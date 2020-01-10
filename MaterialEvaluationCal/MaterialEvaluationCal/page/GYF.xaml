@@ -1,0 +1,13 @@
+﻿<Window x:Class="MaterialEvaluationCal.page.GYF"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MaterialEvaluationCal.page"
+        mc:Ignorable="d"
+        Title="GYF" Height="450" Width="800">
+    <Grid>
+        <Button Content="钢筋原材料复试" HorizontalAlignment="Left" Margin="210,183,0,0" VerticalAlignment="Top" Width="252" Height="90" Click="Button_Click"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,58 @@
+﻿<Window x:Class="MaterialEvaluationCal.page.GYC"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MaterialEvaluationCal.page"
+        mc:Ignorable="d"
+        Title="钢筋原材料" Height="550" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="19*"/>
+            <ColumnDefinition Width="377*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="设备名称及编号" Grid.Column="1" HorizontalAlignment="Left" Margin="0,21,0,0" VerticalAlignment="Top" Width="120" Height="35"/>
+        <TextBox x:Name="SBMJ" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="136,21,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="直径" Grid.Column="1" HorizontalAlignment="Left" Margin="0,56,0,0" VerticalAlignment="Top" Width="120" Height="35"/>
+        <TextBox x:Name="ZJ" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="136,56,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="重量偏差长度(MM)1" Grid.Column="1" HorizontalAlignment="Left" Margin="0,91,0,0" VerticalAlignment="Top" Height="35"/>
+        <TextBox x:Name="Z_CD1" Grid.Column="1" HorizontalAlignment="Left" Height="25" Margin="136,91,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="重量偏差长度(MM)2" Grid.Column="1" HorizontalAlignment="Left" Margin="0,126,0,0" VerticalAlignment="Top" Width="120" Height="35"/>
+        <TextBox x:Name="Z_CD2" Grid.Column="1" HorizontalAlignment="Left" Margin="136,126,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25"/>
+        <Label Content="重量偏差长度(MM)3" Grid.Column="1" HorizontalAlignment="Left" Margin="0,163,0,0" VerticalAlignment="Top" Height="35"/>
+        <TextBox x:Name="Z_CD3" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="136,163,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="重量偏差长度(MM)4" Grid.Column="1" HorizontalAlignment="Left" Margin="0,198,0,0" VerticalAlignment="Top" Height="35"/>
+        <TextBox x:Name="Z_CD4" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="136,198,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="重量偏差长度(MM)5" Grid.Column="1" HorizontalAlignment="Left" Margin="0,233,0,0" VerticalAlignment="Top" Height="35"/>
+        <TextBox x:Name="Z_CD5" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="136,233,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="总重量(G)" Grid.Column="1" HorizontalAlignment="Left" Margin="0,268,0,0" VerticalAlignment="Top" Height="35" Width="120"/>
+        <TextBox x:Name="Z_ZZL" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="136,268,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="抗拉荷重（KN）1" Grid.Column="1" HorizontalAlignment="Left" Margin="0,303,0,0" VerticalAlignment="Top" Height="35" Width="120"/>
+        <TextBox x:Name="KLHZ1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="136,303,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="抗拉荷重（KN）2" Grid.Column="1" HorizontalAlignment="Left" Margin="0,338,0,0" VerticalAlignment="Top" Height="35" Width="120"/>
+        <TextBox x:Name="KLHZ2" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="136,338,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="屈服荷重（KN）1" Grid.Column="1" HorizontalAlignment="Left" Margin="0,373,0,0" VerticalAlignment="Top" Height="35" Width="120"/>
+        <TextBox x:Name="QFHZ1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="136,373,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="屈服荷重（KN）2" Grid.Column="1" HorizontalAlignment="Left" Margin="0,408,0,0" VerticalAlignment="Top" Height="35" Width="120"/>
+        <TextBox x:Name="QFHZ2" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="136,408,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="断后距L(MM)1" Grid.Column="1" HorizontalAlignment="Left" Margin="310,21,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="DHJL1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="447,21,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="断后距L(MM)2" Grid.Column="1" HorizontalAlignment="Left" Margin="310,56,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="DHJL2" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="447,56,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="冷弯1" Grid.Column="1" HorizontalAlignment="Left" Margin="310,91,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="LW1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="447,91,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="冷弯2" Grid.Column="1" HorizontalAlignment="Left" Margin="310,126,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="LW2" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="447,126,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="伸长值1" Grid.Column="1" HorizontalAlignment="Left" Margin="310,163,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="SCL1" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="447,163,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="伸长值2" Grid.Column="1" HorizontalAlignment="Left" Margin="310,198,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="SCL2" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="447,198,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="反向弯曲" Grid.Column="1" HorizontalAlignment="Left" Margin="310,233,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="FXWQ" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="447,233,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="断前距L0(MM)1" Grid.Column="1" HorizontalAlignment="Left" Margin="310,268,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="DQJL01" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="447,268,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label Content="断前距L0(MM)2" Grid.Column="1" HorizontalAlignment="Left" Margin="310,303,0,0" VerticalAlignment="Top" Width="121" Height="35"/>
+        <TextBox x:Name="DQJL02" Grid.Column="1" Height="23" Margin="447,303,187,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+        <Button Content="查看报告" Grid.Column="1" HorizontalAlignment="Left" Margin="286,467,0,0" VerticalAlignment="Top" Width="94" Height="32" Click="Button_Click"/>
+    </Grid>
+</Window>

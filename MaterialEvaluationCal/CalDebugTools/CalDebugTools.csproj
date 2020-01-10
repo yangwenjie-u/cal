@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{226C46D1-E268-4175-9247-0A5D9A5E1509}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>CalDebugTools</RootNamespace>
+    <AssemblyName>CalDebugTools</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942" />
+    <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604" />
+    <Reference Include="Microsoft.VisualBasic">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\MaterialEvaluationCal\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BLL\ConfigurationHelper.cs" />
+    <Compile Include="CodeUpload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CodeUpload.Designer.cs">
+      <DependentUpon>CodeUpload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Base64Helper.cs" />
+    <Compile Include="Common\Comm.cs" />
+    <Compile Include="Common\CSetLineSpace.cs" />
+    <Compile Include="Common\Data.cs" />
+    <Compile Include="Common\DBUtility\BaseDal.cs" />
+    <Compile Include="Common\DBUtility\JsonHelper.cs" />
+    <Compile Include="Common\DBUtility\SqlBase.cs" />
+    <Compile Include="Common\DBUtility\SqlHelper.cs" />
+    <Compile Include="DAL\DebugManage.cs" />
+    <Compile Include="DAL\FieldManage.cs" />
+    <Compile Include="Common\TokenHeple.cs" />
+    <Compile Include="DAL\GetProjectInfos.cs" />
+    <Compile Include="FormFields.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFields.Designer.cs">
+      <DependentUpon>FormFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FieldToUpper.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FieldToUpper.Designer.cs">
+      <DependentUpon>FieldToUpper.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SettingFields.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingFields.Designer.cs">
+      <DependentUpon>SettingFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\StringConvert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StringConvert.Designer.cs">
+      <DependentUpon>StringConvert.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SyncDataField.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SyncDataField.Designer.cs">
+      <DependentUpon>SyncDataField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UploadFields.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UploadFields.Designer.cs">
+      <DependentUpon>UploadFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CalculateParam.cs" />
+    <Compile Include="Model\ProjectInfos.cs" />
+    <Compile Include="Model\Token.cs" />
+    <Compile Include="Model\TokenEntity.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ProjectManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectManage.Designer.cs">
+      <DependentUpon>ProjectManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CodeUpload.resx">
+      <DependentUpon>CodeUpload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormFields.resx">
+      <DependentUpon>FormFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FieldToUpper.resx">
+      <DependentUpon>FieldToUpper.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingFields.resx">
+      <DependentUpon>SettingFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StringConvert.resx">
+      <DependentUpon>StringConvert.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SyncDataField.resx">
+      <DependentUpon>SyncDataField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UploadFields.resx">
+      <DependentUpon>UploadFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectManage.resx">
+      <DependentUpon>ProjectManage.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="bin\Debug\CalDebugTools.exe.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\CalculateFile\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\hh.fw.Standard\hh.fw.Standard.csproj">
+      <Project>{0eb82b47-f360-4133-96ac-0824b57824a4}</Project>
+      <Name>hh.fw.Standard</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\CalDebugTools.exe" />
+    <Content Include="bin\Debug\CalDebugTools.pdb" />
+    <Content Include="bin\Debug\hh.fw.Standard.dll" />
+    <Content Include="bin\Debug\hh.fw.Standard.pdb" />
+    <Content Include="bin\Debug\Microsoft.VisualBasic.dll" />
+    <Content Include="bin\Debug\Newtonsoft.Json.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

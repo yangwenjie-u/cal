@@ -1,0 +1,608 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A1EDDB9-0A69-4549-B9BE-69F3763BA139}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MaterialEvaluationCal</RootNamespace>
+    <AssemblyName>MaterialEvaluationCal</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>F:\calbin\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <UpdateUrl>http://localhost/MaterialEvaluationCal/</UpdateUrl>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>On</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>B46FDA9EE17849FD598A63BC5B6A77DEE922CB47</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>MaterialEvaluationCal_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlServerCe, Version=4.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Compact.4.0.8876.1\lib\net40\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\AW.xaml.cs">
+      <DependentUpon>AW.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\CGL.xaml.cs">
+      <DependentUpon>CGL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\AQW.xaml.cs">
+      <DependentUpon>AQW.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\CJL.xaml.cs">
+      <DependentUpon>CJL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\CreateTable.xaml.cs">
+      <DependentUpon>CreateTable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\FDJ.xaml.cs">
+      <DependentUpon>FDJ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\FM.xaml.cs">
+      <DependentUpon>FM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GHF.xaml.cs">
+      <DependentUpon>GHF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\HT1.xaml.cs">
+      <DependentUpon>HT1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\JPH.xaml.cs">
+      <DependentUpon>JPH.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\MA.xaml.cs">
+      <DependentUpon>MA.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\RF.xaml.cs">
+      <DependentUpon>RF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\SC.xaml.cs">
+      <DependentUpon>SC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GX.xaml.cs">
+      <DependentUpon>GX.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\TB.xaml.cs">
+      <DependentUpon>TB.xaml</DependentUpon>
+    </Compile><Compile Include="page\SSJ.xaml.cs">
+      <DependentUpon>SSJ.xaml</DependentUpon>
+    </Compile>    <Compile Include="page\WJJ.xaml.cs">
+      <DependentUpon>WJJ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\WLB.xaml.cs">
+      <DependentUpon>WLB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GGH.xaml.cs">
+      <DependentUpon>GGH.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\WB.xaml.cs">
+      <DependentUpon>WB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\YJ.xaml.cs">
+      <DependentUpon>YJ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\XS.xaml.cs">
+      <DependentUpon>XS.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\XC.xaml.cs">
+      <DependentUpon>XC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\WZ.xaml.cs">
+      <DependentUpon>WZ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GLF.xaml.cs">
+      <DependentUpon>GLF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GSF.xaml.cs">
+      <DependentUpon>GSF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\DXL.xaml.cs">
+      <DependentUpon>DXL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GG.xaml.cs">
+      <DependentUpon>GG.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GHJ.xaml.cs">
+      <DependentUpon>GHJ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GLJ.xaml.cs">
+      <DependentUpon>GLJ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GYC.xaml.cs">
+      <DependentUpon>GYC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GYF.xaml.cs">
+      <DependentUpon>GYF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\HD.xaml.cs">
+      <DependentUpon>HD.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\GGF.xaml.cs">
+      <DependentUpon>GGF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\HNT.xaml.cs">
+      <DependentUpon>HNT.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\HPB.xaml.cs">
+      <DependentUpon>HPB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\HSA.xaml.cs">
+      <DependentUpon>HSA.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\JBS.xaml.cs">
+      <DependentUpon>JBS.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\JMC.xaml.cs">
+      <DependentUpon>JMC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\KF.xaml.cs">
+      <DependentUpon>KF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\YKJ.xaml.cs">
+      <DependentUpon>YKJ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\JZBL.xaml.cs">
+      <DependentUpon>JZBL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\KS.xaml.cs">
+      <DependentUpon>KS.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\HSZ.xaml.cs">
+      <DependentUpon>HSZ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\JGG.xaml.cs">
+      <DependentUpon>JGG.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\AW.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\CGL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\AQW.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\CJL.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\CreateTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\FDJ.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\FM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\GHF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\HT1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  
+    <Page Include="page\MA.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\RF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\SC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\GX.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\TB.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>    <Page Include="page\SSJ.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>    <Page Include="page\WJJ.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\WLB.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\GGH.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\WB.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\YJ.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\XS.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\XC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\WZ.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\GLF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\GSF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\DXL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\GG.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\GHJ.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\GLJ.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\GYF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\HD.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\GGF.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\HNT.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\HPB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\HSA.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\JBS.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\JMC.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\KF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\YKJ.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\JZBL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\KS.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\GYC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\HSZ.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\JGG.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\LNG.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\MC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\PZJ.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\QK2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\QK3.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\Qsf.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\SJX.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\SPB.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\TG.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\SN.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\TZy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="page\XGL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\XJL.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\ZDZD.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="page\ZSJ.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="page\LNG.xaml.cs">
+      <DependentUpon>LNG.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\MC.xaml.cs">
+      <DependentUpon>MC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\PZJ.xaml.cs">
+      <DependentUpon>PZJ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\QK2.xaml.cs">
+      <DependentUpon>QK2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\QK3.xaml.cs">
+      <DependentUpon>QK3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\Qsf.xaml.cs">
+      <DependentUpon>Qsf.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\SJX.xaml.cs">
+      <DependentUpon>SJX.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\SPB.xaml.cs">
+      <DependentUpon>SPB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\TG.xaml.cs">
+      <DependentUpon>TG.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\SN.xaml.cs">
+      <DependentUpon>SN.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\TZY.xaml.cs">
+      <DependentUpon>TZy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\XGL.xaml.cs">
+      <DependentUpon>XGL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\XJL.xaml.cs">
+      <DependentUpon>XJL.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\ZDZD.xaml.cs">
+      <DependentUpon>ZDZD.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="page\ZSJ.xaml.cs">
+      <DependentUpon>ZSJ.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="说明文档\GB11945-99蒸压灰砂砖-开发文档.docx" />
+    <None Include="说明文档\GBT_50081-2002 混泥土抗折-开发文档.docx" />
+    <None Include="说明文档\GBT_50081-2002 混泥土轴心抗压-开发文档.docx" />
+    <None Include="说明文档\GBT_50082-2009 混泥土抗渗-开发文档.docx" />
+    <None Include="说明文档\GBT_700-2006_碳素结构钢使用标准-开发文档.docx" />
+    <None Include="说明文档\GB_T 14684 — 2011建 设 用 砂.docx" />
+    <None Include="说明文档\GB_28635-2012 路面砖%28国标%29+路面砖.docx" />
+    <None Include="说明文档\GB_6566-2010 建筑材料放射性核素限量.docx" />
+    <None Include="说明文档\JGJ-T 110-2017 建筑工程饰面砖粘结强度检验标准.docx" />
+    <None Include="说明文档\JGJ-T 144-2004 外墙外保温现场粘结强度.docx" />
+    <None Include="说明文档\接焊头试验说明.doc" />
+    <None Include="说明文档\数据字段说明.xlsx" />
+    <None Include="说明文档\机械连接.doc" />
+    <None Include="说明文档\水泥%28新%29.doc" />
+    <None Include="说明文档\水泥搅拌桩.doc" />
+    <None Include="说明文档\混凝土配合比.doc" />
+    <None Include="说明文档\电线.doc" />
+    <None Include="说明文档\砂浆[2009标准].doc" />
+    <None Include="说明文档\砂浆配合比.doc" />
+    <None Include="说明文档\钢筋原材料.doc" />
+    <None Include="说明文档\钢筋套筒灌浆连接应用技术.doc" />
+    <None Include="说明文档\铝合金门窗.doc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MaterialEvaluationCal.Calculates\Calculates.csproj">
+      <Project>{1b6cf353-e1f5-4022-89cf-43d2fd2da36f}</Project>
+      <Name>Calculates</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="obj\Debug\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    if not exist "$(TargetDir)x86" md "$(TargetDir)x86"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\x86\*.*" "$(TargetDir)x86"
+    if not exist "$(TargetDir)amd64" md "$(TargetDir)amd64"
+    xcopy /s /y "$(SolutionDir)packages\Microsoft.SqlServer.Compact.4.0.8876.1\NativeBinaries\amd64\*.*" "$(TargetDir)amd64"</PostBuildEvent>
+  </PropertyGroup>
+</Project>
