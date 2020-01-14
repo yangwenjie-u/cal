@@ -17,7 +17,6 @@ namespace Calculates
              *  参考标准：
              * GB/T 50082-2009
              */
-
             #region 参数定义
             string mcalBh, mlongStr;
             string mSjdjbh, mSjdj;
@@ -107,8 +106,6 @@ namespace Calculates
             #region  计算开始
             string which = "1";
             MItem[0]["JCJGMS"] = "";
-            string mhgzh = "";
-            string mbhgzh = "";
             foreach (var sitem in SItem)
             {
                 string mSz = "0";
@@ -133,7 +130,7 @@ namespace Calculates
                     break;
                 }
                 //计算龄期
-                sitem["LQ"] = (GetSafeDateTime(MItem[0]["SYRQS"]) - GetSafeDateTime(sitem["ZZRQ"])).Days.ToString();
+                sitem["LQ"] = (GetSafeDateTime(sitem["SYRQ"]) - GetSafeDateTime(sitem["ZZRQ"])).Days.ToString();
                 if (!string.IsNullOrEmpty(MItem[0]["SJTABS"]))
                 {
                     if (sjtabcalc(MItem[0], sitem, mAllHg))
@@ -187,7 +184,7 @@ namespace Calculates
                         vv = vv + 1;
                     if (Conversion.Val(sitem["KYQD5"]) > mQdyq || (Conversion.Val(sitem["KYQD5"]) >= mQdyq && sitem["SFBSS5"] == "1"))
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD6"]) > mQdyq || (Conversion.Val(sitem["KYQD6"]) >= mQdyq && sitem["SFBSS6"] == "1"))
+                    if (Conversion.Val(sitem["KYQD6"]) > mQdyq || (mQdyq <= Conversion.Val(sitem["KYQD6"]) && sitem["SFBSS5"] == "1"))
                         vv = vv + 1;
                     if (vv <= 3)
                     {
@@ -201,20 +198,6 @@ namespace Calculates
                         sitem["JCJG"] = "合格";
                         mAllHg = true;
                     }
-                }
-                if (sitem["JCJG"] == "合格")
-                {
-                    if (mhgzh.Length > 0)
-                        mhgzh = mhgzh + "、" + sitem["zh"].Trim();
-                    else
-                        mhgzh = sitem["zh"];
-                }
-                else
-                {
-                    if (mbhgzh.Length > 0)
-                        mbhgzh = mbhgzh + "、" + sitem["zh"].Trim();
-                    else
-                        mbhgzh = sitem["zh"].Trim();
                 }
             }
             //主表总判断赋值

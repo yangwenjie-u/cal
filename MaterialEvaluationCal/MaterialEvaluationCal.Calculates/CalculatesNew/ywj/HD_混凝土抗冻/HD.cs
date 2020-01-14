@@ -142,7 +142,7 @@ namespace Calculates
                     }
                 }
                 double qdVal = 0;
-                if (jcxm.Contains("、强度损失、"))
+                if (jcxm.Contains("、强度损失、") || jcxm.Contains("、抗冻试验、"))
                 {
                     qdVal = 0;
                     mtmpArray.Clear();
@@ -180,7 +180,7 @@ namespace Calculates
                     sItem["KYPJ28"] = "----";
                 }
                 // kyhz
-                if (jcxm.Contains("、强度损失、"))
+                if (jcxm.Contains("、强度损失、") || jcxm.Contains("、抗冻试验、"))
                 {
                     #region KYHZ
                     qdVal = 0;
@@ -329,8 +329,7 @@ namespace Calculates
                     sItem["DHPJ2"] = "----";
                 }
 
-
-                if (jcxm.Contains("、质量损失、"))
+                if (jcxm.Contains("、质量损失、") || jcxm.Contains("、抗冻试验、"))
                 {
                     #region 质量损失
                     qdVal = 0;
