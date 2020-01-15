@@ -13,7 +13,8 @@ namespace CalDebugTools
     public class Data
     {
         public static string http_getapiurl = ConfigurationManager.AppSettings["http_getapiurl"];
-        public static string http_setapiurl = ConfigurationManager.AppSettings["http_setapiurl"];
+        public static string http_setapiurl = ConfigurationManager.AppSettings["http_setapiurl"]; 
+        public static string http_set_defaultLib_url = ConfigurationManager.AppSettings["http_set_defaultLib_url"]; 
         public static string http_get_sylbapiurl = ConfigurationManager.AppSettings["http_get_sylbapiurl"];
         public static string http_get_parameterapiurl = ConfigurationManager.AppSettings["http_getparameterapiurl"];
         public static string http_get_login = ConfigurationManager.AppSettings["http_get_login"];
@@ -24,7 +25,7 @@ namespace CalDebugTools
             return BitConverter.ToString(provider.ComputeHash(Encoding.Default.GetBytes(ConvertString))).Replace("-", "").ToLower();
         }
 
-        public static string GetHtmlByPost(string url, string indata, string referer, CookieContainer myCookieContainer,string header)
+        public static string GetHtmlByPost(string url, string indata, string referer, CookieContainer myCookieContainer, string header)
         {
             string str = string.Empty;
             try
@@ -53,13 +54,13 @@ namespace CalDebugTools
             return str;
         }
 
-        public static string GetPost_http(string url, string indata, string referer, CookieContainer myCookieContainer,string header)
+        public static string GetPost_http(string url, string indata, string referer, CookieContainer myCookieContainer, string header)
         {
             string str2;
             try
             {
                 string str = "";
-                byte[] bytes = Encoding.Default.GetBytes(indata);
+                byte[] bytes = Encoding.UTF8.GetBytes(indata);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.ContentType = "application/json";
                 request.Headers.Add("Accept-Language", "zh-cn");
@@ -103,7 +104,7 @@ namespace CalDebugTools
             return true;
         }
 
-        public static string GetHtml(string url,string header)
+        public static string GetHtml(string url, string header)
         {
             string result = string.Empty;
             WebClient wb = new WebClient(); if (!string.IsNullOrEmpty(header))

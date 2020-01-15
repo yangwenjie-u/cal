@@ -1,5 +1,6 @@
 ﻿using CalDebugTools.Common.DBUtility;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Net;
@@ -120,7 +121,28 @@ namespace CalDebugTools
                 string get_json = Data.GetHtmlByPost(Data.http_setapiurl, par_json, "", null, token);
                 if (get_json.Contains("成功"))
                 {
-                    MessageBox.Show("代码上传成功");
+                    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
+                    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
+                    var ddf = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json_strue.data.ToString());
+                    var ver = ddf["ver"];
+                    if (this.ck_defaultLib.Checked)
+                    {
+
+                        par_json = "{\"sylb\":\"" + sylb + "\",\"ver\":\"" + ver + "\"}";
+                        get_json = Data.GetHtmlByPost(Data.http_set_defaultLib_url, par_json, "", null, token);
+                        //get_json = Data.GetHtmlByPost(@"http://calctest.jzyglxt.com/apiv1/SetCalcVersionDefault", par_json, "", null, token);
+                        if (get_json.Contains("成功"))
+                        {
+                            MessageBox.Show($"代码上传成功,设置{sylb}默认版本为{ver}");
+                        }
+                        else
+                        {
+                            MessageBox.Show($"代码上传成功,设置{sylb}默认版本失败：{json_strue.message}");
+                        }
+                    }
+                    else {
+                        MessageBox.Show($"代码上传成功");
+                    }
                 }
                 else
                 {

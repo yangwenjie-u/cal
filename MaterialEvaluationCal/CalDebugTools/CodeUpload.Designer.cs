@@ -41,6 +41,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.txtextratable = new System.Windows.Forms.TextBox();
             this.txtcode = new System.Windows.Forms.RichTextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.ck_defaultLib = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -139,7 +141,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(128, 496);
+            this.button1.Location = new System.Drawing.Point(128, 516);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(139, 29);
@@ -164,11 +166,32 @@
             this.txtcode.TabIndex = 16;
             this.txtcode.Text = "";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(3, 480);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(112, 15);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "设置默认版本：";
+            // 
+            // ck_defaultLib
+            // 
+            this.ck_defaultLib.AutoSize = true;
+            this.ck_defaultLib.Location = new System.Drawing.Point(128, 480);
+            this.ck_defaultLib.Name = "ck_defaultLib";
+            this.ck_defaultLib.Size = new System.Drawing.Size(44, 19);
+            this.ck_defaultLib.TabIndex = 18;
+            this.ck_defaultLib.Text = "是";
+            this.ck_defaultLib.UseVisualStyleBackColor = true;
+            // 
             // CodeUpload
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1137, 599);
+            this.Controls.Add(this.ck_defaultLib);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.txtcode);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtremark);
@@ -206,5 +229,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox txtextratable;
         private System.Windows.Forms.RichTextBox txtcode;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.CheckBox ck_defaultLib;
     }
 }

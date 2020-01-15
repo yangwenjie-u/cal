@@ -11,7 +11,6 @@ namespace Calculates
     {
         public void Calc()
         {
-            
             #region
             /************************ 代码开始 *********************/
             bool mAllHg = true;
@@ -110,6 +109,7 @@ namespace Calculates
 
                return "";
            };
+
 
             Func<IDictionary<string, string>, int, string> calc_qf =
                 delegate (IDictionary<string, string> sItem, int count)
@@ -473,7 +473,7 @@ namespace Calculates
                 string mJSFF = "", sZlpc = "", LwBzyq = "";
                 double md = 0, md1 = 0, md2 = 0;
                 mGJLB = string.IsNullOrEmpty(sItem["GJLB"]) ? "" : sItem["GJLB"];
-                if (sItem["SYHJWD"].Length != 0)
+                if (!string.IsNullOrEmpty(sItem["SYHJWD"]) && sItem["SYHJWD"].Length != 0)
                 {
                     MItem[0]["SYWD"] = sItem["SYHJWD"] + "℃";
                 }
@@ -520,7 +520,6 @@ namespace Calculates
                     MItem[0]["BGBH"] = "";
                     mAllHg = false;
                     sItem["JCJG"] = "不合格";
-                    jsbeiZHu = jsbeiZHu + "单组流水号:" + sItem["DZBH"] + "试件尺寸为空。      ";
                     continue;
                 }
 
@@ -534,13 +533,13 @@ namespace Calculates
                     {
                         //if ((DateTime.Parse(MItem[0]["JYRQ"]) - DateTime.Parse("2015-10-09")).Days >= 0)
                         //{
-                        //    sItem["G_ZLPC"] = "≥-" + extraFieldsZLPCB["TZHZLPC"];
-                        //    sZlpc = "-" + extraFieldsZLPCB["TZHZLPC"];
+                        sItem["G_ZLPC"] = "≥-" + extraFieldsZLPCB["TZHZLPC"];
+                        sZlpc = "-" + extraFieldsZLPCB["TZHZLPC"];
                         //}
                         //else
                         //{
-                        sItem["G_ZLPC"] = "≤" + extraFieldsZLPCB["TZHZLPC"];
-                        sZlpc = extraFieldsZLPCB["TZHZLPC"];
+                        //sItem["G_ZLPC"] = "≤" + extraFieldsZLPCB["TZHZLPC"];
+                        //sZlpc = extraFieldsZLPCB["TZHZLPC"];
                         //}
                     }
                 }
@@ -642,38 +641,18 @@ namespace Calculates
                         {
                             //if ((DateTime.Parse(MItem[0]["JYRQ"]) - DateTime.Parse("2015-10-09")).Days >= 0)
                             //{
-                            //    MItem[0]["ZLPCXS"] = "重量偏差";
-                            //    zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]);
-
-                            //    sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - Conversion.Val(SLLZL) * zCD) / (Conversion.Val(SLLZL) * zCD), 0)).ToString();
-                            //    if (jcxm.Contains("、拉伸、") && sItem["KLHZ1"].Trim() == "0")
-                            //    {
-                            //        sItem["LW1"] = "0";
-                            //        sItem["LW2"] = "0";
-                            //        //sItem["SYR"] = "";
-                            //    }
-
-                            //    if (Conversion.Val(sItem["ZLPC"]) >= Conversion.Val(sZlpc))
-                            //    {
-                            //        sItem["JCJG_ZLPC"] = "符合";
-                            //    }
-                            //    else
-                            //    {
-                            //        sItem["JCJG_ZLPC"] = "不符合";
-                            //    }
-                            //}
-                            //else
-                            //{
-                            MItem[0]["ZLPCXS"] = "重量负偏差";
+                            MItem[0]["ZLPCXS"] = "重量偏差";
                             zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]);
-                            sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(SLLZL) * zCD - Conversion.Val(sItem["Z_ZZL"])) / (SLLZL * zCD), 0)).ToString();
-                            if (jcxm.Contains("、拉伸、") && Conversion.Val(sItem["KLHZ1"]) == 0)
+
+                            sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - Conversion.Val(SLLZL) * zCD) / (Conversion.Val(SLLZL) * zCD), 0)).ToString();
+                            if (jcxm.Contains("、拉伸、") && sItem["KLHZ1"].Trim() == "0")
                             {
                                 sItem["LW1"] = "0";
                                 sItem["LW2"] = "0";
                                 //sItem["SYR"] = "";
                             }
-                            if (Conversion.Val(sItem["ZLPC"]) <= Conversion.Val(sZlpc))
+
+                            if (Conversion.Val(sItem["ZLPC"]) >= Conversion.Val(sZlpc))
                             {
                                 sItem["JCJG_ZLPC"] = "符合";
                             }
@@ -681,6 +660,26 @@ namespace Calculates
                             {
                                 sItem["JCJG_ZLPC"] = "不符合";
                             }
+                            //}
+                            //else
+                            //{
+                            //MItem[0]["ZLPCXS"] = "重量负偏差";
+                            //zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]);
+                            //sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(SLLZL) * zCD - Conversion.Val(sItem["Z_ZZL"])) / (SLLZL * zCD), 0)).ToString();
+                            //if (jcxm.Contains("、拉伸、") && Conversion.Val(sItem["KLHZ1"]) == 0)
+                            //{
+                            //    sItem["LW1"] = "0";
+                            //    sItem["LW2"] = "0";
+                            //    //sItem["SYR"] = "";
+                            //}
+                            //if (Conversion.Val(sItem["ZLPC"]) <= Conversion.Val(sZlpc))
+                            //{
+                            //    sItem["JCJG_ZLPC"] = "符合";
+                            //}
+                            //else
+                            //{
+                            //    sItem["JCJG_ZLPC"] = "不符合";
+                            //}
                             //}
                         }
                         else
@@ -867,12 +866,10 @@ namespace Calculates
                         MItem[0]["FJJJ1"] = MItem[0]["FJJJ1"] + zh + "#";
                     }
                 }
-
-          
             }
 
             #region 添加最终报告
-         
+
             if (mFlag_Bhg && mFlag_Hg)
             {
                 jsbeiZHu = "该组试样所检项目部分不符合" + MItem[0]["PDBZ"] + "标准要求。";
