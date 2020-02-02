@@ -135,7 +135,7 @@ namespace Calculates
                     TimeSpan ts = GetSafeDateTime(sItem["SYRQ"]) - GetSafeDateTime(sItem["ZZRQ"]);
                     sItem["LQ"] = ts.Days.ToString();
 
-                    if (ts.Days < 28 && sItem["YHTJ"].Trim() == "工地标准养护")
+                    if (ts.Days < 28 && "工地标准养护" == sItem["YHTJ"].Trim())
                     {
                         sItem["LQ"] = "28";
                         sItem["SYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToString();

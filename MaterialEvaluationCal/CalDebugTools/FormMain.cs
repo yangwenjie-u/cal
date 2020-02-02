@@ -945,5 +945,12 @@ namespace CalDebugTools
         {
 
         }
+
+        private void zdzd表数据ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ZDZDTableSync manage = new ZDZDTableSync(this);
+            this.Hide();
+            manage.Show();
+        }
     }
 }
