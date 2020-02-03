@@ -89,6 +89,11 @@ namespace Calculates
                     int count = 1;
                     foreach (var MS_MC in MS_MCS)
                     {
+                        if (MS_MC.Count == 0)
+                        {
+                            count++;
+                            continue;
+                        }
                         if (MS_MC["开启缝长"] != null)
                         {
                             kqfc = double.Parse(MS_MC["开启缝长"].Trim());//1 

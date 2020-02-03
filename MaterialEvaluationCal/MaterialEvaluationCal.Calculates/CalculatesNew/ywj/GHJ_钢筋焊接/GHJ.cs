@@ -402,7 +402,7 @@ namespace Calculates
                     }
 
 
-                    if (jcxm2.Contains("、冷弯、"))
+                    if (jcxm2.Contains("、冷弯、") || jcxm2.Contains("、弯曲、"))
                     {
                         if (Convert.ToDouble(hg_lw) > mHggs_lw2)
                         {
@@ -445,7 +445,7 @@ namespace Calculates
                      var jcxm2 = "、" + sItem["JCXM"] + "、";
 
                      if (jcxm2.Contains("、拉伸、") && (Convert.ToDouble(sItem["HG_KL"]) < mFsgs_klqd2 || Convert.ToDouble(sItem["HG_SC"]) < mFsgs_scl2) ||
-                     (jcxm2.Contains("、冷弯、") && (Convert.ToDouble(sItem["hg_lw"]) < mFsgs_lw2)))
+                     ((jcxm2.Contains("、冷弯、") || jcxm2.Contains("、弯曲、")) && (Convert.ToDouble(sItem["hg_lw"]) < mFsgs_lw2)))
                      {
                          sItem["JCJG"] = "不合格";
                          mFlag_Bhg = true;
@@ -731,7 +731,7 @@ namespace Calculates
                         sItem["HG_LW"] = "0";
                     }
 
-                    if (jcxm.Contains("、冷弯、"))
+                    if (jcxm.Contains("、冷弯、")|| jcxm.Contains("、弯曲、"))
                     {
                         int Gs = 0;
                         for (int i = 1; i < 4; i++)
@@ -831,7 +831,7 @@ namespace Calculates
             {
                 MItem[0]["FJJJ3"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
 
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
