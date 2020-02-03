@@ -205,7 +205,7 @@ namespace Calculates
                     //mrsmainTablesItem["WHICH") = IIf(sign, "bgqk2", "bgqk2_1")
                 }
 
-                if (jcxm.Contains("、质量损失、") && sign)
+                if (jcxm.Contains("、外观质量、") && sign)
                 {
                     if (sign)
                     {

@@ -1123,7 +1123,7 @@ namespace Calculates
                     MItem[0]["G_CNSJ"] = "----";
                     MItem[0]["G_ZNSJ"] = "----";
                 }
-                if (jcxm.Contains("、泌水率、"))
+                if (jcxm.Contains("、泌水率比、"))
                 {
                     if (sitem["PBSN1"] != "" && sitem["PBSN1"] != "----")
                     {

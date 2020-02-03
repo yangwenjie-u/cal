@@ -144,7 +144,7 @@ namespace Calculates
                     MItem[0]["G_XSLB"] = "----";
                 }
 
-                if (jcxm.Contains("、强度活性指数、"))
+                if (jcxm.Contains("、活性指数、"))
                 {
                     MItem[0]["G_HXZS"] = mrsDj["HXZS"];
 

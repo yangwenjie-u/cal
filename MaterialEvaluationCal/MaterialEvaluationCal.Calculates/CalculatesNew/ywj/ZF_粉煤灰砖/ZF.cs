@@ -60,7 +60,7 @@ namespace Calculates
                      jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
                      mFlag_Hg = true;
                      sign = true;
-                     if (jcxm.Contains("、抗压、"))
+                     if (jcxm.Contains("、抗压强度、"))
                      {
                          sign = true;
 
@@ -151,79 +151,80 @@ namespace Calculates
                          sItem["QDJL"] = "----";
                      }
 
-
-                     if (jcxm.Contains("、冻后强度、"))
+                     if (jcxm.Contains("、抗冻性能、"))
                      {
-                         sign = true;
+                         //if (jcxm.Contains("、冻后强度、"))
+                         //{
+                             sign = true;
 
-                         sign = IsNumeric(sItem["KD_KYAVG"]) ? sign : false;
-                         if (sign)
-                         {
-                             var GH_KYAVG = IsQualified(sItem["GH_KD_KYAVG"], sItem["KD_KYAVG"], true);
-                             if (GH_KYAVG == "不符合")
+                             sign = IsNumeric(sItem["KD_KYAVG"]) ? sign : false;
+                             if (sign)
                              {
-                                 sItem["PD_DHQD"] = "不合格";
-                                 mbhggs = mbhggs + 1;
-                                 mFlag_Bhg = false;
+                                 var GH_KYAVG = IsQualified(sItem["GH_KD_KYAVG"], sItem["KD_KYAVG"], true);
+                                 if (GH_KYAVG == "不符合")
+                                 {
+                                     sItem["PD_DHQD"] = "不合格";
+                                     mbhggs = mbhggs + 1;
+                                     mFlag_Bhg = false;
+                                 }
+                                 else
+                                 {
+                                     sItem["PD_DHQD"] = "合格";
+                                     mFlag_Hg = true;
+                                 }
+                                 sItem["GH_KD_KYAVG"] = "平均值" + sItem["GH_KD_KYAVG"];
                              }
-                             else
+
+                         //}
+                         //else
+                         //{
+                         //    sItem["PD_DHQD"] = "----";
+                         //    sItem["GH_KD_KYAVG"] = "----";
+                         //    sItem["KD_KYAVG"] = "----";
+                         //}
+
+
+                         //if (jcxm.Contains("、质量损失率、"))
+                         //{
+                             sign = true;
+
+                             sign = IsNumeric(sItem["KD_SSMAX"]) ? sign : false;
+                             if (sign)
                              {
-                                 sItem["PD_DHQD"] = "合格";
-                                 mFlag_Hg = true;
+                                 var GH_KYAVG = IsQualified(sItem["GH_KD_SSDKZ"], sItem["KD_SSMAX"], true);
+                                 if (GH_KYAVG == "不符合")
+                                 {
+                                     sItem["PD_ZLSS"] = "不合格";
+                                     mbhggs = mbhggs + 1;
+                                     mFlag_Bhg = false;
+                                 }
+                                 else
+                                 {
+                                     sItem["PD_ZLSS"] = "合格";
+                                     mFlag_Hg = true;
+                                 }
+                                 sItem["GH_KD_SSDKZ"] = "单块最大损失率" + sItem["GH_KD_SSDKZ"];
                              }
-                             sItem["GH_KD_KYAVG"] = "平均值" + sItem["GH_KD_KYAVG"];
-                         }
+                         //}
+                         //else
+                         //{
+                         //    sItem["PD_ZLSS"] = "----";
+                         //    sItem["GH_KD_SSDKZ"] = "----";
+                         //    sItem["KD_SSMAX"] = "----";
+                         //}
 
+
+                         //if (jcxm.Contains("冻后强度") || jcxm.Contains("质量损失率"))
+                         //{
+                             sItem["KDXJL"] = sItem["PD_DHQD"] == "不合格" || sItem["PD_ZLSS"] == "不合格" ? "不符合" : "符合";
+                             sItem["KDXJL"] = sItem["KDXJL"] + sItem["sjdj"] + "强度等级";
+
+                         //}
+                         //else
+                         //{
+                         //    sItem["KDXJL"] = "----";
+                         //}
                      }
-                     else
-                     {
-                         sItem["PD_DHQD"] = "----";
-                         sItem["GH_KD_KYAVG"] = "----";
-                         sItem["KD_KYAVG"] = "----";
-                     }
-
-
-                     if (jcxm.Contains("、质量损失、"))
-                     {
-                         sign = true;
-
-                         sign = IsNumeric(sItem["KD_SSMAX"]) ? sign : false;
-                         if (sign)
-                         {
-                             var GH_KYAVG = IsQualified(sItem["GH_KD_SSDKZ"], sItem["KD_SSMAX"], true);
-                             if (GH_KYAVG == "不符合")
-                             {
-                                 sItem["PD_ZLSS"] = "不合格";
-                                 mbhggs = mbhggs + 1;
-                                 mFlag_Bhg = false;
-                             }
-                             else
-                             {
-                                 sItem["PD_ZLSS"] = "合格";
-                                 mFlag_Hg = true;
-                             }
-                             sItem["GH_KD_SSDKZ"] = "单块最大损失率" + sItem["GH_KD_SSDKZ"];
-                         }
-                     }
-                     else
-                     {
-                         sItem["PD_ZLSS"] = "----";
-                         sItem["GH_KD_SSDKZ"] = "----";
-                         sItem["KD_SSMAX"] = "----";
-                     }
-
-
-                     if (jcxm.Contains("冻后强度") || jcxm.Contains("质量损失"))
-                     {
-                         sItem["KDXJL"] = sItem["PD_DHQD"] == "不合格" || sItem["PD_ZLSS"] == "不合格" ? "不符合" : "符合";
-                         sItem["KDXJL"] = sItem["KDXJL"] + sItem["sjdj"] + "强度等级";
-
-                     }
-                     else
-                     {
-                         sItem["KDXJL"] = "----";
-                     }
-
 
                      if (mbhggs == 0)
                      {

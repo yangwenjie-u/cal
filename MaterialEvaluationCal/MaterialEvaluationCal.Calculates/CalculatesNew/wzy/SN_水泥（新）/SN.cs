@@ -506,7 +506,7 @@ namespace Calculates
                     mitem["LDD"] = Round((Conversion.Val(mitem["LDD1"]) + Conversion.Val(mitem["LDD2"])) / 2, 0).ToString();
                 else
                     mitem["LDD"] = "----";
-                if (sitem["JCXM"].Contains("3天强度") && Conversion.Val(sitem["KYHZ3_1"]) > 0)
+                if (sitem["JCXM"].Contains("强度（3天）") && Conversion.Val(sitem["KYHZ3_1"]) > 0)
                 {
                     mMj = 0.625;
                     sitem["KYQD3_1"] = Round(Conversion.Val(sitem["KYHZ3_1"]) * mMj, 1).ToString("0.0");
@@ -590,7 +590,7 @@ namespace Calculates
                             sitem["KY3_HG"] = "不合格";
                         ky3_hg = false;
                     }
-                    if (!("、" + sitem["JCXM"] + "、").Contains("、3天强度、"))
+                    if (!("、" + sitem["JCXM"] + "、").Contains("、强度（3天）、"))
                     {
                         sitem["KY3_HG"] = "----";
                         ky3_hg = true;
@@ -618,7 +618,7 @@ namespace Calculates
                         sitem["KZ3_HG"] = "不合格";
                         kz3_hg = false;
                     }
-                    if (!("、" + sitem["JCXM"] + "、").Contains("、3天强度、"))
+                    if (!("、" + sitem["JCXM"] + "、").Contains("、强度（3天）、"))
                     {
                         sitem["KZ3_HG"] = "----";
                         kz3_hg = true;
@@ -649,7 +649,7 @@ namespace Calculates
                     sitem["KZ3_HG"] = "----";
                     sitem["KY3_HG"] = "----";
                 }
-                if (sitem["JCXM"].Contains("28天强度") && Conversion.Val(sitem["KYHZ28_1"]) > 0)
+                if (sitem["JCXM"].Contains("强度（28天）") && Conversion.Val(sitem["KYHZ28_1"]) > 0)
                 {
                     if (Conversion.Val(sitem["KYPJ28"]) == 0)
                     {
@@ -801,7 +801,7 @@ namespace Calculates
                     sitem["KZ28_HG"] = "----";
                     sitem["KY28_HG"] = "----";
                 }
-                if (sitem["JCXM"].Contains("28天强度"))
+                if (sitem["JCXM"].Contains("强度（28天）"))
                 {
                     if (Conversion.Val(sitem["KYPJ3"]) != 0)
                     {
@@ -956,7 +956,7 @@ namespace Calculates
 
                 }
                 //细度判定
-                if (jcxm.Contains("、密度、"))
+                if (jcxm.Contains("、细度、"))
                 {
                     sitem["MD1"] = ((int)(Round(Conversion.Val(sitem["MDSYZL1"]) / (Conversion.Val(sitem["MDYYTJ1"]) - Conversion.Val(sitem["MDYTJ1"])), 4) * 1000) / 1000).ToString("0.00");
                     sitem["MD2"] = ((int)(Round(Conversion.Val(sitem["MDSYZL2"]) / (Conversion.Val(sitem["MDYYTJ2"]) - Conversion.Val(sitem["MDYTJ2"])), 4) * 1000) / 1000).ToString("0.00");

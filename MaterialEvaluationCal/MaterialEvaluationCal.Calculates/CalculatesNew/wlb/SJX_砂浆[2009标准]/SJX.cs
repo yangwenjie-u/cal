@@ -91,7 +91,7 @@ namespace Calculates
                 if ("" == mJSFF)
                 {
                     #region 抗压
-                    if (jcxm.Contains("、抗压、"))
+                    if (jcxm.Contains("、抗压强度、"))
                     {
                         //FormatNumber(Round(CDec(sitem["drxs), mcd), mcd, vbTrue, , vbFalse)
                         //c#可以用    Math.Round(GetSafeDouble(sItem["DRXS"]), mcd).ToString();

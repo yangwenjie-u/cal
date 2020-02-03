@@ -79,7 +79,7 @@ namespace Calculates
                 if (!string.IsNullOrEmpty(MItem[0]["SJTABS"]))
                 {
                     #region 抗压
-                    if (jcxm.Contains("、抗压、"))
+                    if (jcxm.Contains("、抗压强度、"))
                     {
                         sign = true;
                         for (int i = 1; i < 11; i++)
@@ -122,7 +122,7 @@ namespace Calculates
                     #endregion
 
                     #region 抗折
-                    if (jcxm.Contains("、抗折、"))
+                    if (jcxm.Contains("、抗折强度、"))
                     {
                         sign = true;
                         for (int i = 1; i < 11; i++)
@@ -253,7 +253,7 @@ namespace Calculates
                     #endregion
 
                     #region 耐磨度
-                    if (jcxm.Contains("、耐磨度、"))
+                    if (jcxm.Contains("、耐磨性、"))
                     {
                         sign = true;
                         sign = IsNumeric(sItem["NMD"]) && !string.IsNullOrEmpty(sItem["NMD"]) ? sign : false;
@@ -282,7 +282,7 @@ namespace Calculates
                     #endregion
 
                     #region 防滑性
-                    if (jcxm.Contains("、防滑性、"))
+                    if (jcxm.Contains("、防滑性能、"))
                     {
                         sign = true;
                         sign = IsNumeric(sItem["FHX"]) && !string.IsNullOrEmpty(sItem["FHX"]) ? sign : false;

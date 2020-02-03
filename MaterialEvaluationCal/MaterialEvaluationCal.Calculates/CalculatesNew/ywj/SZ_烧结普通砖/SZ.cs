@@ -61,7 +61,7 @@ namespace Calculates
                      jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
                      mFlag_Hg = true;
                      sign = true;
-                     if (jcxm.Contains("、抗压、"))
+                     if (jcxm.Contains("、抗压强度、"))
                      {
                          sign = true;
                          for (xd = 1; xd < 11; xd++)
@@ -147,106 +147,108 @@ namespace Calculates
                              sItem["KYQD" + xd] = "----";
                          }
                      }
-
-                     if (jcxm.Contains("、冻融、"))
+                     if (jcxm.Contains("、抗风化性能、"))
                      {
-                         sign = true;
-                         for (xd = 1; xd < 6; xd++)
-                         {
-                             sign = IsNumeric(sItem["drgm" + xd]) ? sign : false;
-                             if (!sign)
+                         //if (jcxm.Contains("、冻融、"))
+                         //{
+                             sign = true;
+                             for (xd = 1; xd < 6; xd++)
                              {
-                                 break;
+                                 sign = IsNumeric(sItem["drgm" + xd]) ? sign : false;
+                                 if (!sign)
+                                 {
+                                     break;
+                                 }
                              }
-                         }
 
-                         if (sign)
-                         {
-                             sum = 0;
-                             nArr.Clear();
-                             nArr.Add(0);
-                             for (xd = 0; xd < 6; xd++)
+                             if (sign)
                              {
-                                 sign = sItem["SFDH" + xd] == "否" ? sign : false;
-                                 sItem["drwg" + xd] = sign ? "0" : "1";
-                                 md = Double.Parse(sItem["drgm" + xd]);
-                                 sign = md <= 2.0 ? sign : false;
+                                 sum = 0;
+                                 nArr.Clear();
+                                 nArr.Add(0);
+                                 for (xd = 0; xd < 6; xd++)
+                                 {
+                                     sign = sItem["SFDH" + xd] == "否" ? sign : false;
+                                     sItem["drwg" + xd] = sign ? "0" : "1";
+                                     md = Double.Parse(sItem["drgm" + xd]);
+                                     sign = md <= 2.0 ? sign : false;
 
 
-                             }
-                             sItem["drpd"] = sign ? "合格" : "不合格";
+                                 }
+                                 sItem["drpd"] = sign ? "合格" : "不合格";
 
 
-                             if (sItem["drpd"] == "不合格")
-                             {
-                                 mbhggs = mbhggs + 1;
-                                 mAllHg = false;
-                                 mFlag_Hg = true;
+                                 if (sItem["drpd"] == "不合格")
+                                 {
+                                     mbhggs = mbhggs + 1;
+                                     mAllHg = false;
+                                     mFlag_Hg = true;
+                                 }
+                                 else
+                                 {
+                                     sItem["PD_KYQD"] = "合格";
+                                     mFlag_Hg = true;
+                                 }
                              }
                              else
                              {
-                                 sItem["PD_KYQD"] = "合格";
-                                 mFlag_Hg = true;
+                                 return false;
                              }
-                         }
-                         else
-                         {
-                             return false;
-                         }
-                     }
-                     else
-                     {
-                         for (xd = 1; xd < 6; xd++)
-                         {
-                             sItem["drwg" + xd] = "----";
-                             sItem["drgm" + xd] = "----";
-                         }
-                         sItem["drpd"] = "----";
+                         //}
+                         //else
+                         //{
+                         //    for (xd = 1; xd < 6; xd++)
+                         //    {
+                         //        sItem["drwg" + xd] = "----";
+                         //        sItem["drgm" + xd] = "----";
+                         //    }
+                         //    sItem["drpd"] = "----";
 
-                     }
+                         //}
 
-                     if (jcxm.Contains("、吸水率和饱和系数、"))
-                     {
-                         sign = true;
-                         sign = IsNumeric(sItem["XSLPJZ"]) ? sign : false;
-                         sign = IsNumeric(sItem["BHXSPJZ"]) ? sign : false;
+                         //if (jcxm.Contains("、吸水率和饱和系数、"))
+                         //{
+                             sign = true;
+                             sign = IsNumeric(sItem["XSLPJZ"]) ? sign : false;
+                             sign = IsNumeric(sItem["BHXSPJZ"]) ? sign : false;
 
-                         if (sign)
-                         {
-                             sItem["xslbhxsyq"] = "5h沸煮吸水率平均值需" + sItem["XSLPJZYQ"].Trim() + " %，单块最大值需" + sItem["XSLZDZYQ"].Trim() + " %；饱和系数平均值需" + sItem["BHXSPJZYQ"].Trim() + "，单块最大值需" + sItem["BHXSZDZYQ"].Trim() + "。";
-
-                             sign = IsQualified(sItem["XSLPJZYQ"], sItem["XSLPJZ"], false) == "合格" ? sign : false;
-                             sign = IsQualified(sItem["XSLZDZYQ"], sItem["XSLDKZD"], false) == "合格" ? sign : false;
-                             sign = IsQualified(sItem["BHXSPJZYQ"], sItem["BHXSPJZ"], false) == "合格" ? sign : false;
-                             sign = IsQualified(sItem["BHXSZDZYQ"], sItem["BHXSZDZ"], false) == "合格" ? sign : false;
-                             sItem["bhxspd"] = sign ? "合格" : "不合格";
-
-
-                             if (sItem["drpd"] == "不合格")
+                             if (sign)
                              {
-                                 mbhggs = mbhggs + 1;
-                                 mAllHg = false;
-                                 mFlag_Hg = true;
+                                 sItem["xslbhxsyq"] = "5h沸煮吸水率平均值需" + sItem["XSLPJZYQ"].Trim() + " %，单块最大值需" + sItem["XSLZDZYQ"].Trim() + " %；饱和系数平均值需" + sItem["BHXSPJZYQ"].Trim() + "，单块最大值需" + sItem["BHXSZDZYQ"].Trim() + "。";
+
+                                 sign = IsQualified(sItem["XSLPJZYQ"], sItem["XSLPJZ"], false) == "合格" ? sign : false;
+                                 sign = IsQualified(sItem["XSLZDZYQ"], sItem["XSLDKZD"], false) == "合格" ? sign : false;
+                                 sign = IsQualified(sItem["BHXSPJZYQ"], sItem["BHXSPJZ"], false) == "合格" ? sign : false;
+                                 sign = IsQualified(sItem["BHXSZDZYQ"], sItem["BHXSZDZ"], false) == "合格" ? sign : false;
+                                 sItem["bhxspd"] = sign ? "合格" : "不合格";
+
+
+                                 if (sItem["drpd"] == "不合格")
+                                 {
+                                     mbhggs = mbhggs + 1;
+                                     mAllHg = false;
+                                     mFlag_Hg = true;
+                                 }
+                                 else
+                                 {
+                                     sItem["PD_KYQD"] = "合格";
+                                     mFlag_Hg = true;
+                                 }
                              }
                              else
                              {
-                                 sItem["PD_KYQD"] = "合格";
-                                 mFlag_Hg = true;
+                                 return false;
                              }
-                         }
-                         else
-                         {
-                             return false;
-                         }
-                     }
-                     else
-                     {
-                         sItem["bhxspd"] = "----";
-                         sItem["XSLPJZ"] = "----";
-                         sItem["XSLDKZD"] = "----";
-                         sItem["BHXSPJZ"] = "----";
-                         sItem["BHXSZDZ"] = "----";
-                         sItem["xslbhxsyq"] = "----";
+                         //}
+                         //else
+                         //{
+                         //    sItem["bhxspd"] = "----";
+                         //    sItem["XSLPJZ"] = "----";
+                         //    sItem["XSLDKZD"] = "----";
+                         //    sItem["BHXSPJZ"] = "----";
+                         //    sItem["BHXSZDZ"] = "----";
+                         //    sItem["xslbhxsyq"] = "----";
+                         //}
                      }
 
                      if (jcxm.Contains("、泛霜、"))

@@ -803,7 +803,7 @@ namespace Calculates
                     mItem["G_DWRDR"] = "----";
                 }
 
-                if (jcxm.Contains("、低温弯折性、") ||jcxm.Contains("、低温弯折温度、"))
+                if (jcxm.Contains("、低温弯折、") ||jcxm.Contains("、低温弯折温度、"))
                 {
                     if (sItem["CPMC"] == "高分子防水材料" || sItem["CPMC"] == "聚氯乙烯(PVC)防水卷材")
                     {
@@ -1021,7 +1021,7 @@ namespace Calculates
                     mItem["G_SYX"] = "----";
                 }
 
-                if (jcxm.Contains("、撕裂强度、") || jcxm.Contains("、撕裂力、") || jcxm.Contains("、钉杆撕裂强度、") || jcxm.Contains("、梯形撕裂强度、"))
+                if (jcxm.Contains("、撕裂强度、") || jcxm.Contains("、撕裂力、") || jcxm.Contains("、钉杆撕裂强度、") || jcxm.Contains("、梯形撕裂强度、") || jcxm.Contains("、直角(梯形)撕裂强度、"))
                 {
                     if (Conversion.Val(sItem["V_SLQD"]) >= Conversion.Val(mItem["GV_SLQD"]) && Conversion.Val(sItem["H_SLQD"]) >= Conversion.Val(mItem["GH_SLQD"]))
                     {

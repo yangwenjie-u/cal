@@ -102,7 +102,7 @@ namespace Calculates
                 double md1, md2, md, sum, pjmd = 0;
                 #endregion
 
-                if (jcxm.Contains("、干密度、") || jcxm.Contains("、抗压、"))
+                if (jcxm.Contains("、干密度、") || jcxm.Contains("、抗压强度、"))
                 {
                     mtj1 = 0;
                     mtj1 = 0;
@@ -137,7 +137,7 @@ namespace Calculates
                     sItem["GMDPD"] = "----";
                 }
 
-                if (jcxm.Contains("、抗压、"))
+                if (jcxm.Contains("、抗压强度、"))
                 {
                     //if (Conversion.Val(sItem["KYHZ1"]) == 0)
                     //{
@@ -209,7 +209,7 @@ namespace Calculates
                     sItem["KYPJ"] = "0";
                 }
 
-                if (jcxm.Contains("、吸水率、"))
+                if (jcxm.Contains("、含水率、"))
                 {
                     if (MItem[0]["PDBZ"].ToString().ToUpper().Contains("2011"))
                     {

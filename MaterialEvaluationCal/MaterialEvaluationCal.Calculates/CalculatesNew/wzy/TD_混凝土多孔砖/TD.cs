@@ -197,7 +197,7 @@ namespace Calculates
                 mbHggs = 0;
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 //密度、抗压、冻融、吸水率
-                if (jcxm.Contains("、抗压、"))
+                if (jcxm.Contains("、强度等级、"))
                 {
                     sign = true;
                     //等级表

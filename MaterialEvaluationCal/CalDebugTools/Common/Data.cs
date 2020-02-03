@@ -59,7 +59,7 @@ namespace CalDebugTools
             try
             {
                 string str = "";
-                byte[] bytes = Encoding.Default.GetBytes(indata);
+                byte[] bytes = Encoding.UTF8.GetBytes(indata);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.ContentType = "application/json";
                 request.Headers.Add("Accept-Language", "zh-cn");

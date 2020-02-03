@@ -61,7 +61,7 @@ namespace Calculates
                      jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
                      mFlag_Hg = true;
 
-                     if (jcxm.Contains("、抗压、"))
+                     if (jcxm.Contains("、抗压强度、"))
                      {
                          sign = true;
 
@@ -150,7 +150,7 @@ namespace Calculates
                          }
                      }
 
-                     if (jcxm.Contains("、干密度、"))
+                     if (jcxm.Contains("、密度等级、"))
                      {
                          sign = true;
 
@@ -200,35 +200,37 @@ namespace Calculates
                          sItem["gmdpj"] = "----";
                      }
 
-
-                     if (jcxm.Contains("、冻融、"))
+                     if (jcxm.Contains("、抗风化性能、"))
                      {
-                         sign = true;
+                         //if (jcxm.Contains("、冻融、"))
+                         //{
+                             sign = true;
 
-                         for (xd = 1; xd <= 5; xd++)
-                         {
-                             sign = sItem["SFDH" + xd] == "否" ? sign : false;
-                             sItem["drwg" + xd] = sItem["SFDH" + xd] == "否" ? "0" : "1";
-                         }
+                             for (xd = 1; xd <= 5; xd++)
+                             {
+                                 sign = sItem["SFDH" + xd] == "否" ? sign : false;
+                                 sItem["drwg" + xd] = sItem["SFDH" + xd] == "否" ? "0" : "1";
+                             }
 
-                         sItem["drpd"] = sign ? "合格" : "不合格";
-                         if (sItem["drpd"] == "合格")
-                         {
-                             mFlag_Hg = true;
-                         }
-                         else
-                         {
-                             mFlag_Bhg = true;
-                             mbhggs++;
-                         }
-                     }
-                     else
-                     {
-                         sItem["drpd"] = "----";
-                         for (int i = 1; i <=5; i++)
-                         {
-                             sItem["drwg" + i] = "----";
-                         }
+                             sItem["drpd"] = sign ? "合格" : "不合格";
+                             if (sItem["drpd"] == "合格")
+                             {
+                                 mFlag_Hg = true;
+                             }
+                             else
+                             {
+                                 mFlag_Bhg = true;
+                                 mbhggs++;
+                             }
+                         //}
+                         //else
+                         //{
+                         //    sItem["drpd"] = "----";
+                         //    for (int i = 1; i <= 5; i++)
+                         //    {
+                         //        sItem["drwg" + i] = "----";
+                         //    }
+                         //}
                      }
                      sItem["bhxspd"] = "----";
                      sItem["fspd"] = "----";

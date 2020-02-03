@@ -57,89 +57,92 @@ namespace Calculates
                 int xd, Gs;
                 bool sign;
 
-
-                if (sitem["JCXM"].Contains("7天强度"))
+                string jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+                if (jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
+                    //if (sitem["JCXM"].Contains("7天强度"))
+                    //{
 
-                    if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
-                    {
-                        DateTime dtnow = DateTime.Now;
-                        if (DateTime.TryParse(sitem["ZZRQ"], out dtnow))
-                            sitem["YQSYRQ"] = GetSafeDateTime(sitem["ZZRQ"]).AddDays(28).ToString("yyyy-MM-dd HH:mm:ss");
-                    }
-                    for (xd = 1; xd < 4; xd++)
-                    {
-                        if (IsNumeric(sitem["KYHZ" + xd + "_7"]) && Conversion.Val(sitem["KYHZ" + xd + "_7"]) != 0)
+                        if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
                         {
-                            md = GetSafeDouble(sitem["KYHZ" + xd + "_7"].Trim());
-                            md = 1350 * md / (70.7 * 70.7);
-                            md = Round(md, 1);
-                            sitem["KYQD" + xd + "_7"] = md.ToString("0.0");
+                            DateTime dtnow = DateTime.Now;
+                            if (DateTime.TryParse(sitem["ZZRQ"], out dtnow))
+                                sitem["YQSYRQ"] = GetSafeDateTime(sitem["ZZRQ"]).AddDays(28).ToString("yyyy-MM-dd HH:mm:ss");
                         }
-                        else
-                            sitem["KYQD" + xd + "_7"] = "----";
-                    }
-                }
-                else
-                {
-                    for (xd = 1; xd < 4; xd++)
-                        sitem["KYQD" + xd + "_7"] = "----";
-                    sitem["KYPJ_7"] = "----";
-                }
-                if (sitem["JCXM"].Contains("28天强度"))
-                {
-                    if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
-                    {
-                        DateTime dtnow = DateTime.Now;
-                        if (DateTime.TryParse(sitem["ZZRQ"], out dtnow))
-                            sitem["YQSYRQ"] = GetSafeDateTime(sitem["ZZRQ"]).AddDays(28).ToString("yyyy-MM-dd HH:mm:ss");
-                        sitem["KYPJ"] = "----";
-                    }
-                    for (xd = 1; xd < 4; xd++)
-                    {
-                        if (IsNumeric(sitem["KYHZ" + xd]) && Conversion.Val(sitem["KYHZ" + xd]) != 0)
+                        for (xd = 1; xd < 4; xd++)
                         {
-                            md = GetSafeDouble(sitem["KYHZ" + xd].Trim());
-                            md = 1350 * md / (70.7 * 70.7);
-                            md = Round(md, 1);
-                            sitem["KYQD" + xd] = md.ToString("0.0");
+                            if (IsNumeric(sitem["KYHZ" + xd + "_7"]) && Conversion.Val(sitem["KYHZ" + xd + "_7"]) != 0)
+                            {
+                                md = GetSafeDouble(sitem["KYHZ" + xd + "_7"].Trim());
+                                md = 1350 * md / (70.7 * 70.7);
+                                md = Round(md, 1);
+                                sitem["KYQD" + xd + "_7"] = md.ToString("0.0");
+                            }
+                            else
+                                sitem["KYQD" + xd + "_7"] = "----";
                         }
-                        else
-                            sitem["KYQD" + xd] = "----";
-                    }
-                }
-                else
-                {
-                    for (xd = 1; xd < 4; xd++)
-                        sitem["KYQD" + xd] = "----";
-                    sitem["KYPJ"] = "----";
-                }
-                if (sitem["JCXM"].Contains("抗冻"))
-                {
+                    //}
+                    //else
+                    //{
+                    //    for (xd = 1; xd < 4; xd++)
+                    //        sitem["KYQD" + xd + "_7"] = "----";
+                    //    sitem["KYPJ_7"] = "----";
+                    //}
+                    //if (sitem["JCXM"].Contains("28天强度"))
+                    //{
+                        if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
+                        {
+                            DateTime dtnow = DateTime.Now;
+                            if (DateTime.TryParse(sitem["ZZRQ"], out dtnow))
+                                sitem["YQSYRQ"] = GetSafeDateTime(sitem["ZZRQ"]).AddDays(28).ToString("yyyy-MM-dd HH:mm:ss");
+                            sitem["KYPJ"] = "----";
+                        }
+                        for (xd = 1; xd < 4; xd++)
+                        {
+                            if (IsNumeric(sitem["KYHZ" + xd]) && Conversion.Val(sitem["KYHZ" + xd]) != 0)
+                            {
+                                md = GetSafeDouble(sitem["KYHZ" + xd].Trim());
+                                md = 1350 * md / (70.7 * 70.7);
+                                md = Round(md, 1);
+                                sitem["KYQD" + xd] = md.ToString("0.0");
+                            }
+                            else
+                                sitem["KYQD" + xd] = "----";
+                        }
+                    //}
+                    //else
+                    //{
+                    //    for (xd = 1; xd < 4; xd++)
+                    //        sitem["KYQD" + xd] = "----";
+                    //    sitem["KYPJ"] = "----";
+                    //}
+                    //if (sitem["JCXM"].Contains("抗冻"))
+                    //{
 
-                }
-                else
-                {
-                    sitem["QDSSL"] = "----";
-                    sitem["ZLSSL"] = "----";
-                }
-                if (sitem["JCXM"].Contains("拉伸粘结强度"))
-                {
+                    //}
+                    //else
+                    //{
+                        sitem["QDSSL"] = "----";
+                        sitem["ZLSSL"] = "----";
+                    //}
+                    //if (sitem["JCXM"].Contains("拉伸粘结强度"))
+                    //{
 
-                }
-                else
-                {
-                    sitem["NJQD"] = "----";
-                }
-                if (sitem["JCXM"].Contains("凝结时间"))
-                {
-                    sitem["ZNSJ"] = (Round(((GetSafeDouble(sitem["T1ZN"]) + GetSafeDouble(sitem["T2ZN"])) / 2) / 5, 0) * 5).ToString();
-                }
-                else
-                {
-                    sitem["ZNSJ"] = "0";
-                    sitem["T1ZN"] = "0";
-                    sitem["T2ZN"] = "0";
+                    //}
+                    //else
+                    //{
+                        sitem["NJQD"] = "----";
+                    //}
+                    //if (sitem["JCXM"].Contains("凝结时间"))
+                    //{
+                        sitem["ZNSJ"] = (Round(((GetSafeDouble(sitem["T1ZN"]) + GetSafeDouble(sitem["T2ZN"])) / 2) / 5, 0) * 5).ToString();
+                    //}
+                    //else
+                    //{
+                    //    sitem["ZNSJ"] = "0";
+                    //    sitem["T1ZN"] = "0";
+                    //    sitem["T2ZN"] = "0";
+                    //}
                 }
 
                 //主表总判断赋值

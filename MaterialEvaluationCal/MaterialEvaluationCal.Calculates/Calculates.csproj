@@ -37,8 +37,9 @@
       <HintPath>..\..\..\越码科技\调试工具源码\CalculateServiceDebugLib（新逻辑）\CalculateServiceDebugLib\CalculateServiceDebugLib\bin\Release\netstandard2.1\CalculateServiceDebugLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\工作代码\计算代码2\MaterialEvaluationCal\MaterialEvaluationCal\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -176,7 +177,7 @@
     <Compile Include="CalculatesNew\ywj\GHF_钢筋焊接复试\GHF.cs" />
     <Compile Include="CalculatesNew\ywj\GHJ_钢筋焊接\GHJ.cs" />
     <Compile Include="CalculatesNew\ywj\HD_混凝土抗冻\HD.cs" />
-    <Compile Include="CalculatesNew\ywj\HNT\HNT.cs" />
+    <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
     <Compile Include="CalculatesNew\ywj\HPB_混凝土配合比\HPB.cs" />
     <Compile Include="CalculatesNew\ywj\JGF_钢筋型材复试\JGF.cs" />
     <Compile Include="CalculatesNew\ywj\JGG_钢筋型材\JGG.cs" />
