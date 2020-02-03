@@ -135,14 +135,14 @@ namespace Calculates
                     TimeSpan ts = GetSafeDateTime(sItem["SYRQ"]) - GetSafeDateTime(sItem["ZZRQ"]);
                     sItem["LQ"] = ts.Days.ToString();
 
-                    if (ts.Days < 28 && sItem["YHTJ"].Trim() == "工地标准养护")
+                    if (ts.Days < 28 && "工地标准养护" == sItem["YHTJ"].Trim())
                     {
                         sItem["LQ"] = "28";
                         sItem["SYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToString();
                     }
                 }
                 double qdVal = 0;
-                if (jcxm.Contains("、强度损失、"))
+                if (jcxm.Contains("、强度损失、") || jcxm.Contains("、抗冻试验、"))
                 {
                     qdVal = 0;
                     mtmpArray.Clear();
@@ -180,7 +180,7 @@ namespace Calculates
                     sItem["KYPJ28"] = "----";
                 }
                 // kyhz
-                if (jcxm.Contains("、强度损失、"))
+                if (jcxm.Contains("、强度损失、") || jcxm.Contains("、抗冻试验、"))
                 {
                     #region KYHZ
                     qdVal = 0;
@@ -329,8 +329,7 @@ namespace Calculates
                     sItem["DHPJ2"] = "----";
                 }
 
-
-                if (jcxm.Contains("、质量损失、"))
+                if (jcxm.Contains("、质量损失、") || jcxm.Contains("、抗冻试验、"))
                 {
                     #region 质量损失
                     qdVal = 0;

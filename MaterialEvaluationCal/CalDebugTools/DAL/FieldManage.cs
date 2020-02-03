@@ -281,7 +281,7 @@ namespace CalDebugTools.DAL
                     return -2;
                 }
 
-                sqlStr = $"select 1 from ZDZD_{param.SYXMBH} where ZDMC ='{param.RemoteZdName}'";
+                sqlStr = $"select 1 from ZDZD_{param.SYXMBH} where ZDMC ='{param.RemoteZdName}' and  SJBMC ='{param.RemoteTableName}'";
 
                 cout = _sqlBase.ExecuteNonQuery(sqlStr);
                 if (cout > 0)
