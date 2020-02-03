@@ -425,7 +425,7 @@ namespace Calculates
                     {
                         mLsfs = false;
                     }
-                    if (sItem["JCXM"].Trim().Contains("、冷弯、"))
+                    if (sItem["JCXM"].Trim().Contains("、冷弯、") || sItem["JCXM"].Trim().Contains("、弯曲、"))
                     {
                         mLwfs = true;
                     }
@@ -461,7 +461,7 @@ namespace Calculates
                 sItem["G_DLWZ"] = SclBzyq;
                 sItem["G_LWWZ"] = LwBzyq;
 
-                if (!jcxm.Contains("、冷弯、"))
+                if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
                     sItem["G_LWWZ"] = "----";
                 }
@@ -571,7 +571,7 @@ namespace Calculates
                     sItem["DKJ6"] = "-1";
                 }
 
-                if (jcxm.Contains("、冷弯、"))
+                if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
                     if (Convert.ToInt32(MItem[0]["JYDBH"]) > 150700000)
                     {

@@ -85,7 +85,7 @@ namespace CalDebugTools
                             string[] jcxmlist = item["SSJCX"].ToString().Split(',');
                             foreach (var jcxm in jcxmlist)
                             {
-                                jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, jcxm, "", item["ZDLX"]);
+                                jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, jcxm.Trim(), "", item["ZDLX"]);
 
                             }
                         }
