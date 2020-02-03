@@ -101,7 +101,8 @@ namespace Calculates
 
                  }
 
-                 if (jcxm.Contains("、拉伸粘结强度(原强度)、") && sign1)
+                 //if (jcxm.Contains("、拉伸粘结强度(原强度)、") && sign1)
+                 if (jcxm.Contains("、拉伸粘结原强度、") && sign1)
                  {
                      sign = true;
                      if (Conversion.Val(sItem["QD1"]) == 0)
@@ -184,7 +185,8 @@ namespace Calculates
                  }
 
 
-                 if (jcxm.Contains("、拉伸粘结强度(耐水)、") && sign1)
+                 //if (jcxm.Contains("、拉伸粘结强度(耐水)、") && sign1)
+                 if (jcxm.Contains("、拉伸粘结耐水强度、") && sign1)
                  {
                      sign = true;
                      if (Conversion.Val(sItem["QD2"]) == 0)
@@ -197,7 +199,8 @@ namespace Calculates
                      }
                  }
 
-                 if (jcxm.Contains("、拉伸粘结强度(耐水)、") && sign1)
+                 //if (jcxm.Contains("、拉伸粘结强度(耐水)、") && sign1)
+                 if (jcxm.Contains("、拉伸粘结耐水强度、") && sign1)
                  {
                      sign = true;
                      if (Conversion.Val(sItem["QD2"]) == 0)
@@ -267,7 +270,8 @@ namespace Calculates
                      mItem["HG_QD3"] = IsQualified(mItem["G_QD3"], sItem["QD3"], false);
                  }
 
-                 if (jcxm.Contains("、拉伸粘结强度(耐冻融)、") && sign1)
+                 //if (jcxm.Contains("、拉伸粘结强度(耐冻融)、") && sign1)
+                 if (jcxm.Contains("、拉伸粘结耐冻融强度、") && sign1)
                  {
                      sign = true;
                      if (Conversion.Val(sItem["QD3"]) == 0)
@@ -298,6 +302,8 @@ namespace Calculates
                      mItem["G_QD3"] = "----";
                      mItem["G_PHJM3"] = "----";
                  }
+
+
 
                  if (mbhggs == 0)
                  {

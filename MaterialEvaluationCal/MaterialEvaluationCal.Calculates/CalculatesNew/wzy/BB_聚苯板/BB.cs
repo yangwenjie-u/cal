@@ -432,7 +432,7 @@ namespace Calculates
                         mItem["HG_DRXS1"] = "----";
                         mItem["G_DRXS1"] = "----";
                     }
-                    if (jcxm.Contains("、导热系数(25℃)、"))
+                    if (jcxm.Contains("、导热系数(25℃)、") || jcxm.Contains("、导热系数、"))
                     {
                         sItem["DRXS2"] = sItem["DRXS"];
                         mcd = mItem["G_DRXS2"].Length;
@@ -739,7 +739,7 @@ namespace Calculates
                     mItem["G_DRXS1"] = "----";
                 }
 
-                if (jcxm.Contains("、导热系数(25℃)、"))
+                if (jcxm.Contains("、导热系数(25℃)、") || jcxm.Contains("、导热系数、"))
                 {
                     string drxs1 = calc_PB(mItem["G_DRXS2"], sItem["DRXS2"], true);
                     if (drxs1 == "符合")
