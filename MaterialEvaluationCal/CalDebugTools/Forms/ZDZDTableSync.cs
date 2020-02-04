@@ -66,7 +66,8 @@ namespace CalDebugTools.Forms
                     //MessageBox.Show($"项目{syxmbh}已经同步");
                     continue;
                 }
-                sql = $"select * into ZDZD_{syxmbh} from ITSV.jcjt_wh.dbo.ZDZD_{syxmbh} where sjbmc like 'S_{syxmbh}' or sjbmc like 'M_{syxmbh}'";
+                sql = $"select * into ZDZD_{syxmbh} from jcjt_wh.dbo.ZDZD_{syxmbh} where sjbmc like 'S_{syxmbh}' or sjbmc like 'M_{syxmbh}'";
+                //sql = $"select * into ZDZD_{syxmbh} from ITSV.jcjt_wh.dbo.ZDZD_{syxmbh} where sjbmc like 'S_{syxmbh}' or sjbmc like 'M_{syxmbh}'";
                 _DebugTool.ExecuteNonQuery(sql);
             }
             //select* from ITSV.jcjt_wh.dbo.ZDZD_ZX where sjbmc like 'S_%' or sjbmc like 'M_%'
