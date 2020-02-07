@@ -207,7 +207,7 @@ namespace Calculates
                     #endregion
 
                     #region 正常操作
-                    if (jcxm.Contains("、正常操作、"))
+                    if (jcxm.Contains("、正常操作、")|| jcxm.Contains("、插座正常操作次数、") )//
                     {
                         double zCCZ1 = GetSafeDouble(MItem[0]["ZCCZ1"]);
                         if (zCCZ1 >= 0 && zCCZ1 < 3)

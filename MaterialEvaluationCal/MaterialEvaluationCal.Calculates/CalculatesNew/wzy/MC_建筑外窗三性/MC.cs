@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class MC:BaseMethods
+    public class MC : BaseMethods
     {
         public void Calc()
         {
@@ -34,6 +34,18 @@ namespace Calculates
                 delegate (string sj_fun, string sc_fun, bool flag_fun)
                 {
                     string calc_PB_fun = string.Empty;
+                    if (string.IsNullOrEmpty(sj_fun) || string.IsNullOrEmpty(sc_fun))
+                    {
+                        if (flag_fun)
+                        {
+                            return "不符合";
+                        }
+                        else
+                        {
+                            return "不合格";
+                        }
+                    }
+
                     sj_fun = sj_fun.Trim();
                     sc_fun = sc_fun.Trim();
                     if (!IsNumeric(sc_fun))
@@ -58,7 +70,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("＞") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -76,7 +88,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("≥") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -94,7 +106,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("＜") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -112,7 +124,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("≤") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -130,7 +142,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
+                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
                             max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
                             min_bl = true;
                             max_bl = true;
@@ -140,7 +152,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("±") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
+                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
                             max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
                             min_sjz = min_sjz - max_sjz;
                             max_sjz = min_sjz + 2 * max_sjz;
@@ -229,6 +241,10 @@ namespace Calculates
                     var MS_MC = MS_MC_Filter[0];
                     for (xd = 1; xd <= 3; xd++)
                     {
+                        if (MS_MC.Count == 0)
+                        {
+                            continue;
+                        }
                         kqfc = Conversion.Val(MS_MC["开启缝长"].Trim());
                         kqmj = Conversion.Val(MS_MC["试件面积"].Trim());
                         zqf1 = Conversion.Val(MS_MC["升压流量100F"].Trim());
@@ -429,6 +445,10 @@ namespace Calculates
                         var MS_MC = MS_MC_Filter[0];
                         for (xd = 1; xd <= 3; xd++)
                         {
+                            if (MS_MC.Count == 0)
+                            {
+                                continue;
+                            }
                             if (MS_MC["稳定渗漏12"] != "○" && MS_MC["稳定渗漏12"] != "" && MS_MC["稳定渗漏12"] != "△" && MS_MC["稳定渗漏12"] != "□")
                                 sitem["PD_SM"] = "不符合";
                             else
@@ -659,7 +679,7 @@ namespace Calculates
             mjgsm = MItem[0]["JCJGMS"];
             if (djjg != "")
             {
-                MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"].Substring(0, MItem[0]["JCJGMS"].Length - 1);
+                MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"].Length > 0 ? MItem[0]["JCJGMS"].Substring(0, MItem[0]["JCJGMS"].Length - 1) : MItem[0]["JCJGMS"];
                 MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"] + "," + djjg + "定级结果如上。";
                 mjgsm = MItem[0]["JCJGMS"] + "," + djjg + "定级见报告。";
             }

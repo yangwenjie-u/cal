@@ -1123,7 +1123,7 @@ namespace Calculates
                     MItem[0]["G_CNSJ"] = "----";
                     MItem[0]["G_ZNSJ"] = "----";
                 }
-                if (jcxm.Contains("、泌水率、"))
+                if (jcxm.Contains("、泌水率比、"))
                 {
                     if (sitem["PBSN1"] != "" && sitem["PBSN1"] != "----")
                     {
@@ -1516,7 +1516,7 @@ namespace Calculates
                                 double mMinKyqd = mkyqdArray[0];
                                 double mMidKyqd = mkyqdArray[1];
                                 double mAvgKyqd = mkyqdArray.Average();
-                                MItem[0]["JSBEIZHU"] = "";
+                                //MItem[0]["JSBEIZHU"] = "";
                                 //计算抗压平均、达到设计强度、及进行单组合格判定
 
                                 if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
