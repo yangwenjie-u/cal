@@ -410,7 +410,7 @@ namespace Calculates
                         sItem["JCJG_LS"] = "----";
                     }
 
-                    if (jcxm.Contains("、冷弯、"))
+                    if (jcxm.Contains("、冷弯、")|| jcxm.Contains("、弯曲、"))
                     {
                         if (Conversion.Val(sItem["HG_LW"]) - mHggs_LW > -0.00001)
                         {
@@ -517,7 +517,6 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    MItem[0]["BGBH"] = "";
                     mAllHg = false;
                     sItem["JCJG"] = "不合格";
                     continue;

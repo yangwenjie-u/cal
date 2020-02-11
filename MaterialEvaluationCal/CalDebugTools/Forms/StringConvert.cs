@@ -44,6 +44,8 @@ namespace CalDebugTools.Forms
             }
 
             dicReplaceStr.Add("mrsDj.Fields(\"", "mrsDj[\"");
+            dicReplaceStr.Add("mrssubTable!", "sItem[\"");
+
             dicReplaceStr.Add("mrssubTable.Fields(\"", "sItem[\"");
             dicReplaceStr.Add(".mrssubTable(\"", "sItem[\"");
             dicReplaceStr.Add("sitem[\"", "sItem[\"");
@@ -62,8 +64,9 @@ namespace CalDebugTools.Forms
             dicReplaceStr.Add(")),", "\"]),");
             dicReplaceStr.Add(") + \"、", "\"] +\"、");
             dicReplaceStr.Add(") +\"、", "\"] +\"、");
+            dicReplaceStr.Add("Val", " Conversion.Val");
 
-            dicReplaceStr.Add("CDec(Val", " Conversion.Val");
+            //dicReplaceStr.Add("CDec(Val", " Conversion.Val");
             dicReplaceStr.Add(" = False", " = false;");
             dicReplaceStr.Add("False", "false");
             dicReplaceStr.Add("= True", "= true;");

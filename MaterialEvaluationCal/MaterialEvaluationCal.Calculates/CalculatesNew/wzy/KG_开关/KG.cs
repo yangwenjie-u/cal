@@ -43,7 +43,8 @@ namespace Calculates
                     mFlag_Bhg_fun = false;
 
                     var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
-                    if (jcxm.Contains("、正常操作1、")||jcxm.Contains("、开关正常操作次数、"))
+
+                    if (jcxm.Contains("、正常操作1、") || jcxm.Contains("、开关正常操作次数、"))
                     {
                         if (GetSafeDouble(mitem["ZCCZ1"]) >= 0 && GetSafeDouble(mitem["ZCCZ1"]) < 3)
                         {
@@ -131,6 +132,7 @@ namespace Calculates
                         mitem["TDNL1"] = "-1";
                         mitem["TDNL1_HG"] = "----";
                     }
+
                     if (jcxm.Contains("、通断能力2、") || jcxm.Contains("、插座通断能力、") || jcxm.Contains("、开关通断能力、"))//插座通断能力？
                     {
                         if (GetSafeDouble(mitem["TDNL2"]) >= 0 && GetSafeDouble(mitem["TDNL2"]) < 3)
@@ -470,7 +472,9 @@ namespace Calculates
                     MItem[0]["JYDZ_HG"] = "----";
 
                 }
-                if (jcxm.Contains("、正常操作1、"))
+
+                if (jcxm.Contains("、正常操作1、") || jcxm.Contains("、开关正常操作次数、"))
+
                 {
                     if (GetSafeDouble(MItem[0]["ZCCZ1"]) >= 0 && GetSafeDouble(MItem[0]["ZCCZ1"]) < 3)
                     {
@@ -491,7 +495,7 @@ namespace Calculates
                     MItem[0]["ZCCZ1"] = "-1";
                     MItem[0]["ZCCZ1_HG"] = "----";
                 }
-                if (jcxm.Contains("、正常操作2、"))
+                if (jcxm.Contains("、正常操作2、") || jcxm.Contains("、开关正常操作次数、"))
                 {
                     if (GetSafeDouble(MItem[0]["ZCCZ2"]) >= 0 && GetSafeDouble(MItem[0]["ZCCZ2"]) < 3)
                     {
@@ -512,7 +516,7 @@ namespace Calculates
                     MItem[0]["ZCCZ2"] = "-1";
                     MItem[0]["ZCCZ2_HG"] = "----";
                 }
-                if (jcxm.Contains("、正常操作3、"))
+                if (jcxm.Contains("、正常操作3、") || jcxm.Contains("、开关正常操作次数、"))
                 {
                     if (GetSafeDouble(MItem[0]["ZCCZ3"]) >= 0 && GetSafeDouble(MItem[0]["ZCCZ3"]) < 3)
                     {
@@ -620,7 +624,8 @@ namespace Calculates
                     MItem[0]["NR2_HG"] = "----";
                     MItem[0]["NR3_HG"] = "----";
                 }
-                if (jcxm.Contains("、通断能力1、"))
+
+                if (jcxm.Contains("、通断能力1、") || jcxm.Contains("、插座通断能力、"))//开关通断能力？
                 {
                     if (GetSafeDouble(MItem[0]["TDNL1"]) >= 0 && GetSafeDouble(MItem[0]["TDNL1"]) < 3)
                     {
@@ -641,7 +646,7 @@ namespace Calculates
                     MItem[0]["TDNL1"] = "-1";
                     MItem[0]["TDNL1_HG"] = "----";
                 }
-                if (jcxm.Contains("、通断能力2、"))
+                if (jcxm.Contains("、通断能力2、") || jcxm.Contains("、插座通断能力、"))//插座通断能力？
                 {
                     if (GetSafeDouble(MItem[0]["TDNL2"]) >= 0 && GetSafeDouble(MItem[0]["TDNL2"]) < 3)
                     {
