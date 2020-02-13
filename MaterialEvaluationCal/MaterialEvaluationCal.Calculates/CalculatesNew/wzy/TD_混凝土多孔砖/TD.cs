@@ -431,10 +431,6 @@ namespace Calculates
                     mitem["GH_XDXSL"] = "----";
                     mitem["G_XDHSL"] = "----";
                 }
-
-
-
-
                 if (jcxm.Contains("、抗冻性、"))
                 {
                     sign = true;

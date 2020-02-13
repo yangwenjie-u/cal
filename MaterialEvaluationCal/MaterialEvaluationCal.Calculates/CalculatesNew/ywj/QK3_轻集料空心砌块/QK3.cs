@@ -102,7 +102,7 @@ namespace Calculates
                 double md1, md2, md, sum, pjmd = 0;
                 #endregion
 
-                if (jcxm.Contains("、干密度、") || jcxm.Contains("、抗压强度、"))
+                if (jcxm.Contains("、干密度、"))
                 {
                     mtj1 = 0;
                     mtj1 = 0;

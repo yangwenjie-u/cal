@@ -335,6 +335,10 @@ namespace Calculates
                     }
                     mAllHg = (mAllHg && sitem["JCJG"] == "合格");
                 }
+                else
+                {
+                    
+                }
             }
             #endregion
             /************************ 代码结束 *********************/

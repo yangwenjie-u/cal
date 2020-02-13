@@ -653,11 +653,11 @@ namespace Calculates
                 {
                     if (Conversion.Val(sitem["KYPJ28"]) == 0)
                     {
-                        mitem["BGSHR"] = "";
-                        mitem["BGQFR"] = "";
-                        mitem["BGDYR"] = "";
-                        mitem["BGJDZT"] = mitem["BGJDZT"].Replace("S", "");
-                        mitem["BGJDZT"] = mitem["BGJDZT"].Replace("R", "");
+                        //mitem["BGSHR"] = "";
+                        //mitem["BGQFR"] = "";
+                        //mitem["BGDYR"] = "";
+                        //mitem["BGJDZT"] = mitem["BGJDZT"].Replace("S", "");
+                        //mitem["BGJDZT"] = mitem["BGJDZT"].Replace("R", "");
                     }
                     mMj = 0.625;
                     sitem["KYQD28_1"] = Round(Conversion.Val(sitem["KYHZ28_1"]) * mMj, 1).ToString("0.0");
@@ -704,8 +704,8 @@ namespace Calculates
 
                     if ((string.IsNullOrEmpty(sitem["KYPJ28"]) || sitem["KYPJ28"] == "" || Conversion.Val(sitem["KYPJ28"]) == 0) && Conversion.Val(sitem["KYHZ28_1"]) > 0)
                     {
-                        mitem["SHWCRQ"] = DateTime.Now.ToString();
-                        mitem["QFWCRQ"] = DateTime.Now.ToString();
+                        //mitem["SHWCRQ"] = DateTime.Now.ToString();
+                        //mitem["QFWCRQ"] = DateTime.Now.ToString();
                     }
                     sitem["KYPJ28"] = Round(mavgkyqd, 1).ToString("0.0");
 

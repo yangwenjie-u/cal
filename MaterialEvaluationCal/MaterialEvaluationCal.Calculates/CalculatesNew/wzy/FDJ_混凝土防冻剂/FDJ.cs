@@ -606,7 +606,7 @@ namespace Calculates
                         sitem["ZNPJSJC"] = "-----";
                         mitem["HG_ZNSJC"] = "----";
                     }
-                    if (jcxm.Contains("、R-7抗压强度比、") || jcxm.Contains("抗压强度比"))
+                    if (jcxm.Contains("、R-7抗压强度比、") || jcxm.Contains("、抗压强度比、"))
                     {
                         if (!string.IsNullOrEmpty(sitem["QDB1"]))
                         {
@@ -626,7 +626,7 @@ namespace Calculates
                         sitem["QDB1"] = "-----";
                         mitem["HG_KYQD1D"] = "----";
                     }
-                    if (jcxm.Contains("、R28抗压强度比、") || jcxm.Contains("抗压强度比"))
+                    if (jcxm.Contains("、R28抗压强度比、") || jcxm.Contains("、抗压强度比、"))
                     {
                         if (!string.IsNullOrEmpty(sitem["QDB2"]))
                         {
@@ -646,7 +646,7 @@ namespace Calculates
                         sitem["QDB2"] = "-----";
                         mitem["HG_KYQD3D"] = "----";
                     }
-                    if (jcxm.Contains("、R-7+28抗压强度比、") || jcxm.Contains("、R－7＋28抗压强度比、") || jcxm.Contains("抗压强度比"))
+                    if (jcxm.Contains("、R-7+28抗压强度比、") || jcxm.Contains("、R－7＋28抗压强度比、") || jcxm.Contains("、抗压强度比、"))
                     {
                         if (!string.IsNullOrEmpty(sitem["QDB3"]))
                         {
@@ -666,7 +666,7 @@ namespace Calculates
                         sitem["QDB3"] = "-----";
                         mitem["HG_KYQD7D"] = "----";
                     }
-                    if (jcxm.Contains("、R-7+56抗压强度比、") || jcxm.Contains("、R－7＋56抗压强度比、") || jcxm.Contains("抗压强度比"))
+                    if (jcxm.Contains("、R-7+56抗压强度比、") || jcxm.Contains("、R－7＋56抗压强度比、") || jcxm.Contains("、抗压强度比、"))
                     {
                         if (!string.IsNullOrEmpty(sitem["QDB4"]))
                         {

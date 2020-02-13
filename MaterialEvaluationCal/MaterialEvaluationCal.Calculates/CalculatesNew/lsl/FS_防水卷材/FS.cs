@@ -241,7 +241,7 @@ namespace Calculates
                 bool sign = false, mark, flag = false;
 
                 flag = false;
-                if (jcxm.Contains("拉力") || jcxm.Contains("、断裂拉伸强度、") || jcxm.Contains("、拉伸强度、"))
+                if (jcxm.Contains("拉力") || jcxm.Contains("、断裂拉伸强度、") || jcxm.Contains("、拉伸强度、") || jcxm.Contains("拉伸性能"))
                 {
                     flag = true;
                     double sKlqd1 = 0, sKlqd2 = 0, sKlqd3 = 0, sKlqd4 = 0, sKlqd5 = 0, sKlqd6 = 0;
@@ -530,7 +530,7 @@ namespace Calculates
                 }
                 flag = false;
 
-                if (jcxm.Contains("延伸率")|| jcxm.Contains("伸长率") || jcxm.Contains("拉断伸长率") || jcxm.Contains("断裂伸长率"))
+                if (jcxm.Contains("延伸率")|| jcxm.Contains("伸长率") || jcxm.Contains("拉断伸长率") || jcxm.Contains("断裂伸长率") || jcxm.Contains("拉伸性能"))
                 {
                     flag = true;
                     double sYsbj1=0, sYsbj2=0, sYsbj3=0, sYsbj4=0, sYsbj5=0, sScl1= 0, sScl2=0, sScl3=0, sScl4=0, sScl5=0;
