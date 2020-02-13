@@ -62,7 +62,7 @@ namespace Calculates
                 #endregion
 
                 #region 表观密度
-                if (sItem["JCXM"].Contains("表观密度"))
+                if (sItem["JCXM"].Contains("表观密度") || sItem["JCXM"].Contains("密度"))
                 {
                     sItem["BGMD_GH"] = IsQualified(sItem["G_BGMD"], sItem["W_BGMD"], true);
                     if (sItem["BGMD_GH"] == "不符合") { mAllHg = false; jcjgHg = false; }
@@ -261,8 +261,8 @@ namespace Calculates
             }
             else
             {
-                M_XJL[0]["JCJG"] = mjcjg;
-                M_XJL[0]["JCJGMS"] = jsbeizhu;
+                MItem[0]["JCJG"] = mjcjg;
+                MItem[0]["JCJGMS"] = jsbeizhu;
             }
             #endregion
             /************************ 代码结束 *********************/
