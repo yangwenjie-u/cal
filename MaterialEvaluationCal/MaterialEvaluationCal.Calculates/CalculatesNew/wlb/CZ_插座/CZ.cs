@@ -94,102 +94,39 @@ namespace Calculates
                     #region  拔出力
                     if (jcxm.Contains("、拔出力、"))
                     {
+                        double bCL = 0;
                         for (int xd = 1; xd < 4; xd++)
                         {
-                            MItem[0]["BCL" + xd] = MItem[0]["BCLHGS"];
-                        }
-                        double bCLHGS = GetSafeDouble(MItem[0]["BCLHGS"]);
-                        if (bCLHGS >= 0 && bCLHGS < 3)
-                        {
-                            MItem[0]["BCL_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["BCL_HG"] = "合格";
-                            mbHggs++;
-                        }
-                        string gGXH = sItem["GGXH"];
-                        if (gGXH.Contains("四孔"))
-                        {
-                            MItem[0]["BCL1"] = "-1";
-                            MItem[0]["BCL2"] = "-1";
-                        }
-                        if (gGXH.Contains("五孔"))
-                        {
-                            MItem[0]["BCL3"] = "-1";
-                        }
-                        if (gGXH.Contains("两孔"))
-                        {
-                            MItem[0]["BCL3"] = "-1";
-                            MItem[0]["BCL2"] = "-1";
-                        }
-                        if (gGXH.Contains("三孔"))
-                        {
-                            MItem[0]["BCL1"] = "-1";
-                            MItem[0]["BCL3"] = "-1";
-                        }
-                        string bCL1 = MItem[0]["BCL1"];
-                        string bCL2 = MItem[0]["BCL2"];
-                        string bCL3 = MItem[0]["BCL3"];
-                        string bCL4 = MItem[0]["BCL4"];
-                        if (bCL1 == null)
-                        {
-                            MItem[0]["BCL1"] = "-1";
-                        }
-                        if (bCL2 == null)
-                        {
-                            MItem[0]["BCL2"] = "-1";
-                        }
-                        if (bCL3 == null)
-                        {
-                            MItem[0]["BCL3"] = "-1";
-                        }
-                        if (bCL4 == null)
-                        {
-                            MItem[0]["BCL4"] = "-1";
-                        }
+                            if (string.IsNullOrEmpty(MItem[0]["BCL" + xd]))
+                            {
+                                bCL = -1;
 
-                        if (GetSafeDouble(bCL1) >= 0 && GetSafeDouble(bCL1) < 3)
-                        {
-                            MItem[0]["BCL1_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["BCL1_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if (GetSafeDouble(bCL2) >= 0 && GetSafeDouble(bCL2) < 3)
-                        {
-                            MItem[0]["BCL2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["BCL2_HG"] = "合格";
-                            mbHggs++;
-                        }
-                        if (bCL1 == "-1")
-                        {
-                            MItem[0]["BCL1_HG"] = "----";
-                            MItem[0]["G_BCL1"] = "----";
-                        }
-                        string g_BCL1 = MItem[0]["G_BCL1"];
-                        if (g_BCL1 == "")
-                        {
-                            MItem[0]["BCL1_HG"] = "----";
-                            MItem[0]["G_BCL1"] = "----";
-                            MItem[0]["BCL1"] = "-1";
-                        }
-                        if (bCL2 == "-1")
-                        {
-                            MItem[0]["BCL2_HG"] = "----";
-                            MItem[0]["G_BCL2"] = "----";
+                                MItem[0]["BCL" + xd + "_HG"] = "----";
+                                MItem[0]["G_BCL" + xd] = "----";
+                            }
+                            else
+                            {
+                                bCL = double.Parse(MItem[0]["BCL" + xd]);
+                                if ((bCL >= 0 && bCL < 3) || bCL == -1)
+                                {
+                                    if (bCL == -1)
+                                    {
+                                        MItem[0]["G_BCL" + xd] = "----";
+                                        MItem[0]["BCL" + xd + "_HG"] = "----";
+                                    }
+                                    else
+                                    {
+                                        mAllHg = false;
+                                        itemHG = false;
+                                        MItem[0]["BCL" + xd + "_HG"] = "不合格";
+                                    }
+                                }
+                                else
+                                {
+                                    MItem[0]["BCL" + xd + "_HG"] = "合格";
+                                    mbHggs++;
+                                }
+                            }
                         }
                     }
                     else
@@ -202,12 +139,11 @@ namespace Calculates
                         MItem[0]["BCL2_HG"] = "----";
                         MItem[0]["BCL3_HG"] = "----";
                         MItem[0]["BCL4_HG"] = "----";
-                        MItem[0]["BCLHGS"] = "----";
                     }
                     #endregion
 
                     #region 正常操作
-                    if (jcxm.Contains("、正常操作、"))
+                    if (jcxm.Contains("、正常操作、") || jcxm.Contains("、插座正常操作次数、"))
                     {
                         double zCCZ1 = GetSafeDouble(MItem[0]["ZCCZ1"]);
                         if (zCCZ1 >= 0 && zCCZ1 < 3)
@@ -847,7 +783,7 @@ namespace Calculates
                     #endregion
 
                     #region  正常操作
-                    if (jcxm.Contains("、正常操作、"))
+                    if (jcxm.Contains("、正常操作、") || jcxm.Contains("、插座正常操作次数、"))
                     {
                         if (3 > GetSafeDouble(MItem[0]["ZCCZ1"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ1"]))
                         {
@@ -870,10 +806,6 @@ namespace Calculates
                     {
                         MItem[0]["ZCCZ1"] = "-1";
                         MItem[0]["ZCCZ1_HG"] = "----";
-                        //MItem[0]["JYDZ2"] = "-1";
-                        //MItem[0]["JYDZ2_HG"] = "----";
-                        //MItem[0]["JYDZ3"] = "-1";
-                        //MItem[0]["JYDZ3_HG"] = "----";
                     }
                     #endregion
 

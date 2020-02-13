@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class JWW : BaseMethods
+    public class JWW2 : BaseMethods
     {
         public void Calc()
         {

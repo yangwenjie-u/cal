@@ -775,6 +775,7 @@ namespace Calculates
         }
         #endregion
 
+        ///<summary>
         /// 判断是否合格 默认合格/不合格
         /// </summary>
         /// <param name="sj">范围值</param>
@@ -798,6 +799,8 @@ namespace Calculates
             sc = sc.Trim();
 
             sj = sj.Replace("~", "～");
+            sj = sj.Replace("%", "");
+            sc = sc.Replace("%", "");
 
             if (!IsNumeric(sc))
             {
