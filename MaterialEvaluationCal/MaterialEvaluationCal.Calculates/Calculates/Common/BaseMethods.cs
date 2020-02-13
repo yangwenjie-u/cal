@@ -799,6 +799,8 @@ namespace Calculates
             sc = sc.Trim();
 
             sj = sj.Replace("~", "～");
+            sj = sj.Replace("%", "");
+            sc = sc.Replace("%", "");
 
             if (!IsNumeric(sc))
             {

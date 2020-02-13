@@ -952,5 +952,12 @@ namespace CalDebugTools
             this.Hide();
             manage.Show();
         }
+
+        private void target_Tools_Click(object sender, EventArgs e)
+        {
+            TargetForm manage = new TargetForm(this);
+            this.Hide();
+            manage.Show();
+        }
     }
 }

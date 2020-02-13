@@ -157,9 +157,21 @@ namespace Calculates
 
                             if (mrslccj_Sel == mrslccj.First() || mrslccj_Sel == mrslccj.Last())
                             {
-                                md1 = Conversion.Val(mitem["LCCJBHGS"].Trim());
-                                md2 = Conversion.Val(mitem["LCCJCS"].Trim());
-                                md = (int)(100 * md1 / md2);
+                                md1 = string.IsNullOrEmpty(mitem["LCCJBHGS"]) ? 0 : Conversion.Val(mitem["LCCJBHGS"]);
+                                md2 = string.IsNullOrEmpty(mitem["LCCJCS"]) ? 0 : Conversion.Val(mitem["LCCJCS"]);
+                                if (md2 == 0)
+                                {
+                                    md = 0;
+                                }
+                                else
+                                {
+                                    md = (int)(100 * md1 / md2);
+                                }
+
+                                //md1 = Conversion.Val(mitem["LCCJBHGS"].Trim());
+                                //md2 = Conversion.Val(mitem["LCCJCS"].Trim());
+
+                                //md = (int)(100 * md1 / md2);
                                 mitem["LCCJ"] = Round(md, 0).ToString("0.0");
                                 mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
                                 mbhggs = mitem["LCCJ_HG"] == "不合格" ? mbhggs + 1 : mbhggs;
