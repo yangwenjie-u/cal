@@ -76,7 +76,17 @@ namespace CalDebugTools.Forms
                 //主表 从表添加记录
                 var alterM = $"alter table M_{xmbh} add HG_{fieldName} nvarchar(15);";
                 alterM += $"alter table M_{xmbh} add G_{fieldName} {fieldType};";
-                alterM += $"alter table S_{xmbh} add {fieldName} {fieldType}";
+
+                if (txt_STabCount.Text == "0" || txt_STabCount.Text == "1")
+                {
+                    alterM += $"alter table S_{xmbh} add {fieldName} {fieldType}";
+                }
+                else
+                    for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
+                    {
+                        alterM += $"alter table S_{xmbh} add {fieldName}{i} {fieldType}";
+
+                    }
                 queryCount = _sqlBase.ExecuteNonQuery(alterM);
 
                 string sqlStr = $"select 1 from ZDZD_{xmbh} where ZDMC like '%{fieldName}%'";
@@ -96,10 +106,22 @@ $"VALUES('M_{xmbh}', 'G_{fieldName}', '{fieldMS}判断标准', 'nvarchar', '200'
 $"";
                     lst.Add(sqlStr);
 
-                    sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-  $"VALUES('S_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)  " +
-  $"";
-                    lst.Add(sqlStr);
+                    if (txt_STabCount.Text == "0" || txt_STabCount.Text == "1")
+                    {
+
+                        sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
+      $"VALUES('S_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)  " +
+      $"";
+                        lst.Add(sqlStr);
+                    }
+                    else
+                        for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
+                        {
+                            sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
+     $"VALUES('S_{xmbh}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)  " +
+     $"";
+                            lst.Add(sqlStr);
+                        }
 
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
  $"VALUES('BZ_{xmbh}_DJ', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)  " +
@@ -130,6 +152,22 @@ $"";
                 MessageBox.Show("Success!");
 
             }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txt_STabCount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar))     //判断按键输入字符是不是数字
+            {
+                if (e.KeyChar != (char)Keys.Back)
+                {
+                    e.Handled = true;   //表示按键输入已经被处理,这样按键将不会给应用程序,丢掉不想要的按键值,这样的缺点是backspace也会被返回
+                }
+            }
         }
     }
 }
