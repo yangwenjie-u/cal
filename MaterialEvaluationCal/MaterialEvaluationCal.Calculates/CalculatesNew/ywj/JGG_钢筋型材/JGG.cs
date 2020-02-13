@@ -154,8 +154,8 @@ namespace Calculates
                 {
 
                     sItem["JCJG_LW"] = "----";
-                    sItem["lW1"] = "-1";
-                    sItem["lW2"] = "-1";
+                    sItem["LW1"] = "-1";
+                    sItem["LW2"] = "-1";
                     sItem["LW3"] = "-1";
 
                 }
@@ -371,7 +371,7 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["CD"] = myint(Double.Parse(sItem["xgm"]) * Conversion.Val(sItem["MJ"])).ToString();
+                    sItem["CD"] = myint(Double.Parse(sItem["XGM"]) * Conversion.Val(sItem["MJ"])).ToString();
                 }
 
                 if (Math.Abs(Double.Parse(sItem["XGM"]) - 100) < 0.00001)
@@ -490,14 +490,17 @@ namespace Calculates
                     var mcjcnt = 0;
                     var mcjcnt7 = 0;
                     var mcjpj = 0.0;
-                    if (extraFieldsDj["which"] == "1")
+                    if (extraFieldsDj["WHICH"] == "1")
                     {
                         var cjbzz = double.Parse(extraFieldsDj["CJBZZ"]);
-                        if (Conversion.Val(sItem["CJSY1"]) < cjbzz)
+                        var cjsy = Conversion.Val(sItem["CJSY1"]);
+                        if (cjsy < cjbzz)
                         {
                             mcjcnt = mcjcnt + 1;
                         }
-                        if (Conversion.Val(sItem["CJSY2"]) < cjbzz)
+                        cjsy = Conversion.Val(sItem["CJSY2"]);
+
+                        if (cjsy < cjbzz)
                         {
                             mcjcnt = mcjcnt + 1;
                         }
@@ -578,7 +581,7 @@ namespace Calculates
                         }
                     }
                     var mydpj = 0;
-                    if (mydpj >= double.Parse(extraFieldsDj["ydbzz"]) && mydcnt < 1)
+                    if (mydpj >= double.Parse(extraFieldsDj["YDBZZ"]) && mydcnt < 1)
                     {
                         sItem["JCJG_YD"] = "合格";
                         mFlag_Hg = true;
@@ -673,8 +676,10 @@ namespace Calculates
 
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
+            #endregion 
             #endregion
-            #endregion
+
+
         }
     }
 }

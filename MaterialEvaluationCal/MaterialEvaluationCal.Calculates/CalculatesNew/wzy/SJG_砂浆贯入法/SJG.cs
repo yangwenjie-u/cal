@@ -88,7 +88,7 @@ namespace Calculates
                     double mRm;
 
                     mRm = GetSafeDouble(mrssjhsb_fun["GRSD"]);
-                    ret_Val = GetSafeDouble(mrssjhsb_fun[sjzl_fun.ToUpper()]);
+                    ret_Val = GetSafeDouble(mrssjhsb_fun[sjzl_fun].ToUpper());
                     return ret_Val;
                 };
 

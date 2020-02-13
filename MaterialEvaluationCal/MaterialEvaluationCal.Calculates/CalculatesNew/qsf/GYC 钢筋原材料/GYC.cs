@@ -410,7 +410,7 @@ namespace Calculates
                         sItem["JCJG_LS"] = "----";
                     }
 
-                    if (jcxm.Contains("、冷弯、"))
+                    if (jcxm.Contains("、冷弯、")|| jcxm.Contains("、弯曲、"))
                     {
                         if (Conversion.Val(sItem["HG_LW"]) - mHggs_LW > -0.00001)
                         {
@@ -517,7 +517,6 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    MItem[0]["BGBH"] = "";
                     mAllHg = false;
                     sItem["JCJG"] = "不合格";
                     continue;
@@ -726,7 +725,7 @@ namespace Calculates
                 mallBHG_QF = mallBHG_QF + find_singlezb_bhg(MItem[0], sItem, "qf", mQfqd, (int)mXLGS);
                 mallBHG_KL = mallBHG_KL + find_singlezb_bhg(MItem[0], sItem, "kl", mKlqd, (int)mXLGS);
                 mallBHG_SC = mallBHG_SC + find_singlezb_bhg(MItem[0], sItem, "SCL", mScl, (int)mXLGS);
-                if (jcxm.Contains("、冷弯、"))
+                if (jcxm.Contains("、冷弯、")|| jcxm.Contains("、弯曲、"))
                 {
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mXWGS);
                 }

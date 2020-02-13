@@ -11,12 +11,15 @@ namespace CalDebugTools
     public partial class CodeUpload : Form
     {
         private Common.DBUtility.SqlBase _sqlBase = null;
+        private Common.DBUtility.SqlBase _sqlDebugTool = null;
         public CodeUpload(FormMain main)
         {
             InitializeComponent();
             _formMain = main;
             if (_sqlBase == null)
                 _sqlBase = new SqlBase();
+            if (_sqlDebugTool == null)
+                _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
         }
         FormMain _formMain;
         private void button1_Click(object sender, EventArgs e)
@@ -55,7 +58,7 @@ namespace CalDebugTools
                 zdzdjson += "[";
                 string jcx_json = string.Empty;
                 string ZDZD_sql = string.Format(@"select SJGJ_ID,SY,DEFAVAL,LX,SSJCX,SJBMC,ZDMC,ZDLX from ZDZD_" + sylb + " where (LX like '%I%' or LX like '%O%')");
-                DataSet dszdzd = _sqlBase.ExecuteDataset(ZDZD_sql);
+                DataSet dszdzd = _sqlDebugTool.ExecuteDataset(ZDZD_sql);
                 if (dszdzd != null && dszdzd.Tables[0].Rows.Count > 0)
                 {
                     int recid = 1;
@@ -85,7 +88,7 @@ namespace CalDebugTools
                             string[] jcxmlist = item["SSJCX"].ToString().Split(',');
                             foreach (var jcxm in jcxmlist)
                             {
-                                jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, jcxm, "", item["ZDLX"]);
+                                jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, jcxm.Trim(), "", item["ZDLX"]);
 
                             }
                         }

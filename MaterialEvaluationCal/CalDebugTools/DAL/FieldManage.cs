@@ -14,12 +14,15 @@ namespace CalDebugTools.DAL
     public class FieldManage
     {
         private Common.DBUtility.SqlBase _sqlBase = null;
+        private Common.DBUtility.SqlBase _sqlDebugTool = null;
         public FieldManage()
         {
             if (_sqlBase == null)
             {
-                _sqlBase = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringMain);
+                _sqlBase = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringDebugTool);
             }
+            if (_sqlDebugTool == null)
+                _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
         }
 
         public int InsertFields(string xmbh, string jcxm, string sjbmc, string field, string lx)
@@ -227,11 +230,9 @@ namespace CalDebugTools.DAL
             {
                 //SJBMC,ZDMC,SY,SSJCX,LX from
                 string sqlStr = $"update ZDZD_{xmbh} set LX='{lx}',SSJCX='{SSJCX}'  where SJGJ_ID ='{recid}'  ";
-
-                var result = _sqlBase.ExecuteNonQuery(sqlStr);
+                var result = _sqlDebugTool.ExecuteNonQuery(sqlStr);
 
                 return result;
-
             }
             catch (Exception ex)
             {
