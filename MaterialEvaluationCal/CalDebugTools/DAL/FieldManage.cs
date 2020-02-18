@@ -293,16 +293,16 @@ namespace CalDebugTools.DAL
                 sqlStr = $"insert into ZDZD_{param.SYXMBH} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
                         $"VALUES('{param.RemoteTableName}', '{param.RemoteZdName}', '配置字段', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)  " +
                         $"";
-                cout = _sqlBase.ExecuteNonQuery(sqlStr);
+                cout = _sqlDebugTool.ExecuteNonQuery(sqlStr);
                 if (cout > 0)
                 {
                     sqlStr = $"insert into   H_Calculate_Param  (SYXMBH,JCXM,LocalTableName,LocalZdName,RemoteTableName,RemoteZdName) values('{param.SYXMBH}','{param.JCXM}','{param.LocalTableName}','" +
                         $"{param.LocalZdName}','{param.RemoteTableName}','{param.RemoteZdName}')";
 
-                    _sqlBase.ExecuteNonQuery(sqlStr);
-
-                    sqlStr = $"alter table {param.RemoteTableName} add {param.RemoteZdName} varchar(200) null ";
                     return _sqlBase.ExecuteNonQuery(sqlStr);
+
+                    //sqlStr = $"alter table {param.RemoteTableName} add {param.RemoteZdName} varchar(200) null ";
+                    //return _sqlBase.ExecuteNonQuery(sqlStr);
                 }
 
                 //zdzd 插入失败

@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -19,16 +21,12 @@ namespace CalDebugTools.Forms
         public TargetForm(FormMain main)
         {
             InitializeComponent();
+            //Init();
             _formMain = main;
             if (_sqlBase == null)
                 _sqlBase = new SqlBase();
             if (_sqlDebugTool == null)
                 _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
-        }
-
-        private void TargetForm_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -154,10 +152,8 @@ $"";
             }
         }
 
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
+        private DataTable DT = new DataTable();
+        private SqlDataAdapter SDA = new SqlDataAdapter();
 
         private void txt_STabCount_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -167,7 +163,101 @@ $"";
                 {
                     e.Handled = true;   //表示按键输入已经被处理,这样按键将不会给应用程序,丢掉不想要的按键值,这样的缺点是backspace也会被返回
                 }
-            }
+            }
+        }
+
+        private void btn_save_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SqlCommandBuilder SCB = new SqlCommandBuilder(SDA);
+                SDA.Update(DT);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return;
+            }
+
+            MessageBox.Show("更新成功！");
+        }
+
+        private void TargetForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _formMain.Show();
+        }
+
+        private void Init(string syxmbh)
+        {
+            string str_conn = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;//integrated Security=true";
+
+            //1、用于从数据库中获取数据的查询字符串
+            //2、开始建立建立并打开连接
+            SqlConnection myconn = new SqlConnection(str_conn);
+
+            myconn.Open();
+            //var syxmbh = "RF";
+            var sqlFields = "";
+            var sqlFields2 = "";
+            DataSet ds = _sqlBase.ExecuteDataset($"select  zdmc,sy from ZDZD_{syxmbh} where  SJBMC ='BZ_{syxmbh}_DJ'");
+            if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                foreach (DataRow item in ds.Tables[0].Rows)
+                {
+                    Console.Write(item[0].ToString() + "\t");
+                    sqlFields += item[0].ToString() + $" as '{item[1].ToString()}',";
+                    sqlFields2 += item[0].ToString() + ",";
+                }
+            }
+            sqlFields = sqlFields.TrimEnd(',');
+            sqlFields2 = sqlFields2.TrimEnd(',');
+
+            string str_select = $"select {sqlFields2} from BZ_{syxmbh}_DJ";
+
+            SqlCommand SCD = new SqlCommand(str_select, myconn);
+            SDA.SelectCommand = SCD;
+            SDA.Fill(DT);
+            dataGridView1.DataSource = DT;
+
+            str_select = $"select {sqlFields} from BZ_{syxmbh}_DJ where 1=2";
+            SqlDataAdapter sql_Adapter = new SqlDataAdapter(str_select, myconn);
+
+            DataSet dataset1 = new DataSet();
+
+            //5、使用SqlDataAdapater.Fill(DataSet_Name,index_name)方法将读取的数据存入DataSet定义的名为任意名的Datatable中，其中任意名表用于数据的标识(索引)
+            sql_Adapter.Fill(dataset1, "任意名");
+
+            //6、将DataTable表中employee表的视图赋值给控件DataGridView以便输出
+           dataGridView2.DataSource = dataset1.Tables["任意名"].DefaultView;
+            //7、关闭数据库连接
+            myconn.Close();
+        }
+
+        private void btn_load_Click(object sender, EventArgs e)
+        {
+            string xmbh = string.IsNullOrEmpty(txt_xmbh.Text) ? "" : txt_xmbh.Text.Trim();
+          
+            if (string.IsNullOrEmpty(xmbh))
+            {
+                MessageBox.Show("输入项目编号！");
+                return;
+            }
+            Init(xmbh);
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void TargetForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
