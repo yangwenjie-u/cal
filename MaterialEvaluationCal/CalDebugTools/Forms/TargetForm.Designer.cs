@@ -66,7 +66,6 @@
             this.txt_xmbh.Name = "txt_xmbh";
             this.txt_xmbh.Size = new System.Drawing.Size(100, 21);
             this.txt_xmbh.TabIndex = 1;
-            this.txt_xmbh.Text = "HNT";
             // 
             // txt_fieldMs
             // 

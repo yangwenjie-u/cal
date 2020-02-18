@@ -213,7 +213,7 @@ $"";
             sqlFields2 = sqlFields2.TrimEnd(',');
 
             string str_select = $"select {sqlFields2} from BZ_{syxmbh}_DJ";
-
+            DT.Clear();
             SqlCommand SCD = new SqlCommand(str_select, myconn);
             SDA.SelectCommand = SCD;
             SDA.Fill(DT);
