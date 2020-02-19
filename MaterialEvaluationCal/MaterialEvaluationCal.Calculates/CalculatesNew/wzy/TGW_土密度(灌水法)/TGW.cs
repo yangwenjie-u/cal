@@ -47,9 +47,9 @@ namespace Calculates
             foreach (var sitem in SItem)
             {
                 double msmd;
+                var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
-                    var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                     if (jcxm.Contains("、干密度、"))
                     {
                         msktj = Round(Conversion.Val(sitem["JSTJ"].Trim()) - Conversion.Val(sitem["THTJ"]), 0);
@@ -78,6 +78,67 @@ namespace Calculates
                         sitem["YSD"] = "----";
                     }
                     sitem["JCJG"] = "----";
+                }
+                else
+                {
+                    if (jcxm.Contains("、干密度、"))
+                    {
+                        //计算单组的抗压强度,并进行合格判断
+                        if (Conversion.Val(sitem["zdgmd"]) == 0 || Conversion.Val(sitem["zdgmd"]) == -1 || string.IsNullOrEmpty(sitem["zdgmd"]))
+                        {
+                            sitem["zdgmd"] = "-1";
+                            sitem["gmd"] = "0";
+                        }
+                        if (Conversion.Val(sitem["sjysd"]) == 0 || Conversion.Val(sitem["sjysd"]) == -1 || string.IsNullOrEmpty(sitem["sjysd"]))
+                        {
+                            sitem["sjysd"] = "-1";
+                            sitem["ysd"] = "0";
+                        }
+                        msktj = Round(Conversion.Val(sitem["jstj"].Trim()) - Conversion.Val(sitem["THTJ"]), 0);
+                        msmd = Round((Conversion.Val(sitem["qbcl"]) / msktj), 2); //湿密度计算
+                        sitem["smd"] = msmd.ToString("0.00");
+                        sitem["szl1"] = (Conversion.Val(sitem["hjst1"]) - Conversion.Val(sitem["hjgt1"])).ToString("0.0"); //水质量计算
+                        sitem["szl2"] = (Conversion.Val(sitem["hjst2"]) - Conversion.Val(sitem["hjgt2"])).ToString("0.0");
+                        sitem["gtzl1"] = (Conversion.Val(sitem["hjgt1"]) - Conversion.Val(sitem["hzl1"])).ToString("0.0"); //干土质量计算
+                        sitem["gtzl2"] = (Conversion.Val(sitem["hjgt2"]) - Conversion.Val(sitem["hzl2"])).ToString("0.0");
+                        sitem["hsl1"] = Round((Conversion.Val(sitem["szl1"]) / Conversion.Val(sitem["gtzl1"])) * 100, 1).ToString("0.0"); //含水量计算
+                        sitem["hsl2"] = Round((Conversion.Val(sitem["szl2"]) / Conversion.Val(sitem["gtzl2"])) * 100, 1).ToString("0.0");
+                        sitem["pjhsl"] = Round((Conversion.Val(sitem["hsl1"]) + Conversion.Val(sitem["hsl2"])) / 2, 1).ToString("0.0"); //平均含水量
+                        if (Conversion.Val(sitem["hsl1"]) >= 40 && (Conversion.Val(sitem["hsl2"])) >= 40)
+                        {
+                            if (Math.Abs((Conversion.Val(sitem["hsl1"]) - Conversion.Val(sitem["hsl2"]))) > 2)
+                                sitem["pjhsl"] = "无效";
+                        }
+                        else
+                        {
+                            if (Math.Abs((Conversion.Val(sitem["hsl1"]) - Conversion.Val(sitem["hsl2"]))) > 1)
+                                sitem["pjhsl"] = "无效";
+                        }
+                        double mgmd = Round((msmd / (1 + 0.01 * Conversion.Val(sitem["pjhsl"]))), 2); //干密度计算
+                        sitem["gmd"] = mgmd.ToString("0.00");
+                        if (Conversion.Val(sitem["zdgmd"]) != 0)
+                        {
+                            double mysd = Round(100 * (Conversion.Val(sitem["gmd"]) / Conversion.Val(sitem["zdgmd"])), 0);
+                            sitem["ysd"] = mysd.ToString("0");
+                        }
+                        else
+                            sitem["ysd"] = "0";
+                        if (Conversion.Val(sitem["sjysd"]) == -1 && Conversion.Val(sitem["zdgmd"]) > 0)
+                        {
+                            if (Conversion.Val(sitem["gmd"]) >= Conversion.Val(sitem["zdgmd"]))
+                                vi = vi + 1;
+                        }
+                        else
+                        {
+                            if (Conversion.Val(sitem["ysd"]) >= Conversion.Val(sitem["sjysd"]))
+                                vi = vi + 1;
+                        }
+                    }
+                    else
+                    {
+                        sitem["ysd"] = "----";
+                        sitem["gmd"] = "----";
+                    }
                 }
             }
             //平均值,最小值等计算

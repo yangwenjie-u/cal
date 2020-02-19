@@ -152,7 +152,7 @@ namespace Calculates
                          }
                      }
 
-                     if (jcxm.Contains("、干密度、"))
+                     if (jcxm.Contains("、密度等级、"))
                      {
                          sign = true;
 
@@ -333,7 +333,7 @@ namespace Calculates
                 }
                 else
                 {
-                    if (jcxm.Contains("、干密度、"))
+                    if (jcxm.Contains("、密度等级、"))
                     {
                         sItem["GMDCD1"] = Round((Conversion.Val(sItem["GMDCD1_1"]) + Conversion.Val(sItem["GMDCD1_2"])) / 2, 0).ToString();
                         sItem["GMDKD1"] = Round((Conversion.Val(sItem["GMDKD1_1"]) + Conversion.Val(sItem["GMDKD1_2"])) / 2, 0).ToString();
