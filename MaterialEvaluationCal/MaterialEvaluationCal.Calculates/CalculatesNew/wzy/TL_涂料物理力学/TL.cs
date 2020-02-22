@@ -10,23 +10,14 @@ namespace Calculates
     {
         public void Calc()
         {
-            /************************ 代码开始 *********************/
             #region  参数定义
-            string mcalBh;
             double[] mkyqdArray = new double[3];
             int mbhggs;
-            int mbhggs2;
             string dCpmc, dLx, dZf, dDj, dBzh, mSjdj;
-            int vp, mCnt_FjHg, mCnt_FjHg1, mxlgs, mxwgs;
-            string mMaxBgbh;
             string mJSFF;
-            bool mAllHg;
-            bool msffs;
-            bool mGetBgbh;
+            bool mAllHg = true;
             int QDJSFF = 0;
-            bool mSFwc;
-            bool mFlag_Hg, mFlag_Bhg;
-            mSFwc = true;
+            bool mFlag_Hg, mFlag_Bhg = false;
             #endregion
 
             #region  集合取值
@@ -38,10 +29,6 @@ namespace Calculates
             #endregion
 
             #region  计算开始
-            mGetBgbh = false;
-            mAllHg = true;
-            mFlag_Hg = false;
-            mFlag_Bhg = false;
             mitem["JCJGMS"] = "";
             mSjdj = "";
             //int QDJSFF = 0;
@@ -90,6 +77,9 @@ namespace Calculates
                     mitem["G_DWRD"] = mrsDj_item["G_DWRD"];
                     mitem["G_NRD"] = mrsDj_item["G_NRD"];
                     mitem["G_DWWZ"] = mrsDj_item["G_DWWZ"];
+                    //要求初级干燥抗裂性（6h）
+
+                    //
                 }
                 else
                 {
@@ -112,7 +102,6 @@ namespace Calculates
                 bool sign;
                 int xd, Gs, Ws;
                 double md1, md2, md, sum;
-                double[] nArr;
                 mFlag_Hg = false;
                 mFlag_Bhg = false;
                 mbhggs = 0;
@@ -348,19 +337,7 @@ namespace Calculates
                         sitem["HG_BTSX"] = "----";
                         mitem["G_BTSX"] = "----";
                     }
-                    if (mbhggs == 0)
-                    {
-                        mitem["JCJGMS"] = "该组试件所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                        sitem["JCJG"] = "合格";
-                    }
-                    if (mbhggs >= 1)
-                    {
-                        mitem["JCJGMS"] = "该组试件不符合" + mitem["PDBZ"] + "标准要求。";
-                        sitem["JCJG"] = "不合格";
-                        if (mFlag_Bhg && mFlag_Hg)
-                            mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                    }
-                    mAllHg = (mAllHg && sitem["JCJG"] == "合格");
+
                 }
                 else
                 {
@@ -501,7 +478,7 @@ namespace Calculates
                         sitem["HG_JNJQD"] = "----";
                         mitem["G_JNJQD"] = "----";
                     }
-                    if (jcxm.Contains("、耐水性、")|| jcxm.Contains("、耐水性（96h）、"))
+                    if (jcxm.Contains("、耐水性、") || jcxm.Contains("、耐水性（96h）、"))
                     {
                         if (sitem["HG_NSX"] != "符合" && sitem["HG_NSX"] != "合格")
                         {
@@ -520,7 +497,7 @@ namespace Calculates
                         mitem["G_NSX"] = "----";
                     }
 
-                    if (jcxm.Contains("、耐碱性(48h)、")|| jcxm.Contains("、耐碱性、"))
+                    if (jcxm.Contains("、耐碱性(48h)、") || jcxm.Contains("、耐碱性、"))
                     {
                         if (sitem["HG_NJX"] != "符合" && sitem["HG_NJX"] != "合格")
                         {
@@ -579,26 +556,140 @@ namespace Calculates
 
                     if (jcxm.Contains("、初期干燥抗裂性（6h）、"))
                     {
+                        //判定单道施工厚度《=1.5mm
+                        var gCJGZLX = 1.5 >= GetSafeDouble(sitem["SGHD"]) ? mrsDj_item["G_CJGZLX6h1"] : mrsDj_item["G_CJGZLX6h2"];
 
+                        if (sitem["W_CJGZLX6h"] == gCJGZLX)
+                        {
+                            sitem["HG_CJGZLX6h"] = "符合";
+                            mFlag_Hg = true;
+
+                        }
+                        else
+                        {
+                            sitem["HG_CJGZLX6h"] = "不符合";
+                            mFlag_Bhg = true;
+                            mbhggs = mbhggs + 1;
+                        }
+
+
+                    }
+                    else
+                    {
+                        sitem["SGHD"] = "----";
+                        sitem["HG_CJGZLX6h"] = "----";
+                        sitem["G_CJGZLX6h"] = "----";
                     }
                     if (jcxm.Contains("、打磨性、"))
                     {
+                        if (sitem["HG_DWRD"] != "符合" && sitem["HG_DWRD"] != "合格")
+                        {
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                        }
+                        else
+                        {
+                            mFlag_Hg = true;
+                        }
                     }
-                    if (jcxm.Contains("、粘结强度（冻融循环5次、"))
+                    else
                     {
+                        sitem["W_DMX"] = "----";
+                        mitem["HG_DMX"] = "----";
+                        mitem["G_DMX"] = "----";
+                    }
+                    if (jcxm.Contains("、粘结强度（冻融循环5次)、"))
+                    {
+                        List<double> listQd = new List<double>();
+                        for (int i = 1; i < 7; i++)
+                        {
+                            listQd.Add(GetSafeDouble(sitem["DNJQD" + i]));
+                        }
+                        listQd.Sort();
+                        listQd.RemoveAt(5);
+                        listQd.RemoveAt(0);
+                        double pjNum = listQd.Average();
+                        sitem["PJDNJQD"] = pjNum.ToString();
+                        var flag = true;
+                        foreach (var item in listQd)
+                        {
+                            if (Math.Abs(pjNum - item) / pjNum > 0.2)
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        mitem["HG_DNJQD"] = flag ? "合格" : "不合格";
+
+                        if (mitem["HG_DNJQD"] != "符合" && mitem["HG_DNJQD"] != "合格")
+                        {
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                        }
+                        else
+                        {
+                            mFlag_Hg = true;
+                        }
+                    }
+                    else
+                    {
+                        sitem["PJDNJQD"] = "----";
+                        mitem["G_DNJQD"] = "----";
+                        mitem["HG_DNJQD"] = "----";
                     }
                     if (jcxm.Contains("、动态抗开裂性（基层裂缝）"))
                     {
+                        if (sitem["HG_DTKKLX"] != "符合" && sitem["HG_DTKKLX"] != "合格")
+                        {
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                        }
+                        else
+                        {
+                            mFlag_Hg = true;
+                        }
+                    }
+                    else
+                    {
+                        sitem["HG_DTKKLX"] = "----";
+                        sitem["G_DTKKLX"] = "----";
+                        sitem["W_DTKKLX"] = "----";
                     }
                     if (jcxm.Contains("、吸水量"))
                     {
+                        if (sitem["HG_XSL"] != "符合" && sitem["HG_XSL"] != "合格")
+                        {
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                        }
+                        else
+                        {
+                            mFlag_Hg = true;
+                        }
+                    }
+                    else
+                    {
+                        sitem["W_XSL"] = "----";
+                        mitem["G_XSL"] = "----";
+                        mitem["HG_DNJQD"] = "----";
                     }
 
-                    /*
-
-
-                */
                 }
+
+                if (mbhggs == 0)
+                {
+                    mitem["JCJGMS"] = "该组试件所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                    sitem["JCJG"] = "合格";
+                }
+                if (mbhggs >= 1)
+                {
+                    mitem["JCJGMS"] = "该组试件不符合" + mitem["PDBZ"] + "标准要求。";
+                    sitem["JCJG"] = "不合格";
+                    if (mFlag_Bhg && mFlag_Hg)
+                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                }
+                mAllHg = (mAllHg && sitem["JCJG"] == "合格");
+
                 //主表总判断赋值
                 if (mAllHg)
                 {
@@ -612,9 +703,8 @@ namespace Calculates
                     if (mFlag_Bhg && mFlag_Hg)
                         mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
                 }
-                #endregion
-            /************************ 代码结束 *********************/
             }
+            #endregion
         }
     }
 }

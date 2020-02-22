@@ -96,13 +96,19 @@ namespace CalDebugTools.Forms
                 //添加主/从表字段
 
                 alterM = $"alter table {tableType}{xmbh} add HG_{fieldName} nvarchar(15);";
-                alterM += $"alter table {tableType}{xmbh} add G_{fieldName} {fieldType};";
+                alterM += $"alter table M_{xmbh} add G_{fieldName} {fieldType};";
 
-                if (txt_STabCount.Text != "1")
+                if (txt_STabCount.Text == "1")
                 {
-                    for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
+                    alterM += $"alter table S_{xmbh} add {fieldName} {fieldType};";
+                }
+                else
+                {
                     {
-                        alterM += $"alter table S_{xmbh} add {fieldName}{i} {fieldType};";
+                        for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
+                        {
+                            alterM += $"alter table S_{xmbh} add {fieldName}{i} {fieldType};";
+                        }
                     }
                 }
                 queryCount = _sqlBase.ExecuteNonQuery(alterM);
@@ -120,14 +126,13 @@ namespace CalDebugTools.Forms
     $"";
                     lst.Add(sqlStr);
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-    $"VALUES('{tableType}{xmbh}', 'G_{fieldName}', '要求{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)  " +
+    $"VALUES('M_{xmbh}', 'G_{fieldName}', '要求{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)  " +
     $"";
                     lst.Add(sqlStr);
 
-                    sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-    $"VALUES('S_{xmbh}', 'W_{fieldName}', '实测{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL) ";
-                    lst.Add(sqlStr);
-
+    //                sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
+    //$"VALUES('S_{xmbh}', '{fieldName}', '实测{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL) ";
+    //                lst.Add(sqlStr);
 
 
                     if (txt_bzCount.Text == "1")
@@ -146,7 +151,13 @@ namespace CalDebugTools.Forms
                         }
                     }
 
-                    if (txt_STabCount.Text != "1")
+                    if (txt_STabCount.Text == "1")
+                    {
+                        sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
+    $"VALUES('S_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)";
+                        lst.Add(sqlStr);
+                    }
+                    else
                     {
                         for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
                         {
