@@ -254,8 +254,8 @@ namespace CalDebugTools
                 }
                 quertBH = listJYDBH[0];
                 //参数
-                strIOParams = GetParams(zdzdIOParms, quertBH, ESqlConnType.ConnectionStringCF);
-                strIParams = GetParams(zdzdIParms, quertBH, ESqlConnType.ConnectionStringCF);
+                strIOParams = GetParams(zdzdIOParms, quertBH, ESqlConnType.ConnectionStringDebugTool);
+                strIParams = GetParams(zdzdIParms, quertBH, ESqlConnType.ConnectionStringDebugTool);
 
             }
 
@@ -379,7 +379,7 @@ namespace CalDebugTools
                     {
                         continue;
                     }
-                    extraDJjson = JsonHelper.GetDataJson($"select * from {extras[0]} ", extras[1], ESqlConnType.ConnectionStringCF);
+                    extraDJjson = JsonHelper.GetDataJson($"select * from {extras[1]} ", extras[1], ESqlConnType.ConnectionStringWH);
                     extraJsonData = JsonHelper.GetDictionary(extraDJjson);
                     listExtraData.Add(extras[1], extraJsonData[extras[1]]);
                 }
@@ -689,7 +689,7 @@ namespace CalDebugTools
                 //查询输入输出字段
                 List<string> zdzdIOParms = _manage.GetIOFields(jcxmBH);
                 ///输入输出的参数
-                string strIOParams = GetParams(zdzdIOParms, listJYDBH[0], ESqlConnType.ConnectionStringCF);
+                string strIOParams = GetParams(zdzdIOParms, listJYDBH[0], ESqlConnType.ConnectionStringDebugTool);
 
                 //查询输入字段
                 List<string> zdzdIParms = _manage.GetIFields(jcxmBH);
@@ -706,7 +706,7 @@ namespace CalDebugTools
                     dt.Rows.Add(row);
                     dt.Rows[flag]["JYDBH"] = listJYDBH[i];
 
-                    strIParams = GetParams(zdzdIParms, listJYDBH[i], ESqlConnType.ConnectionStringCF);
+                    strIParams = GetParams(zdzdIParms, listJYDBH[i], ESqlConnType.ConnectionStringDebugTool);
                     if (string.IsNullOrEmpty(strIOParams) || string.IsNullOrEmpty(strIParams))
                     {
                         MessageBox.Show("参数数据不能为空！", "调试", MessageBoxButtons.OK);

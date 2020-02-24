@@ -147,7 +147,7 @@ namespace CalDebugTools.DAL
 
             //select ZDMC  from ZDZD_HNT where (SJBMC = 'S_HNT' or SJBMC = 'M_HNT') and(lx like '%O%')
             string sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%' or lx like '%O%')";
-            var redata = _sqlBase.ExecuteDataset(sqlStr);
+            var redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             if (redata != null)
             {
@@ -164,7 +164,7 @@ namespace CalDebugTools.DAL
 
             //从表
             sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%' or lx like '%O%') and lx not like '%H%'";
-            redata = _sqlBase.ExecuteDataset(sqlStr);
+            redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             result = "";
             if (redata != null)
@@ -189,7 +189,7 @@ namespace CalDebugTools.DAL
 
             //select ZDMC  from ZDZD_HNT where (SJBMC = 'S_HNT' or SJBMC = 'M_HNT') and(lx like '%O%')
             string sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%')";
-            var redata = _sqlBase.ExecuteDataset(sqlStr);
+            var redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             if (redata != null)
             {
@@ -205,7 +205,7 @@ namespace CalDebugTools.DAL
             lisResult.Add(result);
 
             //从表
-            sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%') and lx not like '%H%'";
+            sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%') ";
             redata = _sqlBase.ExecuteDataset(sqlStr);
 
             result = "";
