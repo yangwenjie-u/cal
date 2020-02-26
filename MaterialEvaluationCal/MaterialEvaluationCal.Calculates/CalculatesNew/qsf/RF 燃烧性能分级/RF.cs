@@ -642,13 +642,7 @@ namespace Calculates
                         sItem["GH_YJGD"] = "合格";
                         djjg = "E";
                     }
-                    else
-                    {
-                        sItem["G_YJGD"] = "20s内，≤150 mm";
-                        sItem["W_YJGD"] = "否";
-                        sItem["GH_YJGD"] = "不合格";
-                        mbHggs1 = mbHggs1 + 1;
-                    }
+              
                     if (GetSafeDouble(sItem["HGS1"]) <= 1)
                     {
                         if (djjg == "E")
