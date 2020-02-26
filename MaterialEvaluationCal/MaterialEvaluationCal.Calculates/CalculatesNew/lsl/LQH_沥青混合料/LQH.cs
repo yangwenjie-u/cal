@@ -40,7 +40,56 @@ namespace Calculates
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
                 sign = true;
-                if (jcxm.Contains("、沥青含量、"))
+                if (jcxm.Contains("、油石比、"))
+                {
+                    gs = 3;
+                    for (int i = 1; i <= 3; i++)
+                    {
+                        if (!IsNumeric(sItem["L_HHL" + i]) && !IsNumeric(sItem["L_LZL" + i]) && !IsNumeric(sItem["L_RQZL" + i])
+                            && !IsNumeric(sItem["L_RJG" + i]) && !IsNumeric(sItem["L_LJK" + i]) && !IsNumeric(sItem["L_GGZL" + i])
+                             && !IsNumeric(sItem["L_CTL" + i]) && !IsNumeric(sItem["L_ZSCT" + i]) && !IsNumeric(sItem["L_CZZL" + i]))
+                        {
+                            gs = i - 1;
+                        }
+                    }
+                    sum = 0;
+                    nArr = new double[8];
+                    for (int i = 1; i <= gs; i++)
+                    {
+                        md1 = Conversion.Val(sItem["L_RJG" + i].Trim());
+                        md2 = Conversion.Val(sItem["L_RQZL" + i].Trim());
+                        nArr[1] = (md1 - md2); //容器中留下集料干燥质量;
+                        md1 = Conversion.Val(sItem["L_LJK" + i].Trim());
+                        md2 = Conversion.Val(sItem["L_LZL" + i].Trim());
+                        nArr[2] = (md1 - md2); //滤纸在试验前后增质量
+                        md1 = Conversion.Val(sItem["L_CZZL" + i].Trim());
+                        md2 = Conversion.Val(sItem["L_GGZL" + i].Trim());
+                        md1 = md1 - md2;
+                        md2 = Conversion.Val(sItem["L_CTL" + i].Trim());
+                        md3 = Conversion.Val(sItem["L_ZSCT" + i].Trim());
+                        nArr[3] = (md1 * md2 / md3); //泄露入抽提液中矿粉质量
+                        nArr[4] = (nArr[1] + nArr[2] + nArr[3]);//沥青混合料中矿料总质量
+                        md1 = GetSafeDouble(sItem["L_HHL" + i].Trim());
+                        nArr[5] = md1 - nArr[4]; //沥青混合料中沥青质量
+                        nArr[6] = 100 * nArr[5] / md1; //沥青含量
+                        nArr[7] = 100 * nArr[5] / nArr[3];  //油石比
+                        sum = sum + nArr[7];
+                    }
+                    if (gs == 0)
+                        pjmd = 0;
+                    else
+                        pjmd = sum / gs;
+                    pjmd = Round(pjmd, 2);
+                    mItem["W_YSB"] = pjmd.ToString();  //油石比
+                    mItem["GH_YSB"] = IsQualified(mItem["G_YSB"], mItem["W_YSB"], true);
+                }
+                else
+                {
+                    mItem["W_YSB"] = "----";
+                    mItem["GH_YSB"] = "----";
+                    mItem["G_YSB"] = "----";
+                }
+                if (jcxm.Contains("、沥青含量、") || jcxm.Contains("沥青用量"))
                 {
                     gs = 3;
                     for (int i = 1; i <= 3; i++)
@@ -92,6 +141,18 @@ namespace Calculates
                     mItem["GH_LQHL"] = "----";
                     mItem["G_LQHL"] = "----";
                 }
+
+                sign = true;
+                if (jcxm.Contains("、矿料级配、"))
+                {
+
+                    if (sItem["SFPD"] == "不符合")
+                    {
+                        mAllHg = false;
+                    }
+                }
+                else
+                    sign = false;
 
                 sign = true;
                 if (jcxm.Contains("、稳定度、"))
@@ -158,98 +219,36 @@ namespace Calculates
                     mItem["G_LZ"] = "----";
                 }
                 sign = true;
-                //if (jcxm.Contains("、马歇尔模数、"))
-                //{
-                //    string Bhgxm = "";
-                //    //先计算一下修正系数
-                //    int Gs = 0;
-                //    for (int xd = 1; xd <= 6; xd++)
-                //    {
-                //        if (IsNumeric(sItem["SJWD" + xd]) && !string.IsNullOrEmpty(sItem["SJWD" + xd].Trim()))
-                //            Gs = Gs + 1;
 
-                //    }
-                //    double[] dArray = new double[Gs + 1];
-                //    Gs = 0;
-                //    for (int xd = 1; xd <= 6; xd++)
-                //    {
-                //        if (IsNumeric(sItem["SJWD" + xd]) && !string.IsNullOrEmpty(sItem["SJWD" + xd].Trim()))
-                //        {
-                //            Gs = Gs + 1;
-                //            dArray[Gs] = Conversion.Val(sItem["SJWD" + xd]);
-                //        }
-                //    }
-                //    sign = Gs > 1 ? sign : false;
-                //    if (sign)
-                //    {
-                //        sum = 0;
-                //        for (int xd = 1; xd <= Gs; xd++)
-                //        {
-                //            sum = sum + dArray[xd];
-                //        }
-                //        pjmd = sum / Gs;
-                //        pjmd = Round(pjmd, 2);
-                //        sum = 0;
-                //        for (int xd = 1; xd <= Gs; xd++)
-                //            sum = sum + Math.Pow(dArray[xd] - pjmd, 2);
-                //        md = Math.Sqrt(sum / (Gs - 1));
-                //        bool flag = false;
-                //        if (Gs == 3)
-                //        {
-                //            md = md * 1.15;
-                //            flag = true;
-                //        }
-                //        else if (Gs == 4)
-                //        {
-                //            md = md * 1.46;
-                //            flag = true;
-                //        }
-                //        else if (Gs == 5)
-                //        {
-                //            md = md * 1.67;
-                //            flag = true;
-                //        }
-                //        else if (Gs == 6)
-                //        {
-                //            md = md * 1.82;
-                //            flag = true;
-                //        }
-                //        else
-                //        {
-                //            flag = false;
-                //        }
-                //        sum = 0;
-                //        Gs = 0;
-                //        for (int xd = 1; xd < dArray.Length; xd++)
-                //        {
-                //            if (flag && Math.Abs(dArray[xd] - pjmd) > md)
-                //            { }
-                //            else
-                //            {
-                //                sum = sum + dArray[xd];
-                //                Gs = Gs + 1;
-                //            }
-                //        }
-                //        pjmd = sum / Gs;
-                //        pjmd = Round(pjmd, 2);
-                //        sItem["W_WD"] = pjmd.ToString("0.00");
-                //        //判定
-                //        sItem["PD_WD"] = IsQualified(sItem["G_WD"], sItem["W_WD"], true);
-                //        if (sItem["PD_WD"] == "不符合")
-                //        {
-                //            mAllHg = false;
-                //        }
-                //    }
-                //}
-                //else
-                //    sign = false;
-                //if (!sign)
-                //{
-                //    sItem["W_WD"] = "----";
-                //    sItem["PD_WD"] = "----";
-                //    sItem["G_WD"] = "----";
-                //    sItem["B_WD"] = "----";
-                //}
+                if (jcxm.Contains("、马歇尔模数、"))
+                {
+                    gs = 6;
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        if (!IsNumeric(sItem["MXEMS" + i]))
+                        {
+                            gs = gs - 1;
+                            continue;
+                        }
+                    }
+                    sum = 0;
+                    for (int i = 1; i <= gs; i++)
+                    {
+                        md = Conversion.Val(sItem["MXEMS" + i].Trim());
+                        sum = sum + md;
+                    }
+                    pjmd = sum / gs;
+                    pjmd = Round(pjmd, 1);
+                    mItem["W_MXEMS"] = pjmd.ToString();
+                    mItem["GH_MXEMS"] = IsQualified(mItem["G_MXEMS"], mItem["W_MXEMS"], true);
+                }
+                else
+                {
+                    mItem["W_MXEMS"] = "----";
+                    mItem["GH_MXEMS"] = "----";
+                    mItem["G_MXEMS"] = "----";
+                }
+
 
                 if (jcxm.Contains("、空隙率、"))
                 {

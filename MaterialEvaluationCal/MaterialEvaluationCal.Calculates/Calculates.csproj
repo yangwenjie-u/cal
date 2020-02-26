@@ -59,6 +59,7 @@
     <Compile Include="CalculatesNew\lsl\FS_防水卷材\FS.cs" />
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
+    <Compile Include="CalculatesNew\wlb\XHJ.cs" />
     <Compile Include="CalculatesNew\wzy\FDJ_混凝土防冻剂\FDJ.cs" />
     <Compile Include="CalculatesNew\wzy\GC_给水管\GC.cs" />
     <Compile Include="CalculatesNew\wzy\GJJ_硅酮建筑密封胶\GJJ.cs" />

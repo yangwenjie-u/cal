@@ -77,7 +77,7 @@ namespace Calculates
                     case "改性沥青聚乙烯胎防水卷材":
                         sItem["CPBJ"] = dXs + " " + dXh + "" + dTjlx + "" + dSbmcl + " " + dHd + " " + dBzh;
                         break;
-                    case "高分子防水材料":
+                    case "高分子防水卷材":
                         sItem["CPBJ"] = dXh + "-" + dZyycl + "-" + dGgxh + "×" + dHd + "mm"; break;
                     case "沥青复合胎柔性防水卷材":
                         sItem["CPBJ"] = dTjlx + " " + dXh + " " + dSbmcl + dHd + " " + dGgxh + " " + dBzh; break;
@@ -121,10 +121,10 @@ namespace Calculates
                         break;
                 }
 
-                var mrsdj = mrsDj.FirstOrDefault(u => (u["MC"] == dCpmc & u["JCBZ"] == dBzh & u["XS"] == dXs & u["HD"] == dHd & u["XH"] == dXh & u["TJLX"] == dTjlx & u["SBMCL"] == dSbmcl)
-                || (u["MC"] == dCpmc & u["JCBZ"] == dBzh & u["XS"] == dXs & u["HD"] == dHd + ".0" & u["XH"] == dXh & u["TJLX"] == dTjlx & u["SBMCL"] == dSbmcl)
-                || (u["MC"] == dCpmc & u["JCBZ"] == dBzh & u["XS"] == dXs & u["HD"] == "----" & u["XH"] == dXh & u["TJLX"] == dTjlx & u["SBMCL"] == dSbmcl)
-                || (u["MC"] == dCpmc & u["JCBZ"] == dBzh & u["XS"] == dXs & u["HD"] == "" & u["XH"] == dXh & u["TJLX"] == dTjlx & u["SBMCL"] == dSbmcl));
+                var mrsdj = mrsDj.FirstOrDefault(u => (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains(dHd) && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))
+                                || (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains(dHd + ".0") && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))
+                                || (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains("----") && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))
+                                || (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains("") && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl)));
 
                 switch (dCpmc) {
                    case "预铺防水卷材":
@@ -803,7 +803,7 @@ namespace Calculates
                     mItem["G_DWRDR"] = "----";
                 }
 
-                if (jcxm.Contains("、低温弯折、") ||jcxm.Contains("、低温弯折温度、"))
+                if (jcxm.Contains("、低温弯折、") ||jcxm.Contains("、低温弯折温度、") || jcxm.Contains("脆性温度"))
                 {
                     if (sItem["CPMC"] == "高分子防水材料" || sItem["CPMC"] == "聚氯乙烯(PVC)防水卷材")
                     {
