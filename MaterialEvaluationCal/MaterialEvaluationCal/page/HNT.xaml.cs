@@ -51,9 +51,9 @@ namespace MaterialEvaluationCal.page
             var retSData = Base.JsonHelper.GetAfferentDictionaryNew(retSDataJosn);
 
 
-            Calculates.HNT2 hNT = new Calculates.HNT2();  
-            hNT.Calculate(listExtraData, retSData, out err);
-            hNT.Calc();
+            //Calculates.HNT2 hNT = new Calculates.HNT2();  
+            //hNT.Calculate(listExtraData, retSData, out err);
+            //hNT.Calc();
         }
     }
 }
