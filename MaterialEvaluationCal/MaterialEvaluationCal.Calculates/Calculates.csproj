@@ -58,6 +58,13 @@
     <Compile Include="CalculatesNew\lsl\FS_防水卷材\FS.cs" />
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
+    <Compile Include="CalculatesNew\qsf\DCL地基承载力\DCL.cs" />
+    <Compile Include="CalculatesNew\qsf\JLF混凝土裂缝宽度检测\JLF.cs" />
+    <Compile Include="CalculatesNew\qsf\KZD_矿渣粉\KZD.cs" />
+    <Compile Include="CalculatesNew\qsf\LQX市政取芯\LQX.cs" />
+    <Compile Include="CalculatesNew\qsf\NLS 外墙外保温现场粘结强度\NLS.cs" />
+    <Compile Include="CalculatesNew\qsf\TG电工套管\TG.cs" />
+    <Compile Include="CalculatesNew\qsf\XJB 现浇板厚度\XJB.cs" />
     <Compile Include="CalculatesNew\wzy\FDJ_混凝土防冻剂\FDJ.cs" />
     <Compile Include="CalculatesNew\wzy\GC_给水管\GC.cs" />
     <Compile Include="CalculatesNew\wzy\GJJ_硅酮建筑密封胶\GJJ.cs" />
@@ -224,7 +231,6 @@
     <Compile Include="Calculates\LMZ-路面砖\GB 28635-2012.cs" />
     <Compile Include="Calculates\LNJ_大六角螺栓扭矩系数\LNJ.cs" />
     <Compile Include="Calculates\MC_铝合金门窗\MC2.cs" />
-    <Compile Include="Calculates\NLS-外墙外保温现场粘结强度\JGJ-T 114-2004.cs" />
     <Compile Include="Calculates\PZJ_混凝土膨胀剂\PZJ.cs" />
     <Compile Include="Calculates\QK2_加气切块\GBT_11969_2008.cs" />
     <Compile Include="Calculates\SJX_砂浆[2009标准]\JGL_70-2009.cs" />

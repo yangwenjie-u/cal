@@ -212,6 +212,17 @@ namespace Calculates
                 delegate (string sj_fun, string sc_fun, bool flag_fun)
                 {
                     string calc_PB_fun = string.Empty;
+                    if (string.IsNullOrEmpty(sj_fun) || string.IsNullOrEmpty(sc_fun))
+                    {
+                        if (flag_fun)
+                        {
+                            return "不符合";
+                        }
+                        else
+                        {
+                            return "不合格";
+                        }
+                    }
                     sj_fun = sj_fun.Trim();
                     sc_fun = sc_fun.Trim();
                     if (!IsNumeric(sc_fun))
