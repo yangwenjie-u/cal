@@ -174,7 +174,7 @@ namespace CalDebugTools.Forms
                     {
                         //两个数据添加
                         _sqlBase.ExecuteNonQuery(item);
-                        _sqlDebugTool.ExecuteNonQuery(item);
+                        //_sqlDebugTool.ExecuteNonQuery(item);
                     }
                     catch (Exception ex)
                     {

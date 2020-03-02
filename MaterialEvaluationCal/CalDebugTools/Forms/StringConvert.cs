@@ -47,6 +47,7 @@ namespace CalDebugTools.Forms
             dicReplaceStr.Add("mrssubTable!", "sItem[\"");
 
             dicReplaceStr.Add("mrssubTable.Fields(\"", "sItem[\"");
+            dicReplaceStr.Add(".Fields(\"", "sItem[\"");
             dicReplaceStr.Add(".mrssubTable(\"", "sItem[\"");
             dicReplaceStr.Add("sitem[\"", "sItem[\"");
             dicReplaceStr.Add("mrsDj!", "mrsDj[\"");

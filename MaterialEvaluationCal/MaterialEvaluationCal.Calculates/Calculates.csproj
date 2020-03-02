@@ -156,6 +156,7 @@
     <Compile Include="CalculatesNew\wzy\ZGY_基桩高应变\ZGY.cs" />
     <Compile Include="CalculatesNew\wzy\ZJZ_基桩静载%28试桩%29\ZJZ.cs" />
     <Compile Include="CalculatesNew\ywj\BN_保温系统用胶粘剂\BN.cs" />
+    <Compile Include="CalculatesNew\ywj\TGB_土工合成材料\TGB.cs" />
     <Compile Include="CalculatesNew\ywj\FM_阀门\FM.cs" />
     <Compile Include="CalculatesNew\ywj\HB_空心隔墙板\HB.cs" />
     <Compile Include="CalculatesNew\ywj\JA_喷涂聚氨酯\JA.cs" />
