@@ -1494,7 +1494,7 @@ namespace Calculates
                     if (sign)
                         mitem["GH_DRXS"] = calc_PB(mitem["G_DRXS"], mitem["W_DRXS"], false);
                 }
-                else
+ else
                 {
                     mitem["W_DRXS"] = "----";
                     mitem["G_DRXS"] = "----";
@@ -1549,8 +1549,7 @@ namespace Calculates
                 mitem["GH_CDPC"] == "合格"))
                     mitem["JCJGMS"] = "该样品所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
-                //}
-            }
+                //}  }
             #endregion
             /************************ 代码结束 *********************/
         }

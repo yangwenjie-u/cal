@@ -37,8 +37,9 @@
       <HintPath>..\..\..\越码科技\调试工具源码\CalculateServiceDebugLib（新逻辑）\CalculateServiceDebugLib\CalculateServiceDebugLib\bin\Release\netstandard2.1\CalculateServiceDebugLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>F:\工作代码\计算代码2\MaterialEvaluationCal\MaterialEvaluationCal\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -58,6 +59,7 @@
     <Compile Include="CalculatesNew\lsl\FS_防水卷材\FS.cs" />
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
+	<Compile Include="CalculatesNew\wlb\XHJ.cs" />
     <Compile Include="CalculatesNew\qsf\DCL地基承载力\DCL.cs" />
     <Compile Include="CalculatesNew\qsf\JLF混凝土裂缝宽度检测\JLF.cs" />
     <Compile Include="CalculatesNew\qsf\KZD_矿渣粉\KZD.cs" />
@@ -66,7 +68,7 @@
     <Compile Include="CalculatesNew\qsf\TG电工套管\TG.cs" />
     <Compile Include="CalculatesNew\qsf\XJB 现浇板厚度\XJB.cs" />
     <Compile Include="CalculatesNew\wzy\FDJ_混凝土防冻剂\FDJ.cs" />
-    <Compile Include="CalculatesNew\wzy\GC_给水管\GC.cs" />
+	<Compile Include="CalculatesNew\wzy\GC_给水管\GC.cs" />
     <Compile Include="CalculatesNew\wzy\GJJ_硅酮建筑密封胶\GJJ.cs" />
     <Compile Include="CalculatesNew\wzy\HSA_砂%28行标砼用%29\HSA.cs" />
     <Compile Include="CalculatesNew\wzy\HTZ_混凝土回弹-取芯法\HTZ.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="CalculatesNew\wzy\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\wzy\JZ_岩棉、矿渣棉及用品\JZ.cs" />
     <Compile Include="CalculatesNew\wzy\PGC_排水管\PGC.cs" />
+    <Compile Include="CalculatesNew\wzy\QK1_普通混凝土小型砌块\QK1.cs" />
     <Compile Include="CalculatesNew\wzy\QN_蒸压加气混凝土用砂浆[2001]\QN.cs" />
     <Compile Include="CalculatesNew\wzy\SHX_石灰（新）\SHX.cs" />
     <Compile Include="CalculatesNew\wzy\SL_石料\SL.cs" />
@@ -170,7 +173,6 @@
     <Compile Include="CalculatesNew\ywj\JF_聚合物水泥防水砂浆\JF.cs" />
     <Compile Include="CalculatesNew\ywj\JT_硅酸盐复合绝热涂料\JT.cs" />
     <Compile Include="CalculatesNew\ywj\JWA_建筑绝热用硬质聚氨酯\JWA.cs" />
-    <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\ywj\MFJ_建筑用硅酮结构密封胶\MFJ.cs" />
     <Compile Include="CalculatesNew\ywj\MQJ_幕墙玻璃接缝用密封胶\MQJ.cs" />
     <Compile Include="CalculatesNew\ywj\NH_耐候性\NH.cs" />
@@ -184,7 +186,7 @@
     <Compile Include="CalculatesNew\ywj\GHF_钢筋焊接复试\GHF.cs" />
     <Compile Include="CalculatesNew\ywj\GHJ_钢筋焊接\GHJ.cs" />
     <Compile Include="CalculatesNew\ywj\HD_混凝土抗冻\HD.cs" />
-    <Compile Include="CalculatesNew\ywj\HNT\HNT.cs" />
+    <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
     <Compile Include="CalculatesNew\ywj\HPB_混凝土配合比\HPB.cs" />
     <Compile Include="CalculatesNew\ywj\JGF_钢筋型材复试\JGF.cs" />
     <Compile Include="CalculatesNew\ywj\JGG_钢筋型材\JGG.cs" />

@@ -526,7 +526,7 @@ namespace Calculates
                         mitem["G_HSL"] = "----";
                         mitem["HG_HSL"] = "----";
                     }
-                    if (jcxm.Contains("、泌水率、"))
+                    if (jcxm.Contains("、泌水率比、"))
                     {
                         mitem["HG_MSL"] = calc_pd(mitem["G_MSL"], sitem["MSLB"]);
                         if (mitem["HG_MSL"] == "不符合")
@@ -606,16 +606,19 @@ namespace Calculates
                         sitem["ZNPJSJC"] = "-----";
                         mitem["HG_ZNSJC"] = "----";
                     }
-                    if (jcxm.Contains("、R-7抗压强度比、"))
+                    if (jcxm.Contains("、R-7抗压强度比、") || jcxm.Contains("、抗压强度比、"))
                     {
-                        mitem["HG_KYQD1D"] = calc_pd(mitem["G_KYQD1D"], sitem["QDB1"]);
-                        if (mitem["HG_KYQD1D"] == "不符合")
+                        if (!string.IsNullOrEmpty(sitem["QDB1"]))
                         {
-                            mbhggs = mbhggs + 1;
-                            mFlag_Bhg = true;
+                            mitem["HG_KYQD1D"] = calc_pd(mitem["G_KYQD1D"], sitem["QDB1"]);
+                            if (mitem["HG_KYQD1D"] == "不符合")
+                            {
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                            else
+                                mFlag_Hg = true;
                         }
-                        else
-                            mFlag_Hg = true;
                     }
                     else
                     {
@@ -623,16 +626,19 @@ namespace Calculates
                         sitem["QDB1"] = "-----";
                         mitem["HG_KYQD1D"] = "----";
                     }
-                    if (jcxm.Contains("、R28抗压强度比、"))
+                    if (jcxm.Contains("、R28抗压强度比、") || jcxm.Contains("、抗压强度比、"))
                     {
-                        mitem["HG_KYQD3D"] = calc_pd(mitem["G_KYQD3D"], sitem["QDB2"]);
-                        if (mitem["HG_KYQD3D"] == "不符合")
+                        if (!string.IsNullOrEmpty(sitem["QDB2"]))
                         {
-                            mbhggs = mbhggs + 1;
-                            mFlag_Bhg = true;
+                            mitem["HG_KYQD3D"] = calc_pd(mitem["G_KYQD3D"], sitem["QDB2"]);
+                            if (mitem["HG_KYQD3D"] == "不符合")
+                            {
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                            else
+                                mFlag_Hg = true;
                         }
-                        else
-                            mFlag_Hg = true;
                     }
                     else
                     {
@@ -640,16 +646,19 @@ namespace Calculates
                         sitem["QDB2"] = "-----";
                         mitem["HG_KYQD3D"] = "----";
                     }
-                    if (jcxm.Contains("、R-7+28抗压强度比、") || jcxm.Contains("、R－7＋28抗压强度比、"))
+                    if (jcxm.Contains("、R-7+28抗压强度比、") || jcxm.Contains("、R－7＋28抗压强度比、") || jcxm.Contains("、抗压强度比、"))
                     {
-                        mitem["HG_KYQD7D"] = calc_pd(mitem["G_KYQD7D"], sitem["QDB3"]);
-                        if (mitem["HG_KYQD7D"] == "不符合")
+                        if (!string.IsNullOrEmpty(sitem["QDB3"]))
                         {
-                            mbhggs = mbhggs + 1;
-                            mFlag_Bhg = true;
+                            mitem["HG_KYQD7D"] = calc_pd(mitem["G_KYQD7D"], sitem["QDB3"]);
+                            if (mitem["HG_KYQD7D"] == "不符合")
+                            {
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                            else
+                                mFlag_Hg = true;
                         }
-                        else
-                            mFlag_Hg = true;
                     }
                     else
                     {
@@ -657,16 +666,19 @@ namespace Calculates
                         sitem["QDB3"] = "-----";
                         mitem["HG_KYQD7D"] = "----";
                     }
-                    if (jcxm.Contains("、R-7+56抗压强度比、") || jcxm.Contains("、R－7＋56抗压强度比、"))
+                    if (jcxm.Contains("、R-7+56抗压强度比、") || jcxm.Contains("、R－7＋56抗压强度比、") || jcxm.Contains("、抗压强度比、"))
                     {
-                        mitem["HG_KYQD28D"] = calc_pd(mitem["G_KYQD28D"], sitem["QDB4"]);
-                        if (mitem["HG_KYQD28D"] == "不符合")
+                        if (!string.IsNullOrEmpty(sitem["QDB4"]))
                         {
-                            mbhggs = mbhggs + 1;
-                            mFlag_Bhg = true;
+                            mitem["HG_KYQD28D"] = calc_pd(mitem["G_KYQD28D"], sitem["QDB4"]);
+                            if (mitem["HG_KYQD28D"] == "不符合")
+                            {
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                            else
+                                mFlag_Hg = true;
                         }
-                        else
-                            mFlag_Hg = true;
                     }
                     else
                     {

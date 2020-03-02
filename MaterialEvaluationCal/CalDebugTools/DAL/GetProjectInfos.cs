@@ -364,10 +364,10 @@ namespace CalDebugTools
         /// </summary>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        public string GetExtra(string tableName)
-        {
-            string extraDJjson = Common.DBUtility.JsonHelper.GetDataJson("select * from GHFDJ ", "BZ_GHF_DJ");
-            return extraDJjson;
-        }
+        //public string GetExtra(string tableName)
+        //{
+        //    string extraDJjson = Common.DBUtility.JsonHelper.GetDataJson("select * from GHFDJ ", "BZ_GHF_DJ");
+        //    return extraDJjson;
+        //}
     }
 }

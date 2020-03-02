@@ -198,7 +198,7 @@ namespace Calculates
             //var mrsWd = dataExtra["BZ_DXLWD"];
             var MItem = data["M_MC"];
             var SItem = data["S_MC"];
-            var mrsMs = data["MS_MC"];
+            var mrsMs = dataExtra["MS_MC"];
             #endregion
 
             #region  计算开始

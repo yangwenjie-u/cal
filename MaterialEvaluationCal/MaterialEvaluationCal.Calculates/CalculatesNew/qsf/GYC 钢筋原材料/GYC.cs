@@ -410,7 +410,7 @@ namespace Calculates
                         sItem["JCJG_LS"] = "----";
                     }
 
-                    if (jcxm.Contains("、冷弯、")|| jcxm.Contains("、弯曲、"))
+                    if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                     {
                         if (Conversion.Val(sItem["HG_LW"]) - mHggs_LW > -0.00001)
                         {
@@ -507,6 +507,9 @@ namespace Calculates
 
                     mXLGS = GetSafeDouble(extraFieldsDj["XLGS"]);
                     mXWGS = GetSafeDouble(extraFieldsDj["XWGS"]);
+                    MItem[0]["G_WGZZ"] = extraFieldsDj["WGZZ"];//微观组织
+                    MItem[0]["G_HGJX"] = extraFieldsDj["HGJX"];//宏观金相
+                    MItem[0]["G_JMWSYD"] = extraFieldsDj["JMWSYD"];//截面维氏硬度
 
                     if (sItem["SFTZ"].Trim() == "是")
                     {
@@ -725,7 +728,7 @@ namespace Calculates
                 mallBHG_QF = mallBHG_QF + find_singlezb_bhg(MItem[0], sItem, "qf", mQfqd, (int)mXLGS);
                 mallBHG_KL = mallBHG_KL + find_singlezb_bhg(MItem[0], sItem, "kl", mKlqd, (int)mXLGS);
                 mallBHG_SC = mallBHG_SC + find_singlezb_bhg(MItem[0], sItem, "SCL", mScl, (int)mXLGS);
-                if (jcxm.Contains("、冷弯、")|| jcxm.Contains("、弯曲、"))
+                if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mXWGS);
                 }
@@ -817,14 +820,61 @@ namespace Calculates
                     }
                 }
                 #endregion
+                //宏观金相,截面维氏硬度,微观组织 是2018新增
+                #region 宏观金相
+                if (jcxm.Contains("、宏观金相、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
+                {
+                    if (MItem[0]["HG_HGJX"] == "合格" || MItem[0]["HG_HGJX"] == "符合")
+                    {
+                        MItem[0]["HG_HGJX"] = "符合";
+                    }
+                    else
+                    {
+                        MItem[0]["HG_HGJX"] = "不符合";
+                    }
+                }
+                else
+                {
+                    MItem[0]["HG_HGJX"] = "----";
+                }
+                #endregion
+                #region 截面维氏硬度
+                if (jcxm.Contains("、截面维氏硬度、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
+                {
+                    double JMWSYD1 = GetSafeDouble(sItem["JMWSYD1"]);
+                    double JMWSYD2 = GetSafeDouble(sItem["JMWSYD2"]);
+
+                    if (IsQualified(MItem[0]["G_JMWSYD"], Math.Abs(JMWSYD1 - JMWSYD2).ToString(), true) == "符合")
+                    {
+                        MItem[0]["HG_JMWSYD"] = "符合";
+                    }
+                    else
+                    {
+                        MItem[0]["HG_JMWSYD"] = "不符合";
+                    }
+                }
+                #endregion
+                #region 微观组织
+                if (jcxm.Contains("、微观组织、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
+                {
+                    if (MItem[0]["HG_WGZZ"] == "合格" || MItem[0]["HG_WGZZ"] == "符合")
+                    {
+                        MItem[0]["HG_WGZZ"] = "符合";
+                    }
+                    else
+                    {
+                        MItem[0]["HG_WGZZ"] = "不符合";
+                    }
+                }
+                #endregion
 
                 var zh = sItem["ZH_G"].Trim();
-                if (sItem["JCJG_KZ"] == "不符合" || sItem["JCJG_LS"] == "不符合")
+                if (MItem[0]["HG_JMWSYD"] == "合格" || MItem[0]["HG_WGZZ"] == "合格" || MItem[0]["HG_HGJX"] == "合格" || sItem["JCJG_KZ"] == "不符合" || sItem["JCJG_LS"] == "不符合")
                 {
                     sItem["JCJG_LS"] = "不符合";
                 }
 
-                if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合" || sItem["JCJG_ZLPC"] == "不符合")
+                if (MItem[0]["HG_JMWSYD"] == "不合格" || MItem[0]["HG_WGZZ"] == "不合格" || MItem[0]["HG_HGJX"] == "不合格" || sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合" || sItem["JCJG_ZLPC"] == "不符合")
                 {
                     sItem["JCJG"] = "不合格";
                 }

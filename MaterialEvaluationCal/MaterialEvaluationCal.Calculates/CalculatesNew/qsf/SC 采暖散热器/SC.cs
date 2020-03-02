@@ -158,11 +158,11 @@ namespace Calculates
                 }
 
                 #region 压力试验
-                if (jcxm.Contains("、压力试验、"))
+                if (jcxm.Contains("、压力试验、")|| jcxm.Contains("、液压试验、") )
                 {
                     if (sItem["SJSYYL"] != "")
                     {
-                        sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "；持续2～3min，压力不降且不渗不漏";
+                        sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续2～3min，压力不降且不渗不漏";
                         if (GetSafeDouble(sItem["YLSYSM"]) >= GetSafeDouble(sItem["SJSYYL"]) && GetSafeDouble(sItem["YLSYSM"]) >= 0.6 && sItem["SLQK"] == "压力不降且不渗不漏")
                         {
                             MItem[0]["GH_YLSY"] = "合格";
@@ -233,7 +233,7 @@ namespace Calculates
                 #endregion
 
                 #region 压力试验
-                if (jcxm.Contains("、压力试验、"))
+                if (jcxm.Contains("、压力试验、") || jcxm.Contains("、液压试验、"))
                 {
                     if (MItem[0]["GH_YLSY"] == "不合格")
                     {

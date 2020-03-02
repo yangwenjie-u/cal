@@ -197,7 +197,7 @@ namespace Calculates
                 mbHggs = 0;
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 //密度、抗压、冻融、吸水率
-                if (jcxm.Contains("、抗压、"))
+                if (jcxm.Contains("、强度等级、"))
                 {
                     sign = true;
                     //等级表
@@ -264,7 +264,7 @@ namespace Calculates
                             Gd2 = md;
                             md1 = Conversion.Val(sitem["KYHZ" + xd].Trim());
                             md2 = Gd1 * Gd2;
-                            md2 = Round(nArr[xd], 0);
+                            //md2 = Round(nArr[xd], 0);
                             md = 1000 * md1 / md2;
                             md = Round(md, 1);
                             mitem["KYQD" + xd] = md.ToString("0.0");
@@ -431,10 +431,6 @@ namespace Calculates
                     mitem["GH_XDXSL"] = "----";
                     mitem["G_XDHSL"] = "----";
                 }
-
-
-
-
                 if (jcxm.Contains("、抗冻性、"))
                 {
                     sign = true;

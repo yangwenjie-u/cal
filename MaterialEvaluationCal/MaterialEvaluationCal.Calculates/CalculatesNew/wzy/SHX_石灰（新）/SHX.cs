@@ -243,6 +243,7 @@ namespace Calculates
                     mitem["JCJGMS"] = mitem["JCJGMS"] + "试件尺寸为空";
                     continue;
                 }
+                var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 //旋转裂纹、旋转盖板、旋转缩松、旋转抗滑、旋转破坏、旋转力矩、旋转一般项、对接裂纹、对接盖板、对接缩松、对接抗拉、对接力矩、对接一般项
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
@@ -251,11 +252,10 @@ namespace Calculates
                     int xd;
                     mFlag_Hg = false;
                     mFlag_Bhg = false;
-                    var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                     if (jcxm.Contains("、CaO和MgO含量、"))
                     {
                         sitem["PJMGO"] = Round((Conversion.Val(sitem["MGO_1"]) + Conversion.Val(sitem["MGO_2"])) / 2, 2).ToString("0.00");
-                        if (calc_pd(mitem["G_YHM"], sitem["PJMGO"]) == "符合")
+                        if (IsQualified(mitem["G_YHM"], sitem["PJMGO"]) == "合格")
                         {
                             mitem["HG_MGO"] = "合格";
                             mFlag_Hg = true;
@@ -266,7 +266,7 @@ namespace Calculates
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
                         }
-                        if (calc_pd(mitem["G_CJM"], sitem["CJM"]) == "符合")
+                        if (IsQualified(mitem["G_CJM"], sitem["CJM"]) == "合格")
                         {
                             mitem["HG_CJM"] = "合格";
                             mFlag_Hg = true;
@@ -286,7 +286,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、细度、"))
                     {
-                        if (calc_pd(mitem["G_XD1"], sitem["XD0_90"]) == "符合")
+                        if (IsQualified(mitem["G_XD1"], sitem["XD0_90"]) == "合格")
                         {
                             mitem["HG_XD1"] = "合格";
                             mFlag_Hg = true;
@@ -297,7 +297,7 @@ namespace Calculates
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
                         }
-                        if (calc_pd(mitem["G_XD2"], sitem["XD0_125"]) == "符合")
+                        if (IsQualified(mitem["G_XD2"], sitem["XD0_125"]) == "合格")
                         {
                             mitem["HG_XD2"] = "合格";
                             mFlag_Hg = true;
@@ -334,6 +334,137 @@ namespace Calculates
                             mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
                     }
                     mAllHg = (mAllHg && sitem["JCJG"] == "合格");
+                }
+                else
+                {
+                    mbhggs = 0;
+                    double md1, md2, md, pjmd, sum, gmhl;
+                    int xd, Gs;
+                    double[] nArr;
+                    bool falg;
+                    falg = false;
+                    if (jcxm.Contains("、有效氧化钙、") && jcxm.Contains("、氧化镁含量、"))
+                    {
+                        sum = 0;
+                        gmhl = 0;
+                        for (xd = 1; xd <= 2; xd++)
+                        {
+                            md = GetSafeDouble(sitem["TCAO_1"].Trim());
+                            md1 = GetSafeDouble(sitem["CAOV1_" + xd].Trim());
+                            md2 = GetSafeDouble(sitem["CAOM_" + xd].Trim());
+                            md = 1.25 * md * md1 / md2;
+                            md = Round(md, 2);
+                            sum = md + sum;
+                            sitem["CAO_" + xd] = md.ToString("0.00");
+                        }
+                        gmhl = sum + gmhl;
+                        pjmd = sum / 2;
+                        pjmd = Round(pjmd, 2);
+                        sitem["PJCAO"] = pjmd.ToString("0.00");
+                        sum = 0;
+                        for (xd = 1; xd <= 2; xd++)
+                        {
+                            md = GetSafeDouble(sitem["TMGO_1"].Trim());
+                            md1 = GetSafeDouble(sitem["MGOV2_" + xd].Trim());
+                            md2 = GetSafeDouble(sitem["CAOV1_" + xd].Trim());
+                            pjmd = GetSafeDouble(sitem["CAOM_" + xd].Trim());
+                            md = 1.25 * md * (md1 - md2) / pjmd;
+                            md = Round(md, 2);
+                            sum = md + sum;
+                            sitem["MGO_" + xd] = md.ToString("0.00");
+                        }
+                        gmhl = sum + gmhl;
+                        pjmd = sum / 2;
+                        pjmd = Round(pjmd, 2);
+                        sitem["PJMGO"] = pjmd.ToString("0.00");
+                        sitem["MGO_1"] = Round((Conversion.Val(sitem["TMGO_1"]) * (Conversion.Val(sitem["MGOV2_1"]) - Conversion.Val(sitem["CAOV1_1"])) * 12.5 / Conversion.Val(sitem["CAOM_1"]) / 1000 * 100), 2).ToString("0.00");
+                        sitem["MGO_2"] = Round((Conversion.Val(sitem["TMGO_1"]) * (Conversion.Val(sitem["MGOV2_2"]) - Conversion.Val(sitem["CAOV1_2"])) * 12.5 / Conversion.Val(sitem["CAOM_2"]) / 1000 * 100), 2).ToString("0.00");
+                        sitem["PJMGO"] = Round((Conversion.Val(sitem["MGO_1"]) + Conversion.Val(sitem["MGO_2"])) / 2, 2).ToString("0.00");
+                        md1 = GetSafeDouble(sitem["PJCAO"]);
+                        md2 = GetSafeDouble(sitem["PJMGO"]);
+                        sum = gmhl / 2;
+                        sum = Round(sum, 2);
+                        sitem["CJM"] = sum.ToString("0.00");
+                        mitem["HG_MGO"] = "";
+                        foreach (var item in mrsDj)
+                        {
+                            if (IsQualified(item["YHMHLSM"], sitem["PJMGO"]) == "合格")
+                            {
+                                mitem["HG_MGO"] = "合格";
+                                mitem["G_CJM"] = item["CJM"];
+                                mitem["G_YHM"] = item["YHMHLSM"];
+                                mFlag_Hg = true;
+                                break;
+                            }
+                        }
+                        if (mitem["HG_MGO"] == "")
+                        {
+                            mitem["HG_MGO"] = "不合格";
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                        }
+                        if (IsQualified(mitem["G_CJM"], sitem["CJM"]) == "合格")
+                        {
+                            mitem["HG_CJM"] = "合格";
+                            mFlag_Hg = true;
+                        }
+                        else
+                        {
+                            mitem["HG_CJM"] = "不合格";
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                        }
+                    }
+                    else
+                    {
+                        mitem["HG_MGO"] = "----";
+                        mitem["HG_CJM "] = "----";
+                    }
+
+
+                    if (jcxm.Contains("、有效氧化钙、") && jcxm.Contains("、氧化镁含量、"))
+                    {
+                        falg = true;
+                        sum = 0;
+                        for (xd = 1; xd <= 2; xd++)
+                        {
+                            md = GetSafeDouble(sitem["TCAO_1"].Trim());
+                            md1 = GetSafeDouble(sitem["CAOV1_" + xd].Trim());
+                            md2 = GetSafeDouble(sitem["CAOM_" + xd].Trim());
+                            md = 1.25 * md * md1 / md2;
+                            md = Round(md, 2);
+                            sum = md + sum;
+                            sitem["CAO_" + xd] = md.ToString("0.00");
+                        }
+                        pjmd = sum / 2;
+                        pjmd = Round(pjmd, 2);
+                        sitem["PJCAO"] = pjmd.ToString("0.00");
+
+                        mitem["G_YHM"] = "----";
+                        sitem["PJMGO"] = "----";
+                        mitem["HG_MGO"] = "----";
+                    }
+                    mitem["JCJGMS"] = "";
+                    if (falg)
+                    {
+                        mitem["JCJGMS"] = "该组试样所检项依据" + sitem["PZ"].Trim() + "标准结果如上。";
+                        sitem["JCJG"] = "合格";
+                    }
+                    else
+                    {
+                        if (mbhggs > 0)
+                        {
+                            sitem["JCJG"] = "不合格";
+                            mitem["JCJGMS"] = "该组试样不符合" + sitem["PZ"].Trim() + "标准要求。";
+                            if (mFlag_Bhg && mFlag_Hg)
+                                mitem["JCJGMS"] = "该组试样所检项部分符合" + sitem["PZ"].Trim() + "标准要求。";
+                        }
+                        else
+                        {
+                            mitem["JCJGMS"] = "该组试样所检项符合" + sitem["PZ"].Trim() + "标准要求。";
+                            sitem["JCJG"] = "合格";
+                        }
+                    }
                 }
             }
             #endregion
