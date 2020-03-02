@@ -264,7 +264,7 @@ namespace Calculates
                             Gd2 = md;
                             md1 = Conversion.Val(sitem["KYHZ" + xd].Trim());
                             md2 = Gd1 * Gd2;
-                            md2 = Round(nArr[xd], 0);
+                            //md2 = Round(nArr[xd], 0);
                             md = 1000 * md1 / md2;
                             md = Round(md, 1);
                             mitem["KYQD" + xd] = md.ToString("0.0");

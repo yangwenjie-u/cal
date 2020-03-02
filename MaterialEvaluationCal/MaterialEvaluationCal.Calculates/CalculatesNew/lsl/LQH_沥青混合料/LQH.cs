@@ -146,7 +146,7 @@ namespace Calculates
                 if (jcxm.Contains("、矿料级配、"))
                 {
 
-                    if (sItem["SFPD"] == "不符合")
+                    if (sItem["HG_SFPD"] == "不符合")
                     {
                         mAllHg = false;
                     }
@@ -184,7 +184,7 @@ namespace Calculates
                 {
                     mItem["W_WDD"] = "----";
                     mItem["GH_WDD"] = "----";
-                    mItem["G_LQHL"] = "----";
+                    mItem["G_WDD"] = "----";
                 }
                 sign = true;
                 if (jcxm.Contains("、流值、"))

@@ -139,7 +139,7 @@ namespace Calculates
                     sItem["JCJG_LS"] = "----";
                 }
 
-                if (jcxm2.Contains("、冷弯、"))
+                if (jcxm2.Contains("、冷弯、") || jcxm2.Contains("、弯曲、"))
                 {
                     if (double.Parse(sItem["HG_LW"]) - mHggs_lw_f > -0.00001)
                         sItem["JCJG_LW"] = "符合";
@@ -478,7 +478,7 @@ namespace Calculates
                 }
 
 
-                if (jcxm.Contains("、冷弯、"))
+                if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
                     mallBhg_lw = mallBhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, double.Parse(mxwgs));
 

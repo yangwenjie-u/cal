@@ -255,7 +255,7 @@ namespace Calculates
                     if (jcxm.Contains("、CaO和MgO含量、"))
                     {
                         sitem["PJMGO"] = Round((Conversion.Val(sitem["MGO_1"]) + Conversion.Val(sitem["MGO_2"])) / 2, 2).ToString("0.00");
-                        if (calc_pd(mitem["G_YHM"], sitem["PJMGO"]) == "符合")
+                        if (IsQualified(mitem["G_YHM"], sitem["PJMGO"]) == "合格")
                         {
                             mitem["HG_MGO"] = "合格";
                             mFlag_Hg = true;
@@ -266,7 +266,7 @@ namespace Calculates
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
                         }
-                        if (calc_pd(mitem["G_CJM"], sitem["CJM"]) == "符合")
+                        if (IsQualified(mitem["G_CJM"], sitem["CJM"]) == "合格")
                         {
                             mitem["HG_CJM"] = "合格";
                             mFlag_Hg = true;
@@ -286,7 +286,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、细度、"))
                     {
-                        if (calc_pd(mitem["G_XD1"], sitem["XD0_90"]) == "符合")
+                        if (IsQualified(mitem["G_XD1"], sitem["XD0_90"]) == "合格")
                         {
                             mitem["HG_XD1"] = "合格";
                             mFlag_Hg = true;
@@ -297,7 +297,7 @@ namespace Calculates
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
                         }
-                        if (calc_pd(mitem["G_XD2"], sitem["XD0_125"]) == "符合")
+                        if (IsQualified(mitem["G_XD2"], sitem["XD0_125"]) == "合格")
                         {
                             mitem["HG_XD2"] = "合格";
                             mFlag_Hg = true;
@@ -388,7 +388,7 @@ namespace Calculates
                         mitem["HG_MGO"] = "";
                         foreach (var item in mrsDj)
                         {
-                            if (IsQualified(item["YHMHLSM"], sitem["PJMGO"]) == "符合")
+                            if (IsQualified(item["YHMHLSM"], sitem["PJMGO"]) == "合格")
                             {
                                 mitem["HG_MGO"] = "合格";
                                 mitem["G_CJM"] = item["CJM"];
@@ -403,7 +403,7 @@ namespace Calculates
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
                         }
-                        if (IsQualified(mitem["G_CJM"], sitem["CJM"]) == "符合")
+                        if (IsQualified(mitem["G_CJM"], sitem["CJM"]) == "合格")
                         {
                             mitem["HG_CJM"] = "合格";
                             mFlag_Hg = true;

@@ -489,12 +489,25 @@ namespace Calculates
                     }
 
                     double masum = Conversion.Val(sItem["JGXQM1"]) + Conversion.Val(sItem["JGXQM2"]) + Conversion.Val(sItem["JGXQM3"]) + Conversion.Val(sItem["JGXQM4"]) + Conversion.Val(sItem["JGXQM5"]);
-                    double ma1 = Math.Round(Conversion.Val(sItem["JGXHM1"]) / masum * 100, 2);
-                    double ma2 = Math.Round(Conversion.Val(sItem["JGXHM2"]) / masum * 100, 2);
-                    double ma3 = Math.Round(Conversion.Val(sItem["JGXHM3"]) / masum * 100, 2);
-                    double ma4 = Math.Round(Conversion.Val(sItem["JGXHM4"]) / masum * 100, 2);
-                    double ma5 = Math.Round(Conversion.Val(sItem["JGXHM5"]) / masum * 100, 2);
-                    sItem["JGX"] = Math.Round((ma1 * mfjzlss1 + ma2 * mfjzlss2 + ma3 * mfjzlss3 + ma4 * mfjzlss4 + ma5 * mfjzlss5) / (ma1 + ma2 + ma3 + ma4 + ma5), 0).ToString();
+                    double ma1 = 0;
+                    if (masum != 0)
+                        ma1 = Math.Round(Conversion.Val(sItem["JGXHM1"]) / masum * 100, 2);
+                    double ma2 = 0;
+                    if (masum != 0)
+                        ma2 = Math.Round(Conversion.Val(sItem["JGXHM2"]) / masum * 100, 2);
+                    double ma3 = 0;
+                    if (masum != 0)
+                        ma3 = Math.Round(Conversion.Val(sItem["JGXHM3"]) / masum * 100, 2);
+                    double ma4 = 0;
+                    if (masum != 0)
+                        ma4 = Math.Round(Conversion.Val(sItem["JGXHM4"]) / masum * 100, 2);
+                    double ma5 = 0;
+                    if (masum != 0)
+                        ma5 = Math.Round(Conversion.Val(sItem["JGXHM5"]) / masum * 100, 2);
+                    if (ma1 + ma2 + ma3 + ma4 + ma5 != 0)
+                        sItem["JGX"] = Math.Round((ma1 * mfjzlss1 + ma2 * mfjzlss2 + ma3 * mfjzlss3 + ma4 * mfjzlss4 + ma5 * mfjzlss5) / (ma1 + ma2 + ma3 + ma4 + ma5), 0).ToString();
+                    else
+                        sItem["JGX"] = "0";
 
                     //从设计等级表中取得相应的计算数值、等级标准
                     var extraFieldsZBYQs = extraZBYQ.Where(u => u["MC"].Trim() == "坚固性");

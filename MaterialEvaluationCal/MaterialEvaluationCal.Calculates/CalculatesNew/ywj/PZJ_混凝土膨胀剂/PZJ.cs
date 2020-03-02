@@ -328,7 +328,7 @@ namespace Calculates
 
             foreach (var sItem in sItems)
             {
-                jcxm = "、" + sItem["JCXM"] + "、";
+                jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
                 //sItem["FJ"] = false.ToString();
 
                 var mrsDj = extraDJ.FirstOrDefault(u => u["LX"] == sItem["LX"]);
@@ -423,44 +423,44 @@ namespace Calculates
                         sum = 0;
                         for (xd = 1; xd <= 2; xd++)
                         {
-                            md1 = Conversion.Val(sItem["BBWDBZ"].Trim());
-                            md2 = Conversion.Val(sItem["BBWDSY" + xd].Trim());
+                            md1 = Conversion.Val(sItem["BBWDBZ"]);
+                            md2 = Conversion.Val(sItem["BBWDSY" + xd]);
                             flag = Math.Abs(md1 - md2) > 3 ? true : false;
 
                             if (Conversion.Val(sItem["BBMD"]) == Conversion.Val(sItem["SYMD"]) && Conversion.Val(sItem["BBKXBZ"]) == Conversion.Val(sItem["BBKXSY"]))
                             {
-                                md1 = Conversion.Val(sItem["BBYLBZ"].Trim());
-                                md2 = Conversion.Val(sItem["BBYLSY" + xd].Trim());
-                                md = Conversion.Val(sItem["BBMJBZ"].Trim());
+                                md1 = Conversion.Val(sItem["BBYLBZ"]);
+                                md2 = Conversion.Val(sItem["BBYLSY" + xd]);
+                                md = Conversion.Val(sItem["BBMJBZ"]);
                                 md = Math.Pow(md * (md2 / md1), (1 / 2));
                             }
                             else if (Conversion.Val(sItem["BBMD"]) == Conversion.Val(sItem["SYMD"]) && Conversion.Val(sItem["BBKXBZ"]) != Conversion.Val(sItem["BBKXSY"]))
                             {
-                                md1 = Conversion.Val(sItem["BBYLBZ"].Trim());
-                                md2 = Conversion.Val(sItem["BBYLSY" + xd].Trim());
-                                md = Conversion.Val(sItem["BBMJBZ"].Trim());
+                                md1 = Conversion.Val(sItem["BBYLBZ"]);
+                                md2 = Conversion.Val(sItem["BBYLSY" + xd]);
+                                md = Conversion.Val(sItem["BBMJBZ"]);
                                 md = Math.Pow(md * (md2 / md1), (1 / 2));
-                                md1 = Conversion.Val(sItem["BBKXBZ"].Trim());
-                                md2 = Conversion.Val(sItem["BBKXSY"].Trim());
+                                md1 = Conversion.Val(sItem["BBKXBZ"]);
+                                md2 = Conversion.Val(sItem["BBKXSY"]);
                                 md = Math.Pow(md * (1 - md1) / (1 - md2) * (md2 / md1), (3 / 2));
                             }
                             else
                             {
-                                md1 = Conversion.Val(sItem["BBYLBZ"].Trim());
-                                md2 = Conversion.Val(sItem["BBYLSY" + xd].Trim());
-                                md = Conversion.Val(sItem["BBMJBZ"].Trim());
+                                md1 = Conversion.Val(sItem["BBYLBZ"]);
+                                md2 = Conversion.Val(sItem["BBYLSY" + xd]);
+                                md = Conversion.Val(sItem["BBMJBZ"]);
                                 md = Math.Pow(md * (md2 / md1), (1 / 2));
-                                md1 = Conversion.Val(sItem["BBKXBZ"].Trim());
-                                md2 = Conversion.Val(sItem["BBKXSY"].Trim());
+                                md1 = Conversion.Val(sItem["BBKXBZ"]);
+                                md2 = Conversion.Val(sItem["BBKXSY"]);
                                 md = Math.Pow(md * (1 - md1) / (1 - md2) * (md2 / md1), (3 / 2));
-                                md1 = Conversion.Val(sItem["BBMD"].Trim());
-                                md2 = Conversion.Val(sItem["SYMD"].Trim());
+                                md1 = Conversion.Val(sItem["BBMD"]);
+                                md2 = Conversion.Val(sItem["SYMD"]);
                                 md = md * md1 / md2;
                             }
                             if (flag)
                             {
-                                md1 = Conversion.Val(sItem["BBKQBZ"].Trim());
-                                md2 = Conversion.Val(sItem["BBKQSY" + xd].Trim());
+                                md1 = Conversion.Val(sItem["BBKQBZ"]);
+                                md2 = Conversion.Val(sItem["BBKQSY" + xd]);
                                 md = Math.Pow(md * (md1 / md2), (1 / 2));
                             }
                             md = Round(md, 0);
@@ -483,10 +483,10 @@ namespace Calculates
                             sItem["S5XZXS"] = "1";
                         for (xd = 1; xd <= 2; xd++)
                         {
-                            md1 = Conversion.Val(sItem["SY5ZL" + xd].Trim());
-                            md2 = Conversion.Val(sItem["YP5ZL" + xd].Trim());
+                            md1 = Conversion.Val(sItem["SY5ZL" + xd]);
+                            md2 = Conversion.Val(sItem["YP5ZL" + xd]);
                             md = 100 * md1 / md2;
-                            md = md * Conversion.Val(sItem["S5XZXS"].Trim());
+                            md = md * Conversion.Val(sItem["S5XZXS"]);
                             md = Round((md), 1);
                             sItem["S5XD" + xd] = md.ToString("0.0");
                             sum = sum + md;

@@ -423,11 +423,17 @@ namespace Calculates
                         mfjzlss2 = Round(((Conversion.Val(sitem["JGXQM4"])) - (Conversion.Val(sitem["JGXHM4"]))) / (Conversion.Val(sitem["JGXQM4"])) * 100, 1);
                         mfjzlss1 = Round(((Conversion.Val(sitem["JGXQM5"])) - (Conversion.Val(sitem["JGXHM5"]))) / (Conversion.Val(sitem["JGXQM5"])) * 100, 1);
                         masum = (Conversion.Val(sitem["JGXQM2"])) + (Conversion.Val(sitem["JGXQM3"])) + (Conversion.Val(sitem["JGXQM4"])) + (Conversion.Val(sitem["JGXQM5"]));
-                        ma1 = Round((Conversion.Val(sitem["JGXHM5"])) / masum * 100, 1);
-                        ma2 = Round((Conversion.Val(sitem["JGXHM4"])) / masum * 100, 1);
-                        ma3 = Round((Conversion.Val(sitem["JGXHM3"])) / masum * 100, 1);
-                        ma4 = Round((Conversion.Val(sitem["JGXHM2"])) / masum * 100, 1);
-                        sitem["JGX"] = Round((ma1 * mfjzlss1 + ma2 * mfjzlss2 + ma3 * mfjzlss3 + ma4 * mfjzlss4) / (ma1 + ma2 + ma3 + ma4), 0).ToString();
+                        if (masum != 0)
+                        {
+                            ma1 = Round((Conversion.Val(sitem["JGXHM5"])) / masum * 100, 1);
+                            ma2 = Round((Conversion.Val(sitem["JGXHM4"])) / masum * 100, 1);
+                            ma3 = Round((Conversion.Val(sitem["JGXHM3"])) / masum * 100, 1);
+                            ma4 = Round((Conversion.Val(sitem["JGXHM2"])) / masum * 100, 1);
+                        }
+                        if (ma1 + ma2 + ma3 + ma4 != 0)
+                            sitem["JGX"] = Round((ma1 * mfjzlss1 + ma2 * mfjzlss2 + ma3 * mfjzlss3 + ma4 * mfjzlss4) / (ma1 + ma2 + ma3 + ma4), 0).ToString();
+                        else
+                            sitem["JGX"] = "0";
                     }
                     else
                     {
@@ -436,11 +442,17 @@ namespace Calculates
                         mfjzlss2 = Round(((Conversion.Val(sitem["JGXQM5"])) - (Conversion.Val(sitem["JGXHM5"]))) / (Conversion.Val(sitem["JGXQM5"])) * 100, 1);
                         mfjzlss1 = Round(((Conversion.Val(sitem["JGXQM6"])) - (Conversion.Val(sitem["JGXHM6"]))) / (Conversion.Val(sitem["JGXQM6"])) * 100, 1);
                         masum = (Conversion.Val(sitem["JGXQM3"])) + (Conversion.Val(sitem["JGXQM4"])) + (Conversion.Val(sitem["JGXQM5"])) + (Conversion.Val(sitem["JGXQM6"]));
-                        ma1 = Round((Conversion.Val(sitem["JGXHM6"])) / masum * 100, 1);
-                        ma2 = Round((Conversion.Val(sitem["JGXHM5"])) / masum * 100, 1);
-                        ma3 = Round((Conversion.Val(sitem["JGXHM4"])) / masum * 100, 1);
-                        ma4 = Round((Conversion.Val(sitem["JGXHM3"])) / masum * 100, 1);
-                        sitem["JGX"] = Round((ma1 * mfjzlss1 + ma2 * mfjzlss2 + ma3 * mfjzlss3 + ma4 * mfjzlss4) / (ma1 + ma2 + ma3 + ma4), 0).ToString();
+                        if (masum != 0)
+                        {
+                            ma1 = Round((Conversion.Val(sitem["JGXHM6"])) / masum * 100, 1);
+                            ma2 = Round((Conversion.Val(sitem["JGXHM5"])) / masum * 100, 1);
+                            ma3 = Round((Conversion.Val(sitem["JGXHM4"])) / masum * 100, 1);
+                            ma4 = Round((Conversion.Val(sitem["JGXHM3"])) / masum * 100, 1);
+                        }
+                        if (ma1 + ma2 + ma3 + ma4 != 0)
+                            sitem["JGX"] = Round((ma1 * mfjzlss1 + ma2 * mfjzlss2 + ma3 * mfjzlss3 + ma4 * mfjzlss4) / (ma1 + ma2 + ma3 + ma4), 0).ToString();
+                        else
+                            sitem["JGX"] = "0";
                     }
 
                     var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("坚固性")).ToList();
