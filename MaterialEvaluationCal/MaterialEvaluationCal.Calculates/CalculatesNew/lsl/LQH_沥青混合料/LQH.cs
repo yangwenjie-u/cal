@@ -47,7 +47,7 @@ namespace Calculates
                             && !IsNumeric(sItem["L_RJG" + i]) && !IsNumeric(sItem["L_LJK" + i]) && !IsNumeric(sItem["L_GGZL" + i])
                              && !IsNumeric(sItem["L_CTL" + i]) && !IsNumeric(sItem["L_ZSCT" + i]) && !IsNumeric(sItem["L_CZZL" + i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                         }
                     }
                     sum = 0;
@@ -94,7 +94,7 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["SJWD"+i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                             continue;
                         }
                     }
@@ -124,7 +124,7 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["SJLZ" + i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                             continue;
                         }
                     }
@@ -153,7 +153,7 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["KSL" + i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                             continue;
                         }
                     }
@@ -182,7 +182,7 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["LQBHD" + i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                             continue;
                         }
                     }
@@ -204,6 +204,64 @@ namespace Calculates
                     mItem["G_LQBHD"] = "----";
                 }
 
+                if (jcxm.Contains("、矿料间隙率、"))
+                {
+                    gs = 6;
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        if (!IsNumeric(sItem["KLJXL" + i]))
+                        {
+                            gs = gs - 1;
+                            continue;
+                        }
+                    }
+                    sum = 0;
+                    for (int i = 1; i <= gs; i++)
+                    {
+                        md = Conversion.Val(sItem["KLJXL" + i].Trim());
+                        sum = sum + md;
+                    }
+                    pjmd = sum / gs;
+                    pjmd = Round(pjmd, 1);
+                    mItem["W_KLJXL"] = pjmd.ToString();
+                    mItem["GH_KLJXL"] = IsQualified(mItem["G_KLJXL"], mItem["W_KLJXL"], true);
+                }
+                else
+                {
+                    mItem["W_KLJXL"] = "----";
+                    mItem["GH_KLJXL"] = "----";
+                    mItem["G_KLJXL"] = "----";
+                }
+
+                if (jcxm.Contains("、马歇尔模数、"))
+                {
+                    gs = 6;
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        if (!IsNumeric(sItem["MXEMS" + i]))
+                        {
+                            gs = gs - 1;
+                            continue;
+                        }
+                    }
+                    sum = 0;
+                    for (int i = 1; i <= gs; i++)
+                    {
+                        md = Conversion.Val(sItem["MXEMS" + i].Trim());
+                        sum = sum + md;
+                    }
+                    pjmd = sum / gs;
+                    pjmd = Round(pjmd, 1);
+                    mItem["W_MXEMS"] = pjmd.ToString();
+                    mItem["GH_MXEMS"] = IsQualified(mItem["G_MXEMS"], mItem["W_MXEMS"], true);
+                }
+                else
+                {
+                    mItem["W_MXEMS"] = "----";
+                    mItem["GH_MXEMS"] = "----";
+                    mItem["G_MXEMS"] = "----";
+                }
+
                 if (jcxm.Contains("、残留稳定度、"))
                 {
                     gs = 6;
@@ -211,7 +269,7 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["SJWD" + i])|| !IsNumeric(sItem["CLWD" + i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                             continue;
                         }
                     }
@@ -243,7 +301,7 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["SCMD" + i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                             continue;
                         }
                     }

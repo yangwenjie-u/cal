@@ -30,13 +30,17 @@ namespace Calculates
 
                 if (!string.IsNullOrEmpty(sItem["JLMC8"]) && sItem["JLMC8"] != "----" && sItem["JLMC8"] != "")
                 {
-                    mItem["WHICH"] = "bgspa、bgspa_4、bgspa_2、bgspa_3";
+                    //mItem["WHICH"] = "bgspa、bgspa_4、bgspa_2、bgspa_3";
                     stemp = "";
                     for (int i = 1;i <= 8;i++)
                     {
                         sItem["JLMC" + i] = sItem["JLMC" + i].Trim();
                         if (!string.IsNullOrEmpty(sItem["JLMC" + i]) && sItem["JLMC" + i] != "----" && sItem["JLMC" + i] != "")
                         {
+                            if (string.IsNullOrEmpty(sItem["JLGG" + i]))
+                            {
+                                sItem["JLGG" + i] = "----";
+                            }
                             stemp = stemp + sItem["JLMC" + i] + "(" + sItem["JLBH" + i] + "):";
                             stemp = stemp + sItem["JLGG" + i] + " ";
                             stemp = stemp + sItem["JLCD" + i] + ";\r\n";
@@ -51,13 +55,15 @@ namespace Calculates
                         for (int i = 1;i <= 8;i ++)
                         {
                             if (IsNumeric(sItem["MTJMD"+i]) && !string.IsNullOrEmpty(sItem["MTJMD" + i]) &&
-                                IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                                IsNumeric(sItem["klpb" + i]) && !string.IsNullOrEmpty(sItem["klpb" + i]))
                             {
                                 md1 = GetSafeDouble(sItem["MTJMD" + i]);
-                                md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                                md2 = GetSafeDouble(sItem["KLPB" + i]);
                                 md = md2 / md1;
                                 sum = sum + md;
-                                sItem["KLPB" + i] = EItem[0]["klpb" + i].Trim();
+                                //sItem["KLPB" + i] = EItem[0]["klpb" + i].Trim();
                             }
                             else
                             {
@@ -71,10 +77,12 @@ namespace Calculates
                         for (int i = 1; i <= 8; i++)
                         {
                             if (IsNumeric(sItem["BGMD" + i]) && !string.IsNullOrEmpty(sItem["BGMD" + i]) &&
-                                IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                                IsNumeric(sItem["KLPB" + i]) && !string.IsNullOrEmpty(sItem["KLPB" + i]))
                             {
                                 md1 = GetSafeDouble(sItem["BGMD" + i]);
-                                md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                                md2 = GetSafeDouble(sItem["KLPB" + i]);
                                 md = md2 / md1;
                                 sum = sum + md;
                             }
@@ -92,7 +100,7 @@ namespace Calculates
                 }
                 else
                 {
-                    mItem["WHICH"] = "bgspa、bgspa_1、bgspa_2、bgspa_3";
+                    //mItem["WHICH"] = "bgspa、bgspa_1、bgspa_2、bgspa_3";
                     stemp = "";
                     for (int i = 1;i<=7;i++)
                     {
@@ -115,13 +123,15 @@ namespace Calculates
                         for (int i = 1;i <= 7;i ++)
                         {
                             if (IsNumeric(sItem["MTJMD" + i]) && !string.IsNullOrEmpty(sItem["MTJMD" + i]) &&
-                                IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                                IsNumeric(sItem["KLPB" + i]) && !string.IsNullOrEmpty(sItem["KLPB" + i]))
                             {
                                 md1 = GetSafeDouble(sItem["MTJMD" + i]);
-                                md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                                md2 = GetSafeDouble(sItem["KLPB" + i]);
                                 md = md2 / md1;
                                 sum = sum + md;
-                                sItem["KLPB" + i] = EItem[0]["klpb" + i].Trim();
+                                //sItem["KLPB" + i] = EItem[0]["klpb" + i].Trim();
                             }else 
                             {
                                 sItem["KLPB" + i] = "";
@@ -134,10 +144,12 @@ namespace Calculates
                         for (int i = 1; i <= 7; i++)
                         {
                             if (IsNumeric(sItem["BGMD" + i]) && !string.IsNullOrEmpty(sItem["BGMD" + i]) &&
-                                IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                                IsNumeric(sItem["klpb" + i]) && !string.IsNullOrEmpty(sItem["klpb" + i]))
                             {
                                 md1 = GetSafeDouble(sItem["BGMD" + i]);
-                                md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                                md2 = GetSafeDouble(sItem["klpb" + i]);
                                 md = md2 / md1;
                                 sum = sum + md;
                             }
@@ -154,29 +166,81 @@ namespace Calculates
                     }
                 }
                 //关于沥青含量
-                if (ELQItem.Count > 0)
+                #region 赋值
+                if (null == MItem[0]["G_MTJMD"])
                 {
-                    sItem["G_BHD"] = ELQItem[0]["g_bhd"];
-                    sItem["G_JXL"] = ELQItem[0]["g_jxl"];
-                    sItem["G_KXL"] = ELQItem[0]["g_kxl"];
-                    sItem["G_LZ"] = ELQItem[0]["g_lz"];
-                    sItem["G_MTJMD"] = ELQItem[0]["g_mtjmd"];
-                    sItem["G_WDD"] = ELQItem[0]["g_wdd"];
-                    sItem["OAC1"] = ELQItem[0]["oac1"];
-                    sItem["OAC2"] = ELQItem[0]["oac2"];
-                    sItem["OAC"] = ELQItem[0]["oac"];
+                    sItem["G_MTJMD"] = MItem[0]["G_MTJMD"];
+                }
+                else
+                {
+                    sItem["G_MTJMD"] = "----";
+                }
+                if (null == MItem[0]["G_WDD"])
+                {
+                    sItem["G_WDD"] = MItem[0]["G_WDD"];
+                }
+                else
+                {
+                    sItem["G_WDD"] = "----";
+                }
+                if (null == MItem[0]["G_LZ"])
+                {
+                    sItem["G_LZ"] = MItem[0]["G_LZ"];
+                }
+                else
+                {
+                    sItem["G_LZ"] = "----";
+                }
+                if (null == MItem[0]["G_BHD"])
+                {
+                    sItem["G_BHD"] = MItem[0]["G_BHD"];
                 }
                 else
                 {
                     sItem["G_BHD"] = "----";
-                    sItem["G_JXL"] = "----";
-                    sItem["G_KXL"] = "----";
-                    sItem["G_LZ"] = "----";
-                    sItem["G_MTJMD"] = "----";
-                    sItem["G_WDD"] = "----";
-                    mSFwc = false;
                 }
+                if (null == MItem[0]["G_JXL"])
+                {
+                    sItem["G_JXL"] = MItem[0]["G_JXL"];
+                }
+                else
+                {
+                    sItem["G_JXL"] = "----";
+                }
+                if (null == MItem[0]["G_KXL"])
+                {
+                    sItem["G_KXL"] = MItem[0]["G_KXL"];
+                }
+                else
+                {
+                    sItem["G_KXL"] = "----";
+                }
+                #endregion
 
+                #region
+                //if (ELQItem.Count > 0)
+                //{
+                //    //sItem["G_BHD"] = ELQItem[0]["g_bhd"];
+                //    //sItem["G_JXL"] = ELQItem[0]["g_jxl"];
+                //    //sItem["G_KXL"] = ELQItem[0]["g_kxl"];
+                //    //sItem["G_LZ"] = ELQItem[0]["g_lz"];
+                //    //sItem["G_MTJMD"] = ELQItem[0]["g_mtjmd"];
+                //    //sItem["G_WDD"] = ELQItem[0]["g_wdd"];
+                //    //sItem["OAC1"] = ELQItem[0]["oac1"];
+                //    //sItem["OAC2"] = ELQItem[0]["oac2"];
+                //    //sItem["OAC"] = ELQItem[0]["oac"];
+                //}
+                //else
+                //{
+                //    //sItem["G_BHD"] = "----";
+                //    //sItem["G_JXL"] = "----";
+                //    //sItem["G_KXL"] = "----";
+                //    //sItem["G_LZ"] = "----";
+                //    //sItem["G_MTJMD"] = "----";
+                //    //sItem["G_WDD"] = "----";
+                //    mSFwc = false;
+                //}
+                #endregion
                 if (mAllHg)
                 {
                     sItem["JCJG"] = "合格";
@@ -186,6 +250,15 @@ namespace Calculates
                 {
                     sItem["JCJG"] = "不合格";
                     mItem["JCJG"] = "不合格";
+                }
+
+                if (sign)
+                {
+                    jsbeizhu = "沥青混合料配合比详情见报告第2～5页。";
+                }
+                else
+                {
+                    jsbeizhu = "沥青混合料配合比详情见报告第2～4页。";
                 }
             }
             #region 添加最终报告
