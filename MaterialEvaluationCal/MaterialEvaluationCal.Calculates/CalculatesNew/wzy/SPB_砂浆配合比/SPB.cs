@@ -57,8 +57,8 @@ namespace Calculates
                 int xd, Gs;
                 bool sign;
 
-
-                if (sitem["JCXM"].Contains("7天强度"))
+                string jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+                if (sitem["JCXM"].Contains("7天强度") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
 
                     if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
@@ -86,7 +86,7 @@ namespace Calculates
                         sitem["KYQD" + xd + "_7"] = "----";
                     sitem["KYPJ_7"] = "----";
                 }
-                if (sitem["JCXM"].Contains("28天强度"))
+                if (sitem["JCXM"].Contains("28天强度") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
                     {
@@ -123,7 +123,7 @@ namespace Calculates
                     sitem["QDSSL"] = "----";
                     sitem["ZLSSL"] = "----";
                 }
-                if (sitem["JCXM"].Contains("拉伸粘结强度"))
+                if (sitem["JCXM"].Contains("拉伸粘结强度") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
 
                 }
@@ -131,7 +131,7 @@ namespace Calculates
                 {
                     sitem["NJQD"] = "----";
                 }
-                if (sitem["JCXM"].Contains("凝结时间"))
+                if (sitem["JCXM"].Contains("凝结时间") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     sitem["ZNSJ"] = (Round(((GetSafeDouble(sitem["T1ZN"]) + GetSafeDouble(sitem["T2ZN"])) / 2) / 5, 0) * 5).ToString();
                 }
@@ -141,13 +141,13 @@ namespace Calculates
                     sitem["T1ZN"] = "0";
                     sitem["T2ZN"] = "0";
                 }
-
-                //主表总判断赋值
-                if (mAllHg)
-                    MItem[0]["JCJG"] = "合格";
-                else
-                    MItem[0]["JCJG"] = "不合格";
             }
+
+            //主表总判断赋值
+            if (mAllHg)
+                MItem[0]["JCJG"] = "合格";
+            else
+                MItem[0]["JCJG"] = "不合格";
 
             /************************ 代码结束 *********************/
             #endregion

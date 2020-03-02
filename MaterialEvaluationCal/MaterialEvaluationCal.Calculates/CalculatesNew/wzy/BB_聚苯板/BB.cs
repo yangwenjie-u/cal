@@ -345,7 +345,8 @@ namespace Calculates
             var BCRDJ = dataExtra["BZ_BB_DJ"];
             var YZSKB = dataExtra["BZ_YZSKB"];
             var MItem = data["M_BB"];
-            var mrsDrxs = data["ZM_DRJL"];
+            var mrsDrxs = new List<IDictionary<string, string>>();
+            //var mrsDrxs = data["ZM_DRJL"];
             double zj1, zj2, mMj1, mMj2, mMj3, mMj4, mMj5, mKyqd1, mKyqd2, mKyqd3, mKyqd4, mKyqd5;
             int mbhggs = 0;
             bool mFlag_Bhg = false, mFlag_Hg = false, mSFwc = true;
@@ -400,7 +401,7 @@ namespace Calculates
                     mFlag_Hg = false;
                     mFlag_Bhg = false;
                     mbhggs = 0;
-                    if (jcxm.Contains("、导热系数(10℃)、"))
+                    if (jcxm.Contains("、导热系数(10℃)、") || jcxm.Contains("、导热系数、"))
                     {
                         mcd = mItem["G_DRXS1"].Length;
                         mdwz = mItem["G_DRXS1"].IndexOf(".") + 1;
@@ -432,7 +433,7 @@ namespace Calculates
                         mItem["HG_DRXS1"] = "----";
                         mItem["G_DRXS1"] = "----";
                     }
-                    if (jcxm.Contains("、导热系数(25℃)、"))
+                    if (jcxm.Contains("、导热系数(25℃)、") || jcxm.Contains("、导热系数、"))
                     {
                         sItem["DRXS2"] = sItem["DRXS"];
                         mcd = mItem["G_DRXS2"].Length;
@@ -717,7 +718,7 @@ namespace Calculates
                     continue;
                 }
 
-                if (jcxm.Contains("、导热系数(10℃)、"))
+                if (jcxm.Contains("、导热系数(10℃)、") || jcxm.Contains("、导热系数、"))
                 {
                     string drxs1 = calc_PB(mItem["G_DRXS1"], sItem["DRXS1"], true);
                     if (drxs1 == "符合")
@@ -739,7 +740,7 @@ namespace Calculates
                     mItem["G_DRXS1"] = "----";
                 }
 
-                if (jcxm.Contains("、导热系数(25℃)、"))
+                if (jcxm.Contains("、导热系数(25℃)、") || jcxm.Contains("、导热系数、"))
                 {
                     string drxs1 = calc_PB(mItem["G_DRXS2"], sItem["DRXS2"], true);
                     if (drxs1 == "符合")
@@ -763,65 +764,65 @@ namespace Calculates
 
                 if (jcxm.Contains("、尺寸稳定性、"))
                 {
-                    if (double.Parse(sItem["CCWDXCQ1_1"]) != 0)
+                    if (GetSafeDouble(sItem["CCWDXCQ1_1"]) != 0)
                     {
-                        sItem["CCWDXCQ1"] = Round((double.Parse(sItem["CCWDXCQ1_1"]) + double.Parse(sItem["CCWDXCQ1_2"]) + double.Parse(sItem["CCWDXCQ1_3"])) / 3, 1).ToString();
-                        sItem["CCWDXCQ2"] = Round((double.Parse(sItem["CCWDXCQ2_1"]) + double.Parse(sItem["CCWDXCQ2_2"]) + double.Parse(sItem["CCWDXCQ2_3"])) / 3, 1).ToString();
-                        sItem["CCWDXCQ3"] = Round((double.Parse(sItem["CCWDXCQ3_1"]) + double.Parse(sItem["CCWDXCQ3_2"]) + double.Parse(sItem["CCWDXCQ3_3"])) / 3, 1).ToString();
-                        sItem["CCWDXCH1"] = Round((double.Parse(sItem["CCWDXCH1_1"]) + double.Parse(sItem["CCWDXCH1_2"]) + double.Parse(sItem["CCWDXCH1_3"])) / 3, 1).ToString();
-                        sItem["CCWDXCH2"] = Round((double.Parse(sItem["CCWDXCH2_1"]) + double.Parse(sItem["CCWDXCH2_2"]) + double.Parse(sItem["CCWDXCH2_3"])) / 3, 1).ToString();
-                        sItem["CCWDXCH3"] = Round((double.Parse(sItem["CCWDXCH3_1"]) + double.Parse(sItem["CCWDXCH3_2"]) + double.Parse(sItem["CCWDXCH3_3"])) / 3, 1).ToString();
+                        sItem["CCWDXCQ1"] = Round((GetSafeDouble(sItem["CCWDXCQ1_1"]) + GetSafeDouble(sItem["CCWDXCQ1_2"]) + GetSafeDouble(sItem["CCWDXCQ1_3"])) / 3, 1).ToString();
+                        sItem["CCWDXCQ2"] = Round((GetSafeDouble(sItem["CCWDXCQ2_1"]) + GetSafeDouble(sItem["CCWDXCQ2_2"]) + GetSafeDouble(sItem["CCWDXCQ2_3"])) / 3, 1).ToString();
+                        sItem["CCWDXCQ3"] = Round((GetSafeDouble(sItem["CCWDXCQ3_1"]) + GetSafeDouble(sItem["CCWDXCQ3_2"]) + GetSafeDouble(sItem["CCWDXCQ3_3"])) / 3, 1).ToString();
+                        sItem["CCWDXCH1"] = Round((GetSafeDouble(sItem["CCWDXCH1_1"]) + GetSafeDouble(sItem["CCWDXCH1_2"]) + GetSafeDouble(sItem["CCWDXCH1_3"])) / 3, 1).ToString();
+                        sItem["CCWDXCH2"] = Round((GetSafeDouble(sItem["CCWDXCH2_1"]) + GetSafeDouble(sItem["CCWDXCH2_2"]) + GetSafeDouble(sItem["CCWDXCH2_3"])) / 3, 1).ToString();
+                        sItem["CCWDXCH3"] = Round((GetSafeDouble(sItem["CCWDXCH3_1"]) + GetSafeDouble(sItem["CCWDXCH3_2"]) + GetSafeDouble(sItem["CCWDXCH3_3"])) / 3, 1).ToString();
                     }
                     for (int i = 1; i <= 3; i++)
                     {
-                        sItem["CCWDXCQ" + i] = Round(double.Parse(sItem["CCWDXCQ" + i]), 1).ToString();
-                        sItem["CCWDXCH" + i] = Round(double.Parse(sItem["CCWDXCH" + i]), 1).ToString();
+                        sItem["CCWDXCQ" + i] = Round(GetSafeDouble(sItem["CCWDXCQ" + i]), 1).ToString();
+                        sItem["CCWDXCH" + i] = Round(GetSafeDouble(sItem["CCWDXCH" + i]), 1).ToString();
                     }
 
-                    if (double.Parse(sItem["CCWDXKQ1_1"]) != 0)
+                    if (GetSafeDouble(sItem["CCWDXKQ1_1"]) != 0)
                     {
-                        sItem["CCWDXKQ1"] = Round((double.Parse(sItem["CCWDXKQ1_1"]) + double.Parse(sItem["CCWDXKQ1_2"]) + double.Parse(sItem["CCWDXKQ1_3"])) / 3, 1).ToString();
-                        sItem["CCWDXKQ2"] = Round((double.Parse(sItem["CCWDXKQ2_1"]) + double.Parse(sItem["CCWDXKQ2_2"]) + double.Parse(sItem["CCWDXKQ2_3"])) / 3, 1).ToString();
-                        sItem["CCWDXKQ3"] = Round((double.Parse(sItem["CCWDXKQ3_1"]) + double.Parse(sItem["CCWDXKQ3_2"]) + double.Parse(sItem["CCWDXKQ3_3"])) / 3, 1).ToString();
-                        sItem["CCWDXKH1"] = Round((double.Parse(sItem["CCWDXKH1_1"]) + double.Parse(sItem["CCWDXKH1_2"]) + double.Parse(sItem["CCWDXKH1_3"])) / 3, 1).ToString();
-                        sItem["CCWDXKH2"] = Round((double.Parse(sItem["CCWDXCH2_1"]) + double.Parse(sItem["CCWDXKH2_2"]) + double.Parse(sItem["CCWDXKH2_3"])) / 3, 1).ToString();
-                        sItem["CCWDXKH3"] = Round((double.Parse(sItem["CCWDXKH3_1"]) + double.Parse(sItem["CCWDXKH3_2"]) + double.Parse(sItem["CCWDXKH3_3"])) / 3, 1).ToString();
+                        sItem["CCWDXKQ1"] = Round((GetSafeDouble(sItem["CCWDXKQ1_1"]) + GetSafeDouble(sItem["CCWDXKQ1_2"]) + GetSafeDouble(sItem["CCWDXKQ1_3"])) / 3, 1).ToString();
+                        sItem["CCWDXKQ2"] = Round((GetSafeDouble(sItem["CCWDXKQ2_1"]) + GetSafeDouble(sItem["CCWDXKQ2_2"]) + GetSafeDouble(sItem["CCWDXKQ2_3"])) / 3, 1).ToString();
+                        sItem["CCWDXKQ3"] = Round((GetSafeDouble(sItem["CCWDXKQ3_1"]) + GetSafeDouble(sItem["CCWDXKQ3_2"]) + GetSafeDouble(sItem["CCWDXKQ3_3"])) / 3, 1).ToString();
+                        sItem["CCWDXKH1"] = Round((GetSafeDouble(sItem["CCWDXKH1_1"]) + GetSafeDouble(sItem["CCWDXKH1_2"]) + GetSafeDouble(sItem["CCWDXKH1_3"])) / 3, 1).ToString();
+                        sItem["CCWDXKH2"] = Round((GetSafeDouble(sItem["CCWDXCH2_1"]) + GetSafeDouble(sItem["CCWDXKH2_2"]) + GetSafeDouble(sItem["CCWDXKH2_3"])) / 3, 1).ToString();
+                        sItem["CCWDXKH3"] = Round((GetSafeDouble(sItem["CCWDXKH3_1"]) + GetSafeDouble(sItem["CCWDXKH3_2"]) + GetSafeDouble(sItem["CCWDXKH3_3"])) / 3, 1).ToString();
                     }
                     for (int i = 1; i <= 3; i++)
                     {
-                        sItem["CCWDXKQ" + i] = Round(double.Parse(sItem["CCWDXKQ" + i]), 1).ToString();
-                        sItem["CCWDXKH" + i] = Round(double.Parse(sItem["CCWDXKH" + i]), 1).ToString();
+                        sItem["CCWDXKQ" + i] = Round(GetSafeDouble(sItem["CCWDXKQ" + i]), 1).ToString();
+                        sItem["CCWDXKH" + i] = Round(GetSafeDouble(sItem["CCWDXKH" + i]), 1).ToString();
                     }
 
-                    if (double.Parse(sItem["CCWDXHQ1_1"]) != 0)
+                    if (GetSafeDouble(sItem["CCWDXHQ1_1"]) != 0)
                     {
-                        sItem["CCWDXHQ1"] = Round((double.Parse(sItem["CCWDXHQ1_1"]) + double.Parse(sItem["CCWDXHQ1_2"]) + double.Parse(sItem["CCWDXHQ1_3"]) + double.Parse(sItem["CCWDXHQ1_4"]) + double.Parse(sItem["CCWDXHQ1_5"])) / 5, 1).ToString();
-                        sItem["CCWDXHQ2"] = Round((double.Parse(sItem["CCWDXHQ2_1"]) + double.Parse(sItem["CCWDXHQ2_2"]) + double.Parse(sItem["CCWDXHQ2_3"]) + double.Parse(sItem["CCWDXHQ2_4"]) + double.Parse(sItem["CCWDXHQ2_5"])) / 5, 1).ToString();
-                        sItem["CCWDXHQ3"] = Round((double.Parse(sItem["CCWDXHQ3_1"]) + double.Parse(sItem["CCWDXHQ3_2"]) + double.Parse(sItem["CCWDXHQ3_3"]) + double.Parse(sItem["CCWDXHQ3_4"]) + double.Parse(sItem["CCWDXHQ3_5"])) / 5, 1).ToString();
-                        sItem["CCWDXHH1"] = Round((double.Parse(sItem["CCWDXHH1_1"]) + double.Parse(sItem["CCWDXHH1_2"]) + double.Parse(sItem["CCWDXHH1_3"]) + double.Parse(sItem["CCWDXHH1_4"]) + double.Parse(sItem["CCWDXHH1_5"])) / 5, 1).ToString();
-                        sItem["CCWDXHH2"] = Round((double.Parse(sItem["CCWDXHH2_1"]) + double.Parse(sItem["CCWDXHH2_2"]) + double.Parse(sItem["CCWDXHH2_3"]) + double.Parse(sItem["CCWDXHH2_4"]) + double.Parse(sItem["CCWDXHH2_5"])) / 5, 1).ToString();
-                        sItem["CCWDXHH3"] = Round((double.Parse(sItem["CCWDXHH3_1"]) + double.Parse(sItem["CCWDXHH3_2"]) + double.Parse(sItem["CCWDXHH3_3"]) + double.Parse(sItem["CCWDXHH3_4"]) + double.Parse(sItem["CCWDXHH3_5"])) / 5, 1).ToString();
+                        sItem["CCWDXHQ1"] = Round((GetSafeDouble(sItem["CCWDXHQ1_1"]) + GetSafeDouble(sItem["CCWDXHQ1_2"]) + GetSafeDouble(sItem["CCWDXHQ1_3"]) + GetSafeDouble(sItem["CCWDXHQ1_4"]) + GetSafeDouble(sItem["CCWDXHQ1_5"])) / 5, 1).ToString();
+                        sItem["CCWDXHQ2"] = Round((GetSafeDouble(sItem["CCWDXHQ2_1"]) + GetSafeDouble(sItem["CCWDXHQ2_2"]) + GetSafeDouble(sItem["CCWDXHQ2_3"]) + GetSafeDouble(sItem["CCWDXHQ2_4"]) + GetSafeDouble(sItem["CCWDXHQ2_5"])) / 5, 1).ToString();
+                        sItem["CCWDXHQ3"] = Round((GetSafeDouble(sItem["CCWDXHQ3_1"]) + GetSafeDouble(sItem["CCWDXHQ3_2"]) + GetSafeDouble(sItem["CCWDXHQ3_3"]) + GetSafeDouble(sItem["CCWDXHQ3_4"]) + GetSafeDouble(sItem["CCWDXHQ3_5"])) / 5, 1).ToString();
+                        sItem["CCWDXHH1"] = Round((GetSafeDouble(sItem["CCWDXHH1_1"]) + GetSafeDouble(sItem["CCWDXHH1_2"]) + GetSafeDouble(sItem["CCWDXHH1_3"]) + GetSafeDouble(sItem["CCWDXHH1_4"]) + GetSafeDouble(sItem["CCWDXHH1_5"])) / 5, 1).ToString();
+                        sItem["CCWDXHH2"] = Round((GetSafeDouble(sItem["CCWDXHH2_1"]) + GetSafeDouble(sItem["CCWDXHH2_2"]) + GetSafeDouble(sItem["CCWDXHH2_3"]) + GetSafeDouble(sItem["CCWDXHH2_4"]) + GetSafeDouble(sItem["CCWDXHH2_5"])) / 5, 1).ToString();
+                        sItem["CCWDXHH3"] = Round((GetSafeDouble(sItem["CCWDXHH3_1"]) + GetSafeDouble(sItem["CCWDXHH3_2"]) + GetSafeDouble(sItem["CCWDXHH3_3"]) + GetSafeDouble(sItem["CCWDXHH3_4"]) + GetSafeDouble(sItem["CCWDXHH3_5"])) / 5, 1).ToString();
                     }
                     for (int i = 1; i <= 3; i++)
                     {
-                        sItem["CCWDXHQ" + i] = Round(double.Parse(sItem["CCWDXHQ" + i]), 1).ToString();
-                        sItem["CCWDXHH" + i] = Round(double.Parse(sItem["CCWDXHH" + i]), 1).ToString();
+                        sItem["CCWDXHQ" + i] = Round(GetSafeDouble(sItem["CCWDXHQ" + i]), 1).ToString();
+                        sItem["CCWDXHH" + i] = Round(GetSafeDouble(sItem["CCWDXHH" + i]), 1).ToString();
                     }
 
                     double mcbhl1, mcbhl2, mcbhl3;
-                    mcbhl1 = Round((double.Parse(sItem["CCWDXCQ1"]) - double.Parse(sItem["CCWDXCH1"])) / double.Parse(sItem["CCWDXCQ1"]) * 100, 1);
-                    mcbhl2 = Round((double.Parse(sItem["CCWDXCQ2"]) - double.Parse(sItem["CCWDXCH2"])) / double.Parse(sItem["CCWDXCQ2"]) * 100, 1);
-                    mcbhl3 = Round((double.Parse(sItem["CCWDXCQ3"]) - double.Parse(sItem["CCWDXCH3"])) / double.Parse(sItem["CCWDXCQ3"]) * 100, 1);
+                    mcbhl1 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXCQ1"]) - GetSafeDouble(sItem["CCWDXCH1"])) / GetSafeDouble(sItem["CCWDXCQ1"]) * 100, 1);
+                    mcbhl2 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXCQ2"]) - GetSafeDouble(sItem["CCWDXCH2"])) / GetSafeDouble(sItem["CCWDXCQ2"]) * 100, 1);
+                    mcbhl3 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXCQ3"]) - GetSafeDouble(sItem["CCWDXCH3"])) / GetSafeDouble(sItem["CCWDXCQ3"]) * 100, 1);
                     sItem["CCWDXC"] = Round((mcbhl1 + mcbhl2 + mcbhl3) / 3, 1).ToString();
 
-                    mcbhl1 = Round((double.Parse(sItem["CCWDXKQ1"]) - double.Parse(sItem["CCWDXKH1"])) / double.Parse(sItem["CCWDXKQ1"]) * 100, 1);
-                    mcbhl2 = Round((double.Parse(sItem["CCWDXKQ2"]) - double.Parse(sItem["CCWDXKH2"])) / double.Parse(sItem["CCWDXKQ2"]) * 100, 1);
-                    mcbhl3 = Round((double.Parse(sItem["CCWDXKQ3"]) - double.Parse(sItem["CCWDXKH3"])) / double.Parse(sItem["CCWDXKQ3"]) * 100, 1);
+                    mcbhl1 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXKQ1"]) - GetSafeDouble(sItem["CCWDXKH1"])) / GetSafeDouble(sItem["CCWDXKQ1"]) * 100, 1);
+                    mcbhl2 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXKQ2"]) - GetSafeDouble(sItem["CCWDXKH2"])) / GetSafeDouble(sItem["CCWDXKQ2"]) * 100, 1);
+                    mcbhl3 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXKQ3"]) - GetSafeDouble(sItem["CCWDXKH3"])) / GetSafeDouble(sItem["CCWDXKQ3"]) * 100, 1);
                     sItem["CCWDXK"] = Round((mcbhl1 + mcbhl2 + mcbhl3) / 3, 1).ToString();
 
-                    mcbhl1 = Round((double.Parse(sItem["CCWDXHQ1"]) - double.Parse(sItem["CCWDXHH1"])) / double.Parse(sItem["CCWDXHQ1"]) * 100, 1);
-                    mcbhl2 = Round((double.Parse(sItem["CCWDXHQ2"]) - double.Parse(sItem["CCWDXHH2"])) / double.Parse(sItem["CCWDXHQ2"]) * 100, 1);
-                    mcbhl3 = Round((double.Parse(sItem["CCWDXHQ3"]) - double.Parse(sItem["CCWDXHH3"])) / double.Parse(sItem["CCWDXHQ3"]) * 100, 1);
+                    mcbhl1 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXHQ1"]) - GetSafeDouble(sItem["CCWDXHH1"])) / GetSafeDouble(sItem["CCWDXHQ1"]) * 100, 1);
+                    mcbhl2 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXHQ2"]) - GetSafeDouble(sItem["CCWDXHH2"])) / GetSafeDouble(sItem["CCWDXHQ2"]) * 100, 1);
+                    mcbhl3 = Round(Math.Abs(GetSafeDouble(sItem["CCWDXHQ3"]) - GetSafeDouble(sItem["CCWDXHH3"])) / GetSafeDouble(sItem["CCWDXHQ3"]) * 100, 1);
                     sItem["CCWDXH"] = Round((mcbhl1 + mcbhl2 + mcbhl3) / 3, 1).ToString();
 
                     if ("符合" == calc_PB(mItem["G_CCWDX"], sItem["CCWDXC"], true))
@@ -874,81 +875,82 @@ namespace Calculates
                 if (jcxm.Contains("、表观密度、"))
                 {
                     double mcd1, mkd1, mhd1, bgmdv1;
-                    mcd1 = Round((double.Parse(sItem["BGMDC1_1"]) + double.Parse(sItem["BGMDC1_2"]) + double.Parse(sItem["BGMDC1_3"])) / 3, 1);
-                    mkd1 = Round((double.Parse(sItem["BGMDK1_1"]) + double.Parse(sItem["BGMDK1_2"]) + double.Parse(sItem["BGMDK1_3"])) / 3, 1);
-                    mhd1 = Round((double.Parse(sItem["BGMDH1_1"]) + double.Parse(sItem["BGMDH1_2"]) + double.Parse(sItem["BGMDH1_3"])) / 3, 1);
-                    //if (mcd1 != 0 && 0 >= double.Parse(sItem["BGMDC1"]))
-                    if (mcd1 != 0 && !(double.Parse(sItem["BGMDC1"]) > 0))
+                    mcd1 = Round((GetSafeDouble(sItem["BGMDC1_1"]) + GetSafeDouble(sItem["BGMDC1_2"]) + GetSafeDouble(sItem["BGMDC1_3"])) / 3, 1);
+                    mkd1 = Round((GetSafeDouble(sItem["BGMDK1_1"]) + GetSafeDouble(sItem["BGMDK1_2"]) + GetSafeDouble(sItem["BGMDK1_3"])) / 3, 1);
+                    mhd1 = Round((GetSafeDouble(sItem["BGMDH1_1"]) + GetSafeDouble(sItem["BGMDH1_2"]) + GetSafeDouble(sItem["BGMDH1_3"])) / 3, 1);
+                    //if (mcd1 != 0 && 0 >= GetSafeDouble(sItem["BGMDC1"]))
+                    if (mcd1 != 0 && !(GetSafeDouble(sItem["BGMDC1"]) > 0))
                     {
                         sItem["BGMDC1"] = Round(mcd1, 1).ToString();
                         sItem["BGMDK1"] = Round(mkd1, 1).ToString();
                         sItem["BGMDH1"] = Round(mhd1, 1).ToString();
                     }
                     double mcd2, mkd2, mhd2, bgmdv2;
-                    bgmdv1 = double.Parse(sItem["BGMDC1"]) * double.Parse(sItem["BGMDK1"]) * double.Parse(sItem["BGMDH1"]);
-                    mcd2 = Round((double.Parse(sItem["BGMDC2_1"]) + double.Parse(sItem["BGMDC2_2"]) + double.Parse(sItem["BGMDC2_3"])) / 3, 1);
-                    mkd2 = Round((double.Parse(sItem["BGMDK2_1"]) + double.Parse(sItem["BGMDK2_2"]) + double.Parse(sItem["BGMDK2_3"])) / 3, 1);
-                    mhd2 = Round((double.Parse(sItem["BGMDH2_1"]) + double.Parse(sItem["BGMDH2_2"]) + double.Parse(sItem["BGMDH2_3"])) / 3, 1);
-                    //if (mcd2 != 0 && 0 >= double.Parse(sItem["BGMDC2"]))
-                    if (mcd2 != 0 && !(double.Parse(sItem["BGMDC2"]) > 0))
+                    bgmdv1 = GetSafeDouble(sItem["BGMDC1"]) * GetSafeDouble(sItem["BGMDK1"]) * GetSafeDouble(sItem["BGMDH1"]);
+                    mcd2 = Round((GetSafeDouble(sItem["BGMDC2_1"]) + GetSafeDouble(sItem["BGMDC2_2"]) + GetSafeDouble(sItem["BGMDC2_3"])) / 3, 1);
+                    mkd2 = Round((GetSafeDouble(sItem["BGMDK2_1"]) + GetSafeDouble(sItem["BGMDK2_2"]) + GetSafeDouble(sItem["BGMDK2_3"])) / 3, 1);
+                    mhd2 = Round((GetSafeDouble(sItem["BGMDH2_1"]) + GetSafeDouble(sItem["BGMDH2_2"]) + GetSafeDouble(sItem["BGMDH2_3"])) / 3, 1);
+                    if (mcd2 == 0 && GetSafeDouble(sItem["BGMDC2"]) > 0)
+                    { }
+                    else
                     {
                         sItem["BGMDC2"] = Round(mcd2, 1).ToString();
                         sItem["BGMDK2"] = Round(mkd2, 1).ToString();
                         sItem["BGMDH2"] = Round(mhd2, 1).ToString();
                     }
-                    bgmdv2 = double.Parse(sItem["BGMDC2"]) * double.Parse(sItem["BGMDK2"]) * double.Parse(sItem["BGMDH2"]);
+                    bgmdv2 = GetSafeDouble(sItem["BGMDC2"]) * GetSafeDouble(sItem["BGMDK2"]) * GetSafeDouble(sItem["BGMDH2"]);
 
                     double mcd3, mkd3, mhd3, bgmdv3;
-                    mcd3 = Round((double.Parse(sItem["BGMDC3_1"]) + double.Parse(sItem["BGMDC3_2"]) + double.Parse(sItem["BGMDC3_3"])) / 3, 1);
-                    mkd3 = Round((double.Parse(sItem["BGMDK3_1"]) + double.Parse(sItem["BGMDK3_2"]) + double.Parse(sItem["BGMDK3_3"])) / 3, 1);
-                    mhd3 = Round((double.Parse(sItem["BGMDH3_1"]) + double.Parse(sItem["BGMDH3_2"]) + double.Parse(sItem["BGMDH3_3"])) / 3, 1);
-                    if (mcd2 != 0 && !(double.Parse(sItem["BGMDC3"]) > 0))
+                    mcd3 = Round((GetSafeDouble(sItem["BGMDC3_1"]) + GetSafeDouble(sItem["BGMDC3_2"]) + GetSafeDouble(sItem["BGMDC3_3"])) / 3, 1);
+                    mkd3 = Round((GetSafeDouble(sItem["BGMDK3_1"]) + GetSafeDouble(sItem["BGMDK3_2"]) + GetSafeDouble(sItem["BGMDK3_3"])) / 3, 1);
+                    mhd3 = Round((GetSafeDouble(sItem["BGMDH3_1"]) + GetSafeDouble(sItem["BGMDH3_2"]) + GetSafeDouble(sItem["BGMDH3_3"])) / 3, 1);
+                    if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC3"]) > 0))
                     {
                         sItem["BGMDC3"] = Round(mcd3, 1).ToString();
                         sItem["BGMDK3"] = Round(mkd3, 1).ToString();
                         sItem["BGMDH3"] = Round(mhd3, 1).ToString();
                     }
-                    bgmdv3 = double.Parse(sItem["BGMDC3"]) * double.Parse(sItem["BGMDK3"]) * double.Parse(sItem["BGMDH3"]);
+                    bgmdv3 = GetSafeDouble(sItem["BGMDC3"]) * GetSafeDouble(sItem["BGMDK3"]) * GetSafeDouble(sItem["BGMDH3"]);
 
                     double mcd4, mkd4, mhd4, bgmdv4;
-                    mcd4 = Round((double.Parse(sItem["BGMDC4_1"]) + double.Parse(sItem["BGMDC4_2"]) + double.Parse(sItem["BGMDC4_3"])) / 3, 1);
-                    mkd4 = Round((double.Parse(sItem["BGMDK4_1"]) + double.Parse(sItem["BGMDK4_2"]) + double.Parse(sItem["BGMDK4_3"])) / 3, 1);
-                    mhd4 = Round((double.Parse(sItem["BGMDH4_1"]) + double.Parse(sItem["BGMDH4_2"]) + double.Parse(sItem["BGMDH4_3"])) / 3, 1);
-                    if (mcd2 != 0 && !(double.Parse(sItem["BGMDC4"]) > 0))
+                    mcd4 = Round((GetSafeDouble(sItem["BGMDC4_1"]) + GetSafeDouble(sItem["BGMDC4_2"]) + GetSafeDouble(sItem["BGMDC4_3"])) / 3, 1);
+                    mkd4 = Round((GetSafeDouble(sItem["BGMDK4_1"]) + GetSafeDouble(sItem["BGMDK4_2"]) + GetSafeDouble(sItem["BGMDK4_3"])) / 3, 1);
+                    mhd4 = Round((GetSafeDouble(sItem["BGMDH4_1"]) + GetSafeDouble(sItem["BGMDH4_2"]) + GetSafeDouble(sItem["BGMDH4_3"])) / 3, 1);
+                    if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC4"]) > 0))
                     {
                         sItem["BGMDC4"] = Round(mcd4, 1).ToString();
                         sItem["BGMDK4"] = Round(mkd4, 1).ToString();
                         sItem["BGMDH4"] = Round(mhd4, 1).ToString();
                     }
-                    bgmdv4 = double.Parse(sItem["BGMDC4"]) * double.Parse(sItem["BGMDK4"]) * double.Parse(sItem["BGMDH4"]);
+                    bgmdv4 = GetSafeDouble(sItem["BGMDC4"]) * GetSafeDouble(sItem["BGMDK4"]) * GetSafeDouble(sItem["BGMDH4"]);
 
                     double mcd5, mkd5, mhd5, bgmdv5;
-                    mcd5 = Round((double.Parse(sItem["BGMDC5_1"]) + double.Parse(sItem["BGMDC5_2"]) + double.Parse(sItem["BGMDC5_3"])) / 3, 1);
-                    mkd5 = Round((double.Parse(sItem["BGMDK5_1"]) + double.Parse(sItem["BGMDK5_2"]) + double.Parse(sItem["BGMDK5_3"])) / 3, 1);
-                    mhd5 = Round((double.Parse(sItem["BGMDH5_1"]) + double.Parse(sItem["BGMDH5_2"]) + double.Parse(sItem["BGMDH5_3"])) / 3, 1);
-                    if (mcd2 != 0 && !(double.Parse(sItem["BGMDC5"]) > 0))
+                    mcd5 = Round((GetSafeDouble(sItem["BGMDC5_1"]) + GetSafeDouble(sItem["BGMDC5_2"]) + GetSafeDouble(sItem["BGMDC5_3"])) / 3, 1);
+                    mkd5 = Round((GetSafeDouble(sItem["BGMDK5_1"]) + GetSafeDouble(sItem["BGMDK5_2"]) + GetSafeDouble(sItem["BGMDK5_3"])) / 3, 1);
+                    mhd5 = Round((GetSafeDouble(sItem["BGMDH5_1"]) + GetSafeDouble(sItem["BGMDH5_2"]) + GetSafeDouble(sItem["BGMDH5_3"])) / 3, 1);
+                    if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC5"]) > 0))
                     {
                         sItem["BGMDC5"] = Round(mcd5, 1).ToString();
                         sItem["BGMDK5"] = Round(mkd5, 1).ToString();
                         sItem["BGMDH5"] = Round(mhd5, 1).ToString();
                     }
-                    bgmdv5 = double.Parse(sItem["BGMDC5"]) * double.Parse(sItem["BGMDK5"]) * double.Parse(sItem["BGMDH5"]);
+                    bgmdv5 = GetSafeDouble(sItem["BGMDC5"]) * GetSafeDouble(sItem["BGMDK5"]) * GetSafeDouble(sItem["BGMDH5"]);
 
                     if (bgmdv1 * bgmdv2 != 0 && bgmdv3 * bgmdv4 * bgmdv5 != 0)
                     {
-                        sItem["BGMD1"] = Round(double.Parse(sItem["BGMDM1"]) / bgmdv1 * 1000000, 4).ToString();
-                        sItem["BGMD2"] = Round(double.Parse(sItem["BGMDM2"]) / bgmdv2 * 1000000, 4).ToString();
-                        sItem["BGMD3"] = Round(double.Parse(sItem["BGMDM3"]) / bgmdv3 * 1000000, 4).ToString();
-                        sItem["BGMD4"] = Round(double.Parse(sItem["BGMDM4"]) / bgmdv4 * 1000000, 4).ToString();
-                        sItem["BGMD5"] = Round(double.Parse(sItem["BGMDM5"]) / bgmdv5 * 1000000, 4).ToString();
+                        sItem["BGMD1"] = Round(GetSafeDouble(sItem["BGMDM1"]) / bgmdv1 * 1000000, 4).ToString();
+                        sItem["BGMD2"] = Round(GetSafeDouble(sItem["BGMDM2"]) / bgmdv2 * 1000000, 4).ToString();
+                        sItem["BGMD3"] = Round(GetSafeDouble(sItem["BGMDM3"]) / bgmdv3 * 1000000, 4).ToString();
+                        sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMDM4"]) / bgmdv4 * 1000000, 4).ToString();
+                        sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMDM5"]) / bgmdv5 * 1000000, 4).ToString();
                     }
-                    if (23 == double.Parse(sItem["BGMDWD"]))
+                    if (23 == GetSafeDouble(sItem["BGMDWD"]))
                     {
                         if (!string.IsNullOrEmpty(sItem["BGMD1"]))
                         {
-                            if (15 > double.Parse(sItem["BGMD1"]))
+                            if (15 > GetSafeDouble(sItem["BGMD1"]))
                             {
-                                sItem["BGMD1"] = Round(double.Parse(sItem["BGMD1"]) + 1.22, 4).ToString();
+                                sItem["BGMD1"] = Round(GetSafeDouble(sItem["BGMD1"]) + 1.22, 4).ToString();
                             }
                         }
 
@@ -957,74 +959,74 @@ namespace Calculates
                     {
                         if (!string.IsNullOrEmpty(sItem["BGMD1"]))
                         {
-                            if (15 > double.Parse(sItem["BGMD1"]))
+                            if (15 > GetSafeDouble(sItem["BGMD1"]))
                             {
-                                sItem["BGMD1"] = Round(double.Parse(sItem["BGMD1"]) + 1.1955, 4).ToString();
+                                sItem["BGMD1"] = Round(GetSafeDouble(sItem["BGMD1"]) + 1.1955, 4).ToString();
                             }
                         }
                     }
 
-                    if (23 == double.Parse(sItem["BGMDWD"]))
+                    if (23 == GetSafeDouble(sItem["BGMDWD"]))
                     {
-                        if (15 > double.Parse(sItem["BGMD2"]) && !string.IsNullOrEmpty(sItem["BGMD2"]))
+                        if (15 > GetSafeDouble(sItem["BGMD2"]) && !string.IsNullOrEmpty(sItem["BGMD2"]))
                         {
-                            sItem["BGMD2"] = Round(double.Parse(sItem["BGMD2"]) + 1.22, 4).ToString();
+                            sItem["BGMD2"] = Round(GetSafeDouble(sItem["BGMD2"]) + 1.22, 4).ToString();
                         }
                     }
                     else
                     {
-                        if (15 > double.Parse(sItem["BGMD2"]) && !string.IsNullOrEmpty(sItem["BGMD2"]))
+                        if (15 > GetSafeDouble(sItem["BGMD2"]) && !string.IsNullOrEmpty(sItem["BGMD2"]))
                         {
-                            sItem["BGMD2"] = Round(double.Parse(sItem["BGMD2"]) + 1.1955, 4).ToString();
+                            sItem["BGMD2"] = Round(GetSafeDouble(sItem["BGMD2"]) + 1.1955, 4).ToString();
                         }
                     }
 
-                    if (23 == double.Parse(sItem["BGMDWD"]))
+                    if (23 == GetSafeDouble(sItem["BGMDWD"]))
                     {
-                        if (15 > double.Parse(sItem["BGMD3"]) && !string.IsNullOrEmpty(sItem["BGMD3"]))
+                        if (15 > GetSafeDouble(sItem["BGMD3"]) && !string.IsNullOrEmpty(sItem["BGMD3"]))
                         {
-                            sItem["BGMD3"] = Round(double.Parse(sItem["BGMD3"]) + 1.22, 4).ToString();
+                            sItem["BGMD3"] = Round(GetSafeDouble(sItem["BGMD3"]) + 1.22, 4).ToString();
                         }
                     }
                     else
                     {
-                        if (15 > double.Parse(sItem["BGMD3"]) && !string.IsNullOrEmpty(sItem["BGMD3"]))
+                        if (15 > GetSafeDouble(sItem["BGMD3"]) && !string.IsNullOrEmpty(sItem["BGMD3"]))
                         {
-                            sItem["BGMD3"] = Round(double.Parse(sItem["BGMD3"]) + 1.1955, 4).ToString();
+                            sItem["BGMD3"] = Round(GetSafeDouble(sItem["BGMD3"]) + 1.1955, 4).ToString();
                         }
                     }
 
-                    if (23 == double.Parse(sItem["BGMDWD"]))
+                    if (23 == GetSafeDouble(sItem["BGMDWD"]))
                     {
-                        if (15 > double.Parse(sItem["BGMD4"]) && !string.IsNullOrEmpty(sItem["BGMD4"]))
+                        if (15 > GetSafeDouble(sItem["BGMD4"]) && !string.IsNullOrEmpty(sItem["BGMD4"]))
                         {
-                            sItem["BGMD4"] = Round(double.Parse(sItem["BGMD4"]) + 1.22, 4).ToString();
+                            sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMD4"]) + 1.22, 4).ToString();
                         }
                     }
                     else
                     {
-                        if (15 > double.Parse(sItem["BGMD4"]) && !string.IsNullOrEmpty(sItem["BGMD4"]))
+                        if (15 > GetSafeDouble(sItem["BGMD4"]) && !string.IsNullOrEmpty(sItem["BGMD4"]))
                         {
-                            sItem["BGMD4"] = Round(double.Parse(sItem["BGMD4"]) + 1.1955, 4).ToString();
+                            sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMD4"]) + 1.1955, 4).ToString();
                         }
                     }
 
-                    if (23 == double.Parse(sItem["BGMDWD"]))
+                    if (23 == GetSafeDouble(sItem["BGMDWD"]))
                     {
-                        if (15 > double.Parse(sItem["BGMD5"]) && !string.IsNullOrEmpty(sItem["BGMD5"]))
+                        if (15 > GetSafeDouble(sItem["BGMD5"]) && !string.IsNullOrEmpty(sItem["BGMD5"]))
                         {
-                            sItem["BGMD5"] = Round(double.Parse(sItem["BGMD5"]) + 1.22, 4).ToString();
+                            sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMD5"]) + 1.22, 4).ToString();
                         }
                     }
                     else
                     {
-                        if (15 > double.Parse(sItem["BGMD5"]) && !string.IsNullOrEmpty(sItem["BGMD5"]))
+                        if (15 > GetSafeDouble(sItem["BGMD5"]) && !string.IsNullOrEmpty(sItem["BGMD5"]))
                         {
-                            sItem["BGMD5"] = Round(double.Parse(sItem["BGMD5"]) + 1.1955, 4).ToString();
+                            sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMD5"]) + 1.1955, 4).ToString();
                         }
                     }
 
-                    sItem["BGMD"] = Round((double.Parse(sItem["BGMD1"]) + double.Parse(sItem["BGMD2"]) + double.Parse(sItem["BGMD3"]) + double.Parse(sItem["BGMD4"]) + double.Parse(sItem["BGMD5"])) / 5, 1).ToString();
+                    sItem["BGMD"] = Round((GetSafeDouble(sItem["BGMD1"]) + GetSafeDouble(sItem["BGMD2"]) + GetSafeDouble(sItem["BGMD3"]) + GetSafeDouble(sItem["BGMD4"]) + GetSafeDouble(sItem["BGMD5"])) / 5, 1).ToString();
 
                     string bgmd = calc_PB(mItem["G_BGMD"], sItem["BGMD"], true);
                     if (bgmd == "符合")
@@ -1049,17 +1051,17 @@ namespace Calculates
                 if (jcxm.Contains("、抗拉强度、"))
                 {
                     double KLMJ1, KLMJ2, KLMJ3, KLMJ4, KLMJ5;
-                    KLMJ1 = double.Parse(sItem["KLC1"]) * double.Parse(sItem["KLK1"]);
-                    KLMJ2 = double.Parse(sItem["KLC2"]) * double.Parse(sItem["KLK2"]);
-                    KLMJ3 = double.Parse(sItem["KLC3"]) * double.Parse(sItem["KLK3"]);
-                    KLMJ4 = double.Parse(sItem["KLC4"]) * double.Parse(sItem["KLK4"]);
-                    KLMJ5 = double.Parse(sItem["KLC5"]) * double.Parse(sItem["KLK5"]);
-                    sItem["KLQD1"] = Round(double.Parse(sItem["KLYZ1"]) / KLMJ1, 2).ToString();
-                    sItem["KLQD2"] = Round(double.Parse(sItem["KLYZ2"]) / KLMJ2, 2).ToString();
-                    sItem["KLQD3"] = Round(double.Parse(sItem["KLYZ3"]) / KLMJ3, 2).ToString();
-                    sItem["KLQD4"] = Round(double.Parse(sItem["KLYZ4"]) / KLMJ4, 2).ToString();
-                    sItem["KLQD5"] = Round(double.Parse(sItem["KLYZ5"]) / KLMJ5, 2).ToString();
-                    sItem["KLQD"] = Round(double.Parse(sItem["KLQD1"]) + double.Parse(sItem["KLQD2"]) + double.Parse(sItem["KLQD3"]) + double.Parse(sItem["KLQD4"]) + double.Parse(sItem["KLQD5"]) / 5, 2).ToString();
+                    KLMJ1 = GetSafeDouble(sItem["KLC1"]) * GetSafeDouble(sItem["KLK1"]);
+                    KLMJ2 = GetSafeDouble(sItem["KLC2"]) * GetSafeDouble(sItem["KLK2"]);
+                    KLMJ3 = GetSafeDouble(sItem["KLC3"]) * GetSafeDouble(sItem["KLK3"]);
+                    KLMJ4 = GetSafeDouble(sItem["KLC4"]) * GetSafeDouble(sItem["KLK4"]);
+                    KLMJ5 = GetSafeDouble(sItem["KLC5"]) * GetSafeDouble(sItem["KLK5"]);
+                    sItem["KLQD1"] = Round(GetSafeDouble(sItem["KLYZ1"]) / KLMJ1, 2).ToString();
+                    sItem["KLQD2"] = Round(GetSafeDouble(sItem["KLYZ2"]) / KLMJ2, 2).ToString();
+                    sItem["KLQD3"] = Round(GetSafeDouble(sItem["KLYZ3"]) / KLMJ3, 2).ToString();
+                    sItem["KLQD4"] = Round(GetSafeDouble(sItem["KLYZ4"]) / KLMJ4, 2).ToString();
+                    sItem["KLQD5"] = Round(GetSafeDouble(sItem["KLYZ5"]) / KLMJ5, 2).ToString();
+                    sItem["KLQD"] = Round(GetSafeDouble(sItem["KLQD1"]) + GetSafeDouble(sItem["KLQD2"]) + GetSafeDouble(sItem["KLQD3"]) + GetSafeDouble(sItem["KLQD4"]) + GetSafeDouble(sItem["KLQD5"]) / 5, 2).ToString();
 
                     string klqd = calc_PB(mItem["G_KLQD"], sItem["KLQD"], true);
                     if (klqd == "符合")
@@ -1121,56 +1123,56 @@ namespace Calculates
                 if (jcxm.Contains("、压缩强度、"))
                 {
                     double mcd1, mkd1, mcd2, mkd2, mcd3, mkd3, mcd4, mkd4, mcd5, mkd5;
-                    mcd1 = Round((double.Parse(sItem["BGMDC1_1"]) + double.Parse(sItem["BGMDC1_2"]) + double.Parse(sItem["BGMDC1_3"])) / 3, 1);
-                    mkd1 = Round((double.Parse(sItem["BGMDK1_1"]) + double.Parse(sItem["BGMDK1_2"]) + double.Parse(sItem["BGMDK1_3"])) / 3, 1);
-                    mcd2 = Round((double.Parse(sItem["BGMDC2_1"]) + double.Parse(sItem["BGMDC2_2"]) + double.Parse(sItem["BGMDC2_3"])) / 3, 1);
-                    mkd2 = Round((double.Parse(sItem["BGMDK2_1"]) + double.Parse(sItem["BGMDK2_2"]) + double.Parse(sItem["BGMDK2_3"])) / 3, 1);
-                    mcd3 = Round((double.Parse(sItem["BGMDC3_1"]) + double.Parse(sItem["BGMDC3_2"]) + double.Parse(sItem["BGMDC3_3"])) / 3, 1);
-                    mkd3 = Round((double.Parse(sItem["BGMDK3_1"]) + double.Parse(sItem["BGMDK3_2"]) + double.Parse(sItem["BGMDK3_3"])) / 3, 1);
-                    mcd4 = Round((double.Parse(sItem["BGMDC4_1"]) + double.Parse(sItem["BGMDC4_2"]) + double.Parse(sItem["BGMDC4_3"])) / 3, 1);
-                    mkd4 = Round((double.Parse(sItem["BGMDK4_1"]) + double.Parse(sItem["BGMDK4_2"]) + double.Parse(sItem["BGMDK4_3"])) / 3, 1);
-                    mcd5 = Round((double.Parse(sItem["BGMDC5_1"]) + double.Parse(sItem["BGMDC5_2"]) + double.Parse(sItem["BGMDC5_3"])) / 3, 1);
-                    mkd5 = Round((double.Parse(sItem["BGMDK5_1"]) + double.Parse(sItem["BGMDK5_2"]) + double.Parse(sItem["BGMDK5_3"])) / 3, 1);
+                    mcd1 = Round((GetSafeDouble(sItem["BGMDC1_1"]) + GetSafeDouble(sItem["BGMDC1_2"]) + GetSafeDouble(sItem["BGMDC1_3"])) / 3, 1);
+                    mkd1 = Round((GetSafeDouble(sItem["BGMDK1_1"]) + GetSafeDouble(sItem["BGMDK1_2"]) + GetSafeDouble(sItem["BGMDK1_3"])) / 3, 1);
+                    mcd2 = Round((GetSafeDouble(sItem["BGMDC2_1"]) + GetSafeDouble(sItem["BGMDC2_2"]) + GetSafeDouble(sItem["BGMDC2_3"])) / 3, 1);
+                    mkd2 = Round((GetSafeDouble(sItem["BGMDK2_1"]) + GetSafeDouble(sItem["BGMDK2_2"]) + GetSafeDouble(sItem["BGMDK2_3"])) / 3, 1);
+                    mcd3 = Round((GetSafeDouble(sItem["BGMDC3_1"]) + GetSafeDouble(sItem["BGMDC3_2"]) + GetSafeDouble(sItem["BGMDC3_3"])) / 3, 1);
+                    mkd3 = Round((GetSafeDouble(sItem["BGMDK3_1"]) + GetSafeDouble(sItem["BGMDK3_2"]) + GetSafeDouble(sItem["BGMDK3_3"])) / 3, 1);
+                    mcd4 = Round((GetSafeDouble(sItem["BGMDC4_1"]) + GetSafeDouble(sItem["BGMDC4_2"]) + GetSafeDouble(sItem["BGMDC4_3"])) / 3, 1);
+                    mkd4 = Round((GetSafeDouble(sItem["BGMDK4_1"]) + GetSafeDouble(sItem["BGMDK4_2"]) + GetSafeDouble(sItem["BGMDK4_3"])) / 3, 1);
+                    mcd5 = Round((GetSafeDouble(sItem["BGMDC5_1"]) + GetSafeDouble(sItem["BGMDC5_2"]) + GetSafeDouble(sItem["BGMDC5_3"])) / 3, 1);
+                    mkd5 = Round((GetSafeDouble(sItem["BGMDK5_1"]) + GetSafeDouble(sItem["BGMDK5_2"]) + GetSafeDouble(sItem["BGMDK5_3"])) / 3, 1);
 
-                    if (mcd1 != 0 && !(double.Parse(sItem["BGMDC1"]) > 0))
+                    if (mcd1 != 0 && !(GetSafeDouble(sItem["BGMDC1"]) > 0))
                     {
                         sItem["BGMDC1"] = Round(mcd1, 1).ToString();
                         sItem["BGMDK1"] = Round(mkd1, 1).ToString();
                     }
-                    if (mcd2 != 0 && !(double.Parse(sItem["BGMDC2"]) > 0))
+                    if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC2"]) > 0))
                     {
                         sItem["BGMDC2"] = Round(mcd2, 1).ToString();
                         sItem["BGMDK2"] = Round(mkd2, 1).ToString();
                     }
-                    if (mcd3 != 0 && !(double.Parse(sItem["BGMDC3"]) > 0))
+                    if (mcd3 != 0 && !(GetSafeDouble(sItem["BGMDC3"]) > 0))
                     {
                         sItem["BGMDC3"] = Round(mcd3, 1).ToString();
                         sItem["BGMDK3"] = Round(mkd3, 1).ToString();
                     }
-                    if (mcd4 != 0 && !(double.Parse(sItem["BGMDC4"]) > 0))
+                    if (mcd4 != 0 && !(GetSafeDouble(sItem["BGMDC4"]) > 0))
                     {
                         sItem["BGMDC4"] = Round(mcd4, 1).ToString();
                         sItem["BGMDK4"] = Round(mkd4, 1).ToString();
                     }
-                    if (mcd5 != 0 && !(double.Parse(sItem["BGMDC5"]) > 0))
+                    if (mcd5 != 0 && !(GetSafeDouble(sItem["BGMDC5"]) > 0))
                     {
                         sItem["BGMDC5"] = Round(mcd5, 1).ToString();
                         sItem["BGMDK5"] = Round(mkd5, 1).ToString();
                     }
 
-                    mMj1 = double.Parse(sItem["BGMDC1"]) * double.Parse(sItem["BGMDK1"]);
-                    mMj2 = double.Parse(sItem["BGMDC2"]) * double.Parse(sItem["BGMDK2"]);
-                    mMj3 = double.Parse(sItem["BGMDC3"]) * double.Parse(sItem["BGMDK3"]);
-                    mMj4 = double.Parse(sItem["BGMDC4"]) * double.Parse(sItem["BGMDK4"]);
-                    mMj5 = double.Parse(sItem["BGMDC5"]) * double.Parse(sItem["BGMDK5"]);
+                    mMj1 = GetSafeDouble(sItem["BGMDC1"]) * GetSafeDouble(sItem["BGMDK1"]);
+                    mMj2 = GetSafeDouble(sItem["BGMDC2"]) * GetSafeDouble(sItem["BGMDK2"]);
+                    mMj3 = GetSafeDouble(sItem["BGMDC3"]) * GetSafeDouble(sItem["BGMDK3"]);
+                    mMj4 = GetSafeDouble(sItem["BGMDC4"]) * GetSafeDouble(sItem["BGMDK4"]);
+                    mMj5 = GetSafeDouble(sItem["BGMDC5"]) * GetSafeDouble(sItem["BGMDK5"]);
 
                     if (mMj1 != 0 & mMj2 != 0 & mMj3 != 0 & mMj4 != 0 & mMj5 != 0)
                     {
-                        mKyqd1 = Round(1000 * double.Parse(sItem["KYHZ1"]) / (mMj1), 2);
-                        mKyqd2 = Round(1000 * double.Parse(sItem["KYHZ2"]) / (mMj2), 2);
-                        mKyqd3 = Round(1000 * double.Parse(sItem["KYHZ3"]) / (mMj3), 2);
-                        mKyqd4 = Round(1000 * double.Parse(sItem["KYHZ4"]) / (mMj4), 2);
-                        mKyqd5 = Round(1000 * double.Parse(sItem["KYHZ5"]) / (mMj5), 2);
+                        mKyqd1 = Round(1000 * GetSafeDouble(sItem["KYHZ1"]) / (mMj1), 2);
+                        mKyqd2 = Round(1000 * GetSafeDouble(sItem["KYHZ2"]) / (mMj2), 2);
+                        mKyqd3 = Round(1000 * GetSafeDouble(sItem["KYHZ3"]) / (mMj3), 2);
+                        mKyqd4 = Round(1000 * GetSafeDouble(sItem["KYHZ4"]) / (mMj4), 2);
+                        mKyqd5 = Round(1000 * GetSafeDouble(sItem["KYHZ5"]) / (mMj5), 2);
                     }
                     else
                     {
@@ -1186,7 +1188,7 @@ namespace Calculates
                     List<double> mtmpList = new List<double>();
                     foreach (string str in mtmpArray)
                     {
-                        mtmpList.Add(double.Parse(str));
+                        mtmpList.Add(GetSafeDouble(str));
                     }
                     mtmpList.Sort();
                     double mMaxKyqd = mtmpList[4];
@@ -1265,25 +1267,25 @@ namespace Calculates
                     {
                         continue;
                     }
-                    double mkz = double.Parse(mrsyzskb["K"]);
+                    double mkz = GetSafeDouble(mrsyzskb["K"]);
                     if (sItem["RSNTFY1"] == "0")
                     {
                         mkz = -mkz;
                     }
                     sItem["RSYZSKZ"] = Round(mkz, 2).ToString();
-                    double moi = Round(double.Parse(sItem["RSNTYND5"]) + mkz * double.Parse(sItem["RSYZSD"]), 2);
+                    double moi = Round(GetSafeDouble(sItem["RSNTYND5"]) + mkz * GetSafeDouble(sItem["RSYZSD"]), 2);
                     sItem["RSYZS"] = Round((moi * 10) / 10, 1).ToString();
-                    double mnlzhynd = double.Parse(sItem["RSNLYND" + mnlfy.Trim().Length]);
-                    double mbzc = ((mnlzhynd - moi) * (mnlzhynd - moi) + (double.Parse(sItem["RSNTYND1"]) - moi) * (double.Parse(sItem["RSNTYND1"]) - moi) +
-                         (double.Parse(sItem["RSNTYND2"]) - moi) * (double.Parse(sItem["RSNTYND2"]) - moi)
-                          + (double.Parse(sItem["RSNTYND3"]) - moi) * (double.Parse(sItem["RSNTYND3"]) - moi)
-                           + (double.Parse(sItem["RSNTYND4"]) - moi) * (double.Parse(sItem["RSNTYND4"]) - moi)
-                            + (double.Parse(sItem["RSNTYND5"]) - moi) * (double.Parse(sItem["RSNTYND5"]) - moi)) / 5;
+                    double mnlzhynd = GetSafeDouble(sItem["RSNLYND" + mnlfy.Trim().Length]);
+                    double mbzc = ((mnlzhynd - moi) * (mnlzhynd - moi) + (GetSafeDouble(sItem["RSNTYND1"]) - moi) * (GetSafeDouble(sItem["RSNTYND1"]) - moi) +
+                         (GetSafeDouble(sItem["RSNTYND2"]) - moi) * (GetSafeDouble(sItem["RSNTYND2"]) - moi)
+                          + (GetSafeDouble(sItem["RSNTYND3"]) - moi) * (GetSafeDouble(sItem["RSNTYND3"]) - moi)
+                           + (GetSafeDouble(sItem["RSNTYND4"]) - moi) * (GetSafeDouble(sItem["RSNTYND4"]) - moi)
+                            + (GetSafeDouble(sItem["RSNTYND5"]) - moi) * (GetSafeDouble(sItem["RSNTYND5"]) - moi)) / 5;
                     sItem["RSBZPC"] = Round(mbzc, 3).ToString();
                     sItem["RSYSM"] = "";
-                    if (0.2 == double.Parse(sItem["RSYZSD"]) && 0.2 > 3 / 2 * double.Parse(sItem["RSBZPC"]) ||
-                        (2 / 3 * double.Parse(sItem["RSBZPC"]) < double.Parse(sItem["RSYZSD"]) &&
-                        double.Parse(sItem["RSYZSD"]) < 3 / 2 * double.Parse(sItem["RSBZPC"])))
+                    if (0.2 == GetSafeDouble(sItem["RSYZSD"]) && 0.2 > 3 / 2 * GetSafeDouble(sItem["RSBZPC"]) ||
+                        (2 / 3 * GetSafeDouble(sItem["RSBZPC"]) < GetSafeDouble(sItem["RSYZSD"]) &&
+                        GetSafeDouble(sItem["RSYZSD"]) < 3 / 2 * GetSafeDouble(sItem["RSBZPC"])))
                     {
                         sItem["RSYSM"] = "有效";
                         string rsyzs = calc_PB(mItem["G_RSYZS"], sItem["RSYZS"], true);

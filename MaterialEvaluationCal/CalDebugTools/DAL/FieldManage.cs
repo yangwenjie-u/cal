@@ -147,7 +147,7 @@ namespace CalDebugTools.DAL
 
             //select ZDMC  from ZDZD_HNT where (SJBMC = 'S_HNT' or SJBMC = 'M_HNT') and(lx like '%O%')
             string sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%' or lx like '%O%')";
-            var redata = _sqlBase.ExecuteDataset(sqlStr);
+            var redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             if (redata != null)
             {
@@ -164,7 +164,7 @@ namespace CalDebugTools.DAL
 
             //从表
             sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%' or lx like '%O%') and lx not like '%H%'";
-            redata = _sqlBase.ExecuteDataset(sqlStr);
+            redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             result = "";
             if (redata != null)
@@ -189,7 +189,7 @@ namespace CalDebugTools.DAL
 
             //select ZDMC  from ZDZD_HNT where (SJBMC = 'S_HNT' or SJBMC = 'M_HNT') and(lx like '%O%')
             string sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%')";
-            var redata = _sqlBase.ExecuteDataset(sqlStr);
+            var redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             if (redata != null)
             {
@@ -205,7 +205,7 @@ namespace CalDebugTools.DAL
             lisResult.Add(result);
 
             //从表
-            sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%') and lx not like '%H%'";
+            sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%') ";
             redata = _sqlBase.ExecuteDataset(sqlStr);
 
             result = "";
@@ -293,16 +293,16 @@ namespace CalDebugTools.DAL
                 sqlStr = $"insert into ZDZD_{param.SYXMBH} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
                         $"VALUES('{param.RemoteTableName}', '{param.RemoteZdName}', '配置字段', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL)  " +
                         $"";
-                cout = _sqlBase.ExecuteNonQuery(sqlStr);
+                cout = _sqlDebugTool.ExecuteNonQuery(sqlStr);
                 if (cout > 0)
                 {
                     sqlStr = $"insert into   H_Calculate_Param  (SYXMBH,JCXM,LocalTableName,LocalZdName,RemoteTableName,RemoteZdName) values('{param.SYXMBH}','{param.JCXM}','{param.LocalTableName}','" +
                         $"{param.LocalZdName}','{param.RemoteTableName}','{param.RemoteZdName}')";
 
-                    _sqlBase.ExecuteNonQuery(sqlStr);
-
-                    sqlStr = $"alter table {param.RemoteTableName} add {param.RemoteZdName} varchar(200) null ";
                     return _sqlBase.ExecuteNonQuery(sqlStr);
+
+                    //sqlStr = $"alter table {param.RemoteTableName} add {param.RemoteZdName} varchar(200) null ";
+                    //return _sqlBase.ExecuteNonQuery(sqlStr);
                 }
 
                 //zdzd 插入失败

@@ -940,11 +940,11 @@ namespace Calculates
                 MItem[0]["SJDJ"] = sitem["SJDJ"];
                 if (string.IsNullOrEmpty(mSjdj))
                     mSjdj = "";
-
                 //var mrsXtab2 = mrsXtab.Where(x => x["DZBH"].Contains(MItem[0]["JYDBH"]));
-                var mrsXtab2 = mrsXtab.Where(mrsXtab_Filter => mrsXtab_Filter["SYSJBRECID"].Equals(sitem["RECID"]));
+                List<IDictionary<string, string>> mrsXtab2 = new List<IDictionary<string, string>>();
+                if (mrsXtab != null && mrssjTable[0].Count > 0)
+                    mrsXtab2 = mrsXtab.Where(mrsXtab_Filter => mrsXtab_Filter["SYSJBRECID"].Equals(sitem["RECID"])).ToList();
                 var mrsDj_Filter = extraDJ.FirstOrDefault(x => x["MC"].Contains(mSjdj));
-
                 if (string.IsNullOrEmpty(MItem[0]["SJTABS"]))  //数据录入使用模板
                     MItem[0]["SJTABS"] = "sjht1";
                 if (string.IsNullOrEmpty(MItem[0]["SFQXXZ"]))
@@ -1031,7 +1031,9 @@ namespace Calculates
                     sitem["BSFS"] = "0";
                 mBsfs = sitem["BSFS"];
                 //var mrssjTable2 = mrssjTable.Where(x => x["DZBH"].Equals(sitem["DZBH"].ToString()));
-                var mrssjTable2 = mrssjTable.Where(mrssjTable_Filter => mrssjTable_Filter["SYSJBRECID"].Equals(sitem["RECID"]));
+                List<IDictionary<string, string>> mrssjTable2 = new List<IDictionary<string, string>>();
+                if (mrssjTable != null && mrssjTable[0].Count > 0)
+                    mrssjTable2 = mrssjTable.Where(mrssjTable_Filter => mrssjTable_Filter["SYSJBRECID"].Equals(sitem["RECID"])).ToList();
                 c_Ht = mrssjTable2.Count();
                 try
                 {

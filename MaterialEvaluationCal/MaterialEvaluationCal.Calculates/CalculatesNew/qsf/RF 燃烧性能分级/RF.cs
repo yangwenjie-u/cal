@@ -625,7 +625,7 @@ namespace Calculates
                     {
                         if (djjg == "E")
                         {
-                            MItem[0]["WHICH"] = "bgrf、bgrf_7";
+                            //MItem[0]["WHICH"] = "bgrf、bgrf_7";
                             sItem["G_YJGD"] = "20s内，≤150 mm";
                         }
                         else
@@ -642,24 +642,13 @@ namespace Calculates
                         sItem["GH_YJGD"] = "合格";
                         djjg = "E";
                     }
-                    else
-                    {
-                        sItem["G_YJGD"] = "20s内，≤150 mm";
-                        sItem["W_YJGD"] = "否";
-                        sItem["GH_YJGD"] = "不合格";
-                        mbHggs1 = mbHggs1 + 1;
-                    }
-
-                    if (GetSafeDouble(sItem["HGS1"].Trim()) <= 1)
+              
+                    if (GetSafeDouble(sItem["HGS1"]) <= 1)
                     {
                         if (djjg == "E")
-                        {
                             sItem["G_SFYR"] = "20s内无燃烧滴落物引燃滤纸现象";
-                        }
                         else
-                        {
                             sItem["G_SFYR"] = "60s内无燃烧滴落物引燃滤纸现象";
-                        }
                         sItem["W_SFYR"] = "是";
                         sItem["GH_SFYR"] = "合格";
                     }

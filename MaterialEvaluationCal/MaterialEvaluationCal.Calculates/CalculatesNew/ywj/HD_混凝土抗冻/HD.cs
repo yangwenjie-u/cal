@@ -349,19 +349,19 @@ namespace Calculates
                     mMidKyqd = mtmpArray[1];
                     mAvgKyqd = mtmpArray.Average();
 
-                    if ((mMaxKyqd - mMidKyqd > Math.Round(mMidKyqd * 0.15, 1)) && (mMidKyqd - mMinKyqd > Math.Round(mMidKyqd * 0.15, 1)))
+                    if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd) > 1)
                     {
                         sItem["ZLSSL1"] = Math.Round(mMidKyqd, 1).ToString("0.0");
                     }
-                    if ((mMaxKyqd - mMidKyqd > Math.Round(mMidKyqd * 0.15, 1)) && (mMidKyqd - mMinKyqd <= Math.Round(mMidKyqd * 0.15, 1)))
+                    if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd) <= 1)
                     {
                         sItem["ZLSSL1"] = Math.Round((mMidKyqd + mMinKyqd) / 2, 1).ToString("0.0");
                     }
-                    if ((mMaxKyqd - mMidKyqd <= Math.Round(mMidKyqd * 0.15, 1)) && (mMidKyqd - mMinKyqd > Math.Round(mMidKyqd * 0.15, 1)))
+                    if ((mMaxKyqd - mMidKyqd) <= 1 && (mMidKyqd - mMinKyqd) > 1)
                     {
                         sItem["ZLSSL1"] = Math.Round((mMaxKyqd + mMidKyqd) / 2, 1).ToString("0.0");
                     }
-                    if ((mMaxKyqd - mMidKyqd <= Math.Round(mMidKyqd * 0.15, 2)) && (mMidKyqd - mMinKyqd <= Math.Round(mMidKyqd * 0.15, 1)))
+                    if ((mMaxKyqd - mMidKyqd) <= 1 && (mMidKyqd - mMinKyqd) <= 1)
                     {
                         sItem["ZLSSL1"] = Math.Round(mAvgKyqd, 1).ToString("0.0");
                     }
@@ -383,19 +383,19 @@ namespace Calculates
                         mMidKyqd = mtmpArray[1];
                         mAvgKyqd = mtmpArray.Average();
 
-                        if ((mMaxKyqd - mMidKyqd > Math.Round(mMidKyqd * 0.15, 1)) && (mMidKyqd - mMinKyqd > Math.Round(mMidKyqd * 0.15, 1)))
+                        if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd)> 1)
                         {
                             sItem["ZLSSL2"] = Math.Round(mMidKyqd, 1).ToString("0.0");
                         }
-                        if ((mMaxKyqd - mMidKyqd > Math.Round(mMidKyqd * 0.15, 1)) && (mMidKyqd - mMinKyqd <= Math.Round(mMidKyqd * 0.15, 1)))
+                        if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd) <= 1)
                         {
                             sItem["ZLSSL2"] = Math.Round((mMidKyqd + mMinKyqd) / 2, 1).ToString("0.0");
                         }
-                        if ((mMaxKyqd - mMidKyqd <= Math.Round(mMidKyqd * 0.15, 1)) && (mMidKyqd - mMinKyqd > Math.Round(mMidKyqd * 0.15, 1)))
+                        if ((mMaxKyqd - mMidKyqd) <= 1 && (mMidKyqd - mMinKyqd) > 1)
                         {
                             sItem["ZLSSL2"] = Math.Round((mMaxKyqd + mMidKyqd) / 2, 1).ToString("0.0");
                         }
-                        if ((mMaxKyqd - mMidKyqd <= Math.Round(mMidKyqd * 0.15, 1)) && (mMidKyqd - mMinKyqd <= Math.Round(mMidKyqd * 0.15, 1)))
+                        if ((mMaxKyqd - mMidKyqd) <= 1 && (mMidKyqd - mMinKyqd) <= 1)
                         {
                             sItem["ZLSSL2"] = Math.Round(mAvgKyqd, 1).ToString("0.0");
                         }

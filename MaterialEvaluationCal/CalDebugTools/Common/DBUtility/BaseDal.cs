@@ -45,8 +45,8 @@ namespace CalDebugTools.Common.DBUtility
                     sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;  //数据数据库连接
                     break;
                 case ESqlConnType.ConnectionStringJCJT:
-                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT"].ConnectionString;    //数据数据库连接
-                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT"].ConnectionString;  //数据数据库连接
+                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;    //数据数据库连接
+                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;  //数据数据库连接
                     break;
                 case ESqlConnType.ConnectionStringLocal:
                     sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;    //数据数据库连接

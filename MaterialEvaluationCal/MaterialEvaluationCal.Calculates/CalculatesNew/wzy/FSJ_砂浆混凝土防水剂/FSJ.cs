@@ -1020,7 +1020,7 @@ namespace Calculates
                 else
                 {
 
-                    if (sitem["ADXFF"] == "----")
+                    if (sitem["ADXFF"] == "----" || string.IsNullOrEmpty(sitem["ADXFF"]))
                         sitem["ADXFF"] = "代用法";
                     var mrsadx_Filter = mrsadx.FirstOrDefault(x => x["MC"].Contains(sitem["ADXFF"].Trim()));
                     if (mrsadx_Filter != null && mrsadx_Filter.Count > 0)
@@ -1030,9 +1030,9 @@ namespace Calculates
                         mg_bzfxc = mrsadx_Filter["BZFXC"];
                     }
                     //安定性
-                    if (sitem["ADXFF"].Trim() == "代用法")
+                    if (sitem["ADXFF"] == "代用法")
                     {
-                        if (sitem["ADX"].Trim() == "完整")
+                        if (sitem["ADX"] == "完整")
                         {
                             MItem[0]["HG_ADX"] = "符合";
                             mFlag_Hg = true;
@@ -1056,7 +1056,6 @@ namespace Calculates
 
                         else
                         {
-
 
                             MItem[0]["HG_ADX"] = "不符合";
                             mbhggs = mbhggs + 1;
@@ -1123,7 +1122,7 @@ namespace Calculates
                     MItem[0]["G_CNSJ"] = "----";
                     MItem[0]["G_ZNSJ"] = "----";
                 }
-                if (jcxm.Contains("、泌水率、"))
+                if (jcxm.Contains("、泌水率比、"))
                 {
                     if (sitem["PBSN1"] != "" && sitem["PBSN1"] != "----")
                     {
@@ -1516,7 +1515,7 @@ namespace Calculates
                                 double mMinKyqd = mkyqdArray[0];
                                 double mMidKyqd = mkyqdArray[1];
                                 double mAvgKyqd = mkyqdArray.Average();
-                                MItem[0]["JSBEIZHU"] = "";
+                                MItem[0]["JCJGMS"] = "";
                                 //计算抗压平均、达到设计强度、及进行单组合格判定
 
                                 if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
