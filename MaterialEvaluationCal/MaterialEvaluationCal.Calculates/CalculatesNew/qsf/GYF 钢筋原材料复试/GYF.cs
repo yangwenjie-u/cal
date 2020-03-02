@@ -680,8 +680,8 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["jcjg_kz"] = "----";
-                    sItem["g_kzyq"] = "----";
+                    sItem["JCJG_KZ"] = "----";
+                    sItem["G_KZYQ"] = "----";
                 }
                 #endregion
 

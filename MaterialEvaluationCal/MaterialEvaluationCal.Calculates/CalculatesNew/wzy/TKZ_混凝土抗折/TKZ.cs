@@ -97,7 +97,7 @@ namespace Calculates
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (string.IsNullOrEmpty(mJSFF))
                 {
-                    if (jcxm.Contains("、抗折、"))
+                    if (jcxm.Contains("、抗折强度、"))
                     {
                         mlongStr = sitem["KZQD1"] + "," + sitem["KZQD2"] + "," + sitem["KZQD3"];
                         mtmpArray = mlongStr.Split(',');
@@ -169,7 +169,7 @@ namespace Calculates
                 }
                 else if (mJSFF == "special")
                 {
-                    if (jcxm.Contains("、抗折、"))
+                    if (jcxm.Contains("、抗折强度、"))
                     {
                         if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "0" && sitem["DYZJW3"] == "0")
                         {

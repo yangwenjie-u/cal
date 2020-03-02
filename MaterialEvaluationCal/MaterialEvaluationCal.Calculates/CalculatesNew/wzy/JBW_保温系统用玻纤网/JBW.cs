@@ -89,6 +89,7 @@ namespace Calculates
                             mitem["HG_LDQLJ"] = "不合格";
                             mitem["HG_LDQ"] = "不合格";
                             mbhggs = mbhggs + 1;
+                            mAllHg = false;
                         }
                         if (Conversion.Val(sitem["LDQLW"]) >= Conversion.Val(mitem["G_LDQLW"]))
                             mitem["HG_LDQLW"] = "合格";
@@ -97,6 +98,7 @@ namespace Calculates
                             mitem["HG_LDQLW"] = "不合格";
                             mitem["HG_LDQ"] = "不合格";
                             mbhggs = mbhggs + 1;
+                            mAllHg = false;
                         }
                     }
                     else
@@ -119,6 +121,7 @@ namespace Calculates
                             mitem["HG_LDQLBJ"] = "不合格";
                             mitem["HG_LDQLB"] = "不合格";
                             mbhggs = mbhggs + 1;
+                            mAllHg = false;
                         }
 
                         if (Conversion.Val(sitem["LDQLBW"]) >= Conversion.Val(mitem["G_LDQLBW"]))
@@ -128,6 +131,7 @@ namespace Calculates
                             mitem["HG_LDQLBW"] = "不合格";
                             mitem["HG_LDQLB"] = "不合格";
                             mbhggs = mbhggs + 1;
+                            mAllHg = false;
                         }
                     }
                     else
@@ -171,6 +175,7 @@ namespace Calculates
                         mitem["HG_DLQLJ"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
 
 
@@ -184,6 +189,7 @@ namespace Calculates
                         mitem["HG_DLQLW"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
                 }
                 else
@@ -214,6 +220,7 @@ namespace Calculates
                         mitem["HG_LDQLJ"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
 
 
@@ -227,6 +234,7 @@ namespace Calculates
                         mitem["HG_LDQLW"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
                 }
                 else
@@ -278,6 +286,7 @@ namespace Calculates
                         mitem["HG_LDQLBJ"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
 
 
@@ -291,6 +300,7 @@ namespace Calculates
                         mitem["HG_LDQLBW"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
                 }
                 else
@@ -322,6 +332,7 @@ namespace Calculates
                         mitem["HG_DLYBJ"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
                     if (Conversion.Val(sitem["DLYBW"]) <= Conversion.Val(mitem["G_DLYBW"]))
                     {
@@ -333,6 +344,7 @@ namespace Calculates
                         mitem["HG_DLYBW"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
                     mitem["G_DLYBJ"] = "≤" + mitem["G_DLYBJ"];
                     mitem["G_DLYBW"] = "≤" + mitem["G_DLYBW"];
@@ -368,6 +380,7 @@ namespace Calculates
                         mitem["HG_DMJZL"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        mAllHg = false;
                     }
                 }
                 else
@@ -376,24 +389,30 @@ namespace Calculates
                     mitem["HG_DMJZL"] = "----";
                 }
                 mitem["JCJGMS"] = "";
-                if (mbhggs == 0)
-                {
-                    mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                    sitem["JCJG"] = "合格";
-                }
-                if (mbhggs >= 1)
-                {
-                    mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
-                    sitem["JCJG"] = "不合格";
-                    if (mFlag_Bhg && mFlag_Hg)
-                        mitem["JCJGMS"] = "该组试样所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
-                }
+                //if (mbhggs == 0)
+                //{
+                //    mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                //    sitem["JCJG"] = "合格";
+                //}
+                //if (mbhggs >= 1)
+                //{
+                //    mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
+                //    sitem["JCJG"] = "不合格";
+                //    if (mFlag_Bhg && mFlag_Hg)
+                //        mitem["JCJGMS"] = "该组试样所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
+                //}
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
             }
             if (mAllHg)
+            {
                 mitem["JCJG"] = "合格";
+                mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+            }
             else
+            {
                 mitem["JCJG"] = "不合格";
+                mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
+            }
             #endregion
             /************************ 代码结束 *********************/
         }

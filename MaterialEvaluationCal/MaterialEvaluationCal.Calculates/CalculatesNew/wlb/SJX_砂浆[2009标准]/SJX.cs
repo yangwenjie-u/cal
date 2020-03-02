@@ -86,12 +86,12 @@ namespace Calculates
                 //    MItem[0]["SYWD"] = sItem["SYHJWD"] + "℃";
                 //}
                 //计算龄期
-                sItem["LQ"] = (DateTime.Parse(sItem["SYRQ"]) - DateTime.Parse(sItem["ZZRQ"])).ToString();
+                sItem["LQ"] = (DateTime.Parse(sItem["SYRQ"]) - DateTime.Parse(sItem["ZZRQ"])).Days.ToString();
 
                 if ("" == mJSFF)
                 {
                     #region 抗压
-                    if (jcxm.Contains("、抗压、"))
+                    if (jcxm.Contains("、抗压强度、"))
                     {
                         //FormatNumber(Round(CDec(sitem["drxs), mcd), mcd, vbTrue, , vbFalse)
                         //c#可以用    Math.Round(GetSafeDouble(sItem["DRXS"]), mcd).ToString();
@@ -111,6 +111,7 @@ namespace Calculates
                         mAvgKyqd = Math.Round(mkyqdArray.Average(),2);
 
                         jsbeizhu = "";
+                        sItem["MIDAVG"] = "0";
                         //计算抗压平均、达到设计强度、及进行单组合格判定
                         if (0 != mMidKyqd)
                         {
@@ -140,7 +141,7 @@ namespace Calculates
                                         mAllHg = false;
                                     }
                                 }
-                                sItem["MIDAVG"] = "True";
+                                sItem["MIDAVG"] = "1";
                             }
                             if (mMaxKyqd - mMidKyqd <= Math.Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Math.Round(mMidKyqd * 0.15, 1))
                             {
@@ -159,7 +160,7 @@ namespace Calculates
                                         mAllHg = false;
                                     }
                                 }
-                                sItem["MIDAVG"] = "True";
+                                sItem["MIDAVG"] = "1";
                             }
 
                             if (mMaxKyqd - mMidKyqd <= Math.Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Math.Round(mMidKyqd * 0.15, 1))

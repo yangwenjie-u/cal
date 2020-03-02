@@ -18,7 +18,7 @@ namespace Calculates.HPB_混凝土配合比
              */
 
 
-            var extraDJ = dataExtra["BZ_JGF_DJ"];
+            var extraDJ = dataExtra["BZ_HPB_DJ"];
             var mjcjg = "不合格";
             var jsbeizhu = "";
             var jgsm = "";
@@ -60,15 +60,15 @@ namespace Calculates.HPB_混凝土配合比
                 }
 
                 var dateTime = new DateTime();
-                if (jcxm.Contains("、7天强度、"))
+                if (jcxm.Contains("、7天强度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     if (DateTime.TryParse(sItem["ZZRQ"], out dateTime))
-                    {
-                        sItem["YQSYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
-                    }
+                        {
+                            sItem["YQSYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
+                        }
                 }
 
-                if (jcxm.Contains("、7天强度、") && Conversion.Val(sItem["KYPJ_71"]) > 0)
+                if (Conversion.Val(sItem["KYPJ_71"]) > 0)
                 {
                     if (DateTime.TryParse(sItem["ZZRQ"], out dateTime))
                     {
@@ -76,55 +76,53 @@ namespace Calculates.HPB_混凝土配合比
                     }
                     MItem[0]["SYRQQ1"] = "";
                 }
-
-                if (jcxm.Contains("、28天强度、"))
+                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     if ((-0.001 <= Conversion.Val(sItem["KYPJ_7"]) && -0.001 <= Conversion.Val(sItem["KYPJ"])) && (null == sItem["TOMARK"] || Conversion.Val(sItem["TOMARK"]) <= 0))
-                    {
-                        sItem["TOMARK"] = "1";
-                    }
+                        {
+                            sItem["TOMARK"] = "1";
+                        }
                 }
 
-                if (jcxm.Contains("、28天强度、"))
+                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     if (0 == Conversion.Val(sItem["KYPJ1"]))
-                    {
+                        {
+                            if (DateTime.TryParse(sItem["ZZRQ"], out dateTime))
+                            {
+                                sItem["YQSYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
+                            }
+                            else
+                            {
+                                sItem["KYPJ"] = "----";
+                            }
+                        }
                         if (DateTime.TryParse(sItem["ZZRQ"], out dateTime))
                         {
-                            sItem["YQSYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
+                            MItem[0]["SYRQQ2"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
                         }
-                        else
-                        {
-                            sItem["KYPJ"] = "----";
-                        }
-                    }
-
-                    if (DateTime.TryParse(sItem["ZZRQ"], out dateTime))
-                    {
-                        MItem[0]["SYRQQ2"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
-                    }
                 }
                 else
                 {
                     MItem[0]["SYRQQ2"] = "";
                 }
 
-                if (jcxm.Contains("、28天强度、"))
+                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     if (-0 <= Conversion.Val(sItem["KYPJ_7"]) && (null == sItem["KYPJ"] || Conversion.Val(sItem["KYPJ"]) <= 0))
-                    {
-                        if (DateTime.TryParse(sItem["ZZRQ"], out dateTime))
                         {
-                            sItem["YQSYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
+                            if (DateTime.TryParse(sItem["ZZRQ"], out dateTime))
+                            {
+                                sItem["YQSYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
+                            }
+                            else
+                            {
+                                sItem["KYPJ"] = "----";
+                            }
                         }
-                        else
-                        {
-                            sItem["KYPJ"] = "----";
-                        }
-                    }
                 }
 
-                if (jcxm.Contains("、抗渗、"))
+                if (jcxm.Contains("、抗渗、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     sItem["DDKSDJ"] = "P" + (Conversion.Val(sItem["KSQD1"]) * 10 - 2).ToString();
                 }
@@ -133,7 +131,7 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["DDKSDJ"] = "----";
                 }
 
-                if (jcxm.Contains("、泌水率、"))
+                if (jcxm.Contains("、泌水率、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     sItem["MSL"] = (Math.Round((100 * Conversion.Val(sItem["MSL1"]) / Conversion.Val(sItem["MSL2"])) / 10, 0) * 10).ToString(); ;
                 }
@@ -144,7 +142,7 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["MSL2"] = "----";
                 }
 
-                if (jcxm.Contains("、含气量、"))
+                if (jcxm.Contains("、含气量、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     sItem["HQL"] = (Math.Round(Conversion.Val(sItem["HQL1"]) - Conversion.Val(sItem["HQL2"]), 1)).ToString("0.0"); ;
                 }
@@ -155,22 +153,23 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["HQL2"] = "----";
                 }
 
-                if (jcxm.Contains("、表观密度、"))
+                if (jcxm.Contains("、表观密度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                 }
                 else
                 {
                     sItem["TLJ"] = "----";
-                    sItem["BGMD"] = "----";
-                    sItem["THSJZZL"] = "----";
-                    sItem["TZL"] = "----";
+                        sItem["BGMD"] = "----";
+                        sItem["THSJZZL"] = "----";
+                        sItem["TZL"] = "----";
                 }
 
-                if (jcxm.Contains("、凝结时间、"))
+                if (jcxm.Contains("、凝结时间、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
                 {
                     sItem["CNSJ"] = (Math.Round((Conversion.Val(sItem["T1CN"]) + Conversion.Val(sItem["T2CN"]) + Conversion.Val(sItem["T3CN"]) / 3 / 5), 0) * 5).ToString("0"); ;
                 }
-                else {
+                else
+                {
                     sItem["CNSJ"] = "----";
                     sItem["ZNSJ"] = "----";
                     sItem["T1CN"] = "----";

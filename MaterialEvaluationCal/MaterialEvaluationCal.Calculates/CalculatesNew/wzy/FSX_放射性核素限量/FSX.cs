@@ -220,7 +220,7 @@ namespace Calculates
             #endregion
 
             #region  计算开始
-            MItem[0]["JSBEIZHU"] = "";
+            //MItem[0]["JSBEIZHU"] = "";
             zj1 = 0;
             zj2 = 0;
             foreach (var sitem in SItem)

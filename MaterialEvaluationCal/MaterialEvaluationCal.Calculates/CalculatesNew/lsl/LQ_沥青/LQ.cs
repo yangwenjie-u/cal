@@ -57,7 +57,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、针入度、"))
                 {
-                    sItem["TJ_ZRD"] = sItem["SY_ZRD"];
+                    //sItem["TJ_ZRD"] = sItem["SY_ZRD"];
                     sign = true;
                     sItem["HG_ZRD"] = IsQualified(sItem["G_ZRD"], sItem["W_ZRD"], false);
                     if (sItem["HG_ZRD"] == "不合格")
@@ -79,7 +79,7 @@ namespace Calculates
                     sItem["G_ZRD"] = "----";
                     sItem["W_ZRD"] = "----";
                     sItem["B_ZRD"] = "----";
-                    sItem["TJ_ZRD"] = "----";
+                    //sItem["TJ_ZRD"] = "----";
                 }
                 sign = true;
                 if (jcxm.Contains("、软化点、"))
@@ -88,7 +88,7 @@ namespace Calculates
                     sign = IsNumeric(sItem["RHD2"]) && !string.IsNullOrEmpty(sItem["RHD2"]) ? sign : false;
                     if (sign)
                     {
-                        sItem["TJ_RHD"] = sItem["SY_RHD"];
+                        //sItem["TJ_RHD"] = sItem["SY_RHD"];
                         sum = 0;
                         for (int i = 1;i <= 2;i ++)
                         {
@@ -130,7 +130,7 @@ namespace Calculates
 
                 if (!sign)
                 {
-                    sItem["TJ_RHD"] = "----";
+                    //sItem["TJ_RHD"] = "----";
                     sItem["HG_RHD"] = "----";
                     sItem["G_RHD"] = "----";
                     sItem["W_RHD"] = "----";
@@ -145,7 +145,7 @@ namespace Calculates
                     }
                     if (sign)
                     {
-                        sItem["TJ_YD"] = sItem["SY_YD"];
+                        //sItem["TJ_YD"] = sItem["SY_YD"];
                         sum = 0;
                         for (int i = 1; i <= 3; i++)
                         {
@@ -183,7 +183,7 @@ namespace Calculates
                     sItem["G_YD"] = "----";
                     sItem["W_YD"] = "----";
                     sItem["B_YD"] = "----";
-                    sItem["TJ_YD"] = "----";
+                   // sItem["TJ_YD"] = "----";
                 }
 
                 if (jcxm.Contains("、溶解度、"))
@@ -291,8 +291,8 @@ namespace Calculates
                     sItem["W_XDMD"] = "----";
                     sItem["B_MD"] = "----";
                 }
-                sItem["TJ_RJD"] = "----";
-                sItem["TJ_MD"] = "----";
+                //sItem["TJ_RJD"] = "----";
+                //sItem["TJ_MD"] = "----";
 
                 if(mbHggs > 0)
                 {
