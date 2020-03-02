@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class TGS:BaseMethods
+    public class TGS : BaseMethods
     {
         public void Calc()
         {
@@ -53,7 +53,7 @@ namespace Calculates
                     int mbhggs = 0;
                     int xd;
                     double msmd;
-                    if (jcxm.Contains("、干密度、"))
+                    if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
                         if (Conversion.Val(sitem["ZDGMD"]) == 0)
                             sitem["YSD"] = "0";
@@ -87,7 +87,7 @@ namespace Calculates
                 }
                 else
                 {
-                    if (jcxm.Contains("、干密度、"))
+                    if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
                         //计算单组的抗压强度,并进行合格判断
                         if (Conversion.Val(sitem["ZDGMD"]) == 0 || Conversion.Val(sitem["ZDGMD"]) == -1 || string.IsNullOrEmpty(sitem["ZDGMD"]))
@@ -114,8 +114,8 @@ namespace Calculates
                         md = (Conversion.Val(sitem["HJST2"]) - Conversion.Val(sitem["HJGT2"]));
                         md = Round((md), 2);
                         sitem["SZL2"] = md.ToString("0.00");
-                        sitem["GTZL1"] = (Conversion.Val(sitem["HJGT1"]) - Conversion.Val(sitem["HZL1"])).ToString(); //干土质量计算
-                        sitem["GTZL2"] = (Conversion.Val(sitem["HJGT2"]) - Conversion.Val(sitem["HZL2"])).ToString();
+                        sitem["GTZL1"] = (Conversion.Val(sitem["HJGT1"]) - Conversion.Val(sitem["HZL1"])).ToString("0"); //干土质量计算
+                        sitem["GTZL2"] = (Conversion.Val(sitem["HJGT2"]) - Conversion.Val(sitem["HZL2"])).ToString("0");
                         if (Conversion.Val(sitem["GTZL1"]) != 0 && Conversion.Val(sitem["GTZL2"]) != 0)
                         {
                             sitem["HSL1"] = Round((Conversion.Val(sitem["SZL1"]) / Conversion.Val(sitem["GTZL1"])) * 100, 1).ToString("0.0"); //含水量计算
@@ -135,8 +135,8 @@ namespace Calculates
                                 sitem["PJHSL"] = "无效";
 
                         }
-                        double mgmd = Round((msmd / (1 + 0.01 * Conversion.Val(sitem["PJHSL"]))), 2); //干密度计算
-                        sitem["GMD"] = mgmd.ToString("0.00");
+                        //double mgmd = Round((msmd / (1 + 0.01 * Conversion.Val(sitem["PJHSL"]))), 2); //干密度计算
+                        //sitem["GMD"] = mgmd.ToString("0.00");
 
                         if (Conversion.Val(sitem["ZDGMD"]) != 0)
                         {

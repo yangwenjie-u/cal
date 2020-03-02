@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class TGW:BaseMethods
+    public class TGW : BaseMethods
     {
         public void Calc()
         {
@@ -50,7 +50,7 @@ namespace Calculates
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
-                    if (jcxm.Contains("、干密度、"))
+                    if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
                         msktj = Round(Conversion.Val(sitem["JSTJ"].Trim()) - Conversion.Val(sitem["THTJ"]), 0);
                         msmd = Round(Conversion.Val(sitem["QBCL"]) / msktj, 2);   //湿密度计算
@@ -81,7 +81,7 @@ namespace Calculates
                 }
                 else
                 {
-                    if (jcxm.Contains("、干密度、"))
+                    if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
                         //计算单组的抗压强度,并进行合格判断
                         if (Conversion.Val(sitem["ZDGMD"]) == 0 || Conversion.Val(sitem["ZDGMD"]) == -1 || string.IsNullOrEmpty(sitem["ZDGMD"]))

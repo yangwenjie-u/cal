@@ -85,7 +85,7 @@ namespace Calculates
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
-                    if (jcxm.Contains("、干密度、"))
+                    if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
                         sitem["SMD1"] = Round(Conversion.Val(sitem["TZL1"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
                         sitem["SMD2"] = Round(Conversion.Val(sitem["TZL2"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
@@ -131,44 +131,44 @@ namespace Calculates
                 }
                 else
                 {
-                    if (jcxm.Contains("、干密度、"))
+                    if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
                         //计算单组的抗压强度,并进行合格判断
-                        double p1 = Conversion.Val(sitem["HDJT1"]) - Conversion.Val(sitem["HDZL1"]);
-                        double p2 = Conversion.Val(sitem["HDJT2"]) - Conversion.Val(sitem["HDZL2"]);
-                        if (p1 != 0)
-                        {
-                            sitem["TZL1"] = p1.ToString();
-                            sitem["TZL2"] = p2.ToString();
-                        }
-                        sitem["SMD1"] = Round(Conversion.Val(sitem["TZL1"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
-                        sitem["SMD2"] = Round(Conversion.Val(sitem["TZL2"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
-                        sitem["SZL11"] = (Conversion.Val(sitem["HJST11"]) - Conversion.Val(sitem["HJGT11"])).ToString();
-                        sitem["GTZL11"] = (Conversion.Val(sitem["HJGT11"]) - Conversion.Val(sitem["HZL11"])).ToString();
-                        sitem["HSL11"] = Round(Conversion.Val(sitem["SZL11"]) / Conversion.Val(sitem["GTZL11"]) * 100, 1).ToString("0.0");
-                        if (sitem["HJGT12"].Trim() == "0" || string.IsNullOrEmpty(sitem["HJGT12"]) || !IsNumeric(sitem["HJGT12"]))
-                        {
-                            if (IsNumeric(sitem["HZL12"]) && sitem["HZL12"].Trim() != "0")
-                                sitem["HJGT12"] = calc_hjgt(GetSafeDouble(sitem["HZL12"]), GetSafeDouble(sitem["HJST12"].Trim()), GetSafeDouble(sitem["HSL11"].Trim()));
-                        }
-                        sitem["SZL12"] = (Conversion.Val(sitem["HJST12"]) - Conversion.Val(sitem["HJGT12"])).ToString();
-                        sitem["GTZL12"] = (Conversion.Val(sitem["HJGT12"]) - Conversion.Val(sitem["HZL12"])).ToString();
-                        sitem["HSL12"] = Round(Conversion.Val(sitem["SZL12"]) / Conversion.Val(sitem["GTZL12"]) * 100, 1).ToString("0.0");
-                        sitem["SZL21"] = (Conversion.Val(sitem["HJST21"]) - Conversion.Val(sitem["HJGT21"])).ToString();
-                        sitem["GTZL21"] = (Conversion.Val(sitem["HJGT21"]) - Conversion.Val(sitem["HZL21"])).ToString();
-                        sitem["HSL21"] = Round(Conversion.Val(sitem["SZL21"]) / Conversion.Val(sitem["GTZL21"]) * 100, 1).ToString("0.0");
-                        if (sitem["HJGT22"].Trim() == "0" || string.IsNullOrEmpty(sitem["HJGT22"]) || !IsNumeric(sitem["HJGT22"]))
-                        {
-                            if (IsNumeric(sitem["HZL22"]) && sitem["HZL22"].Trim() != "0")
-                                sitem["HJGT22"] = calc_hjgt(GetSafeDouble(sitem["HZL22"].Trim()), GetSafeDouble(sitem["HJST22"].Trim()), GetSafeDouble(sitem["HSL21"].Trim()));
-                        }
+                        //double p1 = Conversion.Val(sitem["HDJT1"]) - Conversion.Val(sitem["HDZL1"]);
+                        //double p2 = Conversion.Val(sitem["HDJT2"]) - Conversion.Val(sitem["HDZL2"]);
+                        //if (p1 != 0)
+                        //{
+                        //    sitem["TZL1"] = p1.ToString();
+                        //    sitem["TZL2"] = p2.ToString();
+                        //}
+                        //sitem["SMD1"] = Round(Conversion.Val(sitem["TZL1"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
+                        //sitem["SMD2"] = Round(Conversion.Val(sitem["TZL2"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
+                        //sitem["SZL11"] = (Conversion.Val(sitem["HJST11"]) - Conversion.Val(sitem["HJGT11"])).ToString();
+                        //sitem["GTZL11"] = (Conversion.Val(sitem["HJGT11"]) - Conversion.Val(sitem["HZL11"])).ToString();
+                        //sitem["HSL11"] = Round(Conversion.Val(sitem["SZL11"]) / Conversion.Val(sitem["GTZL11"]) * 100, 1).ToString("0.0");
+                        //if (sitem["HJGT12"].Trim() == "0" || string.IsNullOrEmpty(sitem["HJGT12"]) || !IsNumeric(sitem["HJGT12"]))
+                        //{
+                        //    if (IsNumeric(sitem["HZL12"]) && sitem["HZL12"].Trim() != "0")
+                        //        sitem["HJGT12"] = calc_hjgt(GetSafeDouble(sitem["HZL12"]), GetSafeDouble(sitem["HJST12"].Trim()), GetSafeDouble(sitem["HSL11"].Trim()));
+                        //}
+                        //sitem["SZL12"] = (Conversion.Val(sitem["HJST12"]) - Conversion.Val(sitem["HJGT12"])).ToString();
+                        //sitem["GTZL12"] = (Conversion.Val(sitem["HJGT12"]) - Conversion.Val(sitem["HZL12"])).ToString();
+                        //sitem["HSL12"] = Round(Conversion.Val(sitem["SZL12"]) / Conversion.Val(sitem["GTZL12"]) * 100, 1).ToString("0.0");
+                        //sitem["SZL21"] = (Conversion.Val(sitem["HJST21"]) - Conversion.Val(sitem["HJGT21"])).ToString();
+                        //sitem["GTZL21"] = (Conversion.Val(sitem["HJGT21"]) - Conversion.Val(sitem["HZL21"])).ToString();
+                        //sitem["HSL21"] = Round(Conversion.Val(sitem["SZL21"]) / Conversion.Val(sitem["GTZL21"]) * 100, 1).ToString("0.0");
+                        //if (sitem["HJGT22"].Trim() == "0" || string.IsNullOrEmpty(sitem["HJGT22"]) || !IsNumeric(sitem["HJGT22"]))
+                        //{
+                        //    if (IsNumeric(sitem["HZL22"]) && sitem["HZL22"].Trim() != "0")
+                        //        sitem["HJGT22"] = calc_hjgt(GetSafeDouble(sitem["HZL22"].Trim()), GetSafeDouble(sitem["HJST22"].Trim()), GetSafeDouble(sitem["HSL21"].Trim()));
+                        //}
 
 
-                        sitem["SZL22"] = (Conversion.Val(sitem["HJST22"]) - Conversion.Val(sitem["HJGT22"])).ToString();
-                        sitem["GTZL22"] = (Conversion.Val(sitem["HJGT22"]) - Conversion.Val(sitem["HZL22"])).ToString();
-                        sitem["HSL22"] = Round(Conversion.Val(sitem["SZL22"]) / Conversion.Val(sitem["GTZL22"]) * 100, 1).ToString("0.0");
-                        sitem["PJHSL1"] = Round(Conversion.Val(sitem["HSL11"]) + Conversion.Val(sitem["HSL12"]) / 2, 1).ToString("0.0");
-                        sitem["PJHSL2"] = Round(Conversion.Val(sitem["HSL21"]) + Conversion.Val(sitem["HSL22"]) / 2, 1).ToString("0.0");
+                        //sitem["SZL22"] = (Conversion.Val(sitem["HJST22"]) - Conversion.Val(sitem["HJGT22"])).ToString();
+                        //sitem["GTZL22"] = (Conversion.Val(sitem["HJGT22"]) - Conversion.Val(sitem["HZL22"])).ToString();
+                        //sitem["HSL22"] = Round(Conversion.Val(sitem["SZL22"]) / Conversion.Val(sitem["GTZL22"]) * 100, 1).ToString("0.0");
+                        //sitem["PJHSL1"] = Round(Conversion.Val(sitem["HSL11"]) + Conversion.Val(sitem["HSL12"]) / 2, 1).ToString("0.0");
+                        //sitem["PJHSL2"] = Round(Conversion.Val(sitem["HSL21"]) + Conversion.Val(sitem["HSL22"]) / 2, 1).ToString("0.0");
                         if (Conversion.Val(sitem["HSL11"]) >= 40 && Conversion.Val(sitem["HSL12"]) >= 40)
                         {
                             if (Math.Abs(Conversion.Val(sitem["HSL11"]) - Conversion.Val(sitem["HSL12"])) > 2)

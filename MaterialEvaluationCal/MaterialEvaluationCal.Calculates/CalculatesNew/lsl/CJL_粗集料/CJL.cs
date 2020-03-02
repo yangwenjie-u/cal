@@ -27,14 +27,16 @@ namespace Calculates
             var jcjg = "";
             var SItem = data["S_CJL"];
             var MItem = data["M_CJL"];
+            //var E_SF = data["E_SF"];
             var mItem = MItem[0];
             foreach (var sItem in SItem)
             {
                 bool sign, flag;
                 double md1, md2, md, sum;
                 string sql;
-                #region 表观密度
-                if (sItem["JCXM"].Contains("表观密度"))
+                var jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+                #region 表观密度  ||  密度
+                if (jcxm.Contains("、表观密度、") || jcxm.Contains("、密度、"))
                 {
                     sItem["BGMD_GH"] = IsQualified(sItem["G_BGMD"], sItem["W_BGMD"], true);
                     if (sItem["BGMD_GH"] == "不符合") mAllHg = false;
@@ -48,7 +50,7 @@ namespace Calculates
                 #endregion
 
                 #region 堆积密度
-                if (sItem["JCXM"].Contains("堆积密度"))
+                if (jcxm.Contains("、堆积密度、"))
                 {
                     sItem["DJMD_GH"] = IsQualified(sItem["G_DJMD"], sItem["W_DJMD"], true);
                     if (sItem["DJMD_GH"] == "不符合") mAllHg = false;
@@ -62,7 +64,7 @@ namespace Calculates
                 #endregion
 
                 #region 振实密度
-                if (sItem["JCXM"].Contains("振实密度"))
+                if (jcxm.Contains("、振实密度、"))
                 {
                     sItem["ZSMD_GH"] = IsQualified(sItem["G_ZSMD"], sItem["W_ZSMD"], true);
                     if (sItem["ZSMD_GH"] == "不符合") mAllHg = false;
@@ -76,7 +78,7 @@ namespace Calculates
                 #endregion
 
                 #region 含泥量
-                if (sItem["JCXM"].Contains("含泥量"))
+                if (jcxm.Contains("、含泥量、"))
                 {
                     sItem["HNL_GH"] = IsQualified(sItem["G_HNL"], sItem["W_HNL"], true);
                     if (sItem["HNL_GH"] == "不符合") mAllHg = false;
@@ -90,7 +92,7 @@ namespace Calculates
                 #endregion
 
                 #region 泥块含量
-                if (sItem["JCXM"].Contains("泥块含量"))
+                if (jcxm.Contains("、泥块含量、"))
                 {
                     sItem["NKHL_GH"] = IsQualified(sItem["G_ZSMD"], sItem["W_ZSMD"], true);
                     if (sItem["HNL_GH"] == "不符合") mAllHg = false;
@@ -103,8 +105,8 @@ namespace Calculates
                 }
                 #endregion
 
-                #region 针状和片状颗粒总含量
-                if (sItem["JCXM"].Contains("针状和片状颗粒总含量"))
+                #region 针状和片状颗粒总含量  || 针片状
+                if (jcxm.Contains("、针状和片状颗粒总含量、") || jcxm.Contains("、针片状、"))
                 {
                     sItem["ZZKL_GH"] = IsQualified(sItem["G_ZZKL"], sItem["W_ZZKL"], true);
                     if (sItem["ZZKL_GH"] == "不符合") mAllHg = false;
@@ -117,8 +119,8 @@ namespace Calculates
                 }
                 #endregion
 
-                #region 压碎值指标
-                if (sItem["JCXM"].Contains("压碎值指标"))
+                #region 压碎值指标 || 压碎值
+                if (jcxm.Contains("、压碎值指标、") || jcxm.Contains("、压碎值、"))
                 {
                     sItem["YSZ_GH"] = IsQualified(sItem["G_YSZ"], sItem["W_YSZ"], true);
                     if (sItem["YSZ_GH"] == "不符合") mAllHg = false;
@@ -132,7 +134,7 @@ namespace Calculates
                 #endregion
 
                 #region 含水率
-                if (sItem["JCXM"].Contains("含水率"))
+                if (jcxm.Contains("、含水率、"))
                 {
                     sItem["HSL_GH"] = IsQualified(sItem["G_HSL"], sItem["W_HSL"], true);
                     if (sItem["HSL_GH"] == "不符合") mAllHg = false;
@@ -146,7 +148,7 @@ namespace Calculates
                 #endregion
 
                 #region 吸水率
-                if (sItem["JCXM"].Contains("吸水率"))
+                if (jcxm.Contains("、吸水率、"))
                 {
                     sItem["XSL_GH"] = IsQualified(sItem["G_XSL"], sItem["W_XSL"], true);
                     if (sItem["HSL_GH"] == "不符合") mAllHg = false;
@@ -160,7 +162,7 @@ namespace Calculates
                 #endregion
 
                 #region 空隙率
-                if (sItem["JCXM"].Contains("空隙率") && IsNumeric(sItem["W_BGMD"]) && IsNumeric(sItem["W_DJMD"]))
+                if (jcxm.Contains("、空隙率、") && IsNumeric(sItem["W_BGMD"]) && IsNumeric(sItem["W_DJMD"]))
                 {
                     md1 = GetSafeDouble(sItem["W_BGMD"]);
                     md2 = GetSafeDouble(sItem["W_DJMD"]);
@@ -179,13 +181,13 @@ namespace Calculates
                 jsbeizhu = "";
                 #endregion
 
-                if (sItem["JCXM"] == "筛分析")
+                if (jcxm == "、筛分析、" || jcxm == "、筛分、")
                 {
                     jsbeizhu = "该组试样的检测结果详见报告第1～2页。";
                 }
                 else
                 {
-                    if (sItem["JCXM"].Contains("筛分析"))
+                    if (jcxm.Contains("筛分析") || jcxm.Contains("筛分"))
                     {
                         jsbeizhu = "该组试样的检测结果详见报告第1～2页。";
                     }

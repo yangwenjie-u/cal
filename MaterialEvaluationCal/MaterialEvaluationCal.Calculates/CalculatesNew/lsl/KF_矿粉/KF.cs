@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,9 +26,9 @@ namespace Calculates
             foreach (var sItem in SItem)
             {
                 bool jcjgHg = true;
-                var jcxm = sItem["JCXM"];
+                var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
-                if (jcxm.Contains("密度"))
+                if (jcxm.Contains("、密度、"))
                 {
                     sItem["MD_GH"] = IsQualified(sItem["G_MD"], sItem["W_MD"], true);
                     if (sItem["MD_GH"] == "不符合") mAllHg = false;
@@ -48,7 +47,7 @@ namespace Calculates
                         sItem["W_MD"] = "----";
                     }
                 
-                if (jcxm.Contains("塑性指数"))
+                if (jcxm.Contains("、塑性指数、"))
                 {
                     sItem["SXZS_GH"] = IsQualified(sItem["G_SXZS"], sItem["W_SXZS"], true);
                     if (sItem["SXZS_GH"] == "不符合")
@@ -68,13 +67,13 @@ namespace Calculates
                 
                 MItem[0]["BHG_JCXM"] = bhg_jcxm;
                 jsbeizhu = "";
-                if (jcxm.Contains("筛分"))
+                if (jcxm  == "、筛分、")
                 {
                     jsbeizhu = "该试样的检测结果详见报告。";
                 }
                 else
                 {
-                    if (sItem["JCXM"].Contains("筛分"))
+                    if (jcxm.Contains("、筛分、"))
                     {
                         jsbeizhu = "该试样的检测结果详见报告。";
                     }

@@ -10,6 +10,7 @@ namespace Calculates
     {
         public void Calc()
         {
+            /************************ 代码开始 *********************/
             #region
             bool mAllHg = true, mItemHg = true, mFlag_Bhg = true;
             int mbhggs = 0;
@@ -21,18 +22,18 @@ namespace Calculates
             string mJSFF;
             var SItem = data["S_WCX"];
             var MItem = data["M_WCX"];
-            var EItem = data["E_WCX"];
+            //var EItem = data["E_WCX"];
             var mItem = MItem[0];
 
             foreach (var sItem in SItem)
             {
-               
+
                 bool jcjgHg = true;
                 double md1, md2, md3, pjmd, sum, md, sStzl, sSmd, sSzl1, sSzl2, sGtzl1, sGtzl2, sHsl1, sHsl2;
                 int hggs = 0;
                 for (int i = 1; i <= 1; i++)
                 {
-                    if (GetSafeDouble(sItem["MTJST"+i]) != 0)
+                    if (GetSafeDouble(sItem["MTJST" + i]) != 0)
                     {
                         sStzl = GetSafeDouble(sItem["MTJST" + i]) - GetSafeDouble(sItem["MTZL"]);
                         if (GetSafeDouble(sItem["MTTJ"]) == 0)
@@ -41,7 +42,7 @@ namespace Calculates
                         }
                         else
                         {
-                            sSmd = Round(sStzl / GetSafeDouble(sItem["MTTJ"]),3);
+                            sSmd = Round(sStzl / GetSafeDouble(sItem["MTTJ"]), 3);
                         }
                         sSzl1 = GetSafeDouble(sItem["HJST" + "11"]) - GetSafeDouble(sItem["HJGT" + "11"]);
                         sSzl2 = GetSafeDouble(sItem["HJST" + "12"]) - GetSafeDouble(sItem["HJGT" + "12"]);
@@ -63,11 +64,11 @@ namespace Calculates
                     }
                     else
                     {
-                        sItem["PJHSL"+"1"] = "0";
+                        sItem["PJHSL" + "1"] = "0";
                         sItem["GMD" + "1"] = "0";
                     }
                 }
-                sItem["CQS"] = EItem.Count.ToString();
+                //sItem["CQS"] = EItem.Count.ToString();
                 md1 = GetSafeDouble(sItem["PJKYQD"]);
                 md2 = GetSafeDouble(sItem["BZC"]);
                 if (mItem["BZLXS"] == "0.90")
@@ -106,12 +107,13 @@ namespace Calculates
                 {
                     sItem["JCJG"] = "合格";
                     mItem["JCJG"] = "合格";
-                    mItem["JGSM"] = "该组样品符合设计要求。";
-                }else if (sItem["JL"] == "不符合")
+                    jsbeizhu = "该组样品符合设计要求。";
+                }
+                else if (sItem["JL"] == "不符合")
                 {
                     sItem["JCJG"] = "不合格";
                     mItem["JCJG"] = "不合格";
-                    mItem["JCJGSM"] = "该组样品不符合设计要求。";
+                    jsbeizhu = "该组样品不符合设计要求。";
                     jcjgHg = false;
                     mAllHg = false;
                 }
@@ -119,14 +121,13 @@ namespace Calculates
                 {
                     sItem["JCJG"] = "合格";
                     mItem["JCJG"] = "合格";
-                    mItem["JCJGSM"] = "该组样品检测结果如上。";
+                    jsbeizhu = "该组样品检测结果如上。";
                 }
-                #endregion
                 #endregion
 
             }
 
-            #region 添加最终报告
+            //添加最终报告
             if (mAllHg)
             {
                 mjcjg = "合格";
