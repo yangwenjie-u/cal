@@ -40,13 +40,8 @@ namespace Calculates
                         else
                             bhg_jcxm = bhg_jcxm + "、密度";
                     }
-                }else
-                    {
-                        sItem["G_MD"] = "----";
-                        sItem["MD_GH"] = "----";
-                        sItem["W_MD"] = "----";
-                    }
-                
+         
+
                 if (jcxm.Contains("、塑性指数、"))
                 {
                     sItem["SXZS_GH"] = IsQualified(sItem["G_SXZS"], sItem["W_SXZS"], true);
@@ -64,20 +59,15 @@ namespace Calculates
                     sItem["SXZS_GH"] = "----";
                     sItem["W_SXZS"] = "----";
                 }
-                
+
                 MItem[0]["BHG_JCXM"] = bhg_jcxm;
                 jsbeizhu = "";
-                if (jcxm  == "、筛分、")
-                {
-                    jsbeizhu = "该试样的检测结果详见报告。";
-                }
-                else
-                {
-                    if (jcxm.Contains("、筛分、"))
+             
+           
                     {
                         jsbeizhu = "该试样的检测结果详见报告。";
                     }
-                }
+             }
                 if (jcjgHg)
                 {
                     sItem["JCJG"] = "合格";

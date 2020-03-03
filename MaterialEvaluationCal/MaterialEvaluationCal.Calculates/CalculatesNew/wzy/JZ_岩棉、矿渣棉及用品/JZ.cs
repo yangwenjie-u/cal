@@ -1548,11 +1548,12 @@ namespace Calculates
                 mitem["GH_KDPC"] == "合格" ||
                 mitem["GH_CDPC"] == "合格"))
                     mitem["JCJGMS"] = "该样品所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
+
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
-                //}
+                //}  }
+                #endregion
+                /************************ 代码结束 *********************/
             }
-            #endregion
-            /************************ 代码结束 *********************/
         }
     }
 }
