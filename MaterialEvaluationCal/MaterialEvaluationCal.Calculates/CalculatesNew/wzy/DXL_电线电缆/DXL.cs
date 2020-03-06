@@ -32,7 +32,7 @@ namespace Calculates
             bool mFlag_Hg, mFlag_Bhg;
             mSFwc = true;
             #endregion
-            
+
             #region  集合取值
             var data = retData;
             var mrsDj = dataExtra["BZ_DXL_DJ"];
@@ -51,7 +51,7 @@ namespace Calculates
             if (GetSafeDouble(MItem[0]["SYRQ1"]) <= GetSafeDouble(MItem[0]["JYRQ"]))
                 MItem[0]["SYRQ1"] = MItem[0]["YPJSRQ_SY"];
             mbhggs = 0;
-            string sd, sm="";
+            string sd, sm = "";
             int Gs, xd;
             double md, md1, md2, sum, sqz, xd1, xd2;
             bool sign, flag;
@@ -63,12 +63,16 @@ namespace Calculates
             int row = 0;
             string[] strArray;
             mjgsm = "该组试样:";
+            var jcxm = "";
+
             foreach (var sitem in SItem)
             {
                 dzbh = "";
+                jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+
                 //var mrssjTable2 = mrssjTable.Where(x => x["DZBH"].Contains(dzbh));
                 var mrssjTable2 = mrssjTable.Where(x => x["SYSJBRECID"].Equals(sitem["RECID"]));
-                if (sitem["JCXM"].Contains("截面积试验"))
+                if (jcxm.Contains("、截面积试验、"))
                 {
                     S_jmj = true;
                     row = mrssjTable2.Count();
@@ -104,7 +108,8 @@ namespace Calculates
                     foreach (var Y_DXL in mrssjTable2)
                         Y_DXL["E_JMJSC"] = "----";
                 }
-                if (sitem["JCXM"].Contains("直流电阻试验"))
+
+                if (jcxm.Contains("、直流电阻试验、") || jcxm.Contains("、导体试验、"))
                 {
                     //计算修正系数
                     if (MItem[0]["H_SFXZ"] == "是")
@@ -213,7 +218,41 @@ namespace Calculates
                         Y_DXL["E_SCDZ"] = "----";
                     }
                 }
-                mjgsm += mjgsm.Substring(0, mjgsm.Length - 1) + "。";
+
+                if (jcxm.Contains("、标志、"))
+                {
+                    if ("合格" == MItem[0]["BZ_HG"])
+                        mFlag_Hg = true;
+                    else
+                        mFlag_Bhg = true;
+                }
+                else
+                {
+                    MItem[0]["BZ_HG"] = "----";
+                }
+                if (jcxm.Contains("、阻燃试验、"))
+                {
+                    //燃烧向下延伸至距离上支架的下缘大于540mm，判定不合格
+
+                    MItem[0]["ZR_HG"] = IsQualified("≤540", sitem["XYJSZJ"]);
+                    //if ()
+
+                    if (MItem[0]["ZR_HG"] == "合格")
+                    {
+                        //上支架下缘距离碳化起点
+                        MItem[0]["ZR_HG"] = IsQualified("＞50", sitem["ZJJSTHQD"]);
+                    }
+                    //
+                    if (MItem[0]["ZR_HG"] == "合格")
+                        mFlag_Hg = true;
+                    else
+                        mFlag_Bhg = true;
+                }
+                else
+                {
+                    MItem[0]["ZR_HG"] = "----";
+                }
+                mjgsm = mjgsm.Substring(0, mjgsm.Length - 1).TrimEnd(',') + "。";
                 MItem[0]["CF_SUBROWS"] = row.ToString();
                 //新增部分用于原始记录
                 strArray = new string[20];

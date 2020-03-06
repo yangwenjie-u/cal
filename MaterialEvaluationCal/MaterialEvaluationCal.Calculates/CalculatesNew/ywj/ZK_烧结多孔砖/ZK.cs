@@ -249,11 +249,6 @@ namespace Calculates
                          sItem["JCJG"] = "不合格";
                          mAllHg = false;
                          jsbeizhu = "该组试件不符合" + mItem["PDBZ"] + "标准要求。";
-                         if (mFlag_Bhg && mFlag_Hg)
-                         {
-                             jsbeizhu = "该组试件所检项目部分符合" + mItem["PDBZ"] + "标准要求。";
-
-                         }
                      }
 
 
@@ -319,12 +314,7 @@ namespace Calculates
                 }
 
                 var mrswcdj = extraWCDj.FirstOrDefault(u => u["MC"].Equals(sItem["WGDJ"].Trim()));
-
                 sItem["LQ"] = (GetSafeDateTime(MItem[0]["SYRQ"]) - GetSafeDateTime(sItem["ZZRQ"])).Days.ToString();
-
-
-
-
 
                 var sjtabs = MItem[0]["SJTABS"];
                 if (!string.IsNullOrEmpty(sjtabs))
@@ -676,23 +666,23 @@ namespace Calculates
                             if (sItem["WGDJ"].Trim() == "一等品")
                             {
                                 mbhgs = 0;
-                                if (Conversion.Val(sItem["BLDS10_1"]) <= 15 && Conversion.Val(sItem["BLDS15_1"]) + Conversion.Val(sItem["BLDS16_1"]) == 0)
+                                if (15 >= Conversion.Val(sItem["BLDS10_1"]) && Conversion.Val(sItem["BLDS15_1"]) + Conversion.Val(sItem["BLDS16_1"]) == 0)
                                 { }
                                 else
                                     mbhgs = mbhgs + 1;
-                                if (Conversion.Val(sItem["BLDS10_2"]) <= 15 && Conversion.Val(sItem["BLDS15_2"]) + Conversion.Val(sItem["BLDS16_2"]) == 0)
+                                if (15 >= Conversion.Val(sItem["BLDS10_2"]) && Conversion.Val(sItem["BLDS15_2"]) + Conversion.Val(sItem["BLDS16_2"]) == 0)
                                 { }
                                 else
                                     mbhgs = mbhgs + 1;
-                                if (Conversion.Val(sItem["BLDS10_3"]) <= 15 && Conversion.Val(sItem["BLDS15_3"]) + Conversion.Val(sItem["BLDS16_3"]) == 0)
+                                if (15 >= Conversion.Val(sItem["BLDS10_3"]) && Conversion.Val(sItem["BLDS15_3"]) + Conversion.Val(sItem["BLDS16_3"]) == 0)
                                 { }
                                 else
                                     mbhgs = mbhgs + 1;
-                                if (Conversion.Val(sItem["BLDS10_4"]) <= 15 && Conversion.Val(sItem["BLDS15_4"]) + Conversion.Val(sItem["BLDS16_4"]) == 0)
+                                if (15 >= Conversion.Val(sItem["BLDS10_4"]) && Conversion.Val(sItem["BLDS15_4"]) + Conversion.Val(sItem["BLDS16_4"]) == 0)
                                 { }
                                 else
                                     mbhgs = mbhgs + 1;
-                                if (Conversion.Val(sItem["BLDS10_5"]) <= 15 && Conversion.Val(sItem["BLDS15_5"]) + Conversion.Val(sItem["BLDS16_5"]) == 0)
+                                if (15 >= Conversion.Val(sItem["BLDS10_5"]) && Conversion.Val(sItem["BLDS15_5"]) + Conversion.Val(sItem["BLDS16_5"]) == 0)
                                 { }
                                 else
                                     mbhgs = mbhgs + 1;

@@ -42,6 +42,11 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.btn_load = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txt_bzCount = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txt_where = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.btn_S_only = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.radio_m = new System.Windows.Forms.RadioButton();
@@ -50,11 +55,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txt_where = new System.Windows.Forms.TextBox();
-            this.txt_bzCount = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.btn_M_only = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -178,6 +179,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btn_M_only);
             this.panel1.Controls.Add(this.txt_bzCount);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.label8);
@@ -203,6 +205,50 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1293, 141);
             this.panel1.TabIndex = 15;
+            // 
+            // txt_bzCount
+            // 
+            this.txt_bzCount.Location = new System.Drawing.Point(503, 68);
+            this.txt_bzCount.Name = "txt_bzCount";
+            this.txt_bzCount.Size = new System.Drawing.Size(23, 21);
+            this.txt_bzCount.TabIndex = 25;
+            this.txt_bzCount.Text = "1";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(409, 70);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(89, 12);
+            this.label9.TabIndex = 24;
+            this.label9.Text = "标准字段数量：";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(48, 112);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(89, 12);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "标准表查询条件";
+            // 
+            // txt_where
+            // 
+            this.txt_where.Location = new System.Drawing.Point(143, 109);
+            this.txt_where.Multiline = true;
+            this.txt_where.Name = "txt_where";
+            this.txt_where.Size = new System.Drawing.Size(320, 21);
+            this.txt_where.TabIndex = 23;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(716, 85);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(203, 12);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "仅添加从表字段（不添加hg，G字段）";
             // 
             // btn_S_only
             // 
@@ -293,49 +339,15 @@
             this.dataGridView1.Size = new System.Drawing.Size(1287, 406);
             this.dataGridView1.TabIndex = 11;
             // 
-            // label7
+            // btn_M_only
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(716, 85);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(203, 12);
-            this.label7.TabIndex = 21;
-            this.label7.Text = "仅添加从表字段（不添加hg，G字段）";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(48, 112);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(89, 12);
-            this.label8.TabIndex = 22;
-            this.label8.Text = "标准表查询条件";
-            // 
-            // txt_where
-            // 
-            this.txt_where.Location = new System.Drawing.Point(143, 109);
-            this.txt_where.Multiline = true;
-            this.txt_where.Name = "txt_where";
-            this.txt_where.Size = new System.Drawing.Size(320, 21);
-            this.txt_where.TabIndex = 23;
-            // 
-            // txt_bzCount
-            // 
-            this.txt_bzCount.Location = new System.Drawing.Point(503, 68);
-            this.txt_bzCount.Name = "txt_bzCount";
-            this.txt_bzCount.Size = new System.Drawing.Size(23, 21);
-            this.txt_bzCount.TabIndex = 25;
-            this.txt_bzCount.Text = "1";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(409, 70);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(89, 12);
-            this.label9.TabIndex = 24;
-            this.label9.Text = "标准字段数量：";
+            this.btn_M_only.Location = new System.Drawing.Point(775, 112);
+            this.btn_M_only.Name = "btn_M_only";
+            this.btn_M_only.Size = new System.Drawing.Size(75, 23);
+            this.btn_M_only.TabIndex = 26;
+            this.btn_M_only.Text = "添加主表字段";
+            this.btn_M_only.UseVisualStyleBackColor = true;
+            this.btn_M_only.Click += new System.EventHandler(this.btn_M_only_Click);
             // 
             // TargetForm
             // 
@@ -387,5 +399,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txt_bzCount;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btn_M_only;
     }
 }
