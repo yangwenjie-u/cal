@@ -60,6 +60,7 @@
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
     <Compile Include="CalculatesNew\wlb\SCY_土工\SCY.cs" />
+    <Compile Include="CalculatesNew\wlb\YS-砌筑石材\YS.cs" />
     <Compile Include="CalculatesNew\wzy\FDJ_混凝土防冻剂\FDJ.cs" />
     <Compile Include="CalculatesNew\qsf\DCL地基承载力\DCL.cs" />
     <Compile Include="CalculatesNew\qsf\JLF混凝土裂缝宽度检测\JLF.cs" />

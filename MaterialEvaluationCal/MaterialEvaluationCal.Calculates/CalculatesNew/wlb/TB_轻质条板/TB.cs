@@ -63,13 +63,13 @@ namespace Calculates
                     MItem[0]["G_GZSSZ"] = extraFieldsDj["G_GZSSZ"];
                 }
                 #region vb跳转代码
-                if (string.IsNullOrEmpty(MItem[0]["SJTABS"]))
+                if (!string.IsNullOrEmpty(MItem[0]["SJTABS"]))
                 {
                     flag = sItem["TBLB"] == "建筑隔墙用轻质条板" ? true : false;
                     sItem["XS_KW"] = flag ? "抗弯破坏荷载" : "抗弯承载";
 
                     #region 抗弯破坏荷载 || 抗弯承载
-                    if (jcxm == "抗弯破坏荷载" || jcxm == "抗弯承载")
+                    if (jcxm.Contains("、抗弯破坏荷载、") || jcxm.Contains("、抗弯承载、"))
                     {
                         sign = true;
                         sign = IsNumeric(MItem[0]["W_PHHZ"]) ? sign : false;
@@ -100,7 +100,7 @@ namespace Calculates
                     #endregion
 
                     #region 软化系数
-                    if (jcxm == "软化系数")
+                    if (jcxm.Contains("、软化系数、"))
                     {
                         sign = true;
                         if (sItem["YPMC"] == "石膏条板")
@@ -131,7 +131,7 @@ namespace Calculates
                     #endregion
 
                     #region 面密度
-                    if (jcxm == "面密度")
+                    if (jcxm.Contains("、面密度、"))
                     {
                         sign = true;
                         MItem[0]["GH_MMD"] = IsQualified(MItem[0]["G_MMD"], MItem[0]["W_MMD"], false);
@@ -149,12 +149,12 @@ namespace Calculates
                     {
                         MItem[0]["W_MMD"] = "----";
                         MItem[0]["GH_MMD"] = "----";
-                       // MItem[0]["G_MDD"] = "----";
+                        // MItem[0]["G_MDD"] = "----";
                     }
                     #endregion
 
                     #region 含水率
-                    if (jcxm == "含水率")
+                    if (jcxm.Contains("、含水率、"))
                     {
                         MItem[0]["GH_HSL"] = IsQualified(MItem[0]["G_HSL"], MItem[0]["W_HSL"], false);
                         if (MItem[0]["GH_HSL"] == "不合格")
@@ -176,7 +176,7 @@ namespace Calculates
                     #endregion
 
                     #region 传热系数
-                    if (jcxm == "传热系数")
+                    if (jcxm.Contains("、传热系数、"))
                     {
                         sign = true;
                         MItem[0]["W_CRXS"] = sItem["CRXS"].Trim();
@@ -204,7 +204,7 @@ namespace Calculates
                     #endregion
 
                     #region 干燥收缩值
-                    if (jcxm == "干燥收缩值")
+                    if (jcxm.Contains("、干燥收缩值、"))
                     {
                         sign = true;
                         MItem[0]["GH_GZSSZ"] = IsQualified(MItem[0]["G_GZSSZ"], MItem[0]["W_GZSSZ"], false);
@@ -379,8 +379,8 @@ namespace Calculates
                     sign = true;
                     for (int xd = 1; xd < 4; xd++)
                     {
-                        sign = IsNumeric(sItem["HS_QYZL"+ xd]) ? sign : false;
-                        sign = IsNumeric(sItem["HS_JGZL"+ xd]) ? sign : false;
+                        sign = IsNumeric(sItem["HS_QYZL" + xd]) ? sign : false;
+                        sign = IsNumeric(sItem["HS_JGZL" + xd]) ? sign : false;
                         if (!sign)
                         {
                             break;
@@ -389,6 +389,13 @@ namespace Calculates
                     if (sign)
                     {
                         sum = 0;
+                        for (int i = 1; i < 4; i++)
+                        {
+                            md1 = GetSafeDouble(sItem["HS_QYZL" + i]);
+                            md2 = GetSafeDouble(sItem["HS_JGZL" + i]);
+                            md = Math.Round(100 * (md1 - md2) / md2, 1);
+                            sum = sum + md;
+                        }
                         pjmd = Math.Round(sum / 3, 1);
                         MItem[0]["W_HSL"] = pjmd.ToString("0.0");
                         MItem[0]["GH_HSL"] = IsQualified(MItem[0]["G_HSL"], MItem[0]["W_HSL"], false);
@@ -440,6 +447,64 @@ namespace Calculates
                     MItem[0]["W_CRXS"] = "----";
                     MItem[0]["G_CRXS"] = "----";
                     MItem[0]["GH_CRXS"] = "----";
+                }
+                #endregion
+
+                #region 干燥收缩值
+                if (jcxm.Contains("、干燥收缩值、"))
+                {
+                    sign = true;
+                    MItem[0]["GH_GZSSZ"] = IsQualified(MItem[0]["G_GZSSZ"], MItem[0]["W_GZSSZ"], false);
+                    if (MItem[0]["GH_GZSSZ"] == "不合格")
+                    {
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                    else
+                    {
+                        mbHggs++;
+                    }
+                }
+                else
+                {
+                    sign = false;
+                }
+                if (!sign)
+                {
+                    MItem[0]["W_GZSSZ"] = "----";
+                    MItem[0]["G_GZSSZ"] = "----";
+                    MItem[0]["GH_GZSSZ"] = "----";
+                }
+                #endregion
+
+                #region 软化系数
+                if (jcxm.Contains("、软化系数、"))
+                {
+                    sign = true;
+                    if (sItem["YPMC"] == "石膏条板")
+                    {
+                        MItem[0]["G_RHXS"] = "≥0.6";
+                    }
+                    MItem[0]["GH_RHXS"] = IsQualified(MItem[0]["G_RHXS"], MItem[0]["W_RHXS"], false);
+                    if (MItem[0]["GH_RHXS"] == "不合格")
+                    {
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                    else
+                    {
+                        mbHggs++;
+                    }
+                }
+                else
+                {
+                    sign = false;
+                }
+                if (!sign)
+                {
+                    MItem[0]["W_RHXS"] = "----";
+                    MItem[0]["G_RHXS"] = "----";
+                    MItem[0]["GH_RHXS"] = "----";
                 }
                 #endregion
 
