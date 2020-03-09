@@ -65,7 +65,7 @@ namespace Calculates
                 //}
                 //计算修正系数
                 //MItem[0]["BGZS"] =(double.Parse(MItem[0]["BGZS"]) + 1).ToString();
-                if ("Ⅱ" == sItem["YSDJ"] && "Ⅲ" == sItem["PDDJ"])
+                if ("Ⅱ级" == sItem["YSDJ"] && "Ⅲ级" == sItem["PDDJ"])
                 {
                     sItem["JCJG"] = "不合格";
                     mAllHg = false;
