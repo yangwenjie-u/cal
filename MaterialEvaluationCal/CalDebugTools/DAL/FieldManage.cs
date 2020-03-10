@@ -19,7 +19,7 @@ namespace CalDebugTools.DAL
         {
             if (_sqlBase == null)
             {
-                _sqlBase = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringDebugTool);
+                _sqlBase = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringMain);
             }
             if (_sqlDebugTool == null)
                 _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
@@ -31,7 +31,7 @@ namespace CalDebugTools.DAL
             {
                 string sqlStr = string.Format("select  SJBMC,ZDMC,LX,SSJCX  from [dbo].[ZDZD_{0}] where sjbmc ='{1}' and ZDMC='{2}'", xmbh, sjbmc, field);
 
-                var ds = _sqlBase.ExecuteDataset(sqlStr);
+                var ds = _sqlDebugTool.ExecuteDataset(sqlStr);
                 if (null == ds)
                 {
                     return -1;
@@ -62,7 +62,7 @@ namespace CalDebugTools.DAL
 
                 sqlStr = $" Update  ZDZD_{xmbh} set  LX = '{dtLX}',SSJCX ='{dtSSJCX}'  where sjbmc ='{sjbmc}' and ZDMC='{field}'";
 
-                return _sqlBase.ExecuteNonQuery(sqlStr);
+                return _sqlDebugTool.ExecuteNonQuery(sqlStr);
             }
             catch (Exception ex)
             {
@@ -99,7 +99,7 @@ namespace CalDebugTools.DAL
                 //    sqlStr = $"select SJGJ_ID, SJBMC,ZDMC,SY,SSJCX,LX  from  ZDZD_{xmbh} where SJBMC ='M_{xmbh}' and (  ";
                 //}
 
-                ds = _sqlBase.ExecuteDataset(sqlStr + whereStr);
+                ds = _sqlDebugTool.ExecuteDataset(sqlStr + whereStr);
 
                 return ds;
             }
@@ -113,7 +113,6 @@ namespace CalDebugTools.DAL
         {
             List<string> lst = new List<string>();
 
-            //select lx, SFXS, *from ZDZD_HNT where SJBMC = 'S_HNT' and SFXS = 1 and(lx like '%w%' or LX like 'S')
             string sqlStr = $"select SJGJ_ID,SJBMC,ZDMC,SY,SSJCX,LX  from  ZDZD_{xmbh} where SJBMC ='{table_name}' and SFXS = 1 and(lx like '%w%' or LX like 'S') ";
             var s_ds = _sqlBase.ExecuteDataset(sqlStr);
 
@@ -124,38 +123,60 @@ namespace CalDebugTools.DAL
                     lst.Add(item["ZDMC"].ToString());
                 }
             }
-            //sqlStr = $"select SJGJ_ID,SJBMC,ZDMC,SY,SSJCX,LX  from  ZDZD_{xmbh} where SJBMC ='M_{xmbh}' and SFXS = 1 and(lx like '%w%' or LX like 'S') ";
-
-            //var m_ds = _sqlBase.ExecuteDataset(sqlStr);
-
-            //if (m_ds != null)
-            //{
-            //    foreach (DataRow item in m_ds.Tables[0].Rows)
-            //    {
-            //        lst.Add(item["ZDMC"].ToString());
-            //    }
-            //}
-
             return lst;
         }
 
-
-        public List<string> GetIOFields(string xmbh)
+        public string GetFieldsResult(DataSet redata, string strJcxm)
         {
-            List<string> lisResult = new List<string>();
             string result = "";
+            List<string> lstJcxm = strJcxm.Replace(',', '、').Split('、').ToList();
 
-            //select ZDMC  from ZDZD_HNT where (SJBMC = 'S_HNT' or SJBMC = 'M_HNT') and(lx like '%O%')
-            string sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%' or lx like '%O%')";
-            var redata = _sqlDebugTool.ExecuteDataset(sqlStr);
-
-            if (redata != null)
+            foreach (DataRow item in redata.Tables[0].Rows)
             {
-                foreach (DataRow item in redata.Tables[0].Rows)
+                if (!string.IsNullOrEmpty(item["SSJCX"].ToString()))
+                {
+                    foreach (string jcxm in lstJcxm)
+                    {
+                        if (item["SSJCX"].ToString().Contains(jcxm) && !result.Contains($",{item["ZDMC"]},"))
+                        {
+                            result += item["ZDMC"].ToString() + ",";
+                        }
+                    }
+                }
+                else
                 {
                     result += item["ZDMC"].ToString() + ",";
                 }
             }
+
+            return result;
+        }
+
+
+        public List<string> GetIOFields(string xmbh, string wtdbh)
+        {
+            List<string> lisResult = new List<string>();
+            string result = "";
+
+            string strJcxm = "";
+            var jcxmData = _sqlBase.ExecuteDataset($"select jcxm from s_{xmbh}  where BYZBRECID in(select RECID from M_BY where WTDBH = '{wtdbh}' )");
+
+            if (jcxmData != null)
+            {
+                foreach (DataRow item in jcxmData.Tables[0].Rows)
+                {
+                    strJcxm += item["jcxm"].ToString();
+                }
+            }
+
+            string sqlStr = $"select ZDMC,SSJCX from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%' or lx like '%O%')";
+            var redata = _sqlDebugTool.ExecuteDataset(sqlStr);
+
+            if (redata != null)
+            {
+                result = GetFieldsResult(redata, strJcxm);
+            }
+
             if (result.Length > 0)
             {
                 result = result.Substring(0, result.Length - 1);
@@ -163,16 +184,13 @@ namespace CalDebugTools.DAL
             lisResult.Add(result);
 
             //从表
-            sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%' or lx like '%O%') and lx not like '%H%'";
+            sqlStr = $"select ZDMC,SSJCX from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%' or lx like '%O%')";
             redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             result = "";
             if (redata != null)
             {
-                foreach (DataRow item in redata.Tables[0].Rows)
-                {
-                    result += item["ZDMC"].ToString() + ",";
-                }
+                result = GetFieldsResult(redata, strJcxm);
             }
             if (result.Length > 0)
             {
@@ -182,21 +200,28 @@ namespace CalDebugTools.DAL
             return lisResult;
 
         }
-        public List<string> GetIFields(string xmbh)
+        public List<string> GetIFields(string xmbh, string wtdbh)
         {
             List<string> lisResult = new List<string>();
             string result = "";
+            string strJcxm = "";
+            var jcxmData = _sqlBase.ExecuteDataset($"select jcxm from s_{xmbh}  where BYZBRECID in(select RECID from M_BY where WTDBH = '{wtdbh}' )");
 
-            //select ZDMC  from ZDZD_HNT where (SJBMC = 'S_HNT' or SJBMC = 'M_HNT') and(lx like '%O%')
-            string sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%')";
+            if (jcxmData != null)
+            {
+                foreach (DataRow item in jcxmData.Tables[0].Rows)
+                {
+                    strJcxm += item["jcxm"].ToString();
+                }
+            }
+            List<string> lstJcxm = strJcxm.Replace(',', '、').Split('、').ToList();
+
+            string sqlStr = $"select ZDMC ,SSJCX from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%')";
             var redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             if (redata != null)
             {
-                foreach (DataRow item in redata.Tables[0].Rows)
-                {
-                    result += item["ZDMC"].ToString() + ",";
-                }
+                result = GetFieldsResult(redata, strJcxm);
             }
             if (result.Length > 0)
             {
@@ -205,16 +230,13 @@ namespace CalDebugTools.DAL
             lisResult.Add(result);
 
             //从表
-            sqlStr = $"select ZDMC  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%') ";
-            redata = _sqlBase.ExecuteDataset(sqlStr);
+            sqlStr = $"select ZDMC,SSJCX  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%') ";
+            redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             result = "";
             if (redata != null)
             {
-                foreach (DataRow item in redata.Tables[0].Rows)
-                {
-                    result += item["ZDMC"].ToString() + ",";
-                }
+                result = GetFieldsResult(redata, strJcxm);
             }
             if (result.Length > 0)
             {

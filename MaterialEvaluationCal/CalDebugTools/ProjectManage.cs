@@ -129,8 +129,8 @@ namespace CalDebugTools
             var val = txt_jcxmbh.Text.Trim();
             if (!string.IsNullOrEmpty(val))
             {
-                txt_s.Text = "S" + val;
-                txt_m.Text = "M" + val;
+                txt_s.Text = "S_" + val;
+                txt_m.Text = "M_" + val;
             }
         }
     }

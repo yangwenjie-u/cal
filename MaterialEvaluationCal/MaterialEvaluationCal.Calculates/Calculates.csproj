@@ -60,6 +60,7 @@
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
     <Compile Include="CalculatesNew\wlb\SCY_土工\SCY.cs" />
+    <Compile Include="CalculatesNew\wlb\YS-砌筑石材\YS.cs" />
     <Compile Include="CalculatesNew\wzy\FDJ_混凝土防冻剂\FDJ.cs" />
     <Compile Include="CalculatesNew\qsf\DCL地基承载力\DCL.cs" />
     <Compile Include="CalculatesNew\qsf\JLF混凝土裂缝宽度检测\JLF.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="CalculatesNew\wzy\ZGY_基桩高应变\ZGY.cs" />
     <Compile Include="CalculatesNew\wzy\ZJZ_基桩静载%28试桩%29\ZJZ.cs" />
     <Compile Include="CalculatesNew\ywj\BN_保温系统用胶粘剂\BN.cs" />
+    <Compile Include="CalculatesNew\ywj\XHJ_型钢焊接\XHJ.cs" />
     <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\ywj\TGB_土工合成材料\TGB.cs" />
     <Compile Include="CalculatesNew\ywj\FM_阀门\FM.cs" />

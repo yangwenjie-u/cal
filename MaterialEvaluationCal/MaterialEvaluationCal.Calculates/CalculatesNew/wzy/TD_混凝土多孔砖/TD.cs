@@ -431,6 +431,47 @@ namespace Calculates
                     mitem["GH_XDXSL"] = "----";
                     mitem["G_XDHSL"] = "----";
                 }
+
+                if (jcxm.Contains("、抗渗性、"))
+                {
+                    sign = true;
+                    int bhgCount = 0;
+                    mitem["G_KS"] = "≤10";
+                    for (int i = 1; i < 4; i++)
+                    {
+                        if (!IsNumeric(sitem["W_KS_SMXJGD" + i]))
+                        {
+                            sign = false;
+                            break;
+                        }
+                    }
+                    if (sign)
+                    {
+                        for (int i = 1; i < 4; i++)
+                        {
+                            mitem["GH_KS"] = IsQualified("≤10", sitem["W_KS_SMXJGD" + i], false);
+                            if ("不合格" == mitem["GH_KS"])
+                            {
+                                bhgCount++;
+                            }
+                        }
+                    }
+                   
+                    if (bhgCount > 0)
+                    {
+                        mitem["GH_KS"] = "不合格";
+                    }
+                }
+                if (!sign)
+                {
+                    for (int i = 1; i < 4; i++)
+                    {
+                        sitem["W_KS_SMXJGD" + i] = "----";
+                    }
+                    mitem["GH_KS"] = "----";
+                    mitem["G_KS"] = "----";
+                }
+
                 if (jcxm.Contains("、抗冻性、"))
                 {
                     sign = true;

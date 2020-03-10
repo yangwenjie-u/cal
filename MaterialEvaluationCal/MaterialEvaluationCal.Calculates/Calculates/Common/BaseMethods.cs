@@ -536,8 +536,8 @@ namespace Calculates
         {
             //^-?\\d+(\\.\\d+)?$
             //^[+-]?\d*[.]?\d*$
-            //if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
-            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
+            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
+            //if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
             {
                 return true;
             }

@@ -198,7 +198,7 @@ namespace CalDebugTools
         private void btn_Debug_Click(object sender, EventArgs e)
         {
             SaveXMinfos();
-
+            IsQualified("-150~+150","-150");
             //测试乌海
             if (this.ck_other.Checked)
             {
@@ -220,9 +220,9 @@ namespace CalDebugTools
             string strIOParams = "";
             string strIParams = "";
             //查询输入输出字段
-            List<string> zdzdIOParms = _manage.GetIOFields(jcxmBH);
+            List<string> zdzdIOParms = _manage.GetIOFields(jcxmBH, whWtdbh);
             //查询输入字段
-            List<string> zdzdIParms = _manage.GetIFields(jcxmBH);
+            List<string> zdzdIParms = _manage.GetIFields(jcxmBH, whWtdbh);
 
             if (!string.IsNullOrEmpty(whWtdbh))
             {
@@ -641,146 +641,146 @@ namespace CalDebugTools
         private void btn_Run_Click(object sender, EventArgs e)
         {
             SaveXMinfos();
-            try
-            {
-                string errStr = "";
-                #region
-                //主表唯一标识，判断取数据行数
-                string jcxmBH = this.txt_jcxmbh.Text.Trim();
-                //获取JYDBH 
-                List<string> listJYDBH = new List<string>();
-                listJYDBH = GetJYDBHs();
+            //try
+            //{
+            //    string errStr = "";
+            //    #region
+            //    //主表唯一标识，判断取数据行数
+            //    string jcxmBH = this.txt_jcxmbh.Text.Trim();
+            //    //获取JYDBH 
+            //    List<string> listJYDBH = new List<string>();
+            //    listJYDBH = GetJYDBHs();
 
 
-                if (listJYDBH.Count == 0)
-                {
-                    MessageBox.Show("批量调试时获取JYDBH异常！", "调试", MessageBoxButtons.OK);
-                    return;
-                }
+            //    if (listJYDBH.Count == 0)
+            //    {
+            //        MessageBox.Show("批量调试时获取JYDBH异常！", "调试", MessageBoxButtons.OK);
+            //        return;
+            //    }
 
 
-                //if (string.IsNullOrWhiteSpace(this.txt_helper.Text.Trim()))
-                //{
-                //    MessageBox.Show("帮助表不能为空！", "调试", MessageBoxButtons.OK);
-                //    return;
-                //}
-                #region 帮助表
-                Dictionary<string, IList<IDictionary<string, string>>> listExtraData = GetExtraData(this.txt_helper.Text.Trim());
-                #endregion
+            //    //if (string.IsNullOrWhiteSpace(this.txt_helper.Text.Trim()))
+            //    //{
+            //    //    MessageBox.Show("帮助表不能为空！", "调试", MessageBoxButtons.OK);
+            //    //    return;
+            //    //}
+            //    #region 帮助表
+            //    Dictionary<string, IList<IDictionary<string, string>>> listExtraData = GetExtraData(this.txt_helper.Text.Trim());
+            //    #endregion
 
-                #endregion
-                #region 初始化dataGridView
-                //创建DataSet对象
-                DataSet ds = new DataSet();
-                //创建DataTable对象
-                DataTable dt = new DataTable();
-                //创建列
-                dt.Columns.Add("JYDBH", typeof(string));
-                dt.Columns.Add("是否合格", typeof(string));
-                //创建行
-                DataRow row = dt.NewRow();
-                //添加数据
+            //    #endregion
+            //    #region 初始化dataGridView
+            //    //创建DataSet对象
+            //    DataSet ds = new DataSet();
+            //    //创建DataTable对象
+            //    DataTable dt = new DataTable();
+            //    //创建列
+            //    dt.Columns.Add("JYDBH", typeof(string));
+            //    dt.Columns.Add("是否合格", typeof(string));
+            //    //创建行
+            //    DataRow row = dt.NewRow();
+            //    //添加数据
 
-                #endregion
+            //    #endregion
 
-                DataSet ch_sdata = null;
-                int flag = 0;
+            //    DataSet ch_sdata = null;
+            //    int flag = 0;
 
-                //查询输入输出字段
-                List<string> zdzdIOParms = _manage.GetIOFields(jcxmBH);
-                ///输入输出的参数
-                string strIOParams = GetParams(zdzdIOParms, listJYDBH[0], ESqlConnType.ConnectionStringDebugTool);
+            //    //查询输入输出字段
+            //    List<string> zdzdIOParms = _manage.GetIOFields(jcxmBH);
+            //    ///输入输出的参数
+            //    string strIOParams = GetParams(zdzdIOParms, listJYDBH[0], ESqlConnType.ConnectionStringDebugTool);
 
-                //查询输入字段
-                List<string> zdzdIParms = _manage.GetIFields(jcxmBH);
-                //输入的参数
-                string strIParams = "";
+            //    //查询输入字段
+            //    List<string> zdzdIParms = _manage.GetIFields(jcxmBH);
+            //    //输入的参数
+            //    string strIParams = "";
 
-                IDictionary<string, IList<IDictionary<string, string>>> dicIParams = null;
-                bool isHG = true;
+            //    IDictionary<string, IList<IDictionary<string, string>>> dicIParams = null;
+            //    bool isHG = true;
 
-                for (int i = 0; i < listJYDBH.Count; i++)
-                {
-                    isHG = true;
-                    row = dt.NewRow();
-                    dt.Rows.Add(row);
-                    dt.Rows[flag]["JYDBH"] = listJYDBH[i];
+            //    for (int i = 0; i < listJYDBH.Count; i++)
+            //    {
+            //        isHG = true;
+            //        row = dt.NewRow();
+            //        dt.Rows.Add(row);
+            //        dt.Rows[flag]["JYDBH"] = listJYDBH[i];
 
-                    strIParams = GetParams(zdzdIParms, listJYDBH[i], ESqlConnType.ConnectionStringDebugTool);
-                    if (string.IsNullOrEmpty(strIOParams) || string.IsNullOrEmpty(strIParams))
-                    {
-                        MessageBox.Show("参数数据不能为空！", "调试", MessageBoxButtons.OK);
-                        return;
-                    }
-                    //获取赤峰数据
-                    ch_sdata = _projectInfo.GetParmsCF(jcxmBH, zdzdIOParms, listJYDBH[i]);
-                    //调用计算
+            //        strIParams = GetParams(zdzdIParms, listJYDBH[i], ESqlConnType.ConnectionStringDebugTool);
+            //        if (string.IsNullOrEmpty(strIOParams) || string.IsNullOrEmpty(strIParams))
+            //        {
+            //            MessageBox.Show("参数数据不能为空！", "调试", MessageBoxButtons.OK);
+            //            return;
+            //        }
+            //        //获取赤峰数据
+            //        ch_sdata = _projectInfo.GetParmsCF(jcxmBH, zdzdIOParms, listJYDBH[i]);
+            //        //调用计算
 
-                    dicIParams = JsonHelper.GetAfferentDictionaryNew(strIParams);
+            //        dicIParams = JsonHelper.GetAfferentDictionaryNew(strIParams);
 
-                    RunCode(listExtraData, ref dicIParams, ref errStr);
-                    if (!string.IsNullOrEmpty(errStr))
-                    {
-                        MessageBox.Show("批量执行失败");
-                        return;
-                    }
-                    List<string> dicKeys = dicIParams.Keys.ToList();
-                    if (dicKeys.Count == 0)
-                    {
-                        MessageBox.Show($"返回试验项目{jcxmBH}数据异常");
-                    }
+            //        RunCode(listExtraData, ref dicIParams, ref errStr);
+            //        if (!string.IsNullOrEmpty(errStr))
+            //        {
+            //            MessageBox.Show("批量执行失败");
+            //            return;
+            //        }
+            //        List<string> dicKeys = dicIParams.Keys.ToList();
+            //        if (dicKeys.Count == 0)
+            //        {
+            //            MessageBox.Show($"返回试验项目{jcxmBH}数据异常");
+            //        }
 
-                    Dictionary<string, string> cfData = new Dictionary<string, string>();
+            //        Dictionary<string, string> cfData = new Dictionary<string, string>();
 
-                    List<Dictionary<string, string>> dicTab = new List<Dictionary<string, string>>();
-                    foreach (DataColumn mDc in ch_sdata.Tables[0].Columns)
-                    {
-                        cfData.Add(mDc.ToString(), ch_sdata.Tables[0].Rows[0][mDc.ToString()].ToString());
-                    }
+            //        List<Dictionary<string, string>> dicTab = new List<Dictionary<string, string>>();
+            //        foreach (DataColumn mDc in ch_sdata.Tables[0].Columns)
+            //        {
+            //            cfData.Add(mDc.ToString(), ch_sdata.Tables[0].Rows[0][mDc.ToString()].ToString());
+            //        }
 
-                    Dictionary<string, string> dicCalResult = new Dictionary<string, string>();
+            //        Dictionary<string, string> dicCalResult = new Dictionary<string, string>();
 
-                    var sItem = dicIParams[$"S_{jcxmBH}"];
+            //        var sItem = dicIParams[$"S_{jcxmBH}"];
 
-                    //计算返回的数据
-                    var value = "";
-                    foreach (var item in sItem)
-                    {
-                        foreach (var itemPar in item)
-                        {
-                            if (cfData.Keys.Contains(itemPar.Key) && cfData[itemPar.Key] != itemPar.Value)
-                            {
+            //        //计算返回的数据
+            //        var value = "";
+            //        foreach (var item in sItem)
+            //        {
+            //            foreach (var itemPar in item)
+            //            {
+            //                if (cfData.Keys.Contains(itemPar.Key) && cfData[itemPar.Key] != itemPar.Value)
+            //                {
 
-                                value = cfData[itemPar.Key];
+            //                    value = cfData[itemPar.Key];
 
-                                if (Comm.CheckValueEquals(value, itemPar.Value))
-                                {
-                                    continue;
-                                }
-                                isHG = false;
-                                break;
-                            }
-                        }
-                    }
+            //                    if (Comm.CheckValueEquals(value, itemPar.Value))
+            //                    {
+            //                        continue;
+            //                    }
+            //                    isHG = false;
+            //                    break;
+            //                }
+            //            }
+            //        }
 
-                    dt.Rows[flag]["是否合格"] = isHG;
-                    flag++;
+            //        dt.Rows[flag]["是否合格"] = isHG;
+            //        flag++;
 
-                }
-                ds.Tables.Add(dt);
+            //    }
+            //    ds.Tables.Add(dt);
 
 
-                #region 绑定dataGridView
+            //    #region 绑定dataGridView
 
-                //将数据表添加到DataSet中 
+            //    //将数据表添加到DataSet中 
 
-                this.DataGridViewRowBitch.DataSource = ds.Tables[0];
-                #endregion
-            }
-            catch
-            {
+            //    this.DataGridViewRowBitch.DataSource = ds.Tables[0];
+            //    #endregion
+            //}
+            //catch
+            //{
 
-            }
+            //}
         }
 
 
@@ -959,5 +959,229 @@ namespace CalDebugTools
             this.Hide();
             manage.Show();
         }
+
+
+        public static bool IsNumeric(string str)
+        {
+            //^-?\\d+(\\.\\d+)?$
+            //^[+-]?\d*[.]?\d*$
+            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
+            //if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        ///<summary>
+        /// 判断是否合格 默认合格/不合格
+        /// </summary>
+        /// <param name="sj">范围值</param>
+        /// <param name="sc">比较值</param>
+        /// <param name="flag">返回(符合,不符合) 还是判断(合格,不合格)  true：符合/不符合  false :合格,不合格</param>
+        /// <returns></returns>
+        public static string IsQualified(string sj, string sc, bool flag = false)
+        {
+            if (string.IsNullOrEmpty(sj) || string.IsNullOrEmpty(sc))
+            {
+                if (flag)
+                {
+                    return "不符合";
+                }
+                else
+                {
+                    return "不合格";
+                }
+            }
+            sj = sj.Trim();
+            sc = sc.Trim();
+
+            sj = sj.Replace("~", "～");
+            sj = sj.Replace(">", "＞");
+            sj = sj.Replace("<", "＜");
+            sj = sj.Replace("%", "");
+            sc = sc.Replace("%", "");
+
+            if (!IsNumeric(sc))
+            {
+                return "----";
+            }
+            #region 判断 取文字中的数值 
+
+            string temStr = sj;//"提取123.11abc提取"; //我们抓取当前字符当中的123.11
+            temStr = Regex.Replace(temStr, @"[^\d.\d]", "");
+
+            //sj 是文字加数字 如：检测值》234.43
+            if (temStr.Length + 1 != sj.Length && sj.IndexOf("～") == -1)
+            {
+                if (sj.IndexOf(temStr) > 1)
+                {
+                    sj = sj.Substring(sj.IndexOf(temStr) - 1, temStr.Length + 1);
+                }
+            }
+            #endregion
+
+            string l_bl, r_bl = "";
+            decimal min_sjz, max_sjz, scz = 0;
+            bool min_bl, max_bl, sign = false;
+
+            min_sjz = -99999;
+            max_sjz = 99999;
+            scz = Convert.ToDecimal(sc);
+
+            sign = false;
+            min_bl = false;
+            max_bl = false;
+
+            int length = 0, dw = 0;
+
+            if (sj.IndexOf('＞') != -1)
+            {
+                length = sj.Length;
+                dw = sj.IndexOf('＞');
+                dw += 1;
+                l_bl = sj.Substring(0, dw - 1);
+                r_bl = sj.Substring(dw, length - dw);
+
+                if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                {
+                    max_sjz = Convert.ToDecimal(l_bl);
+                    max_bl = false;
+                }
+
+                if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                {
+                    min_sjz = Convert.ToDecimal(r_bl);
+                    min_bl = false;
+                }
+                sign = true;
+
+            }
+
+            if (sj.IndexOf('≥') != -1)
+            {
+                length = sj.Length;
+                dw = sj.IndexOf('≥');
+                dw += 1;
+                l_bl = sj.Substring(0, dw - 1);
+                r_bl = sj.Substring(dw, length - dw);
+
+                if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                {
+                    max_sjz = Convert.ToDecimal(l_bl);
+                    max_bl = true;
+                }
+                if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                {
+                    min_sjz = Convert.ToDecimal(r_bl);
+                    min_bl = true;
+                }
+                sign = true;
+            }
+
+            if (sj.IndexOf('＜') != -1)
+            {
+                length = sj.Length;
+                dw = sj.IndexOf('＜');
+                dw += 1;
+                l_bl = sj.Substring(0, dw - 1);
+                r_bl = sj.Substring(dw, length - dw);
+
+                if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                {
+                    min_sjz = Convert.ToDecimal(l_bl);
+                    min_bl = false;
+                }
+
+                if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                {
+                    max_sjz = Convert.ToDecimal(r_bl);
+                    max_bl = false;
+                }
+                sign = true;
+            }
+
+            if (sj.IndexOf('≤') != -1)
+            {
+                length = sj.Length;
+                dw = sj.IndexOf('≤');
+                dw += 1;
+                l_bl = sj.Substring(0, dw - 1);
+                r_bl = sj.Substring(dw, length - dw);
+
+                if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                {
+                    min_sjz = Convert.ToDecimal(l_bl);
+                    min_bl = true;
+                }
+
+                if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                {
+                    max_sjz = Convert.ToDecimal(r_bl);
+                    max_bl = true;
+                }
+                sign = true;
+            }
+            if (sj.IndexOf('～') != -1)
+            {
+                length = sj.Length;
+                dw = sj.IndexOf('～');
+                dw += 1;
+                min_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(0, dw - 1)));
+                max_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(dw, length - dw)));
+
+                max_bl = true;
+                min_bl = true;
+
+                sign = true;
+            }
+            if (sj.IndexOf('±') != -1)
+            {
+                length = sj.Length;
+                dw = sj.IndexOf('±');
+                dw += 1;
+                min_sjz = Convert.ToDecimal(sj.Substring(0, dw - 1));
+                max_sjz = Convert.ToDecimal(sj.Substring(dw, length - dw));
+
+                max_bl = true;
+                min_bl = true;
+
+                sign = true;
+            }
+
+            if (sj == "0")
+            {
+                sign = true;
+                min_bl = false;
+                max_bl = true;
+                max_sjz = 0;
+            }
+
+            if (!sign)
+            {
+                return "----";
+            }
+
+            string hgjl, bhgjl = "";
+            hgjl = flag ? "符合" : "合格";
+            bhgjl = flag ? "不符合" : "不合格";
+            sign = true;
+
+            if (min_bl)
+                sign = scz >= min_sjz ? sign : false;
+            else
+                sign = scz > min_sjz ? sign : false;
+
+            if (max_bl)
+                sign = scz <= max_sjz ? sign : false;
+            else
+                sign = scz < max_sjz ? sign : false;
+
+            return sign ? hgjl : bhgjl;
+        }
+
     }
 }
