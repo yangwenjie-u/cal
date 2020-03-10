@@ -924,7 +924,7 @@ namespace Calculates
                     sign = (IsNumeric(sItem["FIGRA"]) && !string.IsNullOrEmpty(sItem["FIGRA"])) ? sign : false;
 
                     //mbHggs3 = sItem["GH_FIGRA"] == "不合格" ? mbHggs3++ : mbHggs3;
-                    mAllHg = sItem["GH_FIGRA"] == "不合格" ? false : true;
+                    mAllHg = sItem["GH_FIGRA"] == "不合格" ? false : mAllHg;
                 }
                 else
                 {
@@ -984,7 +984,7 @@ namespace Calculates
                     }
 
                     //mbHggs3 = sItem["GH_THR"] == "不合格" ? mbHggs3++ : mbHggs3;
-                    mAllHg = sItem["GH_THR"] == "不合格" ? false : true;
+                    mAllHg = sItem["GH_THR"] == "不合格" ? false : mAllHg;
                 }
                 else
                 {
@@ -1253,7 +1253,7 @@ namespace Calculates
                         }
                     }
                     //mbHggs1 = sItem["GH_RSYZZ"] == "不合格" ? mbHggs1++ : mbHggs1;
-                    mAllHg = sItem["GH_RSYZZ"] == "不合格" ? false : true;
+                    mAllHg = sItem["GH_RSYZZ"] == "不合格" ? false : mAllHg;
                 }
                 else
                 {

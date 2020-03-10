@@ -70,13 +70,13 @@ namespace CalDebugTools.Forms
                 string alterSql = "";
                 if (txt_bzCount.Text == "1")
                 {
-                    alterSql = $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName} {txt_fieldType.Text.Trim()};";
+                    //alterSql = $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName} {txt_fieldType.Text.Trim()};";
                 }
                 else
                 {
                     for (int i = 1; i < Convert.ToInt16(txt_bzCount.Text) + 1; i++)
                     {
-                        alterSql += $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName}{i} {txt_fieldType.Text.Trim()};";
+                        //alterSql += $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName}{i} {txt_fieldType.Text.Trim()};";
                     }
                 }
 

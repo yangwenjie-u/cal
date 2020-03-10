@@ -158,8 +158,10 @@ namespace Calculates
                              sItem["KYQD" + xd] = "----";
                          }
                      }
-                     if (jcxm.Contains("、冻融、") || jcxm.Contains("抗风化性能"))
+                     if (jcxm.Contains("、抗风化性能、"))
                      {
+                         //if (jcxm.Contains("、冻融、"))
+                         //{
                          sign = true;
                          for (xd = 1; xd < 6; xd++)
                          {
@@ -203,20 +205,20 @@ namespace Calculates
                          {
                              return false;
                          }
-                     }
-                     else
-                     {
-                         for (xd = 1; xd < 6; xd++)
-                         {
-                             sItem["DRWG" + xd] = "----";
-                             sItem["DRGM" + xd] = "----";
-                         }
-                         sItem["DRPD"] = "----";
+                         //}
+                         //else
+                         //{
+                         //    for (xd = 1; xd < 6; xd++)
+                         //    {
+                         //        sItem["DRWG" + xd] = "----";
+                         //        sItem["DRGM" + xd] = "----";
+                         //    }
+                         //    sItem["DRPD"] = "----";
 
-                     }
+                         //}
 
-                     if (jcxm.Contains("、吸水率和饱和系数、") || jcxm.Contains("抗风化性能"))
-                     {
+                         //if (jcxm.Contains("、吸水率和饱和系数、"))
+                         //{
                          sign = true;
                          sign = IsNumeric(sItem["XSLPJZ"]) ? sign : false;
                          sign = IsNumeric(sItem["BHXSPJZ"]) ? sign : false;
@@ -248,15 +250,16 @@ namespace Calculates
                          {
                              return false;
                          }
-                     }
-                     else
-                     {
-                         sItem["BHXSPD"] = "----";
-                         sItem["XSLPJZ"] = "----";
-                         sItem["XSLDKZD"] = "----";
-                         sItem["BHXSPJZ"] = "----";
-                         sItem["BHXSZDZ"] = "----";
-                         sItem["XSLBHXSYQ"] = "----";
+                         //}
+                         //else
+                         //{
+                         //    sItem["BHXSPD"] = "----";
+                         //    sItem["XSLPJZ"] = "----";
+                         //    sItem["XSLDKZD"] = "----";
+                         //    sItem["BHXSPJZ"] = "----";
+                         //    sItem["BHXSZDZ"] = "----";
+                         //    sItem["XSLBHXSYQ"] = "----";
+                         //}
                      }
 
                      if (jcxm.Contains("、泛霜、"))
@@ -842,7 +845,7 @@ namespace Calculates
                     }
                     else
                         sItem["WGPD"] = "----";
-                    if (jcxm.Contains("、冻融、") || jcxm.Contains("抗风化性能"))
+                    if (jcxm.Contains("、冻融、"))
                     {
                         if (Conversion.Val(sItem["DRG0_1"]) != 0)
                         {
@@ -881,7 +884,7 @@ namespace Calculates
                                 sItem["DRPD"] = "----";
 
                         }
-                        if (jcxm.Contains("、吸水率和饱和系数、") || jcxm.Contains("抗风化性能"))
+                        if (jcxm.Contains("、吸水率和饱和系数、"))
                         {
                             if (Conversion.Val(sItem["BHXSG0_1"]) != 0)
                             {
@@ -934,7 +937,7 @@ namespace Calculates
                         }
                         else
                             sItem["BHXSPD"] = "----";
-                        if (jcxm.Contains("、、泛霜、"))
+                        if (jcxm.Contains("、泛霜、"))
                         {
                             if (sItem["FSCD1"].Trim() == "----" || sItem["FSCD1"].Trim() == "")
                                 mSFwc = false;

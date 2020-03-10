@@ -76,6 +76,7 @@
     <Compile Include="CalculatesNew\wzy\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\wzy\JZ_岩棉、矿渣棉及用品\JZ.cs" />
     <Compile Include="CalculatesNew\wzy\PGC_排水管\PGC.cs" />
+    <Compile Include="CalculatesNew\wzy\QK1_普通混凝土小型砌块\QK1.cs" />
     <Compile Include="CalculatesNew\wzy\QN_蒸压加气混凝土用砂浆[2001]\QN.cs" />
     <Compile Include="CalculatesNew\wzy\SHX_石灰（新）\SHX.cs" />
     <Compile Include="CalculatesNew\wzy\SL_石料\SL.cs" />

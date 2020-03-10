@@ -42,11 +42,11 @@ namespace Calculates
                 {
                     sItem["GGLB"] = "Ⅱ";
                 }
-                var mrsdj = mrsDj.FirstOrDefault(u => u["MC"] == sItem["GGLB"].Trim());
-                if (sItem["BZXZ"] == "Q/THBW 001-2013")
-                {
-                    mrsdj = mrsDj.FirstOrDefault(u => u["JCYJ"] == sItem["BZXZ"].Trim() && u["MC"] == sItem["GGLB"].Trim());
-                }
+                //var mrsdj = mrsDj.FirstOrDefault(u => u["MC"] == sItem["GGLB"].Trim());
+                //if (sItem["BZXZ"] == "Q/THBW 001-2013")
+                //{
+                  var  mrsdj = mrsDj.FirstOrDefault(u => u["JCYJ"] == sItem["BZXZ"].Trim() && u["MC"] == sItem["GGLB"].Trim());
+                //}
 
                 if (mrsdj != null)
                 {
@@ -76,7 +76,7 @@ namespace Calculates
                     int mcd, mdwz;
                     bool sjtabcalc = true;
 
-                    if (sItem["BZXZ"].Contains("JC/T 2200-2013") || sItem["CPMC"].Contains("水泥基泡沫保温板"))
+                    if (sItem["BZXZ"].Contains("JC/T 2200-2013") && sItem["CPMC"].Contains("水泥基泡沫保温板"))
                     {
                         #region 表观密度
                         if (jcxm.Contains("、表观密度、"))
@@ -532,7 +532,7 @@ namespace Calculates
                     continue;
                 }
 
-                if (sItem["BZXZ"].Contains("JC/T 2200-2013") || sItem["CPMC"].Contains("水泥基泡沫保温板"))
+                if (sItem["BZXZ"].Contains("JC/T 2200-2013") && sItem["CPMC"].Contains("水泥基泡沫保温板"))
                 {
                     #region 表观密度
                     if (jcxm.Contains("、表观密度、"))
