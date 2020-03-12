@@ -249,7 +249,7 @@ namespace Calculates
                 sItem["QT_SJ"] = mrsYlsj["KTSY"];
 
                 var sjtabs = MItem[0]["SJTABS"];
-                if (!string.IsNullOrEmpty(sjtabs))
+                if (string.IsNullOrEmpty(sjtabs))
                 {
                     mAllHg = sjtabcalc(MItem[0], sItem);
                 }
