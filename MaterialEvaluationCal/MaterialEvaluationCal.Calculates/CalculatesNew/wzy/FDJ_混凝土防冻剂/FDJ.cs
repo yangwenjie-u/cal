@@ -699,20 +699,20 @@ namespace Calculates
 
                             if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                             {
-                                MItem[0]["HG_JSL"] = "重做";
-                                sItem["PJJSL"] = "重做";
+                                MItem[0]["HG_MSL"] = "重做";
+                                sItem["JPJMSL"] = "重做";
                             }
                             if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                             {
-                                sItem["PJJSL"] = Round(mMidKyqd, 0).ToString();
+                                sItem["JPJMSL"] = Round(mMidKyqd, 0).ToString();
                             }
                             if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                             {
-                                sItem["PJJSL"] = Round(mMidKyqd, 0).ToString();
+                                sItem["JPJMSL"] = Round(mMidKyqd, 0).ToString();
                             }
                             if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                             {
-                                sItem["PJJSL"] = Round(mAvgKyqd, 1).ToString();
+                                sItem["JPJMSL"] = Round(mAvgKyqd, 1).ToString();
                             }
                         }
 
@@ -731,6 +731,7 @@ namespace Calculates
                             sItem["SMSL_2"] = Round(GetSafeDouble(sItem["SMSZL_2"]) / (GetSafeDouble(sItem["MSBYS_2"]) / GetSafeDouble(sItem["SPHWZL_2"])) / GetSafeDouble(sItem["SSYZL_2"]) * 100, 2).ToString();
                             sItem["SMSL_3"] = Round(GetSafeDouble(sItem["SMSZL_3"]) / (GetSafeDouble(sItem["MSBYS_3"]) / GetSafeDouble(sItem["SPHWZL_3"])) / GetSafeDouble(sItem["SSYZL_3"]) * 100, 2).ToString();
                         }
+
                         if (!string.IsNullOrEmpty(sItem["SMSL_1"]) && sItem["SMSL_1"] != "----")
                         {
                             string mlongStr = sItem["SMSL_1"] + "," + sItem["SMSL_2"] + "," + sItem["SMSL_3"];
@@ -768,7 +769,7 @@ namespace Calculates
                             mAllHg = false;
                             if (sItem["JPJMSL"] == "重做" && sItem["SPJMSL"] == "重做")
                             {
-                                sItem["HG_MSL"] = "基准受检重做";
+                                MItem[0]["HG_MSL"] = "基准受检重做";
                             }
                             else
                             {

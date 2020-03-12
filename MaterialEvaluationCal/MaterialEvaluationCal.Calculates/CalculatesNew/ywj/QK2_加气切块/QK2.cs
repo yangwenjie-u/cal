@@ -12,9 +12,6 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
-
-            #region 计算方法
-            System.Diagnostics.Debugger.Break();
             #region 
             var mjcjg = "不合格";
             var jsbeizhu = "";
@@ -588,7 +585,26 @@ namespace Calculates
                     }
                     else
                         sItem["DRXSPD"] = "----";
-                    if (sItem["GMDPD"].Trim() == "不合格" || sItem["QDPD"].Trim() == "不合格" || sItem["WCPD"].Trim() == "不合格" || sItem["DRXSPD"] == "不合格" || sItem["LLSSLPD"] == "不合格" || sItem["DHQDPD"] == "不合格")
+
+                    if (jcxm.Contains("、含水率和吸水率、"))
+                    {
+                        if (Conversion.Val(sItem["HSL1_1"]) > 0)
+                        {
+                            sItem["HSL1"] = Round((Conversion.Val(sItem["HSL1_1"]) + Conversion.Val(sItem["HSL1_2"]) + Conversion.Val(sItem["HSL1_3"])) / 3, 1).ToString("0.0");
+                            sItem["HSL2"] = Round((Conversion.Val(sItem["HSL2_1"]) + Conversion.Val(sItem["HSL2_2"]) + Conversion.Val(sItem["HSL2_3"])) / 3, 1).ToString("0.0");
+                            sItem["HSL3"] = Round((Conversion.Val(sItem["HSL3_1"]) + Conversion.Val(sItem["HSL3_2"]) + Conversion.Val(sItem["HSL3_3"])) / 3, 1).ToString("0.0");
+                        }
+                        if (Conversion.Val(sItem["HSL1"]) > 0)
+                            sItem["HSLPJ"] = Round((Conversion.Val(sItem["HSL1"]) + Conversion.Val(sItem["HSL2"]) + Conversion.Val(sItem["HSL3"])) / 3, 1).ToString("0.0");
+
+                        sItem["HSLPD"] = IsQualified(sItem["HSLYQ"], sItem["HSLPJ"]);
+                    }
+                    else
+                    {
+                        sItem["HSLPD"] = "----";
+                    }
+
+                    if (sItem["GMDPD"].Trim() == "不合格" || sItem["HSLPD"] == "不合格" || sItem["QDPD"].Trim() == "不合格" || sItem["WCPD"].Trim() == "不合格" || sItem["DRXSPD"] == "不合格" || sItem["LLSSLPD"] == "不合格" || sItem["DHQDPD"] == "不合格")
                     {
                         sItem["JCJG"] = "不合格";
                         if (sItem["GMDPD"].Trim() == "合格" || sItem["QDPD"].Trim() == "合格" || sItem["WCPD"].Trim() == "合格" || sItem["DRXSPD"] == "合格" || sItem["LLSSLPD"] == "合格" || sItem["DHQDPD"] == "合格")
@@ -608,8 +624,6 @@ namespace Calculates
                 #endregion
             }
             #endregion
-            #endregion 计算方法
-
             /************************ 代码结束 *********************/
 
         }
