@@ -14,358 +14,13 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region  参数定义
-            string mcalBh;
             double[] mkyqdArray = new double[3];
             int mbhggs;
-            int mbhggs2;
             string dCpmc, dLx, dZf, dDj, dBzh, mSjdj;
-            int vp, mCnt_FjHg, mCnt_FjHg1, mxlgs, mxwgs;
-            string mMaxBgbh;
             string mJSFF;
-            bool mAllHg;
-            bool msffs;
-            bool mGetBgbh;
-            int QDJSFF;
-            bool mSFwc;
-            bool mFlag_Hg, mFlag_Bhg;
-            mSFwc = true;
-            #endregion
-
-            #region 自定义函数
-
-            //以下为对用设计值的判定方式
-            Func<string, string, string> calc_pd =
-                delegate (string sj, string sc)
-                {
-                    sj = sj.Trim();
-                    string calc_pd_ret = "";
-                    bool isStart = false;
-                    string tmpStr = string.Empty;
-                    if (string.IsNullOrEmpty(sc))
-                        sc = "";
-                    for (int i = 1; i <= sc.Length; i++)
-                    {
-                        if (IsNumeric(sc.Substring(i - 1, 1)) || sc.Substring(i - 1, 1) == "." || sc.Substring(i - 1, 1) == "-")
-                        {
-                            isStart = true;
-                            tmpStr = tmpStr + sc.Substring(i - 1, 1);
-                        }
-                        else
-                        {
-                            if (isStart == false && tmpStr != "")
-                                break;
-                        }
-                    }
-                    sc = tmpStr;
-                    if (!IsNumeric(sc))
-                    {
-                        calc_pd_ret = "----";
-                    }
-                    else
-                    {
-                        double min_sjz, max_sjz, scz;
-                        int length, dw;
-                        if (sj.Contains("＞"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("＞") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains(">"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf(">") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("≥"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("≥") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("＜"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("＜") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz < max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("<"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("<") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz < max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("≤"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("≤") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("="))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("=") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz == max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("～"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj.Substring(0, dw - 1));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= min_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(min_sjz.ToString().Substring(i - 1, 1)) || min_sjz.ToString().Substring(i - 1, 1) == "." || min_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + min_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            min_sjz = Conversion.Val(tmpStr);
-                            max_sjz = GetSafeDouble(sj.Substring(dw, length - dw));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= max_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(max_sjz.ToString().Substring(i - 1, 1)) || max_sjz.ToString().Substring(i - 1, 1) == "." || max_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + max_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            max_sjz = Conversion.Val(tmpStr);
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz && scz >= min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("~"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("~") + 1;
-                            min_sjz = GetSafeDouble(sj.Substring(0, dw - 1));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= min_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(min_sjz.ToString().Substring(i - 1, 1)) || min_sjz.ToString().Substring(i - 1, 1) == "." || min_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + min_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            min_sjz = Conversion.Val(tmpStr);
-                            max_sjz = GetSafeDouble(sj.Substring(dw, length - dw));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= max_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(max_sjz.ToString().Substring(i - 1, 1)) || max_sjz.ToString().Substring(i - 1, 1) == "." || max_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + max_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            max_sjz = Conversion.Val(tmpStr);
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz && scz >= min_sjz ? "符合" : "不符合";
-                        }
-                    }
-                    return calc_pd_ret;
-                };
-
-            //这个函数总括了对于判定(符合,不符合) 还是判断(合格,不合格)
-            Func<string, string, bool, string> calc_PB =
-                delegate (string sj_fun, string sc_fun, bool flag_fun)
-                {
-                    string calc_PB_fun = string.Empty;
-                    if (string.IsNullOrEmpty(sj_fun) || string.IsNullOrEmpty(sc_fun))
-                    {
-                        if (flag_fun)
-                        {
-                            return "不符合";
-                        }
-                        else
-                        {
-                            return "不合格";
-                        }
-                    }
-                    sj_fun = sj_fun.Trim();
-                    sc_fun = sc_fun.Trim();
-                    if (!IsNumeric(sc_fun))
-                    {
-                        calc_PB_fun = "----";
-                    }
-                    else
-                    {
-                        sj_fun = sj_fun.Replace("~", "～");
-                        string l_bl, r_bl;
-                        double min_sjz, max_sjz, scz;
-                        int length, dw;
-                        bool min_bl, max_bl, sign_fun;
-                        min_sjz = -99999;
-                        max_sjz = 99999;
-                        scz = GetSafeDouble(sc_fun);
-                        sign_fun = false;
-                        min_bl = false;
-                        max_bl = false;
-                        if (sj_fun.Contains("＞"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("＞") + 1;
-                            l_bl = sj_fun.Substring(0, dw - 1);
-                            r_bl = sj_fun.Substring(dw, length - dw);
-                            if (IsNumeric(l_bl))
-                            {
-                                max_sjz = GetSafeDouble(l_bl);
-                                max_bl = false;
-                            }
-                            if (IsNumeric(r_bl))
-                            {
-                                min_sjz = GetSafeDouble(r_bl);
-                                min_bl = false;
-                            }
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("≥"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("≥") + 1;
-                            l_bl = sj_fun.Substring(0, dw - 1);
-                            r_bl = sj_fun.Substring(dw, length - dw);
-                            if (IsNumeric(l_bl))
-                            {
-                                max_sjz = GetSafeDouble(l_bl);
-                                max_bl = true;
-                            }
-                            if (IsNumeric(r_bl))
-                            {
-                                min_sjz = GetSafeDouble(r_bl);
-                                min_bl = true;
-                            }
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("＜"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("＜") + 1;
-                            l_bl = sj_fun.Substring(0, dw - 1);
-                            r_bl = sj_fun.Substring(dw, length - dw);
-                            if (IsNumeric(l_bl))
-                            {
-                                min_sjz = GetSafeDouble(l_bl);
-                                min_bl = false;
-                            }
-                            if (IsNumeric(r_bl))
-                            {
-                                max_sjz = GetSafeDouble(r_bl);
-                                max_bl = false;
-                            }
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("≤"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("≤") + 1;
-                            l_bl = sj_fun.Substring(0, dw - 1);
-                            r_bl = sj_fun.Substring(dw, length - dw);
-                            if (IsNumeric(l_bl))
-                            {
-                                min_sjz = GetSafeDouble(l_bl);
-                                min_bl = true;
-                            }
-                            if (IsNumeric(r_bl))
-                            {
-                                max_sjz = GetSafeDouble(r_bl);
-                                max_bl = true;
-                            }
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("～"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
-                            max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
-                            min_bl = true;
-                            max_bl = true;
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("±"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("±") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
-                            max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
-                            min_sjz = min_sjz - max_sjz;
-                            max_sjz = min_sjz + 2 * max_sjz;
-                            min_bl = true;
-                            max_bl = true;
-                            sign_fun = true;
-                        }
-                        if (sj_fun == "0" && !string.IsNullOrEmpty(sj_fun))
-                        {
-                            sign_fun = true;
-                            min_bl = false;
-                            max_bl = false;
-                            max_sjz = 0;
-                        }
-                        if (!sign_fun)
-                        {
-                            calc_PB_fun = "----";
-                        }
-                        else
-                        {
-                            string hgjl, bhgjl;
-                            hgjl = flag_fun ? "符合" : "合格";
-                            bhgjl = flag_fun ? "不符合" : "不合格";
-                            sign_fun = true; //做为判定了
-                            if (min_bl)
-                                sign_fun = scz >= min_sjz ? sign_fun : false;
-                            else
-                                sign_fun = scz > min_sjz ? sign_fun : false;
-                            if (max_bl)
-                                sign_fun = scz <= max_sjz ? sign_fun : false;
-                            else
-                                sign_fun = scz < max_sjz ? sign_fun : false;
-                            calc_PB_fun = sign_fun ? hgjl : bhgjl;
-                        }
-                    }
-                    return calc_PB_fun;
-                };
+            bool mAllHg = true;
+            int QDJSFF = 0;
+            bool mFlag_Hg, mFlag_Bhg = false;
             #endregion
 
             #region  集合取值
@@ -377,12 +32,9 @@ namespace Calculates
             #endregion
 
             #region  计算开始
-            mGetBgbh = false;
-            mAllHg = true;
-            mFlag_Hg = false;
-            mFlag_Bhg = false;
             mitem["JCJGMS"] = "";
             mSjdj = "";
+            //int QDJSFF = 0;
             foreach (var sitem in SItem)
             {
                 dCpmc = string.IsNullOrEmpty(sitem["CPMC"]) ? "" : sitem["CPMC"].Trim();
@@ -428,6 +80,34 @@ namespace Calculates
                     mitem["G_DWRD"] = mrsDj_item["G_DWRD"];
                     mitem["G_NRD"] = mrsDj_item["G_NRD"];
                     mitem["G_DWWZ"] = mrsDj_item["G_DWWZ"];
+                    //要求初级干燥抗裂性（6h）
+                    mitem["G_DWWZ"] = mrsDj_item["G_DWWZ"];
+
+                    //施工性
+                    mitem["G_SGX"] = mrsDj_item["G_SGX"];
+                    //腻子膜柔韧性
+                    mitem["G_NZMRRX"] = mrsDj_item["G_NZMRRX"];
+
+                    //初期干燥抗裂性
+                    //打磨性
+                    mitem["G_DMX"] = mrsDj_item["G_DMX"];
+
+                    mitem["G_DNJQD"] = mrsDj_item["G_DNJQD"];
+                    //动态抗开裂性
+                    mitem["G_DTKKLX"] = mrsDj_item["G_DTKKLX"];
+
+                    //吸水量
+                    mitem["G_XSL"] = mrsDj_item["G_XSL"];
+                    //低温成膜性
+                    mitem["G_DWCMX"] = mrsDj_item["G_DWCMX"];
+                    //耐碱性
+                    mitem["G_NJX"] = mrsDj_item["G_NJX"];
+                    //对比率
+                    mitem["G_DBL"] = mrsDj_item["G_DBL"];
+                    //耐沾污性
+                    mitem["G_NZWX"] = mrsDj_item["G_NZWX"];
+
+
                 }
                 else
                 {
@@ -446,20 +126,21 @@ namespace Calculates
                     mitem["G_NJQD"] = "≥" + mitem["G_NJQD"];
                 }
                 mbhggs = 0;
+                var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+                bool sign;
+                int xd, Gs, Ws;
+                double md1, md2, md, sum;
+                mFlag_Hg = false;
+                mFlag_Bhg = false;
+                mbhggs = 0;
+
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
-                    bool sign;
-                    int xd, Gs, Ws;
-                    double md1, md2, md, sum;
-                    double[] nArr;
-                    mFlag_Hg = false;
-                    mFlag_Bhg = false;
-                    mbhggs = 0;
                     //以下初始化报告字段
-                    var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+
                     if (jcxm.Contains("、干燥时间(表干)、") || jcxm.Contains("、表干时间、"))
                     {
-                        sitem["HG_BGSJ"] = calc_PB(mitem["G_BGSJ"], sitem["BGSJ"], false);
+                        sitem["HG_BGSJ"] = IsQualified(mitem["G_BGSJ"], sitem["BGSJ"], false);
                         mbhggs = sitem["HG_BGSJ"] == "不合格" ? mbhggs + 1 : mbhggs;
                         if (sitem["HG_BGSJ"] != "不合格")
                             mFlag_Hg = true;
@@ -475,7 +156,7 @@ namespace Calculates
                     if (jcxm.Contains("、干燥时间(实干)、") || jcxm.Contains("、实干时间、"))
                     {
                         mitem["G_SGSJ"] = "≤" + mitem["G_SGSJ"].Trim();
-                        sitem["HG_SGSJ"] = calc_PB(mitem["G_SGSJ"], sitem["SGSJ"], false);
+                        sitem["HG_SGSJ"] = IsQualified(mitem["G_SGSJ"], sitem["SGSJ"], false);
                         mbhggs = sitem["HG_SGSJ"] == "不合格" ? mbhggs + 1 : mbhggs;
                         if (sitem["HG_SGSJ"] != "不合格")
                             mFlag_Hg = true;
@@ -535,7 +216,7 @@ namespace Calculates
                             sitem["NJQD"] = Ws == 1 ? pjmd.ToString("0.0") : sitem["NJQD"];
                             sitem["NJQD"] = Ws == 2 ? pjmd.ToString("0.00") : sitem["NJQD"];
                             sitem["NJQD"] = Ws == 3 ? pjmd.ToString("0.000") : sitem["NJQD"];
-                            sitem["HG_NJQD"] = calc_PB(mitem["G_NJQD"], sitem["NJQD"], false);
+                            sitem["HG_NJQD"] = IsQualified(mitem["G_NJQD"], sitem["NJQD"], false);
                             mbhggs = sitem["HG_NJQD"] == "不合格" ? mbhggs + 1 : mbhggs;
                             if (sitem["HG_NJQD"] != "不合格")
                                 mFlag_Hg = true;
@@ -559,7 +240,7 @@ namespace Calculates
                     if (jcxm.Contains("、固体含量、"))
                     {
                         mitem["G_GTHL"] = "≥" + mitem["G_GTHL"].Trim();
-                        sitem["HG_GTHL"] = calc_PB(mitem["G_GTHL"], sitem["GTHL"], false);
+                        sitem["HG_GTHL"] = IsQualified(mitem["G_GTHL"], sitem["GTHL"], false);
                         mbhggs = sitem["HG_GTHL"] == "不合格" ? mbhggs + 1 : mbhggs;
                         if (sitem["HG_GTHL"] != "不合格")
                             mFlag_Hg = true;
@@ -575,7 +256,7 @@ namespace Calculates
                     if (jcxm.Contains("、断裂伸长率(无处理)、") || jcxm.Contains("、断裂伸长率、") || jcxm.Contains("、断裂延伸率、"))
                     {
                         mitem["G_SCL"] = "≥" + mitem["G_SCL"].Trim();
-                        sitem["HG_SCL"] = calc_PB(mitem["G_SCL"], sitem["SCL"], false);
+                        sitem["HG_SCL"] = IsQualified(mitem["G_SCL"], sitem["SCL"], false);
                         mbhggs = sitem["HG_SCL"] == "不合格" ? mbhggs + 1 : mbhggs;
                         if (sitem["HG_SCL"] != "不合格")
                             mFlag_Hg = true;
@@ -591,7 +272,7 @@ namespace Calculates
                     if (jcxm.Contains("、拉伸强度(热处理后)、"))
                     {
                         mitem["G_JNJQD"] = "≥" + mitem["G_JNJQD"].Trim();
-                        sitem["HG_JNJQD"] = calc_PB(mitem["G_JNJQD"], sitem["JNJQD"], false);
+                        sitem["HG_JNJQD"] = IsQualified(mitem["G_JNJQD"], sitem["JNJQD"], false);
                         mbhggs = sitem["HG_JNJQD"] == "不合格" ? mbhggs + 1 : mbhggs;
                         if (sitem["HG_JNJQD"] != "不合格")
                             mFlag_Hg = true;
@@ -607,7 +288,7 @@ namespace Calculates
                     if (jcxm.Contains("、断裂伸长率(热处理后)、"))
                     {
                         mitem["G_RSCL"] = "≥" + mitem["G_RSCL"].Trim();
-                        sitem["HG_RSCL"] = calc_PB(mitem["G_RSCL"], sitem["RSCL"], false);
+                        sitem["HG_RSCL"] = IsQualified(mitem["G_RSCL"], sitem["RSCL"], false);
                         mbhggs = sitem["HG_RSCL"] == "不合格" ? mbhggs + 1 : mbhggs;
                         if (sitem["HG_RSCL"] != "不合格")
                             mFlag_Hg = true;
@@ -684,18 +365,28 @@ namespace Calculates
                         sitem["HG_BTSX"] = "----";
                         mitem["G_BTSX"] = "----";
                     }
-                    if (mbhggs == 0)
+                }
+                else
+                {
+                    if (jcxm.Contains("、容器中状态、"))
                     {
-                        mitem["JCJGMS"] = "该组试件所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                        sitem["JCJG"] = "合格";
+                        if ("符合" != sitem["HG_RQZZT"] && "合格" != sitem["HG_RQZZT"])
+                        {
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                        }
+                        else
+                        {
+                            mFlag_Hg = true;
+                        }
                     }
-                    if (mbhggs >= 1)
+                    else
                     {
-                        mitem["JCJGMS"] = "该组试件不符合" + mitem["PDBZ"] + "标准要求。";
-                        sitem["JCJG"] = "不合格";
-                        if (mFlag_Bhg && mFlag_Hg)
-                            mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                        sitem["RQZZT"] = "----";
+                        sitem["HG_RQZZT"] = "----";
+                        mitem["G_RQZZT"] = "----";
                     }
+
                     if (jcxm.Contains("、施工性、"))
                     {
                         if ("符合" != sitem["HG_SGX"] && "合格" != sitem["HG_SGX"])
@@ -1225,6 +916,7 @@ namespace Calculates
                         sitem["HG_DWCMX"] = "----";
                         mitem["G_DWCMX"] = "----";
                     }
+
                     if (jcxm.Contains("、固体含量、"))
                     {
                         mitem["G_GTHL"] = "≥" + mitem["G_GTHL"].Trim();
@@ -1290,19 +982,34 @@ namespace Calculates
                         mitem["G_DWRD"] = "----";
                     }
                 }
-            }
-            //主表总判断赋值
-            if (mAllHg)
-            {
-                mitem["JCJG"] = "合格";
-                mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
-            }
-            else
-            {
-                mitem["JCJG"] = "不合格";
-                mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
-                if (mFlag_Bhg && mFlag_Hg)
+
+                if (mbhggs == 0)
+                {
+                    mitem["JCJGMS"] = "该组试件所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                    sitem["JCJG"] = "合格";
+                }
+                if (mbhggs >= 1)
+                {
+                    mitem["JCJGMS"] = "该组试件不符合" + mitem["PDBZ"] + "标准要求。";
+                    sitem["JCJG"] = "不合格";
+                    if (mFlag_Bhg && mFlag_Hg)
+                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                }
+                mAllHg = (mAllHg && sitem["JCJG"] == "合格");
+
+                //主表总判断赋值
+                if (mAllHg)
+                {
+                    mitem["JCJG"] = "合格";
                     mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                }
+                else
+                {
+                    mitem["JCJG"] = "不合格";
+                    mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
+                    if (mFlag_Bhg && mFlag_Hg)
+                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                }
             }
             #endregion
             /************************ 代码结束 *********************/
