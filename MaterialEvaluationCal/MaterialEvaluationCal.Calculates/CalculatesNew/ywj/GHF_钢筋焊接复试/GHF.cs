@@ -573,8 +573,8 @@ namespace Calculates
 
                 if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
-                    if (Convert.ToInt32(MItem[0]["JYDBH"]) > 150700000)
-                    {
+                    //if (Convert.ToInt32(MItem[0]["JYDBH"]) > 150700000)
+                    //{
                         var Gs = 0;
                         for (int i = 1; i < 7; i++)
                         {
@@ -615,7 +615,7 @@ namespace Calculates
                         {
                             sItem["JCJG_LW"] = "不符合";
                         }
-                    }
+                    //}
                 }
                 else
                 {
