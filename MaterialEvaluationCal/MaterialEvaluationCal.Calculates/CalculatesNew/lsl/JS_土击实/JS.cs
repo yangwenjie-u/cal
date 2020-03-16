@@ -13,6 +13,7 @@ namespace Calculates
             Func<double[], double[], int, double, double, double, double, string> qd =
                 delegate (double[] X, double[] Y, int n_fun, double Xmin, double Ymin, double Xmax, double Ymax)
                 {
+
                     int Xh;
                     double[] dt = new double[4];
                     int m = 5;
@@ -40,7 +41,7 @@ namespace Calculates
 
                     Z = 0;
 
-                    for (I = 0; I <= n_fun - 1; I++)
+                    for (I = 1; I <= n_fun; I++)
                     {
                         xpj = xpj + X[I];
                         Z = Z + X[I] / (1 * n_fun);
@@ -50,7 +51,7 @@ namespace Calculates
                     D1 = 1 * n_fun;
                     P = 0;
                     C = 0;
-                    for (I = 0; I <= n_fun - 1; I++)
+                    for (I = 1; I <= n_fun; I++)
                     {
                         P = P + (X[I] - Z);
                         C = C + Y[I];
@@ -67,7 +68,7 @@ namespace Calculates
                         D2 = 0;
                         C = 0;
                         G = 0;
-                        for (I = 0; I <= n_fun - 1; I++)
+                        for (I = 1; I <= n_fun ; I++)
                         {
                             Q = X[I] - Z - P;
                             D2 = D2 + Q * Q;
@@ -96,7 +97,7 @@ namespace Calculates
                         C = 0;
                         G = 0;
 
-                        for (I = 0; I <= n_fun - 1; I++)
+                        for (I = 1; I <= n_fun; I++)
                         {
                             Q = S[J];
                             for (K = J - 1; K >= 0; K--)
@@ -123,7 +124,7 @@ namespace Calculates
                     dt[0] = 0;
                     dt[1] = 0;
                     dt[2] = 0;
-                    for (I = 0; I <= n_fun - 1; I++)
+                    for (I = 1; I <= n_fun ; I++)
                     {
                         Q = xiaoA[m];
                         for (K = m - 2; K >= 0; K--)
@@ -215,7 +216,7 @@ namespace Calculates
                 //    sItem["LQ"] = (DateTime.Parse(sItem["SYRQ"]) - DateTime.Parse(sItem["ZZRQ"])).Days.ToString();
                 //}
                 string mYpmcJcxm = sItem["YPMC"].Trim() + "样品" + sItem["JCXM"].Trim();
-                mItem["PDBZ"] = "GB/T 50123-1999《土工试验方法标准》";
+                mItem["PDBZ"] = "GB/T 50123-2019《土工试验方法标准》";
                 double sStzl, sSmd, sSzl1, sSzl2, sGtzl1, sGtzl2, sHsl1, sHsl2;
                 for (int i = 1; i <= 6; i++)
                 {
@@ -273,7 +274,7 @@ namespace Calculates
                 if (n >= 5)
                 {
 
-                    for (int i = 0; i <= n - 1; i++)
+                    for (int i = 1; i <= n; i++)
                     {
                         if (x[i] < Xmin && x[i] != 0)
                             Xmin = x[i];
@@ -368,19 +369,19 @@ namespace Calculates
                 }
                 if (double.Parse(mItem["ZDGMD1"]) * double.Parse(mItem["ZDGMD2"]) == 0)
                 {
-                    mItem["ZDGMD"] = Round(double.Parse(mItem["ZDGMD1"]) + double.Parse(mItem["ZDGMD2"]), 2).ToString();
+                    mItem["ZDGMD"] = Round(double.Parse(mItem["ZDGMD1"]) + double.Parse(mItem["ZDGMD2"]), 2).ToString("0.00");
                 }
                 else
                 {
-                    mItem["ZDGMD"] = Round((double.Parse(mItem["ZDGMD1"]) + double.Parse(mItem["ZDGMD2"]))/2, 2).ToString();
+                    mItem["ZDGMD"] = Round((double.Parse(mItem["ZDGMD1"]) + double.Parse(mItem["ZDGMD2"]))/2, 2).ToString("0.00");
                 }
                 if (double.Parse(mItem["ZJHSL1"]) * double.Parse(mItem["ZJHSL2"]) == 0)
                 {
-                    mItem["ZJHSL"] = Round(double.Parse(mItem["ZJHSL1"]) + double.Parse(mItem["ZJHSL2"]), 1).ToString();
+                    mItem["ZJHSL"] = Round(double.Parse(mItem["ZJHSL1"]) + double.Parse(mItem["ZJHSL2"]), 1).ToString("0.0");
                 }
                 else
                 {
-                    mItem["ZJHSL"] = Round((double.Parse(mItem["ZJHSL1"]) + double.Parse(mItem["ZJHSL2"])) / 2, 1).ToString();
+                    mItem["ZJHSL"] = Round((double.Parse(mItem["ZJHSL1"]) + double.Parse(mItem["ZJHSL2"])) / 2, 1).ToString("0.0");
                 }
                 bool flag, sign;
                 mItem["S_BZ"] = "1";

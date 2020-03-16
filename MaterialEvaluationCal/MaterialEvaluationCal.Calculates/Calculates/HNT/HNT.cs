@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculates
 {
-    public class HNT : BaseMethods
+    public class HNT1 : BaseMethods
     {
         //使用标准 GBT 14684-2011 建设用砂
         public void Calc()

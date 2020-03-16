@@ -12,7 +12,6 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
-
             #region  参数定义
             string mcalBh, mlongStr;
             double[] mkzqdArray = new double[3];
@@ -58,7 +57,7 @@ namespace Calculates
                     sitem["SJKD"] = mrsGg_Filter["SJKD"];
                     sitem["SJGD"] = mrsGg_Filter["SJGD"];
                     sitem["SJCD"] = mrsGg_Filter["SJCD"];
-                    sitem["HSXS"] = mrsGg_Filter["HSXS"];
+                    sitem["HSXS"] =GetSafeDouble(mrsGg_Filter["HSXS"]).ToString("0.00");
                 }
                 else
                 {
