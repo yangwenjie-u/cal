@@ -9,6 +9,7 @@ namespace Calculates
     {
         public void Calc()
         {
+            /************************ 代码开始 *********************/
             #region
             bool mAllHg = true;
             var data = retData;
@@ -39,6 +40,7 @@ namespace Calculates
                 double md1, md2, md3, xd1, xd2, xd3, md, pjmd, sum; int gs;
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
+                #region 油石比
                 sign = true;
                 if (jcxm.Contains("、油石比、"))
                 {
@@ -49,7 +51,7 @@ namespace Calculates
                             && !IsNumeric(sItem["L_RJG" + i]) && !IsNumeric(sItem["L_LJK" + i]) && !IsNumeric(sItem["L_GGZL" + i])
                              && !IsNumeric(sItem["L_CTL" + i]) && !IsNumeric(sItem["L_ZSCT" + i]) && !IsNumeric(sItem["L_CZZL" + i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                         }
                     }
                     sum = 0;
@@ -79,8 +81,8 @@ namespace Calculates
                         pjmd = 0;
                     else
                         pjmd = sum / gs;
-                    pjmd = Round(pjmd, 2);
-                    mItem["W_YSB"] = pjmd.ToString();  //油石比
+                    //pjmd = Math.Round(pjmd, 2);
+                    mItem["W_YSB"] = pjmd.ToString("0.00");  //油石比
                     mItem["GH_YSB"] = IsQualified(mItem["G_YSB"], mItem["W_YSB"], true);
                 }
                 else
@@ -89,6 +91,9 @@ namespace Calculates
                     mItem["GH_YSB"] = "----";
                     mItem["G_YSB"] = "----";
                 }
+                #endregion
+
+                #region 沥青含量 || 沥青用量
                 if (jcxm.Contains("、沥青含量、") || jcxm.Contains("沥青用量"))
                 {
                     gs = 3;
@@ -98,7 +103,7 @@ namespace Calculates
                             && !IsNumeric(sItem["L_RJG" + i]) && !IsNumeric(sItem["L_LJK" + i]) && !IsNumeric(sItem["L_GGZL" + i])
                              && !IsNumeric(sItem["L_CTL" + i]) && !IsNumeric(sItem["L_ZSCT" + i]) && !IsNumeric(sItem["L_CZZL" + i]))
                         {
-                            gs = i - 1;
+                            gs = gs - 1;
                         }
                     }
                     sum = 0;
@@ -124,15 +129,15 @@ namespace Calculates
                         md1 = GetSafeDouble(sItem["L_HHL" + i].Trim());
                         nArr[5] = md1 - nArr[4]; //沥青混合料中沥青质量
                         nArr[6] = 100 * nArr[5] / md1; //沥青含量
-                        nArr[6] = Round(nArr[6], 2);
+                        nArr[6] = Math.Round(nArr[6], 2);
                         sum = sum + nArr[6];
                     }
                     if (gs == 0)
                         pjmd = 0;
                     else
                         pjmd = sum / gs;
-                    pjmd = Round(pjmd, 2);
-                    mItem["W_LQHL"] = pjmd.ToString();
+                    //pjmd = Math.Round(pjmd, 2);
+                    mItem["W_LQHL"] = pjmd.ToString("0.00");
                     mItem["GH_LQHL"] = IsQualified(mItem["G_LQHL"], mItem["W_LQHL"], true);
                 }
                 else
@@ -141,7 +146,9 @@ namespace Calculates
                     mItem["GH_LQHL"] = "----";
                     mItem["G_LQHL"] = "----";
                 }
+                #endregion
 
+                #region 矿料级配
                 sign = true;
                 if (jcxm.Contains("、矿料级配、"))
                 {
@@ -153,7 +160,9 @@ namespace Calculates
                 }
                 else
                     sign = false;
+                #endregion
 
+                #region 稳定度
                 sign = true;
                 if (jcxm.Contains("、稳定度、"))
                 {
@@ -162,8 +171,8 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["SJWD" + i]))
                         {
-                            gs = i - 1;
-                            break;
+                            gs = gs - 1;
+                            continue;
                         }
                     }
                     sum = 0;
@@ -176,8 +185,9 @@ namespace Calculates
                         pjmd = 0;
                     else
                         pjmd = sum / gs;
-                    pjmd = Round(pjmd, 2);
-                    mItem["W_WDD"] = pjmd.ToString();
+                    //pjmd =Math.Round(pjmd, 2);
+                    //pjmd = Math.Round(pjmd, 2, MidpointRounding.AwayFromZero);
+                    mItem["W_WDD"] = pjmd.ToString("0.00");
                     mItem["GH_WDD"] = IsQualified(mItem["G_WDD"], mItem["W_WDD"], true);
                 }
                 else
@@ -186,6 +196,9 @@ namespace Calculates
                     mItem["GH_WDD"] = "----";
                     mItem["G_WDD"] = "----";
                 }
+                #endregion
+
+                #region 流值
                 sign = true;
                 if (jcxm.Contains("、流值、"))
                 {
@@ -194,8 +207,8 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["SJLZ" + i]))
                         {
-                            gs = i - 1;
-                            break;
+                            gs = gs - 1;
+                            continue;
                         }
                     }
                     sum = 0;
@@ -208,8 +221,8 @@ namespace Calculates
                         pjmd = 0;
                     else
                         pjmd = sum / gs;
-                    pjmd = Round(pjmd, 1);
-                    mItem["W_LZ"] = pjmd.ToString();
+                    //pjmd = Math.Round(pjmd, 1);
+                    mItem["W_LZ"] = pjmd.ToString("0.0");
                     mItem["GH_LZ"] = IsQualified(mItem["G_LZ"], mItem["W_LZ"], true);
                 }
                 else
@@ -218,8 +231,41 @@ namespace Calculates
                     mItem["GH_LZ"] = "----";
                     mItem["G_LZ"] = "----";
                 }
-                sign = true;
+                #endregion
 
+                #region 矿料间隙率
+                sign = true;
+                if (jcxm.Contains("、矿料间隙率、"))
+                {
+                    gs = 6;
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        if (!IsNumeric(sItem["KLJXL" + i]))
+                        {
+                            gs = gs - 1;
+                            continue;
+                        }
+                    }
+                    sum = 0;
+                    for (int i = 1; i <= gs; i++)
+                    {
+                        md = Conversion.Val(sItem["KLJXL" + i].Trim());
+                        sum = sum + md;
+                    }
+                    pjmd = sum / gs;
+                    //pjmd = Math.Round(pjmd, 1);
+                    mItem["W_KLJXL"] = pjmd.ToString("0.0");
+                    mItem["GH_KLJXL"] = IsQualified(mItem["G_KLJXL"], mItem["W_KLJXL"], true);
+                }
+                else
+                {
+                    mItem["W_KLJXL"] = "----";
+                    mItem["GH_KLJXL"] = "----";
+                    mItem["G_KLJXL"] = "----";
+                }
+                #endregion
+
+                #region 马歇尔模数
                 if (jcxm.Contains("、马歇尔模数、"))
                 {
                     gs = 6;
@@ -238,8 +284,8 @@ namespace Calculates
                         sum = sum + md;
                     }
                     pjmd = sum / gs;
-                    pjmd = Round(pjmd, 1);
-                    mItem["W_MXEMS"] = pjmd.ToString();
+                    //pjmd = Math.Round(pjmd, 1);
+                    mItem["W_MXEMS"] = pjmd.ToString("0.0");
                     mItem["GH_MXEMS"] = IsQualified(mItem["G_MXEMS"], mItem["W_MXEMS"], true);
                 }
                 else
@@ -248,8 +294,9 @@ namespace Calculates
                     mItem["GH_MXEMS"] = "----";
                     mItem["G_MXEMS"] = "----";
                 }
+                #endregion
 
-
+                #region 空隙率
                 if (jcxm.Contains("、空隙率、"))
                 {
                     gs = 6;
@@ -257,8 +304,8 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["KSL" + i]))
                         {
-                            gs = i - 1;
-                            break;
+                            gs = gs - 1;
+                            continue;
                         }
                     }
                     sum = 0;
@@ -271,8 +318,8 @@ namespace Calculates
                         pjmd = 0;
                     else
                         pjmd = sum / gs;
-                    pjmd = Round(pjmd, 1);
-                    mItem["W_KXL"] = pjmd.ToString();
+                    //pjmd = Math.Round(pjmd, 1);
+                    mItem["W_KXL"] = pjmd.ToString("0.0");
                     mItem["GH_KXL"] = IsQualified(mItem["G_KXL"], mItem["W_KXL"], true);
                 }
                 else
@@ -281,7 +328,9 @@ namespace Calculates
                     mItem["GH_KXL"] = "----";
                     mItem["G_KXL"] = "----";
                 }
+                #endregion
 
+                #region 沥青饱和度
                 if (jcxm.Contains("、沥青饱和度、"))
                 {
                     gs = 6;
@@ -289,8 +338,8 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["LQBHD" + i]))
                         {
-                            gs = i - 1;
-                            break;
+                            gs = gs - 1;
+                            continue;
                         }
                     }
                     sum = 0;
@@ -303,8 +352,8 @@ namespace Calculates
                         pjmd = 0;
                     else
                         pjmd = sum / gs;
-                    pjmd = Round(pjmd, 1);
-                    mItem["W_LQBHD"] = pjmd.ToString();
+                    //pjmd = Math.Round(pjmd, 1);
+                    mItem["W_LQBHD"] = pjmd.ToString("0.0");
                     mItem["GH_LQBHD"] = IsQualified(mItem["G_LQBHD"], mItem["W_LQBHD"], true);
                 }
                 else
@@ -313,7 +362,9 @@ namespace Calculates
                     mItem["GH_LQBHD"] = "----";
                     mItem["G_LQBHD"] = "----";
                 }
+                #endregion
 
+                #region 残留稳定度
                 if (jcxm.Contains("、残留稳定度、"))
                 {
                     gs = 6;
@@ -321,8 +372,8 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["SJWD" + i]) || !IsNumeric(sItem["CLWD" + i]))
                         {
-                            gs = i - 1;
-                            break;
+                            gs = gs - 1;
+                            continue;
                         }
                     }
                     sum = 0;
@@ -331,15 +382,15 @@ namespace Calculates
                         md1 = Conversion.Val(sItem["CLWD" + i].Trim());
                         md2 = Conversion.Val(sItem["SJWD" + i].Trim());
                         md = 100 * md1 / md2;
-                        md = Round(md, 1);
+                        md = Math.Round(md, 1);
                         sum = sum + md;
                     }
                     if (gs == 0)
                         pjmd = 0;
                     else
                         pjmd = sum / gs;
-                    pjmd = Round(pjmd, 1);
-                    mItem["W_CLWDD"] = pjmd.ToString();
+                    //pjmd = Math.Round(pjmd, 1);
+                    mItem["W_CLWDD"] = pjmd.ToString("0.0");
                     mItem["GH_CLWDD"] = IsQualified(mItem["G_CLWDD"], mItem["W_CLWDD"], true);
                 }
                 else
@@ -348,7 +399,9 @@ namespace Calculates
                     mItem["GH_CLWDD"] = "----";
                     mItem["G_CLWDD"] = "----";
                 }
+                #endregion
 
+                #region 密度
                 if (jcxm.Contains("、密度、"))
                 {
                     gs = 6;
@@ -356,8 +409,8 @@ namespace Calculates
                     {
                         if (!IsNumeric(sItem["SCMD" + i]))
                         {
-                            gs = i - 1;
-                            break;
+                            gs = gs - 1;
+                            continue;
                         }
                     }
                     sum = 0;
@@ -370,8 +423,8 @@ namespace Calculates
                         pjmd = 0;
                     else
                         pjmd = sum / gs;
-                    pjmd = Round(pjmd, 1);
-                    mItem["W_MD"] = pjmd.ToString();
+                    //pjmd = Math.Round(pjmd, 1);
+                    mItem["W_MD"] = pjmd.ToString("0.0");
                     mItem["GH_MD"] = IsQualified(mItem["G_MD"], mItem["W_MD"], true);
                 }
                 else
@@ -384,6 +437,7 @@ namespace Calculates
                 mAllHg = true;
                 jsbeizhu = "该组样品检测结果如上。";
             }
+            #endregion
 
             #region 添加最终报告
             if (mAllHg)
