@@ -77,7 +77,7 @@ namespace Calculates
                     continue;
                 }
 
-                sItem["BZYQ"] = "每组试样平均粘结强度不应小于" + string.Format(extraFieldsDj["PJBXY"], "0.0") + "MPa，每组可有一个试样的粘结强度小于" + string.Format(extraFieldsDj["PJBXY"], "0.0") + "MPa，但不应小于" + string.Format(extraFieldsDj["DKBXY"], "0.0") + "MPa。";
+                sItem["BZYQ"] = "每组试样平均粘结强度不应小于" + GetSafeDouble(extraFieldsDj["PJBXY"]).ToString("0.0") + "MPa，每组可有一个试样的粘结强度小于" + GetSafeDouble(extraFieldsDj["PJBXY"]).ToString("0.0") + "MPa，但不应小于" + GetSafeDouble(extraFieldsDj["DKBXY"]).ToString("0.0") + "MPa。";
                 if (mJSFF == "")
                 {
                     if (jcxm.Contains("、粘结强度、"))

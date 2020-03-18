@@ -63,7 +63,7 @@ namespace Calculates
                     //}
 
                     pjhd = (schd1 + schd2 + schd3) / 3;
-                    sItem["SCPJHD"] = pjhd.ToString("0.0");
+                    sItem["SCPJHD"] = pjhd.ToString("0");
                     sjhd = string.IsNullOrEmpty(sItem["SJHD"]) ? 0 : double.Parse(sItem["SJHD"].Trim());
                     c = pjhd - sjhd;    //平均厚度与设计厚度差
                     if (sjhd > 0 && c >= -5 && c <= 10)

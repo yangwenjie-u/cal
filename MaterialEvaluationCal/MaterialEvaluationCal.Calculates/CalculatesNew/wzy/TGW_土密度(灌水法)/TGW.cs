@@ -46,6 +46,7 @@ namespace Calculates
             mitem["JCJGMS"] = "";
             foreach (var sitem in SItem)
             {
+                sitem["GCBW"] = mitem["GCBW"];//报告展示用
                 double msmd;
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))

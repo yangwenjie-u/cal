@@ -143,7 +143,7 @@ namespace Calculates
                     //{
                     //    sItem["syr"] = "";
                     //}
-                    sItem["QDYQ"] = "抗压强度平均值需≥" + extraFieldsDj["PJBXY"] + "MPa,\r\n 单块最小强度值需≥" + GetSafeDouble(extraFieldsDj["DKBXY"]).ToString("0.0") + "MPa，";
+                    sItem["QDYQ"] = "抗压强度平均值需≥" + GetSafeDouble(extraFieldsDj["PJBXY"]).ToString("0.0") + "MPa,\r\n 单块最小强度值需≥" + GetSafeDouble(extraFieldsDj["DKBXY"]).ToString("0.0") + "MPa";
 
                     sItem["QCD1"] = Math.Round((GetSafeDouble(sItem["QCD1_1"]) + GetSafeDouble(sItem["QCD1_2"])) / 2, 0).ToString();
                     sItem["QKD1"] = Math.Round((GetSafeDouble(sItem["QKD1_1"]) + GetSafeDouble(sItem["QKD1_2"])) / 2, 0).ToString();
@@ -199,7 +199,7 @@ namespace Calculates
                         sItem["GMDPD"] = "不合格";
                     }
 
-                    sItem["MDDJFW"] = "密度等级范围≤" + sItem["MDDJFW"] + "kg/m&scsup3&scend。";
+                    sItem["MDDJFW"] = "密度等级范围≤" + GetSafeDouble(sItem["MDDJFW"]).ToString("0") + "kg/m³。";
 
 
                 }

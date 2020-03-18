@@ -365,7 +365,7 @@ namespace Calculates
                 {
                     if (sItem["JCBZH"].Contains("144") || (sItem["GGXH"].Contains("抗裂砂浆") || sItem["JCBZH"].Contains("158")))
                     {
-                        if (jcxm.Contains("、拉伸粘结强度(原强度)、") || jcxm.Contains("、拉伸粘结强度(干燥状态)、") || jcxm.Contains("、拉伸粘结强度(常温28d)、"))
+                        if (jcxm.Contains("、拉伸粘结强度(原强度)、") || jcxm.Contains("、拉伸粘结强度(干燥状态)、") || jcxm.Contains("、拉伸粘结强度(常温28d)、") || jcxm.Contains("、拉伸粘结原强度、"))
                         {
                             sItem["MJ11"] = (Conversion.Val(sItem["CD11"]) * Conversion.Val(sItem["KD11"])).ToString();
                             sItem["MJ12"] = (Conversion.Val(sItem["CD12"]) * Conversion.Val(sItem["KD12"])).ToString();
@@ -411,7 +411,7 @@ namespace Calculates
                             MItem[0]["G_PHJM1"] = "----";
                         }
 
-                        if (jcxm.Contains("、拉伸粘结强度(耐水)、") || jcxm.Contains("、拉伸粘结强度(浸水48h后)、") || jcxm.Contains("、浸水拉伸粘结强度(常温28d，浸水7d)、"))
+                        if (jcxm.Contains("、拉伸粘结强度(耐水)、") || jcxm.Contains("、拉伸粘结强度(浸水48h后)、") || jcxm.Contains("、浸水拉伸粘结强度(常温28d，浸水7d)、") || jcxm.Contains("、拉伸粘结耐水强度、"))
                         {
                             sItem["MJ21"] = (Conversion.Val(sItem["CD21"]) * Conversion.Val(sItem["KD21"])).ToString();
                             sItem["MJ22"] = (Conversion.Val(sItem["CD22"]) * Conversion.Val(sItem["KD22"])).ToString();
@@ -458,7 +458,7 @@ namespace Calculates
                             MItem[0]["G_PHJM2"] = "----";
                         }
 
-                        if (jcxm.Contains("、拉伸粘结强度(耐冻融)、"))
+                        if (jcxm.Contains("、拉伸粘结强度(耐冻融)、") || jcxm.Contains("、拉伸粘结耐冻融强度、"))
                         {
                             sItem["MJ31"] = (Conversion.Val(sItem["CD31"]) * Conversion.Val(sItem["KD31"])).ToString();
                             sItem["MJ32"] = (Conversion.Val(sItem["CD32"]) * Conversion.Val(sItem["KD32"])).ToString();
@@ -505,9 +505,15 @@ namespace Calculates
                             //MItem[0]["G_QD3"] = "----";
                             //MItem[0]["G_PHJM3"] = "----";
                         }
+
+                        #region 压折比 可操作时间
                         sItem["KCZSJ"] = "----";
                         MItem[0]["G_KCZSJ"] = "----";
                         MItem[0]["HG_KCZSJ"] = "----";
+                        sItem["YZB"] = "----";
+                        MItem[0]["G_YZB"] = "----";
+                        MItem[0]["HG_YZB"] = "----";
+                        #endregion
                     }
                     else if (sItem["JCBZH"].Contains("29906-2013"))
                     {
@@ -744,7 +750,7 @@ namespace Calculates
                     {
                         //JC 149-2003(JG 158)标准开始
                         #region 拉伸粘结强度(原强度)、拉伸粘结强度(干燥状态)、压剪粘结强度(原强度)、
-                        if (jcxm.Contains("、拉伸粘结强度(原强度)、") || jcxm.Contains("、拉伸粘结强度(干燥状态)、") || jcxm.Contains("、压剪粘结强度(原强度)、"))
+                        if (jcxm.Contains("、拉伸粘结强度(原强度)、") || jcxm.Contains("、拉伸粘结强度(干燥状态)、") || jcxm.Contains("、压剪粘结强度(原强度)、") || jcxm.Contains("、拉伸粘结原强度、"))
                         {
                             if (jcxm.Contains("、压剪粘结强度(原强度)、"))
                             {
@@ -865,7 +871,7 @@ namespace Calculates
                         #endregion
 
                         #region 拉伸粘结强度(耐水)、拉伸粘结强度(浸水48h后)、压剪粘结强度(耐水)、
-                        if (jcxm.Contains("、拉伸粘结强度(耐水)、") || jcxm.Contains("、拉伸粘结强度(浸水48h后)、") || jcxm.Contains("、压剪粘结强度(耐水)、"))
+                        if (jcxm.Contains("、拉伸粘结强度(耐水)、") || jcxm.Contains("、拉伸粘结强度(浸水48h后)、") || jcxm.Contains("、压剪粘结强度(耐水)、") || jcxm.Contains("、拉伸粘结耐水强度、"))
                         {
                             if (jcxm.Contains("、压剪粘结强度(耐水)、"))
                             {
@@ -985,7 +991,7 @@ namespace Calculates
                         #endregion
 
                         #region 拉伸粘结强度(耐冻融)、压剪粘结强度(耐冻融)、
-                        if (jcxm.Contains("、拉伸粘结强度(耐冻融)、") || jcxm.Contains("、压剪粘结强度(耐冻融)、"))
+                        if (jcxm.Contains("、拉伸粘结强度(耐冻融)、") || jcxm.Contains("、压剪粘结强度(耐冻融)、") || jcxm.Contains("、拉伸粘结耐冻融强度、"))
                         {
                             if (jcxm.Contains("、压剪粘结强度(耐冻融)、"))
                             {
@@ -1129,6 +1135,11 @@ namespace Calculates
                         }
                         #endregion
 
+                        #region 压折比
+                        sItem["YZB"] = "----";
+                        MItem[0]["G_YZB"] = "----";
+                        MItem[0]["HG_YZB"] = "----";
+                        #endregion
                     }
                 }
             }

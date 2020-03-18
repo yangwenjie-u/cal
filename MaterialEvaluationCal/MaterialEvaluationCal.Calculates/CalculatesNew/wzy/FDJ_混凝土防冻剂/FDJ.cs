@@ -1339,8 +1339,8 @@ namespace Calculates
                             mFlag_Hg = true;
                         }
                     }
-                    #region 50次冻融强度损失率比
                     #endregion
+                    #region 50次冻融强度损失率比
                     if (jcxm.Contains("、50次冻融强度损失率比、"))
                     {
                         mhsxs = 0;
@@ -1376,17 +1376,17 @@ namespace Calculates
                             {
                                 mlq = "DRHS";
                             }
-                            var mHZ1 = sItem["DRQJHZ1"];
+                            //var mHZ1 = sItem["DRQJHZ1"];
 
                             List<double> Arrmd = new List<double>();
                             if (sItem[mlq + "HZ1"] != "" && sItem[mlq + "HZ1"] != "----")
                             {
                                 for (int j = 1; j <= 3; j++)
                                 {
-                                    mHZ1 = sItem["DRHJHZ" + j];
-                                    mHZ1 = sItem["DRQJHZ" + j];
-                                    mHZ1 = sItem["DRQSHZ" + j];
-                                    mHZ1 = sItem["DRHSHZ" + j];
+                                    //mHZ1 = sItem["DRHJHZ" + j];
+                                    //mHZ1 = sItem["DRQJHZ" + j];
+                                    //mHZ1 = sItem["DRQSHZ" + j];
+                                    //mHZ1 = sItem["DRHSHZ" + j];
 
                                     md1 = GetSafeDouble(sItem[mlq + "HZ" + j]);
                                     md2 = Round(1000 * md1 / (100 * 100), 1);
@@ -1394,17 +1394,17 @@ namespace Calculates
                                     sum = sum + md2;
                                     sItem[mlq + "QD" + j] = Round(md2, 1).ToString();
                                 }
-                                string mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
-                                string[] str = mlongStr.Split(',');
-                                foreach (string s in str)
-                                {
-                                    mtmpArray.Add(GetSafeDouble(s));
-                                }
-                                mtmpArray.Sort();
-                                mMaxKyqd = mtmpArray[2];
-                                mMinKyqd = mtmpArray[0];
-                                mMidKyqd = mtmpArray[1];
-                                mAvgKyqd = mtmpArray.Average();
+                                //string mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
+                                //string[] str = mlongStr.Split(',');
+                                //foreach (string s in str)
+                                //{
+                                //    mtmpArray.Add(GetSafeDouble(s));
+                                //}
+                                Arrmd.Sort();
+                                mMaxKyqd = Arrmd[2];
+                                mMinKyqd = Arrmd[0];
+                                mMidKyqd = Arrmd[1];
+                                mAvgKyqd = Arrmd.Average();
                                 if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
                                 {
                                     sItem[mlq + "QD"] = Round(mMidKyqd, 1).ToString();
