@@ -724,11 +724,11 @@ namespace Calculates
                 #region 不跳转代码
                 else
                 {
-                    #region 含泥量
                     double mdjmd1 = 0;
                     double mdjmd2 = 0;
                     double mbgmd1 = 0;
                     double mbgmd2 = 0;
+                    #region 含泥量
                     sitem["HNLPD"] = "";
                     if (jcxm.Contains("、含泥量、"))
                     {
@@ -806,8 +806,8 @@ namespace Calculates
                     {
                         if (Conversion.Val(sitem["DJMDV"]) != 0)
                         {
-                            mdjmd1 = Round((Conversion.Val(sitem["DJMDG1"]) - Conversion.Val(sitem["DJMDG2"])) / Conversion.Val(sitem["DJMDV"]) * 10, 0) * 10;
-                            mdjmd2 = Round((Conversion.Val(sitem["DJMDG1_2"]) - Conversion.Val(sitem["DJMDG2_2"])) / Conversion.Val(sitem["DJMDV"]) * 10, 0) * 10;
+                            mdjmd1 = Round((Conversion.Val(sitem["DJMDG1"]) - Conversion.Val(sitem["DJMDG2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0)*10;//标准文档要求精确到10kg/m3
+                            mdjmd2 = Round((Conversion.Val(sitem["DJMDG1_2"]) - Conversion.Val(sitem["DJMDG2_2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0)*10;
                             sitem["DJMD"] = (Round((mdjmd1 + mdjmd2) / 20, 0) * 10).ToString();
                             sitem["DJMDPD"] = "";
                         }
@@ -823,8 +823,8 @@ namespace Calculates
                         double mjmmd2 = 0;
                         if ((Conversion.Val(sitem["JMMDV"]) != 0))
                         {
-                            mjmmd1 = Round((Conversion.Val(sitem["JMMDG1"]) - Conversion.Val(sitem["JMMDG2"])) / Conversion.Val(sitem["JMMDV"]) * 10, 0) * 10;
-                            mjmmd2 = Round((Conversion.Val(sitem["JMMDG1_2"]) - Conversion.Val(sitem["JMMDG2_2"])) / Conversion.Val(sitem["JMMDV"]) * 10, 0) * 10;
+                            mjmmd1 = Round((Conversion.Val(sitem["JMMDG1"]) - Conversion.Val(sitem["JMMDG2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0)*10;//标准文档要求精确到10kg/m3
+                            mjmmd2 = Round((Conversion.Val(sitem["JMMDG1_2"]) - Conversion.Val(sitem["JMMDG2_2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0)*10;
                             sitem["JMMD"] = (Round((mjmmd1 + mjmmd2) / 20, 0) * 10).ToString();
                             sitem["JMMDPD"] = "";
                         }
@@ -870,14 +870,14 @@ namespace Calculates
                     {
                         double mkxl1 = 0;
                         double mkxl2 = 0;
-                        sitem["KXLP1"] = mdjmd1.ToString();
+                        sitem["KXLP1"] = mdjmd1.ToString();//堆积密度
                         sitem["KXLP1_2"] = mdjmd2.ToString();
-                        sitem["KXLP2"] = mbgmd1.ToString();
+                        sitem["KXLP2"] = mbgmd1.ToString();//表观密度1
                         sitem["KXLP2_2"] = mbgmd2.ToString();
                         if (GetSafeDouble(sitem["KXLP2"]) != 0 && GetSafeDouble(sitem["KXLP2_2"]) != 0)
                         {
-                            mkxl1 = Round(1 - GetSafeDouble(sitem["KXLP1"]) / GetSafeDouble(sitem["KXLP2"]) * 100, 0);
-                            mkxl2 = Round((1 - GetSafeDouble(sitem["KXLP1_2"]) / GetSafeDouble(sitem["KXLP2_2"])) * 100, 0);
+                            mkxl1 = (1 - GetSafeDouble(sitem["KXLP1"]) / GetSafeDouble(sitem["KXLP2"])) * 100;
+                            mkxl2 = (1 - GetSafeDouble(sitem["KXLP1_2"]) / GetSafeDouble(sitem["KXLP2_2"])) * 100;
                             sitem["KXL"] = Round((mkxl1 + mkxl2) / 2, 0).ToString();
                         }
                         sitem["KXLPD"] = "";
@@ -953,7 +953,8 @@ namespace Calculates
                             md = Round((mxsl1 + mxsl2) / 2, 1);
                             sitem["XSL"] = md.ToString("0.0");
                             if (Math.Abs((mxsl1 - mxsl2)) > 0.2)
-                                sitem["XSLPD"] = "两次结果差大于0.2，须重新试验";
+                                //sitem["XSLPD"] = "两次结果差大于0.2，须重新试验";
+                                sitem["XSLPD"] = "重新试验";
                         }
                     }
                     else
