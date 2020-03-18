@@ -1,4 +1,5 @@
-﻿using CalDebugTools.DAL;
+﻿using CalDebugTools.BLL;
+using CalDebugTools.DAL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,6 +26,7 @@ namespace CalDebugTools.Forms
             {
                 this.txt_code.Text = FormMain._strCode;
             }
+            txt_xmbh.Text = ConfigurationHelper.GetConfig("jcxmbh");
         }
 
         private void UploadFields_FormClosed(object sender, FormClosedEventArgs e)

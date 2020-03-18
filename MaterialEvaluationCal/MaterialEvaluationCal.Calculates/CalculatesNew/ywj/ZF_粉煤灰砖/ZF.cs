@@ -14,7 +14,6 @@ namespace Calculates
             #region
             var extraDJ = dataExtra["BZ_ZF_DJ"];
 
-
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "该组试样的检测结果全部合格";
@@ -155,7 +154,7 @@ namespace Calculates
                      {
                          sItem["QDJL"] = "----";
                      }
-                     if (jcxm.Contains("、冻后强度、")|| jcxm.Contains("、抗冻性能、"))
+                     if (jcxm.Contains("、冻后强度、") || jcxm.Contains("、抗冻性能、"))
                      {
                          sign = true;
 
@@ -186,7 +185,7 @@ namespace Calculates
                      }
 
 
-                     if (jcxm.Contains("、质量损失率、")|| jcxm.Contains("、抗冻性能、"))
+                     if (jcxm.Contains("、质量损失率、") || jcxm.Contains("、抗冻性能、"))
                      {
                          sign = true;
 
@@ -216,7 +215,7 @@ namespace Calculates
                      }
 
 
-                     if (jcxm.Contains("冻后强度") || jcxm.Contains("质量损失率")|| jcxm.Contains("、抗冻性能、"))
+                     if (jcxm.Contains("冻后强度") || jcxm.Contains("质量损失率") || jcxm.Contains("、抗冻性能、"))
                      {
                          sItem["KDXJL"] = sItem["PD_DHQD"] == "不合格" || sItem["PD_ZLSS"] == "不合格" ? "不符合" : "符合";
                          sItem["KDXJL"] = sItem["KDXJL"] + sItem["SJDJ"] + "强度等级";
@@ -385,7 +384,7 @@ namespace Calculates
                                 md2 = (kd1 + kd2) / 2;
                                 md2 = Round(md2, 0);
                                 md = Conversion.Val(sItem["KZ_KYHZ" + xd].Trim()) * Conversion.Val(sItem["ZGKJ"].Trim());
-                                md = 1000 * 3 * md / (Math.Pow(2 * md1 * md2, 2));
+                                md = 1000 * 3 * md / (2 * md1 * Math.Pow(md2, 2));
                                 md = Round(md, 2);
                                 sItem["QD_KZQD" + xd] = md.ToString("0.00");
                                 nArr[xd] = md;
