@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1000">
     <Grid >
-        <Button Content="钢筋焊接头" HorizontalAlignment="Left" Margin="117,169,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click"/>
+        <!--<Button Content="钢筋焊接头" HorizontalAlignment="Left" Margin="117,169,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click"/>
         <Button Content="碳素结构钢" HorizontalAlignment="Left" Margin="117,87,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_1"/>
         <Button Content="机械连接" HorizontalAlignment="Left" Margin="272,87,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_2"/>
         <Button Content="蒸压灰砂砖" HorizontalAlignment="Left" Margin="272,173,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_3"/>
@@ -16,7 +16,7 @@
         <Button Content="钢筋原材料" HorizontalAlignment="Left" Margin="117,227,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_6"/>
         <Button Content="轴心抗压" HorizontalAlignment="Left" Margin="551,173,0,0" VerticalAlignment="Top" Width="75" Height="23"  Click="Button_Click_7"/>
         <Button Content="钢管（国际）" HorizontalAlignment="Left" Margin="551,87,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_8"/>
-        <!--<Button Content="砂浆[2009标准]" HorizontalAlignment="Left" Margin="245,223,0,0" VerticalAlignment="Top" Width="102" Height="23" Click="Button_Click_9" RenderTransformOrigin="0.575,-0.01"/>-->
+        --><!--<Button Content="砂浆[2009标准]" HorizontalAlignment="Left" Margin="245,223,0,0" VerticalAlignment="Top" Width="102" Height="23" Click="Button_Click_9" RenderTransformOrigin="0.575,-0.01"/>--><!--
         <Button Content="铝合金门窗" HorizontalAlignment="Left" Margin="404,227,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_10"/>
         <Button Content="水泥搅拌桩" HorizontalAlignment="Left" Margin="551,227,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Button_Click_11"/>
         <Button Content="门窗传热系数" HorizontalAlignment="Left" Margin="117,283,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_12"/>
@@ -50,7 +50,7 @@
         <Button Content="扣件" HorizontalAlignment="Left" Height="19" Margin="245,509,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_YKJ"/>
         <Button Content="矿粉" HorizontalAlignment="Left" Height="19" Margin="404,509,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_KF"/>
         <Button Content="细集料" HorizontalAlignment="Left" Height="19" Margin="549,509,0,0" VerticalAlignment="Top" Width="77" Click="Button_Click_XJL"/>
-        <!--<Button btn Content="防冻剂" HorizontalAlignment="Left" Margin="245,456,0,0" VerticalAlignment="Top" Width="75"/>-->
+        --><!--<Button btn Content="防冻剂" HorizontalAlignment="Left" Margin="245,456,0,0" VerticalAlignment="Top" Width="75"/>--><!--
         <Button Content="WLB" HorizontalAlignment="Left" Margin="649,30,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_WLB"/>
         <Button Content="Qsf" HorizontalAlignment="Left" Margin="774,33,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_QSF"/>
         <Button Content="LSL" HorizontalAlignment="Left" Margin="717,87,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_LSL"/>
@@ -60,6 +60,7 @@
         <Button x:Name="btn_ywj" Content="YWJ" HorizontalAlignment="Left" Margin="122,572,0,0" VerticalAlignment="Top" Width="75" Click="Btn_ywj_Click"/>
         <Button Content="钢筋保护层_TBH" HorizontalAlignment="Left" Margin="117,633,0,0" VerticalAlignment="Top" Width="127" Height="29" Click="Btn_TBH_Click"/>
         <Button Content="烧结空心砖与空心砌块ZX" HorizontalAlignment="Left" Margin="272,638,0,0" VerticalAlignment="Top" Width="163" Height="24" Click="Button_Click_36"/>
-        <Button Content="透水砖_TSZ" HorizontalAlignment="Left" Margin="474,640,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="Button_Click_39"/>
+        <Button Content="透水砖_TSZ" HorizontalAlignment="Left" Margin="474,640,0,0" VerticalAlignment="Top" Width="75" Height="24" Click="Button_Click_39"/>-->
+        
     </Grid>
 </Window>

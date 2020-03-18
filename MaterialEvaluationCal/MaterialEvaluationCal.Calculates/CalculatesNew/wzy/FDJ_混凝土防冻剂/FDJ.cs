@@ -1123,22 +1123,22 @@ namespace Calculates
                         {
                             if (i == 1)
                             {
-                                mlq = "1d";
+                                mlq = "1D";
                                 mmlq = "R-7";
                             }
                             if (i == 2)
                             {
-                                mlq = "3d";
+                                mlq = "3D";
                                 mmlq = "R28";
                             }
                             if (i == 3)
                             {
-                                mlq = "7d";
+                                mlq = "7D";
                                 mmlq = "R-7+28";
                             }
                             if (i == 4)
                             {
-                                mlq = "28d";
+                                mlq = "28D";
                                 mmlq = "R-7+56";
                             }
                             var dff = sItem["SJCD"];
@@ -1162,11 +1162,11 @@ namespace Calculates
                                     sum = 0;
                                     for (int k = 1; k <= 3; k++)
                                     {
-                                        md1 = GetSafeDouble(sItem["JHZ" + "1d" + j + "_" + k]);
+                                        md1 = GetSafeDouble(sItem["JHZ" + "1D" + j + "_" + k]);
                                         md2 = Round(1000 * md1 / (100 * 100), 1);
                                         Arrmd.Add(md2);
                                         sum = sum + md2;
-                                        sItem["JHZ" + "1d" + j + "_" + k] = Round(md2, 1).ToString();
+                                        sItem["JHZ" + "1D" + j + "_" + k] = Round(md2, 1).ToString();
                                     }
                                     string mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
                                     string[] str = mlongStr.Split(',');
@@ -1196,7 +1196,7 @@ namespace Calculates
                                         sItem["JQDDBZ" + "1D" + j] = Round(mAvgKyqd * mhsxs, 1).ToString();
                                     }
                                     sItem["JPJQD"] = "";
-                                    if ("重做" == sItem["JQDDBZ" + "1d" + j])
+                                    if ("重做" == sItem["JQDDBZ" + "1D" + j])
                                     {
                                         sItem["JPJQD"] = "重做";
                                     }
@@ -1265,7 +1265,7 @@ namespace Calculates
                             {
                                 sItem["QDB" + i] = Round(GetSafeDouble(sItem["SPJQD" + i]) / GetSafeDouble(sItem["JPJQD"]) * 100, 0).ToString();
                             }
-                            if (sItem["SPJQD" + i] == "重做" || sItem["JPJQD" + i] == "重做")
+                            if (sItem["SPJQD" + i] == "重做" || sItem["JPJQD"] == "重做")
                             {
                                 mAllHg = false;
                                 MItem[0]["HG_KYQD" + mlq] = "重做";
@@ -1274,10 +1274,10 @@ namespace Calculates
                             else
                             {
                                 mFlag_Hg = true;
-                                var JQDDBZ = sItem["G_KYQD1D"];
-                                JQDDBZ = sItem["G_KYQD3D"];
-                                JQDDBZ = sItem["G_KYQD7D"];
-                                JQDDBZ = sItem["G_KYQD28D"];
+                                var JQDDBZ = MItem[0]["G_KYQD1D"];
+                                JQDDBZ = MItem[0]["G_KYQD3D"];
+                                JQDDBZ = MItem[0]["G_KYQD7D"];
+                                JQDDBZ = MItem[0]["G_KYQD28D"];
                                 JQDDBZ = sItem["QDB" + i];
                                 MItem[0]["HG_KYQD" + mlq] = IsQualified(MItem[0]["G_KYQD" + mlq], sItem["QDB" + i]);
                             }

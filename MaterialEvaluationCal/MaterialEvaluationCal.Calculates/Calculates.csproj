@@ -207,66 +207,23 @@
     <Compile Include="Calculates\Common\BaseMethods.cs" />
     <Compile Include="CalculatesNew\qsf\GYF 钢筋原材料复试\GYF.cs" />
     <Compile Include="Calculates\DemoCode.cs" />
-    <Compile Include="Calculates\DXL_电线\DXL.cs" />
-    <Compile Include="Calculates\FDJ_混凝土防冻剂\FDJ.cs" />
-    <Compile Include="Calculates\FSX-放射性核素限量\GB_6566-2010.cs" />
-    <Compile Include="Calculates\GGF_钢精原材\GGF.cs" />
-    <Compile Include="Calculates\GG_钢管（国际）\GBT3091-2015.cs" />
-    <Compile Include="Calculates\GHF_钢筋焊接复试\GHF.cs" />
-    <Compile Include="Calculates\GHJ_钢筋焊接\GHJ.cs" />
-    <Compile Include="Calculates\GLF_机械连接复试\GLF.cs" />
     <Compile Include="CalculatesNew\wlb\XC_现场气密性\XC.cs" />
     <Compile Include="CalculatesNew\wlb\WZ_节能取芯\WZ.cs" />
     <Compile Include="CalculatesNew\wzy\GLF_机械连接复试\GLF.cs" />
-    <Compile Include="Calculates\GSF-砂浆\GSF.cs" />
-    <Compile Include="Calculates\GYC_钢筋原材料\GYC.cs" />
-    <Compile Include="Calculates\HD_混凝土抗冻\HD.cs" />
-    <Compile Include="Calculates\HNT\HNT.cs" />
-    <Compile Include="Calculates\HPB_混凝土配合比\HPB.cs" />
-    <Compile Include="Calculates\HSA_砂%28行标%29\HSA.cs" />
     <Compile Include="CalculatesNew\wzy\HSZ_蒸压灰砂砖\HSZ.cs" />
-    <Compile Include="Calculates\JBS_水泥搅拌桩\JBS.cs" />
-    <Compile Include="Calculates\JGG\FS_GBT_700_2006.cs" />
-    <Compile Include="Calculates\JGG\GBT_700_2006.cs" />
-    <Compile Include="Calculates\JMC_门窗传热系数\JMC2.cs" />
     <Compile Include="CalculatesNew\lsl\KF_矿粉\KF.cs" />
-    <Compile Include="Calculates\JZBL_建筑玻璃\JZBL.cs" />
     <Compile Include="CalculatesNew\wzy\KS_混凝土抗渗\KS.cs" />
-    <Compile Include="Calculates\LMG-路面砖（国标）\GB 28635-2012.cs" />
-    <Compile Include="Calculates\LMZ-路面砖\GB 28635-2012.cs" />
-    <Compile Include="Calculates\LNJ_大六角螺栓扭矩系数\LNJ.cs" />
-    <Compile Include="Calculates\MC_铝合金门窗\MC2.cs" />
-    <Compile Include="Calculates\PZJ_混凝土膨胀剂\PZJ.cs" />
-    <Compile Include="Calculates\QK2_加气切块\GBT_11969_2008.cs" />
-    <Compile Include="Calculates\SJX_砂浆[2009标准]\JGL_70-2009.cs" />
-    <Compile Include="Calculates\SMZ-饰面砖粘结强度\JGJ-T 110-2017.cs" />
-    <Compile Include="Calculates\SN_水泥（新）\SN.cs" />
     <Compile Include="CalculatesNew\wzy\SPB_砂浆配合比\SPB.cs" />
-    <Compile Include="Calculates\TG_电工套管\TG.cs" />
-    <Compile Include="Calculates\TPL-混泥土劈裂抗拉\GBT_50081_2002.cs" />
     <Compile Include="CalculatesNew\lsl\TS_土塑性指数\TS.cs" />
-    <Compile Include="Calculates\TZY-混泥土轴心抗压\GBT_50081_2002.cs" />
     <Compile Include="CalculatesNew\lsl\XJL_细集料\XJL.cs" />
     <Compile Include="CalculatesNew\wzy\YKJ_扣件\YKJ.cs" />
-    <Compile Include="Calculates\ZSJ_专用砂浆\ZSJ.cs" />
     <Compile Include="CalculatesNew\ywj\WJJ_外加剂\WJJ2.cs" />
-    <Compile Include="Calculates\萧山监管\XGL_砂%28国标砌筑用%29\XGL2.cs" />
-    <Compile Include="Calculates\萧山监管\WJJ_外加剂\WJJ.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Calculates\AW\" />
-    <Folder Include="Calculates\CGL-石子%28国标%29-温州\" />
-    <Folder Include="Calculates\CGL-石子%28国标%29\" />
-    <Folder Include="Calculates\KJ\" />
-    <Folder Include="Calculates\KJ_扣件\" />
-    <Folder Include="Calculates\QK3_轻集料空心砌块\" />
-    <Folder Include="Calculates\WZ_节能取芯\" />
-    <Folder Include="Calculates\XC-现场气密性\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

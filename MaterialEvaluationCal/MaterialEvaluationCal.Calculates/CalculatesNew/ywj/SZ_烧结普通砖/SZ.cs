@@ -936,7 +936,12 @@ namespace Calculates
                             mSFwc = false;
                     }
                     else
+                    {
+                        sItem["DRPD"] = "----";
                         sItem["BHXSPD"] = "----";
+                        sItem["FSPD"] = "----";
+                        sItem["SHBLPD"] = "----";
+                    }
 
                     if (jcxm.Contains("、泛霜、"))
                     {
@@ -1129,27 +1134,20 @@ namespace Calculates
                     }
                     else
                         sItem["SHBLPD"] = "----";
-                }
+
+                    if (sItem["QDPD"] == "不合格" || sItem["WGPD"] == "不合格" || sItem["CCPD"] == "不合格" || sItem["DRPD"] == "不合格" || sItem["BHXSPD"] == "不合格" || sItem["FSPD"] == "不合格" || sItem["SHBLPD"] == "不合格")
+                    {
+                        sItem["JCJG"] = "不合格";
+                        mFlag_Bhg = true;
+                    }
                     else
-                {
-                    sItem["DRPD"] = "----";
-                    sItem["BHXSPD"] = "----";
-                    sItem["FSPD"] = "----";
-                    sItem["SHBLPD"] = "----";
+                    {
+                        sItem["JCJG"] = "合格";
+                        mFlag_Hg = true;
+                    }
+                    mAllHg = (mAllHg && (sItem["JCJG"] == "合格"));
                 }
-                if (sItem["QDPD"] == "不合格" || sItem["WGPD"] == "不合格" || sItem["CCPD"] == "不合格" || sItem["DRPD"] == "不合格" || sItem["BHXSPD"] == "不合格" || sItem["FSPD"] == "不合格" || sItem["SHBLPD"] == "不合格")
-                {
-                    sItem["JCJG"] = "不合格";
-                    mFlag_Bhg = true;
-                }
-                else
-                {
-                    sItem["JCJG"] = "合格";
-                    mFlag_Hg = true;
-                }
-                mAllHg = (mAllHg && (sItem["JCJG"] == "合格"));
             }
-        }
 
             #region 添加最终报告
             //主表总判断赋值
@@ -1166,9 +1164,9 @@ namespace Calculates
                 if (mFlag_Bhg && mFlag_Hg)
                     MItem[0]["JCJGMS"] = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
             }
-    #endregion
-    #endregion
-}
+            #endregion
+            #endregion
+        }
     }
 }
 
