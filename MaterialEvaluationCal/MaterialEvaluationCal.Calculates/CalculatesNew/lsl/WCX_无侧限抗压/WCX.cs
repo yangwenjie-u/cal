@@ -13,13 +13,13 @@ namespace Calculates
             /************************ 代码开始 *********************/
             #region
             bool mAllHg = true, mItemHg = true, mFlag_Bhg = true;
-            int mbhggs = 0;
+            //int mbhggs = 0;
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "";
-            var jgsm = "";
-            var jcjg = "";
-            string mJSFF;
+            //var jgsm = "";
+            //var jcjg = "";
+            //string mJSFF;
             var SItem = data["S_WCX"];
             var MItem = data["M_WCX"];
             //var EItem = data["E_WCX"];
@@ -31,54 +31,63 @@ namespace Calculates
                 bool jcjgHg = true;
                 double md1, md2, md3, pjmd, sum, md, sStzl, sSmd, sSzl1, sSzl2, sGtzl1, sGtzl2, sHsl1, sHsl2;
                 int hggs = 0;
-                for (int i = 1; i <= 1; i++)
-                {
-                    if (GetSafeDouble(sItem["MTJST" + i]) != 0)
-                    {
-                        sStzl = GetSafeDouble(sItem["MTJST" + i]) - GetSafeDouble(sItem["MTZL"]);
-                        if (GetSafeDouble(sItem["MTTJ"]) == 0)
-                        {
-                            sSmd = 0;
-                        }
-                        else
-                        {
-                            sSmd = Round(sStzl / GetSafeDouble(sItem["MTTJ"]), 3);
-                        }
-                        sSzl1 = GetSafeDouble(sItem["HJST" + "11"]) - GetSafeDouble(sItem["HJGT" + "11"]);
-                        sSzl2 = GetSafeDouble(sItem["HJST" + "12"]) - GetSafeDouble(sItem["HJGT" + "12"]);
-                        sGtzl1 = GetSafeDouble(sItem["HJGT" + "11"]) - GetSafeDouble(sItem["HZL" + "11"]);
-                        sGtzl2 = GetSafeDouble(sItem["HJGT" + "12"]) - GetSafeDouble(sItem["HZL" + "12"]);
-                        if (sGtzl1 == 0)
-                            sHsl1 = 0;
-                        else
-                            sHsl1 = Round(sSzl1 / sGtzl1 * 100, 1);
-                        if (sGtzl2 == 0)
-                            sHsl2 = 0;
-                        else
-                            sHsl2 = Round(sSzl2 / sGtzl2 * 100, 1);
-                        if (sGtzl1 == 0 || sGtzl2 == 0)
-                            sItem["PJHSL" + "1"] = Round(sHsl1 + sHsl2, 1).ToString();
-                        else
-                            sItem["PJHSL" + "1"] = Round((sHsl1 + sHsl2) / 2, 1).ToString();
-                        sItem["GMD" + "1"] = Round(sSmd / (1 + 0.01 * GetSafeDouble(sItem["PJHSL" + "1"])), 3).ToString();
-                    }
-                    else
-                    {
-                        sItem["PJHSL" + "1"] = "0";
-                        sItem["GMD" + "1"] = "0";
-                    }
-                }
+                #region
+                //for (int i = 1; i <= 1; i++)
+                //{
+                //    if (GetSafeDouble(sItem["MTJST" + i]) != 0)
+                //    {
+                //        sStzl = GetSafeDouble(sItem["MTJST" + i]) - GetSafeDouble(sItem["MTZL"]);
+                //        if (GetSafeDouble(sItem["MTTJ"]) == 0)
+                //        {
+                //            sSmd = 0;
+                //        }
+                //        else
+                //        {
+                //            sSmd = Round(sStzl / GetSafeDouble(sItem["MTTJ"]), 3);
+                //        }
+                //        sSzl1 = GetSafeDouble(sItem["HJST" + "11"]) - GetSafeDouble(sItem["HJGT" + "11"]);
+                //        sSzl2 = GetSafeDouble(sItem["HJST" + "12"]) - GetSafeDouble(sItem["HJGT" + "12"]);
+                //        sGtzl1 = GetSafeDouble(sItem["HJGT" + "11"]) - GetSafeDouble(sItem["HZL" + "11"]);
+                //        sGtzl2 = GetSafeDouble(sItem["HJGT" + "12"]) - GetSafeDouble(sItem["HZL" + "12"]);
+                //        if (sGtzl1 == 0)
+                //            sHsl1 = 0;
+                //        else
+                //            sHsl1 = Round(sSzl1 / sGtzl1 * 100, 1);
+                //        if (sGtzl2 == 0)
+                //            sHsl2 = 0;
+                //        else
+                //            sHsl2 = Round(sSzl2 / sGtzl2 * 100, 1);
+                //        if (sGtzl1 == 0 || sGtzl2 == 0)
+                //            sItem["PJHSL" + "1"] = Round(sHsl1 + sHsl2, 1).ToString();
+                //        else
+                //            sItem["PJHSL" + "1"] = Round((sHsl1 + sHsl2) / 2, 1).ToString();
+                //        sItem["GMD" + "1"] = Round(sSmd / (1 + 0.01 * GetSafeDouble(sItem["PJHSL" + "1"])), 3).ToString();
+                //    }
+                //    else
+                //    {
+                //        sItem["PJHSL" + "1"] = "0";
+                //        sItem["GMD" + "1"] = "0";
+                //    }
+                //}
+                #endregion
+
+                //计算RC值
                 //sItem["CQS"] = EItem.Count.ToString();
                 md1 = GetSafeDouble(sItem["PJKYQD"]);
                 md2 = GetSafeDouble(sItem["BZC"]);
                 if (mItem["BZLXS"] == "0.90")
+                {
                     pjmd = Round(md1 - 1.282 * md2, 1);
+                }
                 else
+                {
                     pjmd = Round(md1 - 1.645 * md2, 1);
+                }
                 pjmd = Round(md1 - 1.645 * md2, 1);
-                sItem["RC0_95"] = Round(pjmd, 1).ToString();
+                sItem["RC0_95"] = Round(pjmd, 1).ToString("0.0");
                 md1 = Round(GetSafeDouble(sItem["SJQD"]), 1);
                 md2 = Round(GetSafeDouble(sItem["PCXS"]), 1);
+                //计算得到的偏差系数为百分数
                 md2 = md2 / 100;
                 pjmd = Round(md1 / (1 - 1.282 * md2), 1);
                 sItem["RD"] = Round(pjmd, 1).ToString();
