@@ -64,6 +64,9 @@ namespace Calculates
                 {
                     MItem[0]["G_XD"] = mrsDj["XD"];
 
+                   // 'mrssubTable!sy = Format(Round(CDec(Val(mrssubTable!XDG1) / Val(mrssubTable!XDG)) * 100, 1), "0.0")
+                // '  mrssubTable!XD = Format(Round(CDec(Val(mrssubTable!sy) * Val(mrssubTable!xzxs)), 1), "0.0")
+
                     var isQ = IsQualified(MItem[0]["G_XD"], sItem["XD"], true);
                     if ("符合" == isQ)
                     {
@@ -92,18 +95,21 @@ namespace Calculates
                 {
                     MItem[0]["G_ADX"] = mrsDj["ADX"];
 
-                    var isQ = IsQualified(MItem[0]["G_XD"], sItem["XD"], true);
-                    MItem[0]["HG_ADX"] = isQ;
+                    var isQ = IsQualified(MItem[0]["G_ADX"], sItem["ADX"], true);
+                    //MItem[0]["HG_ADX"] = isQ;
 
-                    if (isQ == "不符合")
+                    if (isQ == "符合")
                     {
+                        MItem[0]["HG_ADX"] = "合格";
+                        mFlag_Hg = true;
+                    }
+                    else if (isQ == "不符合")
+                    {
+                        MItem[0]["HG_ADX"] = "不合格";
                         mFlag_Bhg = true;
                         mbhggs = mbhggs + 1;
                         mAllHg = false;
-                    }
-                    else
-                    {
-                        mFlag_Hg = true;
+
                     }
                 }
                 else

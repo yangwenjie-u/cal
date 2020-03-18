@@ -302,11 +302,17 @@ namespace Calculates
                     {
                         sign = true;
 
-                        pbResult = IsQualified(sItem["G_7KYQD"], sItem["PJKY7QD"], true);
-                        sign = pbResult == "不符合" ? false : true;
-                        pbResult = IsQualified(sItem["G_28KYQD"], sItem["PJKY28QD"], true);
-                        sign = pbResult == "不符合" ? false : true;
-
+                        if (IsNumeric(sItem["PJKY7QD"]) || IsNumeric(sItem["PJKY28QD"]))
+                        {
+                            pbResult = IsQualified(sItem["G_7KYQD"], sItem["PJKY7QD"], true);
+                            sign = pbResult == "不符合" ? false : true;
+                            pbResult = IsQualified(sItem["G_28KYQD"], sItem["PJKY28QD"], true);
+                            sign = pbResult == "不符合" ? false : true;
+                        }
+                        else
+                        {
+                            sign = false;
+                        }
                         sItem["GH_KYQD"] = sign ? "合格" : "不合格";
                         mbhggs = sign ? mbhggs : mbhggs + 1;
 
@@ -735,8 +741,15 @@ namespace Calculates
                     if (jcxm.Contains("抗压强度"))
                     {
                         sign = true;
-                        sign = IsQualified(sItem["G_7KYQD"], sItem["PJKY7QD"], true) == "不符合" ? false : sign;
-                        sign = IsQualified(sItem["G_28KYQD"], sItem["PJKY28QD"], true) == "不符合" ? false : sign;
+                        if (IsNumeric(sItem["PJKY7QD"]) || IsNumeric(sItem["PJKY28QD"]))
+                        {
+                            sign = IsQualified(sItem["G_7KYQD"], sItem["PJKY7QD"], true) == "不符合" ? false : sign;
+                            sign = IsQualified(sItem["G_28KYQD"], sItem["PJKY28QD"], true) == "不符合" ? false : sign;
+                        }
+                        else
+                        {
+                            sign = false;
+                        }
                         sItem["GH_KYQD"] = sign ? "合格" : "不合格";
                         mbhggs = sign ? mbhggs : mbhggs + 1;
                         if (sign)
