@@ -90,7 +90,7 @@ namespace Calculates
                         }
                         else
                         {
-                            E_LQX["SSJHD"] = sItem["SJHD"] + "(" + sItem["PC_S"] + ")";
+                            E_LQX["SSJHD"] = E_LQX["SJHD"] + "(" + sItem["PC_S"] + ")";
 
                             int i = 0;
                             double md = 0, md1 = 0, md2 = 0;

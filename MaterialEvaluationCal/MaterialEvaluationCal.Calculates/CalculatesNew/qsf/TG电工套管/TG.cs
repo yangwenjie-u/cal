@@ -128,6 +128,11 @@ namespace Calculates
                         MItem[0]["ZXBH_HG"] = "不合格";
                         mAllHg = false;
                     }
+
+                    if (!string.IsNullOrEmpty(MItem[0]["G_ZXBH"]))
+                    {
+                        MItem[0]["G_ZXBH"] = "" + MItem[0]["G_ZXBH"];
+                    }
                 }
                 else
                 {

@@ -1123,22 +1123,22 @@ namespace Calculates
                         {
                             if (i == 1)
                             {
-                                mlq = "1d";
+                                mlq = "1D";
                                 mmlq = "R-7";
                             }
                             if (i == 2)
                             {
-                                mlq = "3d";
+                                mlq = "3D";
                                 mmlq = "R28";
                             }
                             if (i == 3)
                             {
-                                mlq = "7d";
+                                mlq = "7D";
                                 mmlq = "R-7+28";
                             }
                             if (i == 4)
                             {
-                                mlq = "28d";
+                                mlq = "28D";
                                 mmlq = "R-7+56";
                             }
                             var dff = sItem["SJCD"];
@@ -1162,11 +1162,11 @@ namespace Calculates
                                     sum = 0;
                                     for (int k = 1; k <= 3; k++)
                                     {
-                                        md1 = GetSafeDouble(sItem["JHZ" + "1d" + j + "_" + k]);
+                                        md1 = GetSafeDouble(sItem["JHZ" + "1D" + j + "_" + k]);
                                         md2 = Round(1000 * md1 / (100 * 100), 1);
                                         Arrmd.Add(md2);
                                         sum = sum + md2;
-                                        sItem["JHZ" + "1d" + j + "_" + k] = Round(md2, 1).ToString();
+                                        sItem["JHZ" + "1D" + j + "_" + k] = Round(md2, 1).ToString();
                                     }
                                     string mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
                                     string[] str = mlongStr.Split(',');
@@ -1196,7 +1196,7 @@ namespace Calculates
                                         sItem["JQDDBZ" + "1D" + j] = Round(mAvgKyqd * mhsxs, 1).ToString();
                                     }
                                     sItem["JPJQD"] = "";
-                                    if ("重做" == sItem["JQDDBZ" + "1d" + j])
+                                    if ("重做" == sItem["JQDDBZ" + "1D" + j])
                                     {
                                         sItem["JPJQD"] = "重做";
                                     }
@@ -1339,8 +1339,8 @@ namespace Calculates
                             mFlag_Hg = true;
                         }
                     }
-                    #region 50次冻融强度损失率比
                     #endregion
+                    #region 50次冻融强度损失率比
                     if (jcxm.Contains("、50次冻融强度损失率比、"))
                     {
                         mhsxs = 0;
@@ -1376,17 +1376,17 @@ namespace Calculates
                             {
                                 mlq = "DRHS";
                             }
-                            var mHZ1 = sItem["DRQJHZ1"];
+                            //var mHZ1 = sItem["DRQJHZ1"];
 
                             List<double> Arrmd = new List<double>();
                             if (sItem[mlq + "HZ1"] != "" && sItem[mlq + "HZ1"] != "----")
                             {
                                 for (int j = 1; j <= 3; j++)
                                 {
-                                    mHZ1 = sItem["DRHJHZ" + j];
-                                    mHZ1 = sItem["DRQJHZ" + j];
-                                    mHZ1 = sItem["DRQSHZ" + j];
-                                    mHZ1 = sItem["DRHSHZ" + j];
+                                    //mHZ1 = sItem["DRHJHZ" + j];
+                                    //mHZ1 = sItem["DRQJHZ" + j];
+                                    //mHZ1 = sItem["DRQSHZ" + j];
+                                    //mHZ1 = sItem["DRHSHZ" + j];
 
                                     md1 = GetSafeDouble(sItem[mlq + "HZ" + j]);
                                     md2 = Round(1000 * md1 / (100 * 100), 1);
@@ -1394,17 +1394,17 @@ namespace Calculates
                                     sum = sum + md2;
                                     sItem[mlq + "QD" + j] = Round(md2, 1).ToString();
                                 }
-                                string mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
-                                string[] str = mlongStr.Split(',');
-                                foreach (string s in str)
-                                {
-                                    mtmpArray.Add(GetSafeDouble(s));
-                                }
-                                mtmpArray.Sort();
-                                mMaxKyqd = mtmpArray[2];
-                                mMinKyqd = mtmpArray[0];
-                                mMidKyqd = mtmpArray[1];
-                                mAvgKyqd = mtmpArray.Average();
+                                //string mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
+                                //string[] str = mlongStr.Split(',');
+                                //foreach (string s in str)
+                                //{
+                                //    mtmpArray.Add(GetSafeDouble(s));
+                                //}
+                                Arrmd.Sort();
+                                mMaxKyqd = Arrmd[2];
+                                mMinKyqd = Arrmd[0];
+                                mMidKyqd = Arrmd[1];
+                                mAvgKyqd = Arrmd.Average();
                                 if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
                                 {
                                     sItem[mlq + "QD"] = Round(mMidKyqd, 1).ToString();

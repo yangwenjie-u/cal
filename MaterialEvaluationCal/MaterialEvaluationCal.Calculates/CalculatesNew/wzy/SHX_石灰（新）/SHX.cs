@@ -386,17 +386,18 @@ namespace Calculates
                         sum = Round(sum, 2);
                         sitem["CJM"] = sum.ToString("0.00");
                         mitem["HG_MGO"] = "";
-                        foreach (var item in mrsDj)
+                        //foreach (var item in mrsDj)
+                        //{
+                        //if (IsQualified(item["YHMHLSM"], sitem["PJMGO"]) == "合格")
+                        if (IsQualified(mitem["G_YHM"], sitem["PJMGO"]) == "合格")
                         {
-                            if (IsQualified(item["YHMHLSM"], sitem["PJMGO"]) == "合格")
-                            {
-                                mitem["HG_MGO"] = "合格";
-                                mitem["G_CJM"] = item["CJM"];
-                                mitem["G_YHM"] = item["YHMHLSM"];
-                                mFlag_Hg = true;
-                                break;
-                            }
+                            mitem["HG_MGO"] = "合格";
+                            //mitem["G_CJM"] = item["CJM"];
+                            //mitem["G_YHM"] = item["YHMHLSM"];
+                            //mFlag_Hg = true;
+                            //break;
                         }
+                        //}
                         if (mitem["HG_MGO"] == "")
                         {
                             mitem["HG_MGO"] = "不合格";
@@ -422,7 +423,7 @@ namespace Calculates
                     }
 
 
-                    if (jcxm.Contains("、有效氧化钙、") && jcxm.Contains("、氧化镁含量、"))
+                    if (jcxm.Contains("、有效氧化钙、") && !jcxm.Contains("、氧化镁含量、"))
                     {
                         falg = true;
                         sum = 0;

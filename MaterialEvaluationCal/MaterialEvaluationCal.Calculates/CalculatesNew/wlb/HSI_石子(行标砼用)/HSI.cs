@@ -833,11 +833,11 @@ namespace Calculates
                         {
                             mhnl1 = Round((Conversion.Val(sItem["HNLG1"]) - Conversion.Val(sItem["HNLG2"])) / Conversion.Val(sItem["HNLG1"]) * 100, 1);
                             mhnl2 = Round((Conversion.Val(sItem["HNLG1_2"]) - Conversion.Val(sItem["HNLG2_2"])) / Conversion.Val(sItem["HNLG1_2"]) * 100, 1);
-                            sItem["HNL"] = Round((mhnl1 + mhnl2) / 2, 1).ToString();
+                            sItem["HNL"] = Round((mhnl1 + mhnl2) / 2, 1).ToString("0.0");
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("含泥量"));
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sItem["HNL"]) == "符合")
+                                if (IsQualified(item["YQ"], sItem["HNL"],true) == "符合")
                                 {
                                     sItem["HNLPD"] = item["DJ"];
                                     break;
@@ -849,7 +849,10 @@ namespace Calculates
                                 mbhgs = mbhgs + 1;
                             }
                             if (Math.Abs(mhnl1 - mhnl2) > 0.2)
-                                sItem["HNLPD"] = "两次结果之差超过0.2%需重新取样试验";
+                            {
+                                //sItem["HNLPD"] = "两次结果之差超过0.2%需重新取样试验";
+                                sItem["HNLPD"] = "重新试验";
+                            }
                         }
                     }
                     else
@@ -874,7 +877,7 @@ namespace Calculates
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("泥块含量"));
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sItem["NKHL"]) == "符合")
+                                if (IsQualified(item["YQ"], sItem["NKHL"]) == "合格")
                                 {
                                     sItem["NKHLPD"] = item["DJ"].Trim();
                                     break;
@@ -963,7 +966,10 @@ namespace Calculates
 
                         sItem["BGMD"] = pjmd.ToString("0");
                         if (Math.Abs((mbgmd1 - mbgmd2)) > 20)
-                            sItem["BGMDPD"] = "两次结果差大于20，须重新取样试验";
+                        {
+                            //sItem["BGMDPD"] = "两次结果差大于20，须重新取样试验";
+                            sItem["BGMDPD"] = "重新试验";
+                        }
                     }
                     else
                     {
@@ -1012,7 +1018,7 @@ namespace Calculates
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("压碎性指标") && x["SPZ"].Equals(sItem["SIPZ"].Trim()));
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sItem["YSZB"]) == "符合")
+                                if (IsQualified(item["YQ"], sItem["YSZB"],true) == "符合")
                                 {
                                     sItem["YSZBPD"] = item["DJ"].Trim();
                                     break;
@@ -1033,7 +1039,7 @@ namespace Calculates
                     #endregion
 
                     #region 吸水率
-                    sItem["XSLPD"] = "";
+                    sItem["XSLPD"] = "----";
                     sItem["XSL"] = "0";
                     if (jcxm.Contains("、吸水率、"))
                     {
@@ -1054,7 +1060,7 @@ namespace Calculates
                     #endregion
 
                     #region 含水率
-                    sItem["HSLPD"] = "";
+                    sItem["HSLPD"] = "----";
                     sItem["HSL"] = "0";
                     if (jcxm.Contains("、含水率、"))
                     {
@@ -1084,7 +1090,7 @@ namespace Calculates
                         var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("针片状含量"));
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sItem["ZPZHL"]) == "符合")
+                            if (IsQualified(item["YQ"], sItem["ZPZHL"],true) == "符合")
                             {
                                 sItem["ZPZHLPD"] = item["DJ"].Trim();
                                 break;
@@ -1104,7 +1110,7 @@ namespace Calculates
                     #endregion
 
                     #region 抗压强度
-                    sItem["KYQDPD"] = "";
+                    sItem["KYQDPD"] = "----";
                     sItem["KYQD"] = "0";
                     if (jcxm.Contains("、抗压强度、"))
                     {
@@ -1160,7 +1166,7 @@ namespace Calculates
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("硫化物和硫酸盐含量"));
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sItem["LHW"]) == "符合")
+                                if (IsQualified(item["YQ"], sItem["LHW"],true) == "符合")
                                 {
                                     sItem["LHWPD"] = item["DJ"].Trim();
                                     break;
@@ -1172,7 +1178,10 @@ namespace Calculates
                                 mbhgs = mbhgs + 1;
                             }
                             if (Math.Abs(mlhw1 - mlhw2) > 0.15)
-                                sItem["LHWPD"] = "两次结果差大于0.15，须重新取样试验";
+                            {
+                                //sItem["LHWPD"] = "两次结果差大于0.15，须重新取样试验";
+                                sItem["LHWPD"] = "重新试验";
+                            }
                         }
                     }
                     else

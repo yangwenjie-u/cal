@@ -537,7 +537,7 @@ namespace Calculates
                             if (mxslzdz < mxsl5)
                                 mxslzdz = mxsl5;
                             sItem["BHXSZDZ"] = mxslzdz.ToString("0.000");
-                            if (IsQualified(sItem["XSLPJZYQ"], sItem["XSLPJZ"]) == "不符合" || IsQualified(sItem["XSLZDZYQ"], sItem["XSLDKZD"]) == "不符合" || IsQualified(sItem["BHXSPJZYQ"], sItem["BHXSPJZ"]) == "不符合" || IsQualified(sItem["BHXSZDZYQ"], sItem["BHXSZDZ"]) == "不符合")
+                            if (IsQualified(sItem["XSLPJZYQ"], sItem["XSLPJZ"]) == "不合格" || IsQualified(sItem["XSLZDZYQ"], sItem["XSLDKZD"]) == "不合格" || IsQualified(sItem["BHXSPJZYQ"], sItem["BHXSPJZ"]) == "不合格" || IsQualified(sItem["BHXSZDZYQ"], sItem["BHXSZDZ"]) == "不合格")
                             {
                                 sItem["BHXSPD"] = "不合格";
                                 mFlag_Bhg = true;
