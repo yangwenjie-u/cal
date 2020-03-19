@@ -7,6 +7,7 @@ namespace Calculates
     {
         public void Calc()
         {
+            /************************ 代码开始 *********************/
             #region
             bool mAllHg = true;
             var data = retData;
