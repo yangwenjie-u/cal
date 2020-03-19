@@ -540,7 +540,6 @@ namespace Calculates
                         {
                             sItem["JCJG_CJ"] = "合格";
                             mFlag_Hg = true;
-
                         }
                         else
                         {
@@ -593,7 +592,6 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mAllHg = false;
                     }
-
                 }
                 else
                 {
@@ -601,11 +599,9 @@ namespace Calculates
                     sItem["YD1"] = "----";
                     sItem["YD2"] = "----";
                     sItem["YD3"] = "----";
-
                 }
 
                 all_zb_jl(MItem[0], sItem, double.Parse(mHggs_qfqd), double.Parse(mHggs_klqd), double.Parse(mHggs_scl), double.Parse(mHggs_lw));
-
 
                 #endregion
 

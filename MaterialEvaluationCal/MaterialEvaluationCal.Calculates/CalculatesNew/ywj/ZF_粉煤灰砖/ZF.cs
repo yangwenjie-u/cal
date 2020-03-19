@@ -353,7 +353,21 @@ namespace Calculates
                     if (jcxm.Contains("、抗折强度、"))
                     {
                         flag = true;
-                        flag = IsNumeric(sItem["ZGKJ"]) ? flag : false;
+
+                        string GG = !string.IsNullOrEmpty(sItem["GG"]) && sItem["GG"].ToLower().Contains("x") ? sItem["GG"] : "";
+                        int ZGKJ = 160;
+                        if (string.IsNullOrEmpty(GG))
+                        {
+                            flag = false;
+                        }
+                        else
+                        {
+                            GG = GG.Substring(0, sItem["GG"].ToLower().IndexOf('x'));
+                        }
+                        if (GG != "190")
+                        {
+                            ZGKJ = Convert.ToInt32(GG) - 40;
+                        }
                         for (xd = 1; xd <= 10; xd++)
                         {
                             flag = IsNumeric(sItem["KZ_KD" + xd + "_1"]) ? flag : false;
@@ -383,7 +397,7 @@ namespace Calculates
                                 kd2 = Conversion.Val(sItem["KZ_CD" + xd + "_2"].Trim());
                                 md2 = (kd1 + kd2) / 2;
                                 md2 = Round(md2, 0);
-                                md = Conversion.Val(sItem["KZ_KYHZ" + xd].Trim()) * Conversion.Val(sItem["ZGKJ"].Trim());
+                                md = Conversion.Val(sItem["KZ_KYHZ" + xd].Trim()) * ZGKJ;
                                 md = 1000 * 3 * md / (2 * md1 * Math.Pow(md2, 2));
                                 md = Round(md, 2);
                                 sItem["QD_KZQD" + xd] = md.ToString("0.00");
@@ -421,15 +435,16 @@ namespace Calculates
                         sItem["QD_KZAVG"] = "----";
                         sItem["QD_KZMIN"] = "----";
                     }
-                    if (jcxm.Contains("、抗压强度、") || jcxm.Contains("、抗折强度、"))
+                    if (jcxm.Contains("抗压强度") || jcxm.Contains("抗折强度"))
                     {
                         sItem["QDJL"] = sItem["PD_KYQD"] == "不合格" || sItem["PD_KZQD"] == "不合格" ? "不符合" : "符合";
                         sItem["QDJL"] = sItem["QDJL"] + sItem["SJDJ"] + "强度等级";
                     }
                     else
                         sItem["QDJL"] = "----";
-                    if (jcxm.Contains("、冻后强度、") || jcxm.Contains("、抗冻性能、"))
+                    if (jcxm.Contains("、抗冻性能、"))
                     {
+                        //冻后强度
                         flag = true;
                         for (xd = 1; xd <= 5; xd++)
                         {
@@ -488,8 +503,9 @@ namespace Calculates
                         sItem["GH_KD_KYAVG"] = "----";
                         sItem["KD_KYAVG"] = "----";
                     }
-                    if (jcxm.Contains("、、质量损失率、") || jcxm.Contains("、抗冻性能、"))
+                    if (jcxm.Contains("、抗冻性能、"))
                     {
+                        //jcxm.Contains("、质量损失率、") ||
                         flag = true;
                         for (xd = 1; xd <= 5; xd++)
                         {
@@ -547,7 +563,7 @@ namespace Calculates
                         sItem["GH_KD_SSDKZ"] = "----";
                         sItem["KD_SSMAX"] = "----";
                     }
-                    if (jcxm.Contains("冻后强度") || jcxm.Contains("质量损失率") || jcxm.Contains("抗冻性能"))
+                    if (jcxm.Contains("抗冻性能"))
                     {
                         sItem["KDXJL"] = sItem["PD_DHQD"] == "不合格" || sItem["PD_ZLSS"] == "不合格" ? "不符合" : "符合";
                         sItem["KDXJL"] = sItem["KDXJL"] + sItem["SJDJ"] + "强度等级";
