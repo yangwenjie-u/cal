@@ -852,6 +852,12 @@ namespace CalDebugTools
             manage.Show();
         }
 
+        private void tool_UploadFieldNew_Click(object sender, EventArgs e)
+        {
+            UploadFieldsNew manage = new UploadFieldsNew(this);
+            this.Hide();
+            manage.Show();
+        }
         private void 代码上传ToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             CodeUpload manage = new CodeUpload(this);
@@ -1183,5 +1189,6 @@ namespace CalDebugTools
             return sign ? hgjl : bhgjl;
         }
 
+     
     }
 }

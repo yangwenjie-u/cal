@@ -130,7 +130,6 @@ namespace CalDebugTools
                     var ver = ddf["ver"];
                     if (this.ck_defaultLib.Checked)
                     {
-
                         par_json = "{\"sylb\":\"" + sylb + "\",\"ver\":\"" + ver + "\"}";
                         get_json = Data.GetHtmlByPost(Data.http_set_defaultLib_url, par_json, "", null, token);
                         //get_json = Data.GetHtmlByPost(@"http://calctest.jzyglxt.com/apiv1/SetCalcVersionDefault", par_json, "", null, token);
