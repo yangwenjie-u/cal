@@ -97,7 +97,7 @@ namespace Calculates
                             string stemp = "----";
 
                             i = sItem["PC_S"].IndexOf("，");
-                            if (md > 0 && md < sItem["PC_S"].Length)
+                            if (i > 0 && i < sItem["PC_S"].Length)
                             {
                                 md1 = Conversion.Val(sItem["PC_S"].Substring(0, i - 1));
                                 md2 = Conversion.Val(sItem["PC_S"].Substring(i - 1, sItem["PC_S"].Length - i - 1));
@@ -111,7 +111,7 @@ namespace Calculates
                             }
 
                             i = sItem["PC_S"].IndexOf("～");
-                            if (md > 0 && md < sItem["PC_S"].Length)
+                            if (i > 0 && i < sItem["PC_S"].Length)
                             {
                                 md1 = Conversion.Val(sItem["PC_S"].Substring(0, i - 1));
                                 md2 = Conversion.Val(sItem["PC_S"].Substring(i - 1, sItem["PC_S"].Length - i - 1));
