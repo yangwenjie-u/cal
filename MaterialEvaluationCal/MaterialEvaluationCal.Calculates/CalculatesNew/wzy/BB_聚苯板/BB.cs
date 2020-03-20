@@ -401,7 +401,7 @@ namespace Calculates
                     mFlag_Hg = false;
                     mFlag_Bhg = false;
                     mbhggs = 0;
-                    if (jcxm.Contains("、导热系数(10℃)、") || jcxm.Contains("、导热系数、"))
+                    if (jcxm.Contains("、导热系数(10℃)、"))
                     {
                         mcd = mItem["G_DRXS1"].Length;
                         mdwz = mItem["G_DRXS1"].IndexOf(".") + 1;
@@ -718,7 +718,7 @@ namespace Calculates
                     continue;
                 }
 
-                if (jcxm.Contains("、导热系数(10℃)、") || jcxm.Contains("、导热系数、"))
+                if (jcxm.Contains("、导热系数(10℃)、"))
                 {
                     string drxs1 = calc_PB(mItem["G_DRXS1"], sItem["DRXS1"], true);
                     if (drxs1 == "符合")
