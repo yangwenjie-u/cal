@@ -198,7 +198,7 @@ namespace CalDebugTools
         private void btn_Debug_Click(object sender, EventArgs e)
         {
             SaveXMinfos();
-            IsQualified("-150~+150","-150");
+            //IsQualified("-150~+150","-150");
             //测试乌海
             if (this.ck_other.Checked)
             {

@@ -90,9 +90,6 @@ namespace Calculates
                         {
                             sItem["XD_1"] = Round((GetSafeDouble(sItem["XDM1_1"]) / GetSafeDouble(sItem["XDM0_1"])) * 100, 2).ToString();
                             sItem["XD_2"] = Round((GetSafeDouble(sItem["XDM1_2"]) / GetSafeDouble(sItem["XDM0_2"])) * 100, 2).ToString();
-                        }
-                        if (sItem["XD_1"] != "" && sItem["XD_1"] != "----")
-                        {
                             sItem["XD"] = Round((GetSafeDouble(sItem["XD_1"]) + GetSafeDouble(sItem["XD_2"])) / 2, 2).ToString();
                         }
                         if (sItem["XDKZZ"] == "----")
@@ -130,9 +127,7 @@ namespace Calculates
                         {
                             sItem["MD_1"] = Round(0.9982 * GetSafeDouble(sItem["MDBJWJJ_1"]) - GetSafeDouble(sItem["MDRLBZ_1"]) / GetSafeDouble(sItem["MDTJ_1"]), 3).ToString();
                             sItem["MD_2"] = Round(0.9982 * GetSafeDouble(sItem["MDBJWJJ_2"]) - GetSafeDouble(sItem["MDRLBZ_2"]) / GetSafeDouble(sItem["MDTJ_2"]), 3).ToString();
-                        }
-                        if (sItem["MD_1"] != "" && sItem["MD_1"] != "----")
-                        {
+
                             sItem["MD"] = Round((GetSafeDouble(sItem["MD_1"]) + GetSafeDouble(sItem["MD_2"])) / 2, 3).ToString();
                         }
                         if (GetSafeDouble(sItem["MDKZZ"]) > 1.1)
@@ -177,9 +172,6 @@ namespace Calculates
                         {
                             sItem["GTHL_1"] = Round((GetSafeDouble(sItem["GTHLM2_1"]) - GetSafeDouble(sItem["GTHLM0_1"])) / (GetSafeDouble(sItem["GTHLM1_1"]) - GetSafeDouble(sItem["GTHLM0_1"]) * 100), 2).ToString();
                             sItem["GTHL_2"] = Round((GetSafeDouble(sItem["GTHLM2_2"]) - GetSafeDouble(sItem["GTHLM0_2"])) / (GetSafeDouble(sItem["GTHLM1_2"]) - GetSafeDouble(sItem["GTHLM0_2"]) * 100), 2).ToString();
-                        }
-                        if (sItem["GTHL_1"] == "" && sItem["GTHL_1"] == "----")
-                        {
                             sItem["GTHL"] = Round((GetSafeDouble(sItem["GTHL_1"]) + GetSafeDouble(sItem["GTHL_2"])) / 2, 2).ToString();
                         }
                         if (GetSafeDouble(sItem["HGLKZZ"]) > 20)
@@ -225,9 +217,7 @@ namespace Calculates
                             sItem["HSL_1"] = Round((GetSafeDouble(sItem["HSLM1_1"]) - GetSafeDouble(sItem["HSLM2_1"])) / (GetSafeDouble(sItem["HSLM2_1"]) - GetSafeDouble(sItem["HSLM0_1"])) * 100, 2).ToString();
                             sItem["HSL_2"] = Round((GetSafeDouble(sItem["HSLM1_2"]) - GetSafeDouble(sItem["HSLM2_2"])) / (GetSafeDouble(sItem["HSLM2_2"]) - GetSafeDouble(sItem["HSLM0_2"])) * 100, 2).ToString();
                             sItem["HSL_3"] = Round((GetSafeDouble(sItem["HSLM1_3"]) - GetSafeDouble(sItem["HSLM2_3"])) / (GetSafeDouble(sItem["HSLM2_3"]) - GetSafeDouble(sItem["HSLM0_3"])) * 100, 2).ToString();
-                        }
-                        if (sItem["HSL_1"] != "" && sItem["HSL_1"] != "----")
-                        {
+
                             sItem["HSL"] = Round((GetSafeDouble(sItem["HSL_1"]) + GetSafeDouble(sItem["HSL_2"]) + GetSafeDouble(sItem["HSL_3"])) / 3, 1).ToString();
                         }
                         if (GetSafeDouble(sItem["HSLKZZ"]) >= 5)
@@ -271,6 +261,8 @@ namespace Calculates
                     #region 泌水率
                     if (jcxm.Contains("、泌水率比、"))
                     {
+                        sItem["JPJMSL"] = "";
+                        sItem["SPJMSL"] = "";
                         if (sItem["PBSN1"] != "" && sItem["PBSN1"] != "----")
                         {
                             sItem["JPHWZL_1"] = Round(GetSafeDouble(sItem["PBSN1"]) + GetSafeDouble(sItem["PBS1"]) + GetSafeDouble(sItem["PBSA1"]) + GetSafeDouble(sItem["PBSZ1"]), 1).ToString();
@@ -280,41 +272,41 @@ namespace Calculates
                             sItem["MJBYS_1"] = (sItem["PBS1"]);
                             sItem["MJBYS_2"] = (sItem["PBS2"]);
                             sItem["MJBYS_3"] = (sItem["PBS3"]);
-                        }
 
-                        sItem["JMSL_1"] = Round((GetSafeDouble(sItem["JMSZL_1"]) / (GetSafeDouble(sItem["MJBYS_1"]) / GetSafeDouble(sItem["JPHWZL_1"])) / GetSafeDouble(sItem["JSYZL_1"]) * 100), 2).ToString();
-                        sItem["JMSL_2"] = Round((GetSafeDouble(sItem["JMSZL_2"]) / (GetSafeDouble(sItem["MJBYS_2"]) / GetSafeDouble(sItem["JPHWZL_2"])) / GetSafeDouble(sItem["JSYZL_2"]) * 100), 2).ToString();
-                        sItem["JMSL_3"] = Round((GetSafeDouble(sItem["JMSZL_3"]) / (GetSafeDouble(sItem["MJBYS_3"]) / GetSafeDouble(sItem["JPHWZL_3"])) / GetSafeDouble(sItem["JSYZL_3"]) * 100), 2).ToString();
+                            sItem["JMSL_1"] = Round((GetSafeDouble(sItem["JMSZL_1"]) / (GetSafeDouble(sItem["MJBYS_1"]) / GetSafeDouble(sItem["JPHWZL_1"])) / GetSafeDouble(sItem["JSYZL_1"]) * 100), 2).ToString();
+                            sItem["JMSL_2"] = Round((GetSafeDouble(sItem["JMSZL_2"]) / (GetSafeDouble(sItem["MJBYS_2"]) / GetSafeDouble(sItem["JPHWZL_2"])) / GetSafeDouble(sItem["JSYZL_2"]) * 100), 2).ToString();
+                            sItem["JMSL_3"] = Round((GetSafeDouble(sItem["JMSZL_3"]) / (GetSafeDouble(sItem["MJBYS_3"]) / GetSafeDouble(sItem["JPHWZL_3"])) / GetSafeDouble(sItem["JSYZL_3"]) * 100), 2).ToString();
 
-                        string mlongStr = sItem["JMSL_1"] + "," + sItem["JMSL_2"] + "," + sItem["JMSL_3"];
-                        string[] str = mlongStr.Split(',');
-                        foreach (string s in str)
-                        {
-                            mtmpArray.Add(GetSafeDouble(s));
-                        }
-                        mtmpArray.Sort();
-                        mMaxKyqd = mtmpArray[2];
-                        mMinKyqd = mtmpArray[0];
-                        mMidKyqd = mtmpArray[1];
-                        mAvgKyqd = mtmpArray.Average();
+                            string mlongStr = sItem["JMSL_1"] + "," + sItem["JMSL_2"] + "," + sItem["JMSL_3"];
+                            string[] str = mlongStr.Split(',');
+                            foreach (string s in str)
+                            {
+                                mtmpArray.Add(GetSafeDouble(s));
+                            }
+                            mtmpArray.Sort();
+                            mMaxKyqd = mtmpArray[2];
+                            mMinKyqd = mtmpArray[0];
+                            mMidKyqd = mtmpArray[1];
+                            mAvgKyqd = mtmpArray.Average();
 
-                        sItem["JPJMSL"] = "";
-                        if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
-                        {
-                            MItem[0]["HG_MSL"] = "重做";
-                            sItem["JPJMSL"] = "重做";
-                        }
-                        if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
-                        {
-                            sItem["JPJMSL"] = Round(mMidKyqd, 0).ToString();
-                        }
-                        if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
-                        {
-                            sItem["JPJMSL"] = Round(mMidKyqd, 0).ToString();
-                        }
-                        if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
-                        {
-                            sItem["JPJMSL"] = Round(mAvgKyqd, 1).ToString();
+                            sItem["JPJMSL"] = "";
+                            if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
+                            {
+                                MItem[0]["HG_MSL"] = "重做";
+                                sItem["JPJMSL"] = "重做";
+                            }
+                            if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
+                            {
+                                sItem["JPJMSL"] = Round(mMidKyqd, 0).ToString();
+                            }
+                            if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
+                            {
+                                sItem["JPJMSL"] = Round(mMidKyqd, 0).ToString();
+                            }
+                            if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
+                            {
+                                sItem["JPJMSL"] = Round(mAvgKyqd, 1).ToString();
+                            }
                         }
 
                         if (sItem["SPBSN1"] != "" && sItem["SPBSN1"] != "----")
@@ -329,8 +321,8 @@ namespace Calculates
                             sItem["SMSL_2"] = Round(GetSafeDouble(sItem["SMSZL_2"]) / (GetSafeDouble(sItem["MSBYS_2"]) / GetSafeDouble(sItem["SPHWZL_2"])) / GetSafeDouble(sItem["SSYZL_2"]) * 100, 2).ToString();
                             sItem["SMSL_3"] = Round(GetSafeDouble(sItem["SMSZL_3"]) / (GetSafeDouble(sItem["MSBYS_3"]) / GetSafeDouble(sItem["SPHWZL_3"])) / GetSafeDouble(sItem["SSYZL_3"]) * 100, 2).ToString();
 
-                            mlongStr = sItem["SMSL_1"] + "," + sItem["SMSL_2"] + "," + sItem["SMSL_3"];
-                            str = mlongStr.Split(',');
+                            string mlongStr = sItem["SMSL_1"] + "," + sItem["SMSL_2"] + "," + sItem["SMSL_3"];
+                            string[] str = mlongStr.Split(',');
                             foreach (string s in str)
                             {
                                 mtmpArray.Add(GetSafeDouble(s));
@@ -340,7 +332,7 @@ namespace Calculates
                             mMinKyqd = mtmpArray[0];
                             mMidKyqd = mtmpArray[1];
                             mAvgKyqd = mtmpArray.Average();
-                            sItem["SPJMSL"] = "";
+
 
                             if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                             {
@@ -455,7 +447,6 @@ namespace Calculates
                                 sItem["PJJSL"] = Round(mAvgKyqd, 1).ToString();
                             }
                         }
-
                         if (sItem["PJJSL"] == "重做")
                         {
                             mAllHg = false;
@@ -718,9 +709,79 @@ namespace Calculates
                     if (jcxm.Contains("、抗压强度比、"))
                     {
                         sItem["JPJQD"] = "";
+                        List<double> Arrmd = new List<double>();
+
+                        string mlongStr = "";
+                        string[] str = new string[3];
+                        if (Round(GetSafeDouble(sItem["SJCD"]), 0) == 100)
+                        {
+                            mhsxs = 0.95;
+                        }
+                        if (Round(GetSafeDouble(sItem["SJCD"]), 0) == 150)
+                        {
+                            mhsxs = 1;
+                        }
+                        if (Round(GetSafeDouble(sItem["SJCD"]), 0) == 200)
+                        {
+                            mhsxs = 1.05;
+                        }
+
+                        if (sItem["JHZ" + "1D1_1"] != "" && sItem["JHZ" + "1D1_1"] != "----")
+                        {
+                            for (int j = 1; j <= 3; j++)
+                            {
+                                sum = 0;
+                                for (int k = 1; k <= 3; k++)
+                                {
+                                    md1 = GetSafeDouble(sItem["JHZ" + "1D" + j + "_" + k]);
+                                    md2 = Round(1000 * md1 / (100 * 100), 1);
+                                    Arrmd.Add(md2);
+                                    sum = sum + md2;
+                                    sItem["JQD" + "1D" + j + "_" + k] = Round(md2, 1).ToString();
+                                }
+
+                                mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
+                                str = mlongStr.Split(',');
+                                foreach (string s in str)
+                                {
+                                    mtmpArray.Add(GetSafeDouble(s));
+                                }
+                                mtmpArray.Sort();
+                                mMaxKyqd = mtmpArray[2];
+                                mMinKyqd = mtmpArray[0];
+                                mMidKyqd = mtmpArray[1];
+                                mAvgKyqd = mtmpArray.Average();
+
+                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
+                                {
+                                    sItem["JQDDBZ" + "1D" + j] = "重做";
+                                }
+                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 1))
+                                {
+                                    sItem["JQDDBZ" + "1D" + j] = Round(mMidKyqd * mhsxs, 1).ToString();
+                                }
+                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
+                                {
+                                    sItem["JQDDBZ" + "1D" + j] = Round(mMidKyqd * mhsxs, 1).ToString();
+                                }
+                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 1))
+                                {
+                                    sItem["JQDDBZ" + "1D" + j] = Round(mAvgKyqd * mhsxs, 1).ToString();
+                                }
+
+                                if ("重做" == sItem["JQDDBZ" + "1D" + j])
+                                {
+                                    sItem["JPJQD"] = "重做";
+                                }
+                            }
+                        }
+                        if (sItem["JPJQD"] != "重做")
+                        {
+                            sItem["JPJQD"] = Round((GetSafeDouble(sItem["JQDDBZ1D1"]) + GetSafeDouble(sItem["JQDDBZ1D2"]) + GetSafeDouble(sItem["JQDDBZ1D3"])) / 3, 1).ToString();
+                        }
+
                         for (int i = 1; i <= 4; i++)
                         {
-                            sItem["SPJQD" + i] = "";
                             if (i == 1)
                             {
                                 mlq = "1D";
@@ -742,69 +803,8 @@ namespace Calculates
                                 mmlq = "R-7+56";
                             }
                             var dff = sItem["SJCD"];
-                            if (Round(GetSafeDouble(sItem["SJCD"]), 0) == 100)
-                            {
-                                mhsxs = 0.95;
-                            }
-                            if (Round(GetSafeDouble(sItem["SJCD"]), 0) == 150)
-                            {
-                                mhsxs = 1;
-                            }
-                            if (Round(GetSafeDouble(sItem["SJCD"]), 0) == 200)
-                            {
-                                mhsxs = 1.05;
-                            }
-                            List<double> Arrmd = new List<double>();
-                            if (sItem["JHZ" + "1D1_1"] != "" && sItem["JHZ" + "1D1_1"] != "----")
-                            {
-                                for (int j = 1; j <= 3; j++)
-                                {
-                                    sum = 0;
-                                    for (int k = 1; k <= 3; k++)
-                                    {
-                                        md1 = GetSafeDouble(sItem["JHZ" + "1D" + j + "_" + k]);
-                                        md2 = Round(1000 * md1 / (100 * 100), 1);
-                                        Arrmd.Add(md2);
-                                        sum = sum + md2;
-                                        sItem["JHZ" + "1D" + j + "_" + k] = Round(md2, 1).ToString();
-                                    }
-                                    string mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
-                                    string[] str = mlongStr.Split(',');
-                                    foreach (string s in str)
-                                    {
-                                        mtmpArray.Add(GetSafeDouble(s));
-                                    }
-                                    mtmpArray.Sort();
-                                    mMaxKyqd = mtmpArray[2];
-                                    mMinKyqd = mtmpArray[0];
-                                    mMidKyqd = mtmpArray[1];
-                                    mAvgKyqd = mtmpArray.Average();
-                                    if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
-                                    {
-                                        sItem["JQDDBZ" + "1D" + j] = "重做";
-                                    }
-                                    if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 1))
-                                    {
-                                        sItem["JQDDBZ" + "1D" + j] = Round(mMidKyqd * mhsxs, 1).ToString();
-                                    }
-                                    if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
-                                    {
-                                        sItem["JQDDBZ" + "1D" + j] = Round(mMidKyqd * mhsxs, 1).ToString();
-                                    }
-                                    if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 1))
-                                    {
-                                        sItem["JQDDBZ" + "1D" + j] = Round(mAvgKyqd * mhsxs, 1).ToString();
-                                    }
-                                    if ("重做" == sItem["JQDDBZ" + "1D" + j])
-                                    {
-                                        sItem["JPJQD"] = "重做";
-                                    }
-                                }
-                                if (sItem["JPJQD"] != "重做")
-                                {
-                                    sItem["JPJQD"] = Round((GetSafeDouble(sItem["JQDDBZ1D1"]) + GetSafeDouble(sItem["JQDDBZ1D2"]) + GetSafeDouble(sItem["JQDDBZ1D3"])) / 3, 1).ToString();
-                                }
-                            }
+                        
+
                             if (sItem["SHZ" + mlq + "1_1"] != "" && sItem["SHZ" + mlq + "1_1"] != "----")
                             {
                                 for (int j = 1; j <= 3; j++)
@@ -819,8 +819,8 @@ namespace Calculates
                                         sum = sum + md2;
                                         sItem["SQD" + mlq + j + "_" + k] = Round(md2, 1).ToString();
                                     }
-                                    string mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
-                                    string[] str = mlongStr.Split(',');
+                                    mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
+                                    str = mlongStr.Split(',');
                                     foreach (string s in str)
                                     {
                                         mtmpArray.Add(GetSafeDouble(s));
@@ -846,21 +846,22 @@ namespace Calculates
                                     {
                                         sItem["SQDDBZ" + mlq + j] = Round(mAvgKyqd * mhsxs, 1).ToString();
                                     }
-                                    if ( sItem["SQDDBZ" + mlq + j]== "重做")
+                                    if (sItem["SQDDBZ" + mlq + j] == "重做")
                                     {
                                         sItem["SPJQD" + i] = "重做";
                                     }
                                 }
-
                                 if (sItem["SPJQD" + i] != "重做")
                                 {
                                     sItem["SPJQD" + i] = Round((GetSafeDouble(sItem["SQDDBZ" + mlq + "1"]) + GetSafeDouble(sItem["SQDDBZ" + mlq + "2"]) + GetSafeDouble(sItem["SQDDBZ" + mlq + "3"])) / 3, 1).ToString();
                                 }
                             }
+                            sItem["QDB" + i] = "";
                             if (0 != GetSafeDouble(sItem["JPJQD"]))
                             {
                                 sItem["QDB" + i] = Round(GetSafeDouble(sItem["SPJQD" + i]) / GetSafeDouble(sItem["JPJQD"]) * 100, 0).ToString();
                             }
+
                             if (sItem["SPJQD" + i] == "重做" || sItem["JPJQD"] == "重做")
                             {
                                 mAllHg = false;
@@ -921,7 +922,7 @@ namespace Calculates
                             mhsxs = 1.05;
                         }
                         var mHZ1 = sItem["DRQJHZ1"];
-                         
+
                         for (int i = 1; i <= 4; i++)
                         {
                             if (i == 1)
@@ -940,7 +941,7 @@ namespace Calculates
                             {
                                 mlq = "DRHS";
                             }
-                       
+
                             List<double> Arrmd = new List<double>();
                             if (sItem[mlq + "HZ1"] != "" && sItem[mlq + "HZ1"] != "----")
                             {
@@ -1014,6 +1015,12 @@ namespace Calculates
                             sItem["SSLB1"] = Round(GetSafeDouble(sItem["SSLS1"]) / GetSafeDouble(sItem["SSLS1"]), 1).ToString();
                             sItem["SSLB2"] = Round(GetSafeDouble(sItem["SSLS2"]) / GetSafeDouble(sItem["SSLS2"]), 1).ToString();
                             sItem["SSLB3"] = Round(GetSafeDouble(sItem["SSLS3"]) / GetSafeDouble(sItem["SSLS3"]), 1).ToString();
+                        }
+                        else
+                        {
+                            sItem["SSLB1"] = "";
+                            sItem["SSLB2"] = "";
+                            sItem["SSLB3"] = "";
                         }
                         sItem["SSLB"] = Round((GetSafeDouble(sItem["SSLB1"]) + GetSafeDouble(sItem["SSLB2"]) + GetSafeDouble(sItem["SSLB3"])) / 3, 0).ToString();
                         MItem[0]["HG_SSLB"] = IsQualified(MItem[0]["G_SSLB"], sItem["SSLB"]);

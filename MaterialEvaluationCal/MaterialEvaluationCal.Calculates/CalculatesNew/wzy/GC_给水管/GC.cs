@@ -13,18 +13,12 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region  参数定义
-            string mcalBh;
-            string mMaxBgbh;
-            string mJSFF;
             bool mAllHg;
-            bool mGetBgbh;
             bool mFlag_Hg, mFlag_Bhg;
             //当前项目的变量声明
             int mbhggs, mbhggs1, mbhgpds = 0;
             int mhgpds = 0;
             string mGxl, mSjdj;
-            bool mSFwc;
-            mSFwc = true;
             #endregion
 
             #region  集合取值
@@ -39,7 +33,6 @@ namespace Calculates
             #endregion
 
             #region 计算开始
-            mGetBgbh = false;
             mAllHg = true;
             mitem["JCJGMS"] = "";
             mFlag_Hg = false;
@@ -112,11 +105,9 @@ namespace Calculates
                     mitem["G_HGD"] = string.IsNullOrEmpty(mrsDj_Filter["HGD"]) ? "" : mrsDj_Filter["HGD"].Trim(); //环刚度
                     mitem["G_HRX"] = string.IsNullOrEmpty(mrsDj_Filter["HRX"]) ? "" : mrsDj_Filter["HRX"].Trim(); //环柔度
                     mitem["G_JZLCJ"] = string.IsNullOrEmpty(mrsDj_Filter["JZLCJ"]) ? "" : mrsDj_Filter["JZLCJ"].Trim(); //简支梁冲击
-                    mJSFF = string.IsNullOrEmpty(mrsDj_Filter["JSFF"]) ? "" : mrsDj_Filter["JSFF"].Trim().ToLower();
                 }
                 else
                 {
-                    mJSFF = "";
                     sitem["JCJG"] = "依据不详";
                     mitem["JCJGMS"] = mitem["JCJGMS"] + "获取标准要求出错，找不到对应项";
                     continue;
@@ -125,11 +116,9 @@ namespace Calculates
                 mbhggs1 = 0;
                 jcxmCount = mtmpArray.Count;
                 curJcxmCount = 0;
-                bool sign;
                 int xd, Gs;
                 int md;
-                double md1, md2, sum;
-                double[] nArr;
+                double md1, md2;
                 mbhggs = 0;
                 //以下初始化报告字段
                 for (xd = 0; xd <= 9; xd++)
@@ -610,6 +599,9 @@ namespace Calculates
                         MItem[0]["G_WG"] = "----";
                     }
 
+                    if (jcxm.Contains("、规格尺寸、"))
+                    { 
+                    }
                     if (jcxm.Contains("、平均外径、"))
                     {
                         MItem[0]["G_PJWJ1"] = MItem[0]["G_PJWJ"] + MItem[0]["G_PJWJPC"];

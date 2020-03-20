@@ -33,9 +33,6 @@
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CalculateServiceDebugLib">
-      <HintPath>..\..\..\越码科技\调试工具源码\CalculateServiceDebugLib（新逻辑）\CalculateServiceDebugLib\CalculateServiceDebugLib\bin\Release\netstandard2.1\CalculateServiceDebugLib.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
