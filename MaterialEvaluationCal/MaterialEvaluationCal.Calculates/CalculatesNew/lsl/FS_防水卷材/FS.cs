@@ -1295,7 +1295,6 @@ namespace Calculates
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             #endregion
-            /************************ 代码结束 *********************/
         }
     }
 }

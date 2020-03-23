@@ -12,7 +12,7 @@ namespace Calculates
     {
         public void Calc()
         {
-            /************************ 代码开始 *********************/
+            #region 
             #region  参数定义
             string mcalBh;
             string mMaxBgbh;
@@ -452,13 +452,13 @@ namespace Calculates
                             if (mtmpArray[xd].Contains("环刚") || mtmpArray[xd].Contains("环刚度"))
                             {
                                 if (sitem["SJDJ"] == "埋地用聚乙烯(PE)双壁波纹管材" || sitem["SJDJ"] == "埋地用聚乙烯(PE)缠绕结构壁管材")
-                                    sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd] + "(kN/m&scsup2&scend)";
+                                    sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd] + "(kN/㎡)";
                                 else
                                     sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd];
                                 break;
                             }
                         }
-                        sitem["BGDW" + curJcxmCount] = "kN/m&scsup2&scend";
+                        sitem["BGDW" + curJcxmCount] = "kN/㎡";
                         sitem["BGBZYQ" + curJcxmCount] = mitem["G_HGD"];
                         sitem["BGSCJG" + curJcxmCount] = mitem["HGD"];
                         sitem["BGDXPD" + curJcxmCount] = mitem["HGD_HG"];
@@ -486,6 +486,102 @@ namespace Calculates
                 }
                 else
                 {
+
+                    if (jcxm.Contains("、外观颜色、"))
+                    {
+                        //
+                        //MItem[0]["WG"] = "";
+                        MItem[0]["G_WG"] = "管材内外表面应清洁、光滑, 不应有气泡、明显的划伤、凹陷、杂质、颜色不均等缺陷。 管材两端应切割平整, 并与管材轴线垂直。";
+                        //MItem[0]["WG_HG"] = "";
+
+                        //MItem[0]["BZ"] = "符合";
+                        MItem[0]["G_BZ"] = "管材应为黑色或蓝色, 黑色管材上应共挤出 至少三条蓝色条, 色条应沿管材圆周方向均匀分布。蓝色管材仅用于暗敷。";
+                        //MItem[0]["BZ_HG"] = "合格";
+
+                        if (MItem[0]["WG_HG"] == "合格" && MItem[0]["BZ_HG"] == "合格")
+                        {
+                        }
+                        else
+                        {
+                            mbhggs = mbhggs + 1;
+                            mAllHg = false;
+                        }
+
+                        for (xd = 0; xd < jcxmCount; xd++)
+                        {
+                            if (mtmpArray[xd].Contains("外观颜色"))
+                            {
+                                sitem["BGJCXM" + curJcxmCount] = "外观";
+                                sitem["BGDW" + curJcxmCount] = "----";
+                                sitem["BGBZYQ" + curJcxmCount] = mitem["G_WG"];
+                                sitem["BGSCJG" + curJcxmCount] = mitem["WG"];
+                                sitem["BGDXPD" + curJcxmCount] = mitem["WG_HG"];
+                                curJcxmCount = curJcxmCount + 1;
+
+                                sitem["BGJCXM" + curJcxmCount] = "颜色";
+                                sitem["BGDW" + curJcxmCount] = "----";
+                                sitem["BGBZYQ" + curJcxmCount] = mitem["G_BZ"];
+                                sitem["BGSCJG" + curJcxmCount] = mitem["BZ"];
+                                sitem["BGDXPD" + curJcxmCount] = mitem["BZ_HG"];
+                                curJcxmCount = curJcxmCount + 1;
+                                break;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        MItem[0]["WG_HG"] = "----";
+                        MItem[0]["G_WG"] = "----";
+                        MItem[0]["G_BZ"] = "----";
+                        MItem[0]["BZ_HG"] = "----";
+                    }
+
+                    if (jcxm.Contains("、规格尺寸、"))
+                    {
+                        //测试的数量4-12个
+                        //1 长度 2.平均外径 3.不圆度 4.壁厚公差
+                        //int count = Convert.ToInt32(sitem["ZHCLSL"]);
+
+                        //长度
+                        //MItem[0]["G_GCCD"] = "长度一般为6m 、9m、12m,也可由供需双方商定。";
+                        //MItem[0]["HG_GCCD"] = "";
+                        //MItem[0]["HG_GCCD"] = MItem[0]["HG_GCCD"];
+
+
+                        //MItem[0]["HG_ZGBYD"] = "依据不详";
+                        //MItem[0]["PJWJ_HG"] = "依据不详";
+                        //MItem[0]["HG_GCBH"] = "依据不详";
+                        var ddf = MItem[0]["HG_GCBH"];
+                        ddf = MItem[0]["PJWJ_HG"];
+                        //ddf = MItem[0]["HG_ZGBYD"];
+                        MItem[0]["HG_GCBH"] = MItem[0]["HG_GCBH"];
+                        //MItem[0]["HG_ZGBYD"] = MItem[0]["HG_ZGBYD"];
+                        MItem[0]["PJWJ_HG"] = MItem[0]["PJWJ_HG"];
+
+                        for (xd = 0; xd < jcxmCount; xd++)
+                        {
+                            if (mtmpArray[xd].Contains("规格尺寸"))
+                            {
+                                sitem["BGJCXM" + curJcxmCount] = "平均外径";
+                                sitem["BGDW" + curJcxmCount] = "----";
+                                sitem["BGSCJG" + curJcxmCount] = MItem[0]["PJWJ"];
+                                sitem["BGBZYQ" + curJcxmCount] = MItem[0]["G_PJWJ"];
+                                sitem["BGDXPD" + curJcxmCount] = MItem[0]["PJWJ_HG"];
+                                curJcxmCount = curJcxmCount + 1;
+
+                                sitem["BGJCXM" + curJcxmCount] = "壁厚";
+                                sitem["BGDW" + curJcxmCount] = "----";
+                                sitem["BGSCJG" + curJcxmCount] = sitem["GCBH"];
+                                sitem["BGBZYQ" + curJcxmCount] = MItem[0]["G_GCBH"];
+                                sitem["BGDXPD" + curJcxmCount] = MItem[0]["HG_GCBH"];
+                                curJcxmCount = curJcxmCount + 1;
+
+                                break;
+                            }
+                        }
+
+                    }
                     if (jcxm.Contains("、环刚、") || jcxm.Contains("、环刚度、"))
                     {
                         double Yi, S1, S2, S3 = 0;
@@ -509,19 +605,17 @@ namespace Calculates
                             if (mtmpArray[xd].Contains("环刚") || mtmpArray[xd].Contains("环刚度"))
                             {
                                 if (sitem["SJDJ"] == "埋地用聚乙烯(PE)双壁波纹管材" || sitem["SJDJ"] == "埋地用聚乙烯(PE)缠绕结构壁管材")
-                                    sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd] + "(kN/m&scsup2&scend)";
+                                    sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd] + "(kN/㎡)";
                                 else
                                     sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd];
                                 break;
                             }
                         }
-                        sitem["BGDW" + curJcxmCount] = "kN/m+scsup2+scend";
+                        sitem["BGDW" + curJcxmCount] = "kN/㎡";
                         sitem["BGBZYQ" + curJcxmCount] = mitem["G_HGD"];
                         sitem["BGSCJG" + curJcxmCount] = mitem["HGD"];
                         sitem["BGDXPD" + curJcxmCount] = mitem["HGD_HG"];
                         curJcxmCount = curJcxmCount + 1;
-
-
                     }
                     else
                     {
@@ -853,7 +947,7 @@ namespace Calculates
                 mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
             }
             #endregion
-            /************************ 代码结束 *********************/
+            #endregion
         }
     }
 }

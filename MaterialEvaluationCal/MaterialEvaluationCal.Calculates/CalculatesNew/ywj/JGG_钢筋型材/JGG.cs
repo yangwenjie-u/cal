@@ -281,7 +281,7 @@ namespace Calculates
                 mFsgs_lw = extraFieldsDj["ZFSGS_LW"];
 
                 mlwzj = Double.Parse(extraFieldsDj["LWZJ"]);// '冷弯直径和角度
-                mlwjd = extraFieldsDj["LWJD"];
+                mlwjd = GetSafeInt(extraFieldsDj["LWJD"]).ToString() ;
                 MFFWQCS = extraFieldsDj["FFWQCS"];
 
                 mxlgs = double.Parse(extraFieldsDj["XLGS"]);
@@ -674,8 +674,6 @@ namespace Calculates
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion 
             #endregion
-
-
         }
     }
 }

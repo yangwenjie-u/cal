@@ -528,7 +528,7 @@ namespace CalDebugTools
 
                         this.tacDebug.SelectedTab = this.tapCompare;
                     }
-                    else
+                        else
                     {
                         this.ritResult.Text = strError;
                         this.tacDebug.SelectedTab = this.tab_debug;
@@ -632,7 +632,6 @@ namespace CalDebugTools
                 if (cpaParams != null) cpaParams = null;
                 if (cprCSharp != null) cprCSharp.Dispose();
             }
-
 
         }
 
