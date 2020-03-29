@@ -133,11 +133,15 @@ namespace CalDebugTools.DAL
 
             foreach (DataRow item in redata.Tables[0].Rows)
             {
+                if (item["ZDMC"].ToString() == "SLQD1")
+                {
+
+                }
                 if (!string.IsNullOrEmpty(item["SSJCX"].ToString()))
                 {
                     foreach (string jcxm in lstJcxm)
                     {
-                        if (item["SSJCX"].ToString().Contains(jcxm) && !result.Contains($",{item["ZDMC"]},"))
+                        if (item["SSJCX"].ToString().Replace(",", "、").Contains("、" + jcxm + "、") && !result.Contains($",{item["ZDMC"]},"))
                         {
                             result += item["ZDMC"].ToString() + ",";
                         }
@@ -151,6 +155,7 @@ namespace CalDebugTools.DAL
 
             return result;
         }
+
 
 
         public List<string> GetIOFields(string xmbh, string wtdbh)

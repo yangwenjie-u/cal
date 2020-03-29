@@ -29,7 +29,7 @@ namespace Calculates
             foreach (var sItem in SItem)
             {
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-
+                //sItem["GGXH"] = sItem["GGXH"]+
                 //wtbh = sItem["WTBH"].Trim();
                 //dzbh = sItem["DZBH"].Trim();
 
@@ -158,11 +158,18 @@ namespace Calculates
                 }
 
                 #region 压力试验
-                if (jcxm.Contains("、压力试验、")|| jcxm.Contains("、液压试验、") )
+                if (jcxm.Contains("、压力试验、") || jcxm.Contains("、液压试验、"))
                 {
                     if (sItem["SJSYYL"] != "")
                     {
-                        sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续2～3min，压力不降且不渗不漏";
+                        if ("铸铁供暖散热器" == sItem["CPMC"])
+                        {
+                            sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续1min，并用0.5kg钢锤轻击，压力不降且不渗不漏";
+                        }
+                        else
+                        {
+                            sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续2～3min，压力不降且不渗不漏";
+                        }
                         if (GetSafeDouble(sItem["YLSYSM"]) >= GetSafeDouble(sItem["SJSYYL"]) && GetSafeDouble(sItem["YLSYSM"]) >= 0.6 && sItem["SLQK"] == "压力不降且不渗不漏")
                         {
                             MItem[0]["GH_YLSY"] = "合格";
@@ -241,11 +248,11 @@ namespace Calculates
                         mAllHg = false;
                         if (jsbeizhu == "该组试样")
                         {
-                            jsbeizhu = jsbeizhu + "压力试验不符合GB 50242-2002 《建筑给水排水及采暖工程施工质量验收规范》标准要求。";
+                            jsbeizhu = jsbeizhu + "压力试验不符合" + MItem[0]["PDBZ"] + "标准要求。";
                         }
                         else
                         {
-                            jsbeizhu = jsbeizhu + "；压力试验不符合GB 50242-2002 《建筑给水排水及采暖工程施工质量验收规范》标准要求。";
+                            jsbeizhu = jsbeizhu + "；压力试验不符合" + MItem[0]["PDBZ"] + "标准要求。";
                         }
                     }
                     else
@@ -254,11 +261,11 @@ namespace Calculates
                         mAllHg = true;
                         if (jsbeizhu == "该组试样")
                         {
-                            jsbeizhu = jsbeizhu + "压力试验不符合GB 50242-2002 《建筑给水排水及采暖工程施工质量验收规范》标准要求。";
+                            jsbeizhu = jsbeizhu + "压力试验符合" + MItem[0]["PDBZ"] + "标准要求。";
                         }
                         else
                         {
-                            jsbeizhu = jsbeizhu + "；压力试验不符合GB 50242-2002 《建筑给水排水及采暖工程施工质量验收规范》标准要求。";
+                            jsbeizhu = jsbeizhu + "；压力试验符合" + MItem[0]["PDBZ"] + "标准要求。";
                         }
                     }
                 }

@@ -71,11 +71,11 @@
             this.tool_AddFields = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_uploadFields = new System.Windows.Forms.ToolStripMenuItem();
             this.代码上传ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tool_UploadFieldNew = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.数据库配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_fieldSet = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_dataFieldSync = new System.Windows.Forms.ToolStripMenuItem();
-            this.tool_UploadFieldNew = new System.Windows.Forms.ToolStripMenuItem();
             this.pan_table.SuspendLayout();
             this.tacDebug.SuspendLayout();
             this.tapCode.SuspendLayout();
@@ -120,7 +120,7 @@
             this.pan_table.Controls.Add(this.txt_jcxmbh);
             this.pan_table.Controls.Add(this.label1);
             this.pan_table.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pan_table.Location = new System.Drawing.Point(0, 28);
+            this.pan_table.Location = new System.Drawing.Point(0, 30);
             this.pan_table.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pan_table.Name = "pan_table";
             this.pan_table.Size = new System.Drawing.Size(1277, 129);
@@ -322,11 +322,11 @@
             this.tacDebug.Controls.Add(this.tapCompare);
             this.tacDebug.Controls.Add(this.tab_batch);
             this.tacDebug.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tacDebug.Location = new System.Drawing.Point(0, 157);
+            this.tacDebug.Location = new System.Drawing.Point(0, 159);
             this.tacDebug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tacDebug.Name = "tacDebug";
             this.tacDebug.SelectedIndex = 0;
-            this.tacDebug.Size = new System.Drawing.Size(1277, 471);
+            this.tacDebug.Size = new System.Drawing.Size(1277, 469);
             this.tacDebug.TabIndex = 3;
             // 
             // tapCode
@@ -336,7 +336,7 @@
             this.tapCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tapCode.Name = "tapCode";
             this.tapCode.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tapCode.Size = new System.Drawing.Size(1269, 442);
+            this.tapCode.Size = new System.Drawing.Size(1269, 440);
             this.tapCode.TabIndex = 0;
             this.tapCode.Text = "代码";
             this.tapCode.UseVisualStyleBackColor = true;
@@ -347,7 +347,7 @@
             this.ritCode.Location = new System.Drawing.Point(3, 2);
             this.ritCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ritCode.Name = "ritCode";
-            this.ritCode.Size = new System.Drawing.Size(1263, 438);
+            this.ritCode.Size = new System.Drawing.Size(1263, 436);
             this.ritCode.TabIndex = 1;
             this.ritCode.Text = "";
             this.ritCode.TextChanged += new System.EventHandler(this.ritCode_TextChanged);
@@ -359,7 +359,7 @@
             this.tab_debug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tab_debug.Name = "tab_debug";
             this.tab_debug.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tab_debug.Size = new System.Drawing.Size(1269, 440);
+            this.tab_debug.Size = new System.Drawing.Size(1269, 442);
             this.tab_debug.TabIndex = 1;
             this.tab_debug.Text = "调试输出";
             this.tab_debug.UseVisualStyleBackColor = true;
@@ -371,7 +371,7 @@
             this.ritResult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ritResult.Multiline = true;
             this.ritResult.Name = "ritResult";
-            this.ritResult.Size = new System.Drawing.Size(1263, 436);
+            this.ritResult.Size = new System.Drawing.Size(1263, 438);
             this.ritResult.TabIndex = 0;
             // 
             // tapCompare
@@ -381,7 +381,7 @@
             this.tapCompare.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tapCompare.Name = "tapCompare";
             this.tapCompare.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tapCompare.Size = new System.Drawing.Size(1269, 440);
+            this.tapCompare.Size = new System.Drawing.Size(1269, 442);
             this.tapCompare.TabIndex = 2;
             this.tapCompare.Text = "数据比较";
             this.tapCompare.UseVisualStyleBackColor = true;
@@ -398,7 +398,7 @@
             this.dataGridViewResult.ReadOnly = true;
             this.dataGridViewResult.RowHeadersWidth = 51;
             this.dataGridViewResult.RowTemplate.Height = 27;
-            this.dataGridViewResult.Size = new System.Drawing.Size(1263, 436);
+            this.dataGridViewResult.Size = new System.Drawing.Size(1263, 438);
             this.dataGridViewResult.TabIndex = 0;
             this.dataGridViewResult.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridViewResult_CellPainting);
             // 
@@ -409,7 +409,7 @@
             this.tab_batch.Margin = new System.Windows.Forms.Padding(4);
             this.tab_batch.Name = "tab_batch";
             this.tab_batch.Padding = new System.Windows.Forms.Padding(4);
-            this.tab_batch.Size = new System.Drawing.Size(1269, 440);
+            this.tab_batch.Size = new System.Drawing.Size(1269, 442);
             this.tab_batch.TabIndex = 3;
             this.tab_batch.Text = "批量调试";
             this.tab_batch.UseVisualStyleBackColor = true;
@@ -427,7 +427,7 @@
             this.DataGridViewRowBitch.ReadOnly = true;
             this.DataGridViewRowBitch.RowHeadersWidth = 51;
             this.DataGridViewRowBitch.RowTemplate.Height = 23;
-            this.DataGridViewRowBitch.Size = new System.Drawing.Size(1261, 432);
+            this.DataGridViewRowBitch.Size = new System.Drawing.Size(1261, 434);
             this.DataGridViewRowBitch.TabIndex = 0;
             this.DataGridViewRowBitch.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridViewRowBitch_CellMouseDoubleClick);
             // 
@@ -437,7 +437,7 @@
             this.ProjectAdd,
             this.查看ToolStripMenuItem});
             this.项目管理ToolStripMenuItem.Name = "项目管理ToolStripMenuItem";
-            this.项目管理ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
+            this.项目管理ToolStripMenuItem.Size = new System.Drawing.Size(83, 26);
             this.项目管理ToolStripMenuItem.Text = "项目管理";
             // 
             // ProjectAdd
@@ -462,34 +462,34 @@
             this.zdzd表数据ToolStripMenuItem,
             this.target_Tools});
             this.项目管理2ToolStripMenuItem.Name = "项目管理2ToolStripMenuItem";
-            this.项目管理2ToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
+            this.项目管理2ToolStripMenuItem.Size = new System.Drawing.Size(68, 26);
             this.项目管理2ToolStripMenuItem.Text = "小工具";
             // 
             // tool_StrConver
             // 
             this.tool_StrConver.Name = "tool_StrConver";
-            this.tool_StrConver.Size = new System.Drawing.Size(224, 26);
+            this.tool_StrConver.Size = new System.Drawing.Size(201, 26);
             this.tool_StrConver.Text = "字段转大写";
             this.tool_StrConver.Click += new System.EventHandler(this.tool_StrConver_Click);
             // 
             // tool_StrReplace
             // 
             this.tool_StrReplace.Name = "tool_StrReplace";
-            this.tool_StrReplace.Size = new System.Drawing.Size(224, 26);
+            this.tool_StrReplace.Size = new System.Drawing.Size(201, 26);
             this.tool_StrReplace.Text = "批量替换";
             this.tool_StrReplace.Click += new System.EventHandler(this.tool_StrReplace_Click);
             // 
             // zdzd表数据ToolStripMenuItem
             // 
             this.zdzd表数据ToolStripMenuItem.Name = "zdzd表数据ToolStripMenuItem";
-            this.zdzd表数据ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.zdzd表数据ToolStripMenuItem.Size = new System.Drawing.Size(201, 26);
             this.zdzd表数据ToolStripMenuItem.Text = "zdzd表数据同步";
             this.zdzd表数据ToolStripMenuItem.Click += new System.EventHandler(this.zdzd表数据ToolStripMenuItem_Click);
             // 
             // target_Tools
             // 
             this.target_Tools.Name = "target_Tools";
-            this.target_Tools.Size = new System.Drawing.Size(224, 26);
+            this.target_Tools.Size = new System.Drawing.Size(201, 26);
             this.target_Tools.Text = "指标管理";
             this.target_Tools.Click += new System.EventHandler(this.target_Tools_Click);
             // 
@@ -501,29 +501,36 @@
             this.代码上传ToolStripMenuItem,
             this.tool_UploadFieldNew});
             this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
-            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
+            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(68, 26);
             this.设置ToolStripMenuItem.Text = "数据库";
             // 
             // tool_AddFields
             // 
             this.tool_AddFields.Name = "tool_AddFields";
-            this.tool_AddFields.Size = new System.Drawing.Size(224, 26);
+            this.tool_AddFields.Size = new System.Drawing.Size(197, 26);
             this.tool_AddFields.Text = "添加字段";
             this.tool_AddFields.Click += new System.EventHandler(this.tool_AddFields_Click);
             // 
             // tool_uploadFields
             // 
             this.tool_uploadFields.Name = "tool_uploadFields";
-            this.tool_uploadFields.Size = new System.Drawing.Size(224, 26);
+            this.tool_uploadFields.Size = new System.Drawing.Size(197, 26);
             this.tool_uploadFields.Text = "字段上传";
             this.tool_uploadFields.Click += new System.EventHandler(this.tool_uploadFields_Click_1);
             // 
             // 代码上传ToolStripMenuItem
             // 
             this.代码上传ToolStripMenuItem.Name = "代码上传ToolStripMenuItem";
-            this.代码上传ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.代码上传ToolStripMenuItem.Size = new System.Drawing.Size(197, 26);
             this.代码上传ToolStripMenuItem.Text = "代码上传";
             this.代码上传ToolStripMenuItem.Click += new System.EventHandler(this.代码上传ToolStripMenuItem_Click_1);
+            // 
+            // tool_UploadFieldNew
+            // 
+            this.tool_UploadFieldNew.Name = "tool_UploadFieldNew";
+            this.tool_UploadFieldNew.Size = new System.Drawing.Size(197, 26);
+            this.tool_UploadFieldNew.Text = "字段上传（新）";
+            this.tool_UploadFieldNew.Click += new System.EventHandler(this.tool_UploadFieldNew_Click);
             // 
             // menuStrip1
             // 
@@ -536,7 +543,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1277, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1277, 30);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -546,29 +553,22 @@
             this.tool_fieldSet,
             this.tool_dataFieldSync});
             this.数据库配置ToolStripMenuItem.Name = "数据库配置ToolStripMenuItem";
-            this.数据库配置ToolStripMenuItem.Size = new System.Drawing.Size(98, 24);
+            this.数据库配置ToolStripMenuItem.Size = new System.Drawing.Size(98, 26);
             this.数据库配置ToolStripMenuItem.Text = "数据库配置";
             // 
             // tool_fieldSet
             // 
             this.tool_fieldSet.Name = "tool_fieldSet";
-            this.tool_fieldSet.Size = new System.Drawing.Size(224, 26);
+            this.tool_fieldSet.Size = new System.Drawing.Size(197, 26);
             this.tool_fieldSet.Text = "字段配置";
             this.tool_fieldSet.Click += new System.EventHandler(this.tool_fieldSet_Click);
             // 
             // tool_dataFieldSync
             // 
             this.tool_dataFieldSync.Name = "tool_dataFieldSync";
-            this.tool_dataFieldSync.Size = new System.Drawing.Size(224, 26);
+            this.tool_dataFieldSync.Size = new System.Drawing.Size(197, 26);
             this.tool_dataFieldSync.Text = "数据表字段同步";
             this.tool_dataFieldSync.Click += new System.EventHandler(this.tool_dataFieldSync_Click);
-            // 
-            // tool_UploadFieldNew
-            // 
-            this.tool_UploadFieldNew.Name = "tool_UploadFieldNew";
-            this.tool_UploadFieldNew.Size = new System.Drawing.Size(224, 26);
-            this.tool_UploadFieldNew.Text = "字段上传（新）";
-            this.tool_UploadFieldNew.Click += new System.EventHandler(this.tool_UploadFieldNew_Click);
             // 
             // FormMain
             // 
