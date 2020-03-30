@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class SJG: BaseMethods
+    public class SJG : BaseMethods
     {
         public void Calc()
         {
@@ -171,6 +171,12 @@ namespace Calculates
                         mHtqdz_fun = 21;
                     if (sjzl == "qybs" && mHtqdz_fun == 0)
                         mHtqdz_fun = 22;
+                    if (sjzl == "MHYBSJQD" && mHtqdz_fun == 0)
+                        mHtqdz_fun = 23;
+                    if (sjzl == "MHXCBZSJQD" && mHtqdz_fun == 0)
+                        mHtqdz_fun = 24;
+                    if (sjzl == "QZYBSJQD" && mHtqdz_fun == 0)
+                        mHtqdz_fun = 25;
                     return mHtqdz_fun;
                 };
             #endregion
@@ -228,17 +234,36 @@ namespace Calculates
                     mHtzhz = calc_htzhz(sitem);
                     if (MItem[0]["PDBZ"].Contains("136-2017"))
                     {
-                        if (sitem["SJDJ"].Contains("水泥砂浆"))
-                            sjzl = "qxbs";
-                        if (sitem["SJDJ"].Contains("水泥混合"))
-                            sjzl = "qxbh";
-                        if (sitem["SJDJ"].Contains("预拌砂浆"))
-                            sjzl = "qybs";
-                        if (sitem["SJDJ"].Contains("预拌抹灰"))
-                            sjzl = "mybs";
-                        if (sitem["SJDJ"].Contains("水泥抹灰"))
-                            sjzl = "mxbs";
-
+                        //if (sitem["SJDJ"].Contains("水泥砂浆"))
+                        //    sjzl = "qxbs";
+                        //if (sitem["SJDJ"].Contains("水泥混合"))
+                        //    sjzl = "qxbh";
+                        //if (sitem["SJDJ"].Contains("预拌砂浆"))
+                        //    sjzl = "qybs";
+                        //if (sitem["SJDJ"].Contains("预拌抹灰"))
+                        //    sjzl = "mybs";
+                        //if (sitem["SJDJ"].Contains("水泥抹灰"))
+                        //    sjzl = "mxbs";
+                        if (sitem["SJDJ"].Contains("现场拌制水泥混合砌筑砂浆"))
+                        {
+                            sjzl = "HHQD";
+                        }
+                        if (sitem["SJDJ"].Contains("现场拌制水泥砌筑砂浆"))
+                        {
+                            sjzl = "SNQD";
+                        }
+                        if (sitem["SJDJ"].Contains("预拌砌筑砂浆"))
+                        {
+                            sjzl = "QZYBSJQD";
+                        }
+                        if (sitem["SJDJ"].Contains("预拌水泥抹灰砂浆"))
+                        {
+                            sjzl = "MHYBSJQD";
+                        }
+                        if (sitem["SJDJ"].Contains("现场拌制水泥抹灰砂浆"))
+                        {
+                            sjzl = "MHXCBZSJQD";
+                        }
 
                         mHtqdz = Round(sjhsb(mrssjhsb, mHtzhz, sjzl), 1);
 
@@ -250,7 +275,7 @@ namespace Calculates
                     }
                     else
                     {
-                        if (sitem["SJDJ"].Contains("水泥砂浆"))
+                        if (sitem["SJDJ"].Contains("水泥砌筑砂浆"))
                             sjzl = "snqd";
                         else
                             sjzl = "hhqd";

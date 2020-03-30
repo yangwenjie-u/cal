@@ -4,15 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic;
-
-
 namespace Calculates
 {
     public class TL : BaseMethods
     {
         public void Calc()
         {
-            /************************ 代码开始 *********************/
             #region  参数定义
             double[] mkyqdArray = new double[3];
             int mbhggs;
@@ -1012,7 +1009,6 @@ namespace Calculates
                 }
             }
             #endregion
-            /************************ 代码结束 *********************/
         }
     }
 }

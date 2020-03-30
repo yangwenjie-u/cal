@@ -242,7 +242,7 @@ namespace Calculates
                 {
                     mJSFF = "";
                     MItem[0]["JCJG"] = "依据不详";
-                    MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"] + "试件尺寸为空";
+                    MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"] + "依据不详";
                     break;
                 }
                 string jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
@@ -302,8 +302,8 @@ namespace Calculates
             {
                 MItem[0]["JCJG"] = "不合格";
                 MItem[0]["JCJGMS"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                if (mFlag_Bhg && mFlag_Hg)
-                    MItem[0]["JCJGMS"] = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
+                //if (mFlag_Bhg && mFlag_Hg)
+                //    MItem[0]["JCJGMS"] = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
             }
             #endregion
             /************************ 代码结束 *********************/

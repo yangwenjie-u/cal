@@ -140,6 +140,12 @@
     <Compile Include="Forms\TargetForm.Designer.cs">
       <DependentUpon>TargetForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\UploadFieldsNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UploadFieldsNew.Designer.cs">
+      <DependentUpon>UploadFieldsNew.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\UploadFields.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,6 +193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TargetForm.resx">
       <DependentUpon>TargetForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UploadFieldsNew.resx">
+      <DependentUpon>UploadFieldsNew.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UploadFields.resx">
       <DependentUpon>UploadFields.cs</DependentUpon>

@@ -128,6 +128,38 @@ namespace Calculates
                     sitem["JFBWKLPD"] = "----";
                 }
 
+                #region 质量
+                if (jcxm.Contains("、质量、"))
+                {
+
+                }
+                else
+                {
+
+                }
+                #endregion
+
+                #region 外观尺寸
+                if (jcxm.Contains("、外观尺寸、"))
+                {
+
+                }
+                else
+                {
+
+                }
+                #endregion
+
+                #region 一般要求
+                if (jcxm.Contains("、一般要求、"))
+                {
+
+                }
+                else
+                {
+
+                }
+                #endregion
 
                 if (sitem["APD"] == "不合格" || sitem["BPD"] == "不合格")
                 {

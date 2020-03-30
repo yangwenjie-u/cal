@@ -31,6 +31,11 @@ namespace CalDebugTools.Forms
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("是否创建帮助表数据?", "Confirm Message", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            {
+                return;
+            }
+
             string xmbh = string.IsNullOrEmpty(txt_xmbh.Text) ? "" : txt_xmbh.Text.Trim();
             string fieldName = string.IsNullOrEmpty(txt_fieldName.Text) ? "" : txt_fieldName.Text.Trim();
             string fieldMS = string.IsNullOrEmpty(txt_fieldMs.Text) ? "" : txt_fieldMs.Text.Trim();
@@ -70,13 +75,13 @@ namespace CalDebugTools.Forms
                 string alterSql = "";
                 if (txt_bzCount.Text == "1")
                 {
-                    //alterSql = $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName} {txt_fieldType.Text.Trim()};";
+                    alterSql = $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName} {txt_fieldType.Text.Trim()};";
                 }
                 else
                 {
                     for (int i = 1; i < Convert.ToInt16(txt_bzCount.Text) + 1; i++)
                     {
-                        //alterSql += $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName}{i} {txt_fieldType.Text.Trim()};";
+                        alterSql += $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName}{i} {txt_fieldType.Text.Trim()};";
                     }
                 }
 
@@ -94,7 +99,6 @@ namespace CalDebugTools.Forms
                 }
 
                 //添加主/从表字段
-
                 alterM = $"alter table {tableType}{xmbh} add HG_{fieldName} nvarchar(15);";
                 alterM += $"alter table M_{xmbh} add G_{fieldName} {fieldType};";
 
@@ -117,28 +121,31 @@ namespace CalDebugTools.Forms
 
                 var ds2 = _sqlBase.ExecuteDataset(sqlStr);
                 List<string> lst = new List<string>();
+                string txtLX = string.IsNullOrEmpty(txt_lx.Text) ? "H" : txt_lx.Text.Trim();
+                string chksfxs = this.chk_sfxs.Checked ? "1" : "0";
+                string locstionStr = "1,1";
 
                 //zdzd表添加记录
                 if (ds2 == null || ds2.Tables[0].Rows.Count == 0)
                 {
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-    $"VALUES('{tableType}{xmbh}', 'HG_{fieldName}', '判定{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'O', NULL, NULL, NULL, NULL, NULL, NULL)  " +
+    $"VALUES('{tableType}{xmbh}', 'HG_{fieldName}', '判定{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  " +
     $"";
                     lst.Add(sqlStr);
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-    $"VALUES('M_{xmbh}', 'G_{fieldName}', '要求{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'O', NULL, NULL, NULL, NULL, NULL, NULL)  " +
+    $"VALUES('M_{xmbh}', 'G_{fieldName}', '要求{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  " +
     $"";
                     lst.Add(sqlStr);
 
-    //                sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-    //$"VALUES('S_{xmbh}', '{fieldName}', '实测{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL) ";
-    //                lst.Add(sqlStr);
+                    //                sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
+                    //$"VALUES('S_{xmbh}', '{fieldName}', '实测{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H,I', NULL, NULL, NULL, NULL, NULL, NULL) ";
+                    //                lst.Add(sqlStr);
 
 
                     if (txt_bzCount.Text == "1")
                     {
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-   $"VALUES('BZ_{xmbh}_DJ', 'G_{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'O', NULL, NULL, NULL, NULL, NULL, NULL)  ";
+   $"VALUES('BZ_{xmbh}_DJ', 'G_{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                         lst.Add(sqlStr);
                     }
                     else
@@ -146,7 +153,7 @@ namespace CalDebugTools.Forms
                         for (int i = 1; i < Convert.ToInt16(txt_bzCount.Text) + 1; i++)
                         {
                             sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-   $"VALUES('BZ_{xmbh}_DJ', 'G_{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'O', NULL, NULL, NULL, NULL, NULL, NULL)  ";
+   $"VALUES('BZ_{xmbh}_DJ', 'G_{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                             lst.Add(sqlStr);
                         }
                     }
@@ -154,7 +161,7 @@ namespace CalDebugTools.Forms
                     if (txt_STabCount.Text == "1")
                     {
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-    $"VALUES('S_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H', NULL, NULL, NULL, NULL, NULL, NULL)";
+    $"VALUES('S_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')";
                         lst.Add(sqlStr);
                     }
                     else
@@ -162,7 +169,7 @@ namespace CalDebugTools.Forms
                         for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
                         {
                             sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('S_{xmbh}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H', NULL, NULL, NULL, NULL, NULL, NULL)";
+        $"VALUES('S_{xmbh}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txt_lx}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')";
                             lst.Add(sqlStr);
                         }
                     }
@@ -174,7 +181,7 @@ namespace CalDebugTools.Forms
                     {
                         //两个数据添加
                         _sqlBase.ExecuteNonQuery(item);
-                        //_sqlDebugTool.ExecuteNonQuery(item);
+                        _sqlDebugTool.ExecuteNonQuery(item);
                     }
                     catch (Exception ex)
                     {
@@ -300,6 +307,10 @@ namespace CalDebugTools.Forms
             string fieldMS = string.IsNullOrEmpty(txt_fieldMs.Text) ? "" : txt_fieldMs.Text.Trim();
             string fieldType = string.IsNullOrEmpty(txt_fieldType.Text) ? "" : txt_fieldType.Text.Trim();
 
+            string txtLX = string.IsNullOrEmpty(txt_lx.Text) ? "H" : txt_lx.Text.Trim();
+            string chksfxs = this.chk_sfxs.Checked ? "1" : "0";
+            string locstionStr = "1,1";
+
             if (string.IsNullOrEmpty(xmbh))
             {
                 MessageBox.Show("输入项目编号！");
@@ -352,7 +363,7 @@ namespace CalDebugTools.Forms
                 if (txt_STabCount.Text == "1")
                 {
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('S_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H', NULL, NULL, NULL, NULL, NULL, NULL)  ";
+        $"VALUES('S_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                     lst.Add(sqlStr);
                 }
                 else
@@ -360,7 +371,7 @@ namespace CalDebugTools.Forms
                     for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
                     {
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('S_{xmbh}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H', NULL, NULL, NULL, NULL, NULL, NULL)  ";
+        $"VALUES('S_{xmbh}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                         lst.Add(sqlStr);
                     }
                 }
@@ -396,6 +407,9 @@ namespace CalDebugTools.Forms
             string fieldName = string.IsNullOrEmpty(txt_fieldName.Text) ? "" : txt_fieldName.Text.Trim();
             string fieldMS = string.IsNullOrEmpty(txt_fieldMs.Text) ? "" : txt_fieldMs.Text.Trim();
             string fieldType = string.IsNullOrEmpty(txt_fieldType.Text) ? "" : txt_fieldType.Text.Trim();
+            string txtLX = string.IsNullOrEmpty(txt_lx.Text) ? "H" : txt_lx.Text.Trim();
+            string chksfxs = this.chk_sfxs.Checked ? "1" : "0";
+            string locstionStr = "1,1";
 
             if (string.IsNullOrEmpty(xmbh))
             {
@@ -449,7 +463,7 @@ namespace CalDebugTools.Forms
                 if (txt_STabCount.Text == "1")
                 {
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('M_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H', NULL, NULL, NULL, NULL, NULL, NULL)  ";
+        $"VALUES('M_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                     lst.Add(sqlStr);
                 }
                 else
@@ -457,7 +471,7 @@ namespace CalDebugTools.Forms
                     for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
                     {
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('M_{xmbh}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', 'False', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', 'H', NULL, NULL, NULL, NULL, NULL, NULL)  ";
+        $"VALUES('M_{xmbh}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                         lst.Add(sqlStr);
                     }
                 }

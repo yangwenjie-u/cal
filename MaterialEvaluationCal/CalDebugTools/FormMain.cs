@@ -198,7 +198,7 @@ namespace CalDebugTools
         private void btn_Debug_Click(object sender, EventArgs e)
         {
             SaveXMinfos();
-            IsQualified("-150~+150","-150");
+            //IsQualified("-150~+150","-150");
             //测试乌海
             if (this.ck_other.Checked)
             {
@@ -633,14 +633,15 @@ namespace CalDebugTools
                 if (cprCSharp != null) cprCSharp.Dispose();
             }
 
-
         }
 
         //代码执行
 
         private void btn_Run_Click(object sender, EventArgs e)
         {
+            //_projectInfo.InsertTableInfo();
             SaveXMinfos();
+
             //try
             //{
             //    string errStr = "";
@@ -852,6 +853,12 @@ namespace CalDebugTools
             manage.Show();
         }
 
+        private void tool_UploadFieldNew_Click(object sender, EventArgs e)
+        {
+            UploadFieldsNew manage = new UploadFieldsNew(this);
+            this.Hide();
+            manage.Show();
+        }
         private void 代码上传ToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             CodeUpload manage = new CodeUpload(this);
@@ -1182,6 +1189,7 @@ namespace CalDebugTools
 
             return sign ? hgjl : bhgjl;
         }
+
 
     }
 }

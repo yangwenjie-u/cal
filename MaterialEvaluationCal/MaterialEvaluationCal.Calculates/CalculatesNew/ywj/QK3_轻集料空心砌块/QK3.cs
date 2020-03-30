@@ -117,7 +117,7 @@ namespace Calculates
                         mtj = GetSafeDouble(sItem["CD" + i]) / 1000 * GetSafeDouble(sItem["KD" + i]) / 1000 * GetSafeDouble(sItem["GD" + i]) / 1000;
                         if (mtj != 0)
                         {
-                            mtj = Math.Round(mtj, 3);
+                            //mtj = Math.Round(mtj, 3);
                             sItem["GMD" + i] = (Math.Round((GetSafeDouble(sItem["HGHZL" + i]) / mtj) / 10, 0) * 10).ToString();
                             pj += Math.Round((GetSafeDouble(sItem["HGHZL" + i]) / mtj) / 10, 0) * 10;
                         }
@@ -170,7 +170,7 @@ namespace Calculates
                         if (GetSafeDouble(sItem["QMJ" + i]) == 0)
                             sItem["KYQD" + i] = "0";
                         else
-                            sItem["KYQD" + i] = Math.Round(1000 * GetSafeDouble(sItem["KYHZ" + i]) / GetSafeDouble(sItem["QMJ" + i]), 1).ToString("0.0");
+                            sItem["KYQD" + i] = Math.Round(1000 * GetSafeDouble(sItem["KYHZ" + i]) / GetSafeDouble(sItem["QMJ" + i]), 2).ToString("0.00");
                         mtmpArray.Add(GetSafeDouble(sItem["KYQD" + i]));
                     }
 

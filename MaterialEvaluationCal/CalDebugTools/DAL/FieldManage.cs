@@ -133,11 +133,15 @@ namespace CalDebugTools.DAL
 
             foreach (DataRow item in redata.Tables[0].Rows)
             {
+                if (item["ZDMC"].ToString() == "SLQD1")
+                {
+
+                }
                 if (!string.IsNullOrEmpty(item["SSJCX"].ToString()))
                 {
                     foreach (string jcxm in lstJcxm)
                     {
-                        if (item["SSJCX"].ToString().Contains(jcxm) && !result.Contains($",{item["ZDMC"]},"))
+                        if (item["SSJCX"].ToString().Replace(",", "、").Contains("、" + jcxm + "、") && !result.Contains($",{item["ZDMC"]},"))
                         {
                             result += item["ZDMC"].ToString() + ",";
                         }
@@ -151,6 +155,7 @@ namespace CalDebugTools.DAL
 
             return result;
         }
+
 
 
         public List<string> GetIOFields(string xmbh, string wtdbh)
@@ -217,6 +222,7 @@ namespace CalDebugTools.DAL
             List<string> lstJcxm = strJcxm.Replace(',', '、').Split('、').ToList();
 
             string sqlStr = $"select ZDMC ,SSJCX from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%')";
+            //string sqlStr = $"select ZDMC ,SSJCX from  ZDZD_{xmbh} where ( SJBMC = 'M_{xmbh}') and( lx like '%I%') and mustin= '1'";
             var redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             if (redata != null)
@@ -230,7 +236,8 @@ namespace CalDebugTools.DAL
             lisResult.Add(result);
 
             //从表
-            sqlStr = $"select ZDMC,SSJCX  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%') ";
+            sqlStr = $"select ZDMC,SSJCX  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%')";
+            //sqlStr = $"select ZDMC,SSJCX  from  ZDZD_{xmbh} where (SJBMC = 'S_{xmbh}') and(lx like '%I%') and mustin= '1'";
             redata = _sqlDebugTool.ExecuteDataset(sqlStr);
 
             result = "";

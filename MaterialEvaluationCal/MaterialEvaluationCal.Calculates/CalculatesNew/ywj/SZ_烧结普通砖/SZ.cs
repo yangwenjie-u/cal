@@ -468,7 +468,6 @@ namespace Calculates
                 }
                 else
                 {
-                    #region 抗压强度
                     if (jcxm.Contains("、抗压强度、"))
                     {
                         if ((Conversion.Val(sItem["CD1_1"])) != 0)
@@ -793,9 +792,6 @@ namespace Calculates
                     }
                     else
                         sItem["QDPD"] = "----";
-                    #endregion
-
-                    #region 尺寸偏差
                     if (jcxm.Contains("、尺寸偏差、"))
                     {
                         if (GetSafeDouble(MItem[0]["CCJC"]) != 0)
@@ -818,14 +814,11 @@ namespace Calculates
                     }
                     else
                         sItem["CCPD"] = "----";
-                    #endregion
-
-                    #region 外观质量
                     if (jcxm.Contains("、外观质量、"))
                     {
                         if (GetSafeDouble(MItem[0]["WGBHGS"]) <= GetSafeDouble(extraWCDJ[0]["WYBHGS"]))
                         {
-                            MItem[0]["WGPD"] = "合格";
+                            sItem["WGPD"] = "合格";
                             mFlag_Hg = true;
                         }
                         else
@@ -852,12 +845,9 @@ namespace Calculates
                     }
                     else
                         sItem["WGPD"] = "----";
-                    #endregion
-
-                    #region 抗风化性能
-                    #region 冻融
                     if (jcxm.Contains("、抗风化性能、"))
                     {
+                        //冻融
                         if (Conversion.Val(sItem["DRG0_1"]) != 0)
                         {
                             sItem["DRGM1"] = Round((Conversion.Val(sItem["DRG0_1"]) - Conversion.Val(sItem["DRG1_1"])) / Conversion.Val(sItem["DRG0_1"]) * 100, 1).ToString();
@@ -893,21 +883,9 @@ namespace Calculates
                             }
                             else
                                 sItem["DRPD"] = "----";
-
                         }
-                    }
-                    else
-                    {
-                        sItem["DRPD"] = "----";
-                        sItem["BHXSPD"] = "----";
-                        sItem["FSPD"] = "----";
-                        sItem["SHBLPD"] = "----";
-                    }
-                    #endregion
 
-                    #region 吸水率和饱和系数
-                    if (jcxm.Contains("、抗风化性能、"))
-                    {
+                        //吸水率和饱和系数
                         if (Conversion.Val(sItem["BHXSG0_1"]) != 0)
                         {
                             sItem["XSLBHXSYQ"] = "5h沸煮吸水率平均值需" + sItem["XSLPJZYQ"].Trim() + "%，单块最大值需" + sItem["XSLZDZYQ"].Trim() + "%；饱和系数平均值需" + sItem["BHXSPJZYQ"].Trim() + "%，单块最大值需" + sItem["BHXSZDZYQ"].Trim() + "%。";
@@ -958,11 +936,13 @@ namespace Calculates
                             mSFwc = false;
                     }
                     else
+                    {
+                        sItem["DRPD"] = "----";
                         sItem["BHXSPD"] = "----";
-                    #endregion
-                    #endregion
+                        sItem["FSPD"] = "----";
+                        sItem["SHBLPD"] = "----";
+                    }
 
-                    #region 泛霜
                     if (jcxm.Contains("、泛霜、"))
                     {
                         if (sItem["FSCD1"].Trim() == "----" || sItem["FSCD1"].Trim() == "")
@@ -974,7 +954,6 @@ namespace Calculates
                             double mfscnt2 = 0;
                             if (sItem["FSCD1"].Trim() == "轻度")
                                 mfscnt = mfscnt + 1;
-
                             if (sItem["FSCD2"].Trim() == "轻度")
                                 mfscnt = mfscnt + 1;
                             if (sItem["FSCD3"].Trim() == "轻度")
@@ -995,13 +974,13 @@ namespace Calculates
                                 mfscnt1 = mfscnt1 + 1;
                             if (sItem["FSCD1"].Trim() == "严重")
                                 mfscnt2 = mfscnt2 + 1;
-                            if (sItem["FSCD2"] == "严重")
+                            if (sItem["FSCD2"].Trim() == "严重")
                                 mfscnt2 = mfscnt2 + 1;
-                            if (sItem["FSCD3"] == "严重")
+                            if (sItem["FSCD3"].Trim() == "严重")
                                 mfscnt2 = mfscnt2 + 1;
-                            if (sItem["FSCD4"] == "严重")
+                            if (sItem["FSCD4"].Trim() == "严重")
                                 mfscnt2 = mfscnt2 + 1;
-                            if (sItem["FSCD5"] == "严重")
+                            if (sItem["FSCD5"].Trim() == "严重")
                                 mfscnt2 = mfscnt2 + 1;
                             if (sItem["WGDJ"].Trim() == "合格品")
                             {
@@ -1043,13 +1022,11 @@ namespace Calculates
                                 }
                             }
                         }
-
                     }
                     else
+                    {
                         sItem["FSPD"] = "----";
-                    #endregion
-
-                    #region 石灰爆裂
+                    }
                     if (jcxm.Contains("、石灰爆裂、"))
                     {
                         int mbhgs = 0;
@@ -1157,7 +1134,6 @@ namespace Calculates
                     }
                     else
                         sItem["SHBLPD"] = "----";
-                    #endregion
 
                     if (sItem["QDPD"] == "不合格" || sItem["WGPD"] == "不合格" || sItem["CCPD"] == "不合格" || sItem["DRPD"] == "不合格" || sItem["BHXSPD"] == "不合格" || sItem["FSPD"] == "不合格" || sItem["SHBLPD"] == "不合格")
                     {

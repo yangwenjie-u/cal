@@ -88,7 +88,15 @@ namespace CalDebugTools
 
             return _sqlBase.ExecuteNonQuery(sqlStr);
         }
+        public void InsertTableInfo()
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                string sqlStr = $"insert into BZ_GCCJPD(CJCS) VALUES('{25 + i}')";
+                _sqlBase.ExecuteDataset(sqlStr);
+            }
 
+        }
 
         public int UpdateProInfos(ProjectInfo info)
         {

@@ -1,4 +1,5 @@
-﻿using CalDebugTools.Common.DBUtility;
+﻿using CalDebugTools.BLL;
+using CalDebugTools.Common.DBUtility;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,6 +21,12 @@ namespace CalDebugTools
                 _sqlBase = new SqlBase();
             if (_sqlDebugTool == null)
                 _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
+
+            txtsylb.Text = ConfigurationHelper.GetConfig("jcxmbh");
+            txtextratable.Text = ConfigurationHelper.GetConfig("extratable");
+            txtusername.Text = ConfigurationHelper.GetConfig("username");
+            txtremark.Text = ConfigurationHelper.GetConfig("remark");
+
         }
         FormMain _formMain;
         private void button1_Click(object sender, EventArgs e)
@@ -53,6 +60,16 @@ namespace CalDebugTools
                     MessageBox.Show("用户名不能为空");
                     return;
                 }
+
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                dic.Add("jcxmbh", txtsylb.Text);
+                dic.Add("extratable", txtextratable.Text);
+                dic.Add("username", txtusername.Text);
+                dic.Add("remark", txtremark.Text);
+
+                ConfigurationHelper.SaveConfig(dic);
+
+
                 //获取字段字典json
                 string zdzdjson = string.Empty;
                 zdzdjson += "[";
@@ -130,7 +147,6 @@ namespace CalDebugTools
                     var ver = ddf["ver"];
                     if (this.ck_defaultLib.Checked)
                     {
-
                         par_json = "{\"sylb\":\"" + sylb + "\",\"ver\":\"" + ver + "\"}";
                         get_json = Data.GetHtmlByPost(Data.http_set_defaultLib_url, par_json, "", null, token);
                         //get_json = Data.GetHtmlByPost(@"http://calctest.jzyglxt.com/apiv1/SetCalcVersionDefault", par_json, "", null, token);
@@ -143,7 +159,8 @@ namespace CalDebugTools
                             MessageBox.Show($"代码上传成功,设置{sylb}默认版本失败：{json_strue.message}");
                         }
                     }
-                    else {
+                    else
+                    {
                         MessageBox.Show($"代码上传成功");
                     }
                 }
@@ -162,6 +179,8 @@ namespace CalDebugTools
 
         private void txtsylb_MouseLeave(object sender, EventArgs e)
         {
+            //if (string.IsNullOrEmpty(txtextratable.Text))
+            //{
             string bztxt = string.Empty;
             string sylb = txtsylb.Text.Trim();
             string sql = "select * from PR_M_SJBSM where SSXM ='" + sylb + "' and BLX ='H3'";
@@ -171,6 +190,8 @@ namespace CalDebugTools
                 bztxt += item["SJBMC"].ToString() + ",";
             }
             txtextratable.Text = bztxt.Trim(',');
+
+            //}
         }
 
         private void CodeUpload_FormClosed(object sender, FormClosedEventArgs e)
