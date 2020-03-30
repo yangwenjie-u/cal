@@ -166,6 +166,7 @@
     <Compile Include="CalculatesNew\wzy\ZGY_基桩高应变\ZGY.cs" />
     <Compile Include="CalculatesNew\wzy\ZJZ_基桩静载%28试桩%29\ZJZ.cs" />
     <Compile Include="CalculatesNew\ywj\BN_保温系统用胶粘剂\BN.cs" />
+    <Compile Include="CalculatesNew\ywj\FST_防水涂料\FST.cs" />
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
     <Compile Include="CalculatesNew\ywj\XHJ_型钢焊接\XHJ.cs" />
     <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />

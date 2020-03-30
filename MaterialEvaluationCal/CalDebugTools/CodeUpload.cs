@@ -179,19 +179,19 @@ namespace CalDebugTools
 
         private void txtsylb_MouseLeave(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtextratable.Text))
+            //if (string.IsNullOrEmpty(txtextratable.Text))
+            //{
+            string bztxt = string.Empty;
+            string sylb = txtsylb.Text.Trim();
+            string sql = "select * from PR_M_SJBSM where SSXM ='" + sylb + "' and BLX ='H3'";
+            DataSet dszdzd = _sqlBase.ExecuteDataset(sql);
+            foreach (DataRow item in dszdzd.Tables[0].Rows)
             {
-                string bztxt = string.Empty;
-                string sylb = txtsylb.Text.Trim();
-                string sql = "select * from PR_M_SJBSM where SSXM ='" + sylb + "' and BLX ='H3'";
-                DataSet dszdzd = _sqlBase.ExecuteDataset(sql);
-                foreach (DataRow item in dszdzd.Tables[0].Rows)
-                {
-                    bztxt += item["SJBMC"].ToString() + ",";
-                }
-                txtextratable.Text = bztxt.Trim(',');
-
+                bztxt += item["SJBMC"].ToString() + ",";
             }
+            txtextratable.Text = bztxt.Trim(',');
+
+            //}
         }
 
         private void CodeUpload_FormClosed(object sender, FormClosedEventArgs e)

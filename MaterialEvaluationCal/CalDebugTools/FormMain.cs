@@ -528,7 +528,7 @@ namespace CalDebugTools
 
                         this.tacDebug.SelectedTab = this.tapCompare;
                     }
-                        else
+                    else
                     {
                         this.ritResult.Text = strError;
                         this.tacDebug.SelectedTab = this.tab_debug;
@@ -639,7 +639,9 @@ namespace CalDebugTools
 
         private void btn_Run_Click(object sender, EventArgs e)
         {
+            //_projectInfo.InsertTableInfo();
             SaveXMinfos();
+
             //try
             //{
             //    string errStr = "";
@@ -1188,6 +1190,6 @@ namespace CalDebugTools
             return sign ? hgjl : bhgjl;
         }
 
-     
+
     }
 }
