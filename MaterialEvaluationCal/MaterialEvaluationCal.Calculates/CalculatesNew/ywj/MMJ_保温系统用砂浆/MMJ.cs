@@ -341,7 +341,7 @@ namespace Calculates
                 g_Qd2 = Conversion.Val(mrsDj["QD2"]);
                 g_Qd3 = Conversion.Val(mrsDj["QD3"]);
                 g_Qd4 = Conversion.Val(mrsDj["QD4"]);
-                yZbbz = Conversion.Val(mrsDj["YZB"]);
+                yZbbz = Conversion.Val(mrsDj["YZB"].Replace("≤", ""));
                 MItem[0]["G_QD1"] = "≥" + mrsDj["QD1"];
                 MItem[0]["G_QD2"] = "≥" + mrsDj["QD2"];
                 MItem[0]["G_QD3"] = "≥" + mrsDj["QD3"];
@@ -515,7 +515,7 @@ namespace Calculates
                         MItem[0]["HG_YZB"] = "----";
                         #endregion
                     }
-                    else if (sItem["JCBZH"].Contains("29906-2013"))
+                    else if (sItem["JCBZH"].Contains("29906"))
                     {
                         //GB/T 29906-2013
                         #region 拉伸粘结原强度
@@ -672,6 +672,249 @@ namespace Calculates
                                 }
                                 mtmpArray.Sort();
                                 sItem["QD3"] = ((mtmpArray[1] + mtmpArray[2] + mtmpArray[3] + mtmpArray[4]) / 4).ToString("0.00");
+                            }
+
+
+                            if (Conversion.Val(sItem["QD3"]) >= g_Qd3 && sItem["PHJMPD3"].Trim() == "合格")
+                            {
+                                MItem[0]["HG_QD3"] = "合格";
+                                mFlag_Hg = true;
+                            }
+                            else
+                            {
+                                MItem[0]["HG_QD3"] = "不合格";
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                        }
+                        else
+                        {
+                            sItem["QD3"] = "----";
+                            sItem["PHJM3"] = "----";
+                            sItem["PHJMPD3"] = "----";
+                            MItem[0]["HG_QD3"] = "----";
+                            //MItem[0]["G_QD3"] = "----";
+                            //MItem[0]["G_PHJM3"] = "----";
+                        }
+                        #endregion
+
+                        #region 压折比
+                        if (jcxm.Contains("、压折比、"))
+                        {
+                            sItem["YZB"] = string.IsNullOrEmpty(sItem["KZQD"]) ? "----" : (double.Parse(sItem["KYQD"]) / double.Parse(sItem["KZQD"])).ToString("0.0");
+                            if (sItem["YZB"] != "----" && double.Parse(sItem["YZB"]) <= yZbbz)
+                            {
+                                MItem[0]["HG_YZB"] = "合格";
+                                mFlag_Hg = true;
+                            }
+                            else
+                            {
+                                MItem[0]["HG_YZB"] = "不合格";
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                        }
+                        else
+                        {
+                            sItem["YZB"] = "----";
+                            MItem[0]["HG_YZB"] = "----";
+                            MItem[0]["G_YZB"] = "----";
+                        }
+                        #endregion
+
+                        #region 可操作时间
+                        if (jcxm.Contains("、可操作时间、"))
+                        {
+                            if (Conversion.Val(sItem["KCZSJ"]) >= 1.5 && Conversion.Val(sItem["KCZSJ"]) <= 4)
+                            {
+                                MItem[0]["HG_KCZSJ"] = "合格";
+                                mFlag_Hg = true;
+                            }
+                            else
+                            {
+                                MItem[0]["HG_KCZSJ"] = "不合格";
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                        }
+                        else
+                        {
+                            sItem["KCZSJ"] = "----";
+                            MItem[0]["G_KCZSJ"] = "----";
+                            MItem[0]["HG_KCZSJ"] = "----";
+                        }
+                        #endregion
+
+                    }
+                    else if (sItem["JCBZH"].Contains("993"))
+                    {
+                        //JC/T 993-2006
+                        #region 拉伸粘结原强度
+                        if (jcxm.Contains("、拉伸粘结原强度、"))
+                        {
+                            sItem["MJ11"] = (Conversion.Val(sItem["CD11"]) * Conversion.Val(sItem["KD11"])).ToString();
+                            sItem["MJ12"] = (Conversion.Val(sItem["CD12"]) * Conversion.Val(sItem["KD12"])).ToString();
+                            sItem["MJ13"] = (Conversion.Val(sItem["CD13"]) * Conversion.Val(sItem["KD13"])).ToString();
+                            sItem["MJ14"] = (Conversion.Val(sItem["CD14"]) * Conversion.Val(sItem["KD14"])).ToString();
+                            sItem["MJ15"] = (Conversion.Val(sItem["CD15"]) * Conversion.Val(sItem["KD15"])).ToString();
+                            //sItem["MJ16"] = (Conversion.Val(sItem["CD16"]) * Conversion.Val(sItem["KD16"])).ToString();
+
+                            //if ((Conversion.Val(sItem["MJ11"]) == 0 || Conversion.Val(sItem["MJ12"]) == 0 || Conversion.Val(sItem["MJ13"]) == 0 || Conversion.Val(sItem["MJ14"]) == 0) || Conversion.Val(sItem["MJ15"]) == 0 || Conversion.Val(sItem["MJ15"]) == 0 || Conversion.Val(sItem["MJ16"]) == 0)
+                            if ((Conversion.Val(sItem["MJ11"]) == 0 || Conversion.Val(sItem["MJ12"]) == 0 || Conversion.Val(sItem["MJ13"]) == 0 || Conversion.Val(sItem["MJ14"]) == 0) || Conversion.Val(sItem["MJ15"]) == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                sItem["QD11"] = Conversion.Val(sItem["MJ11"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ11"]) / Conversion.Val(sItem["MJ11"])).ToString("0.000");
+                                sItem["QD12"] = Conversion.Val(sItem["MJ12"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ12"]) / Conversion.Val(sItem["MJ12"])).ToString("0.000");
+                                sItem["QD13"] = Conversion.Val(sItem["MJ13"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ13"]) / Conversion.Val(sItem["MJ13"])).ToString("0.000");
+                                sItem["QD14"] = Conversion.Val(sItem["MJ14"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ14"]) / Conversion.Val(sItem["MJ14"])).ToString("0.000");
+                                sItem["QD15"] = Conversion.Val(sItem["MJ15"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ15"]) / Conversion.Val(sItem["MJ15"])).ToString("0.000");
+                                //sItem["QD16"] = Conversion.Val(sItem["MJ16"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ16"]) / Conversion.Val(sItem["MJ16"])).ToString("0.000");
+                            }
+
+                            //if (Conversion.Val(sItem["QD11"]) != 0 && Conversion.Val(sItem["QD12"]) != 0 && Conversion.Val(sItem["QD13"]) != 0 && Conversion.Val(sItem["QD14"]) != 0 && Conversion.Val(sItem["QD15"]) != 0 && Conversion.Val(sItem["QD16"]) != 0)
+                            if (Conversion.Val(sItem["QD11"]) != 0 && Conversion.Val(sItem["QD12"]) != 0 && Conversion.Val(sItem["QD13"]) != 0 && Conversion.Val(sItem["QD14"]) != 0 && Conversion.Val(sItem["QD15"]) != 0)
+                            {
+                                List<double> mtmpArray = new List<double>();
+                                //string mlongStr = sItem["QD11"] + "," + sItem["QD12"] + "," + sItem["QD13"] + "," + sItem["QD14"] + "," + sItem["QD15"] + "," + sItem["QD16"];
+                                string mlongStr = sItem["QD11"] + "," + sItem["QD12"] + "," + sItem["QD13"] + "," + sItem["QD14"] + "," + sItem["QD15"];
+                                string[] str = mlongStr.Split(',');
+                                foreach (string s in str)
+                                {
+                                    mtmpArray.Add(double.Parse(s));
+                                }
+                                mtmpArray.Sort();
+                                //sItem["QD1"] = ((mtmpArray[1] + mtmpArray[2] + mtmpArray[3] + mtmpArray[4]) / 4).ToString("0.00");
+                                sItem["QD1"] = mtmpArray.Average().ToString("0.00");
+                            }
+
+                            if (Conversion.Val(sItem["QD1"]) >= g_Qd1 && sItem["PHJMPD1"].Trim() == "合格")
+                            {
+                                MItem[0]["HG_QD1"] = "合格";
+                                mFlag_Hg = true;
+                            }
+                            else
+                            {
+                                MItem[0]["HG_QD1"] = "不合格";
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                        }
+                        else
+                        {
+                            sItem["QD1"] = "----";
+                            sItem["PHJM1"] = "----";
+                            sItem["PHJMPD1"] = "----";
+                            MItem[0]["HG_QD1"] = "----";
+                            MItem[0]["G_QD1"] = "----";
+                            MItem[0]["G_PHJM1"] = "----";
+                        }
+                        #endregion
+
+                        #region 拉伸粘结耐水强度
+                        if (jcxm.Contains("、拉伸粘结耐水强度、"))
+                        {
+                            sItem["MJ21"] = (Conversion.Val(sItem["CD21"]) * Conversion.Val(sItem["KD21"])).ToString();
+                            sItem["MJ22"] = (Conversion.Val(sItem["CD22"]) * Conversion.Val(sItem["KD22"])).ToString();
+                            sItem["MJ23"] = (Conversion.Val(sItem["CD23"]) * Conversion.Val(sItem["KD23"])).ToString();
+                            sItem["MJ24"] = (Conversion.Val(sItem["CD24"]) * Conversion.Val(sItem["KD24"])).ToString();
+                            sItem["MJ25"] = (Conversion.Val(sItem["CD25"]) * Conversion.Val(sItem["KD25"])).ToString();
+                            //sItem["MJ26"] = (Conversion.Val(sItem["CD26"]) * Conversion.Val(sItem["KD26"])).ToString();
+
+                            //if (Conversion.Val(sItem["MJ21"]) == 0 || Conversion.Val(sItem["MJ22"]) == 0 || Conversion.Val(sItem["MJ23"]) == 0 || Conversion.Val(sItem["MJ24"]) == 0 || Conversion.Val(sItem["MJ25"]) == 0 || Conversion.Val(sItem["MJ26"]) == 0)
+                            if (Conversion.Val(sItem["MJ21"]) == 0 || Conversion.Val(sItem["MJ22"]) == 0 || Conversion.Val(sItem["MJ23"]) == 0 || Conversion.Val(sItem["MJ24"]) == 0 || Conversion.Val(sItem["MJ25"]) == 0 )
+                            {
+
+                            }
+                            else
+                            {
+                                sItem["QD21"] = Conversion.Val(sItem["MJ21"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ21"]) / Conversion.Val(sItem["MJ21"])).ToString("0.000");
+                                sItem["QD22"] = Conversion.Val(sItem["MJ22"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ22"]) / Conversion.Val(sItem["MJ22"])).ToString("0.000");
+                                sItem["QD23"] = Conversion.Val(sItem["MJ23"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ23"]) / Conversion.Val(sItem["MJ23"])).ToString("0.000");
+                                sItem["QD24"] = Conversion.Val(sItem["MJ24"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ24"]) / Conversion.Val(sItem["MJ24"])).ToString("0.000");
+                                sItem["QD25"] = Conversion.Val(sItem["MJ25"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ25"]) / Conversion.Val(sItem["MJ25"])).ToString("0.000");
+                                //sItem["QD26"] = Conversion.Val(sItem["MJ26"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ26"]) / Conversion.Val(sItem["MJ26"])).ToString("0.000");
+                            }
+                            //if (Conversion.Val(sItem["QD21"]) != 0 && Conversion.Val(sItem["QD22"]) != 0 && Conversion.Val(sItem["QD23"]) != 0 && Conversion.Val(sItem["QD24"]) != 0 && Conversion.Val(sItem["QD25"]) != 0 && Conversion.Val(sItem["QD26"]) != 0)
+                            if (Conversion.Val(sItem["QD21"]) != 0 && Conversion.Val(sItem["QD22"]) != 0 && Conversion.Val(sItem["QD23"]) != 0 && Conversion.Val(sItem["QD24"]) != 0 && Conversion.Val(sItem["QD25"]) != 0)
+                            {
+                                List<double> mtmpArray = new List<double>();
+                                //string mlongStr = sItem["QD21"] + "," + sItem["QD22"] + "," + sItem["QD23"] + "," + sItem["QD24"] + "," + sItem["QD25"] + "," + sItem["QD26"];
+                                string mlongStr = sItem["QD21"] + "," + sItem["QD22"] + "," + sItem["QD23"] + "," + sItem["QD24"] + "," + sItem["QD25"];
+                                string[] str = mlongStr.Split(',');
+                                foreach (string s in str)
+                                {
+                                    mtmpArray.Add(double.Parse(s));
+                                }
+                                mtmpArray.Sort();
+                                //sItem["QD2"] = ((mtmpArray[1] + mtmpArray[2] + mtmpArray[3] + mtmpArray[4]) / 4).ToString("0.00");
+                                sItem["QD2"] = mtmpArray.Average().ToString("0.00");
+                            }
+
+                            if (Conversion.Val(sItem["QD2"]) >= g_Qd2 && sItem["PHJMPD2"].Trim() == "合格")
+                            {
+                                MItem[0]["HG_QD2"] = "合格";
+                                mFlag_Hg = true;
+                            }
+                            else
+                            {
+                                MItem[0]["HG_QD2"] = "不合格";
+                                mbhggs = mbhggs + 1;
+                                mFlag_Bhg = true;
+                            }
+                        }
+                        else
+                        {
+                            sItem["QD2"] = "----";
+                            sItem["PHJM2"] = "----";
+                            sItem["PHJMPD2"] = "----";
+                            MItem[0]["HG_QD2"] = "----";
+                            MItem[0]["G_QD2"] = "----";
+                            MItem[0]["G_PHJM2"] = "----";
+                        }
+                        #endregion
+
+                        #region 拉伸粘结耐冻融强度
+                        if (jcxm.Contains("、拉伸粘结耐冻融强度、"))
+                        {
+                            sItem["MJ31"] = (Conversion.Val(sItem["CD31"]) * Conversion.Val(sItem["KD31"])).ToString();
+                            sItem["MJ32"] = (Conversion.Val(sItem["CD32"]) * Conversion.Val(sItem["KD32"])).ToString();
+                            sItem["MJ33"] = (Conversion.Val(sItem["CD33"]) * Conversion.Val(sItem["KD33"])).ToString();
+                            sItem["MJ34"] = (Conversion.Val(sItem["CD34"]) * Conversion.Val(sItem["KD34"])).ToString();
+                            sItem["MJ35"] = (Conversion.Val(sItem["CD35"]) * Conversion.Val(sItem["KD35"])).ToString();
+                            //sItem["MJ36"] = (Conversion.Val(sItem["CD36"]) * Conversion.Val(sItem["KD36"])).ToString();
+
+                            //if (Conversion.Val(sItem["MJ31"]) == 0 || Conversion.Val(sItem["MJ32"]) == 0 || Conversion.Val(sItem["MJ33"]) == 0 || Conversion.Val(sItem["MJ34"]) == 0 || Conversion.Val(sItem["MJ35"]) == 0 || Conversion.Val(sItem["MJ36"]) == 0)
+                            if (Conversion.Val(sItem["MJ31"]) == 0 || Conversion.Val(sItem["MJ32"]) == 0 || Conversion.Val(sItem["MJ33"]) == 0 || Conversion.Val(sItem["MJ34"]) == 0 || Conversion.Val(sItem["MJ35"]) == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                sItem["QD31"] = Conversion.Val(sItem["MJ31"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ31"]) / Conversion.Val(sItem["MJ31"])).ToString("0.000");
+                                sItem["QD32"] = Conversion.Val(sItem["MJ32"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ32"]) / Conversion.Val(sItem["MJ32"])).ToString("0.000");
+                                sItem["QD33"] = Conversion.Val(sItem["MJ33"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ33"]) / Conversion.Val(sItem["MJ33"])).ToString("0.000");
+                                sItem["QD34"] = Conversion.Val(sItem["MJ34"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ34"]) / Conversion.Val(sItem["MJ34"])).ToString("0.000");
+                                sItem["QD35"] = Conversion.Val(sItem["MJ35"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ35"]) / Conversion.Val(sItem["MJ35"])).ToString("0.000");
+                                //sItem["QD36"] = Conversion.Val(sItem["MJ36"]) == 0 ? "0.000" : (Conversion.Val(sItem["HZ36"]) / Conversion.Val(sItem["MJ36"])).ToString("0.000");
+                            }
+
+                            //if (Conversion.Val(sItem["QD31"]) != 0 && Conversion.Val(sItem["QD32"]) != 0 && Conversion.Val(sItem["QD33"]) != 0 && Conversion.Val(sItem["QD34"]) != 0 && Conversion.Val(sItem["QD35"]) != 0 && Conversion.Val(sItem["QD36"]) != 0)
+                            if (Conversion.Val(sItem["QD31"]) != 0 && Conversion.Val(sItem["QD32"]) != 0 && Conversion.Val(sItem["QD33"]) != 0 && Conversion.Val(sItem["QD34"]) != 0 && Conversion.Val(sItem["QD35"]) != 0)
+                            {
+                                List<double> mtmpArray = new List<double>();
+                                //string mlongStr = sItem["QD31"] + "," + sItem["QD32"] + "," + sItem["QD33"] + "," + sItem["QD34"] + "," + sItem["QD35"] + "," + sItem["QD36"];
+                                string mlongStr = sItem["QD31"] + "," + sItem["QD32"] + "," + sItem["QD33"] + "," + sItem["QD34"] + "," + sItem["QD35"];
+                                string[] str = mlongStr.Split(',');
+                                foreach (string s in str)
+                                {
+                                    mtmpArray.Add(double.Parse(s));
+                                }
+                                mtmpArray.Sort();
+                                //sItem["QD3"] = ((mtmpArray[1] + mtmpArray[2] + mtmpArray[3] + mtmpArray[4]) / 4).ToString("0.00");
+                                sItem["QD3"] = mtmpArray.Average().ToString("0.00");
                             }
 
 

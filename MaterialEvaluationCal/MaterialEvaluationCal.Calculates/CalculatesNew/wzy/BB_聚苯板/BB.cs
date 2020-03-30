@@ -877,7 +877,7 @@ namespace Calculates
                     double mcd1, mkd1, mhd1, bgmdv1;
                     mcd1 = Round((GetSafeDouble(sItem["BGMDC1_1"]) + GetSafeDouble(sItem["BGMDC1_2"]) + GetSafeDouble(sItem["BGMDC1_3"])) / 3, 1);
                     mkd1 = Round((GetSafeDouble(sItem["BGMDK1_1"]) + GetSafeDouble(sItem["BGMDK1_2"]) + GetSafeDouble(sItem["BGMDK1_3"])) / 3, 1);
-                    mhd1 = Round((GetSafeDouble(sItem["BGMDH1_1"]) + GetSafeDouble(sItem["BGMDH1_2"]) + GetSafeDouble(sItem["BGMDH1_3"])) / 3, 1);
+                    mhd1 = Round((GetSafeDouble(sItem["BGMDH1_1"]) + GetSafeDouble(sItem["BGMDH1_2"]) + GetSafeDouble(sItem["BGMDH1_3"]) + GetSafeDouble(sItem["BGMDH1_4"]) + GetSafeDouble(sItem["BGMDH1_5"])) / 5, 1);
                     //if (mcd1 != 0 && 0 >= GetSafeDouble(sItem["BGMDC1"]))
                     if (mcd1 != 0 && !(GetSafeDouble(sItem["BGMDC1"]) > 0))
                     {
@@ -889,7 +889,7 @@ namespace Calculates
                     bgmdv1 = GetSafeDouble(sItem["BGMDC1"]) * GetSafeDouble(sItem["BGMDK1"]) * GetSafeDouble(sItem["BGMDH1"]);
                     mcd2 = Round((GetSafeDouble(sItem["BGMDC2_1"]) + GetSafeDouble(sItem["BGMDC2_2"]) + GetSafeDouble(sItem["BGMDC2_3"])) / 3, 1);
                     mkd2 = Round((GetSafeDouble(sItem["BGMDK2_1"]) + GetSafeDouble(sItem["BGMDK2_2"]) + GetSafeDouble(sItem["BGMDK2_3"])) / 3, 1);
-                    mhd2 = Round((GetSafeDouble(sItem["BGMDH2_1"]) + GetSafeDouble(sItem["BGMDH2_2"]) + GetSafeDouble(sItem["BGMDH2_3"])) / 3, 1);
+                    mhd2 = Round((GetSafeDouble(sItem["BGMDH2_1"]) + GetSafeDouble(sItem["BGMDH2_2"]) + GetSafeDouble(sItem["BGMDH2_3"]) + GetSafeDouble(sItem["BGMDH2_4"]) + GetSafeDouble(sItem["BGMDH2_5"])) / 5, 1);
                     if (mcd2 == 0 && GetSafeDouble(sItem["BGMDC2"]) > 0)
                     { }
                     else
@@ -903,7 +903,7 @@ namespace Calculates
                     double mcd3, mkd3, mhd3, bgmdv3;
                     mcd3 = Round((GetSafeDouble(sItem["BGMDC3_1"]) + GetSafeDouble(sItem["BGMDC3_2"]) + GetSafeDouble(sItem["BGMDC3_3"])) / 3, 1);
                     mkd3 = Round((GetSafeDouble(sItem["BGMDK3_1"]) + GetSafeDouble(sItem["BGMDK3_2"]) + GetSafeDouble(sItem["BGMDK3_3"])) / 3, 1);
-                    mhd3 = Round((GetSafeDouble(sItem["BGMDH3_1"]) + GetSafeDouble(sItem["BGMDH3_2"]) + GetSafeDouble(sItem["BGMDH3_3"])) / 3, 1);
+                    mhd3 = Round((GetSafeDouble(sItem["BGMDH3_1"]) + GetSafeDouble(sItem["BGMDH3_2"]) + GetSafeDouble(sItem["BGMDH3_3"]) + GetSafeDouble(sItem["BGMDH3_4"]) + GetSafeDouble(sItem["BGMDH3_5"])) / 5, 1);
                     if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC3"]) > 0))
                     {
                         sItem["BGMDC3"] = Round(mcd3, 1).ToString();
@@ -912,37 +912,38 @@ namespace Calculates
                     }
                     bgmdv3 = GetSafeDouble(sItem["BGMDC3"]) * GetSafeDouble(sItem["BGMDK3"]) * GetSafeDouble(sItem["BGMDH3"]);
 
-                    double mcd4, mkd4, mhd4, bgmdv4;
-                    mcd4 = Round((GetSafeDouble(sItem["BGMDC4_1"]) + GetSafeDouble(sItem["BGMDC4_2"]) + GetSafeDouble(sItem["BGMDC4_3"])) / 3, 1);
-                    mkd4 = Round((GetSafeDouble(sItem["BGMDK4_1"]) + GetSafeDouble(sItem["BGMDK4_2"]) + GetSafeDouble(sItem["BGMDK4_3"])) / 3, 1);
-                    mhd4 = Round((GetSafeDouble(sItem["BGMDH4_1"]) + GetSafeDouble(sItem["BGMDH4_2"]) + GetSafeDouble(sItem["BGMDH4_3"])) / 3, 1);
-                    if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC4"]) > 0))
-                    {
-                        sItem["BGMDC4"] = Round(mcd4, 1).ToString();
-                        sItem["BGMDK4"] = Round(mkd4, 1).ToString();
-                        sItem["BGMDH4"] = Round(mhd4, 1).ToString();
-                    }
-                    bgmdv4 = GetSafeDouble(sItem["BGMDC4"]) * GetSafeDouble(sItem["BGMDK4"]) * GetSafeDouble(sItem["BGMDH4"]);
+                    //double mcd4, mkd4, mhd4, bgmdv4;
+                    //mcd4 = Round((GetSafeDouble(sItem["BGMDC4_1"]) + GetSafeDouble(sItem["BGMDC4_2"]) + GetSafeDouble(sItem["BGMDC4_3"])) / 3, 1);
+                    //mkd4 = Round((GetSafeDouble(sItem["BGMDK4_1"]) + GetSafeDouble(sItem["BGMDK4_2"]) + GetSafeDouble(sItem["BGMDK4_3"])) / 3, 1);
+                    //mhd4 = Round((GetSafeDouble(sItem["BGMDH4_1"]) + GetSafeDouble(sItem["BGMDH4_2"]) + GetSafeDouble(sItem["BGMDH4_3"])) / 3, 1);
+                    //if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC4"]) > 0))
+                    //{
+                    //    sItem["BGMDC4"] = Round(mcd4, 1).ToString();
+                    //    sItem["BGMDK4"] = Round(mkd4, 1).ToString();
+                    //    sItem["BGMDH4"] = Round(mhd4, 1).ToString();
+                    //}
+                    //bgmdv4 = GetSafeDouble(sItem["BGMDC4"]) * GetSafeDouble(sItem["BGMDK4"]) * GetSafeDouble(sItem["BGMDH4"]);
 
-                    double mcd5, mkd5, mhd5, bgmdv5;
-                    mcd5 = Round((GetSafeDouble(sItem["BGMDC5_1"]) + GetSafeDouble(sItem["BGMDC5_2"]) + GetSafeDouble(sItem["BGMDC5_3"])) / 3, 1);
-                    mkd5 = Round((GetSafeDouble(sItem["BGMDK5_1"]) + GetSafeDouble(sItem["BGMDK5_2"]) + GetSafeDouble(sItem["BGMDK5_3"])) / 3, 1);
-                    mhd5 = Round((GetSafeDouble(sItem["BGMDH5_1"]) + GetSafeDouble(sItem["BGMDH5_2"]) + GetSafeDouble(sItem["BGMDH5_3"])) / 3, 1);
-                    if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC5"]) > 0))
-                    {
-                        sItem["BGMDC5"] = Round(mcd5, 1).ToString();
-                        sItem["BGMDK5"] = Round(mkd5, 1).ToString();
-                        sItem["BGMDH5"] = Round(mhd5, 1).ToString();
-                    }
-                    bgmdv5 = GetSafeDouble(sItem["BGMDC5"]) * GetSafeDouble(sItem["BGMDK5"]) * GetSafeDouble(sItem["BGMDH5"]);
+                    //double mcd5, mkd5, mhd5, bgmdv5;
+                    //mcd5 = Round((GetSafeDouble(sItem["BGMDC5_1"]) + GetSafeDouble(sItem["BGMDC5_2"]) + GetSafeDouble(sItem["BGMDC5_3"])) / 3, 1);
+                    //mkd5 = Round((GetSafeDouble(sItem["BGMDK5_1"]) + GetSafeDouble(sItem["BGMDK5_2"]) + GetSafeDouble(sItem["BGMDK5_3"])) / 3, 1);
+                    //mhd5 = Round((GetSafeDouble(sItem["BGMDH5_1"]) + GetSafeDouble(sItem["BGMDH5_2"]) + GetSafeDouble(sItem["BGMDH5_3"])) / 3, 1);
+                    //if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC5"]) > 0))
+                    //{
+                    //    sItem["BGMDC5"] = Round(mcd5, 1).ToString();
+                    //    sItem["BGMDK5"] = Round(mkd5, 1).ToString();
+                    //    sItem["BGMDH5"] = Round(mhd5, 1).ToString();
+                    //}
+                    //bgmdv5 = GetSafeDouble(sItem["BGMDC5"]) * GetSafeDouble(sItem["BGMDK5"]) * GetSafeDouble(sItem["BGMDH5"]);
 
-                    if (bgmdv1 * bgmdv2 != 0 && bgmdv3 * bgmdv4 * bgmdv5 != 0)
+                    //if (bgmdv1 * bgmdv2 != 0 && bgmdv3 * bgmdv4 * bgmdv5 != 0)
+                    if (bgmdv1 != 0 && bgmdv2 != 0 && bgmdv3 != 0)
                     {
                         sItem["BGMD1"] = Round(GetSafeDouble(sItem["BGMDM1"]) / bgmdv1 * 1000000, 4).ToString();
                         sItem["BGMD2"] = Round(GetSafeDouble(sItem["BGMDM2"]) / bgmdv2 * 1000000, 4).ToString();
                         sItem["BGMD3"] = Round(GetSafeDouble(sItem["BGMDM3"]) / bgmdv3 * 1000000, 4).ToString();
-                        sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMDM4"]) / bgmdv4 * 1000000, 4).ToString();
-                        sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMDM5"]) / bgmdv5 * 1000000, 4).ToString();
+                        //sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMDM4"]) / bgmdv4 * 1000000, 4).ToString();
+                        //sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMDM5"]) / bgmdv5 * 1000000, 4).ToString();
                     }
                     if (23 == GetSafeDouble(sItem["BGMDWD"]))
                     {
@@ -1026,8 +1027,8 @@ namespace Calculates
                         }
                     }
 
-                    sItem["BGMD"] = Round((GetSafeDouble(sItem["BGMD1"]) + GetSafeDouble(sItem["BGMD2"]) + GetSafeDouble(sItem["BGMD3"]) + GetSafeDouble(sItem["BGMD4"]) + GetSafeDouble(sItem["BGMD5"])) / 5, 1).ToString();
-
+                    //sItem["BGMD"] = Round((GetSafeDouble(sItem["BGMD1"]) + GetSafeDouble(sItem["BGMD2"]) + GetSafeDouble(sItem["BGMD3"]) + GetSafeDouble(sItem["BGMD4"]) + GetSafeDouble(sItem["BGMD5"])) / 5, 1).ToString();
+                    sItem["BGMD"] = Round((GetSafeDouble(sItem["BGMD1"]) + GetSafeDouble(sItem["BGMD2"]) + GetSafeDouble(sItem["BGMD3"])) / 3, 1).ToString();
                     string bgmd = calc_PB(mItem["G_BGMD"], sItem["BGMD"], true);
                     if (bgmd == "符合")
                     {

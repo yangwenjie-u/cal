@@ -198,7 +198,7 @@ namespace Calculates
             //var mrsWd = dataExtra["BZ_DXLWD"];
             var MItem = data["M_MC"];
             var SItem = data["S_MC"];
-            var mrsMs = dataExtra["MS_MC"];
+            var mrsMs = data["MS_MC"];
             #endregion
 
             #region  计算开始
@@ -221,8 +221,8 @@ namespace Calculates
             {
                 if (IsNumeric(sitem["BLHD"]))
                     sitem["BLHD"] = sitem["BLHD"] + "mm";
-                if (!sitem["BLGZ"].Contains("mm"))
-                    sitem["BLGZ"] = "(" + sitem["BLGZ"] + ")mm";
+                //if (!sitem["BLGZ"].Contains("mm"))
+                //    sitem["BLGZ"] = "(" + sitem["BLGZ"] + ")mm";
 
 
                 if (sitem["GGCC"].Contains("×"))
@@ -232,7 +232,7 @@ namespace Calculates
                     sitem["MCCD"] = sitem["GGCC"].Substring(sitem["GGCC"].IndexOf("×") + 1);
                     sitem["MCCD"] = sitem["MCCD"] + "mm";
                 }
-                sitem["BLZD"] = sitem["BLZDC"].Trim() + "×" + sitem["BLZDK"].Trim();
+                //sitem["BLZD"] = sitem["BLZDC"].Trim() + "×" + sitem["BLZDK"].Trim();
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (jcxm.Contains("、气密性能、"))
                 {
@@ -511,7 +511,7 @@ namespace Calculates
                 {
                     nArr = new double[4];
                     //只要对p3处理即可了
-                    if (sitem["SFDS"] == "是" && sitem["DSLB"] == "外开单扇无受力杆件")
+                    if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "外开单扇无受力杆件" || sitem["DSLB"] == "外开单扇有受力杆件"))
                     {
                         for (xd = 1; xd <= 3; xd++)
                             sitem["MIN_ZP" + xd] = "----";
@@ -546,7 +546,7 @@ namespace Calculates
                         md = Round(md, 1);
                         sitem["MIN_ZP3"] = md.ToString("F1");
                     }
-                    if (sitem["SFDS"] == "是" && sitem["DSLB"] == "内开单扇无受力杆件")
+                    if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "内开单扇无受力杆件" || sitem["DSLB"] == "内开单扇有受力杆件"))
                     {
                         for (xd = 1; xd <= 3; xd++)
                             sitem["MIN_FP" + xd] = "----";
@@ -583,7 +583,7 @@ namespace Calculates
                     }
                     if (sitem["SFDS"] == "是")
                     {
-                        if (sitem["DSLB"] == "内开单扇无受力杆件")
+                        if (sitem["DSLB"] == "内开单扇无受力杆件" || sitem["DSLB"] == "内开单扇有受力杆件")
                             bl = sitem["MIN_ZP3"];
                         else
                             bl = sitem["MIN_FP3"];
@@ -601,6 +601,13 @@ namespace Calculates
                     sitem["KFYSJYQ"] = sitem["KFYSJYQ"];
                     sitem["KFYSJYQ"] = IsNumeric(sitem["KFYSJYQ"]) ? sitem["KFYSJYQ"] + "≤" : sitem["KFYSJYQ"];
                     sitem["PD_KF"] = calc_PB(sitem["KFYSJYQ"], bl, true);
+                    //功能障碍
+                    if (sitem["GNZA1"] != "无功能障碍和损坏" || sitem["GNZA2"] != "无功能障碍和损坏" || sitem["GNZA3"] != "无功能障碍和损坏")
+                    {
+                        MItem[0]["YCQK"] = "有功能障碍和损坏";
+                        sitem["PD_KF"] = "不符合";
+                    }
+
                     mbHggs = sitem["PD_KF"] == "不符合" ? mbHggs + 1 : mbHggs;
                     if (sitem["PD_KF"] == "不符合") mbhgjg = mbhgjg + "、抗风压性能";
                     if (sitem["PD_KF"] == "符合") mhgjg = mhgjg + "、抗风压性能";
@@ -647,9 +654,22 @@ namespace Calculates
                 if (sitem["SFDS"] == "是")
                 {
                     if (sitem["DSLB"] == "内开单扇无受力杆件")
+                    {
                         MItem[0]["BEIZHU1"] = "此窗为无受力杆件内开单扇平开窗，抗风压性能仅进行正压检测。" + MItem[0]["BEIZHU1"];
+                    }
                     else
+                    {
                         MItem[0]["BEIZHU1"] = "此窗为无受力杆件外开单扇平开窗，抗风压性能仅进行负压检测。" + MItem[0]["BEIZHU1"];
+                    }
+
+                    //if (sitem["DSLB"] == "内开单扇有受力杆件")
+                    //{
+                    //    MItem[0]["BEIZHU1"] = "此窗为有受力杆件内开单扇平开窗，抗风压性能仅进行正压检测。" + MItem[0]["BEIZHU1"];
+                    //}
+                    //else
+                    //{
+                    //    MItem[0]["BEIZHU1"] = "此窗为有受力杆件外开单扇平开窗，抗风压性能仅进行负压检测。" + MItem[0]["BEIZHU1"];
+                    //}
                 }
             }
             //综合判断
