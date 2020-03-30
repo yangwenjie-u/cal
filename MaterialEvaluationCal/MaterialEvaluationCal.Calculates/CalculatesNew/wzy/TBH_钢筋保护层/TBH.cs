@@ -30,7 +30,7 @@ namespace Calculates
             bool mSFwc = true;
             bool mmp = false;
             bool sign = false;
-            bool flag = false;
+            bool flag = true;
             int yxpc1 = 0;
             int yxpc2 = 0;
             int sjhd = 0;
@@ -89,11 +89,14 @@ namespace Calculates
                     if (Conversion.Val(sitem["ZJGS"]) > 12)
                         mmp = true;
                     sign = sitem["SFFJ"] == "是" ? true : false;
-                    flag = sitem["YXPC"].IndexOf("～") > 0 ? true : false;
+                    //原监管中录委托单时只有~符号，数值可能会忘记录入，原代码此处校验
+                    //flag = sitem["YXPC"].IndexOf("～") > 0 ? true : false;
                     if (flag)
                     {
-                        yxpc1 = int.Parse(sitem["YXPC"].Substring(0, (sitem["YXPC"].IndexOf("～"))));
-                        yxpc2 = int.Parse(sitem["YXPC"].Substring(sitem["YXPC"].IndexOf("～") + 2));
+                        //yxpc1 = int.Parse(sitem["YXPC"].Substring(0, (sitem["YXPC"].IndexOf("～"))));
+                        //yxpc2 = int.Parse(sitem["YXPC"].Substring(sitem["YXPC"].IndexOf("～") + 2));
+                        yxpc2 = int.Parse(sitem["YXPC"].Substring(0, (sitem["YXPC"].IndexOf("，"))));
+                        yxpc1 = int.Parse(sitem["YXPC"].Substring(sitem["YXPC"].IndexOf("，") + 1));
                     }
                     sitem["SJHD"] = sitem["SJHD"].Replace("mm", "");
                     if (!string.IsNullOrEmpty(sitem["SJHD"]) && IsNumeric(sitem["SJHD"]))
@@ -258,7 +261,7 @@ namespace Calculates
                         }
                         if (sitem["BHCLB"].Contains("板"))
                         {
-                            MItem[0]["BJCDS"] = (GetSafeDouble(MItem[0]["bjcds"]) + GetSafeDouble(sitem["smds"])).ToString();
+                            MItem[0]["BJCDS"] = (GetSafeDouble(MItem[0]["BJCDS"]) + GetSafeDouble(sitem["smds"])).ToString();
                             MItem[0]["BHGDS"] = (GetSafeDouble(MItem[0]["BHGDS"]) + mhgds).ToString();
                             MItem[0]["BCCDS"] = (GetSafeDouble(MItem[0]["BCCDS"]) + mcc1_5ds).ToString();
                             MItem[0]["ZCGJB"] = (GetSafeDouble(MItem[0]["ZCGJB"]) + 1).ToString();

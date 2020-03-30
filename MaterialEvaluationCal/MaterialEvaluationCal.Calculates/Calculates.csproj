@@ -60,6 +60,9 @@
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
     <Compile Include="CalculatesNew\wlb\SCY_土工\SCY.cs" />
+    <Compile Include="CalculatesNew\wlb\HHD_回填土%28环刀法%29\HHD.cs" />
+    <Compile Include="CalculatesNew\wlb\HGW_回填土（灌水法）\HGW.cs" />
+    <Compile Include="CalculatesNew\wlb\HGS_回填土%28灌砂法%29\HGS.cs" />
     <Compile Include="CalculatesNew\wlb\YS-砌筑石材\YS.cs" />
     <Compile Include="CalculatesNew\wzy\FDJ_混凝土防冻剂\FDJ.cs" />
     <Compile Include="CalculatesNew\qsf\DCL地基承载力\DCL.cs" />

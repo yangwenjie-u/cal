@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class TGW : BaseMethods
+    public class HGW : BaseMethods
     {
         public void Calc()
         {
@@ -33,10 +33,10 @@ namespace Calculates
 
             #region  集合取值
             var data = retData;
-            var mrsDj = dataExtra["BZ_TGW_DJ"];
-            var MItem = data["M_TGW"];
+            var mrsDj = dataExtra["BZ_HGW_DJ"];
+            var MItem = data["M_HGW"];
             var mitem = MItem[0];
-            var SItem = data["S_TGW"];
+            var SItem = data["S_HGW"];
             #endregion
 
             #region 计算开始

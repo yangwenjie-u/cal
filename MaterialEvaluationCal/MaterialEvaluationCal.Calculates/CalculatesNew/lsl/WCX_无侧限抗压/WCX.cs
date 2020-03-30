@@ -133,7 +133,6 @@ namespace Calculates
                     jsbeizhu = "该组样品检测结果如上。";
                 }
                 #endregion
-
             }
 
             //添加最终报告

@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class THD : BaseMethods
+    public class HHD : BaseMethods
     {
         public void Calc()
         {
@@ -61,10 +61,10 @@ namespace Calculates
 
             #region  集合取值
             var data = retData;
-            var mrsDj = dataExtra["BZ_THD_DJ"];
-            var MItem = data["M_THD"];
+            var mrsDj = dataExtra["BZ_HHD_DJ"];
+            var MItem = data["M_HHD"];
             var mitem = MItem[0];
-            var SItem = data["S_THD"];
+            var SItem = data["S_HHD"];
             #endregion
 
             #region  计算开始

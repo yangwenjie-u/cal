@@ -144,15 +144,15 @@ namespace Calculates
                 {
                     //var mrsXtab2 = mrsXtab;
                     //var mrsXtab2 = mrsXtab.Where(mrsXtab_Filter => mrsXtab_Filter["DZBH"].Contains(MItem[0]["JYDBH"]));
-                    var mrsXtab2 = mrsXtab.Where(mrsXtab_Filter => mrsXtab_Filter["SYSJBRECID"].Equals(sitem["RECID"]));
-                    if (mrsXtab2 != null && mrsXtab2.Count() > 0)
+                    //var mrsXtab2 = mrsXtab.Where(mrsXtab_Filter => mrsXtab_Filter["SYSJBRECID"].Equals(sitem["RECID"]));
+                    if (mrsXtab != null && mrsXtab.Count() > 0)
                     {
-                        foreach (var mrsXtab2_Filter in mrsXtab2)
+                        foreach (var mrsXtab_Filter in mrsXtab)
                         {
-                            xHtqdz = calc_htzhz(mrsXtab2_Filter);
-                            xZj = Round(GetSafeDouble(mrsXtab2_Filter["ZJ1"]) + GetSafeDouble(mrsXtab2_Filter["ZJ2"]), 0) / 2;
+                            xHtqdz = calc_htzhz(mrsXtab_Filter);
+                            xZj = Round(GetSafeDouble(mrsXtab_Filter["ZJ1"]) + GetSafeDouble(mrsXtab_Filter["ZJ2"]), 0) / 2;
                             if (xZj != 0)
-                                xKyqd = Round(1000 * GetSafeDouble(mrsXtab2_Filter["KYHZ1"]) / (3.14159 * (xZj / 2) * (xZj / 2)), 1);
+                                xKyqd = Round(1000 * GetSafeDouble(mrsXtab_Filter["KYHZ1"]) / (3.14159 * (xZj / 2) * (xZj / 2)), 1);
                             else
                                 xKyqd = 0;
                             if (xHtqdz != 0)
@@ -205,7 +205,8 @@ namespace Calculates
                 c_Ht = mrssjTable.Count();
                 if (c_Ht == 0)
                     break;
-                sitem["LQ"] = ((GetSafeDateTime(MItem[0]["SYRQ"]) - GetSafeDateTime(DateTime.Now.ToShortDateString())).Days - (GetSafeDateTime(sitem["ZZRQ"]) - GetSafeDateTime(DateTime.Now.ToShortDateString())).Days).ToString();
+                //sitem["LQ"] = ((GetSafeDateTime(MItem[0]["SYRQ"]) - GetSafeDateTime(DateTime.Now.ToShortDateString())).Days - (GetSafeDateTime(sitem["ZZRQ"]) - GetSafeDateTime(DateTime.Now.ToShortDateString())).Days).ToString();
+                sitem["LQ"] = ((GetSafeDateTime(MItem[0]["SYRQ"]) - GetSafeDateTime(sitem["ZZRQ"])).Days).ToString();
                 Ht_Qdz = new double[c_Ht + 1];
                 mDyCount = 0;
                 mXyCount = 0;

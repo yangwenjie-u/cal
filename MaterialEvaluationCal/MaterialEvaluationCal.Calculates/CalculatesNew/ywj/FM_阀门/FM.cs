@@ -222,9 +222,39 @@ namespace Calculates
                     jsbeizhu = jsbeizhu + "试件尺寸为空/r/n";
                     continue;
                 }
+                //不合格数量
+                sItem["MF_GS"] = (GetSafeDouble(sItem["FMGS"]) - GetSafeDouble(sItem["MFSY"])).ToString();
+                sItem["QT_GS"] = (GetSafeDouble(sItem["FMGS"]) - GetSafeDouble(sItem["KTSY"])).ToString();
+                if (GetSafeDouble(sItem["MF_GS"]) > 0)
+                {
+                    sItem["MFSYPD"] = "不合格";
+                    sign = false;
+                }
+                else
+                {
+                    sItem["MFSYPD"] = "合格";
+                }
+
+                if (GetSafeDouble(sItem["QT_GS"]) > 0)
+                {
+                    sItem["KTSYPD"] = "不合格";
+                    sign = false;
+                }
+                else
+                {
+                    sItem["KTSYPD"] = "合格";
+                }
+                if (sign)
+                {
+                    jsbeizhu = "依据标准工业阀门" + MItem[0]["PDBZ"] + "检验，所检项目符合标准要求。";
+                }
+                else
+                {
+                    jsbeizhu = "依据标准工业阀门" + MItem[0]["PDBZ"] + "检验，所检项目不符合标准要求。";
+                }
 
                 mgcyl = Math.Round(1.1 * Conversion.Val(sItem["GCYL"]), 2).ToString("0.00") + "MPa";
-                sItem["SMFSYYQ"] = "20℃ " + mgcyl + "持续" + mrsYlsj["SMFSY"] + "s 无渗漏。";
+                sItem["SMFSYYQ"] = "20℃ " + mgcyl + "持续≥" + mrsYlsj["SMFSY"] + "s 无渗漏。";
                 sItem["SMF_YL"] = mgcyl.Replace("MPa", "");
                 sItem["SMF_SJ"] = mrsYlsj["SMFSY"];
                 sItem["MF_YL"] = mgcyl.Replace("MPa", "");
@@ -233,28 +263,29 @@ namespace Calculates
                 mmfxll = Math.Round(Double.Parse(sItem["FMZJ"]) * Conversion.Val(mrsMfxll["ZJBS"]), 2).ToString("0.00");
                 if (sItem["SJDJ"] == "A级")
                 {
-                    sItem["MFSYYQ"] = "20℃ " + mgcyl + "持续" + mrsYlsj["MFSY"] + "s 无渗漏。";
+                    sItem["MFSYYQ"] = "20℃ " + mgcyl + "持续≥" + mrsYlsj["MFSY"] + "s 无渗漏。";
                     sItem["MF_YX_SLL"] = "----";
                 }
                 else
                 {
-                    sItem["MFSYYQ"] = "20℃ " + mgcyl + "持续" + mrsYlsj["MFSY"] + "s 最大允许渗漏量" + mmfxll + "mm+scsup3+scend/s。";
+                    sItem["MFSYYQ"] = "20℃ " + mgcyl + "持续≥" + mrsYlsj["MFSY"] + "s 最大允许渗漏量" + mmfxll + "mm^3/s。";
                     sItem["MF_YX_SLL"] = mmfxll;
                 }
 
 
                 mktsy = Math.Round(1.5 * Conversion.Val(sItem["GCYL"]), 2).ToString("0.00") + "MPa";
                 sItem["QT_YL"] = mktsy.Replace("MPa", "");
-                sItem["KTSYYQ"] = "20℃ " + mktsy + "持续" + mrsYlsj["KTSY"] + "s 无渗漏。";
+                sItem["KTSYYQ"] = "20℃ " + mktsy + "持续≥" + mrsYlsj["KTSY"] + "s 无渗漏。";
                 sItem["QT_SJ"] = mrsYlsj["KTSY"];
 
                 var sjtabs = MItem[0]["SJTABS"];
-                if (string.IsNullOrEmpty(sjtabs))
+                if (!string.IsNullOrEmpty(sjtabs))
                 {
                     mAllHg = sjtabcalc(MItem[0], sItem);
                 }
                 else
                 {
+
                 }
             }
 

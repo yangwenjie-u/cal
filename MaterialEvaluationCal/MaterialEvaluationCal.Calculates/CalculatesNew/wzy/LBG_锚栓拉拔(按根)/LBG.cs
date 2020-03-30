@@ -43,10 +43,11 @@ namespace Calculates
             #region 计算开始
             mCnt_FjHg = 0;
             mCnt_FjHg1 = 0;
+            mZh = SItem.Count();
             foreach (var sitem in SItem)
             {
                 sitem["FJ"] = "0";
-                mZh = GetSafeInt(sitem["ZH_G"]);
+                //mZh = GetSafeInt(sitem["ZH_G"]);
                 var mrsDj_Filter = mrsDj.FirstOrDefault();
                 if (mrsDj_Filter != null && mrsDj_Filter.Count > 0)
                     mJSFF = string.IsNullOrEmpty(mrsDj_Filter["JSFF"]) ? "" : mrsDj_Filter["JSFF"].Trim().ToLower();
