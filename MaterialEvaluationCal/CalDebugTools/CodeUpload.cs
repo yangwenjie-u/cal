@@ -199,6 +199,11 @@ namespace CalDebugTools
             _formMain.Show();
         }
 
+        private void txtextratable_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
         //private void InitializeComponent()
         //{
         //    this.SuspendLayout();

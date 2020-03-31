@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace Calculates
 {
     public class FS : BaseMethods
@@ -77,7 +76,7 @@ namespace Calculates
                     case "改性沥青聚乙烯胎防水卷材":
                         sItem["CPBJ"] = dXs + " " + dXh + "" + dTjlx + "" + dSbmcl + " " + dHd + " " + dBzh;
                         break;
-                    case "高分子防水片材":
+                    case "高分子防水卷材":
                         sItem["CPBJ"] = dXh + "-" + dZyycl + "-" + dGgxh + "×" + dHd + "mm"; break;
                     case "沥青复合胎柔性防水卷材":
                         sItem["CPBJ"] = dTjlx + " " + dXh + " " + dSbmcl + dHd + " " + dGgxh + " " + dBzh; break;
@@ -142,7 +141,7 @@ namespace Calculates
                         mrsdj = mrsDj.FirstOrDefault(u => u["MC"] == dCpmc && u["XH"] == dXh); break;
                     case "热塑性聚烯烃(TPO)防水卷材":
                         mrsdj = mrsDj.FirstOrDefault(u => u["MC"] == dCpmc && u["XH"] == dXh); break;
-                    case "高分子防水材料":
+                    case "高分子防水卷材":
                         mrsdj = mrsDj.FirstOrDefault(u => u["MC"] == dCpmc && u["JCBZ"] == dBzh && u["XH"] == dXh);
                         break;
                 }
@@ -236,13 +235,14 @@ namespace Calculates
                     mJSFF = "";
                     sItem["JCJG"] = "依据不详";
                     jsbeizhu = "找不到对应的等级";
+                    continue;
                 }
 
                 double md, md1, md2, sum;
                 bool sign = false, mark, flag = false;
 
                 flag = false;
-                if (jcxm.Contains("拉力") || jcxm.Contains("、断裂拉伸强度、") || jcxm.Contains("拉伸性能"))
+                if (jcxm.Contains("拉力") || jcxm.Contains("、断裂拉伸强度、") || jcxm.Contains("拉伸性能") || jcxm.Contains("拉伸强度"))
                 {
                     flag = true;
                     double sKlqd1 = 0, sKlqd2 = 0, sKlqd3 = 0, sKlqd4 = 0, sKlqd5 = 0, sKlqd6 = 0;
@@ -664,29 +664,6 @@ namespace Calculates
 
                 if (jcxm.Contains("、不透水性、"))
                 {
-                    if (sItem["CPMC"] == "高分子防水片料")
-                    {
-                        if (sItem["BTSX"] == "合格")
-                        {
-                            sItem["BTSXSM"] = "无渗漏";
-                        }
-                        else
-                        {
-                            sItem["BTSXSM"] = "有渗漏";
-                        }
-                    }
-                    else
-                    {
-                        if (sItem["BTSX"] == "合格")
-                        {
-                            sItem["BTSXSM"] = "不透水";
-                        }
-                        else
-                        {
-                            sItem["BTSXSM"] = "透水";
-                        }
-                    }
-
                     if (sItem["BTSX"] == "合格")
                     {
                         mItem["HG_BTSX"] = "合格";
@@ -702,6 +679,31 @@ namespace Calculates
                     {
                         mItem["HG_BTSX"] = "----";
                     }
+
+                    #region MyRegion
+                    //if (sItem["CPMC"] == "高分子防水卷材")
+                    //{
+                    //    if (sItem["BTSX"] == "合格")
+                    //    {
+                    //        sItem["BTSXSM"] = "无渗漏";
+                    //    }
+                    //    else
+                    //    {
+                    //        sItem["BTSXSM"] = "有渗漏";
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (sItem["BTSX"] == "合格")
+                    //    {
+                    //        sItem["BTSXSM"] = "不透水";
+                    //    }
+                    //    else
+                    //    {
+                    //        sItem["BTSXSM"] = "透水";
+                    //    }
+                    //} 
+                    #endregion
                 }
                 else
                 {
@@ -810,51 +812,67 @@ namespace Calculates
 
                 if (jcxm.Contains("、低温弯折、") || jcxm.Contains("、低温弯折温度、") || jcxm.Contains("脆性温度"))
                 {
-                    if (sItem["CPMC"] == "高分子防水材料" || sItem["CPMC"] == "聚氯乙烯(PVC)防水卷材")
+
+                    if ("合格" == sItem["DWWZX"])
                     {
-                        if (sItem["DWWZX"] == "合格")
-                        {
-                            sItem["DWWZXSM"] = "无裂纹";
-                            mItem["HG_DWWZX"] = "合格";
-                        }
-                        else
-                        if (sItem["DWWZX"] == "不合格" && sItem["DWWZXSM_1"] == "有裂纹" || sItem["DWWZXSM_2"] == "有裂纹" && sItem["DWWZXSM_3"] == "无裂纹" && sItem["DWWZXSM_4"] == "无裂纹")
-                        {
-                            sItem["DWWZXSM"] = "纵向有裂纹";
-                            mItem["HG_DWWZX"] = "合格";
-                        }
-                        else
-                        if (sItem["DWWZX"] == "不合格" && sItem["DWWZXSM_3"] == "有裂纹" || sItem["DWWZXSM_4"] == "有裂纹" && sItem["DWWZXSM_1"] == "无裂纹" && sItem["DWWZXSM_2"] == "无裂纹")
-                        {
-                            sItem["DWWZXSM"] = "横向有裂纹";
-                            mItem["HG_DWWZX"] = "合格";
-                        }
-                        else if (sItem["DWWZX"] == "不合格" && sItem["DWWZXSM_3"] == "有裂纹" || sItem["DWWZXSM_4"] == "有裂纹" && sItem["DWWZXSM_1"] == "有裂纹" || sItem["DWWZXSM_2"] == "有裂纹")
-                        {
-                            sItem["DWWZXSM"] = "横纵都向有裂纹";
-                            mItem["HG_DWWZX"] = "合格";
-                        }
+                        mItem["HG_DWWZX"] = "合格";
+                    }
+                    else if (sItem["DWWZX"] == "不合格")
+                    {
+                        mItem["HG_DWWZX"] = "不合格";
+                        mbhggs = mbhggs + 1;
+                        mFlag_Bhg = true;
                     }
                     else
                     {
-                        if (sItem["DWWZX"] == "合格")
-                        {
-                            mItem["HG_DWWZX"] = "合格";
-                            sItem["DWWZXSM"] = "无裂纹";
-                            mFlag_Hg = true;
-                        }
-                        else if (sItem["DWWZX"] == "不合格")
-                        {
-                            sItem["DWWZXSM"] = "有裂纹";
-                            mItem["HG_DWWZX"] = "不合格";
-                            mbhggs = mbhggs + 1;
-                            mFlag_Bhg = true;
-                        }
-                        else
-                        {
-                            mItem["HG_DWWZX"] = "----";
-                        }
+                        mItem["HG_DWWZX"] = "----";
                     }
+
+                    #region
+                    //if (sItem["CPMC"] == "高分子防水卷材" || sItem["CPMC"] == "聚氯乙烯(PVC)防水卷材")
+                    //{
+                    //    if (sItem["DWWZX"] == "合格")
+                    //    {
+                    //        sItem["DWWZXSM"] = "无裂纹";
+                    //        mItem["HG_DWWZX"] = "合格";
+                    //    }
+                    //    else if (sItem["DWWZX"] == "不合格" && sItem["DWWZXSM_1"] == "有裂纹" || sItem["DWWZXSM_2"] == "有裂纹" && sItem["DWWZXSM_3"] == "无裂纹" && sItem["DWWZXSM_4"] == "无裂纹")
+                    //    {
+                    //        sItem["DWWZXSM"] = "纵向有裂纹";
+                    //        mItem["HG_DWWZX"] = "合格";
+                    //    }
+                    //    else if (sItem["DWWZX"] == "不合格" && sItem["DWWZXSM_3"] == "有裂纹" || sItem["DWWZXSM_4"] == "有裂纹" && sItem["DWWZXSM_1"] == "无裂纹" && sItem["DWWZXSM_2"] == "无裂纹")
+                    //    {
+                    //        sItem["DWWZXSM"] = "横向有裂纹";
+                    //        mItem["HG_DWWZX"] = "合格";
+                    //    }
+                    //    else if (sItem["DWWZX"] == "不合格" && sItem["DWWZXSM_3"] == "有裂纹" || sItem["DWWZXSM_4"] == "有裂纹" && sItem["DWWZXSM_1"] == "有裂纹" || sItem["DWWZXSM_2"] == "有裂纹")
+                    //    {
+                    //        sItem["DWWZXSM"] = "横纵都向有裂纹";
+                    //        mItem["HG_DWWZX"] = "合格";
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    if (sItem["DWWZX"] == "合格")
+                    //    {
+                    //        mItem["HG_DWWZX"] = "合格";
+                    //        sItem["DWWZXSM"] = "无裂纹";
+                    //        mFlag_Hg = true;
+                    //    }
+                    //    else if (sItem["DWWZX"] == "不合格")
+                    //    {
+                    //        sItem["DWWZXSM"] = "有裂纹";
+                    //        mItem["HG_DWWZX"] = "不合格";
+                    //        mbhggs = mbhggs + 1;
+                    //        mFlag_Bhg = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        mItem["HG_DWWZX"] = "----";
+                    //    }
+                    //}
+                    #endregion
                 }
                 else
                 {
@@ -866,124 +884,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、耐热度、") || jcxm.Contains("、耐热性、"))
                 {
-                    if ((sItem["CPMC"] == "自粘聚合物改性沥青防水卷材" && sItem["XS"] == "PY") || sItem["CPMC"] == "预铺防水卷材(2017)")
-                    {
-                        //if (sItem["NRDSM_3"] == "无滑动、流淌、滴落" && sItem["NRDSM_4"] == "无滑动、流淌、滴落" && sItem["NRDSM_5"] == "无滑动、流淌、滴落")
-                        if (sItem["NRDSM"] == "无滑动、流淌、滴落")
-                        {
-                            sItem["NRD"] = "合格";
-                            sItem["NRDSM"] = "无滑动、流淌、滴落";
-                        }
-                        else
-                        {
-                            sItem["NRD"] = "不合格";
-                            sItem["NRDSM"] = "无滑动、流淌、滴落";
-                        }
-                    }
-                    else if (sItem["CPMC"] == "自粘聚合物改性沥青防水卷材" && sItem["XS"] == "N")
-                    {
-                        //if (double.Parse(sItem["NRDSM_3"]) <= 2 && double.Parse(sItem["NRDSM_4"]) <= 2 && double.Parse(sItem["NRDSM_5"]) <= 2)
-                        if (double.Parse(sItem["NRDSM"]) <= 2)
-                        {
-                            sItem["NRD"] = "合格";
-                        }
-                        else
-                        {
-                            sItem["NRD"] = "不合格";
-                        }
-                    }
-                    else if (sItem["CPMC"] == "胶粉改性沥青聚酯毡与玻纤网格布增强防水卷材")
-                    {
-                        //if (sItem["NRDSM_3"] == "无滑动、流淌、滴落" && sItem["NRDSM_4"] == "无滑动、流淌、滴落" && sItem["NRDSM_5"] == "无滑动、流淌、滴落" && Conversion.Val(sItem["NRDSM_1"]) < 2 && Conversion.Val(sItem["NRDSM_2"]) < 2)
-                        if (sItem["NRDSM"] == "无滑动、流淌、滴落")
-                        {
-                            sItem["NRD"] = "合格";
-                            sItem["NRDSM"] = "无滑动、流淌、滴落";
-                        }
-                        else
-                        {
-                            sItem["NRD"] = "不合格";
-                            sItem["NRDSM"] = "无滑动、流淌、滴落";
-                        }
-                    }
-                    else if (sItem["CPMC"] == "湿铺防水卷材(2017)")
-                    {
-                        //if (sItem["NRDSM_3"] == "无流淌、滴落" && sItem["NRDSM_4"] == "无流淌、滴落" && sItem["NRDSM_5"] == "无流淌、滴落" && Conversion.Val(sItem["NRDSM_1"]) < 2)
-                        if (sItem["NRDSM"] == "无流淌、滴落")
-                        {
-                            sItem["NRD"] = "合格";
-                            sItem["NRDSM"] = "无流淌、滴落";
-                        }
-                        else
-                        {
-                            sItem["NRD"] = "不合格";
-                            sItem["NRDSM"] = "无流淌、滴落";
-                        }
-                    }
-                    else if (sItem["CPMC"] == "玻纤胎沥青瓦")
-                    {
-                        //if (sItem["NRDSM_3"] == "无滑动、流淌、滴落、气泡" && sItem["NRDSM_4"] == "无滑动、流淌、滴落、气泡" && sItem["NRDSM_5"] == "无滑动、流淌、滴落、气泡")
-                        if (sItem["NRDSM"] == "无滑动、流淌、滴落、气泡")
-                        {
-                            sItem["NRD"] = "合格";
-                            sItem["NRDSM"] = "无流淌、滑动、滴落、气泡";
-                        }
-                        else
-                        {
-                            sItem["NRD"] = "不合格";
-                            sItem["NRDSM"] = "无滑动、流淌、滴落";
-                        }
-                    }
-                    else
-                    {
-                        //if ((sItem["NRDSM_3"] == "无流淌、滴落" || sItem["NRDSM_3"] == "无流淌、无起泡" || sItem["NRDSM_3"] == "无位移、流淌、滴落") && (sItem["NRDSM_4"] == "无流淌、滴落" || sItem["NRDSM_4"] == "无流淌、无起泡" || sItem["NRDSM_4"] == "无位移、流淌、滴落") && (sItem["NRDSM_5"] == "无流淌、滴落" || sItem["NRDSM_5"] == "无流淌、无起泡" || sItem["NRDSM_5"] == "无位移、流淌、滴落") && Conversion.Val(sItem["NRDSM_1"]) < 2 && Conversion.Val(sItem["NRDSM_2"]) < 2)
-                        if (sItem["NRDSM"] == "无流淌、滴落" || sItem["NRDSM"] == "无流淌、无起泡" || sItem["NRDSM"] == "无位移、流淌、滴落")
-                        {
-                            sItem["NRD"] = "合格";
-                            //if (sItem["NRDSM_3"] == "无流淌、滴落" && sItem["NRDSM_4"] == "无流淌、滴落" && sItem["NRDSM_5"] == "无流淌、滴落")
-                            if (sItem["NRDSM"] == "无流淌、滴落")
-                            {
-                                sItem["NRDSM"] = "无流淌、滴落";
-                            }
-                            else
-                            {
-                                sItem["NRDSM"] = "有流淌、滴落";
-                            }
-                            //if (sItem["NRDSM_3"] == "无流淌、无起泡" && sItem["NRDSM_4"] == "无流淌、无起泡" && sItem["NRDSM_5"] == "无流淌、无起泡")
-                            if (sItem["NRDSM"] == "无流淌、无起泡")
-                            {
-                                sItem["NRDSM"] = "无流淌、无起泡";
-                            }
-                            //if(sItem["NRDSM_3"] == "无位移、流淌、滴落" && sItem["NRDSM_4"] == "无位移、流淌、滴落" && sItem["NRDSM_5"] == "无位移、流淌、滴落")
-                            if (sItem["NRDSM"] == "无位移、流淌、滴落")
-                            {
-                                sItem["NRDSM"] = "无位移、流淌、滴落";
-                            }
-                        }
-                        else
-                        {
-                            sItem["NRD"] = "不合格";
-                            //if (sItem["NRDSM_3"] == "无流淌、滴落" && sItem["NRDSM_4"] == "无流淌、滴落" && sItem["NRDSM_5"] == "无流淌、滴落")
-                            if (sItem["NRDSM"] == "无流淌、滴落")
-                            {
-                                sItem["NRDSM"] = "无流淌、滴落";
-                            }
-                            else
-                            {
-                                sItem["NRDSM"] = "有流淌、滴落";
-                            }
-                            //if (sItem["NRDSM_3"] == "无流淌、无起泡" && sItem["NRDSM_4"] == "无流淌、无起泡" && sItem["NRDSM_5"] == "无流淌、无起泡")
-                            if (sItem["NRDSM"] == "无流淌、无起泡")
-                            {
-                                sItem["NRDSM"] = "无流淌、无起泡";
-                            }
-                            //if (sItem["NRDSM_3"] == "无位移、流淌、滴落" && sItem["NRDSM_4"] == "无位移、流淌、滴落" && sItem["NRDSM_5"] == "无位移、流淌、滴落")
-                            if (sItem["NRDSM"] == "无位移、流淌、滴落")
-                            {
-                                sItem["NRDSM"] = "无位移、流淌、滴落";
-                            }
-                        }
-                    }
+
                     if (sItem["NRD"] == "合格")
                     {
                         mItem["HG_NRD"] = "合格";
@@ -999,6 +900,127 @@ namespace Calculates
                     {
                         mItem["HG_NRD"] = "----";
                     }
+
+                    #region MyRegion
+                    //if ((sItem["CPMC"] == "自粘聚合物改性沥青防水卷材" && sItem["XS"] == "PY") || sItem["CPMC"] == "预铺防水卷材(2017)")
+                    //{
+                    //    //if (sItem["NRDSM_3"] == "无滑动、流淌、滴落" && sItem["NRDSM_4"] == "无滑动、流淌、滴落" && sItem["NRDSM_5"] == "无滑动、流淌、滴落")
+                    //    if (sItem["NRDSM"] == "无滑动、流淌、滴落")
+                    //    {
+                    //        sItem["NRD"] = "合格";
+                    //        sItem["NRDSM"] = "无滑动、流淌、滴落";
+                    //    }
+                    //    else
+                    //    {
+                    //        sItem["NRD"] = "不合格";
+                    //        sItem["NRDSM"] = "无滑动、流淌、滴落";
+                    //    }
+                    //}
+                    //else if (sItem["CPMC"] == "自粘聚合物改性沥青防水卷材" && sItem["XS"] == "N")
+                    //{
+                    //    //if (double.Parse(sItem["NRDSM_3"]) <= 2 && double.Parse(sItem["NRDSM_4"]) <= 2 && double.Parse(sItem["NRDSM_5"]) <= 2)
+                    //    if (double.Parse(sItem["NRDSM"]) <= 2)
+                    //    {
+                    //        sItem["NRD"] = "合格";
+                    //    }
+                    //    else
+                    //    {
+                    //        sItem["NRD"] = "不合格";
+                    //    }
+                    //}
+                    //else if (sItem["CPMC"] == "胶粉改性沥青聚酯毡与玻纤网格布增强防水卷材")
+                    //{
+                    //    //if (sItem["NRDSM_3"] == "无滑动、流淌、滴落" && sItem["NRDSM_4"] == "无滑动、流淌、滴落" && sItem["NRDSM_5"] == "无滑动、流淌、滴落" && Conversion.Val(sItem["NRDSM_1"]) < 2 && Conversion.Val(sItem["NRDSM_2"]) < 2)
+                    //    if (sItem["NRDSM"] == "无滑动、流淌、滴落")
+                    //    {
+                    //        sItem["NRD"] = "合格";
+                    //        sItem["NRDSM"] = "无滑动、流淌、滴落";
+                    //    }
+                    //    else
+                    //    {
+                    //        sItem["NRD"] = "不合格";
+                    //        sItem["NRDSM"] = "无滑动、流淌、滴落";
+                    //    }
+                    //}
+                    //else if (sItem["CPMC"] == "湿铺防水卷材(2017)")
+                    //{
+                    //    //if (sItem["NRDSM_3"] == "无流淌、滴落" && sItem["NRDSM_4"] == "无流淌、滴落" && sItem["NRDSM_5"] == "无流淌、滴落" && Conversion.Val(sItem["NRDSM_1"]) < 2)
+                    //    if (sItem["NRDSM"] == "无流淌、滴落")
+                    //    {
+                    //        sItem["NRD"] = "合格";
+                    //        sItem["NRDSM"] = "无流淌、滴落";
+                    //    }
+                    //    else
+                    //    {
+                    //        sItem["NRD"] = "不合格";
+                    //        sItem["NRDSM"] = "无流淌、滴落";
+                    //    }
+                    //}
+                    //else if (sItem["CPMC"] == "玻纤胎沥青瓦")
+                    //{
+                    //    //if (sItem["NRDSM_3"] == "无滑动、流淌、滴落、气泡" && sItem["NRDSM_4"] == "无滑动、流淌、滴落、气泡" && sItem["NRDSM_5"] == "无滑动、流淌、滴落、气泡")
+                    //    if (sItem["NRDSM"] == "无滑动、流淌、滴落、气泡")
+                    //    {
+                    //        sItem["NRD"] = "合格";
+                    //        sItem["NRDSM"] = "无流淌、滑动、滴落、气泡";
+                    //    }
+                    //    else
+                    //    {
+                    //        sItem["NRD"] = "不合格";
+                    //        sItem["NRDSM"] = "无滑动、流淌、滴落";
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    //if ((sItem["NRDSM_3"] == "无流淌、滴落" || sItem["NRDSM_3"] == "无流淌、无起泡" || sItem["NRDSM_3"] == "无位移、流淌、滴落") && (sItem["NRDSM_4"] == "无流淌、滴落" || sItem["NRDSM_4"] == "无流淌、无起泡" || sItem["NRDSM_4"] == "无位移、流淌、滴落") && (sItem["NRDSM_5"] == "无流淌、滴落" || sItem["NRDSM_5"] == "无流淌、无起泡" || sItem["NRDSM_5"] == "无位移、流淌、滴落") && Conversion.Val(sItem["NRDSM_1"]) < 2 && Conversion.Val(sItem["NRDSM_2"]) < 2)
+                    //    if (sItem["NRDSM"] == "无流淌、滴落" || sItem["NRDSM"] == "无流淌、无起泡" || sItem["NRDSM"] == "无位移、流淌、滴落")
+                    //    {
+                    //        sItem["NRD"] = "合格";
+                    //        //if (sItem["NRDSM_3"] == "无流淌、滴落" && sItem["NRDSM_4"] == "无流淌、滴落" && sItem["NRDSM_5"] == "无流淌、滴落")
+                    //        if (sItem["NRDSM"] == "无流淌、滴落")
+                    //        {
+                    //            sItem["NRDSM"] = "无流淌、滴落";
+                    //        }
+                    //        else
+                    //        {
+                    //            sItem["NRDSM"] = "有流淌、滴落";
+                    //        }
+                    //        //if (sItem["NRDSM_3"] == "无流淌、无起泡" && sItem["NRDSM_4"] == "无流淌、无起泡" && sItem["NRDSM_5"] == "无流淌、无起泡")
+                    //        if (sItem["NRDSM"] == "无流淌、无起泡")
+                    //        {
+                    //            sItem["NRDSM"] = "无流淌、无起泡";
+                    //        }
+                    //        //if(sItem["NRDSM_3"] == "无位移、流淌、滴落" && sItem["NRDSM_4"] == "无位移、流淌、滴落" && sItem["NRDSM_5"] == "无位移、流淌、滴落")
+                    //        if (sItem["NRDSM"] == "无位移、流淌、滴落")
+                    //        {
+                    //            sItem["NRDSM"] = "无位移、流淌、滴落";
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        sItem["NRD"] = "不合格";
+                    //        //if (sItem["NRDSM_3"] == "无流淌、滴落" && sItem["NRDSM_4"] == "无流淌、滴落" && sItem["NRDSM_5"] == "无流淌、滴落")
+                    //        if (sItem["NRDSM"] == "无流淌、滴落")
+                    //        {
+                    //            sItem["NRDSM"] = "无流淌、滴落";
+                    //        }
+                    //        else
+                    //        {
+                    //            sItem["NRDSM"] = "有流淌、滴落";
+                    //        }
+                    //        //if (sItem["NRDSM_3"] == "无流淌、无起泡" && sItem["NRDSM_4"] == "无流淌、无起泡" && sItem["NRDSM_5"] == "无流淌、无起泡")
+                    //        if (sItem["NRDSM"] == "无流淌、无起泡")
+                    //        {
+                    //            sItem["NRDSM"] = "无流淌、无起泡";
+                    //        }
+                    //        //if (sItem["NRDSM_3"] == "无位移、流淌、滴落" && sItem["NRDSM_4"] == "无位移、流淌、滴落" && sItem["NRDSM_5"] == "无位移、流淌、滴落")
+                    //        if (sItem["NRDSM"] == "无位移、流淌、滴落")
+                    //        {
+                    //            sItem["NRDSM"] = "无位移、流淌、滴落";
+                    //        }
+                    //    }
+                    //} 
+                    #endregion
                 }
                 else
                 {
@@ -1182,7 +1204,7 @@ namespace Calculates
                 }
 
                 sign = true;
-                if (jcxm.Contains("、膜断裂伸长率、")|| jcxm.Contains("、拉伸性能、"))
+                if (jcxm.Contains("、膜断裂伸长率、") || jcxm.Contains("、拉伸性能、"))
                 {
                     for (int i = 1; i <= 5; i++)
                     {

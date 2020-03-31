@@ -811,7 +811,7 @@ namespace Calculates
             #region 判断 取文字中的数值 
 
             string temStr = sj;//"提取123.11abc提取"; //我们抓取当前字符当中的123.11
-            temStr = Regex.Replace(temStr, @"[^\d.\d]", "");
+            temStr = Regex.Replace(temStr, @"[^[+-]?\d.\d]", "");
 
             //sj 是文字加数字 如：检测值》234.43
             if (temStr.Length + 1 != sj.Length && sj.IndexOf("～") == -1)
@@ -936,6 +936,8 @@ namespace Calculates
                 min_bl = true;
 
                 sign = true;
+
+
             }
             if (sj.IndexOf('±') != -1)
             {

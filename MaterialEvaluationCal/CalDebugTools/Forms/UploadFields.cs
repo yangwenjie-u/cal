@@ -394,9 +394,17 @@ namespace CalDebugTools.Forms
                             if (codelist[i].Contains(sd))
                             {
                                 int num = codelist[i].IndexOf(sd);
-                                string str1 = codelist[i].Substring(0, num);
+                                string fieldLeft = codelist[i].Substring(0, num);
                                 string str2 = codelist[i].Substring(num);
-                                if (str1.Contains("="))
+
+                                //字段左侧没有“=”号，肯定是I类型
+                                if (!string.IsNullOrEmpty(fieldLeft) && fieldLeft.IndexOf('=') == -1)
+                                {
+                                    //if (!Ofields.Contains(item) && !Ifields.Contains(item))
+                                        Ifields.Add(item);
+                                }
+
+                                if (fieldLeft.Contains("="))
                                 {
                                     if (!Ifields.Contains(item))
                                         Ifields.Add(item);
@@ -455,6 +463,11 @@ namespace CalDebugTools.Forms
         private void rd_s_Click(object sender, EventArgs e)
         {
             txtother.Visible = false;
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
