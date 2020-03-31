@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class TGW : BaseMethods
+    public class HGS : BaseMethods
     {
         public void Calc()
         {
@@ -33,10 +33,10 @@ namespace Calculates
 
             #region  集合取值
             var data = retData;
-            var mrsDj = dataExtra["BZ_TGW_DJ"];
-            var MItem = data["M_TGW"];
+            var mrsDj = dataExtra["BZ_HGS_DJ"];
+            var MItem = data["M_HGS"];
             var mitem = MItem[0];
-            var SItem = data["S_TGW"];
+            var SItem = data["S_HGS"];
             #endregion
 
             #region 计算开始
@@ -47,19 +47,25 @@ namespace Calculates
             foreach (var sitem in SItem)
             {
                 //sitem["GCBW"] = mitem["GCBW"];//报告展示用
-                double msmd;
+                double md;
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
+                    int mbhggs = 0;
+                    int xd;
+                    double msmd;
                     if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
-                        msktj = Round(Conversion.Val(sitem["JSTJ"].Trim()) - Conversion.Val(sitem["THTJ"]), 0);
-                        msmd = Round(Conversion.Val(sitem["QBCL"]) / msktj, 2);   //湿密度计算
-                        sitem["SMD"] = msmd.ToString("0.00");
                         if (Conversion.Val(sitem["ZDGMD"]) == 0)
                             sitem["YSD"] = "0";
                         else
-                            sitem["YSD"] = Round(100 * Conversion.Val(sitem["GMD"]) / Conversion.Val(sitem["ZDGMD"]), 0).ToString();
+                            sitem["YSD"] = Round(100 * Conversion.Val(sitem["GMD"]) / Conversion.Val(sitem["ZDGMD"]), 0).ToString("");
+                        mskys = Round(Conversion.Val(sitem["RQYS"]) - Conversion.Val(sitem["RQSS"]) - Conversion.Val(sitem["ZDYSL"]), 0);
+                        msktj = Round(mskys / Conversion.Val(sitem["BZSMD"]), 1);
+                        sitem["SKYS"] = mskys.ToString();
+                        sitem["SKTJ"] = msktj.ToString("0.0");
+                        msmd = Round(Conversion.Val(sitem["QBCL"]) / msktj, 2);   //湿密度计算
+                        sitem["SMD"] = msmd.ToString("0.00");
                         if (Conversion.Val(sitem["SJYSD"]) == -1 && Conversion.Val(sitem["ZDGMD"]) > 0)
                         {
                             if (Conversion.Val(sitem["GMD"]) >= Conversion.Val(sitem["ZDGMD"]))
@@ -95,17 +101,33 @@ namespace Calculates
                             sitem["SJYSD"] = "-1";
                             sitem["YSD"] = "0";
                         }
-                        msktj = Round(Conversion.Val(sitem["JSTJ"].Trim()) - Conversion.Val(sitem["THTJ"]), 0);
-                        msmd = Round((Conversion.Val(sitem["QBCL"]) / msktj), 2); //湿密度计算
+                        //If (Val(sitem["ZDGMD)) = -1 AND (VAL(SITEM["sjysd)) = -1 Then MsgBox "错误：干密度设计值和压实度设计值不能同时为-1"
+                        mskys = Round((Conversion.Val(sitem["rqys"]) - Conversion.Val(sitem["RQSS"]) - Conversion.Val(sitem["ZDYSL"])), 0);
+                        msktj = Round((mskys / (Conversion.Val(sitem["BZSMD"]))), 1);
+                        sitem["SKYS"] = mskys.ToString();
+                        sitem["SKTJ"] = msktj.ToString("0.0");
+                        double msmd = Round((Conversion.Val(sitem["QBCL"]) / msktj), 2); //湿密度计算
                         sitem["SMD"] = msmd.ToString("0.00");
-                        sitem["SZL1"] = (Conversion.Val(sitem["HJST1"]) - Conversion.Val(sitem["HJGT1"])).ToString("0.0"); //水质量计算
-                        sitem["SZL2"] = (Conversion.Val(sitem["HJST2"]) - Conversion.Val(sitem["HJGT2"])).ToString("0.0");
-                        sitem["GTZL1"] = (Conversion.Val(sitem["HJGT1"]) - Conversion.Val(sitem["HZL1"])).ToString("0.0"); //干土质量计算
-                        sitem["GTZL2"] = (Conversion.Val(sitem["HJGT2"]) - Conversion.Val(sitem["HZL2"])).ToString("0.0");
-                        sitem["HSL1"] = Round((Conversion.Val(sitem["SZL1"]) / Conversion.Val(sitem["GTZL1"])) * 100, 1).ToString("0.0"); //含水量计算
-                        sitem["HSL2"] = Round((Conversion.Val(sitem["SZL2"]) / Conversion.Val(sitem["GTZL2"])) * 100, 1).ToString("0.0");
+                        md = Conversion.Val(sitem["HJST1"]) - Conversion.Val(sitem["HJGT1"]);
+                        md = Round((md), 2);
+                        sitem["SZL1"] = md.ToString("0.00");
+
+                        md = (Conversion.Val(sitem["HJST2"]) - Conversion.Val(sitem["HJGT2"]));
+                        md = Round((md), 2);
+                        sitem["SZL2"] = md.ToString("0.00");
+                        //sitem["GTZL1"] = (Conversion.Val(sitem["HJGT1"]) - Conversion.Val(sitem["HZL1"])).ToString("0"); //干土质量计算
+                        //sitem["GTZL2"] = (Conversion.Val(sitem["HJGT2"]) - Conversion.Val(sitem["HZL2"])).ToString("0");
+                        sitem["GTZL1"] = (Conversion.Val(sitem["HJGT1"]) - Conversion.Val(sitem["HZL1"])).ToString("0.0000"); //干土质量计算
+                        sitem["GTZL2"] = (Conversion.Val(sitem["HJGT2"]) - Conversion.Val(sitem["HZL2"])).ToString("0.0000");
+                        if (Conversion.Val(sitem["GTZL1"]) != 0 && Conversion.Val(sitem["GTZL2"]) != 0)
+                        {
+                            sitem["HSL1"] = Round((Conversion.Val(sitem["SZL1"]) / Conversion.Val(sitem["GTZL1"])) * 100, 1).ToString("0.0"); //含水量计算
+                            sitem["HSL2"] = Round((Conversion.Val(sitem["SZL2"]) / Conversion.Val(sitem["GTZL2"])) * 100, 1).ToString("0.0");
+                        }
+
                         sitem["PJHSL"] = Round((Conversion.Val(sitem["HSL1"]) + Conversion.Val(sitem["HSL2"])) / 2, 1).ToString("0.0"); //平均含水量
-                        if (Conversion.Val(sitem["HSL1"]) >= 40 && (Conversion.Val(sitem["HSL2"])) >= 40)
+
+                        if (Conversion.Val(sitem["HSL1"]) >= 40 && Conversion.Val(sitem["HSL2"]) >= 40)
                         {
                             if (Math.Abs((Conversion.Val(sitem["HSL1"]) - Conversion.Val(sitem["HSL2"]))) > 2)
                                 sitem["PJHSL"] = "无效";
@@ -114,56 +136,59 @@ namespace Calculates
                         {
                             if (Math.Abs((Conversion.Val(sitem["HSL1"]) - Conversion.Val(sitem["HSL2"]))) > 1)
                                 sitem["PJHSL"] = "无效";
+
                         }
                         double mgmd = Round((msmd / (1 + 0.01 * Conversion.Val(sitem["PJHSL"]))), 2); //干密度计算
                         sitem["GMD"] = mgmd.ToString("0.00");
+
                         if (Conversion.Val(sitem["ZDGMD"]) != 0)
                         {
+                            //干密度 / 最大干密度 = 压实度
                             double mysd = Round(100 * (Conversion.Val(sitem["GMD"]) / Conversion.Val(sitem["ZDGMD"])), 0);
                             sitem["YSD"] = mysd.ToString("0");
                         }
                         else
                             sitem["YSD"] = "0";
-                        if (Conversion.Val(sitem["SJYSD"]) == -1 && Conversion.Val(sitem["ZDGMD"]) > 0)
+                        if (Conversion.Val(sitem["SJYSD"]) == -1 && (Conversion.Val(sitem["ZDGMD"])) > 0)
                         {
                             if (Conversion.Val(sitem["GMD"]) >= Conversion.Val(sitem["ZDGMD"]))
                             {
                                 vi = vi + 1;
-                                //单组判定
                                 sitem["DZHGPD"] = "符合要求";
                             }
                             else
                             {
                                 sitem["DZHGPD"] = "不合格";
                             }
+                               
                         }
                         else
                         {
                             if (Conversion.Val(sitem["YSD"]) >= Conversion.Val(sitem["SJYSD"]))
                             {
                                 vi = vi + 1;
-                                //单组判定
                                 sitem["DZHGPD"] = "符合要求";
                             }
                             else
                             {
                                 sitem["DZHGPD"] = "不合格";
                             }
+                                
                         }
+
                     }
                     else
                     {
+                        sitem["PJHSL"] = "----";
                         sitem["YSD"] = "----";
-                        sitem["GMD"] = "----";
                     }
                 }
             }
-            //平均值,最小值等计算
             int c_Ht = SItem.Count();
             mitem["HGDS"] = vi.ToString();
             mitem["JCDS"] = c_Ht.ToString();
             mitem["HGL"] = Round((vi / c_Ht) * 100, 1).ToString();
-            string mhgl = Round(Conversion.Val(mitem["HGL"]), 1).ToString("0.0");
+            string mhgl = Round(GetSafeDouble(mitem["HGL"]), 1).ToString("0.0");
             if (vi == c_Ht)
                 mAllHg = true;
             else

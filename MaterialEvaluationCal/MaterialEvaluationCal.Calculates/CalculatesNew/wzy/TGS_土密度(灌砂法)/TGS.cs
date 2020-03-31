@@ -46,7 +46,7 @@ namespace Calculates
             mitem["JCJGMS"] = "";
             foreach (var sitem in SItem)
             {
-                sitem["GCBW"] = mitem["GCBW"];//报告展示用
+                //sitem["GCBW"] = mitem["GCBW"];//报告展示用
                 double md;
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
@@ -115,8 +115,8 @@ namespace Calculates
                         md = (Conversion.Val(sitem["HJST2"]) - Conversion.Val(sitem["HJGT2"]));
                         md = Round((md), 2);
                         sitem["SZL2"] = md.ToString("0.00");
-                        sitem["GTZL1"] = (Conversion.Val(sitem["HJGT1"]) - Conversion.Val(sitem["HZL1"])).ToString("0"); //干土质量计算
-                        sitem["GTZL2"] = (Conversion.Val(sitem["HJGT2"]) - Conversion.Val(sitem["HZL2"])).ToString("0");
+                        sitem["GTZL1"] = (Conversion.Val(sitem["HJGT1"]) - Conversion.Val(sitem["HZL1"])).ToString("0.0000"); //干土质量计算
+                        sitem["GTZL2"] = (Conversion.Val(sitem["HJGT2"]) - Conversion.Val(sitem["HZL2"])).ToString("0.0000");
                         if (Conversion.Val(sitem["GTZL1"]) != 0 && Conversion.Val(sitem["GTZL2"]) != 0)
                         {
                             sitem["HSL1"] = Round((Conversion.Val(sitem["SZL1"]) / Conversion.Val(sitem["GTZL1"])) * 100, 1).ToString("0.0"); //含水量计算
@@ -136,11 +136,12 @@ namespace Calculates
                                 sitem["PJHSL"] = "无效";
 
                         }
-                        //double mgmd = Round((msmd / (1 + 0.01 * Conversion.Val(sitem["PJHSL"]))), 2); //干密度计算
-                        //sitem["GMD"] = mgmd.ToString("0.00");
+                        double mgmd = Round((msmd / (1 + 0.01 * Conversion.Val(sitem["PJHSL"]))), 2); //干密度计算
+                        sitem["GMD"] = mgmd.ToString("0.00");
 
                         if (Conversion.Val(sitem["ZDGMD"]) != 0)
                         {
+                            //干密度 / 最大干密度 = 压实度
                             double mysd = Round(100 * (Conversion.Val(sitem["GMD"]) / Conversion.Val(sitem["ZDGMD"])), 0);
                             sitem["YSD"] = mysd.ToString("0");
                         }
@@ -149,12 +150,28 @@ namespace Calculates
                         if (Conversion.Val(sitem["SJYSD"]) == -1 && (Conversion.Val(sitem["ZDGMD"])) > 0)
                         {
                             if (Conversion.Val(sitem["GMD"]) >= Conversion.Val(sitem["ZDGMD"]))
+                            {
                                 vi = vi + 1;
+                                sitem["DZHGPD"] = "符合要求";
+                            }
+                            else
+                            {
+                                sitem["DZHGPD"] = "不合格";
+                            }
+                               
                         }
                         else
                         {
                             if (Conversion.Val(sitem["YSD"]) >= Conversion.Val(sitem["SJYSD"]))
+                            {
                                 vi = vi + 1;
+                                sitem["DZHGPD"] = "符合要求";
+                            }
+                            else
+                            {
+                                sitem["DZHGPD"] = "不合格";
+                            }
+                                
                         }
 
                     }

@@ -56,13 +56,8 @@ namespace Calculates
                 #region 外观要求
                 if (jcxm.Contains("、外观要求、"))
                 {
-                    if (!string.IsNullOrEmpty(MItem[0]["WG"]) && MItem[0]["WG"] == "符合")
+                    if (MItem[0]["WG_HG"] == "不合格")
                     {
-                        MItem[0]["WG_HG"] = "合格";
-                    }
-                    else
-                    {
-                        MItem[0]["WG_HG"] = "不合格";
                         mAllHg = false;
                     }
                 }
@@ -77,13 +72,8 @@ namespace Calculates
                 #region 最大外径
                 if (jcxm.Contains("、最大外径、"))
                 {
-                    if (!string.IsNullOrEmpty(MItem[0]["ZDWJ"]) && MItem[0]["ZDWJ"] == "通过")
+                    if (MItem[0]["ZDWJ_HG"] == "不合格")
                     {
-                        MItem[0]["ZDWJ_HG"] = "合格";
-                    }
-                    else
-                    {
-                        MItem[0]["ZDWJ_HG"] = "不合格";
                         mAllHg = false;
                     }
                 }
@@ -98,13 +88,8 @@ namespace Calculates
                 #region 最小外径
                 if (jcxm.Contains("、最小外径、"))
                 {
-                    if (!string.IsNullOrEmpty(MItem[0]["ZXWJ"]) && MItem[0]["ZXWJ"] == "通过")
+                    if (MItem[0]["ZXWJ_HG"] == "不合格")
                     {
-                        MItem[0]["ZXWJ_HG"] = "合格";
-                    }
-                    else
-                    {
-                        MItem[0]["ZXWJ_HG"] = "不合格";
                         mAllHg = false;
                     }
                 }
@@ -133,12 +118,47 @@ namespace Calculates
                     {
                         MItem[0]["G_ZXBH"] = "" + MItem[0]["G_ZXBH"];
                     }
+
+                    //壁厚均匀度
+                    string g_BHJYD = MItem[0]["BHJYD"];
+                    List<string> listBHJYD = new List<string>();
+                    if (g_BHJYD.Contains("~") && (g_BHJYD.Split('~').Count() == 2))
+                    {
+                        listBHJYD = g_BHJYD.Split('~').ToList();
+
+                        if (listBHJYD.Count() == 2)
+                        {
+                            var flag = IsQualified(MItem[0]["G_BHJYD"], listBHJYD[0]);
+
+                            if (flag == "合格")
+                            {
+                                MItem[0]["BHJYD_HG"] = IsQualified(MItem[0]["G_BHJYD"], listBHJYD[1]);
+                            }
+                            else
+                            {
+                                MItem[0]["BHJYD_HG"] = "不合格";
+                                mAllHg = false;
+                            }
+                        }
+                        else
+                        {
+                            MItem[0]["BHJYD_HG"] = "不合格";
+                            mAllHg = false;
+                        }
+                    }
+                    else {
+                        MItem[0]["BHJYD_HG"] = "不合格";
+                        mAllHg = false;
+                    }
                 }
                 else
                 {
                     MItem[0]["ZXBH"] = "----";
                     MItem[0]["G_ZXBH"] = "----";
                     MItem[0]["ZXBH_HG"] = "----";
+                    MItem[0]["BHJYD"] = "----";
+                    MItem[0]["G_BHJYD"] = "----";
+                    MItem[0]["BHJYD_HG"] = "----";
                 }
                 #endregion
 
@@ -210,13 +230,8 @@ namespace Calculates
                 #region 抗冲击性能
                 if (jcxm.Contains("、抗冲击性能、"))
                 {
-                    if (!string.IsNullOrEmpty(MItem[0]["KCJ"]) && MItem[0]["KCJ"].Trim() == "符合")
+                    if (MItem[0]["KCJ_HG"] == "不合格")
                     {
-                        MItem[0]["KCJ_HG"] = "合格";
-                    }
-                    else
-                    {
-                        MItem[0]["KCJ_HG"] = "不合格";
                         mAllHg = false;
                     }
                 }

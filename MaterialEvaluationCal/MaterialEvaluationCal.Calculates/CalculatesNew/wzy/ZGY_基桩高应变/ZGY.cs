@@ -14,7 +14,7 @@ namespace Calculates
             /************************ 代码开始 *********************/
             #region  集合取值
             var data = retData;
-            var mrsDj = dataExtra["BZ_ZGYDJ"];
+            var mrsDj = dataExtra["BZ_ZGY_DJ"];
             var MItem = data["M_ZGY"];
             var SItem = data["S_ZGY"];
             #endregion

@@ -16,8 +16,8 @@ namespace Calculates
             //获取帮助表数据
             var extraDJ = dataExtra["BZ_ZZQ_DJ"];
             //获取数据表数据
-            var extraMJZ1 = dataExtra["MJZ1"];
-            var extraSJZ1 = dataExtra["SJZ1"];
+            //var extraMJZ1 = dataExtra["MJZ1"];
+            //var extraSJZ1 = dataExtra["SJZ1"];
 
             bool mAllHg = true;
             var data = retData;

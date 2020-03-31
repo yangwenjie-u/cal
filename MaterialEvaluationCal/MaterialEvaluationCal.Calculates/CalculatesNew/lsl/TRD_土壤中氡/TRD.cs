@@ -15,7 +15,7 @@ namespace Calculates
             var SItem = data["S_TRD"];
             var MItem = data["M_TRD"];
             var mjcjg = "不合格";
-            var jsbeizhu = "依据" + MItem[0]["JCYJ"] + "，所检测项目不符合标准要求。";
+            var jsbeizhu = "依据" + MItem[0]["JCYJ"] + "，需采取防氡工程措施。";
 
             int mbHggs = 0;
             if (!data.ContainsKey("M_TRD"))
@@ -66,7 +66,7 @@ namespace Calculates
             if (mAllHg)
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["JCYJ"] + "，所检测项目符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["JCYJ"] + "，可不采取防氡工程措施。";
             }
 
             MItem[0]["JCJG"] = mjcjg;

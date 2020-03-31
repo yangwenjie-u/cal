@@ -50,7 +50,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("＞") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -68,7 +68,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("≥") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -86,7 +86,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("＜") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -104,7 +104,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("≤") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -122,7 +122,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
+                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
                             max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
                             min_bl = true;
                             max_bl = true;
@@ -132,7 +132,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("±") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
+                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
                             max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
                             min_sjz = min_sjz - max_sjz;
                             max_sjz = min_sjz + 2 * max_sjz;
@@ -197,13 +197,13 @@ namespace Calculates
             which = "bghj、bghj_1";
             //if ((GetSafeDateTime(MItem[0]["SYRQ"]) - GetSafeDateTime("2015-01-01")).Days >= 0)
             //{
-                //Ifsitem["jcxm") Like "*氨*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_21"
-                // Ifsitem["jcxm") Like "*甲醛*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_31"
+            //Ifsitem["jcxm") Like "*氨*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_21"
+            // Ifsitem["jcxm") Like "*甲醛*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_31"
             //}
             //else
             //{
-                //Ifsitem["jcxm") Like "*氨*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_2"
-                //Ifsitem["jcxm") Like "*甲醛*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_3"
+            //Ifsitem["jcxm") Like "*氨*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_2"
+            //Ifsitem["jcxm") Like "*甲醛*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_3"
             //}
             //Ifsitem["jcxm") Like "*苯*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_4"
             //Ifsitem["jcxm") Like "*TVOC*" Then mrsmainTablesitem["which") = mrsmainTablesitem["which") & "、bghj_5"
@@ -541,14 +541,25 @@ namespace Calculates
             }
             mbHggs = bHggs_A + bHggs_J + bHggs_B + bHggs_T + bHggs_D;
             MItem[0]["JCJG"] = mbHggs == 0 ? "合格" : "不合格";
-            MItem[0]["JCJGMS"] = mbHggs == 0 ? "所检项目符合" + MItem[0]["JCYJ"] + "标准要求。" : "所检";
+            //MItem[0]["JCJGMS"] = mbHggs == 0 ? "所检项目符合" + MItem[0]["JCYJ"] + "标准要求。" : "所检";
+            //MItem[0]["JCJGMS"] = bHggs_A > 0 ? MItem[0]["JCJGMS"] + "氨、" : MItem[0]["JCJGMS"];
+            //MItem[0]["JCJGMS"] = bHggs_J > 0 ? MItem[0]["JCJGMS"] + "甲醛、" : MItem[0]["JCJGMS"];
+            //MItem[0]["JCJGMS"] = bHggs_B > 0 ? MItem[0]["JCJGMS"] + "苯、" : MItem[0]["JCJGMS"];
+            //MItem[0]["JCJGMS"] = bHggs_T > 0 ? MItem[0]["JCJGMS"] + "TVOC、" : MItem[0]["JCJGMS"];
+            //MItem[0]["JCJGMS"] = bHggs_D > 0 ? MItem[0]["JCJGMS"] + "氡、" : MItem[0]["JCJGMS"];
+            //MItem[0]["JCJGMS"] = mbHggs == 0 ? MItem[0]["JCJGMS"] : MItem[0]["JCJGMS"].Substring(0, MItem[0]["JCJGMS"].Length - 1);
+            //MItem[0]["JCJGMS"] = mbHggs == 0 ? MItem[0]["JCJGMS"] : MItem[0]["JCJGMS"] + "不符合" + MItem[0]["JCYJ"] + "标准要求。";
+
+            MItem[0]["JCJGMS"] = mbHggs == 0 ? "依据" + MItem[0]["JCYJ"] + "标准，所检项目符合" + sitem["GCLB"] + "民用建筑工程验收时室内污染物浓度限量规定。" : "依据" + MItem[0]["JCYJ"] + "标准，所检项目中";
             MItem[0]["JCJGMS"] = bHggs_A > 0 ? MItem[0]["JCJGMS"] + "氨、" : MItem[0]["JCJGMS"];
             MItem[0]["JCJGMS"] = bHggs_J > 0 ? MItem[0]["JCJGMS"] + "甲醛、" : MItem[0]["JCJGMS"];
             MItem[0]["JCJGMS"] = bHggs_B > 0 ? MItem[0]["JCJGMS"] + "苯、" : MItem[0]["JCJGMS"];
             MItem[0]["JCJGMS"] = bHggs_T > 0 ? MItem[0]["JCJGMS"] + "TVOC、" : MItem[0]["JCJGMS"];
             MItem[0]["JCJGMS"] = bHggs_D > 0 ? MItem[0]["JCJGMS"] + "氡、" : MItem[0]["JCJGMS"];
             MItem[0]["JCJGMS"] = mbHggs == 0 ? MItem[0]["JCJGMS"] : MItem[0]["JCJGMS"].Substring(0, MItem[0]["JCJGMS"].Length - 1);
-            MItem[0]["JCJGMS"] = mbHggs == 0 ? MItem[0]["JCJGMS"] : MItem[0]["JCJGMS"] + "不符合" + MItem[0]["JCYJ"] + "标准要求。";
+            MItem[0]["JCJGMS"] = mbHggs == 0 ? MItem[0]["JCJGMS"] : MItem[0]["JCJGMS"] + "不符合" + sitem["GCLB"] + "民用建筑工程验收时室内污染物浓度限量规定，需双倍复检。";
+
+
             #endregion
             /************************ 代码结束 *********************/
         }

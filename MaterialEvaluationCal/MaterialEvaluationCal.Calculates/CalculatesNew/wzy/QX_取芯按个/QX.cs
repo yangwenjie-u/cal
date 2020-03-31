@@ -22,6 +22,7 @@ namespace Calculates
             double mMaxKyqd, mMinKyqd;
             double mPjz;
             string mSjdjbh, mSjdj;
+            string zj, g;
             double mSz = 0;
             int vp;
             string mMaxBgbh;
@@ -49,6 +50,10 @@ namespace Calculates
             //循环从表
             foreach (var sitem in SItem)
             {
+                //高径比计算
+                zj = ((GetSafeDouble(sitem["ZJ1"])+ GetSafeDouble(sitem["ZJ2"])) / 2 / 100).ToString();
+                g = (GetSafeDouble(sitem["GD"]) / 100).ToString();
+                sitem["GJB"] = g+":"+zj;
                 mSjdj = sitem["SJDJ"];            //设计等级名称
                 if (string.IsNullOrEmpty(mSjdj))
                     mSjdj = "";
@@ -100,6 +105,10 @@ namespace Calculates
                 mSum = mSum + GetSafeDouble(sitem["KYQD1"]);
                 MItem[0]["BGZS_G"] = ((int)GetSafeDouble(MItem[0]["BGZS_G"]) + 1).ToString();
             }
+            /*
+             * 单个构件混凝土抗压强度，数量应不少于3个，对构件工作影响较小的小尺寸构件，数量不应少于2个
+             * 单个构件抗压强度推定值取芯样试件混凝土抗压强度的最小值
+             */
             //综合判断
             int count = 0;
             int i;
@@ -282,7 +291,9 @@ namespace Calculates
                 var mrsQjb_Filter = mrsQjb.FirstOrDefault(x => x["GS"].Contains(MItem[0]["BGZS_G"]));
                 if (mrsQjb_Filter != null && mrsQjb_Filter.Count > 0)
                 {
+                    //混凝土抗压强度推定上限值（MPa），精确到0.1
                     MItem[0]["SXZ"] = Round(GetSafeDouble(MItem[0]["PJZ"]) - GetSafeDouble(mrsQjb_Filter["K1"]) * GetSafeDouble(MItem[0]["BZC"]), 1).ToString();
+                    //混凝土抗压强度推定下限值（MPa），精确到0.1
                     MItem[0]["XXZ"] = Round(GetSafeDouble(MItem[0]["PJZ"]) - GetSafeDouble(mrsQjb_Filter["K2"]) * GetSafeDouble(MItem[0]["BZC"]), 1).ToString();
                     double mcxxc = GetSafeDouble(MItem[0]["SXZ"]) - GetSafeDouble(MItem[0]["XXZ"]);
                     if (mcxxc > 5 && mcxxc > 0.1 * GetSafeDouble(MItem[0]["PJZ"]))
@@ -296,16 +307,36 @@ namespace Calculates
                         MItem[0]["JCJGMS"] = "本报告对该批构件混凝土强度负责。";
                     }
                 }
-                MItem[0]["SJDDJ"] = Round(100 * GetSafeDouble(MItem[0]["KYPJ"]) / mSz, 0).ToString();
-                if (Conversion.Val(MItem[0]["SJDDJ"]) < 100)
+                //MItem[0]["SJDDJ"] = Round(100 * GetSafeDouble(MItem[0]["KYPJ"]) / mSz, 0).ToString();
+                SItem[0]["SJDDJ"] = Round(GetSafeDouble(MItem[0]["KYPJ"]) * 100/ mSz, 0).ToString();
+                if (Conversion.Val(SItem[0]["SJDDJ"]) < 100)
                     mAllHg = false;
                 else
                     mAllHg = true;
-                MItem[0]["JCJGMS"] = "该批构件混凝土强度" + MItem[0]["KYPJ"] + "MPa，" + "占设计强度" + MItem[0]["SJDDJ"] + "%。";
+                MItem[0]["JCJGMS"] = "该批构件混凝土强度" + MItem[0]["KYPJ"] + "MPa，" + "占设计强度" + SItem[0]["SJDDJ"] + "%。";
             }
             else
             {
-                if (mAllHg)
+                List<string> kypjList = new List<string>();
+                //单个构件 推定强度取抗压强度最小值
+                foreach (var sitem in SItem)
+                {
+                    kypjList.Add(sitem["KYPJ"]);
+                }
+                kypjList.Sort();
+                foreach (var sitem in SItem)
+                {
+                    sitem["GJKYPJ"] = kypjList[0];
+                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["MC"].Contains(mrssubTable["SJDJ"].Trim()));
+                    if (mrsDj_Filter2 != null && mrsDj_Filter2.Count > 0)
+                    {
+                        mSz = GetSafeDouble(mrsDj_Filter2["SZ"]);
+                    }
+                    sitem["DDSJQD"] = Round(100 * GetSafeDouble(kypjList[0])  / mSz, 1).ToString("0.0");
+                }
+
+
+                    if (mAllHg)
                     MItem[0]["JCJGMS"] = "该次检测混凝土强度全部大于等于设计强度。";
                 else
                     MItem[0]["JCJGMS"] = "该次检测混凝土强度部分小于设计强度。";
@@ -316,7 +347,6 @@ namespace Calculates
             else
                 MItem[0]["JCJG"] = "不合格";
             #endregion
-
             /************************ 代码结束 *********************/
         }
     }

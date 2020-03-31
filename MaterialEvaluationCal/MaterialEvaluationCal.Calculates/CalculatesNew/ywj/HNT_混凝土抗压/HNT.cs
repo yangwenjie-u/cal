@@ -349,8 +349,15 @@ namespace Calculates
                 {
                     HSXS = 1.05;
                 }
-
                 var mttjhsxs = 1.0;
+                if (IsNumeric(sItem["TTJHSXS"]) && GetSafeDouble(sItem["TTJHSXS"]) != 0)
+                {
+                    mttjhsxs = GetSafeDouble(sItem["TTJHSXS"]);
+                }
+                else
+                {
+                    sItem["TTJHSXS"] = "----";
+                }
 
                 var KYQD1 = Math.Round(KYHZ1 * 1000 / SJCCMJ, 1);
                 var KYQD2 = Math.Round(KYHZ2 * 1000 / SJCCMJ, 1);
@@ -592,12 +599,12 @@ namespace Calculates
                     }
                 }
 
-                sItem["KYQD1"] = KYQD1.ToString("0.0");
-                sItem["KYQD2"] = KYQD2.ToString("0.0");
-                sItem["KYQD3"] = KYQD3.ToString("0.0");
+                sItem["KYQD1"] = Round(KYQD1 * HSXS * mttjhsxs, 1).ToString("0.0");
+                sItem["KYQD2"] = Round(KYQD2 * HSXS * mttjhsxs, 1).ToString("0.0");
+                sItem["KYQD3"] = Round(KYQD3 * HSXS * mttjhsxs, 1).ToString("0.0");
                 sItem["KYPJ"] = (GetSafeDouble(KYPJ) * HSXS * mttjhsxs).ToString("0.0");
                 sItem["HSXS"] = HSXS.ToString();
-                sItem["TTJHSXS"] = mttjhsxs.ToString();
+                //sItem["TTJHSXS"] = mttjhsxs.ToString();
                 sItem["DDSJQD"] = (GetSafeDouble(ddsjqd) * HSXS * mttjhsxs).ToString("0");
                 sItem["LQ"] = LQ.ToString();
                 sItem["JCJG"] = jcjg;

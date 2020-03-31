@@ -756,7 +756,9 @@ namespace Calculates
                     if (!string.IsNullOrEmpty(mrssjTable_Filter["CMZT"]))
                         mCmzt_fun = mrssjTable_Filter["CMZT"];
                     mThsd_fun = Round(GetSafeDouble(mrssjTable_Filter["THSD"]) * 2, 0) / 2;
+                    //非水平方向修正
                     mHtzhz_fun = edith(mrsEditH, mHtzhz_fun, mCsjd_fun);
+                    //端面修正
                     mHtzhz_fun = edits(mrsEditS, mHtzhz_fun, mCmzt_fun);
                     moldDyCount_fun = mDyCount_fun;
                     moldXyCount_fun = mXyCount_fun;
@@ -1061,8 +1063,10 @@ namespace Calculates
                         //计算回弹最后值HTZHZ
                         mHtzhz = calc_htzhz(mrssjTable_Filter);
                         if (MItem[0]["PDBZ"].Contains("23-2011") && sitem["BSFS"] == "1")
+                            ////进行修正,最后换算成回弹强度值
                             mHtqdz = calc_htqdzbs(MItem[0], sitem, mrssjTable_Filter);
                         else
+                            //进行修正,最后换算成回弹强度值
                             mHtqdz = calc_htqdz(MItem[0], sitem, mrssjTable_Filter);
                         s_Htqdz = s_Htqdz + mHtqdz;
                     }

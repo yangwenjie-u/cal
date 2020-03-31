@@ -873,7 +873,7 @@ namespace Calculates
                                 sItem["DRPD"] = "不合格";
                                 mFlag_Bhg = true;
                             }
-                            sItem["SYR"] = MItem[0]["SYR"];
+                            //sItem["SYR"] = MItem[0]["SYR"];
                         }
                         else
                         {
