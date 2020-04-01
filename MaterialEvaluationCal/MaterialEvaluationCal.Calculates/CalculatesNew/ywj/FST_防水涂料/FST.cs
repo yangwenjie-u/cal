@@ -111,7 +111,7 @@ namespace Calculates
                 {
                     mJSFF = "";
                     sitem["JCJG"] = "依据不详";
-                    mitem["JCJG,S"] = "找不到对应的等级";
+                    mitem["JCJGMS"] = "找不到对应的等级";
                 }
                 if (dBzh == "JC/T 3049-1998")
                 {

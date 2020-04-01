@@ -97,14 +97,12 @@ namespace Calculates
                     mitem["G_DBL"] = mrsDj_item["G_DBL"];
                     //耐沾污性
                     mitem["G_NZWX"] = mrsDj_item["G_NZWX"];
-
-
                 }
                 else
                 {
                     mJSFF = "";
                     sitem["JCJG"] = "依据不详";
-                    mitem["JCJG,S"] = "找不到对应的等级";
+                    mitem["JCJGMS"] = "找不到对应的等级";
                 }
 
                 mitem["G_BGSJ"] = "≤" + mitem["G_BGSJ"];
@@ -158,6 +156,14 @@ namespace Calculates
 
                 if (jcxm.Contains("、干燥时间(表干)、"))
                 {
+                    if (dCpmc == " 建筑室内用腻子")
+                    {
+                        if (string.IsNullOrEmpty(sitem["SGHD"]))
+                        {
+                            throw new Exception("请输入要求的施工厚度.");
+                        }
+                        mitem["G_BGSJ"] = GetSafeDouble(sitem["SGHD"]) >= 2 ? "≤5" : "≤2";
+                    }
                     sitem["HG_BGSJ"] = IsQualified(mitem["G_BGSJ"], sitem["BGSJ"], false);
                     if (sitem["HG_BGSJ"] == "不合格")
                     {
@@ -356,7 +362,7 @@ namespace Calculates
                     mitem["G_DWWDX"] = "----";
                 }
 
-                if (jcxm.Contains("、腻子膜柔韧性、")|| jcxm.Contains("、柔韧性、") )
+                if (jcxm.Contains("、腻子膜柔韧性、") || jcxm.Contains("、柔韧性、"))
                 {
                     if ("合格" != sitem["HG_NZMRRX"] && sitem["HG_NZMRRX"] != "符合")
                     {
@@ -378,6 +384,10 @@ namespace Calculates
                 if (jcxm.Contains("、初期干燥抗裂性(6h)、") || jcxm.Contains("、初期干燥抗裂性(3h)、"))
                 {
                     //判定
+                    if (string.IsNullOrEmpty(sitem["SGHD"]))
+                    {
+                        throw new Exception("请输入要求的施工厚度.");
+                    }
                     var gCJGZLX = GetSafeDouble(sitem["SGHD"]);
 
                     if (dCpmc == "建筑外墙用腻子")
@@ -397,14 +407,12 @@ namespace Calculates
                         mitem["G_CHGZKLX"] = "无裂纹";
                     }
 
-                    if (sitem["CHGZKLX"] == mitem["G_CHGZKLX"])
+                    if (sitem["HG_CHGZKLX"] =="合格")
                     {
-                        sitem["HG_CHGZKLX"] = "符合";
                         mFlag_Hg = true;
                     }
                     else
                     {
-                        sitem["HG_CHGZKLX"] = "不符合";
                         mFlag_Bhg = true;
                         mbhggs = mbhggs + 1;
                     }
@@ -435,11 +443,11 @@ namespace Calculates
                     mitem["G_DMX"] = "----";
                 }
 
-                if (jcxm.Contains("、动态抗开裂性"))
+                if (jcxm.Contains("、动态抗开裂性、"))
                 {
                     if (dLx == "T型")
                     {
-                        sitem["HG_DTKKLX"] = IsQualified(sitem["W_DTKKLX"], mitem["G_DTKKLX"]);
+                        sitem["HG_DTKKLX"] = IsQualified(mitem["G_DTKKLX"], sitem["W_DTKKLX"]);
                     }
                     else
                     {
