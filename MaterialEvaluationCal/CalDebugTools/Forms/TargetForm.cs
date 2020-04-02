@@ -75,70 +75,27 @@ namespace CalDebugTools.Forms
                 MessageBox.Show($"项目{xmbh}不存在！");
                 return;
             }
-
             int queryCount = 0;//返回受影响的行数
             try
             {
-                string alterSql = "";
-                if (txt_bzCount.Text == "1")
-                {
-                    alterSql = $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName} {txt_fieldType.Text.Trim()};";
-                }
-                else
-                {
-                    for (int i = 1; i < Convert.ToInt16(txt_bzCount.Text) + 1; i++)
-                    {
-                        alterSql += $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName}{i} {txt_fieldType.Text.Trim()};";
-                    }
-                }
-
-                queryCount = _sqlBase.ExecuteNonQuery(alterSql);
-                //主表 从表添加记录
-                var alterM = "";
-                var tableType = "";
-                if (radio_m.Checked)
-                {
-                    tableType = "M_";
-                }
-                else
-                {
-                    tableType = "S_";
-                }
-
-                //添加主/从表字段
-                alterM = $"alter table {tableType}{xmbh} add HG_{fieldName} nvarchar(15);";
-                alterM += $"alter table M_{xmbh} add G_{fieldName} {fieldType};";
-
-                if (txt_STabCount.Text == "1")
-                {
-                    alterM += $"alter table S_{xmbh} add {fieldName} {fieldType};";
-                }
-                else
-                {
-                    {
-                        for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
-                        {
-                            alterM += $"alter table S_{xmbh} add {fieldName}{i} {fieldType};";
-                        }
-                    }
-                }
-                if (chk_syncJcJG.Checked)
-                {
-                    _sqlJGJG.ExecuteNonQuery(alterM);
-                }
-                queryCount = _sqlBase.ExecuteNonQuery(alterM);
-
-                string sqlStr = $"select 1 from ZDZD_{xmbh} where ZDMC like '%{fieldName}%'";
+                //判定是否已有字段
+                string sqlStr = $"select 1 from ZDZD_{xmbh} where ZDMC in ('HG_{fieldName}','HG_{fieldName}','{fieldName}')";
 
                 var ds2 = _sqlBase.ExecuteDataset(sqlStr);
+                var tableType = radio_m.Checked ? "M_" : "S_";
                 List<string> lst = new List<string>();
-                string txtLX = string.IsNullOrEmpty(txt_lx.Text) ? "H" : txt_lx.Text.Trim();
-                string chksfxs = this.chk_SFXS.Checked ? "1" : "0";
-                string locstionStr = "1,1";
 
                 //zdzd表添加记录
-                if (ds2 == null || ds2.Tables[0].Rows.Count == 0)
+                if (ds2 != null && ds2.Tables[0].Rows.Count != 0)
                 {
+                    MessageBox.Show($"添加失败,ZDZD_{xmbh}中已存在{fieldName}相关字段");
+                    return;
+                }
+                else
+                {
+                    string txtLX = string.IsNullOrEmpty(txt_lx.Text) ? "H" : txt_lx.Text.Trim();
+                    string chksfxs = this.chk_SFXS.Checked ? "1" : "0";
+                    string locstionStr = "1,1";
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
     $"VALUES('{tableType}{xmbh}', 'HG_{fieldName}', '判定{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  " +
     $"";
@@ -180,8 +137,49 @@ namespace CalDebugTools.Forms
                             lst.Add(sqlStr);
                         }
                     }
+
+                }
+                string alterSql = "";
+                if (txt_bzCount.Text == "1")
+                {
+                    alterSql = $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName} {txt_fieldType.Text.Trim()};";
+                }
+                else
+                {
+                    for (int i = 1; i < Convert.ToInt16(txt_bzCount.Text) + 1; i++)
+                    {
+                        alterSql += $"alter table BZ_{xmbh.Trim()}_DJ add G_{fieldName}{i} {txt_fieldType.Text.Trim()};";
+                    }
                 }
 
+                queryCount = _sqlBase.ExecuteNonQuery(alterSql);
+                //主表 从表添加记录
+                var alterM = "";
+
+
+                //添加主/从表字段
+                alterM = $"alter table {tableType}{xmbh} add HG_{fieldName} nvarchar(15);";
+                alterM += $"alter table M_{xmbh} add G_{fieldName} {fieldType};";
+
+                if (txt_STabCount.Text == "1")
+                {
+                    alterM += $"alter table S_{xmbh} add {fieldName} {fieldType};";
+                }
+                else
+                {
+                    {
+                        for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
+                        {
+                            alterM += $"alter table S_{xmbh} add {fieldName}{i} {fieldType};";
+                        }
+                    }
+                }
+
+                if (chk_syncJcJG.Checked)
+                {
+                    _sqlJGJG.ExecuteNonQuery(alterM);
+                }
+                queryCount = _sqlBase.ExecuteNonQuery(alterM);
                 foreach (var item in lst)
                 {
                     try
@@ -205,12 +203,9 @@ namespace CalDebugTools.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
-            finally
-            {
-                MessageBox.Show("Success!");
-
-            }
+            MessageBox.Show("Success!");
         }
 
         private DataTable DT = new DataTable();
@@ -415,7 +410,7 @@ namespace CalDebugTools.Forms
                 }
                 queryCount = _sqlBase.ExecuteNonQuery(alterM);
 
-                if (_sqlJGJG != null)
+                if (chk_syncJcJG.Checked)
                 {
                     queryCount = _sqlJGJG.ExecuteNonQuery(alterM);
 
@@ -426,7 +421,7 @@ namespace CalDebugTools.Forms
                 if (txt_STabCount.Text == "1")
                 {
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('M_{xmbh}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
+        $"VALUES('{tableName}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                     lst.Add(sqlStr);
                 }
                 else
@@ -434,7 +429,7 @@ namespace CalDebugTools.Forms
                     for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
                     {
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('M_{xmbh}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
+        $"VALUES('{tableName}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                         lst.Add(sqlStr);
                     }
                 }
