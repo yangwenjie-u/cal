@@ -12,7 +12,6 @@ namespace Calculates
             #region
             string mlongStr;
             string[] mfuncVal = new string[5];
-            List<double> mkyqdArray = new List<double>();
             string[] mtmpArray = new string[5];
             bool mAllHg = true, mFlag_Hg = true, mFlag_Bhg = true, canSetBgbh = true;
             int mbhggs = 0;
@@ -926,6 +925,7 @@ namespace Calculates
                             {
                                 mlongStr = sItem["NJQD11"] + "," + sItem["NJQD12"] + "," + sItem["NJQD13"] + "," + sItem["NJQD14"] + "," + sItem["NJQD15"] + "," + sItem["NJQD16"];
                                 mtmpArray = mlongStr.Split(',');
+                                List<double> mkyqdArray = new List<double>();
                                 for (int i = 0; i < 6; i++)
                                 {
                                     mkyqdArray.Add(GetSafeDouble(mtmpArray[i]));
@@ -977,6 +977,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD31"]) || 0 != GetSafeDouble(sItem["NJQD32"]) || 0 != GetSafeDouble(sItem["NJQD33"])
                                 || 0 != GetSafeDouble(sItem["NJQD34"]) || 0 != GetSafeDouble(sItem["NJQD35"]) || 0 != GetSafeDouble(sItem["NJQD36"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD31"] + "," + sItem["NJQD32"] + "," + sItem["NJQD33"] + "," + sItem["NJQD34"] + "," + sItem["NJQD35"] + "," + sItem["NJQD36"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 6; i++)
@@ -1062,6 +1063,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD21"]) || 0 != GetSafeDouble(sItem["NJQD23"]) || 0 != GetSafeDouble(sItem["NJQD22"])
                                 || 0 != GetSafeDouble(sItem["NJQD24"]) || 0 != GetSafeDouble(sItem["NJQD25"]) || 0 != GetSafeDouble(sItem["NJQD26"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD21"] + "," + sItem["NJQD22"] + "," + sItem["NJQD23"] + "," + sItem["NJQD24"] + "," + sItem["NJQD25"] + "," + sItem["NJQD26"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 6; i++)
@@ -1114,6 +1116,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD41"]) || 0 != GetSafeDouble(sItem["NJQD42"]) || 0 != GetSafeDouble(sItem["NJQD43"])
                                 || 0 != GetSafeDouble(sItem["NJQD44"]) || 0 != GetSafeDouble(sItem["NJQD45"]) || 0 != GetSafeDouble(sItem["NJQD46"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD41"] + "," + sItem["NJQD42"] + "," + sItem["NJQD43"] + "," + sItem["NJQD44"] + "," + sItem["NJQD45"] + "," + sItem["NJQD46"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 6; i++)
@@ -1198,6 +1201,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD51"]) || 0 != GetSafeDouble(sItem["NJQD53"]) || 0 != GetSafeDouble(sItem["NJQD52"])
                                 || 0 != GetSafeDouble(sItem["NJQD54"]) || 0 != GetSafeDouble(sItem["NJQD55"]) || 0 != GetSafeDouble(sItem["NJQD56"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD51"] + "," + sItem["NJQD52"] + "," + sItem["NJQD53"] + "," + sItem["NJQD54"] + "," + sItem["NJQD55"] + "," + sItem["NJQD56"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 6; i++)
@@ -1250,6 +1254,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD71"]) || 0 != GetSafeDouble(sItem["NJQD72"]) || 0 != GetSafeDouble(sItem["NJQD73"])
                                 || 0 != GetSafeDouble(sItem["NJQD74"]) || 0 != GetSafeDouble(sItem["NJQD75"]) || 0 != GetSafeDouble(sItem["NJQD76"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD71"] + "," + sItem["NJQD72"] + "," + sItem["NJQD73"] + "," + sItem["NJQD74"] + "," + sItem["NJQD75"] + "," + sItem["NJQD76"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 6; i++)
@@ -1362,6 +1367,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD11"]) || 0 != GetSafeDouble(sItem["NJQD12"]) || 0 != GetSafeDouble(sItem["NJQD13"])
                                 || 0 != GetSafeDouble(sItem["NJQD14"]) || 0 != GetSafeDouble(sItem["NJQD15"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD11"] + "," + sItem["NJQD12"] + "," + sItem["NJQD13"] + "," + sItem["NJQD14"] + "," + sItem["NJQD15"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 5; i++)
@@ -1412,6 +1418,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD31"]) || 0 != GetSafeDouble(sItem["NJQD32"]) || 0 != GetSafeDouble(sItem["NJQD33"])
                                 || 0 != GetSafeDouble(sItem["NJQD34"]) || 0 != GetSafeDouble(sItem["NJQD35"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD31"] + "," + sItem["NJQD32"] + "," + sItem["NJQD33"] + "," + sItem["NJQD34"] + "," + sItem["NJQD35"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 5; i++)
@@ -1495,6 +1502,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD21"]) || 0 != GetSafeDouble(sItem["NJQD23"]) || 0 != GetSafeDouble(sItem["NJQD22"])
                                 || 0 != GetSafeDouble(sItem["NJQD24"]) || 0 != GetSafeDouble(sItem["NJQD25"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD21"] + "," + sItem["NJQD22"] + "," + sItem["NJQD23"] + "," + sItem["NJQD24"] + "," + sItem["NJQD25"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 5; i++)
@@ -1544,6 +1552,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD41"]) || 0 != GetSafeDouble(sItem["NJQD42"]) || 0 != GetSafeDouble(sItem["NJQD43"])
                                 || 0 != GetSafeDouble(sItem["NJQD44"]) || 0 != GetSafeDouble(sItem["NJQD45"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD41"] + "," + sItem["NJQD42"] + "," + sItem["NJQD43"] + "," + sItem["NJQD44"] + "," + sItem["NJQD45"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 5; i++)
@@ -1625,6 +1634,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD61"]) || 0 != GetSafeDouble(sItem["NJQD62"]) || 0 != GetSafeDouble(sItem["NJQD63"])
                                 || 0 != GetSafeDouble(sItem["NJQD64"]) || 0 != GetSafeDouble(sItem["NJQD65"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD61"] + "," + sItem["NJQD62"] + "," + sItem["NJQD63"] + "," + sItem["NJQD64"] + "," + sItem["NJQD65"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 5; i++)
@@ -1674,6 +1684,7 @@ namespace Calculates
                             if (0 != GetSafeDouble(sItem["NJQD81"]) || 0 != GetSafeDouble(sItem["NJQD82"]) || 0 != GetSafeDouble(sItem["NJQD83"])
                                 || 0 != GetSafeDouble(sItem["NJQD84"]) || 0 != GetSafeDouble(sItem["NJQD85"]))
                             {
+                                List<double> mkyqdArray = new List<double>();
                                 mlongStr = sItem["NJQD81"] + "," + sItem["NJQD82"] + "," + sItem["NJQD83"] + "," + sItem["NJQD84"] + "," + sItem["NJQD85"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (int i = 0; i < 5; i++)
