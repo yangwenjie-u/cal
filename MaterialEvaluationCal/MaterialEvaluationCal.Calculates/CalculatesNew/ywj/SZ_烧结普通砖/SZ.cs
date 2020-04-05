@@ -444,7 +444,7 @@ namespace Calculates
                 }
 
                 var mrsKfhdj = extraKFHDJ.FirstOrDefault(u => u["MC"] == sItem["ZZL"] && u["PZ"] == sItem["WGDJ"]);
-                if (mrsDj == null)
+                if (mrsKfhdj == null)
                 {
                     sItem["DRYQ"] = "每块砖样不允许出现裂纹、分层、掉皮、缺棱、掉角等冻坏现象；质量损失不得大于2%。";
                 }

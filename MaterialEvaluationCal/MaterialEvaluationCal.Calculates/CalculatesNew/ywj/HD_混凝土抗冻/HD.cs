@@ -497,7 +497,7 @@ namespace Calculates
                     if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], true) == "符合" && IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"], true) == "符合" && GetSafeDouble(sItem["DRCS2"]) >= GetSafeDouble(sItem["DRCS"]))
                     {
                         sItem["JCJG"] = "合格";
-                        jsbeizhu = "该组试样所检项目依据" + MItem[0]["PDBZ"] + "符合" + sItem["KDBH"].Trim() + "设计要求。";
+                        jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
                     }
 
                     if ((IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], true) == "符合" && IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"], true) == "符合") && (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"], true) == "不符合" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"], true) == "不符合") && GetSafeDouble(sItem["DRCS2"]) >= GetSafeDouble(sItem["DRCS"]))
@@ -534,11 +534,11 @@ namespace Calculates
                     if ((IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"]) == "不合格") && (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"]) == "不合格"))
                     {
                         mItemHg = false;
-                        jsbeizhu = "该组试样所检项目依据" + MItem[0]["PDBZ"] + "不符合" + sItem["KDBH"].Trim() + "设计要求。";
+                        jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
                     }
                     else
                     {
-                        jsbeizhu = "该组试样所检项目依据" + MItem[0]["PDBZ"] + "符合" + sItem["KDBH"].Trim() + "设计要求。";
+                        jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
                     }
                 }
                 #endregion
@@ -553,12 +553,12 @@ namespace Calculates
                         if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "合格" && IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL1"]) == "合格" && IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"]) == "合格" && IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL2"]) == "合格" && GetSafeDouble(sItem["DRCS2"]) >= GetSafeDouble(sItem["DRCS"]))
                         {
                             sItem["JCJG"] = "合格";
-                            jsbeizhu = "该组试样所检项目依据" + MItem[0]["PDBZ"] + "符合" + sItem["KDBH"].Trim() + "设计要求。";
+                            jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
                         }
                         else
                         {
                             mItemHg = false;
-                            jsbeizhu = "该组试样所检项目依据" + MItem[0]["PDBZ"] + "不符合" + sItem["KDBH"].Trim() + "设计要求。";
+                            jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
                         }
                     }
                     else
@@ -566,12 +566,12 @@ namespace Calculates
                         sItem["DRCS2"] = "----";
                         if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "符合" && IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL1"]) == "符合")
                         {
-                            jsbeizhu = "该组试样所检项目依据" + MItem[0]["PDBZ"] + "符合" + sItem["KDBH"].Trim() + "设计要求。";
+                            jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
                         }
                         else
                         {
                             mItemHg = false;
-                            jsbeizhu = "该组试样所检项目依据" + MItem[0]["PDBZ"] + "不符合" + sItem["KDBH"].Trim() + "设计要求。";
+                            jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
                         }
                     }
                 }

@@ -36,26 +36,30 @@ namespace Calculates
             string BHGXM = "", Hgxm = "";
             double zddnd = 0, zxdnd = 99999;
 
+            List<double> listArray = new List<double>();
             foreach (var sItem in SItem)
             {
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
                 double dnd = double.Parse(sItem["DND1"]);
-                if (dnd > 0)
-                {
-                    if (zddnd < dnd) 
-                    {
-                        zddnd = dnd;
-                    }
-                    if (zxdnd > dnd)
-                    {
-                        zxdnd = dnd;
-                    }
-                }
+                listArray.Add(dnd);
+                //if (dnd > 0)
+                //{
+                //    if (zddnd < dnd) 
+                //    {
+                //        zddnd = dnd;
+                //    }
+                //    if (zxdnd > dnd)
+                //    {
+                //        zxdnd = dnd;
+                //    }
+                //}
                 sItem["JCJG"] = "合格";
             }
 
-            MItem[0]["DNDMAX"] = zddnd.ToString();
-            MItem[0]["DNDMIN"] = zxdnd.ToString();
+            MItem[0]["DNDMAX"] = listArray.Max().ToString();
+            MItem[0]["DNDMIN"] = listArray.Min().ToString();
+            MItem[0]["DNDAVERAGE"] = listArray.Average().ToString();
+
             MItem[0]["G_DND"] = "≤20000";
             if (zddnd > 20000)
             {
