@@ -98,7 +98,7 @@ namespace Calculates
                     sitem["JCJG"] = "依据不详";
                     mitem["JCJGMS"] = "找不到对应的等级";
                 }
-             
+
                 mbhggs = 0;
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 mFlag_Hg = false;
@@ -238,7 +238,7 @@ namespace Calculates
                     mitem["G_DWWDX"] = "----";
                 }
 
-        
+
                 if (jcxm.Contains("、涂膜外观、"))
                 {
                     //如果Ⅰ型 《=0.3 Ⅱ型《=0.5
@@ -319,7 +319,8 @@ namespace Calculates
                     mitem["G_NZWX"] = "----";
                 }
 
-                if (jcxm.Contains("、对比率、"))
+                //只有面漆做对比率
+                if (jcxm.Contains("、对比率、") && sitem["LX"] == "面漆")
                 {
                     sitem["HG_DBL"] = IsQualified(mitem["G_DBL"], sitem["DBL"]);
                     if (sitem["HG_DBL"] == "合格")
@@ -358,7 +359,7 @@ namespace Calculates
                     mitem["G_DWCMX"] = "----";
                 }
 
-            
+
 
                 if (mbhggs == 0)
                 {
@@ -370,7 +371,7 @@ namespace Calculates
                     mitem["JCJGMS"] = "该组试件不符合" + mitem["PDBZ"] + "标准要求。";
                     sitem["JCJG"] = "不合格";
                     if (mFlag_Bhg && mFlag_Hg)
-                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                        mitem["JCJGMS"] = "该组试样所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
                 }
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
 
@@ -385,7 +386,7 @@ namespace Calculates
                     mitem["JCJG"] = "不合格";
                     mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
                     if (mFlag_Bhg && mFlag_Hg)
-                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                        mitem["JCJGMS"] = "该组试样所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
                 }
             }
             #endregion

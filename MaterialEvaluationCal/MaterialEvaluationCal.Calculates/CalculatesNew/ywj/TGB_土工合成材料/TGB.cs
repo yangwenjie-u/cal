@@ -11,8 +11,9 @@ namespace Calculates
     {
         public void Calc()
         {
-            #region
+            #region 计算方法
             var extraDJ = dataExtra["BZ_TGB_DJ"];
+            var extraNJSY = dataExtra["BZ_TGBNJSY"];
 
             var data = retData;
             var mjcjg = "不合格";
@@ -35,10 +36,48 @@ namespace Calculates
 
             var mAllHg = true;
             var jcxm = "";
-
+            var mCPMC = "";
+            IDictionary<string, string> mrsNJSY = new Dictionary<string, string>();
             foreach (var sItem in SItems)
             {
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+
+                mCPMC = sItem["CPMC"];//设计等级名称
+                if (string.IsNullOrEmpty(mCPMC))
+                {
+                    mCPMC = "";
+                }
+
+                var bcdlqd = GetSafeDouble(sItem["BCDLQD"]);
+                var mrsDj = extraDJ.FirstOrDefault(u => u["MC"] == mCPMC && GetSafeDouble(u["BCDLQD"]) == bcdlqd);
+
+                if (null == mrsDj || mrsNJSY == null)
+                {
+                    mAllHg = false;
+                    sItem["JCJG"] = "不合格";
+
+                    throw new Exception("数据有误，找不到" + mCPMC + "对应标准。");
+                    continue;
+                }
+                //断裂强度
+                MItem[0]["G_HXDLQD"] = mrsDj["G_DLQD"];
+                MItem[0]["G_ZXDLQD"] = mrsDj["G_DLQD"];
+                //对应伸长率
+                sItem["G_JXSCL"] = mrsDj["G_DYSCL"];
+                sItem["G_WXSCL"] = mrsDj["G_DYSCL"];
+
+                //撕破强力
+                MItem[0]["G_ZXSPQL"] = mrsDj["G_SPQL"];
+                MItem[0]["G_HXSPQL"] = mrsDj["G_SPQL"];
+
+                //耐静水压
+
+                if (mCPMC != "短纤针刺非织造土工布")
+                {
+                    mrsNJSY = extraNJSY.FirstOrDefault(u => u["MC"] == mCPMC && u["NJSYMHD"] == sItem["NJSYMHD"] && u["NJSYLX"] == sItem["NJSYLX"]);
+                    MItem[0]["G_NJSY"] = mrsNJSY["G_NJSY"];
+                }
+
 
                 //断裂强度、断裂伸长率、撕破强力
                 //断裂强度
@@ -63,14 +102,16 @@ namespace Calculates
                 //断裂伸长率
                 if (jcxm.Contains("、断裂伸长率、"))
                 {
-                    sItem["GH_ZXQD"] = IsQualified(sItem["ZXQDSJZ"], sItem["W_ZXQD"], false);
-                    sItem["GH_ZSCL"] = IsQualified(sItem["ZSCLSJZ"], sItem["W_ZSCL"], false);
-                    sItem["GH_HXQD"] = IsQualified(sItem["HXQDSJZ"], sItem["W_HXQD"], false);
-                    sItem["GH_HSCL"] = IsQualified(sItem["HSCLSJZ"], sItem["W_HSCL"], false);
+                    //sItem["GH_HXQD"] = IsQualified(sItem["HXQDSJZ"], sItem["W_HXQD"], false);
+                    //sItem["GH_ZXQD"] = IsQualified(sItem["ZXQDSJZ"], sItem["W_ZXQD"], false);
 
-                    mAllHg = sItem["GH_ZXQD"] == "合格" ? mAllHg : false;
+
+                    sItem["GH_ZSCL"] = IsQualified(sItem["G_JXSCL"], sItem["W_ZSCL"], false);
+                    sItem["GH_HSCL"] = IsQualified(sItem["G_WXSCL"], sItem["W_HSCL"], false);
+
+                    //mAllHg = sItem["GH_HXQD"] == "合格" ? mAllHg : false;
+                    //mAllHg = sItem["GH_ZXQD"] == "合格" ? mAllHg : false;
                     mAllHg = sItem["GH_ZSCL"] == "合格" ? mAllHg : false;
-                    mAllHg = sItem["GH_HXQD"] == "合格" ? mAllHg : false;
                     mAllHg = sItem["GH_HSCL"] == "合格" ? mAllHg : false;
                 }
                 else

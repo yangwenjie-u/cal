@@ -198,7 +198,7 @@ namespace CalDebugTools
         private void btn_Debug_Click(object sender, EventArgs e)
         {
             SaveXMinfos();
-            IsQualified(">-150","30");
+            IsQualified(">-150","-");
             //测试乌海
             if (this.ck_other.Checked)
             {
@@ -972,7 +972,7 @@ namespace CalDebugTools
         {
             //^-?\\d+(\\.\\d+)?$
             //^[+-]?\d*[.]?\d*$
-            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
+            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d+[.]?\d*$"))//通过正则表达式验证输入的是否是数字
             //if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
             {
                 return true;

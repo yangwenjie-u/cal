@@ -138,6 +138,7 @@ namespace CalDebugTools
 
                 string token = TokenHeple.GetToken(username);
                 string par_json = "{\"sylb\":\"" + sylb + "\",\"code\":\"" + Base64Helper.Base64Encode(code) + "\",\"zdzd\":\"" + Base64Helper.Base64Encode(zdzdjson) + "\",\"extratable\":\"" + Base64Helper.Base64Encode(extratable) + "\",\"username\":\"" + username + "\",\"beizhu\":\"" + beizu + "\"}";
+
                 string get_json = Data.GetHtmlByPost(Data.http_setapiurl, par_json, "", null, token);
                 if (get_json.Contains("成功"))
                 {

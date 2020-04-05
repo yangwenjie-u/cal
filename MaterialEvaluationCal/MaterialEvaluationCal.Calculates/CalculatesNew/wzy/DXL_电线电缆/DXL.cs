@@ -13,24 +13,11 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region  参数定义
-            string mcalBh;
             double[] mkyqdArray = new double[3];
-            double zj1, zj2;
             int mbhggs;
-            int mFsgs_qfqd, mFsgs_klqd, mFsgs_scl, mFsgs_lw;
-            string mSjdjbh, mSjdj;
-            double mQfqd, mKlqd, mScl, mLw;
-            int vp, mCnt_FjHg, mCnt_FjHg1, mxlgs, mxwgs;
-            string mMaxBgbh;
-            string mJSFF;
             bool mAllHg;
-            bool msffs;
-            bool mGetBgbh;
-            string yX, sX;
-            bool mSFwc;
             string mjgsm;
             bool mFlag_Hg, mFlag_Bhg;
-            mSFwc = true;
             #endregion
 
             #region  集合取值
@@ -43,7 +30,6 @@ namespace Calculates
             #endregion
 
             #region  计算开始
-            mGetBgbh = false;
             mAllHg = true;
             mFlag_Hg = false;
             mFlag_Bhg = false;
@@ -54,8 +40,6 @@ namespace Calculates
             string sd, sm = "";
             int Gs, xd;
             double md, md1, md2, sum, sqz, xd1, xd2;
-            bool sign, flag;
-            string dzbh, wtbh;
             bool S_jmj, S_dz;
             S_jmj = false;
             S_dz = false;
@@ -67,16 +51,15 @@ namespace Calculates
 
             foreach (var sitem in SItem)
             {
-                dzbh = "";
                 jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
 
-                //var mrssjTable2 = mrssjTable.Where(x => x["DZBH"].Contains(dzbh));
-                var mrssjTable2 = mrssjTable.Where(x => x["SYSJBRECID"].Equals(sitem["RECID"]));
+                //var mrssjTable = mrssjTable.Where(x => x["DZBH"].Contains(dzbh));
+                //var mrssjTable = mrssjTable.Where(x => x["SYSJBRECID"].Equals(sitem["RECID"]));
                 if (jcxm.Contains("、截面积试验、"))
                 {
                     S_jmj = true;
-                    row = mrssjTable2.Count();
-                    foreach (var Y_DXL in mrssjTable2)
+                    row = mrssjTable.Count();
+                    foreach (var Y_DXL in mrssjTable)
                     {
                         Y_DXL["E_CYFF"] = IsNumeric(Y_DXL["E_ZL"]) && IsNumeric(Y_DXL["E_CD"]) ? "称重法" : "计算法";
                         if (Y_DXL["E_CYFF"] == "计算法")
@@ -105,7 +88,7 @@ namespace Calculates
                 }
                 else
                 {
-                    foreach (var Y_DXL in mrssjTable2)
+                    foreach (var Y_DXL in mrssjTable)
                         Y_DXL["E_JMJSC"] = "----";
                 }
 
@@ -133,8 +116,8 @@ namespace Calculates
                         xd = 1;
                         MItem[0]["H_XZXS"] = "检测设备自动修正";
                     }
-                    row = mrssjTable2.Count();
-                    foreach (var Y_DXL in mrssjTable2)
+                    row = mrssjTable.Count();
+                    foreach (var Y_DXL in mrssjTable)
                     {
                         md = Conversion.Val(MItem[0]["H_SYBC"]);  //试样标长
                         md1 = Conversion.Val(Y_DXL["E_ZDZ"]);
@@ -211,7 +194,7 @@ namespace Calculates
                 }
                 else
                 {
-                    foreach (var Y_DXL in mrssjTable2)
+                    foreach (var Y_DXL in mrssjTable)
                     {
                         Y_DXL["E_DZPD"] = "----";
                         Y_DXL["E_SJDZ"] = "----";
