@@ -221,6 +221,16 @@ namespace CalDebugTools.Forms
                 }
             }
         }
+        private void txt_SFieldeStartIndex_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar))     //判断按键输入字符是不是数字
+            {
+                if (e.KeyChar != (char)Keys.Back)
+                {
+                    e.Handled = true;   //表示按键输入已经被处理,这样按键将不会给应用程序,丢掉不想要的按键值,这样的缺点是backspace也会被返回
+                }
+            }
+        }
 
         private void btn_save_Click(object sender, EventArgs e)
         {
@@ -403,9 +413,19 @@ namespace CalDebugTools.Forms
                 }
                 else
                 {
-                    for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
+                    var startIndex = 0;
+                    if (Convert.ToInt16(txt_SFieldeStartIndex.Text) <= 1)
                     {
-                        alterM += $"alter table {tableName} add {fieldName}{i} {fieldType};";
+                        startIndex = 1;
+                    }
+                    else
+                    {
+                        startIndex = Convert.ToInt16(txt_SFieldeStartIndex.Text);
+                    }
+
+                    for (int i = 0; i < Convert.ToInt16(txt_STabCount.Text); i++)
+                    {
+                        alterM += $"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};";
                     }
                 }
                 queryCount = _sqlBase.ExecuteNonQuery(alterM);
@@ -467,5 +487,7 @@ namespace CalDebugTools.Forms
         {
 
         }
+
+
     }
 }
