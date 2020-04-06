@@ -342,7 +342,7 @@ namespace Calculates
                         break;
                     }
                 }
-                sItem["QDYQ"] = "平均值≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0.0") + "MPa " + "单组最小值≥" + Conversion.Val(MItem[0]["G_MIN"]).ToString("0.0") + "MPa " + "含水率控制在" + mrsDj["HSL"];
+                sItem["QDYQ"] = "平均值≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0.0") + "MPa " + "单组最小值≥" + Conversion.Val(MItem[0]["G_MIN"]).ToString("0.0") + "MPa ";
 
                 //'含水率
                 sItem["HSLYQ"] = "8～12";
@@ -414,7 +414,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、抗压强度、"))
                     {
-                        sItem["QDYQ"] = "平均值≥" + Conversion.Val(extraQK2QDJB_item["PJBXY"]).ToString("0.0").Trim() + "MPa单组最小值≥" + Conversion.Val(extraQK2QDJB_item["DKBXY"]).ToString("0.0").Trim() + "MPa含水率控制在" + mrsDj["HSL"].Trim();
+                        sItem["QDYQ"] = "平均值≥" + Conversion.Val(extraQK2QDJB_item["PJBXY"]).ToString("0.0").Trim() + "MPa单组最小值≥" + Conversion.Val(extraQK2QDJB_item["DKBXY"]).ToString("0.0").Trim()+ "MPa";
                         if (Conversion.Val(sItem["HGQZL1_1"]) > 0)
                         {
                             sItem["HSL1_1"] = Round((Conversion.Val(sItem["HGQZL1_1"]) - Conversion.Val(sItem["HHGHZL1_1"])) / (Conversion.Val(sItem["HHGHZL1_1"])) * 100, 2).ToString("0.00");
@@ -478,7 +478,7 @@ namespace Calculates
                     }
                     else
                         sItem["QDPD"] = "----";
-                    if (jcxm.Contains("、外观尺寸、"))
+                    if (jcxm.Contains("、外观质量、"))
                     {
                         if (Conversion.Val(sItem["WCBHGS"]) <= Conversion.Val(mrsDj["WCYQ"]))
                             sItem["WCPD"] = "合格";
