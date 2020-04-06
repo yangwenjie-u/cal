@@ -890,15 +890,13 @@ namespace Calculates
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 20284-2006";
                     }
                     //火焰横向蔓延长度
-                    if (GetSafeDouble(sItem["HGS3"].Trim()) <= 1)
+                    if (sItem["GH_HXMY"] == "合格")
                     {
                         sItem["W_HXMY"] = "是";
-                        sItem["GH_HXMY"] = "合格";
                     }
                     else
                     {
                         sItem["W_HXMY"] = "否";
-                        sItem["GH_HXMY"] = "不合格";
                         mAllHg = false;
                     }
 
@@ -912,7 +910,7 @@ namespace Calculates
                 #endregion
 
                 #region 燃烧增长速率指数FIGRA
-                if (jcxm.Contains("、单体燃烧试验、"))
+                if (jcxm.Contains("、燃烧增长速率指数FIGRA、"))
                 {
                     if (!MItem[0]["JCYJ"].Contains("GB/T 20284-2006"))
                     {
@@ -920,9 +918,17 @@ namespace Calculates
                     }
 
                     sign = true;
-                    sItem["FIGRA"] = sItem["FIGRA2"];
+                    //sItem["FIGRA"] = sItem["FIGRA2"];
                     sign = (IsNumeric(sItem["FIGRA"]) && !string.IsNullOrEmpty(sItem["FIGRA"])) ? sign : false;
 
+                    if (sign)
+                    {
+                        sItem["GH_FIGRA"] = IsQualified(sItem["G_FIGRA"], sItem["FIGRA"], false);
+                    }
+                    else
+                    {
+                        sItem["GH_FIGRA"] = "不合格";
+                    }
                     //mbHggs3 = sItem["GH_FIGRA"] == "不合格" ? mbHggs3++ : mbHggs3;
                     mAllHg = sItem["GH_FIGRA"] == "不合格" ? false : mAllHg;
                 }
@@ -942,15 +948,15 @@ namespace Calculates
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 20284-2006";
                     }
 
-                    for (int i = 1; i < 4; i++)
-                    {
-                        if (sItem["DLW" + i] == "无")
-                        {
-                            sItem["HGS6"] = (GetSafeDouble(sItem["HGS6"].Trim()) - 1).ToString();
-                        }
-                    }
+                    //for (int i = 1; i < 4; i++)
+                    //{
+                    //    if (sItem["DLW" + i] == "无")
+                    //    {
+                    //        sItem["HGS6"] = (GetSafeDouble(sItem["HGS6"].Trim()) - 1).ToString();
+                    //    }
+                    //}
 
-                    if (sItem["HGS6"] == "0")
+                    if (sItem["GH_D0"] == "合格")
                     {
                         sItem["W_RSDR"] = "无";
                     }
@@ -959,12 +965,11 @@ namespace Calculates
                         sItem["W_RSDR"] = "有";
                         mAllHg = false;
                     }
-
-
                 }
                 else
                 {
                     sItem["W_RSDR"] = "----";
+                    sItem["GH_D0"] = "----";
                 }
                 #endregion
 
@@ -981,6 +986,10 @@ namespace Calculates
                     if (sign)
                     {
                         sItem["GH_THR"] = IsQualified(sItem["G_THR"], sItem["THR"], false);
+                    }
+                    else
+                    {
+                        sItem["GH_THR"] = "不合格";
                     }
 
                     //mbHggs3 = sItem["GH_THR"] == "不合格" ? mbHggs3++ : mbHggs3;
@@ -1002,15 +1011,19 @@ namespace Calculates
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 8626-2007";
                     }
 
-                    if (GetSafeDouble(sItem["HGS1"].Trim()) <= 1)
+                    //if (GetSafeDouble(sItem["HGS1"].Trim()) <= 1)
+                    //{
+                    //    sItem["W_SFYR"] = "是";
+                    //    sItem["GH_SFYR"] = "合格";
+                    //}
+                    //else if (GetSafeDouble(sItem["HGS2"].Trim()) <= 1)
+                    //{
+                    //    sItem["W_SFYR"] = "是";
+                    //    sItem["GH_SFYR"] = "合格";
+                    //}
+                    if (sItem["GH_SFYR"] == "合格")
                     {
                         sItem["W_SFYR"] = "是";
-                        sItem["GH_SFYR"] = "合格";
-                    }
-                    else if (GetSafeDouble(sItem["HGS2"].Trim()) <= 1)
-                    {
-                        sItem["W_SFYR"] = "是";
-                        sItem["GH_SFYR"] = "合格";
                     }
                     else
                     {
@@ -1037,29 +1050,38 @@ namespace Calculates
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 8626-2007";
                     }
 
-                    if (GetSafeDouble(sItem["HGS4"].Trim()) <= 1)
-                    {
-                        sItem["W_YJGD"] = "是";
-                        sItem["GH_YJGD"] = "合格";
-                    }
-                    else
-                    {
-                        sItem["W_YJGD"] = "否";
-                        sItem["GH_YJGD"] = "不合格";
-                        //mbHggs1 = mbHggs1 + 1;
-                        mAllHg = false;
-                    }
+                    //if (GetSafeDouble(sItem["HGS4"].Trim()) <= 1)
+                    //{
+                    //    sItem["W_YJGD"] = "是";
+                    //    sItem["GH_YJGD"] = "合格";
+                    //}
+                    //else
+                    //{
+                    //    sItem["W_YJGD"] = "否";
+                    //    sItem["GH_YJGD"] = "不合格";
+                    //    //mbHggs1 = mbHggs1 + 1;
+                    //    mAllHg = false;
+                    //}
 
-                    if (GetSafeDouble(sItem["HGS5"].Trim()) <= 1)
+                    //if (GetSafeDouble(sItem["HGS5"].Trim()) <= 1)
+                    //{
+                    //    sItem["W_YJGD"] = "是";
+                    //    sItem["GH_YJGD"] = "合格";
+                    //}
+                    //else
+                    //{
+                    //    sItem["W_YJGD"] = "否";
+                    //    sItem["GH_YJGD"] = "不合格";
+                    //    //mbHggs1 = mbHggs1 + 1;
+                    //    mAllHg = false;
+                    //}
+                    if (sItem["GH_YJGD"] == "合格")
                     {
                         sItem["W_YJGD"] = "是";
-                        sItem["GH_YJGD"] = "合格";
                     }
                     else
                     {
                         sItem["W_YJGD"] = "否";
-                        sItem["GH_YJGD"] = "不合格";
-                        //mbHggs1 = mbHggs1 + 1;
                         mAllHg = false;
                     }
                 }

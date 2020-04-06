@@ -250,29 +250,50 @@ namespace Calculates
                 {
                     if ((Conversion.Val(sitem["CSQLJ1"]) * Conversion.Val(sitem["CSQLJ2"]) * Conversion.Val(sitem["CSQLJ3"]) * Conversion.Val(sitem["CSQLJ4"]) * Conversion.Val(sitem["CSQLJ5"])) != 0)
                     {
-                        int sum, pj1, pj2, I;
+                        #region old
+                        //int sum, pj1, pj2, I;
+                        //sum = 0;
+                        //for (I = 1; I <= 5; I++)
+                        //    sum = sum + int.Parse(sitem["LDQLJ" + I]);
+                        //pj1 = (int)Round(sum / 5, 0);
+                        //sitem["LDQLJ"] = pj1.ToString();
+                        //sum = 0;
+                        //for (I = 1; I <= 5; I++)
+                        //    sum = sum + int.Parse(sitem["CSQLJ" + I]);
+                        //pj2 = (int)Round(sum / 5, 0);
+                        //sitem["DLQLJ"] = pj2.ToString();
+                        //sitem["LDQLBJ"] = Round(100 * pj1 / pj2, 1).ToString("0.0");
+                        //sum = 0;
+                        //for (I = 1; I <= 5; I++)
+                        //    sum = sum + int.Parse(sitem["LDQLW" + I]);
+                        //pj1 = (int)Round(sum / 5, 0);
+                        //sitem["LDQLW"] = pj1.ToString();
+                        //sum = 0;
+                        //for (I = 1; I <= 5; I++)
+                        //    sum = sum + int.Parse(sitem["CSQLW" + I]);
+                        //pj2 = (int)Round(sum / 5, 0);
+                        //sitem["DLQLW"] = pj2.ToString();
+                        //sitem["LDQLBW"] = Round(100 * pj1 / pj2, 1).ToString("0.0");
+                        #endregion
+
+                        double sum;
+                        //径向 断裂强力保留率(%)
                         sum = 0;
-                        for (I = 1; I <= 5; I++)
-                            sum = sum + int.Parse(sitem["LDQLJ" + I]);
-                        pj1 = (int)Round(sum / 5, 0);
-                        sitem["LDQLJ"] = pj1.ToString();
+                        for (int i = 1; i < 6; i++)
+                        {
+                            sum = sum + (GetSafeDouble(sitem["LDQLJ" + i]) / GetSafeDouble(sitem["CSQLJ" + i]));
+                        }
+                        sitem["LDQLBJ"] = Round(sum / 5 * 100, 1).ToString("0.0");
+
+
+                        //纬向 断裂强力保留率(%)
                         sum = 0;
-                        for (I = 1; I <= 5; I++)
-                            sum = sum + int.Parse(sitem["CSQLJ" + I]);
-                        pj2 = (int)Round(sum / 5, 0);
-                        sitem["DLQLJ"] = pj2.ToString();
-                        sitem["LDQLBJ"] = Round(100 * pj1 / pj2, 1).ToString("0.0");
-                        sum = 0;
-                        for (I = 1; I <= 5; I++)
-                            sum = sum + int.Parse(sitem["LDQLW" + I]);
-                        pj1 = (int)Round(sum / 5, 0);
-                        sitem["LDQLW"] = pj1.ToString();
-                        sum = 0;
-                        for (I = 1; I <= 5; I++)
-                            sum = sum + int.Parse(sitem["CSQLW" + I]);
-                        pj2 = (int)Round(sum / 5, 0);
-                        sitem["DLQLW"] = pj2.ToString();
-                        sitem["LDQLBW"] = Round(100 * pj1 / pj2, 1).ToString("0.0");
+                        for (int i = 1; i < 6; i++)
+                        {
+                            sum = sum + (GetSafeDouble(sitem["LDQLW" + i]) / GetSafeDouble(sitem["CSQLW" + i]));
+                        }
+                        sitem["LDQLBW"] = Round(sum / 5 * 100, 1).ToString("0.0");
+
                     }
 
 
@@ -401,7 +422,7 @@ namespace Calculates
                 //    if (mFlag_Bhg && mFlag_Hg)
                 //        mitem["JCJGMS"] = "该组试样所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
                 //}
-                mAllHg = (mAllHg && sitem["JCJG"] == "合格");
+                //mAllHg = (mAllHg && sitem["JCJG"] == "合格");
             }
             if (mAllHg)
             {

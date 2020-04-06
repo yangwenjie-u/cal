@@ -536,7 +536,7 @@ namespace Calculates
         {
             //^-?\\d+(\\.\\d+)?$
             //^[+-]?\d*[.]?\d*$
-            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
+            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d+[.]?\d*$"))//通过正则表达式验证输入的是否是数字
             //if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
             {
                 return true;
@@ -777,7 +777,7 @@ namespace Calculates
 
         ///<summary>
         /// 判断是否合格 默认合格/不合格
-        /// </summary>
+        /// </summary>·
         /// <param name="sj">范围值</param>
         /// <param name="sc">比较值</param>
         /// <param name="flag">返回(符合,不符合) 还是判断(合格,不合格)  true：符合/不符合  false :合格,不合格</param>
@@ -811,7 +811,7 @@ namespace Calculates
             #region 判断 取文字中的数值 
 
             string temStr = sj;//"提取123.11abc提取"; //我们抓取当前字符当中的123.11
-            temStr = Regex.Replace(temStr, @"[^\d.\d]", "");
+            temStr = Regex.Replace(temStr, @"[^[+-]?\d.\d]", "");
 
             //sj 是文字加数字 如：检测值》234.43
             if (temStr.Length + 1 != sj.Length && sj.IndexOf("～") == -1)
@@ -936,6 +936,8 @@ namespace Calculates
                 min_bl = true;
 
                 sign = true;
+
+
             }
             if (sj.IndexOf('±') != -1)
             {
@@ -980,6 +982,32 @@ namespace Calculates
                 sign = scz < max_sjz ? sign : false;
 
             return sign ? hgjl : bhgjl;
+        }
+
+        /// <summary>
+        /// 获取匹配的检测项目
+        /// </summary>
+        /// <param name="jcxm"></param>
+        /// <param name="compareItems"></param>
+        /// <returns></returns>
+        public static string CurrentJcxm(string jcxm, string compareItems)
+        {
+            compareItems = compareItems.Replace(',', '、').Trim('、');
+            if (compareItems.IndexOf('、') == -1)
+            {
+                return compareItems;
+            }
+            List<string> listItems = compareItems.Split('、').ToList();
+
+            foreach (var item in listItems)
+            {
+                if (jcxm.Contains("、" + item + "、"))
+                {
+                    return item;
+                }
+            }
+
+            return "";
         }
     }
 }

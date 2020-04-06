@@ -816,7 +816,7 @@ namespace Calculates
                     {
                         sItem["JCJG"] = "不合格";
                     }
-                continue;
+                    continue;
                 }
                 #endregion
                 #region 不跳转
@@ -837,7 +837,7 @@ namespace Calculates
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("含泥量"));
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sItem["HNL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sItem["HNL"], true) == "符合")
                                 {
                                     sItem["HNLPD"] = item["DJ"];
                                     break;
@@ -897,14 +897,12 @@ namespace Calculates
                     }
                     #endregion
 
-                    #region 紧密密度和堆积密度
+                    #region 紧密密度
                     sItem["JMMDPD"] = "";
                     sItem["JMMD"] = "0";
-                    sItem["DJMDPD"] = "";
-                    sItem["DJMD"] = "0";
                     double mdjmd1 = 0;
                     double mdjmd2 = 0;
-                    if (jcxm.Contains("、紧密密度和堆积密度、"))
+                    if (jcxm.Contains("、紧密密度、"))
                     {
                         if (Conversion.Val(sItem["JMMDV"]) != 0)
                         {
@@ -912,6 +910,21 @@ namespace Calculates
                             mdjmd2 = Round(((Conversion.Val(sItem["JMMDG1_2"])) - (Conversion.Val(sItem["JMMDG2_2"]))) / ((Conversion.Val(sItem["JMMDV"])) * 10) * 1000, 0) * 10;
                             sItem["JMMD"] = (Round((mdjmd1 + mdjmd2) / 20, 0) * 10).ToString();
                         }
+                    }
+                    else
+                    {
+                        sItem["JMMD"] = "----";
+                        sItem["JMMDPD"] = "----";
+                    }
+                    #endregion
+
+                    #region 堆积密度
+                    sItem["DJMDPD"] = "";
+                    sItem["DJMD"] = "0";
+                    mdjmd1 = 0;
+                    mdjmd2 = 0;
+                    if (jcxm.Contains("、堆积密度、"))
+                    {
                         if (Conversion.Val(sItem["DJMDV"]) != 0)
                         {
                             mdjmd1 = Round(((Conversion.Val(sItem["DJMDG1"])) - (Conversion.Val(sItem["DJMDG2"]))) / ((Conversion.Val(sItem["DJMDV"])) * 10) * 1000, 0) * 10;
@@ -921,8 +934,6 @@ namespace Calculates
                     }
                     else
                     {
-                        sItem["JMMD"] = "----";
-                        sItem["JMMDPD"] = "----";
                         sItem["DJMDPD"] = "----";
                         sItem["DJMD"] = "----";
                     }
@@ -1018,7 +1029,7 @@ namespace Calculates
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("压碎性指标") && x["SPZ"].Equals(sItem["SIPZ"].Trim()));
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sItem["YSZB"],true) == "符合")
+                                if (IsQualified(item["YQ"], sItem["YSZB"], true) == "符合")
                                 {
                                     sItem["YSZBPD"] = item["DJ"].Trim();
                                     break;
@@ -1090,7 +1101,7 @@ namespace Calculates
                         var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("针片状含量"));
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sItem["ZPZHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sItem["ZPZHL"], true) == "符合")
                             {
                                 sItem["ZPZHLPD"] = item["DJ"].Trim();
                                 break;
@@ -1166,7 +1177,7 @@ namespace Calculates
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("硫化物和硫酸盐含量"));
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sItem["LHW"],true) == "符合")
+                                if (IsQualified(item["YQ"], sItem["LHW"], true) == "符合")
                                 {
                                     sItem["LHWPD"] = item["DJ"].Trim();
                                     break;

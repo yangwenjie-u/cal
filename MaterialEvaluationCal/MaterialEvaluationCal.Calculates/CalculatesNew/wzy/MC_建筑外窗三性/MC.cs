@@ -236,56 +236,58 @@ namespace Calculates
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (jcxm.Contains("、气密性能、"))
                 {
-                    var MS_MC_Filter = mrsMs;
-                    //var MS_MC_Filter = mrsMs.Where(x => x["SYSJBRECID"].Equals(sitem["RECID"]));
-                    var MS_MC = MS_MC_Filter[0];
-                    for (xd = 1; xd <= 3; xd++)
-                    {
-                        if (MS_MC.Count == 0)
-                        {
-                            continue;
-                        }
-                        kqfc = Conversion.Val(MS_MC["开启缝长"].Trim());
-                        kqmj = Conversion.Val(MS_MC["试件面积"].Trim());
-                        zqf1 = Conversion.Val(MS_MC["升压流量100F"].Trim());
-                        zqf2 = Conversion.Val(MS_MC["降压流量100F"].Trim());
-                        zqz1 = Conversion.Val(MS_MC["升压流量100Z"].Trim());
-                        zqz2 = Conversion.Val(MS_MC["降压流量100Z"].Trim());
-                        fqf1 = Conversion.Val(MS_MC["负升压流量100F"].Trim());
-                        fqf2 = Conversion.Val(MS_MC["负降压流量100F"].Trim());
-                        fqz1 = Conversion.Val(MS_MC["负升压流量100Z"].Trim());
-                        fqz2 = Conversion.Val(MS_MC["负降压流量100Z"].Trim());
-                        zqf1 = (zqf1 + zqf2) / 2;
-                        zqz1 = (zqz1 + zqz2) / 2;
-                        fqf1 = (fqf1 + fqf2) / 2;
-                        fqz1 = (fqz1 + fqz2) / 2;
-                        zqt = zqz1 - zqf1;
-                        fqt = fqz1 - fqf1;
-                        q1 = zqt / kqfc;
-                        q1 = Round(q1, 2);
-                        q1 = q1 / 4.65;
-                        q1 = Round(q1, 2);
-                        q2 = zqt / kqmj;
-                        q2 = Round(q2, 2);
-                        q2 = q2 / 4.65;
-                        q2 = Round(q2, 2);
-                        fq1 = fqt / kqfc;
-                        fq1 = Round(fq1, 2);
-                        fq1 = fq1 / 4.65;
-                        fq1 = Round(fq1, 2);
-                        fq2 = fqt / kqmj;
-                        fq2 = Round(fq2, 2);
-                        fq2 = fq2 / 4.65;
-                        fq2 = Round(fq2, 2);
-                        sitem["FCQMZY" + xd] = q1.ToString("F2");
-                        sitem["MJQMZY" + xd] = q2.ToString("F2");
-                        sitem["FCQMFY" + xd] = fq1.ToString("F2");
-                        sitem["MJQMFY" + xd] = fq2.ToString("F2");
-                        if (xd >= MS_MC_Filter.Count())
-                            MS_MC = MS_MC_Filter[xd - 1];
-                        else
-                            MS_MC = MS_MC_Filter[xd];
-                    }
+                    #region old
+                    //var MS_MC_Filter = mrsMs;
+                    ////var MS_MC_Filter = mrsMs.Where(x => x["SYSJBRECID"].Equals(sitem["RECID"]));
+                    //var MS_MC = MS_MC_Filter[0];
+                    //for (xd = 1; xd <= 3; xd++)
+                    //{
+                    //    if (MS_MC.Count == 0)
+                    //    {
+                    //        continue;
+                    //    }
+                    //    kqfc = Conversion.Val(MS_MC["开启缝长"].Trim());
+                    //    kqmj = Conversion.Val(MS_MC["试件面积"].Trim());
+                    //    zqf1 = Conversion.Val(MS_MC["升压流量100F"].Trim());
+                    //    zqf2 = Conversion.Val(MS_MC["降压流量100F"].Trim());
+                    //    zqz1 = Conversion.Val(MS_MC["升压流量100Z"].Trim());
+                    //    zqz2 = Conversion.Val(MS_MC["降压流量100Z"].Trim());
+                    //    fqf1 = Conversion.Val(MS_MC["负升压流量100F"].Trim());
+                    //    fqf2 = Conversion.Val(MS_MC["负降压流量100F"].Trim());
+                    //    fqz1 = Conversion.Val(MS_MC["负升压流量100Z"].Trim());
+                    //    fqz2 = Conversion.Val(MS_MC["负降压流量100Z"].Trim());
+                    //    zqf1 = (zqf1 + zqf2) / 2;
+                    //    zqz1 = (zqz1 + zqz2) / 2;
+                    //    fqf1 = (fqf1 + fqf2) / 2;
+                    //    fqz1 = (fqz1 + fqz2) / 2;
+                    //    zqt = zqz1 - zqf1;
+                    //    fqt = fqz1 - fqf1;
+                    //    q1 = zqt / kqfc;
+                    //    q1 = Round(q1, 2);
+                    //    q1 = q1 / 4.65;
+                    //    q1 = Round(q1, 2);
+                    //    q2 = zqt / kqmj;
+                    //    q2 = Round(q2, 2);
+                    //    q2 = q2 / 4.65;
+                    //    q2 = Round(q2, 2);
+                    //    fq1 = fqt / kqfc;
+                    //    fq1 = Round(fq1, 2);
+                    //    fq1 = fq1 / 4.65;
+                    //    fq1 = Round(fq1, 2);
+                    //    fq2 = fqt / kqmj;
+                    //    fq2 = Round(fq2, 2);
+                    //    fq2 = fq2 / 4.65;
+                    //    fq2 = Round(fq2, 2);
+                    //    sitem["FCQMZY" + xd] = q1.ToString("F2");
+                    //    sitem["MJQMZY" + xd] = q2.ToString("F2");
+                    //    sitem["FCQMFY" + xd] = fq1.ToString("F2");
+                    //    sitem["MJQMFY" + xd] = fq2.ToString("F2");
+                    //    if (xd >= MS_MC_Filter.Count())
+                    //        MS_MC = MS_MC_Filter[xd - 1];
+                    //    else
+                    //        MS_MC = MS_MC_Filter[xd];
+                    //}
+                    #endregion
                     nArr = new double[4];
                     sum = 0;
                     for (xd = 1; xd <= 3; xd++)
@@ -435,70 +437,107 @@ namespace Calculates
                     pjmd = sum / 3;
                     pjmd = Round(pjmd, 0);
                     sitem["AVG_SM"] = pjmd.ToString();
-                    flag = sitem["JCLB"] == "工程检测" ? true : false;
-                    if (flag)
+                    #region old
+                    //flag = sitem["JCLB"] == "工程检测" ? true : false;
+                    //if (flag)
+                    //{
+                    //    sitem["SMXSJYQ"] = sitem["SMXSJYQ"].Trim();
+                    //    sitem["AVG_SM"] = sitem["SMXSJYQ"].Replace("≥", "");
+                    //    var MS_MC_Filter = mrsMs;
+                    //    //var MS_MC_Filter = mrsMs.Where(x => x["SYSJBRECID"].Equals(sitem["RECID"]));
+                    //    var MS_MC = MS_MC_Filter[0];
+                    //    for (xd = 1; xd <= 3; xd++)
+                    //    {
+                    //        if (MS_MC.Count == 0)
+                    //        {
+                    //            continue;
+                    //        }
+                    //        if (MS_MC["稳定渗漏12"] != "○" && MS_MC["稳定渗漏12"] != "" && MS_MC["稳定渗漏12"] != "△" && MS_MC["稳定渗漏12"] != "□")
+                    //            sitem["PD_SM"] = "不符合";
+                    //        else
+                    //            sitem["PD_SM"] = "符合";
+                    //        if (xd >= MS_MC_Filter.Count())
+                    //            MS_MC = MS_MC_Filter[xd - 1];
+                    //        else
+                    //            MS_MC = MS_MC_Filter[xd];
+                    //    }
+                    //    //sitem["DJ_SM"] = "----";
+                    //    if (sitem["PD_SM"] == "不符合")
+                    //        sitem["AVG_SM"] = sitem["AVG_SM"] + " Pa 渗漏 ";
+                    //    else
+                    //        sitem["AVG_SM"] = sitem["AVG_SM"] + " Pa 未渗漏 ";
+                    //    if (sitem["PD_SM"] == "不符合")
+                    //        mbhgjg = mbhgjg + "、水密性能";
+                    //    if (sitem["PD_SM"] == "符合")
+                    //        mhgjg = mhgjg + "、水密性能";
+                    //    if (sitem["PD_SM"] == "----")
+                    //        djjg = djjg + "、水密性能";
+                    //}
+                    //else
+                    //{
+                    //    sitem["SMXSJYQ"] = sitem["SMXSJYQ"].Trim();
+                    //    sitem["SMXSJYQ"] = IsNumeric(sitem["SMXSJYQ"]) ? sitem["SMXSJYQ"] + "≤" : sitem["SMXSJYQ"];
+                    //    sitem["PD_SM"] = calc_PB(sitem["SMXSJYQ"], sitem["AVG_SM"], true);
+                    //    mbHggs = sitem["PD_SM"] == "不符合" ? mbHggs + 1 : mbHggs;
+                    //    if (sitem["PD_SM"] == "不符合")
+                    //        mbhgjg = mbhgjg + "、水密性能";
+                    //    if (sitem["PD_SM"] == "符合")
+                    //        mhgjg = mhgjg + "、水密性能";
+                    //    if (sitem["PD_SM"] == "----")
+                    //        djjg = djjg + "、水密性能";
+                    //    //var mrsDj_Filter = mrsDj[0];
+                    //    //Gs = mrsDj.Count();
+                    //    //for (xd = 1; xd <= Gs; xd++)
+                    //    //{
+                    //    //    if (calc_PB(mrsDj_Filter["SMYQ"], sitem["AVG_SM"], true) == "符合")
+                    //    //    {
+                    //    //        sitem["DJ_SM"] = mrsDj_Filter["SMJB"] + "级";
+                    //    //        break;
+                    //    //    }
+                    //    //    if (xd >= mrsDj.Count())
+                    //    //        mrsDj_Filter = mrsDj[xd - 1];
+                    //    //    else
+                    //    //        mrsDj_Filter = mrsDj[xd];
+                    //    //}
+                    //    //if (xd > Gs)
+                    //    //    sitem["DJ_SM"] = "不符合任一级别";
+                    //}
+                    #endregion
+                    sitem["PD_SM"] = "----";
+                    var mrsDj_Filter = mrsDj[0];
+                    Gs = mrsDj.Count();
+                    for (xd = 1; xd <= Gs; xd++)
                     {
-                        sitem["SMXSJYQ"] = sitem["SMXSJYQ"].Trim();
-                        sitem["AVG_SM"] = sitem["SMXSJYQ"].Replace("≥", "");
-                        var MS_MC_Filter = mrsMs;
-                        //var MS_MC_Filter = mrsMs.Where(x => x["SYSJBRECID"].Equals(sitem["RECID"]));
-                        var MS_MC = MS_MC_Filter[0];
-                        for (xd = 1; xd <= 3; xd++)
+                        if (calc_PB(mrsDj_Filter["SMYQ"], sitem["AVG_SM"], true) == "符合")
                         {
-                            if (MS_MC.Count == 0)
+                            sitem["DJ_SM"] = mrsDj_Filter["SMJB"] + "级";
+                            if (GetSafeDouble(mrsDj_Filter["SMJB"]) >= GetSafeDouble(sitem["SMXSJJB"]) )
                             {
-                                continue;
-                            }
-                            if (MS_MC["稳定渗漏12"] != "○" && MS_MC["稳定渗漏12"] != "" && MS_MC["稳定渗漏12"] != "△" && MS_MC["稳定渗漏12"] != "□")
-                                sitem["PD_SM"] = "不符合";
-                            else
                                 sitem["PD_SM"] = "符合";
-                            if (xd >= MS_MC_Filter.Count())
-                                MS_MC = MS_MC_Filter[xd - 1];
-                            else
-                                MS_MC = MS_MC_Filter[xd];
-                        }
-                        sitem["DJ_SM"] = "----";
-                        if (sitem["PD_SM"] == "不符合")
-                            sitem["AVG_SM"] = sitem["AVG_SM"] + " Pa 渗漏 ";
-                        else
-                            sitem["AVG_SM"] = sitem["AVG_SM"] + " Pa 未渗漏 ";
-                        if (sitem["PD_SM"] == "不符合")
-                            mbhgjg = mbhgjg + "、水密性能";
-                        if (sitem["PD_SM"] == "符合")
-                            mhgjg = mhgjg + "、水密性能";
-                        if (sitem["PD_SM"] == "----")
-                            djjg = djjg + "、水密性能";
-                    }
-                    else
-                    {
-                        sitem["SMXSJYQ"] = sitem["SMXSJYQ"].Trim();
-                        sitem["SMXSJYQ"] = IsNumeric(sitem["SMXSJYQ"]) ? sitem["SMXSJYQ"] + "≤" : sitem["SMXSJYQ"];
-                        sitem["PD_SM"] = calc_PB(sitem["SMXSJYQ"], sitem["AVG_SM"], true);
-                        mbHggs = sitem["PD_SM"] == "不符合" ? mbHggs + 1 : mbHggs;
-                        if (sitem["PD_SM"] == "不符合")
-                            mbhgjg = mbhgjg + "、水密性能";
-                        if (sitem["PD_SM"] == "符合")
-                            mhgjg = mhgjg + "、水密性能";
-                        if (sitem["PD_SM"] == "----")
-                            djjg = djjg + "、水密性能";
-                        var mrsDj_Filter = mrsDj[0];
-                        Gs = mrsDj.Count();
-                        for (xd = 1; xd <= Gs; xd++)
-                        {
-                            if (calc_PB(mrsDj_Filter["SMYQ"], sitem["AVG_SM"], true) == "符合")
-                            {
-                                sitem["DJ_SM"] = mrsDj_Filter["SMJB"] + "级";
-                                break;
                             }
-                            if (xd >= mrsDj.Count())
-                                mrsDj_Filter = mrsDj[xd - 1];
-                            else
-                                mrsDj_Filter = mrsDj[xd];
+                            break;
                         }
-                        if (xd > Gs)
-                            sitem["DJ_SM"] = "不符合任一级别";
+                        if (xd >= mrsDj.Count())
+                            mrsDj_Filter = mrsDj[xd - 1];
+                        else
+                            mrsDj_Filter = mrsDj[xd];
                     }
+                    if (xd > Gs)
+                    {
+                        sitem["DJ_SM"] = "不符合任一级别";
+                        sitem["PD_SM"] = "不符合";
+                        mbHggs = sitem["PD_SM"] == "不符合" ? mbHggs + 1 : mbHggs;
+                    }
+                    if (sitem["PD_SM"] == "不符合")
+                        sitem["AVG_SM"] = sitem["AVG_SM"] + " Pa 渗漏 ";
+                    else
+                        sitem["AVG_SM"] = sitem["AVG_SM"] + " Pa 未渗漏 ";
+                    if (sitem["PD_SM"] == "不符合")
+                        mbhgjg = mbhgjg + "、水密性能";
+                    if (sitem["PD_SM"] == "符合")
+                        mhgjg = mhgjg + "、水密性能";
+                    if (sitem["PD_SM"] == "----")
+                        djjg = djjg + "、水密性能";
                 }
                 else
                 {
@@ -612,10 +651,10 @@ namespace Calculates
                     if (sitem["PD_KF"] == "不符合") mbhgjg = mbhgjg + "、抗风压性能";
                     if (sitem["PD_KF"] == "符合") mhgjg = mhgjg + "、抗风压性能";
                     if (sitem["PD_KF"] == "----") djjg = djjg + "、抗风压性能";
-                    if (flag)
-                        sitem["DJ_KF"] = "----";
-                    else
-                    {
+                    //if (flag)
+                    //    sitem["DJ_KF"] = "----";
+                    //else
+                    //{
                         var mrsDj_Filter = mrsDj[0];
                         Gs = mrsDj.Count();
                         for (xd = 1; xd <= Gs; xd++)
@@ -632,7 +671,7 @@ namespace Calculates
 
                         }
                         if (xd > Gs) sitem["DJ_KF"] = "不符合任一级别";
-                    }
+                    //}
 
                 }
                 else

@@ -42,17 +42,20 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.btn_load = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.chk_sfxs = new System.Windows.Forms.CheckBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_helper = new System.Windows.Forms.Button();
+            this.btn_S_only = new System.Windows.Forms.Button();
+            this.btn_M_only = new System.Windows.Forms.Button();
+            this.chk_SFXS = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.chk_syncJcJG = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.txt_lx = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.btn_M_only = new System.Windows.Forms.Button();
             this.txt_bzCount = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.txt_where = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.btn_S_only = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.radio_m = new System.Windows.Forms.RadioButton();
             this.label6 = new System.Windows.Forms.Label();
@@ -60,7 +63,10 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.txt_SFieldeStartIndex = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -87,7 +93,7 @@
             // 
             // txt_fieldMs
             // 
-            this.txt_fieldMs.Location = new System.Drawing.Point(733, 41);
+            this.txt_fieldMs.Location = new System.Drawing.Point(669, 40);
             this.txt_fieldMs.Margin = new System.Windows.Forms.Padding(4);
             this.txt_fieldMs.Name = "txt_fieldMs";
             this.txt_fieldMs.Size = new System.Drawing.Size(132, 25);
@@ -96,7 +102,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(639, 45);
+            this.label2.Location = new System.Drawing.Point(575, 44);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 15);
@@ -123,7 +129,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(745, 82);
+            this.button1.Location = new System.Drawing.Point(1086, 106);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 29);
@@ -172,7 +178,7 @@
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(1548, 126);
+            this.btn_save.Location = new System.Drawing.Point(657, 137);
             this.btn_save.Margin = new System.Windows.Forms.Padding(4);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(100, 29);
@@ -183,7 +189,7 @@
             // 
             // btn_load
             // 
-            this.btn_load.Location = new System.Drawing.Point(655, 133);
+            this.btn_load.Location = new System.Drawing.Point(455, 137);
             this.btn_load.Margin = new System.Windows.Forms.Padding(4);
             this.btn_load.Name = "btn_load";
             this.btn_load.Size = new System.Drawing.Size(100, 29);
@@ -194,17 +200,19 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.chk_sfxs);
+            this.panel1.Controls.Add(this.txt_SFieldeStartIndex);
+            this.panel1.Controls.Add(this.label12);
+            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Controls.Add(this.chk_SFXS);
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Controls.Add(this.chk_syncJcJG);
             this.panel1.Controls.Add(this.label11);
             this.panel1.Controls.Add(this.txt_lx);
             this.panel1.Controls.Add(this.label10);
-            this.panel1.Controls.Add(this.btn_M_only);
             this.panel1.Controls.Add(this.txt_bzCount);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.txt_where);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.btn_S_only);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.btn_load);
@@ -226,28 +234,92 @@
             this.panel1.Size = new System.Drawing.Size(1724, 176);
             this.panel1.TabIndex = 15;
             // 
-            // chk_sfxs
+            // groupBox1
             // 
-            this.chk_sfxs.AutoSize = true;
-            this.chk_sfxs.Location = new System.Drawing.Point(1027, 139);
-            this.chk_sfxs.Name = "chk_sfxs";
-            this.chk_sfxs.Size = new System.Drawing.Size(59, 19);
-            this.chk_sfxs.TabIndex = 30;
-            this.chk_sfxs.Text = "显示";
-            this.chk_sfxs.UseVisualStyleBackColor = true;
+            this.groupBox1.Controls.Add(this.btn_helper);
+            this.groupBox1.Controls.Add(this.btn_S_only);
+            this.groupBox1.Controls.Add(this.btn_M_only);
+            this.groupBox1.Location = new System.Drawing.Point(1243, 20);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 141);
+            this.groupBox1.TabIndex = 34;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "独立添加";
+            // 
+            // btn_helper
+            // 
+            this.btn_helper.Location = new System.Drawing.Point(40, 102);
+            this.btn_helper.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_helper.Name = "btn_helper";
+            this.btn_helper.Size = new System.Drawing.Size(100, 29);
+            this.btn_helper.TabIndex = 27;
+            this.btn_helper.Text = "添加帮助表字典";
+            this.btn_helper.UseVisualStyleBackColor = true;
+            this.btn_helper.Click += new System.EventHandler(this.btn_helper_Click);
+            // 
+            // btn_S_only
+            // 
+            this.btn_S_only.Location = new System.Drawing.Point(40, 62);
+            this.btn_S_only.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_S_only.Name = "btn_S_only";
+            this.btn_S_only.Size = new System.Drawing.Size(100, 28);
+            this.btn_S_only.TabIndex = 20;
+            this.btn_S_only.Text = "添加从表字段";
+            this.btn_S_only.UseVisualStyleBackColor = true;
+            this.btn_S_only.Click += new System.EventHandler(this.btn_S_only_Click);
+            // 
+            // btn_M_only
+            // 
+            this.btn_M_only.Location = new System.Drawing.Point(40, 26);
+            this.btn_M_only.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_M_only.Name = "btn_M_only";
+            this.btn_M_only.Size = new System.Drawing.Size(100, 29);
+            this.btn_M_only.TabIndex = 26;
+            this.btn_M_only.Text = "添加主表字段";
+            this.btn_M_only.UseVisualStyleBackColor = true;
+            this.btn_M_only.Click += new System.EventHandler(this.btn_M_only_Click);
+            // 
+            // chk_SFXS
+            // 
+            this.chk_SFXS.AutoSize = true;
+            this.chk_SFXS.Location = new System.Drawing.Point(1013, 87);
+            this.chk_SFXS.Name = "chk_SFXS";
+            this.chk_SFXS.Size = new System.Drawing.Size(59, 19);
+            this.chk_SFXS.TabIndex = 33;
+            this.chk_SFXS.Text = "显示";
+            this.chk_SFXS.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(919, 87);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(75, 15);
+            this.label7.TabIndex = 32;
+            this.label7.Text = "是否显示:";
+            // 
+            // chk_syncJcJG
+            // 
+            this.chk_syncJcJG.AutoSize = true;
+            this.chk_syncJcJG.Location = new System.Drawing.Point(1013, 132);
+            this.chk_syncJcJG.Name = "chk_syncJcJG";
+            this.chk_syncJcJG.Size = new System.Drawing.Size(59, 19);
+            this.chk_syncJcJG.TabIndex = 30;
+            this.chk_syncJcJG.Text = "同步";
+            this.chk_syncJcJG.UseVisualStyleBackColor = true;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(945, 139);
+            this.label11.Location = new System.Drawing.Point(919, 132);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(75, 15);
             this.label11.TabIndex = 29;
-            this.label11.Text = "是否显示:";
+            this.label11.Text = "同步监管:";
             // 
             // txt_lx
             // 
-            this.txt_lx.Location = new System.Drawing.Point(865, 137);
+            this.txt_lx.Location = new System.Drawing.Point(816, 82);
             this.txt_lx.Name = "txt_lx";
             this.txt_lx.Size = new System.Drawing.Size(64, 25);
             this.txt_lx.TabIndex = 28;
@@ -256,22 +328,11 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(819, 140);
+            this.label10.Location = new System.Drawing.Point(735, 87);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(31, 15);
+            this.label10.Size = new System.Drawing.Size(75, 15);
             this.label10.TabIndex = 27;
-            this.label10.Text = "LX:";
-            // 
-            // btn_M_only
-            // 
-            this.btn_M_only.Location = new System.Drawing.Point(1233, 133);
-            this.btn_M_only.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_M_only.Name = "btn_M_only";
-            this.btn_M_only.Size = new System.Drawing.Size(100, 29);
-            this.btn_M_only.TabIndex = 26;
-            this.btn_M_only.Text = "添加主表字段";
-            this.btn_M_only.UseVisualStyleBackColor = true;
-            this.btn_M_only.Click += new System.EventHandler(this.btn_M_only_Click);
+            this.label10.Text = "字段类型:";
             // 
             // txt_bzCount
             // 
@@ -294,7 +355,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(64, 140);
+            this.label8.Location = new System.Drawing.Point(37, 146);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(112, 15);
@@ -303,49 +364,28 @@
             // 
             // txt_where
             // 
-            this.txt_where.Location = new System.Drawing.Point(191, 136);
+            this.txt_where.Location = new System.Drawing.Point(159, 137);
             this.txt_where.Margin = new System.Windows.Forms.Padding(4);
             this.txt_where.Multiline = true;
             this.txt_where.Name = "txt_where";
-            this.txt_where.Size = new System.Drawing.Size(425, 25);
+            this.txt_where.Size = new System.Drawing.Size(264, 25);
             this.txt_where.TabIndex = 23;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(955, 106);
-            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(256, 15);
-            this.label7.TabIndex = 21;
-            this.label7.Text = "仅添加从表字段（不添加hg，G字段）";
-            // 
-            // btn_S_only
-            // 
-            this.btn_S_only.Location = new System.Drawing.Point(1233, 100);
-            this.btn_S_only.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_S_only.Name = "btn_S_only";
-            this.btn_S_only.Size = new System.Drawing.Size(100, 29);
-            this.btn_S_only.TabIndex = 20;
-            this.btn_S_only.Text = "添加从表字段";
-            this.btn_S_only.UseVisualStyleBackColor = true;
-            this.btn_S_only.Click += new System.EventHandler(this.btn_S_only_Click);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.radio_m);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.radio_s);
-            this.panel2.Location = new System.Drawing.Point(948, 40);
+            this.panel2.Location = new System.Drawing.Point(833, 25);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(351, 41);
+            this.panel2.Size = new System.Drawing.Size(353, 50);
             this.panel2.TabIndex = 19;
             // 
             // radio_m
             // 
             this.radio_m.AutoSize = true;
-            this.radio_m.Location = new System.Drawing.Point(123, 6);
+            this.radio_m.Location = new System.Drawing.Point(146, 15);
             this.radio_m.Margin = new System.Windows.Forms.Padding(4);
             this.radio_m.Name = "radio_m";
             this.radio_m.Size = new System.Drawing.Size(58, 19);
@@ -356,18 +396,18 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(4, 9);
+            this.label6.Location = new System.Drawing.Point(9, 19);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(82, 15);
+            this.label6.Size = new System.Drawing.Size(129, 15);
             this.label6.TabIndex = 17;
-            this.label6.Text = "添加字段到";
+            this.label6.Text = "判定字段(HG)保存";
             // 
             // radio_s
             // 
             this.radio_s.AutoSize = true;
             this.radio_s.Checked = true;
-            this.radio_s.Location = new System.Drawing.Point(235, 6);
+            this.radio_s.Location = new System.Drawing.Point(225, 14);
             this.radio_s.Margin = new System.Windows.Forms.Padding(4);
             this.radio_s.Name = "radio_s";
             this.radio_s.Size = new System.Drawing.Size(58, 19);
@@ -419,6 +459,25 @@
             this.dataGridView1.Size = new System.Drawing.Size(1716, 507);
             this.dataGridView1.TabIndex = 11;
             // 
+            // txt_SFieldeStartIndex
+            // 
+            this.txt_SFieldeStartIndex.Location = new System.Drawing.Point(468, 111);
+            this.txt_SFieldeStartIndex.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_SFieldeStartIndex.Name = "txt_SFieldeStartIndex";
+            this.txt_SFieldeStartIndex.Size = new System.Drawing.Size(29, 25);
+            this.txt_SFieldeStartIndex.TabIndex = 36;
+            this.txt_SFieldeStartIndex.Text = "1";
+            this.txt_SFieldeStartIndex.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SFieldeStartIndex_KeyPress);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(343, 113);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(112, 15);
+            this.label12.TabIndex = 35;
+            this.label12.Text = "字段初始序号：";
+            // 
             // TargetForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -432,6 +491,7 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TargetForm_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -467,13 +527,18 @@
         private System.Windows.Forms.Button btn_S_only;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txt_where;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txt_bzCount;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btn_M_only;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox txt_lx;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.CheckBox chk_sfxs;
+        private System.Windows.Forms.CheckBox chk_syncJcJG;
+        private System.Windows.Forms.Button btn_helper;
+        private System.Windows.Forms.CheckBox chk_SFXS;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox txt_SFieldeStartIndex;
+        private System.Windows.Forms.Label label12;
     }
 }
