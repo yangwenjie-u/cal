@@ -68,7 +68,7 @@ namespace Calculates
                         D2 = 0;
                         C = 0;
                         G = 0;
-                        for (I = 1; I <= n_fun ; I++)
+                        for (I = 1; I <= n_fun; I++)
                         {
                             Q = X[I] - Z - P;
                             D2 = D2 + Q * Q;
@@ -124,7 +124,7 @@ namespace Calculates
                     dt[0] = 0;
                     dt[1] = 0;
                     dt[2] = 0;
-                    for (I = 1; I <= n_fun ; I++)
+                    for (I = 1; I <= n_fun; I++)
                     {
                         Q = xiaoA[m];
                         for (K = m - 2; K >= 0; K--)
@@ -187,7 +187,7 @@ namespace Calculates
             var jsbeizhu = "";
             var SItem = data["S_JS"];
             var MItem = data["M_JS"];
-            int mbHggs = 0,n = 0,k = 5;
+            int mbHggs = 0, n = 0, k = 5;
             if (!data.ContainsKey("M_JS"))
             {
                 data["M_JS"] = new List<IDictionary<string, string>>();
@@ -216,32 +216,44 @@ namespace Calculates
                 //    sItem["LQ"] = (DateTime.Parse(sItem["SYRQ"]) - DateTime.Parse(sItem["ZZRQ"])).Days.ToString();
                 //}
                 string mYpmcJcxm = sItem["YPMC"].Trim() + "样品" + sItem["JCXM"].Trim();
-                mItem["PDBZ"] = "GB/T 50123-2019《土工试验方法标准》";
+                mItem["PDBZ"] = "《土工试验方法标准》GB/T 50123-2019";
                 double sStzl, sSmd, sSzl1, sSzl2, sGtzl1, sGtzl2, sHsl1, sHsl2;
                 for (int i = 1; i <= 6; i++)
                 {
-                    if (double.Parse(sItem["MTJST"+i]) != 0)
+                    //模桶加湿土质量
+                    if (double.Parse(sItem["MTJST" + i]) != 0)
                     {
+                        //湿土质量
                         sStzl = double.Parse(sItem["MTJST" + i]) - double.Parse(mItem["MTZL"]);
+                        sItem["STZL1_" + i] = sStzl.ToString();
                         if (double.Parse(mItem["MTTJ"]) == 0)
                         {
                             sSmd = 0;
+                            sItem["SMD1_" + i] = "0";
                         }
                         else
                         {
+                            //计算湿密度
                             sSmd = Round(sStzl / double.Parse(mItem["MTTJ"]), 2);
+                            sItem["SMD1_" + i] = sSmd.ToString("0.00");
                         }
-                        sSzl1 = double.Parse(sItem["HJST" + i+ "1"]) - double.Parse(sItem["HJGT" + i + "1"]);
-                        sSzl2 = double.Parse(sItem["HJST" +i + "2"]) - double.Parse(sItem["HJGT" + i + "2"]);
-                        sGtzl1 = double.Parse(sItem["HJGT" +i+ "1"]) - double.Parse(sItem["HZL" + i + "1"]);
-                        sGtzl2 = double.Parse(sItem["HJGT" +i+ "2"]) - double.Parse(sItem["HZL" + i + "2"]);
-
+                        //水质量 = 盒加湿土质量 - 盒加干土质量
+                        sSzl1 = double.Parse(sItem["HJST" + i + "1"]) - double.Parse(sItem["HJGT" + i + "1"]);
+                        sSzl2 = double.Parse(sItem["HJST" + i + "2"]) - double.Parse(sItem["HJGT" + i + "2"]);
+                        //水分质量
+                        sItem["SZL1_" + i] = Round((sSzl1 + sSzl2) / 2, 2).ToString("0.00");
+                        //干土质量
+                        sGtzl1 = double.Parse(sItem["HJGT" + i + "1"]) - double.Parse(sItem["HZL" + i + "1"]);
+                        sGtzl2 = double.Parse(sItem["HJGT" + i + "2"]) - double.Parse(sItem["HZL" + i + "2"]);
+                        //干土质量
+                        sItem["GTZL1_" + i] = Round((sGtzl1+ sGtzl2)/2,2).ToString("0.00");
                         if (sGtzl1 == 0)
                         {
                             sHsl1 = 0;
                         }
                         else
                         {
+                            //含水率1
                             sHsl1 = Round(sSzl1 / sGtzl1 * 100, 1);
                         }
                         if (sGtzl2 == 0)
@@ -250,15 +262,17 @@ namespace Calculates
                         }
                         else
                         {
+                            //含水率2 
                             sHsl2 = Round(sSzl2 / sGtzl2 * 100, 1);
                         }
+                        //计算平均含水率时应该先判断两个含水率的差值应不大于1%
                         if (sHsl1 == 0 || sHsl2 == 0)
                             sItem["PJHSL" + i] = Round((sHsl1 + sHsl2), 1).ToString();
                         else
-                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2)/2, 1).ToString();
+                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString();
                         sItem["GMD" + i] = Round(sSmd / (1 + 0.01 * double.Parse(sItem["PJHSL" + i])), 2).ToString();
                         x[i] = double.Parse(sItem["PJHSL" + i]);
-                        y[i] =double.Parse(sItem["GMD" + i]);
+                        y[i] = double.Parse(sItem["GMD" + i]);
                         n = n + 1;
                     }
                     else
@@ -297,24 +311,34 @@ namespace Calculates
                     mItem["ZDGMD1"] = Round(0, 2).ToString();
                     mItem["ZJHSL1"] = Round(0, 1).ToString();
                 }
-                n = 0;      
+
+                n = 0;
                 for (int i = 1; i <= 6; i++)
                 {
                     if (0 != double.Parse(sItem["S_MTJST" + i]))
                     {
                         sStzl = double.Parse(sItem["S_MTJST" + i]) - double.Parse(mItem["MTZL"]);
+                        //湿土质量
+                        sItem["STZL2_" + i] = sStzl.ToString();
                         if (double.Parse(mItem["MTTJ"]) == 0)
                         {
                             sSmd = 0;
+                            sItem["SMD2_" + i] = "0";
                         }
                         else
                         {
+                            //计算湿密度
                             sSmd = Round(sStzl / double.Parse(mItem["MTTJ"]), 2);
+                            sItem["SMD2_" + i] = sSmd.ToString("0.00");
                         }
-                        sSzl1 = double.Parse(sItem["S_HJST" +i+ "1"]) - double.Parse(sItem["S_HJGT" +i+ "1"]);
-                        sSzl2 = double.Parse(sItem["S_HJST" +i+ "2"]) - double.Parse(sItem["S_HJGT" +i+ "2"]);
-                        sGtzl1 = double.Parse(sItem["S_HJGT" +i+ "1"]) - double.Parse(sItem["S_HZL" +i+ "1"]);
+                        sSzl1 = double.Parse(sItem["S_HJST" + i + "1"]) - double.Parse(sItem["S_HJGT" + i + "1"]);
+                        sSzl2 = double.Parse(sItem["S_HJST" + i + "2"]) - double.Parse(sItem["S_HJGT" + i + "2"]);
+                        //水分质量
+                        sItem["SZL2_" + i] = Round((sSzl1 + sSzl2) / 2, 2).ToString("0.00");
+                        sGtzl1 = double.Parse(sItem["S_HJGT" + i + "1"]) - double.Parse(sItem["S_HZL" + i + "1"]);
                         sGtzl2 = double.Parse(sItem["S_HJGT" + i + "2"]) - double.Parse(sItem["S_HZL" + i + "2"]);
+                        //干土质量
+                        sItem["GTZL2_" + i] = Round((sGtzl1 + sGtzl2) / 2, 2).ToString("0.00");
                         if (sGtzl1 == 0) sHsl1 = 0;
                         else sHsl1 = Round(sSzl1 / sGtzl1 * 100, 1);
                         if (sGtzl2 == 0) sHsl2 = 0;
@@ -325,17 +349,17 @@ namespace Calculates
                         }
                         else
                         {
-                            sItem["S_PJHSL" + i] = Round((sHsl1 + sHsl2)/2, 1).ToString();
+                            sItem["S_PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString();
                         }
                         sItem["S_GMD" + i] = Round(sSmd / (1 + 0.01 * double.Parse(sItem["S_PJHSL" + i])), 2).ToString();
-                        x[i] =double.Parse(sItem["S_PJHSL" + i]);
-                        y[i] =double.Parse(sItem["S_GMD" + i]);
+                        x[i] = double.Parse(sItem["S_PJHSL" + i]);
+                        y[i] = double.Parse(sItem["S_GMD" + i]);
                         n = n + 1;
                     }
                     else
                     {
                         sItem["S_PJHSL" + i] = "0";
-                        sItem["S_GMD" + i]="0";
+                        sItem["S_GMD" + i] = "0";
                     }
                 }
 
@@ -373,7 +397,7 @@ namespace Calculates
                 }
                 else
                 {
-                    mItem["ZDGMD"] = Round((double.Parse(mItem["ZDGMD1"]) + double.Parse(mItem["ZDGMD2"]))/2, 2).ToString("0.00");
+                    mItem["ZDGMD"] = Round((double.Parse(mItem["ZDGMD1"]) + double.Parse(mItem["ZDGMD2"])) / 2, 2).ToString("0.00");
                 }
                 if (double.Parse(mItem["ZJHSL1"]) * double.Parse(mItem["ZJHSL2"]) == 0)
                 {
@@ -387,7 +411,7 @@ namespace Calculates
                 mItem["S_BZ"] = "1";
                 if (mItem["JCYJ"].Contains("51"))
                 {
-                    mItem["S_BZ"] = "0"; 
+                    mItem["S_BZ"] = "0";
                 }
                 double[] dArray = new double[4];
                 double[] sArray = new double[3];
@@ -422,8 +446,8 @@ namespace Calculates
                 {
                     mItem["JCYJ"] = "JTG E51-2009 《公路工程无机结合料稳定材料试验规程》";
                     sign = true;
-                    sign = IsNumeric(mItem["S_BFL"])? sign: false;
-                    sign = IsNumeric(mItem["S_MTJ"])? sign: false;
+                    sign = IsNumeric(mItem["S_BFL"]) ? sign : false;
+                    sign = IsNumeric(mItem["S_MTJ"]) ? sign : false;
                     sign = IsNumeric(mItem["S_XSL"]) ? sign : false;
                     if (sign)
                     {
@@ -434,7 +458,7 @@ namespace Calculates
                         qcymax = Round(qcymax, 2);
                         qcxmax = qcxmax * (1 - 0.1 * dArray[1]) + 0.01 * dArray[1] * dArray[3];
                         qcxmax = Round(qcxmax, 1);
-                        jsbeizhu= "已修约";
+                        jsbeizhu = "已修约";
                     }
                     else
                     {

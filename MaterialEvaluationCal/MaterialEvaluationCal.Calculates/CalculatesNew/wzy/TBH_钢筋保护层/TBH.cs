@@ -66,10 +66,14 @@ namespace Calculates
             MItem[0]["QHGDS"] = "0";
             MItem[0]["QCCDS"] = "0";
             List<double> gjjjArray = new List<double>();
+            int z = 0;
+            int dggjhgCount = 0;
+            int cjbhcdsCount = 0;
             //从表循环
             foreach (var sitem in SItem)
             {
-
+                dggjhgCount = 0;
+                z++;
                 string jcxm = '、' + sitem["JCXM"].Trim().Replace(",", "、") + "、";
                 double mmin = 0;
                 double mmax = 0;
@@ -199,8 +203,11 @@ namespace Calculates
 
                     for (int i = 1; i <= 20; i++)
                     {
+
                         if (!string.IsNullOrEmpty(sitem["PJHD" + i]) && IsNumeric(sitem["PJHD" + i]))
                         {
+                            //钢筋总数
+                            cjbhcdsCount++;
                             sitem["SMDS"] = (GetSafeDouble(sitem["SMDS"]) + 3).ToString();
                             md = GetSafeDouble(sitem["PJHD" + i].Trim());
                             mmin = mmin == 0 ? md : mmin;
@@ -212,7 +219,10 @@ namespace Calculates
                             if (flag)
                             {
                                 if (md >= sjhd + yxpc1 && md <= sjhd + yxpc2)
+                                {
                                     mhgds = mhgds + 3;
+                                    dggjhgCount++;//记录单个构件合格点数
+                                }
                                 else
                                 {
                                     mccds = mccds + 3;
@@ -232,6 +242,9 @@ namespace Calculates
                         else
                             sitem["SFCC" + i] = "----";
                     }
+                    //记录单个构件合格点数
+                    sitem["DGGJHGDS"] = dggjhgCount.ToString();
+
                     if (Gs != 0)
                         mpj = Round(sum / Gs, 0);
                     sitem["SCMIN"] = mmin.ToString();
@@ -602,7 +615,8 @@ namespace Calculates
                 }
 
             }
-
+            //测点总数
+            MItem[0]["BHCZS"] = (cjbhcdsCount*3).ToString();
             //主表总判断赋值
             if (mAllHg)
             {

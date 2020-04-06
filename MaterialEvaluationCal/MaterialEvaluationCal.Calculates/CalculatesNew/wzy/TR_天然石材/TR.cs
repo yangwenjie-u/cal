@@ -26,6 +26,7 @@ namespace Calculates
             mAllHg = true;
             mFlag_Hg = false;
             mFlag_Bhg = false;
+            var bhgJcxm = "";
             #endregion
 
             #region 自定义函数
@@ -57,7 +58,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("＞") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -75,7 +76,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("≥") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -93,7 +94,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("＜") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -111,7 +112,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("≤") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -129,7 +130,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
+                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
                             max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
                             min_bl = true;
                             max_bl = true;
@@ -139,7 +140,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("±") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
+                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
                             max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
                             min_sjz = min_sjz - max_sjz;
                             max_sjz = min_sjz + 2 * max_sjz;
@@ -348,6 +349,8 @@ namespace Calculates
                 bool flag, sign, mark;
                 sign = true;
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+
+                #region 体积密度
                 if (jcxm.Contains("、体积密度、"))
                 {
                     for (xd = 1; xd <= 5; xd++)
@@ -380,11 +383,21 @@ namespace Calculates
                         MItem[0]["GH_TJMD"] = calc_PB(MItem[0]["G_TJMD"], MItem[0]["W_TJMD"], false);
                         mbhggs = MItem[0]["GH_TJMD"] == "合格" ? mbhggs : mbhggs + 1;
                         if (MItem[0]["GH_TJMD"] == "合格")
+                        {
                             mFlag_Hg = true;
+                        }
                         else
+                        {
                             mFlag_Bhg = true;
-
-
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = "体积密度";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、体积密度";
+                            }
+                        }
                     }
                 }
                 else
@@ -395,6 +408,9 @@ namespace Calculates
                     MItem[0]["GH_TJMD"] = "----";
                     MItem[0]["G_TJMD"] = "----";
                 }
+                #endregion
+
+                #region 吸水率
                 sign = true;
                 if (jcxm.Contains("、吸水率、"))
                 {
@@ -418,16 +434,27 @@ namespace Calculates
                             sum = sum + md;
                         }
 
-
                         pjmd = sum / 5;
                         pjmd = Round(pjmd, 2);
                         MItem[0]["W_XSL"] = pjmd.ToString("F2");
                         MItem[0]["GH_XSL"] = calc_PB(MItem[0]["G_XSL"], MItem[0]["W_XSL"], false);
                         mbhggs = MItem[0]["GH_XSL"] == "合格" ? mbhggs : mbhggs + 1;
                         if (MItem[0]["GH_XSL"] == "合格")
+                        {
                             mFlag_Hg = true;
+                        }
                         else
+                        {
                             mFlag_Bhg = true;
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = "吸水率";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、吸水率";
+                            }
+                        }
                     }
                 }
                 else
@@ -438,15 +465,30 @@ namespace Calculates
                     MItem[0]["GH_XSL"] = "----";
                     MItem[0]["G_XSL"] = "----";
                 }
+                #endregion
+
+                #region 干燥压缩强度
                 sign = true;
                 if (jcxm.Contains("、干燥压缩强度、"))
                 {
                     MItem[0]["GH_YSQD"] = calc_PB(MItem[0]["G_YSQD"], MItem[0]["W_YSQD"], false);
                     mbhggs = MItem[0]["GH_YSQD"] == "合格" ? mbhggs : mbhggs + 1;
                     if (MItem[0]["GH_YSQD"] == "合格")
+                    {
                         mFlag_Hg = true;
+                    }
                     else
+                    {
                         mFlag_Bhg = true;
+                        if (string.IsNullOrEmpty(bhgJcxm))
+                        {
+                            bhgJcxm = "干燥压缩强度";
+                        }
+                        else
+                        {
+                            bhgJcxm = bhgJcxm + "、干燥压缩强度";
+                        }
+                    }
                 }
                 else
                     sign = false;
@@ -456,15 +498,30 @@ namespace Calculates
                     MItem[0]["G_YSQD"] = "----";
                     MItem[0]["GH_YSQD"] = "----";
                 }
+                #endregion
+
+                #region 干燥弯曲强度
                 sign = true;
                 if (jcxm.Contains("、干燥弯曲强度、"))
                 {
                     MItem[0]["GH_WQQD"] = calc_PB(MItem[0]["G_WQQD"], MItem[0]["W_WQQD"], false);
                     mbhggs = MItem[0]["GH_WQQD"] == "合格" ? mbhggs : mbhggs + 1;
                     if (MItem[0]["GH_WQQD"] == "合格")
+                    {
                         mFlag_Hg = true;
+                    }
                     else
+                    {
                         mFlag_Bhg = true;
+                        if (string.IsNullOrEmpty(bhgJcxm))
+                        {
+                            bhgJcxm = "干燥弯曲强度";
+                        }
+                        else
+                        {
+                            bhgJcxm = bhgJcxm + "、干燥弯曲强度";
+                        }
+                    }
                 }
                 else
                     sign = false;
@@ -476,15 +533,30 @@ namespace Calculates
                     MItem[0]["G_WQQD"] = "----";
                     MItem[0]["W_WQQD"] = "----";
                 }
+                #endregion
+
+                #region 水饱和压缩强度
                 sign = true;
                 if (jcxm.Contains("、水饱和压缩强度、"))
                 {
                     MItem[0]["GH_SBHYSQD"] = calc_PB(MItem[0]["G_SBHYSQD"], MItem[0]["W_SBHYSQD"], false);
                     mbhggs = MItem[0]["GH_SBHYSQD"] == "合格" ? mbhggs : mbhggs + 1;
                     if (MItem[0]["GH_SBHYSQD"] == "合格")
-                               mFlag_Hg = true;
+                    {
+                        mFlag_Hg = true;
+                    }
                     else
+                    {
                         mFlag_Bhg = true;
+                        if (string.IsNullOrEmpty(bhgJcxm))
+                        {
+                            bhgJcxm = "水饱和压缩强度";
+                        }
+                        else
+                        {
+                            bhgJcxm = bhgJcxm + "、水饱和压缩强度";
+                        }
+                    }
                 }
                 else
                     sign = false;
@@ -494,15 +566,30 @@ namespace Calculates
                     MItem[0]["G_SBHYSQD"] = "----";
                     MItem[0]["GH_SBHYSQD"] = "----";
                 }
+                #endregion
+
+                #region 水饱和弯曲强度
                 sign = true;
                 if (jcxm.Contains("、水饱和弯曲强度、"))
                 {
                     MItem[0]["GH_SBHWQQD"] = calc_PB(MItem[0]["G_SBHWQQD"], MItem[0]["W_SBHWQQD"], false);
                     mbhggs = MItem[0]["GH_SBHWQQD"] == "合格" ? mbhggs : mbhggs + 1;
                     if (MItem[0]["GH_SBHWQQD"] == "合格")
+                    {
                         mFlag_Hg = true;
+                    }
                     else
+                    {
                         mFlag_Bhg = true;
+                        if (string.IsNullOrEmpty(bhgJcxm))
+                        {
+                            bhgJcxm = "水饱和弯曲强度";
+                        }
+                        else
+                        {
+                            bhgJcxm = bhgJcxm + "、水饱和弯曲强度";
+                        }
+                    }
                 }
                 else
                     sign = false;
@@ -512,13 +599,18 @@ namespace Calculates
                     MItem[0]["G_SBHWQQD"] = "----";
                     MItem[0]["W_SBHWQQD"] = "----";
                 }
+                #endregion
+
                 sitem["JCJG"] = mbhggs == 0 ? "合格" : "不合格";
                 MItem[0]["JCJG"] = mbhggs == 0 ? "合格" : "不合格";
                 mAllHg = mbhggs == 0 ? mAllHg : false;
             }
             MItem[0]["JCJGMS"] = mAllHg ? "该组样品所检项目符合" + MItem[0]["PDBZ"] + "标准要求。" : "该组样品所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
             if (mFlag_Bhg && mFlag_Hg)
-                MItem[0]["JCJGMS"] = "该组样品所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
+            {
+                MItem[0]["JCJGMS"] = "该组样品所检项目"+bhgJcxm+"不符合" + MItem[0]["PDBZ"] + "标准要求。";
+            }
+               
             #endregion
 
             /************************ 代码结束 *********************/

@@ -41,6 +41,7 @@ namespace Calculates
 
 
 
+
             double mSjcc, mMj, mSjcc1 = 0;
             double mMaxKyqd, mMinKyqd, mMidKyqd, mAvgKyqd = 0;
             double md = 0, md1 = 0, md2 = 0, pjmd, Gs, cd1 = 0, cd2 = 0, sum = 0;
@@ -57,7 +58,9 @@ namespace Calculates
             double[] narr;
             int xd;
             string bl;
+            var bhgJcxm = "";
 
+            #region 跳转代码
             Func<IDictionary<string, string>, IDictionary<string, string>, bool> sjtabcalc =
                 delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem)
                 {
@@ -110,6 +113,14 @@ namespace Calculates
                                 sItem["GH_ZJL"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                if (string.IsNullOrEmpty(bhgJcxm))
+                                {
+                                    bhgJcxm = "碱含量";
+                                }
+                                else
+                                {
+                                    bhgJcxm = bhgJcxm + "碱含量";
+                                }
                                 break;
                             case "符合":
                                 sItem["GH_ZJL"] = "合格";
@@ -331,6 +342,7 @@ namespace Calculates
 
                     return mbhggs > 0 ? false : true;
                 };
+            #endregion
 
             foreach (var sItem in sItems)
             {
@@ -364,6 +376,7 @@ namespace Calculates
                 var sjtabs = MItem[0]["SJTABS"];
                 if (string.IsNullOrEmpty(sjtabs))
                 {
+                    #region 氧化镁
                     if (jcxm.Contains("、氧化镁、"))
                     {
                         flag = true;
@@ -374,6 +387,14 @@ namespace Calculates
                                 sItem["GH_YHM"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                if (string.IsNullOrEmpty(bhgJcxm))
+                                {
+                                    bhgJcxm = "氧化镁";
+                                }
+                                else
+                                {
+                                    bhgJcxm = bhgJcxm + "、氧化镁";
+                                }
                                 break;
                             case "符合":
                                 sItem["GH_YHM"] = "合格";
@@ -390,6 +411,9 @@ namespace Calculates
                         sItem["GH_YHM"] = "----";
                         sItem["W_YHM"] = "----";
                     }
+                    #endregion
+
+                    #region 碱含量
                     if (jcxm.Contains("、碱含量、"))
                     {
                         flag = true;
@@ -400,6 +424,14 @@ namespace Calculates
                                 sItem["GH_ZJL"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                if (string.IsNullOrEmpty(bhgJcxm))
+                                {
+                                    bhgJcxm = "碱含量";
+                                }
+                                else
+                                {
+                                    bhgJcxm = bhgJcxm + "、碱含量";
+                                }
                                 break;
                             case "符合":
                                 sItem["GH_ZJL"] = "合格";
@@ -416,6 +448,9 @@ namespace Calculates
                         sItem["GH_ZJL"] = "----";
                         sItem["W_ZJL"] = "----";
                     }
+                    #endregion
+
+                    #region 细度
                     if (jcxm.Contains("、细度、"))
                     {
                         sign = true;
@@ -485,7 +520,7 @@ namespace Calculates
                             sign = sign;
                         //计算1.18mm筛了
                         sum = 0;
-                        if (!IsNumeric(sItem["S5XZXS"]))
+                        if (!IsNumeric(sItem["S5XZXS"].Trim()))
                             sItem["S5XZXS"] = "1";
                         for (xd = 1; xd <= 2; xd++)
                         {
@@ -505,9 +540,23 @@ namespace Calculates
                         sItem["GH_XD"] = sign ? "合格" : "不合格";
                         mbhggs = sign ? mbhggs : mbhggs + 1;
                         if (sign)
+                        {
                             mFlag_Hg = true;
+                        }
                         else
+                        {
                             mFlag_Bhg = true;
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = "细度";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、细度";
+                            }
+                        }
+                            
+
                     }
                     else
                     {
@@ -517,16 +566,19 @@ namespace Calculates
                         sItem["G_XD118"] = "----";
                         sItem["S5PJXD"] = "----";
                     }
+                    #endregion
+
+                    #region 凝结时间
                     if (jcxm.Contains("、凝结时间、"))
                     {
                         flag = true;
                         sign = true;
-                        flag = !string.IsNullOrEmpty(sItem["JSSJH"]) && IsNumeric(sItem["JSSJH"]) ? flag : false;
-                        flag = !string.IsNullOrEmpty(sItem["JSSJM"]) && IsNumeric(sItem["JSSJM"]) ? flag : false;
-                        flag = !string.IsNullOrEmpty(sItem["CNSJH"]) && IsNumeric(sItem["CNSJH"]) ? flag : false;
-                        flag = !string.IsNullOrEmpty(sItem["CNSJM"]) && IsNumeric(sItem["CNSJM"]) ? flag : false;
-                        flag = !string.IsNullOrEmpty(sItem["ZNSJH"]) && IsNumeric(sItem["ZNSJH"]) ? flag : false;
-                        flag = !string.IsNullOrEmpty(sItem["ZNSJM"]) && IsNumeric(sItem["ZNSJM"]) ? flag : false;
+                        flag = !string.IsNullOrEmpty(sItem["JSSJH"]) && IsNumeric(sItem["JSSJH"].Trim()) ? flag : false;
+                        flag = !string.IsNullOrEmpty(sItem["JSSJM"]) && IsNumeric(sItem["JSSJM"].Trim()) ? flag : false;
+                        flag = !string.IsNullOrEmpty(sItem["CNSJH"]) && IsNumeric(sItem["CNSJH"].Trim()) ? flag : false;
+                        flag = !string.IsNullOrEmpty(sItem["CNSJM"]) && IsNumeric(sItem["CNSJM"].Trim()) ? flag : false;
+                        flag = !string.IsNullOrEmpty(sItem["ZNSJH"]) && IsNumeric(sItem["ZNSJH"].Trim()) ? flag : false;
+                        flag = !string.IsNullOrEmpty(sItem["ZNSJM"]) && IsNumeric(sItem["ZNSJM"].Trim()) ? flag : false;
                         if (flag)
                         {
                             sum = 0;
@@ -547,9 +599,21 @@ namespace Calculates
                             sItem["GH_NJSJ"] = sign ? "合格" : "不合格";
                             mbhggs = sign ? mbhggs : mbhggs + 1;
                             if (sign)
+                            {
                                 mFlag_Hg = true;
+                            }
                             else
+                            {
                                 mFlag_Bhg = true;
+                                if (string.IsNullOrEmpty(bhgJcxm))
+                                {
+                                    bhgJcxm = "凝结时间";
+                                }
+                                else
+                                {
+                                    bhgJcxm = bhgJcxm + "、凝结时间";
+                                }
+                            }
                         }
                         else
                             mSFwc = false;
@@ -562,8 +626,13 @@ namespace Calculates
                         sItem["ZNSJ"] = "----";
                         sItem["GH_NJSJ"] = "----";
                     }
+                    #endregion
+
+                    #region 限制膨胀率
                     if (jcxm.Contains("、限制膨胀率、"))
                     {
+                        List<double> day7Array = new List<double>();
+                        List<double> day21Array = new List<double>();
                         flag = true;
                         sign = true;
                         //初始化
@@ -571,50 +640,107 @@ namespace Calculates
                         sItem["PJ7PZL"] = "----";
                         sItem["PJ21PZL"] = "----";
                         //水中7d
-                        for (xd = 1; xd <= 2; xd++)
+                        for (xd = 1; xd <= 3; xd++)
                         {
-                            flag = IsNumeric(sItem["P7CS" + xd]) ? flag : false;
-                            flag = IsNumeric(sItem["P7XZ" + xd]) ? flag : false;
+                            flag = IsNumeric(sItem["P7CS" + xd].Trim()) ? flag : false;
+                            flag = IsNumeric(sItem["P7XZ" + xd].Trim()) ? flag : false;
                         }
                         if (flag)
                         {
                             sum = 0;
-                            for (xd = 1; xd <= 2; xd++)
+                            for (xd = 1; xd <= 3; xd++)
                             {
                                 md1 = Conversion.Val(sItem["P7XZ" + xd].Trim());
                                 md2 = Conversion.Val(sItem["P7CS" + xd].Trim());
+                                //限制膨胀率% = （所测龄期的试体长度测量值mm - 试体的初始长度mm）/试体的基准长度（144mm）
                                 md = 100 * (md1 - md2) / 140;
                                 md = Round(md, 3);
                                 sItem["P7ZL" + xd] = md.ToString("0.000");
-                                sum = sum + md;
+                                day7Array.Add(GetSafeDouble(sItem["P7ZL" + xd]));
+                                //sum = sum + md;
                             }
-                            pjmd = sum / 2;
-                            pjmd = Round(pjmd, 3);
+                            day7Array.Sort();
+                            //取相近的两个试体测定值的平均值作为限制膨胀率的测量结果，精确到0.001%
+                            //最大最小值与中间值的差值绝对值比较
+                            if (Math.Abs(day7Array[0] - day7Array[1]) > Math.Abs(day7Array[2] - day7Array[1]))
+                            {
+                                if (Math.Abs(day7Array[2] - day7Array[1]) > Math.Abs(day7Array[0] - day7Array[2]))
+                                {
+                                    pjmd = Round((day7Array[2] + day7Array[0]) / 2, 3);
+                                }
+                                else
+                                {
+                                    pjmd = Round((day7Array[1] + day7Array[2]) / 2, 3);
+                                }
+                                
+                            }
+                            else
+                            {
+                                if (Math.Abs(day7Array[0] - day7Array[1]) > Math.Abs(day7Array[0] - day7Array[2]))
+                                {
+                                    pjmd = Round((day7Array[0] + day7Array[2]) / 2, 3);
+                                }
+                                else
+                                {
+                                    pjmd = Round((day7Array[1] + day7Array[1]) / 2, 3);
+                                }
+                                
+                            }
+                            //pjmd = sum / 2;
+                            //pjmd = Round(pjmd, 3);
                             sItem["PJ7PZL"] = pjmd.ToString("0.000");
                             sign = IsQualified(sItem["G_7PZL"], sItem["PJ7PZL"], true) == "不符合" ? false : sign;
                         }
                         else
                             mSFwc = false;
-                        //空中21d
-                        for (xd = 1; xd <= 2; xd++)
+                        //空气中21d
+                        for (xd = 1; xd <= 3; xd++)
                         {
-                            flag = IsNumeric(sItem["P7CS" + xd]) ? flag : false;
-                            flag = IsNumeric(sItem["P21XZ" + xd]) ? flag : false;
+                            flag = IsNumeric(sItem["P7CS" + xd].Trim()) ? flag : false;
+                            flag = IsNumeric(sItem["P21XZ" + xd].Trim()) ? flag : false;
                         }
                         if (flag)
                         {
                             sum = 0;
-                            for (xd = 1; xd <= 2; xd++)
+                            for (xd = 1; xd <= 3; xd++)
                             {
                                 md1 = Conversion.Val(sItem["P21XZ" + xd].Trim());
                                 md2 = Conversion.Val(sItem["P7CS" + xd].Trim());
                                 md = 100 * (md1 - md2) / 140;
                                 md = Round(md, 3);
                                 sItem["P21ZL" + xd] = md.ToString("0.000");
-                                sum = sum + md;
+                                day21Array.Add(GetSafeDouble(sItem["P21ZL" + xd]));
+                                //sum = sum + md;
                             }
-                            pjmd = sum / 2;
-                            pjmd = Round(pjmd, 3);
+                            day21Array.Sort();
+                            //取相近的两个试体测定值的平均值作为限制膨胀率的测量结果，精确到0.001%
+                            //最大最小值与中间值的差值绝对值比较
+                            if (Math.Abs(day21Array[0] - day21Array[1]) > Math.Abs(day21Array[2] - day21Array[1]))
+                            {
+                                if (Math.Abs(day21Array[2] - day21Array[1]) > Math.Abs(day21Array[0] - day21Array[2]))
+                                {
+                                    pjmd = Round((day21Array[0] + day21Array[2]) / 2, 3);
+                                }
+                                else
+                                {
+                                    pjmd = Round((day21Array[2] + day21Array[1]) / 2, 3);
+                                }
+                               
+                            }
+                            else
+                            {
+                                if (Math.Abs(day21Array[0] - day21Array[1]) > Math.Abs(day21Array[0] - day21Array[2]))
+                                {
+                                    pjmd = Round((day21Array[0] + day21Array[2]) / 2, 3);
+                                }
+                                else
+                                {
+                                    pjmd = Round((day21Array[0] + day21Array[1]) / 2, 3);
+                                }
+                                
+                            }
+                            //pjmd = sum / 2;
+                            //pjmd = Round(pjmd, 3);
                             sItem["PJ21PZL"] = pjmd.ToString("0.000");
                             sign = IsQualified(sItem["G_21PZL"], sItem["PJ21PZL"], true) == "不符合" ? false : sign;
                         }
@@ -624,9 +750,21 @@ namespace Calculates
                         sItem["GH_PZL"] = sign ? "合格" : "不合格";
                         mbhggs = sign ? mbhggs : mbhggs + 1;
                         if (sign)
+                        {
                             mFlag_Hg = true;
+                        }
                         else
+                        {
                             mFlag_Bhg = true;
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = "限制膨胀率";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、限制膨胀率";
+                            }
+                        }
                     }
                     else
                     {
@@ -636,13 +774,16 @@ namespace Calculates
                         sItem["PJ7PZL"] = "----";
                         sItem["PJ21PZL"] = "----";
                     }
+                    #endregion
+
+                    #region 7d抗压强度
                     //试件规格为40 * 40 * 160
                     if (jcxm.Contains("、7d抗压强度、"))
                     {
                         flag = true;
                         //单位是kN
                         for (xd = 1; xd <= 6; xd++)
-                            flag = IsNumeric(sItem["KY7HZ" + xd]) ? flag : false;
+                            flag = IsNumeric(sItem["KY7HZ" + xd].Trim()) ? flag : false;
                         narr = new double[7];
                         if (flag)
                         {
@@ -675,24 +816,50 @@ namespace Calculates
                                 pjmd = sum / Gs;
                                 pjmd = Round(pjmd, 1);
                                 sItem["PJKY7QD"] = pjmd.ToString("0.0");
+                                sign = IsQualified(sItem["G_7KYQD"], sItem["PJKY7QD"], true) == "不符合" ? false : sign;
+                                if (sign)
+                                {
+                                    sItem["GH_7KYQD"] = "合格";
+                                }
+                                else
+                                {
+                                    sItem["GH_7KYQD"] = "不合格";
+                                    mbhggs++;
+                                    if (string.IsNullOrEmpty(bhgJcxm))
+                                    {
+                                        bhgJcxm = "7d抗压强度";
+                                    }
+                                    else
+                                    {
+                                        bhgJcxm = bhgJcxm + "、7d抗压强度";
+                                    }
+                                }
+
                             }
                             else
+                            {
                                 sItem["PJKY7QD"] = "重做";
+                            }
+                                
                         }
                         else
                             mSFwc = false;
                     }
                     else
                     {
+                        sItem["GH_7KYQD"] = "----";
                         sItem["G_7KYQD"] = "----";
                         sItem["PJKY7QD"] = "----";
                     }
+                    #endregion
+
+                    #region 28d抗压强度
                     if (jcxm.Contains("、28d抗压强度、"))
                     {
                         flag = true;
                         //单位是kN
                         for (xd = 1; xd <= 6; xd++)
-                            flag = IsNumeric(sItem["KY28HZ" + xd]) ? flag : false;
+                            flag = IsNumeric(sItem["KY28HZ" + xd].Trim()) ? flag : false;
                         narr = new double[7];
                         if (flag)
                         {
@@ -725,40 +892,69 @@ namespace Calculates
                                 pjmd = sum / Gs;
                                 pjmd = Round(pjmd, 1);
                                 sItem["PJKY28QD"] = pjmd.ToString("0.0");
+                                sign = IsQualified(sItem["G_28KYQD"], sItem["PJKY28QD"], true) == "不符合" ? false : sign;
+                                if (sign)
+                                {
+                                    sItem["GH_28KYQD"] = "合格";
+                                }
+                                else
+                                {
+                                    sItem["GH_28KYQD"] = "不合格";
+                                    mbhggs++;
+                                    if (string.IsNullOrEmpty(bhgJcxm))
+                                    {
+                                        bhgJcxm = "28d抗压强度";
+                                    }
+                                    else
+                                    {
+                                        bhgJcxm = bhgJcxm + "、28d抗压强度";
+                                    }
+                                }
                             }
                             else
+                            {
                                 sItem["PJKY28QD"] = "重做";
+                            }
                         }
                         else
+                        {
                             mSFwc = false;
+                        }
                     }
                     else
                     {
+                        sItem["GH_28KYQD"] = "----";
                         sItem["G_28KYQD"] = "----";
                         sItem["PJKY28QD"] = "----";
                     }
+                    #endregion
+
+                    #region
                     //总括抗压强度
-                    if (jcxm.Contains("抗压强度"))
-                    {
-                        sign = true;
-                        if (IsNumeric(sItem["PJKY7QD"]) || IsNumeric(sItem["PJKY28QD"]))
-                        {
-                            sign = IsQualified(sItem["G_7KYQD"], sItem["PJKY7QD"], true) == "不符合" ? false : sign;
-                            sign = IsQualified(sItem["G_28KYQD"], sItem["PJKY28QD"], true) == "不符合" ? false : sign;
-                        }
-                        else
-                        {
-                            sign = false;
-                        }
-                        sItem["GH_KYQD"] = sign ? "合格" : "不合格";
-                        mbhggs = sign ? mbhggs : mbhggs + 1;
-                        if (sign)
-                            mFlag_Hg = true;
-                        else
-                            mFlag_Bhg = true;
-                    }
-                    else
-                        sItem["GH_KYQD"] = "----";
+                    //if (jcxm.Contains("抗压强度"))
+                    //{
+                    //    sign = true;
+                    //    if (IsNumeric(sItem["PJKY7QD"]) || IsNumeric(sItem["PJKY28QD"]))
+                    //    {
+                    //        sign = IsQualified(sItem["G_7KYQD"], sItem["PJKY7QD"], true) == "不符合" ? false : sign;
+                    //        sign = IsQualified(sItem["G_28KYQD"], sItem["PJKY28QD"], true) == "不符合" ? false : sign;
+                    //    }
+                    //    else
+                    //    {
+                    //        sign = false;
+                    //    }
+                    //    sItem["GH_KYQD"] = sign ? "合格" : "不合格";
+                    //    mbhggs = sign ? mbhggs : mbhggs + 1;
+                    //    if (sign)
+                    //        mFlag_Hg = true;
+                    //    else
+                    //        mFlag_Bhg = true;
+                    //}
+                    //else
+                    //{
+                    //    sItem["GH_KYQD"] = "----";
+                    //}
+                    #endregion
 
                     MItem[0]["JCJGMS"] = "";
                     if (mbhggs == 0)
@@ -771,7 +967,7 @@ namespace Calculates
                         MItem[0]["JCJGMS"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
                         sItem["JCJG"] = "不合格";
                         if (mFlag_Bhg && mFlag_Hg)
-                            MItem[0]["JCJGMS"] = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
+                            MItem[0]["JCJGMS"] = "该组试样所检项目"+bhgJcxm+"不符合" + MItem[0]["PDBZ"] + "标准要求。";
                     }
 
                     mAllHg = (mAllHg && sItem["JCJG"] == "合格");
