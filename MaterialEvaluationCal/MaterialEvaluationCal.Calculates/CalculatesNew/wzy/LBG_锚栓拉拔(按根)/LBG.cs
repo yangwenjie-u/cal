@@ -37,41 +37,44 @@ namespace Calculates
             var data = retData;
             var mrsDj = dataExtra["BZ_LBG_DJ"];
             var MItem = data["M_LBG"];
-            var SItem = data["S_LBG"];
+            var SItem = data["S_LBG"][0];
+            var SJItem = data["SJ_LBG"];
             #endregion
 
             #region 计算开始
             mCnt_FjHg = 0;
             mCnt_FjHg1 = 0;
             mZh = SItem.Count();
-            foreach (var sitem in SItem)
+            foreach (var sJItem in SJItem)
             {
-                sitem["FJ"] = "0";
+                SItem["FJ"] = "0";
                 //mZh = GetSafeInt(sitem["ZH_G"]);
                 var mrsDj_Filter = mrsDj.FirstOrDefault();
                 if (mrsDj_Filter != null && mrsDj_Filter.Count > 0)
                     mJSFF = string.IsNullOrEmpty(mrsDj_Filter["JSFF"]) ? "" : mrsDj_Filter["JSFF"].Trim().ToLower();
                 else
                 {
-                    sitem["JCJG"] = "依据不详";
+                    SItem["JCJG"] = "依据不详";
                     break;
                 }
                 int mbhgs = 0;
-                sitem["JYHZ"] = Round(Conversion.Val(sitem["SJZDLBL"]), 2).ToString("F2");
-                if (Conversion.Val(sitem["KLHZ"]) < Conversion.Val(sitem["SJZDLBL"]))
+                sJItem["JYHZ"] = Round(Conversion.Val(SItem["SJZDLBL"]), 2).ToString("F2");
+                if (Conversion.Val(sJItem["KLHZ"]) < Conversion.Val(SItem["SJZDLBL"]))
+                {
                     mbhgs = mbhgs + 1;
-
-
+                }
+                    
                 if (mbhgs > 0)
                 {
-                    sitem["JCJG"] = "不合格";
+                    sJItem["JCJG"] = "不合格";
                     mAllHg = false;
                 }
                 else
                 {
-                    sitem["JCJG"] = "合格";
+                    sJItem["JCJG"] = "合格";
                 }
             }
+
             if (mZh < 2)
             {
                 MItem[0]["JCJG"] = "合格";

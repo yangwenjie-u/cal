@@ -483,6 +483,7 @@ namespace Calculates
                 {
                     mbhgs = 0;
                     double[] narr;
+                    #region 含泥量
                     if (jcxm.Contains("、含泥量、"))
                     {
                         sitem["HNLPD"] = "";
@@ -506,6 +507,9 @@ namespace Calculates
                         sitem["HNL"] = "----";
                         sitem["HNLPD"] = "----";
                     }
+                    #endregion
+
+                    #region 泥块含量
                     if (jcxm.Contains("、泥块含量、"))
                     {
                         sitem["NKHLPD"] = "";
@@ -529,6 +533,9 @@ namespace Calculates
                         sitem["NKHLPD"] = "----";
                         sitem["NKHL"] = "----";
                     }
+                    #endregion
+
+                    #region 堆积密度
                     if (jcxm.Contains("堆积密度、"))
                         sitem["DJMDPD"] = "----";
                     else
@@ -536,6 +543,9 @@ namespace Calculates
                         sitem["DJMDPD"] = "----";
                         sitem["DJMD"] = "----";
                     }
+                    #endregion
+
+                    #region 紧密密度
                     if (jcxm.Contains("、紧密密度"))
                         sitem["JMMDPD"] = "----";
                     else
@@ -543,6 +553,9 @@ namespace Calculates
                         sitem["JMMDPD"] = "----";
                         sitem["JMMD"] = "----";
                     }
+                    #endregion
+
+                    #region 表观密度
                     if (jcxm.Contains("、表观密度、"))
                         sitem["BGMDPD"] = "----";
                     else
@@ -550,6 +563,9 @@ namespace Calculates
                         sitem["BGMD"] = "----";
                         sitem["BGMDPD"] = "----";
                     }
+                    #endregion
+
+                    #region 空隙率
                     if (jcxm.Contains("、空隙率、"))
                         sitem["KXLPD"] = "----";
                     else
@@ -557,6 +573,9 @@ namespace Calculates
                         sitem["KXLPD"] = "----";
                         sitem["KXL"] = "----";
                     }
+                    #endregion
+
+                    #region 氯离子含量
                     if (jcxm.Contains("、氯离子含量、"))
                     {
                         sitem["LLZHLPD"] = "";
@@ -580,6 +599,9 @@ namespace Calculates
                         sitem["LLZHLPD"] = "----";
                         sitem["LLZHL"] = "----";
                     }
+                    #endregion
+
+                    #region 碱活性
                     if (jcxm.Contains("、碱活性、"))
                     {
                         if (Conversion.Val(sitem["JHX"]) < 0.1)
@@ -600,6 +622,9 @@ namespace Calculates
                         sitem["JHX"] = "----";
                         sitem["JHXPD"] = "----";
                     }
+                    #endregion
+
+                    #region 吸水率
                     if (jcxm.Contains("、吸水率、"))
                         sitem["XSLPD"] = "----";
                     else
@@ -607,6 +632,9 @@ namespace Calculates
                         sitem["XSL"] = "----";
                         sitem["XSLPD"] = "----";
                     }
+                    #endregion
+
+                    #region 含水率
                     if (jcxm.Contains("、含水率、"))
                         sitem["HSLPD"] = "----";
                     else
@@ -614,7 +642,9 @@ namespace Calculates
                         sitem["HSLPD"] = "----";
                         sitem["HSL"] = "----";
                     }
+                    #endregion
 
+                    #region 贝壳含量
                     if (jcxm.Contains("、贝壳含量、"))
                     {
                         sitem["BKHLPD"] = "";
@@ -638,8 +668,9 @@ namespace Calculates
                         sitem["BKHL"] = "----";
                         sitem["BKHLPD"] = "----";
                     }
+                    #endregion
 
-
+                    #region 云母含量
                     if (jcxm.Contains("、云母含量、"))
                     {
                         sitem["YMHLPD"] = "";
@@ -663,6 +694,9 @@ namespace Calculates
                         sitem["YMHL"] = "----";
                         sitem["YMHLPD"] = "----";
                     }
+                    #endregion
+
+                    #region 有机物含量
                     if (jcxm.Contains("、有机物含量、"))
                     {
                         if (sitem["YJWHLPD"].Contains("不"))
@@ -673,6 +707,9 @@ namespace Calculates
                     }
                     else
                         sitem["YJWHLPD"] = "----";
+                    #endregion
+
+                    #region 轻物质含量
                     if (jcxm.Contains("、轻物质含量、"))
                     {
                         sitem["QWZHLPD"] = "";
@@ -696,6 +733,9 @@ namespace Calculates
                         sitem["QWZHL"] = "----";
                         sitem["QWZHLPD"] = "----";
                     }
+                    #endregion
+
+                    #region 硫化物和硫酸盐含量
                     if (jcxm.Contains("、硫化物和硫酸盐含量、"))
                     {
                         sitem["SO3PD"] = "";
@@ -719,6 +759,7 @@ namespace Calculates
                         sitem["SO3"] = "----";
                         sitem["SO3PD"] = "----";
                     }
+                    #endregion
                     sitem["JCJG"] = mbhgs == 0 && mAllHg ? "合格" : "不合格";
                     mAllHg = mAllHg && sitem["JCJG"].Trim() == "合格";
                 }
@@ -1199,13 +1240,13 @@ namespace Calculates
             {
                 mitem["JCJG"] = "合格";
                 //mitem["JCJGMS"] = "该组试样所检项目符合上述标准要求。";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",符合≤25的混凝土用砂";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",符合≤25的混凝土用砂。";
             }
             else
             {
                 mitem["JCJG"] = "不合格";
                 //mitem["JCJGMS"] = "该组试样所检项目不符合上述标准要求。";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + "检测项目"+ bhgJcxm + ",不符合≤25的混凝土用砂";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + "检测项目"+ bhgJcxm + ",不符合≤25的混凝土用砂。";
                 //依据+判定标准，+所属项目属于+#F:s_HSA.JPPD#  +#F:s_HSA.XDMSPD#，符合≤25（强度等级）的混凝土用砂
             }
                 #endregion

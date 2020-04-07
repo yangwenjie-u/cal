@@ -47,12 +47,12 @@ namespace Calculates
                     for (int j = 1; j <= 2; j++)
                     {
                         //湿土+盒质量    干土+盒质量    盒质量
-                        if (IsNumeric(ET_JXH[0]["STZL" + i + "_" + j]) && IsNumeric(ET_JXH[0]["GTZL" + i + "_" + j]) && IsNumeric(ET_JXH[0]["HZL" + i + "_" + j]))
+                        if (IsNumeric(ET_JXH["STZL" + i + "_" + j]) && IsNumeric(ET_JXH["GTZL" + i + "_" + j]) && IsNumeric(ET_JXH["HZL" + i + "_" + j]))
                         {
                             //水质量
-                            var szl = GetSafeDouble(ET_JXH[0]["STZL" + i + "_" + j]) - GetSafeDouble(ET_JXH[0]["GTZL" + i + "_" + j]);
+                            var szl = GetSafeDouble(ET_JXH["STZL" + i + "_" + j]) - GetSafeDouble(ET_JXH["GTZL" + i + "_" + j]);
                             //含水率  水质量/干土质量  取一位小数
-                            ET_JXH[0]["HSL" + i + "_" + j] = Round(szl * 100 / (GetSafeDouble(ET_JXH[0]["GTZL" + i + "_" + j]) - GetSafeDouble(ET_JXH[0]["HZL" + i + "_" + j])), 1).ToString("0.0");
+                            ET_JXH["HSL" + i + "_" + j] = Round(szl * 100 / (GetSafeDouble(ET_JXH["GTZL" + i + "_" + j]) - GetSafeDouble(ET_JXH["HZL" + i + "_" + j])), 1).ToString("0.0");
                         }
 
                     }
@@ -60,8 +60,8 @@ namespace Calculates
                     //平均含水率
                     if (IsNumeric(ET_JXH["HSL" + i + "_1"]) && IsNumeric(ET_JXH["HSL" + i + "_2"]))
                     {
-                        var pjhsl = Round((GetSafeDouble(ET_JXH[0]["HSL" + i + "_1"]) + GetSafeDouble(ET_JXH[0]["HSL" + i + "_1"])) / 2, 1);
-                        ET_JXH[0]["PJHSL" + i] = pjhsl.ToString("0.0");
+                        var pjhsl = Round((GetSafeDouble(ET_JXH["HSL" + i + "_1"]) + GetSafeDouble(ET_JXH["HSL" + i + "_1"])) / 2, 1);
+                        ET_JXH["PJHSL" + i] = pjhsl.ToString("0.0");
                     }
 
                 }
