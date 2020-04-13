@@ -363,6 +363,16 @@ namespace Calculates
                     sign = false;
                 }
 
+                if (jcxm.Contains("、外观质量、"))
+                {
+                    if (Conversion.Val(sItem["WCBHGS"]) < 7)
+                        sItem["WCPD"] = "合格";
+                    else
+                        sItem["WCPD"] = "不合格";
+                }
+                else
+                    sItem["WCPD"] = "----";
+
                 if (!sign)
                 {
                     sItem["KDYQ"] = "----";
@@ -373,7 +383,7 @@ namespace Calculates
                     sItem["ZLSSYQ"] = "----";
                 }
 
-                if (sItem["XSLPD"] == "不合格" || sItem["QDPD"] == "不合格" || sItem["GMDPD"] == "不合格" || sItem["KDPD"] == "不合格")
+                if (sItem["XSLPD"] == "不合格" || sItem["QDPD"] == "不合格" || sItem["GMDPD"] == "不合格" || sItem["KDPD"] == "不合格" || sItem["WCPD"] == "不合格")
                 {
                     sItem["JCJG"] = "不合格";
                     mAllHg = false;

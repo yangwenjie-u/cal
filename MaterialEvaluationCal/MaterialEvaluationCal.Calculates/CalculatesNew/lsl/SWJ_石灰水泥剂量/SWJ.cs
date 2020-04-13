@@ -33,6 +33,7 @@ namespace Calculates
             {
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
+                //sItem["S_AVG"] = Round((GetSafeDouble(sItem["SYDDL1"]) + GetSafeDouble(sItem["SYDDL2"])) / 2,1).ToString("0.0");
                 sItem["S_PDJG"] = IsQualified(sItem["S_SJJL"],sItem["S_AVG"],true);
                 if (sItem["S_PDJG"] == "不符合")
                 {

@@ -28,6 +28,7 @@ namespace Calculates
                 data["M_SCY"] = new List<IDictionary<string, string>>();
             }
             var MItem = data["M_SCY"];
+            var ET_SF = data["ET_SF"][0];
 
             if (MItem == null)
             {
@@ -40,6 +41,36 @@ namespace Calculates
             int mHggs = 0;//统计合格数量
             foreach (var sItem in S_SCYS)
             {
+                //筛前总土质量   小于2mm土质量
+                if (IsNumeric(ET_SF["SQZTZL"].Trim()) && IsNumeric(ET_SF["XTZL"].Trim()))
+                {
+                    //小于2mm土占总土质量 %
+                    ET_SF["XTBL"] = Round(GetSafeDouble(ET_SF["XTZL"].Trim()) / GetSafeDouble(ET_SF["SQZTZL"].Trim()),1).ToString("0.0");
+                }
+                sign = true;
+                //细筛总质量（小于2mm取样质量）
+                sign = IsNumeric(ET_SF["XSFZL"]) && GetSafeDouble(ET_SF["XSFZL"]) != 0 ? sign : false;
+                if (sign)
+                {
+                    for (int i = 1; i <= 7; i++)
+                    {
+                        if (IsNumeric(ET_SF["CLSZL"+ i]))
+                        {
+                            for (int j = i+1; j <= 7; j++)
+                            {
+
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    ET_SF["XSFZL"] = "非数字";
+                }
+
+
+
+
                 itemHG = true;
                 string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 

@@ -654,7 +654,15 @@ namespace Calculates
                         }
                         else
                         {
-                            bhgJcxm = bhgJcxm + "强度（3天）,";
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = bhgJcxm + "强度（3天）";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、强度（3天）";
+                            }
+                            
                         }
                     }
                     else
@@ -816,7 +824,14 @@ namespace Calculates
                         }
                         else
                         {
-                            bhgJcxm = bhgJcxm + "强度（28天）,";
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = bhgJcxm + "强度（28天）";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、强度（28天）";
+                            }
                         }
                     }
                     else
@@ -901,7 +916,14 @@ namespace Calculates
                             else
                             {
                                 mitem["ADX_HG"] = "不合格";
-                                bhgJcxm = bhgJcxm + "安定性,";
+                                if (string.IsNullOrEmpty(bhgJcxm))
+                                {
+                                    bhgJcxm = bhgJcxm + "安定性";
+                                }
+                                else
+                                {
+                                    bhgJcxm = bhgJcxm + "、安定性";
+                                }
                                 adx_hg = false;
                             }
                         }
@@ -921,7 +943,14 @@ namespace Calculates
                                 {
                                     adx_hg = false;
                                     mitem["ADX_HG"] = "不合格";
-                                    bhgJcxm = bhgJcxm + "安定性,";
+                                    if (string.IsNullOrEmpty(bhgJcxm))
+                                    {
+                                        bhgJcxm = bhgJcxm + "安定性";
+                                    }
+                                    else
+                                    {
+                                        bhgJcxm = bhgJcxm + "、安定性";
+                                    }
                                 }
                             }
                             else
@@ -942,7 +971,14 @@ namespace Calculates
                                     {
                                         adx_hg = false;
                                         mitem["ADX_HG"] = "不合格";
-                                        bhgJcxm = bhgJcxm + "安定性,";
+                                        if (string.IsNullOrEmpty(bhgJcxm))
+                                        {
+                                            bhgJcxm = bhgJcxm + "安定性";
+                                        }
+                                        else
+                                        {
+                                            bhgJcxm = bhgJcxm + "、安定性";
+                                        }
                                     }
                                 }
                                 else
@@ -956,7 +992,14 @@ namespace Calculates
                                     {
                                         adx_hg = false;
                                         mitem["ADX_HG"] = "不合格";
-                                        bhgJcxm = bhgJcxm + "安定性,";
+                                        if (string.IsNullOrEmpty(bhgJcxm))
+                                        {
+                                            bhgJcxm = bhgJcxm + "安定性";
+                                        }
+                                        else
+                                        {
+                                            bhgJcxm = bhgJcxm + "、安定性";
+                                        }
                                     }
                                 }
                             }
@@ -989,7 +1032,14 @@ namespace Calculates
                         else
                         {
                             mitem["CD_HG"] = "不合格";
-                            bhgJcxm = bhgJcxm + "标准稠度用水量,";
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = bhgJcxm + "标准稠度用水量";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、标准稠度用水量";
+                            }
                             cd_hg = false;
                         }
                         if ((mCdbz1 == 0 && mCdbz2 == 0) || string.IsNullOrEmpty(mitem["CD"]) || Conversion.Val(mitem["CD"]) == 0)
@@ -1061,7 +1111,14 @@ namespace Calculates
                                 else
                                 {
                                     mitem["XD_HG"] = "不合格";
-                                    bhgJcxm = bhgJcxm + "比表面积,";
+                                    if (string.IsNullOrEmpty(bhgJcxm))
+                                    {
+                                        bhgJcxm = bhgJcxm + "比表面积";
+                                    }
+                                    else
+                                    {
+                                        bhgJcxm = bhgJcxm + "、比表面积";
+                                    }
                                     xd_hg = false;
                                 }
                             }
@@ -1168,7 +1225,14 @@ namespace Calculates
                                     else
                                     {
                                         mitem["XD_HG"] = "不合格";
-                                        bhgJcxm = bhgJcxm + "比表面积,";
+                                        if (string.IsNullOrEmpty(bhgJcxm))
+                                        {
+                                            bhgJcxm = bhgJcxm + "比表面积";
+                                        }
+                                        else
+                                        {
+                                            bhgJcxm = bhgJcxm + "、比表面积";
+                                        }
                                         xd_hg = false;
                                     }
                                 }
@@ -1237,7 +1301,14 @@ namespace Calculates
                         else
                         {
                             mitem["XD_HG"] = "不合格";
-                            bhgJcxm = bhgJcxm + "细度,";
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = bhgJcxm + "细度";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、细度";
+                            }
                             xd_hg = false;
                         }
                     }
@@ -1253,7 +1324,14 @@ namespace Calculates
                         else
                         {
                             mitem["XD_HG"] = "不合格";
-                            bhgJcxm = bhgJcxm + "细度,";
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = bhgJcxm + "细度";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、细度";
+                            }
                             xd_hg = false;
                         }
                     }
@@ -1359,7 +1437,14 @@ namespace Calculates
                     else
                     {
                         mitem["NJSJ_HG"] = "不合格";
-                        bhgJcxm = bhgJcxm + "凝结时间,";
+                        if (string.IsNullOrEmpty(bhgJcxm))
+                        {
+                            bhgJcxm = bhgJcxm + "凝结时间";
+                        }
+                        else
+                        {
+                            bhgJcxm = bhgJcxm + "、凝结时间";
+                        }
                     }
                 }
                 else
@@ -1427,7 +1512,7 @@ namespace Calculates
                 {
                     mitem["JCJGMS"] = "28天强度检测前，该组试样不符合标准要求。";
                     if (mFlag_Bhg && mFlag_Hg)
-                        mitem["JCJGMS"] = "28天强度检测前，该组试样所检项目部分符合标准要求。";
+                        mitem["JCJGMS"] = "28天强度检测前，该组试样所检项目"+ bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
                 }
             }
             #endregion
