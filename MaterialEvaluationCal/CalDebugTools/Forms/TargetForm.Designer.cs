@@ -42,6 +42,8 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.btn_load = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txt_SFieldeStartIndex = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btn_helper = new System.Windows.Forms.Button();
             this.btn_S_only = new System.Windows.Forms.Button();
@@ -63,8 +65,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.txt_SFieldeStartIndex = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.txt_ssjcx = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -178,7 +180,7 @@
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(657, 137);
+            this.btn_save.Location = new System.Drawing.Point(597, 164);
             this.btn_save.Margin = new System.Windows.Forms.Padding(4);
             this.btn_save.Name = "btn_save";
             this.btn_save.Size = new System.Drawing.Size(100, 29);
@@ -189,7 +191,7 @@
             // 
             // btn_load
             // 
-            this.btn_load.Location = new System.Drawing.Point(455, 137);
+            this.btn_load.Location = new System.Drawing.Point(452, 162);
             this.btn_load.Margin = new System.Windows.Forms.Padding(4);
             this.btn_load.Name = "btn_load";
             this.btn_load.Size = new System.Drawing.Size(100, 29);
@@ -200,6 +202,8 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.txt_ssjcx);
+            this.panel1.Controls.Add(this.label13);
             this.panel1.Controls.Add(this.txt_SFieldeStartIndex);
             this.panel1.Controls.Add(this.label12);
             this.panel1.Controls.Add(this.groupBox1);
@@ -231,8 +235,27 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1724, 176);
+            this.panel1.Size = new System.Drawing.Size(1724, 223);
             this.panel1.TabIndex = 15;
+            // 
+            // txt_SFieldeStartIndex
+            // 
+            this.txt_SFieldeStartIndex.Location = new System.Drawing.Point(468, 111);
+            this.txt_SFieldeStartIndex.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_SFieldeStartIndex.Name = "txt_SFieldeStartIndex";
+            this.txt_SFieldeStartIndex.Size = new System.Drawing.Size(29, 25);
+            this.txt_SFieldeStartIndex.TabIndex = 36;
+            this.txt_SFieldeStartIndex.Text = "1";
+            this.txt_SFieldeStartIndex.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SFieldeStartIndex_KeyPress);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(343, 113);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(112, 15);
+            this.label12.TabIndex = 35;
+            this.label12.Text = "字段初始序号：";
             // 
             // groupBox1
             // 
@@ -355,7 +378,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(37, 146);
+            this.label8.Location = new System.Drawing.Point(34, 171);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(112, 15);
@@ -364,7 +387,7 @@
             // 
             // txt_where
             // 
-            this.txt_where.Location = new System.Drawing.Point(159, 137);
+            this.txt_where.Location = new System.Drawing.Point(156, 162);
             this.txt_where.Margin = new System.Windows.Forms.Padding(4);
             this.txt_where.Multiline = true;
             this.txt_where.Name = "txt_where";
@@ -423,13 +446,13 @@
             this.tableLayoutPanel1.Controls.Add(this.dataGridView2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 176);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 223);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.061489F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.93851F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1724, 566);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1724, 519);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // dataGridView2
@@ -442,7 +465,7 @@
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersWidth = 40;
             this.dataGridView2.RowTemplate.Height = 23;
-            this.dataGridView2.Size = new System.Drawing.Size(1716, 43);
+            this.dataGridView2.Size = new System.Drawing.Size(1716, 39);
             this.dataGridView2.TabIndex = 13;
             // 
             // dataGridView1
@@ -451,32 +474,30 @@
             this.dataGridView1.ColumnHeadersHeight = 29;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(4, 55);
+            this.dataGridView1.Location = new System.Drawing.Point(4, 51);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 40;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(1716, 507);
+            this.dataGridView1.Size = new System.Drawing.Size(1716, 464);
             this.dataGridView1.TabIndex = 11;
             // 
-            // txt_SFieldeStartIndex
+            // txt_ssjcx
             // 
-            this.txt_SFieldeStartIndex.Location = new System.Drawing.Point(468, 111);
-            this.txt_SFieldeStartIndex.Margin = new System.Windows.Forms.Padding(4);
-            this.txt_SFieldeStartIndex.Name = "txt_SFieldeStartIndex";
-            this.txt_SFieldeStartIndex.Size = new System.Drawing.Size(29, 25);
-            this.txt_SFieldeStartIndex.TabIndex = 36;
-            this.txt_SFieldeStartIndex.Text = "1";
-            this.txt_SFieldeStartIndex.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SFieldeStartIndex_KeyPress);
+            this.txt_ssjcx.Location = new System.Drawing.Point(669, 117);
+            this.txt_ssjcx.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_ssjcx.Name = "txt_ssjcx";
+            this.txt_ssjcx.Size = new System.Drawing.Size(211, 25);
+            this.txt_ssjcx.TabIndex = 38;
             // 
-            // label12
+            // label13
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(343, 113);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(112, 15);
-            this.label12.TabIndex = 35;
-            this.label12.Text = "字段初始序号：";
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(545, 120);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(97, 15);
+            this.label13.TabIndex = 37;
+            this.label13.Text = "所属检测项：";
             // 
             // TargetForm
             // 
@@ -540,5 +561,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txt_SFieldeStartIndex;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txt_ssjcx;
+        private System.Windows.Forms.Label label13;
     }
 }

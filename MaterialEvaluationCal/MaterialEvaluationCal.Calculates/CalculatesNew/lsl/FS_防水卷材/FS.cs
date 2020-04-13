@@ -527,7 +527,7 @@ namespace Calculates
                             md = Round(md, 1);
                             sum = sum + md;
                         }
-                        double pjmd = sum / 6;
+                        double pjmd = sum / 5;
                         pjmd = Round(pjmd, 1);
                         sItem["V_KLQD"] = pjmd.ToString();
                         mItem["GV_KLQD"] = "≥" + mItem["GV_KLQD"];
@@ -665,7 +665,7 @@ namespace Calculates
                             md = Round(md, 0);
                             sum = sum + md;
                         }
-                        double pjmd = sum / 6;
+                        double pjmd = sum / 5;
                         pjmd = Round(pjmd, 0);
                         sItem["V_SCL"] = pjmd.ToString();
                         sItem["H_SCL"] = "";
@@ -737,7 +737,7 @@ namespace Calculates
                 else
                 {
                     sItem["BTSX"] = "----";
-                    sItem["BTSXSM"] = "----";
+                    sItem["BTSXMS"] = "----";
                     mItem["HG_BTSX"] = "----";
                     mItem["G_BTSX"] = "----";
                 }
@@ -1377,27 +1377,27 @@ namespace Calculates
                 if (mbhggs > 0)
                 {
                     sItem["JCJG"] = "不合格";
-                    jsbeizhu = "该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + mItem["PDBZ"] + "标准要求。";
-                    if (mFlag_Bhg & mFlag_Hg)
-                    {
-                        jsbeizhu = "该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + mItem["PDBZ"] + "标准要求。";
-                    }
                 }
                 else
                 {
                     sItem["JCJG"] = "合格";
-                    jsbeizhu = "该组试样所检项目符合" + mItem["PDBZ"] + "标准要求。";
                 }
             }
 
             #region 添加最终报告
+            //综合判断
+            if (mbhggs == 0)
+            {
+                MItem[0]["JCJG"] = "合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+            }
             if (mbhggs > 0)
             {
-                mjcjg = "合格";
+                MItem[0]["JCJG"] = "不合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                //if (mFlag_Bhg && mFlag_Hg)
+                //    MItem[0]["JCJGMS"] = "依据标准" + MItem[0]["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合标准要求。";
             }
-
-            MItem[0]["JCJG"] = mjcjg;
-            MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             #endregion
         }

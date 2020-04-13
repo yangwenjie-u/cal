@@ -359,7 +359,7 @@
             this.tab_debug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tab_debug.Name = "tab_debug";
             this.tab_debug.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tab_debug.Size = new System.Drawing.Size(1269, 442);
+            this.tab_debug.Size = new System.Drawing.Size(1269, 440);
             this.tab_debug.TabIndex = 1;
             this.tab_debug.Text = "调试输出";
             this.tab_debug.UseVisualStyleBackColor = true;
@@ -371,7 +371,7 @@
             this.ritResult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ritResult.Multiline = true;
             this.ritResult.Name = "ritResult";
-            this.ritResult.Size = new System.Drawing.Size(1263, 438);
+            this.ritResult.Size = new System.Drawing.Size(1263, 436);
             this.ritResult.TabIndex = 0;
             // 
             // tapCompare
@@ -381,7 +381,7 @@
             this.tapCompare.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tapCompare.Name = "tapCompare";
             this.tapCompare.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tapCompare.Size = new System.Drawing.Size(1269, 442);
+            this.tapCompare.Size = new System.Drawing.Size(1269, 440);
             this.tapCompare.TabIndex = 2;
             this.tapCompare.Text = "数据比较";
             this.tapCompare.UseVisualStyleBackColor = true;
@@ -398,7 +398,7 @@
             this.dataGridViewResult.ReadOnly = true;
             this.dataGridViewResult.RowHeadersWidth = 51;
             this.dataGridViewResult.RowTemplate.Height = 27;
-            this.dataGridViewResult.Size = new System.Drawing.Size(1263, 438);
+            this.dataGridViewResult.Size = new System.Drawing.Size(1263, 436);
             this.dataGridViewResult.TabIndex = 0;
             this.dataGridViewResult.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridViewResult_CellPainting);
             // 
@@ -409,7 +409,7 @@
             this.tab_batch.Margin = new System.Windows.Forms.Padding(4);
             this.tab_batch.Name = "tab_batch";
             this.tab_batch.Padding = new System.Windows.Forms.Padding(4);
-            this.tab_batch.Size = new System.Drawing.Size(1269, 442);
+            this.tab_batch.Size = new System.Drawing.Size(1269, 440);
             this.tab_batch.TabIndex = 3;
             this.tab_batch.Text = "批量调试";
             this.tab_batch.UseVisualStyleBackColor = true;
@@ -427,7 +427,7 @@
             this.DataGridViewRowBitch.ReadOnly = true;
             this.DataGridViewRowBitch.RowHeadersWidth = 51;
             this.DataGridViewRowBitch.RowTemplate.Height = 23;
-            this.DataGridViewRowBitch.Size = new System.Drawing.Size(1261, 434);
+            this.DataGridViewRowBitch.Size = new System.Drawing.Size(1261, 432);
             this.DataGridViewRowBitch.TabIndex = 0;
             this.DataGridViewRowBitch.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridViewRowBitch_CellMouseDoubleClick);
             // 

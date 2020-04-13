@@ -15,9 +15,8 @@ namespace Calculates
             /************************ 代码开始 *********************/
             bool mAllHg = true;
             string jcxm = "", mjcjg = "不合格", jsbeizhu = "", jcjg = "";
-
-
-            //var extraDJ = dataExtra["BZ_SC_DJ"];
+            var jcxmBhg = "";
+            var jcxmCur = "";
             var data = retData;
 
             var SItem = data["S_SC"];
@@ -160,15 +159,18 @@ namespace Calculates
                 #region 压力试验
                 if (jcxm.Contains("、压力试验、") || jcxm.Contains("、液压试验、"))
                 {
+                    jcxmBhg = "压力试验";
                     if (sItem["SJSYYL"] != "")
                     {
                         if ("铸铁供暖散热器" == sItem["CPMC"])
                         {
                             sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续1min，并用0.5kg钢锤轻击，压力不降且不渗不漏";
+                            sItem["YLSYYQ"] = "试验压力为工作压力的1.5倍，工作压力是" + sItem["GZYL"] + "MPa；持续1min，并用0.5kg钢锤轻击，压力不降且不渗不漏";
                         }
                         else
                         {
-                            sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续2～3min，压力不降且不渗不漏";
+                            //sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续2～3min，压力不降且不渗不漏";
+                            sItem["YLSYYQ"] = "试验压力为工作压力的1.5倍，工作压力是" + sItem["GZYL"] + "MPa；持续2～3min，压力不降且不渗不漏";
                         }
                         if (GetSafeDouble(sItem["YLSYSM"]) >= GetSafeDouble(sItem["SJSYYL"]) && GetSafeDouble(sItem["YLSYSM"]) >= 0.6 && sItem["SLQK"] == "压力不降且不渗不漏")
                         {
@@ -246,34 +248,21 @@ namespace Calculates
                     {
                         sItem["JCJG"] = "不合格";
                         mAllHg = false;
-                        if (jsbeizhu == "该组试样")
-                        {
-                            jsbeizhu = jsbeizhu + "压力试验不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                        }
-                        else
-                        {
-                            jsbeizhu = jsbeizhu + "；压力试验不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                        }
+                        jsbeizhu= "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                     }
                     else
                     {
                         sItem["JCJG"] = "合格";
                         mAllHg = true;
-                        if (jsbeizhu == "该组试样")
-                        {
-                            jsbeizhu = jsbeizhu + "压力试验符合" + MItem[0]["PDBZ"] + "标准要求。";
-                        }
-                        else
-                        {
-                            jsbeizhu = jsbeizhu + "；压力试验符合" + MItem[0]["PDBZ"] + "标准要求。";
-                        }
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                     }
                 }
                 else
                 {
                     sItem["JCJG"] = "合格";
                     mAllHg = true;
-                    jsbeizhu = jsbeizhu + ",标准特征公式如上。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+
                 }
                 #endregion
             }
@@ -283,6 +272,8 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
+                MItem[0]["JCJG"] = "合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             if (!data.ContainsKey("M_SC"))
             {

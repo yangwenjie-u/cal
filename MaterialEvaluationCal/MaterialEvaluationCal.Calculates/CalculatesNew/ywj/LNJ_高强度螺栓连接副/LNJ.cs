@@ -73,7 +73,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、紧固轴力、"))
                 {
-                    jcxmCur = "纵向断裂伸长率";
+                    jcxmCur = "紧固轴力";
                     var klhzVal = "0";
                     for (int i = 1; i < 9; i++)
                     {
@@ -293,7 +293,6 @@ namespace Calculates
                 {
                     sItem["JCJG"] = "合格";
                 }
-
             }
 
             #region 添加最终报告
@@ -301,11 +300,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;

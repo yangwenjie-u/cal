@@ -357,6 +357,7 @@ namespace CalDebugTools.Forms
             string fieldType = string.IsNullOrEmpty(txt_fieldType.Text) ? "" : txt_fieldType.Text.Trim();
             string txtLX = string.IsNullOrEmpty(txt_lx.Text) ? "H" : txt_lx.Text.Trim();
             string chksfxs = this.chk_SFXS.Checked ? "1" : "0";
+            string ssjcx = string.IsNullOrEmpty(this.txt_ssjcx.Text) ? "" : "、" + this.txt_ssjcx.Text.Trim() + "、";
             string locstionStr = "1,1";
 
             if (string.IsNullOrEmpty(xmbh))
@@ -441,7 +442,7 @@ namespace CalDebugTools.Forms
                 if (txt_STabCount.Text == "1")
                 {
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('{tableName}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
+        $"VALUES('{tableName}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '{ssjcx}', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                     lst.Add(sqlStr);
                 }
                 else
@@ -449,7 +450,7 @@ namespace CalDebugTools.Forms
                     for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
                     {
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('{tableName}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
+        $"VALUES('{tableName}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '{ssjcx}', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                         lst.Add(sqlStr);
                     }
                 }

@@ -8,7 +8,7 @@ namespace Calculates
 {
     public partial class BaseMethods : BaseData
     {
-        public IDictionary<string, IList<IDictionary<string, string>>> dataExtra = null;
+        public IDictionary<string, IList<IDictionary<string, string>>> dataExtra = new Dictionary<string, IList<IDictionary<string, string>>>(StringComparer.OrdinalIgnoreCase);
         public IDictionary<string, IList<IDictionary<string, string>>> retData = null;
 
 
@@ -534,6 +534,7 @@ namespace Calculates
         /// <returns></returns>
         public static bool IsNumeric(string str)
         {
+            str = str.Trim();
             //^-?\\d+(\\.\\d+)?$
             //^[+-]?\d*[.]?\d*$
             if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d+[.]?\d*$"))//通过正则表达式验证输入的是否是数字
@@ -777,7 +778,7 @@ namespace Calculates
 
         ///<summary>
         /// 判断是否合格 默认合格/不合格
-        /// </summary>·
+        /// </summary>
         /// <param name="sj">范围值</param>
         /// <param name="sc">比较值</param>
         /// <param name="flag">返回(符合,不符合) 还是判断(合格,不合格)  true：符合/不符合  false :合格,不合格</param>
@@ -836,121 +837,129 @@ namespace Calculates
             max_bl = false;
 
             int length = 0, dw = 0;
-
-            if (sj.IndexOf('＞') != -1)
+            try
             {
-                length = sj.Length;
-                dw = sj.IndexOf('＞');
-                dw += 1;
-                l_bl = sj.Substring(0, dw - 1);
-                r_bl = sj.Substring(dw, length - dw);
 
-                if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                if (sj.IndexOf('＞') != -1)
                 {
-                    max_sjz = Convert.ToDecimal(l_bl);
-                    max_bl = false;
+                    length = sj.Length;
+                    dw = sj.IndexOf('＞');
+                    dw += 1;
+                    l_bl = sj.Substring(0, dw - 1);
+                    r_bl = sj.Substring(dw, length - dw);
+
+                    if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                    {
+                        max_sjz = Convert.ToDecimal(l_bl);
+                        max_bl = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                    {
+                        min_sjz = Convert.ToDecimal(r_bl);
+                        min_bl = false;
+                    }
+                    sign = true;
+
                 }
 
-                if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                if (sj.IndexOf('≥') != -1)
                 {
-                    min_sjz = Convert.ToDecimal(r_bl);
-                    min_bl = false;
+                    length = sj.Length;
+                    dw = sj.IndexOf('≥');
+                    dw += 1;
+                    l_bl = sj.Substring(0, dw - 1);
+                    r_bl = sj.Substring(dw, length - dw);
+
+                    if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                    {
+                        max_sjz = Convert.ToDecimal(l_bl);
+                        max_bl = true;
+                    }
+                    if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                    {
+                        min_sjz = Convert.ToDecimal(r_bl);
+                        min_bl = true;
+                    }
+                    sign = true;
                 }
-                sign = true;
 
-            }
-
-            if (sj.IndexOf('≥') != -1)
-            {
-                length = sj.Length;
-                dw = sj.IndexOf('≥');
-                dw += 1;
-                l_bl = sj.Substring(0, dw - 1);
-                r_bl = sj.Substring(dw, length - dw);
-
-                if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                if (sj.IndexOf('＜') != -1)
                 {
-                    max_sjz = Convert.ToDecimal(l_bl);
+                    length = sj.Length;
+                    dw = sj.IndexOf('＜');
+                    dw += 1;
+                    l_bl = sj.Substring(0, dw - 1);
+                    r_bl = sj.Substring(dw, length - dw);
+
+                    if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                    {
+                        min_sjz = Convert.ToDecimal(l_bl);
+                        min_bl = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                    {
+                        max_sjz = Convert.ToDecimal(r_bl);
+                        max_bl = false;
+                    }
+                    sign = true;
+                }
+
+                if (sj.IndexOf('≤') != -1)
+                {
+                    length = sj.Length;
+                    dw = sj.IndexOf('≤');
+                    dw += 1;
+                    l_bl = sj.Substring(0, dw - 1);
+                    r_bl = sj.Substring(dw, length - dw);
+
+                    if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                    {
+                        min_sjz = Convert.ToDecimal(l_bl);
+                        min_bl = true;
+                    }
+
+                    if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
+                    {
+                        max_sjz = Convert.ToDecimal(r_bl);
+                        max_bl = true;
+                    }
+                    sign = true;
+                }
+                if (sj.IndexOf('～') != -1)
+                {
+                    length = sj.Length;
+                    dw = sj.IndexOf('～');
+                    dw += 1;
+                    min_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(0, dw - 1)));
+                    max_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(dw, length - dw)));
+
                     max_bl = true;
-                }
-                if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
-                {
-                    min_sjz = Convert.ToDecimal(r_bl);
                     min_bl = true;
+
+                    sign = true;
+
+
                 }
-                sign = true;
-            }
-
-            if (sj.IndexOf('＜') != -1)
-            {
-                length = sj.Length;
-                dw = sj.IndexOf('＜');
-                dw += 1;
-                l_bl = sj.Substring(0, dw - 1);
-                r_bl = sj.Substring(dw, length - dw);
-
-                if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
+                if (sj.IndexOf('±') != -1)
                 {
-                    min_sjz = Convert.ToDecimal(l_bl);
-                    min_bl = false;
-                }
-
-                if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
-                {
-                    max_sjz = Convert.ToDecimal(r_bl);
-                    max_bl = false;
-                }
-                sign = true;
-            }
-
-            if (sj.IndexOf('≤') != -1)
-            {
-                length = sj.Length;
-                dw = sj.IndexOf('≤');
-                dw += 1;
-                l_bl = sj.Substring(0, dw - 1);
-                r_bl = sj.Substring(dw, length - dw);
-
-                if (!string.IsNullOrEmpty(l_bl) && IsNumeric(l_bl))
-                {
-                    min_sjz = Convert.ToDecimal(l_bl);
-                    min_bl = true;
-                }
-
-                if (!string.IsNullOrEmpty(r_bl) && IsNumeric(r_bl))
-                {
-                    max_sjz = Convert.ToDecimal(r_bl);
+                    length = sj.Length;
+                    dw = sj.IndexOf('±');
+                    dw += 1;
+                    min_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(0, dw - 1)));
+                    max_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(dw, length - dw)));
+                    min_sjz = Convert.ToDecimal(min_sjz - max_sjz);
+                    max_sjz = Convert.ToDecimal(min_sjz + 2 * max_sjz);
                     max_bl = true;
+                    min_bl = true;
+
+                    sign = true;
                 }
-                sign = true;
             }
-            if (sj.IndexOf('～') != -1)
+            catch (Exception)
             {
-                length = sj.Length;
-                dw = sj.IndexOf('～');
-                dw += 1;
-                min_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(0, dw - 1)));
-                max_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(dw, length - dw)));
-
-                max_bl = true;
-                min_bl = true;
-
-                sign = true;
-
-
-            }
-            if (sj.IndexOf('±') != -1)
-            {
-                length = sj.Length;
-                dw = sj.IndexOf('±');
-                dw += 1;
-                min_sjz = Convert.ToDecimal(sj.Substring(0, dw - 1));
-                max_sjz = Convert.ToDecimal(sj.Substring(dw, length - dw));
-
-                max_bl = true;
-                min_bl = true;
-
-                sign = true;
+                throw new Exception(sj + "格式不正确，请确认标准要求");
             }
 
             if (sj == "0")

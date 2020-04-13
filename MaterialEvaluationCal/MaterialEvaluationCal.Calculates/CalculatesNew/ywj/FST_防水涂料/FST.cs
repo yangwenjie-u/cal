@@ -12,12 +12,12 @@ namespace Calculates
         {
             #region  参数定义
             double[] mkyqdArray = new double[3];
-            int mbhggs;
+            int mbhggs = 0;
             string dCpmc, dLx, dZf, dDj, dBzh, mSjdj;
             string mJSFF;
             bool mAllHg = true;
             int QDJSFF = 0;
-            bool mFlag_Hg, mFlag_Bhg = false;
+            bool mFlag_Hg = false, mFlag_Bhg = false;
 
             var data = retData;
             var mrsDj = dataExtra["BZ_FST_DJ"];
@@ -30,6 +30,9 @@ namespace Calculates
             mitem["JCJGMS"] = "";
             mSjdj = "";
             //int QDJSFF = 0;
+            var jcxmBhg = "";
+            var jcxmCur = "";
+
             foreach (var sitem in SItem)
             {
                 dCpmc = string.IsNullOrEmpty(sitem["CPMC"]) ? "" : sitem["CPMC"].Trim();
@@ -134,6 +137,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、拉伸强度、"))
                 {
+                    jcxmCur = "拉伸强度";
                     Gs = 0;
                     sum = 0;
                     Ws = string.IsNullOrEmpty(sitem["CQS"]) ? 1 : GetSafeInt(sitem["CQS"]);
@@ -195,8 +199,37 @@ namespace Calculates
                     sitem["HG_NJQD"] = "----";
                     mitem["G_NJQD"] = "----";
                 }
-                if (jcxm.Contains("、干燥时间（表干）、") || jcxm.Contains("、表干时间、") || jcxm.Contains("、干燥时间、"))
+                if (jcxm.Contains("、干燥时间(表干)、") || jcxm.Contains("、表干时间、") || jcxm.Contains("、干燥时间、"))
                 {
+                    if (string.IsNullOrEmpty(sitem["SGSJ1"]) || string.IsNullOrEmpty(sitem["SGSJ2"]))
+                    {
+                        throw new Exception("请输入有效的表干时间");
+                    }
+                    jcxmCur = "表干时间";
+
+                    md1 = Conversion.Val(sitem["BGSJ1"]);
+                    md2 = Conversion.Val(sitem["BGSJ2"]);
+                    md = md1 + md2;
+                    if (md < 10)
+                    {
+                        //精确到小数点1位
+                        sitem["BGSJ"] = (Round((md1 + md2) / 2, 1)).ToString();
+                    }
+                    else if (md < 100)
+                    {
+                        //精确到个位
+                        sitem["BGSJ"] = (Round((md1 + md2) / 2, 0)).ToString();
+                    }
+                    else if (md < 1000)
+                    {
+                        //精确到十位
+                        sitem["BGSJ"] = (Round((md1 + md2) / 2 / 10, 0) * 10).ToString();
+                    }
+                    else
+                    {
+                        sitem["BGSJ"] = (Round((md1 + md2) / 2 / 100, 0) * 100).ToString();
+                    }
+
                     sitem["HG_BGSJ"] = IsQualified(mitem["G_BGSJ"], sitem["BGSJ"], false);
                     if (sitem["HG_BGSJ"] == "不合格")
                     {
@@ -215,8 +248,36 @@ namespace Calculates
                     mitem["G_BGSJ"] = "----";
                 }
 
-                if (jcxm.Contains("、干燥时间（实干）、") || jcxm.Contains("、实干时间、") || jcxm.Contains("、干燥时间、"))
+                if (jcxm.Contains("、干燥时间(实干)、") || jcxm.Contains("、实干时间、") || jcxm.Contains("、干燥时间、"))
                 {
+                    if (string.IsNullOrEmpty(sitem["SGSJ1"]) || string.IsNullOrEmpty(sitem["SGSJ2"]))
+                    {
+                        throw new Exception("请输入有效的实干时间");
+                    }
+                    jcxmCur = "实干时间";
+
+                    md1 = Conversion.Val(sitem["SGSJ1"]);
+                    md2 = Conversion.Val(sitem["SGSJ2"]);
+                    md = md1 + md2;
+                    if (md < 10)
+                    {
+                        //精确到小数点1位
+                        sitem["SGSJ"] = (Round((md1 + md2) / 2, 1)).ToString();
+                    }
+                    else if (md < 100)
+                    {
+                        //精确到个位
+                        sitem["SGSJ"] = (Round((md1 + md2) / 2, 0)).ToString();
+                    }
+                    else if (md < 1000)
+                    {
+                        //精确到十位
+                        sitem["SGSJ"] = (Round((md1 + md2) / 2 / 10, 0) * 10).ToString();
+                    }
+                    else
+                    {
+                        sitem["SGSJ"] = (Round((md1 + md2) / 2 / 100, 0) * 100).ToString();
+                    }
                     mitem["G_SGSJ"] = "≤" + mitem["G_SGSJ"].Trim();
                     sitem["HG_SGSJ"] = IsQualified(mitem["G_SGSJ"], sitem["SGSJ"], false);
                     mbhggs = sitem["HG_SGSJ"] == "不合格" ? mbhggs + 1 : mbhggs;
@@ -234,6 +295,8 @@ namespace Calculates
 
                 if (jcxm.Contains("、低温稳定性、") || jcxm.Contains("、低温稳定性(3次循环)、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "低温稳定性,低温稳定性(3次循环)");
+
                     if ("合格" != sitem["HG_DWWDX"] && sitem["HG_DWWDX"] != "符合")
                     {
                         mbhggs = mbhggs + 1;
@@ -254,6 +317,7 @@ namespace Calculates
                 if (jcxm.Contains("、固体含量、"))
                 {
                     sum = 0;
+                    jcxmCur = "固体含量";
                     for (int i = 1; i < 3; i++)
                     {
                         if ((Conversion.Val(sitem["GTHL_M1" + i]) - Conversion.Val(sitem["GTHL_PYM"]) <= 0))
@@ -283,6 +347,8 @@ namespace Calculates
                 {
                     sum = 0;
                     Gs = 0;
+                    jcxmCur = CurrentJcxm(jcxm, "断裂延伸率,断裂伸长率");
+
                     List<double> lsScl = new List<double>();
                     for (xd = 1; xd <= 5; xd++)
                     {
@@ -329,6 +395,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、不透水性、"))
                 {
+                    jcxmCur = "不透水性";
                     if ("合格" != sitem["HG_BTSX"] && sitem["HG_BTSX"] != "符合")
                     {
                         mbhggs = mbhggs + 1;
@@ -345,6 +412,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、低温柔性、"))
                 {
+                    jcxmCur = "低温柔性";
                     if ("合格" != sitem["HG_DWRD"] && sitem["HG_DWRD"] != "符合")
                     {
                         mbhggs = mbhggs + 1;
@@ -362,6 +430,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、低温弯折性、"))
                 {
+                    jcxmCur = "低温弯折性";
                     if (sitem["HG_DWWZ"].Trim() != "符合" && sitem["HG_DWWZ"].Trim() != "合格")
                     {
                         mbhggs = mbhggs + 1;
@@ -382,6 +451,7 @@ namespace Calculates
                     sum = 0;
                     md2 = 0;
 
+                    jcxmCur = "撕裂强度";
                     int hgsl = 0;
                     for (int i = 1; i <= 5; i++)
                     {
@@ -429,33 +499,35 @@ namespace Calculates
                 }
 
 
-                if (mbhggs == 0)
-                {
-                    mitem["JCJGMS"] = "该组试件所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                    sitem["JCJG"] = "合格";
-                }
-                if (mbhggs >= 1)
-                {
-                    mitem["JCJGMS"] = "该组试件不符合" + mitem["PDBZ"] + "标准要求。";
-                    sitem["JCJG"] = "不合格";
-                    if (mFlag_Bhg && mFlag_Hg)
-                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                }
+                //if (mbhggs == 0)
+                //{
+                //    mitem["JCJGMS"] = "该组试件所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                //    sitem["JCJG"] = "合格";
+                //}
+                //if (mbhggs >= 1)
+                //{
+                //    mitem["JCJGMS"] = "该组试件不符合" + mitem["PDBZ"] + "标准要求。";
+                //    sitem["JCJG"] = "不合格";
+                //    if (mFlag_Bhg && mFlag_Hg)
+                //        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                //}
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
 
-                //主表总判断赋值
-                if (mAllHg)
-                {
-                    mitem["JCJG"] = "合格";
-                    mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                }
-                else
-                {
-                    mitem["JCJG"] = "不合格";
-                    mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
-                    if (mFlag_Bhg && mFlag_Hg)
-                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                }
+            }
+
+            //主表总判断赋值
+            //综合判断
+            if (mbhggs == 0)
+            {
+                MItem[0]["JCJG"] = "合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+            }
+            if (mbhggs > 0)
+            {
+                MItem[0]["JCJG"] = "不合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                //if (mFlag_Bhg && mFlag_Hg)
+                //    MItem[0]["JCJGMS"] = "依据标准" + MItem[0]["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合标准要求。";
             }
             #endregion
         }
