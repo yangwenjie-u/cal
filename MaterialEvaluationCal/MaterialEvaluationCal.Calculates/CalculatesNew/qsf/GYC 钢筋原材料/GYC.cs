@@ -15,9 +15,10 @@ namespace Calculates
             /************************ 代码开始 *********************/
             bool mAllHg = true;
             string jcxm = "", MJcjg = "不合格", jsbeiZHu = "", jcjg = "";
-            bool mGetBgbh = false;
+            var jcxmBhg = "";
+            var jcxmCur = "";
+
             int mbhggs = 0;//不合格数量
-            string mCpmc = "";
             var extraDJ = dataExtra["BZ_GYC_DJ"];
             var extraZLPCB = dataExtra["BZ_ZLPCB"];
             var data = retData;
@@ -533,16 +534,8 @@ namespace Calculates
                     sItem["G_ZLPC"] = "±" + sZlpc.ToString().Trim();
                     if (sItem["SFTZ"].Trim() == "是")
                     {
-                        //if ((DateTime.Parse(MItem[0]["JYRQ"]) - DateTime.Parse("2015-10-09")).Days >= 0)
-                        //{
                         sItem["G_ZLPC"] = "≥-" + extraFieldsZLPCB["TZHZLPC"];
                         sZlpc = "-" + extraFieldsZLPCB["TZHZLPC"];
-                        //}
-                        //else
-                        //{
-                        //sItem["G_ZLPC"] = "≤" + extraFieldsZLPCB["TZHZLPC"];
-                        //sZlpc = extraFieldsZLPCB["TZHZLPC"];
-                        //}
                     }
                 }
                 else
@@ -562,12 +555,6 @@ namespace Calculates
                 {
                     sItem["G_ZLPC"] = sItem["G_ZLPC"] + ".0";
                 }
-
-                //If IsNull(mrsDj!which) Then
-                //  mrsmainTable!which = 0
-                //Else
-                // mrsmainTable!which = mrsDj!which
-                //End If
 
                 if (mLWZJ == 0 && MFFWQCS != 0)
                 {
@@ -632,57 +619,44 @@ namespace Calculates
                 #region 重量偏差
                 if (jcxm.Contains("、重量偏差、"))
                 {
+                    jcxmCur = "重量偏差";
                     double zCD = 0;
                     if (Conversion.Val(sItem["Z_ZZL"].Trim()) < 0.1)
                     {
-                        mSFwc = false;
                     }
                     else
                     {
                         if (sItem["SFTZ"] == "是")
                         {
-                            //if ((DateTime.Parse(MItem[0]["JYRQ"]) - DateTime.Parse("2015-10-09")).Days >= 0)
-                            //{
+
                             MItem[0]["ZLPCXS"] = "重量偏差";
-                            zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]);
+                            for (int i = 1; i < 6; i++)
+                            {
+                                zCD += Conversion.Val(sItem["Z_CD" + i]);
+                            }
+                            //zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]);
 
                             sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - Conversion.Val(SLLZL) * zCD) / (Conversion.Val(SLLZL) * zCD), 0)).ToString();
                             if (jcxm.Contains("、拉伸、") && sItem["KLHZ1"].Trim() == "0")
                             {
                                 sItem["LW1"] = "0";
                                 sItem["LW2"] = "0";
+                                sItem["LW3"] = "0";
                                 //sItem["SYR"] = "";
                             }
 
                             if (Conversion.Val(sItem["ZLPC"]) >= Conversion.Val(sZlpc))
                             {
                                 sItem["JCJG_ZLPC"] = "符合";
+                                mFlag_Hg = true;
                             }
                             else
                             {
                                 sItem["JCJG_ZLPC"] = "不符合";
+                                mFlag_Bhg = true;
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mbhggs = mbhggs + 1;
                             }
-                            //}
-                            //else
-                            //{
-                            //MItem[0]["ZLPCXS"] = "重量负偏差";
-                            //zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]);
-                            //sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(SLLZL) * zCD - Conversion.Val(sItem["Z_ZZL"])) / (SLLZL * zCD), 0)).ToString();
-                            //if (jcxm.Contains("、拉伸、") && Conversion.Val(sItem["KLHZ1"]) == 0)
-                            //{
-                            //    sItem["LW1"] = "0";
-                            //    sItem["LW2"] = "0";
-                            //    //sItem["SYR"] = "";
-                            //}
-                            //if (Conversion.Val(sItem["ZLPC"]) <= Conversion.Val(sZlpc))
-                            //{
-                            //    sItem["JCJG_ZLPC"] = "符合";
-                            //}
-                            //else
-                            //{
-                            //    sItem["JCJG_ZLPC"] = "不符合";
-                            //}
-                            //}
                         }
                         else
                         {
@@ -697,15 +671,18 @@ namespace Calculates
                             }
                             if (jcxm.Contains("、拉伸、") && Conversion.Val(sItem["KLHZ1"]) == 0)
                             {
-                                //sItem["SYR"] = "";
                             }
                             if (Math.Abs(Conversion.Val(sItem["ZLPC"])) <= Conversion.Val(sZlpc))
                             {
                                 sItem["JCJG_ZLPC"] = "符合";
+                                mFlag_Hg = true;
                             }
                             else
                             {
                                 sItem["JCJG_ZLPC"] = "不符合";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mFlag_Bhg = true;
+                                mbhggs = mbhggs + 1;
                             }
                         }
                     }
@@ -713,6 +690,15 @@ namespace Calculates
                 else
                 {
                     sItem["JCJG_ZLPC"] = "----";
+                }
+
+                if (sItem["DBSL"] != "60吨")
+                {
+                    mXLGS = 3;
+                }
+                else
+                {
+                    mXLGS = 2;
                 }
 
                 //求伸长率
@@ -738,17 +724,19 @@ namespace Calculates
                 int mkZHggs = 0;
                 if (jcxm.Contains("、抗震要求、"))
                 {
+                    jcxmCur = "抗震要求";
                     sItem["G_ZSCL"] = "≥" + extraFieldsDj["ZSCL"].Trim();
                     sItem["G_KZYQ"] = "实测强屈比≥" + extraFieldsDj["QDQFB"].Trim() + "，实测标准屈服比≤" + extraFieldsDj["QFQFB"].Trim() + "，最大力总伸长率≥" + extraFieldsDj["ZSCL"].Trim() + "%。";
                     mHggs_SCL = 0;
                     sItem["G_SCL"] = "----";
                     sItem["SCL1"] = "----";
                     sItem["SCL2"] = "----";
+                    sItem["SCL3"] = "----";
                     if (MItem[0]["PDBZ"].Contains("1499.2") || MItem[0]["PDBZ"].Contains("1499.1"))
                     {
                         for (int i = 1; i <= mXLGS; i++)
                         {
-                            md1 = double.Parse(sItem["DHJL" + i].Trim());
+                            md1 = double.Parse(sItem["DHJL1"].Trim());
                             md2 = double.Parse(sItem["DQJL0" + i].Trim());
                             md = md1 - md2;
                             md1 = double.Parse(sItem["DQJL0" + i].Trim());
@@ -791,10 +779,14 @@ namespace Calculates
                     if (mkZHggs == mXLGS)
                     {
                         sItem["JCJG_KZ"] = "符合";
+                        mFlag_Hg = true;
                     }
                     else
                     {
                         sItem["JCJG_KZ"] = "不符合";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true;
+                        mbhggs = mbhggs + 1;
                     }
                 }
                 else
@@ -809,14 +801,19 @@ namespace Calculates
                 #region 反向弯曲
                 if (jcxm.Contains("、反向弯曲、"))
                 {
+                    jcxmCur = "反向弯曲";
                     sItem["G_LWWZ"] = "弯曲压头D=" + (mLWZJ + 1) + "a，反向弯曲后，受弯曲部位表面不得产生裂纹。";
-                    if (sItem["FXWQ"].Trim() == "1")
+                    if (sItem["FXWQ1"].Trim() == "1" && sItem["FXWQ2"].Trim() == "1" && sItem["FXWQ3"].Trim() == "1")
                     {
+                        mFlag_Hg = true;
                         sItem["JCJG_LW"] = "符合";
                     }
                     else
                     {
                         sItem["JCJG_LW"] = "不符合";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true;
+                        mbhggs = mbhggs + 1;
                     }
                 }
                 #endregion
@@ -824,13 +821,18 @@ namespace Calculates
                 #region 宏观金相
                 if (jcxm.Contains("、宏观金相、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
                 {
+                    jcxmCur = "宏观金相";
                     if (MItem[0]["HG_HGJX"] == "合格" || MItem[0]["HG_HGJX"] == "符合")
                     {
-                        MItem[0]["HG_HGJX"] = "符合";
+                        MItem[0]["HG_HGJX"] = "合格";
+                        mFlag_Hg = true;
                     }
                     else
                     {
-                        MItem[0]["HG_HGJX"] = "不符合";
+                        MItem[0]["HG_HGJX"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true;
+                        mbhggs = mbhggs + 1;
                     }
                 }
                 else
@@ -841,40 +843,52 @@ namespace Calculates
                 #region 截面维氏硬度
                 if (jcxm.Contains("、截面维氏硬度、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
                 {
+                    jcxmCur = "截面维氏硬度";
+
                     double JMWSYD1 = GetSafeDouble(sItem["JMWSYD1"]);
                     double JMWSYD2 = GetSafeDouble(sItem["JMWSYD2"]);
 
                     if (IsQualified(MItem[0]["G_JMWSYD"], Math.Abs(JMWSYD1 - JMWSYD2).ToString(), true) == "符合")
                     {
-                        MItem[0]["HG_JMWSYD"] = "符合";
+                        MItem[0]["HG_JMWSYD"] = "合格";
+                        mFlag_Hg = true;
                     }
                     else
                     {
-                        MItem[0]["HG_JMWSYD"] = "不符合";
+                        MItem[0]["HG_JMWSYD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true;
+                        mbhggs = mbhggs + 1;
                     }
                 }
                 #endregion
                 #region 微观组织
                 if (jcxm.Contains("、微观组织、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
                 {
+                    jcxmCur = "微观组织";
                     if (MItem[0]["HG_WGZZ"] == "合格" || MItem[0]["HG_WGZZ"] == "符合")
                     {
-                        MItem[0]["HG_WGZZ"] = "符合";
+                        MItem[0]["HG_WGZZ"] = "合格";
+                        mFlag_Hg = true;
                     }
                     else
                     {
-                        MItem[0]["HG_WGZZ"] = "不符合";
+                        MItem[0]["HG_WGZZ"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true;
+                        mbhggs = mbhggs + 1;
                     }
                 }
                 #endregion
 
                 var zh = sItem["ZH_G"].Trim();
-                if (MItem[0]["HG_JMWSYD"] == "合格" || MItem[0]["HG_WGZZ"] == "合格" || MItem[0]["HG_HGJX"] == "合格" || sItem["JCJG_KZ"] == "不符合" || sItem["JCJG_LS"] == "不符合")
+                //var zh = "1";
+                if (sItem["JCJG_KZ"] == "不符合" || sItem["JCJG_LS"] == "不符合")
                 {
                     sItem["JCJG_LS"] = "不符合";
                 }
 
-                if (MItem[0]["HG_JMWSYD"] == "不合格" || MItem[0]["HG_WGZZ"] == "不合格" || MItem[0]["HG_HGJX"] == "不合格" || sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合" || sItem["JCJG_ZLPC"] == "不符合")
+                if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合" || sItem["JCJG_ZLPC"] == "不符合")
                 {
                     sItem["JCJG"] = "不合格";
                 }
@@ -911,6 +925,7 @@ namespace Calculates
                     check_double_Fj(MItem[0], sItem, (int)mHggs_QFQD, (int)mHggs_KLQD, (int)mHggs_SCL, (int)mHggs_LW, (int)mFsgs_QFQD, (int)mFsgs_KLQD, (int)mFsgs_SCL, (int)mFsgs_LW, mZh);
                 }
 
+                //重量偏差
                 if (sItem["JCJG_ZLPC"] == "不符合")
                 {
                     if (!MItem[0]["FJJJ2"].Contains(zh + "#"))
@@ -924,17 +939,17 @@ namespace Calculates
 
             if (mFlag_Bhg && mFlag_Hg)
             {
-                jsbeiZHu = "该组试样所检项目部分不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeiZHu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
 
             if (mAllHg && MJcjg != "----")
             {
                 MJcjg = "合格";
-                jsbeiZHu = "该组试件所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
 
 
@@ -942,34 +957,34 @@ namespace Calculates
 
             if (MItem[0]["FJJJ3"] != "")
             {
-                MItem[0]["FJJJ3"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
-                jsbeiZHu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["FJJJ3"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+                jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             if (MItem[0]["FJJJ2"] != "")
             {
-                if (mFlag_Bhg && mFlag_Hg)
-                {
-                    MItem[0]["FJJJ2"] = "该组试样所检项目部分不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                    jsbeiZHu = "该组试样所检项目部分不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
-                else
-                {
-                    MItem[0]["FJJJ2"] = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                    jsbeiZHu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
+                //if (mFlag_Bhg && mFlag_Hg)
+                //{
+                jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                MItem[0]["FJJJ2"] = jsbeiZHu;
+                //}
+                //else
+                //{
+                //    MItem[0]["FJJJ2"] = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                //    jsbeiZHu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                //}
             }
             if (MItem[0]["FJJJ1"] != "")
             {
-                if (mFlag_Bhg && mFlag_Hg)
-                {
-                    MItem[0]["FJJJ1"] = "该组试样所检项目部分不符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
-                    jsbeiZHu = "该组试样所检项目部分不符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
-                }
-                else
-                {
-                    MItem[0]["FJJJ1"] = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
-                    jsbeiZHu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
-                }
+                //if (mFlag_Bhg && mFlag_Hg)
+                //{
+                jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。";
+                MItem[0]["FJJJ1"] = jsbeiZHu;
+                //}
+                //else
+                //{
+                //    MItem[0]["FJJJ1"] = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                //    jsbeiZHu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                //}
             }
             if (mSFwc)
             {

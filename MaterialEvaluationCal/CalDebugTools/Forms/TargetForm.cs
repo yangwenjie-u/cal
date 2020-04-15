@@ -407,6 +407,7 @@ namespace CalDebugTools.Forms
             try
             {
                 //主表 从表添加记录
+                var startIndex = 0;
                 var alterM = "";
                 if (txt_STabCount.Text == "1")
                 {
@@ -414,7 +415,6 @@ namespace CalDebugTools.Forms
                 }
                 else
                 {
-                    var startIndex = 0;
                     if (Convert.ToInt16(txt_SFieldeStartIndex.Text) <= 1)
                     {
                         startIndex = 1;
@@ -447,10 +447,12 @@ namespace CalDebugTools.Forms
                 }
                 else
                 {
-                    for (int i = 1; i < Convert.ToInt16(txt_STabCount.Text) + 1; i++)
+                    startIndex = Convert.ToInt16(txt_SFieldeStartIndex.Text);
+
+                    for (int i = 0; i < Convert.ToInt16(txt_STabCount.Text); i++)
                     {
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
-        $"VALUES('{tableName}', '{fieldName}{i}', '{fieldMS}{i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '{ssjcx}', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
+        $"VALUES('{tableName}', '{fieldName}{startIndex + i}', '{fieldMS}{startIndex + i}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '{ssjcx}', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";
                         lst.Add(sqlStr);
                     }
                 }

@@ -28,7 +28,7 @@ namespace Calculates
             bool realBhg = false;//标识直接不合格 。外观颜色不合格就不需要复试，直接不合格
             //当前项目的变量声明
             int mbhggs = 0;
-            int mbhggs1, mbhgpds = 0;
+            int mbhgpds = 0;
             int mhgpds = 0;
             string mGxl, mSjdj;
 
@@ -112,7 +112,6 @@ namespace Calculates
                     continue;
                 }
                 mbhggs = 0;
-                mbhggs1 = 0;
                 jcxmCount = mtmpArray.Count;
                 curJcxmCount = 0;
                 int xd, Gs;
@@ -637,7 +636,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -677,7 +676,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -727,7 +726,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
                     }
                     //  '向报告用字段赋值
@@ -781,17 +780,14 @@ namespace Calculates
                 }
                 else
                 {
-                    if (mFlag_Bhg && mFlag_Hg)
+                    if (mbhggs == 1)
                     {
-                        if (mbhggs == 1)
-                        {
-                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不合格，需复检，详情见下页。";
+                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不合格，需复检，详情见下页。";
 
-                        }
-                        else
-                        {
-                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
-                        }
+                    }
+                    else
+                    {
+                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
                     }
                 }
 

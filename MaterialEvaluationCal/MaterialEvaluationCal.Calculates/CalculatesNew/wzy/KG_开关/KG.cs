@@ -111,7 +111,7 @@ namespace Calculates
                         MItem[0]["FC_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -138,7 +138,7 @@ namespace Calculates
                     {
                         MItem[0]["DZ_HG"] = "不合格";
                         mAllHg = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         itemHG = false;
                     }
                     else
@@ -167,7 +167,7 @@ namespace Calculates
                         MItem[0]["JX_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -195,7 +195,7 @@ namespace Calculates
                         MItem[0]["JG1_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -206,7 +206,7 @@ namespace Calculates
                     {
                         MItem[0]["JG2_HG"] = "不合格";
                         mAllHg = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、"; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         itemHG = false;
                     }
                     else
@@ -306,7 +306,7 @@ namespace Calculates
                     {
                         MItem[0]["NLH_HG"] = "不合格";
                         mAllHg = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、"; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         itemHG = false;
                     }
                     else
@@ -400,7 +400,7 @@ namespace Calculates
                         MItem[0]["LD1_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -412,7 +412,7 @@ namespace Calculates
                         MItem[0]["LD2_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -448,7 +448,7 @@ namespace Calculates
                         MItem[0]["JYQH_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -475,7 +475,7 @@ namespace Calculates
                     {
                         MItem[0]["JXQD_HG"] = "不合格";
                         mAllHg = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         itemHG = false;
                     }
                     else
@@ -530,7 +530,7 @@ namespace Calculates
                     {
                         MItem[0]["NR1_HG"] = "不合格";
                         mAllHg = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         itemHG = false;
                     }
                     else
@@ -543,7 +543,7 @@ namespace Calculates
                         MItem[0]["NR2_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -555,7 +555,7 @@ namespace Calculates
                         MItem[0]["NR3_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -597,7 +597,7 @@ namespace Calculates
                     {
                         MItem[0]["ZCCZ1_HG"] = "不合格";
                         mAllHg = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         itemHG = false;
                     }
                     else
@@ -625,7 +625,7 @@ namespace Calculates
                     {
                         MItem[0]["ZCCZ2_HG"] = "不合格";
                         mAllHg = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         itemHG = false;
                     }
                     else
@@ -645,33 +645,33 @@ namespace Calculates
                 }
                 #endregion
 
-                #region  正常操作3
-                if (jcxm.Contains("、正常操作3、") || jcxm.Contains("、开关正常操作次数、"))
-                {
-                    jcxmCur = CurrentJcxm(jcxm, "正常操作3,开关正常操作次数");
-                    if (3 > GetSafeDouble(MItem[0]["ZCCZ3"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ3"]))
-                    {
-                        MItem[0]["ZCCZ3_HG"] = "不合格";
-                        mAllHg = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        itemHG = false;
-                    }
-                    else
-                    {
-                        MItem[0]["ZCCZ3_HG"] = "合格";
-                    }
+                //#region  正常操作3
+                //if (jcxm.Contains("、正常操作3、") || jcxm.Contains("、开关正常操作次数、"))
+                //{
+                //    jcxmCur = CurrentJcxm(jcxm, "正常操作3,开关正常操作次数");
+                //    if (3 > GetSafeDouble(MItem[0]["ZCCZ3"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ3"]))
+                //    {
+                //        MItem[0]["ZCCZ3_HG"] = "不合格";
+                //        mAllHg = false;
+                //        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                //        itemHG = false;
+                //    }
+                //    else
+                //    {
+                //        MItem[0]["ZCCZ3_HG"] = "合格";
+                //    }
 
-                    if ("-1" == MItem[0]["ZCCZ3"])
-                    {
-                        MItem[0]["ZCCZ3_HG"] = "----";
-                    }
-                }
-                else
-                {
-                    MItem[0]["ZCCZ3"] = "-1";
-                    MItem[0]["ZCCZ3_HG"] = "----";
-                }
-                #endregion
+                //    if ("-1" == MItem[0]["ZCCZ3"])
+                //    {
+                //        MItem[0]["ZCCZ3_HG"] = "----";
+                //    }
+                //}
+                //else
+                //{
+                //    MItem[0]["ZCCZ3"] = "-1";
+                //    MItem[0]["ZCCZ3_HG"] = "----";
+                //}
+                //#endregion
 
                 #region  通断能力1
                 if (jcxm.Contains("、通断能力1、") || jcxm.Contains("、开关通断能力、"))
@@ -682,7 +682,7 @@ namespace Calculates
                         MItem[0]["TDNL1_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -710,7 +710,7 @@ namespace Calculates
                         MItem[0]["TDNL2_HG"] = "不合格";
                         mAllHg = false;
                         itemHG = false;
-                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {

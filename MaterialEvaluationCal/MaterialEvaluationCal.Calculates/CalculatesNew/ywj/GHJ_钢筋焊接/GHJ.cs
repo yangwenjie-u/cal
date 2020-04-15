@@ -36,6 +36,9 @@ namespace Calculates
             var mFlag_Hg = false;
             var mFlag_Bhg = false;
             var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+
             bool gIs2HforRyyq_cd = true;//   '标注2个试件在焊缝或热影响区脆断
             bool gIs3HforRyyq_cd = true;// '标注2个试件在焊缝或热影响区脆断
             #region 局部函数
@@ -44,6 +47,7 @@ namespace Calculates
             Func<IDictionary<string, string>, IDictionary<string, string>, string, double, int, int> find_singlezb_bhg =
                 delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, string zbName, double mbzValue, int count)
                 {
+                   
                     int mcnt = 0;//计算单组合格个数
                                  //int mCurBhg_qf;//计算单组不合格个数
                     int this_bhg = 0;//当前组单个指标不合格累加
@@ -497,7 +501,7 @@ namespace Calculates
 
                 if (null == mrsDj)
                 {
-                    jsbeizhu = "依据不详\r\n";
+                    jsbeizhu = "依据不详";
                     mFlag_Bhg = true;
                     sItem["JCJG"] = "不合格";
                     continue;
@@ -556,7 +560,6 @@ namespace Calculates
                     if (!all_hj_zb_jl(MItem[0], sItem, mHggs_klqd, mHggs_scl, mHggs_lw))
                     {
                         mFlag_Bhg = true;
-
                     }
                 }
                 else
@@ -689,6 +692,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "拉伸,抗拉强度");
                             if ((kl1 >= mKlqd && (kj1 == 5 || kj1 == 4) && kl2 >= mKlqd && (kj2 == 5 || kj2 == 4) && kl3 >= mKlqd && (kj3 == 5 || kj3 == 4))
                                 || ((kl1 >= mKlqd && (kj1 == 7 || kj1 == 6) && kl2 >= mKlqd && (kj2 == 7 || kj2 == 6) && kl3 < mKlqd && (kj3 == 4 || kj3 == 5))
                                 || (kl1 >= mKlqd && (kj1 == 6 || kj1 == 7) && kl2 < mKlqd && (kj2 == 4 || kj2 == 5) && kl3 >= mKlqd && (kj3 == 6 || kj3 == 7))
@@ -743,15 +747,18 @@ namespace Calculates
                         }
                         if (Gs <= 1)
                         {
+
                             sItem["JCJG_LW"] = "符合";
 
                         }
                         else if (Gs == 2)
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "冷弯,弯曲");
                             sItem["JCJG_LW"] = "复试";
                         }
                         else
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "冷弯,弯曲");
                             sItem["JCJG_LW"] = "不符合";
                         }
                     }
@@ -784,8 +791,7 @@ namespace Calculates
                 }
                 if (sItem["JCJG"] == "不合格")
                 {
-                    jsbeizhu = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
-
+                    mAllHg = false;
                     if (string.Equals(MItem[0]["PDBZ"], "18-2012"))
                     {
                         if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合")
@@ -824,41 +830,42 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
             {
-                MItem[0]["FJJJ3"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
 
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["FJJJ3"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
             {
-                MItem[0]["FJJJ2"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["FJJJ2"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。"; ;
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "该组试样部分符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
-                    MItem[0]["FJJJ2"] = "该组试样部分符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
+                    MItem[0]["FJJJ2"] = jsbeizhu;
                 }
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"]))
             {
-                MItem[0]["FJJJ1"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                MItem[0]["FJJJ1"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。"; ;
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "该组试样部分符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
-                    MItem[0]["FJJJ1"] = "该组试样部分符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
+                    MItem[0]["FJJJ1"] = jsbeizhu;
                 }
+             
             }
 
-            if (!string.IsNullOrEmpty(mwxzh))
-            {
-                mwxzh = "该组试样无效，应检验母材。";
-                jsbeizhu = "该组试样无效，应检验母材。";
-            }
+            //if (!string.IsNullOrEmpty(mwxzh))
+            //{
+            //    mwxzh = "该组试样无效，应检验母材。";
+            //    jsbeizhu = "该组试样无效，应检验母材。";
+            //}
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion

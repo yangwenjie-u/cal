@@ -212,7 +212,7 @@ namespace CalDebugTools
         }
 
         private void Debug(string jydbh = "", string whWtdbh = "")
-        {
+        { 
             string jcxmBH = this.txt_jcxmbh.Text.Trim();
             List<string> listJYDBH = new List<string>();
             var quertBH = "";

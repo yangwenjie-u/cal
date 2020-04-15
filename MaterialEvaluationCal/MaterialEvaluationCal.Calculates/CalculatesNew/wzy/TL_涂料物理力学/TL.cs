@@ -151,7 +151,8 @@ namespace Calculates
                     if (sitem["HG_BGSJ"] == "不合格")
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; 
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {

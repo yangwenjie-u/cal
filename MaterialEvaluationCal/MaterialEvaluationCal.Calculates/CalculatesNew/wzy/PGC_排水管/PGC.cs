@@ -26,7 +26,7 @@ namespace Calculates
             bool mAllHg;
             bool realBhg = false;//标识直接不合格 。外观颜色不合格就不需要复试，直接不合格
             int mbhggs = 0;
-            int mbhggs1, mhgpds, mbhgpds = 0;
+            int mhgpds, mbhgpds = 0;
             string mGxl, mSjdj;
             mAllHg = true;
 
@@ -104,7 +104,7 @@ namespace Calculates
                 }
                 //具体检测项目处理
                 mbhggs = 0;
-                mbhggs1 = 0;
+                mbhggs = 0;
                 int xd;
                 double md1, md2, md;
                 string[] mtmpArray;
@@ -482,7 +482,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -520,7 +520,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -567,7 +567,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -605,7 +605,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -639,7 +639,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -674,7 +674,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -707,7 +707,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -776,7 +776,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mbhggs1 = mbhggs1 + 1;
+                        mbhggs = mbhggs + 1;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Hg = true;
                     }
@@ -831,18 +831,18 @@ namespace Calculates
                 }
                 else
                 {
-                    if (mFlag_Bhg && mFlag_Hg)
+                    //if (mFlag_Bhg && mFlag_Hg)
+                    //{
+                    if (mbhggs == 1)
                     {
-                        if (mbhggs == 1)
-                        {
-                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不合格，需复检，详情见下页。";
+                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不合格，需复检，详情见下页。";
 
-                        }
-                        else
-                        {
-                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
-                        }
                     }
+                    else
+                    {
+                        mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
+                    }
+                    //}
                 }
             }
             #endregion
