@@ -12,7 +12,6 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
-
             #region  定义变量
             var data = retData;
             var extraDJ = dataExtra["BZ_HT1_DJ"];
@@ -333,7 +332,7 @@ namespace Calculates
                             mHtzhz_fun = 60;
                     }
                     string ENDCHAR = Math.Round(mHtzhz_fun, 1).ToString("0.0").Split('.')[1];
-                    if (ENDCHAR == "1" || ENDCHAR == "3" || ENDCHAR == "7" || ENDCHAR == "9")
+                    if (ENDCHAR == "1" || ENDCHAR == "3" || ENDCHAR == "5" || ENDCHAR == "7" || ENDCHAR == "9")
                     {
                         //不在换算表中
                         mHtzhz0_fun = Convert.ToDouble((decimal)mHtzhz_fun - (decimal)0.1);
@@ -449,7 +448,9 @@ namespace Calculates
                     }
                     mMaxHtz_fun = mhtzArray[15] + mhtzArray[14] + mhtzArray[13];
                     mMinHtz_fun = mhtzArray[0] + mhtzArray[1] + mhtzArray[2];
+                    //剔除3最大值  3个最小值
                     mHtzhz_fun = Math.Round((mSum_fun - mMaxHtz_fun - mMinHtz_fun) / 10, 1);
+                    //mHtzhz_fun = Math.Round((mSum_fun - mMaxHtz_fun - mMinHtz_fun) / 10 * 5, 1) / 5;
                     mrssjTable_Filter["HTZHZ"] = !string.IsNullOrEmpty(mHtzhz_fun.ToString()) ? mHtzhz_fun.ToString() : "0";
                     return mHtzhz_fun;
                     //计算回弹最后值HTZHZ结束
@@ -756,9 +757,7 @@ namespace Calculates
                     if (!string.IsNullOrEmpty(mrssjTable_Filter["CMZT"]))
                         mCmzt_fun = mrssjTable_Filter["CMZT"];
                     mThsd_fun = Round(GetSafeDouble(mrssjTable_Filter["THSD"]) * 2, 0) / 2;
-                    //非水平方向修正
                     mHtzhz_fun = edith(mrsEditH, mHtzhz_fun, mCsjd_fun);
-                    //端面修正
                     mHtzhz_fun = edits(mrsEditS, mHtzhz_fun, mCmzt_fun);
                     moldDyCount_fun = mDyCount_fun;
                     moldXyCount_fun = mXyCount_fun;
@@ -942,11 +941,14 @@ namespace Calculates
                 MItem[0]["SJDJ"] = sitem["SJDJ"];
                 if (string.IsNullOrEmpty(mSjdj))
                     mSjdj = "";
+
                 //var mrsXtab2 = mrsXtab.Where(x => x["DZBH"].Contains(MItem[0]["JYDBH"]));
                 List<IDictionary<string, string>> mrsXtab2 = new List<IDictionary<string, string>>();
-                if (mrsXtab != null && mrssjTable[0].Count > 0)
+                //if (mrsXtab != null && mrsXtab[0].Count > 0)
+                if (mrsXtab != null && mrsXtab[0].Count > 0)
                     mrsXtab2 = mrsXtab.Where(mrsXtab_Filter => mrsXtab_Filter["SYSJBRECID"].Equals(sitem["RECID"])).ToList();
                 var mrsDj_Filter = extraDJ.FirstOrDefault(x => x["MC"].Contains(mSjdj));
+
                 if (string.IsNullOrEmpty(MItem[0]["SJTABS"]))  //数据录入使用模板
                     MItem[0]["SJTABS"] = "sjht1";
                 if (string.IsNullOrEmpty(MItem[0]["SFQXXZ"]))
@@ -1063,10 +1065,8 @@ namespace Calculates
                         //计算回弹最后值HTZHZ
                         mHtzhz = calc_htzhz(mrssjTable_Filter);
                         if (MItem[0]["PDBZ"].Contains("23-2011") && sitem["BSFS"] == "1")
-                            ////进行修正,最后换算成回弹强度值
                             mHtqdz = calc_htqdzbs(MItem[0], sitem, mrssjTable_Filter);
                         else
-                            //进行修正,最后换算成回弹强度值
                             mHtqdz = calc_htqdz(MItem[0], sitem, mrssjTable_Filter);
                         s_Htqdz = s_Htqdz + mHtqdz;
                     }

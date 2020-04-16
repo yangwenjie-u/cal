@@ -59,6 +59,8 @@ namespace Calculates
             int xd;
             string bl;
             var bhgJcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             #region 跳转代码
             Func<IDictionary<string, string>, IDictionary<string, string>, bool> sjtabcalc =
@@ -379,6 +381,7 @@ namespace Calculates
                     #region 氧化镁
                     if (jcxm.Contains("、氧化镁、"))
                     {
+                        jcxmCur = "氧化镁";
                         flag = true;
                         string is_fh = IsQualified(sItem["G_YHM"], sItem["W_YHM"], true);
                         switch (is_fh)
@@ -387,14 +390,7 @@ namespace Calculates
                                 sItem["GH_YHM"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
-                                if (string.IsNullOrEmpty(bhgJcxm))
-                                {
-                                    bhgJcxm = "氧化镁";
-                                }
-                                else
-                                {
-                                    bhgJcxm = bhgJcxm + "、氧化镁";
-                                }
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 break;
                             case "符合":
                                 sItem["GH_YHM"] = "合格";
@@ -416,6 +412,7 @@ namespace Calculates
                     #region 碱含量
                     if (jcxm.Contains("、碱含量、"))
                     {
+                        jcxmCur = "碱含量";
                         flag = true;
                         string is_fh = IsQualified(sItem["G_ZJL"], sItem["W_ZJL"], true);
                         switch (is_fh)
@@ -424,14 +421,7 @@ namespace Calculates
                                 sItem["GH_ZJL"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
-                                if (string.IsNullOrEmpty(bhgJcxm))
-                                {
-                                    bhgJcxm = "碱含量";
-                                }
-                                else
-                                {
-                                    bhgJcxm = bhgJcxm + "、碱含量";
-                                }
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 break;
                             case "符合":
                                 sItem["GH_ZJL"] = "合格";
@@ -453,6 +443,7 @@ namespace Calculates
                     #region 细度
                     if (jcxm.Contains("、细度、"))
                     {
+                        jcxmCur = "细度";
                         sign = true;
                         sum = 0;
                         narr = new double[3];
@@ -545,15 +536,7 @@ namespace Calculates
                         }
                         else
                         {
-                            mFlag_Bhg = true;
-                            if (string.IsNullOrEmpty(bhgJcxm))
-                            {
-                                bhgJcxm = "细度";
-                            }
-                            else
-                            {
-                                bhgJcxm = bhgJcxm + "、细度";
-                            }
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                             
 
@@ -571,6 +554,7 @@ namespace Calculates
                     #region 凝结时间
                     if (jcxm.Contains("、凝结时间、"))
                     {
+                        jcxmCur = "凝结时间";
                         flag = true;
                         sign = true;
                         flag = !string.IsNullOrEmpty(sItem["JSSJH"]) && IsNumeric(sItem["JSSJH"].Trim()) ? flag : false;
@@ -605,14 +589,7 @@ namespace Calculates
                             else
                             {
                                 mFlag_Bhg = true;
-                                if (string.IsNullOrEmpty(bhgJcxm))
-                                {
-                                    bhgJcxm = "凝结时间";
-                                }
-                                else
-                                {
-                                    bhgJcxm = bhgJcxm + "、凝结时间";
-                                }
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             }
                         }
                         else
@@ -631,6 +608,7 @@ namespace Calculates
                     #region 限制膨胀率
                     if (jcxm.Contains("、限制膨胀率、"))
                     {
+                        jcxmCur = "限制膨胀率";
                         List<double> day7Array = new List<double>();
                         List<double> day21Array = new List<double>();
                         flag = true;
@@ -756,14 +734,7 @@ namespace Calculates
                         else
                         {
                             mFlag_Bhg = true;
-                            if (string.IsNullOrEmpty(bhgJcxm))
-                            {
-                                bhgJcxm = "限制膨胀率";
-                            }
-                            else
-                            {
-                                bhgJcxm = bhgJcxm + "、限制膨胀率";
-                            }
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                     }
                     else
@@ -780,6 +751,7 @@ namespace Calculates
                     //试件规格为40 * 40 * 160
                     if (jcxm.Contains("、7d抗压强度、"))
                     {
+                        jcxmCur = "7d抗压强度";
                         flag = true;
                         //单位是kN
                         for (xd = 1; xd <= 6; xd++)
@@ -825,14 +797,7 @@ namespace Calculates
                                 {
                                     sItem["GH_7KYQD"] = "不合格";
                                     mbhggs++;
-                                    if (string.IsNullOrEmpty(bhgJcxm))
-                                    {
-                                        bhgJcxm = "7d抗压强度";
-                                    }
-                                    else
-                                    {
-                                        bhgJcxm = bhgJcxm + "、7d抗压强度";
-                                    }
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 }
 
                             }
@@ -856,6 +821,7 @@ namespace Calculates
                     #region 28d抗压强度
                     if (jcxm.Contains("、28d抗压强度、"))
                     {
+                        jcxmCur = "28d抗压强度";
                         flag = true;
                         //单位是kN
                         for (xd = 1; xd <= 6; xd++)
@@ -901,14 +867,7 @@ namespace Calculates
                                 {
                                     sItem["GH_28KYQD"] = "不合格";
                                     mbhggs++;
-                                    if (string.IsNullOrEmpty(bhgJcxm))
-                                    {
-                                        bhgJcxm = "28d抗压强度";
-                                    }
-                                    else
-                                    {
-                                        bhgJcxm = bhgJcxm + "、28d抗压强度";
-                                    }
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 }
                             }
                             else
@@ -959,15 +918,16 @@ namespace Calculates
                     MItem[0]["JCJGMS"] = "";
                     if (mbhggs == 0)
                     {
-                        MItem[0]["JCJGMS"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                         sItem["JCJG"] = "合格";
                     }
                     if (mbhggs >= 1)
                     {
-                        MItem[0]["JCJGMS"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                        sItem["JCJG"] = "不合格";
-                        if (mFlag_Bhg && mFlag_Hg)
-                            MItem[0]["JCJGMS"] = "该组试样所检项目"+bhgJcxm+"不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。"; 
+                        //MItem[0]["JCJGMS"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                        //sItem["JCJG"] = "不合格";
+                        //if (mFlag_Bhg && mFlag_Hg)
+                        //    MItem[0]["JCJGMS"] = "该组试样所检项目"+bhgJcxm+"不符合" + MItem[0]["PDBZ"] + "标准要求。";
                     }
 
                     mAllHg = (mAllHg && sItem["JCJG"] == "合格");

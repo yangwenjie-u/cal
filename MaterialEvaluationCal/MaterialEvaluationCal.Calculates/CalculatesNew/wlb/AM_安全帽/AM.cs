@@ -37,6 +37,9 @@ namespace Calculates
             }
             string mJSFF = "";
             int mHggs = 0;//统计合格数量
+            var jcxmBhg = "";
+            var jcxmCur = "";
+
             foreach (var sItem in S_AMS)
             {
                 itemHG = true;
@@ -61,6 +64,7 @@ namespace Calculates
                     #region  冲击吸收性能
                     if (jcxm.Contains("、冲击吸收性能、"))
                     {
+                        jcxmCur = "冲击吸收性能";
                         sItem["CJXSYQ"] = extraFieldsDj["CJXS"];
                         if (IsQualified("≤4900", sItem["CJXS1"],true) == "符合")
                         {
@@ -69,6 +73,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["CJXS1PD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -81,6 +86,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["CJXS2PD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -93,6 +99,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["CJXS3PD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -113,10 +120,12 @@ namespace Calculates
                     #region  耐穿刺性能
                     if (jcxm.Contains("、耐穿刺性能、"))
                     {
+                        jcxmCur = "耐穿刺性能";
                         sItem["NCCYQ"] = extraFieldsDj["NCC"];
 
                         if ("接触头模，无碎片" == sItem["NCC1"] || "接触头模，有碎片" == sItem["NCC1"] || "未接触头模， 有碎片" == sItem["NCC1"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["NCC1PD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -129,6 +138,7 @@ namespace Calculates
 
                         if ("接触头模，无碎片" == sItem["NCC2"] || "接触头模，有碎片" == sItem["NCC2"] || "未接触头模， 有碎片" == sItem["NCC2"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["NCC2PD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -141,6 +151,7 @@ namespace Calculates
 
                         if ("接触头模，无碎片" == sItem["NCC3"] || "接触头模，有碎片" == sItem["NCC3"] || "未接触头模， 有碎片" == sItem["NCC3"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["NCC3PD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -166,6 +177,7 @@ namespace Calculates
                     #region  下颏带的强度
                     if (jcxm.Contains("、下颏带的强度、"))
                     {
+                        jcxmCur = "下颏带的强度";
                         sItem["XEDDQDYQ"] = extraFieldsDj["XEDDQD"];
                         if (IsQualified(extraFieldsDj["XEDDQD"],sItem["XEDDQD"],true) == "符合")
                         {
@@ -174,6 +186,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["XEDDQDPD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -190,6 +203,7 @@ namespace Calculates
                     #region  电绝缘性能
                     if (jcxm.Contains("、电绝缘性能、"))
                     {
+                        jcxmCur = "电绝缘性能";
                         sItem["DJYYQ"] = extraFieldsDj["DJY"];
                         if (sItem["DJY"] == "符合")
                         {
@@ -198,6 +212,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["DJYPD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -214,6 +229,7 @@ namespace Calculates
                     #region  阻燃性能
                     if (jcxm.Contains("、阻燃性能、"))
                     {
+                        jcxmCur = "阻燃性能";
                         sItem["ZRYQ"] = extraFieldsDj["ZR"];
                         if (sItem["ZR"] == "符合")
                         {
@@ -222,6 +238,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["ZRPD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -238,6 +255,7 @@ namespace Calculates
                     #region  防静电性能
                     if (jcxm.Contains("、防静电性能、"))
                     {
+                        jcxmCur = "防静电性能";
                         sItem["FJDYQ"] = extraFieldsDj["FJD"];
                         if (sItem["FJD"] == "符合")
                         {
@@ -246,6 +264,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["FJDPD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -262,6 +281,7 @@ namespace Calculates
                     #region  侧向刚性
                     if (jcxm.Contains("、侧向刚性、"))
                     {
+                        jcxmCur = "侧向刚性";
                         sItem["CXGXYQ"] = extraFieldsDj["CXGX"];
                         if (sItem["CXGX"] == "符合")
                         {
@@ -270,6 +290,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["CXGXPD"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
@@ -289,6 +310,7 @@ namespace Calculates
                      */
                     if (jcxm.Contains("、帽舌、"))
                     {
+                        jcxmCur = "帽舌";
                         sItem["MS_YQ"] = "帽舌:10～70mm";
                         if (IsNumeric(sItem["MS_SC"]))
                         {
@@ -299,6 +321,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["MS_PD"] = "不合格";
                                 itemHG = false;
                                 mAllHg = false;
@@ -323,6 +346,7 @@ namespace Calculates
                      */
                     if (jcxm.Contains("、帽沿、"))
                     {
+                        jcxmCur = "帽舌";
                         sItem["MY_YQ"] = "帽沿:≤70mm";
                         if (IsNumeric(sItem["MY_SC"]))
                         {
@@ -333,6 +357,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["MY_PD"] = "不合格";
                                 itemHG = false;
                                 mAllHg = false;
@@ -357,6 +382,7 @@ namespace Calculates
                      */
                     if (jcxm.Contains("、佩戴高度、"))
                     {
+                        jcxmCur = "佩戴高度";
                         sItem["PDGD_YQ"] = "佩戴高度:80～90mm";
                         if (IsNumeric(sItem["PDGD_SC"]))
                         {
@@ -367,6 +393,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["PDGD_PD"] = "不合格";
                                 itemHG = false;
                                 mAllHg = false;
@@ -391,6 +418,7 @@ namespace Calculates
                      */
                     if (jcxm.Contains("、垂直间距、"))
                     {
+                        jcxmCur = "垂直间距";
                         sItem["CZJJ_YQ"] = "垂直间距:≤50mm";
                         if (IsNumeric(sItem["CZJJ_SC"]))
                         {
@@ -401,6 +429,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["CZJJ_PD"] = "不合格";
                                 itemHG = false;
                                 mAllHg = false;
@@ -425,6 +454,7 @@ namespace Calculates
                      */
                     if (jcxm.Contains("、水平间距、"))
                     {
+                        jcxmCur = "水平间距";
                         sItem["SPJJ_YQ"] = "水平间距:5～20mm";
                         if (IsNumeric(sItem["SPJJ_SC"]))
                         {
@@ -435,6 +465,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["SPJJ_PD"] = "不合格";
                                 itemHG = false;
                                 mAllHg = false;
@@ -459,6 +490,7 @@ namespace Calculates
                      */
                     if (jcxm.Contains("、质量、"))
                     {
+                        jcxmCur = "质量";
                         //普通安全帽
                         sItem["ZLPT_YQ"] = "质量:≤430g";
                         if (IsNumeric(sItem["ZLPT_SC"]))
@@ -469,6 +501,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["ZLPT_PD"] = "不合格";
                                 itemHG = false;
                                 mAllHg = false;
@@ -488,6 +521,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["ZLFH_PD"] = "不合格";
                                 itemHG = false;
                                 mAllHg = false;
@@ -520,6 +554,7 @@ namespace Calculates
                      */
                     if (jcxm.Contains("、帽壳内部尺寸、"))
                     {
+                        jcxmCur = "帽壳内部尺寸";
                         //内部尺寸长
                         sItem["NBCC_CYQ"] = "帽壳内部长：195～250mm";
                         if (IsNumeric(sItem["NBCCC_SC"]))
@@ -530,6 +565,7 @@ namespace Calculates
                             }
                             else
                             {
+                                
                                 sItem["NBCCC_PD"] = "不合格";
                                 itemHG = false;
                                 mAllHg = false;
@@ -585,6 +621,10 @@ namespace Calculates
                         {
                             mHggs++;
                         }
+                        else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
 
                     }
                     else
@@ -618,18 +658,19 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组样品所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                if (mHggs > 0)
-                {
-                    jsbeizhu = "该组样品所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
-                else
-                {
-                    jsbeizhu = "该组样品所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求	。";
+                //if (mHggs > 0)
+                //{
+                //    jsbeizhu = "该组样品所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
+                //}
+                //else
+                //{
+                //    jsbeizhu = "该组样品所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                //}
             }
 
             MItem[0]["JCJG"] = mjcjg;

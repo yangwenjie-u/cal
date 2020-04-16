@@ -259,9 +259,9 @@ namespace Calculates
                     }
                 }
                 if (sitem["KZPJ"] == "无效")
-                    mitem["JCJGMS"] = "该组试样强度代表值无效。";
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
                 else
-                    mitem["JCJGMS"] = "该组试样强度代表值" + sitem["KZPJ"] + "MPa，" + "占设计强度" + sitem["DDSJQD"] + "%。";
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sitem["KZPJ"] + "MPa，" + "占设计强度" + sitem["DDSJQD"] + "%。";
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
             }
             //主表总判断赋值

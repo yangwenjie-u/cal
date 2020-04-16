@@ -476,7 +476,7 @@ $"";
             {
                 List<string> lst = new List<string>();
                 var sy = "";
-                string wheresql = string.IsNullOrEmpty(fieldName) ? "" : $" and a.name= '{fieldName}'";
+                string wheresql = string.IsNullOrEmpty(fieldName) ? "" : $" and a.name like '{fieldName}%'";
                 string sqlStr = string.Format($"SELECT 表名 = D.name,字段序号 = A.colorder,字段名 = A.name,字段说明 = isnull(G.[value], ''),类型 = B.name,占用字节数 = A.Length " +
                     $"FROM syscolumns A  Left Join systypes B On A.xusertype = B.xusertype Inner Join sysobjects D On A.id = D.id and D.xtype = 'U' and D.name <> 'dtproperties'" +
                     $" Left Join syscomments E on A.cdefault = E.id Left Join sys.extended_properties G on A.id = G.major_id and A.colid = G.minor_id Left Join sys.extended_properties F On D.id = F.major_id and F.minor_id = 0 " +

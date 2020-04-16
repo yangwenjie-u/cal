@@ -44,7 +44,7 @@ namespace Calculates
             #region 计算开始
             mCnt_FjHg = 0;
             mCnt_FjHg1 = 0;
-            mZh = SItem.Count();
+            mZh = SJItem.Count();
             foreach (var sJItem in SJItem)
             {
                 SItem["FJ"] = "0";
@@ -54,12 +54,12 @@ namespace Calculates
                     mJSFF = string.IsNullOrEmpty(mrsDj_Filter["JSFF"]) ? "" : mrsDj_Filter["JSFF"].Trim().ToLower();
                 else
                 {
-                    SItem["JCJG"] = "依据不详";
+                    sJItem["JCJG"] = "依据不详";
                     break;
                 }
                 int mbhgs = 0;
-                sJItem["JYHZ"] = Round(Conversion.Val(SItem["SJZDLBL"]), 2).ToString("F2");
-                if (Conversion.Val(sJItem["KLHZ"]) < Conversion.Val(SItem["SJZDLBL"]))
+                sJItem["JYHZ"] = Round(Conversion.Val(sJItem["SJZDLBL"]), 2).ToString("F2");
+                if (Conversion.Val(sJItem["KLHZ"]) < Conversion.Val(sJItem["SJZDLBL"]))
                 {
                     mbhgs = mbhgs + 1;
                 }
@@ -85,12 +85,12 @@ namespace Calculates
                 if (mAllHg)
                 {
                     MItem[0]["JCJG"] = "合格";
-                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "，该组试样检验荷载实测值符合设计要求。";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样检验荷载实测值符合设计要求。";
                 }
                 else
                 {
                     MItem[0]["JCJG"] = "不合格";
-                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "，该组试样检验荷载实测值不符合设计要求。";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样检验荷载实测值不符合设计要求。";
                 }
             }
             #endregion

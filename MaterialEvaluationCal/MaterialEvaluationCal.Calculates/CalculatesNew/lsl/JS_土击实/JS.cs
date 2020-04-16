@@ -270,7 +270,7 @@ namespace Calculates
                             sItem["PJHSL" + i] = Round((sHsl1 + sHsl2), 1).ToString();
                         else
                             sItem["PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString();
-                        sItem["GMD" + i] = Round(sSmd / (1 + 0.01 * double.Parse(sItem["PJHSL" + i])), 2).ToString();
+                        sItem["GMD" + i] = Round(sSmd / (1 + 0.01 * double.Parse(sItem["PJHSL" + i])), 2).ToString("0.00");
                         x[i] = double.Parse(sItem["PJHSL" + i]);
                         y[i] = double.Parse(sItem["GMD" + i]);
                         n = n + 1;
@@ -471,11 +471,11 @@ namespace Calculates
                 }
                 if (jsbeizhu.Length > 1)
                 {
-                    jsbeizhu = "经检测，该" + mYpmcJcxm + "试验的校正后最佳含水率为" + sArray[2] + "%，校正后最大干密度为" + sArray[1] + "克/立方厘米。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该" + mYpmcJcxm + "试验的校正后最佳含水率为" + sArray[2] + "%，校正后最大干密度为" + sArray[1] + "克/立方厘米。";
                 }
                 else
                 {
-                    jsbeizhu = "经检测，该" + mYpmcJcxm + "试验的最佳含水率为" + sArray[2] + "%，最大干密度为" + sArray[1] + "克/立方厘米。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该" + mYpmcJcxm + "试验的最佳含水率为" + sArray[2] + "%，最大干密度为" + sArray[1] + "克/立方厘米。";
                 }
             }
             //mItem["MSGINFO"] = "合同号：" + mItem["HTBH"] + "，委托编号：" + mItem["WTDBH"] + "的土击实最大干密度：" + mItem["ZDGMD"] + "，最佳含水率：" + mItem["ZJHSL"];
