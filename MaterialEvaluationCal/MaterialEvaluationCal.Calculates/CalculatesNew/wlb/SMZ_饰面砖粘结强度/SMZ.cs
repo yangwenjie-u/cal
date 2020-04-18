@@ -45,6 +45,8 @@ namespace Calculates
             List<double> mkyhzArray = new List<double>();
             List<string> mtmpArray = new List<string>();
             string mypmc = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
             //遍历从表数据
             foreach (var sItem in S_SMZS)
             {
@@ -71,7 +73,7 @@ namespace Calculates
                     mDkbxy = 0;
                     mSz = 0;
                     mJSFF = "";
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     mAllHg = false;
                     jsbeizhu = "不合格";
                     continue;
@@ -82,6 +84,7 @@ namespace Calculates
                 {
                     if (jcxm.Contains("、粘结强度、"))
                     {
+                        jcxmCur = "粘结强度";
                         double mMj1, mMj2, mMj3, mPjz = 0;
                         mMj1 = Math.Round(Conversion.Val(sItem["CD1"]) * Conversion.Val(sItem["KD1"]), 1);
                         mMj2 = Math.Round(Conversion.Val(sItem["CD2"]) * Conversion.Val(sItem["KD2"]), 1);
@@ -154,6 +157,7 @@ namespace Calculates
                         }
                         if ("True" != sItem["PJZ_HG"] && "True" != sItem["MIN_HG"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             itemHG = false;
                             mAllHg = false;
                         }
@@ -186,21 +190,24 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "不合格";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
             }
 
-            if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"].Trim()))
-            {
-                jsbeizhu = mypmc + MItem[0]["FJJJ3"] + "所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
-            }
-            if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"].Trim()))
-            {
-                jsbeizhu = mypmc + MItem[0]["FJJJ2"] + "不符合标准要求。";
-                MItem[0]["FJJJ2"] = mypmc + MItem[0]["FJJJ2"] + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
-            }
+            //if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"].Trim()))
+            //{
+            //    //jsbeizhu = mypmc + MItem[0]["FJJJ3"] + "所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+            //    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，"+ MItem[0]["FJJJ3"] + "所检项目符合要求。";
+            //}
+            //if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"].Trim()))
+            //{
+            //    //jsbeizhu = mypmc + MItem[0]["FJJJ2"] + "不符合标准要求，需双倍复检。";
+            //    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，" + MItem[0]["FJJJ2"] + "不符合要求，需双倍复检。";
+            //    MItem[0]["FJJJ2"] = mypmc + MItem[0]["FJJJ2"] + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
+            //}
 
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;

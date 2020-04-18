@@ -23,9 +23,12 @@ namespace Calculates
             bool sign = true;
             string mJSFF = "";
             double zj1 = 0, zj2 = 0, mMj1 = 0, mMj2 = 0, mMj3 = 0, mMj4 = 0, mMj5 = 0;
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in SItem)
             {
+                jcxmCur = "粘结强度";
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u["MC"] == sItem["SHANGB"].Trim() && u["JCYJ"] == sItem["SYBZ"].Trim());
                 if (null != extraFieldsDj)
@@ -37,7 +40,7 @@ namespace Calculates
                 {
                     mJSFF = "";
                     mAllHg = false;
-                    mjcjg = "不合格";
+                    mjcjg = "不下结论";
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
                 }
@@ -63,16 +66,16 @@ namespace Calculates
 
                         if ((mMj1 != 0) && (mMj2 != 0) && (mMj3 != 0) && (mMj4 != 0) && (mMj5 != 0))
                         {
-                            sItem["LSQD1"] = (double.Parse(sItem["LSHZ1"]) / mMj1).ToString("0.00");
-                            sItem["LSQD2"] = (double.Parse(sItem["LSHZ2"]) / mMj2).ToString("0.00");
-                            sItem["LSQD3"] = (double.Parse(sItem["LSHZ3"]) / mMj3).ToString("0.00");
-                            sItem["LSQD4"] = (double.Parse(sItem["LSHZ4"]) / mMj4).ToString("0.00");
-                            sItem["LSQD5"] = (double.Parse(sItem["LSHZ5"]) / mMj5).ToString("0.00");
+                            sItem["LSQD1"] = (double.Parse(sItem["LSHZ1"]) / mMj1 * 1000).ToString("0.00");
+                            sItem["LSQD2"] = (double.Parse(sItem["LSHZ2"]) / mMj2 * 1000).ToString("0.00");
+                            sItem["LSQD3"] = (double.Parse(sItem["LSHZ3"]) / mMj3 * 1000).ToString("0.00");
+                            sItem["LSQD4"] = (double.Parse(sItem["LSHZ4"]) / mMj4 * 1000).ToString("0.00");
+                            sItem["LSQD5"] = (double.Parse(sItem["LSHZ5"]) / mMj5 * 1000).ToString("0.00");
                             sItem["LSPJ"] = ((double.Parse(sItem["LSQD1"]) + double.Parse(sItem["LSQD2"]) + double.Parse(sItem["LSQD3"]) + double.Parse(sItem["LSQD4"]) + double.Parse(sItem["LSQD5"])) / 5).ToString("0.0");
 
                             for (int i = 1; i < 6; i++)
                             {
-                                if (GetSafeDouble(sItem["LSQD" + i]) >= double.Parse(MItem[0]["G_KYQD"]) * 0.75 && GetSafeDouble(sItem["LSQD" + i])< double.Parse(MItem[0]["G_KYQD"]))
+                                if (GetSafeDouble(sItem["LSQD" + i]) >= double.Parse(MItem[0]["G_KYQD"]) * 0.75 && GetSafeDouble(sItem["LSQD" + i]) < double.Parse(MItem[0]["G_KYQD"]))
                                 {
                                     zxz++;
                                 }
@@ -87,18 +90,19 @@ namespace Calculates
                             sItem["LSQD5"] = "0";
                             sItem["LSPJ"] = "0";
                         }
-                        if (double.Parse(sItem["LSPJ"]) >= double.Parse(MItem[0]["G_KYQD"]) && zxz<=1 && sItem["PHTZ1"].Trim() == "粘结砂浆破坏" && sItem["PHTZ2"].Trim() == "粘结砂浆破坏" && sItem["PHTZ3"].Trim() == "粘结砂浆破坏" && sItem["PHTZ4"].Trim() == "粘结砂浆破坏" && sItem["PHTZ5"].Trim() == "粘结砂浆破坏")
+                        if (double.Parse(sItem["LSPJ"]) >= double.Parse(MItem[0]["G_KYQD"]) && zxz <= 1 && sItem["PHTZ1"].Trim() == "粘结砂浆破坏" && sItem["PHTZ2"].Trim() == "粘结砂浆破坏" && sItem["PHTZ3"].Trim() == "粘结砂浆破坏" && sItem["PHTZ4"].Trim() == "粘结砂浆破坏" && sItem["PHTZ5"].Trim() == "粘结砂浆破坏")
                         {
                             MItem[0]["HG_KYQD"] = "合格";
                             sItem["JCJG"] = "合格";
-                            jsbeizhu = "该组试样所检项符合上述标准要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                             mAllHg = true;
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             MItem[0]["HG_KYQD"] = "不合格";
                             sItem["JCJG"] = "不合格";
-                            jsbeizhu = "该组试样所检项不符合上述标准要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
                             mAllHg = false;
                         }
                         MItem[0]["G_KYQD"] = "≥" + MItem[0]["G_KYQD"].ToString() + "MPa，且粘接界面脱开面积不应大于50%。破坏荷载每组可有有一个试样的粘接强度小于本标准规定值，但不应小于规定值的75 %。";
@@ -109,14 +113,15 @@ namespace Calculates
                         {
                             MItem[0]["HG_KYQD"] = "合格";
                             sItem["JCJG"] = "合格";
-                            jsbeizhu = "该组试样所检项符合上述标准要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                             mAllHg = true;
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             MItem[0]["HG_KYQD"] = "不合格";
                             sItem["JCJG"] = "不合格";
-                            jsbeizhu = "该组试样所检项不符合上述标准要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
                             mAllHg = false;
                         }
                         break;
@@ -160,14 +165,15 @@ namespace Calculates
                         {
                             MItem[0]["HG_KYQD"] = "合格";
                             sItem["JCJG"] = "合格";
-                            jsbeizhu = "该组试样所检项符合上述标准要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                             mAllHg = true;
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             MItem[0]["HG_KYQD"] = "不合格";
                             sItem["JCJG"] = "不合格";
-                            jsbeizhu = "该组试样所检项不符合上述标准要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
                             mAllHg = false;
                         }
                         MItem[0]["G_KYQD"] = "≥" + MItem[0]["G_KYQD"].ToString() + "MPa，每组允许有一个试样的粘结强度小于0.4Mpa,但不应小于0.3Mpa。";

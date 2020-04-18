@@ -221,7 +221,7 @@ namespace Calculates
                 {
                     mSz = 0;
                     mJsff = "";
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
                     break;
                 }
                 if (mJsff == "" || mJsff == "new")

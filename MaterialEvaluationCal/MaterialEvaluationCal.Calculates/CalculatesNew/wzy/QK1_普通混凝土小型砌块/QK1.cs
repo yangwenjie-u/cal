@@ -35,6 +35,8 @@ namespace Calculates
                 MItem.Add(m);
             }
 
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sItem in SItem)
             {
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
@@ -42,8 +44,10 @@ namespace Calculates
                 #region 外观质量 尺寸偏差
                 if (jcxm.Contains("、外观质量、") || jcxm.Contains("、尺寸偏差、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "外观质量,尺寸偏差");
                     if (GetSafeDouble(sItem["WCBHGS"]) > 7)
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         jsbeizhu = "外观质量、尺寸偏差不合格数量超过7个";
                         MItem[0]["HG_WGZL"] = "不合格";
                         MItem[0]["HG_CCPC"] = "不合格";
@@ -65,6 +69,7 @@ namespace Calculates
                 #region 强度等级
                 if (jcxm.Contains("、强度等级、"))
                 {
+                    jcxmCur = "强度等级";
                     var extraFieldsDj = extraDJ.FirstOrDefault(u => u["MC"] == sItem["SJDJ"].Trim() && u["JCXM"] == "强度等级");
                     if (null != extraFieldsDj)
                     {
@@ -131,6 +136,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["QDPD"] = "不符合";
                             sItem["JCJG"] = "不合格";
                             mAllHg = false;
@@ -153,6 +159,7 @@ namespace Calculates
                 #region 干燥收缩率
                 if (jcxm.Contains("、干燥收缩率、"))
                 {
+                    jcxmCur = "干燥收缩率";
                     double gzssl = 0;
                     var extraFieldsDj = extraDJ.FirstOrDefault(u => u["JCXM"] == "干燥收缩率" && u["QKCZLX"] == sItem["QKCZLX"]);
                     if (null != extraFieldsDj)
@@ -174,6 +181,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                         MItem[0]["HG_GZSSL"] = "不合格";
                         MItem[0]["W_GZSSL"] = "----";
@@ -190,6 +198,7 @@ namespace Calculates
                 #region 相对含水率
                 if (jcxm.Contains("、相对含水率、"))
                 {
+                    jcxmCur = "相对含水率";
                     double bzhsl = 0;//标准含水率
                     var extraFieldsDj = extraDJ.FirstOrDefault(u => u["JCXM"] == "相对含水率" && u["XDHSLLX"] == sItem["XDHSLLX"]);
                     if (extraFieldsDj != null)
@@ -211,6 +220,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["HG_HSL"] = "不合格";
                         mAllHg = false;
                     }
@@ -226,6 +236,7 @@ namespace Calculates
                 #region 抗冻性
                 if (jcxm.Contains("、抗冻性、") && GetSafeDouble(sItem["GKB"]) > 0)  //GKB 抗冻性高宽比
                 {
+                    jcxmCur = "抗冻性";
                     MItem[0]["G_ZLSSL"] = "平均值≤5% 单块最大值≤10%";   //质量损失率
                     MItem[0]["G_QDSSL"] = "平均值≤20% 单块最大值≤30%";  //强度损失率
                     int max = 0;
@@ -267,6 +278,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["HG_KDX"] = "不合格";
                         mAllHg = false;
                     }
@@ -284,6 +296,7 @@ namespace Calculates
                 #region 抗渗性
                 if (jcxm.Contains("、抗渗性、"))
                 {
+                    jcxmCur = "抗渗性";
                     MItem[0]["G_KS"] = "≤10";
                     if (Conversion.Val(sItem["SMXJGD1"]) <= 10 && Conversion.Val(sItem["SMXJGD2"]) <= 10 && Conversion.Val(sItem["SMXJGD3"]) <= 10)
                     {
@@ -292,6 +305,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                         MItem[0]["HG_KS"] = "不合格";
                         MItem[0]["W_KS"] = "----";
@@ -309,11 +323,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样不符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;

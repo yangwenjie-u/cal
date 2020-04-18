@@ -47,6 +47,8 @@ namespace Calculates
             List<double> mtmpArray = new List<double>();
 
             var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sItem in SItems)
             {
                 mItemHg = true;
@@ -65,9 +67,9 @@ namespace Calculates
                 {
                     sItem["SJCC"] = "0";
                     sItem["HSXS"] = "0";
-                    jsbeizhu += "规格不祥。";
+                    jsbeizhu += "依据不详";
                     mAllHg = false;
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     continue;
                 }
                 sItem["SJCC"] = mrsGg["CD"];
@@ -312,6 +314,8 @@ namespace Calculates
                         {
                             sItem["DHPJ2"] = Math.Round(mAvgKyqd, 1).ToString();
                         }
+
+                        sItem["QDSSL2"] = (Math.Round(Conversion.Val(sItem["KYPJ2"]) - Conversion.Val(sItem["DHPJ2"]) / Conversion.Val(sItem["KYPJ2"]) * 100, 1)).ToString("0.0");
                         #endregion
                     }
                     #endregion
@@ -331,6 +335,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、质量损失、") || jcxm.Contains("、抗冻试验、"))
                 {
+
                     #region 质量损失
                     qdVal = 0;
                     mtmpArray.Clear();
@@ -367,7 +372,7 @@ namespace Calculates
                     }
 
                     mtmpArray.Clear();
-                    if ("D25" != sItem["KDBH"].Trim() && sItem["KDBH"].Trim() != "D50")
+                    if ("D25" != sItem["KDBH"].Trim() && sItem["KDBH"].Trim() != "D50" && sItem["KDBH"].Contains("D"))
                     {
                         #region ZLSSL2
                         for (int i = 1; i < 4; i++)
@@ -383,7 +388,7 @@ namespace Calculates
                         mMidKyqd = mtmpArray[1];
                         mAvgKyqd = mtmpArray.Average();
 
-                        if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd)> 1)
+                        if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd) > 1)
                         {
                             sItem["ZLSSL2"] = Math.Round(mMidKyqd, 1).ToString("0.0");
                         }
@@ -401,6 +406,19 @@ namespace Calculates
                         }
 
                         #endregion
+                    }
+                    else
+                    {
+                        sItem["DQZL2_1"] = "----";
+                        sItem["DQZL2_2"] = "----";
+                        sItem["DQZL2_3"] = "----";
+                        sItem["DHZL2_1"] = "----";
+                        sItem["DHZL2_2"] = "----";
+                        sItem["DHZL2_3"] = "----";
+                        sItem["ZLSSL2_1"] = "----";
+                        sItem["ZLSSL2_2"] = "----";
+                        sItem["ZLSSL2_3"] = "----";
+                        sItem["ZLSSL2"] = "----";
                     }
 
                     #endregion
@@ -492,38 +510,69 @@ namespace Calculates
                 #region 快冻法
                 if (sItem["DRFF"] == "快冻法")
                 {
-                    //MItem[0]["WHICH"] = "0";
+                    #region old vb版本有错误，快冻法只做一组质量损失
+                    ////MItem[0]["WHICH"] = "0";
+                    //sItem["KDYQ"] = "相对动弹性模量应" + mrsdrFf["XDTXML"] + "% 或质量损失应" + mrsdrFf["ZLSSL"] + "%。";
+                    //if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], true) == "符合" && IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"], true) == "符合")
+                    //{
+                    //    sItem["JCJG"] = "合格";
+                    //    //jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                    //    jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目均符合要求。";
+                    //}
+
+                    //if ((IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], true) == "符合" && IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"], true) == "符合") && (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"], true) == "不符合" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"], true) == "不符合") && GetSafeDouble(sItem["DRCS2"]) >= GetSafeDouble(sItem["DRCS"]))
+                    //{
+                    //    sItem["JCJG"] = "合格";
+                    //    string mkdbh = "";
+                    //    var extraFieldsDj = extraCS.FirstOrDefault(u => u.Keys.Contains("MC") && u.Values.Contains(sItem["DRFF"].Trim()) && u.Keys.Contains("KDCS") && u.Values.Contains(sItem["DRCS1"].Trim()));
+                    //    if (null == extraFieldsDj)
+                    //    {
+                    //        mkdbh = extraFieldsDj["KDBH"];
+                    //    }
+                    //    //jsbeizhu = "该试件抗冻标号为：" + mkdbh.Trim() + ",不符合设计标号" + sItem["KDBH"] + "设计要求。";
+                    //    jsbeizhu = "依据设计标号" + sItem["KDBH"] + "的规定，该试件抗冻标号为：" + mkdbh.Trim() + "不符合要求。";
+                    //}
+
+                    //if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格" || IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"]) == "不合格")
+                    //{
+                    //    jcxmCur = "质量损失";
+                    //    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    //    sItem["GH_ZLSS"] = "不合格";
+                    //}
+                    //else
+                    //{
+                    //    sItem["GH_ZLSS"] = "合格";
+                    //}
+
+                    //if (IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"]) == "不合格")
+                    //{
+                    //    jcxmCur = "相对动弹性模量";
+                    //    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    //    sItem["GH_DTML"] = "不合格";
+                    //}
+                    //else
+                    //{
+                    //    sItem["GH_DTML"] = "合格";
+                    //}
+
+                    //if ((IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"]) == "不合格") && (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"]) == "不合格"))
+                    //{
+                    //    mItemHg = false;
+                    //    //jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                    //    jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                    //}
+                    //else
+                    //{
+                    //    //jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                    //    jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目均符合要求。";
+                    //}
+                    #endregion
+
                     sItem["KDYQ"] = "相对动弹性模量应" + mrsdrFf["XDTXML"] + "% 或质量损失应" + mrsdrFf["ZLSSL"] + "%。";
-                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], true) == "符合" && IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"], true) == "符合" && GetSafeDouble(sItem["DRCS2"]) >= GetSafeDouble(sItem["DRCS"]))
-                    {
-                        sItem["JCJG"] = "合格";
-                        jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
-                    }
-
-                    if ((IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], true) == "符合" && IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"], true) == "符合") && (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"], true) == "不符合" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"], true) == "不符合") && GetSafeDouble(sItem["DRCS2"]) >= GetSafeDouble(sItem["DRCS"]))
-                    {
-                        sItem["JCJG"] = "合格";
-                        string mkdbh = "";
-                        var extraFieldsDj = extraCS.FirstOrDefault(u => u.Keys.Contains("MC") && u.Values.Contains(sItem["DRFF"].Trim()) && u.Keys.Contains("KDCS") && u.Values.Contains(sItem["DRCS1"].Trim()));
-                        if (null == extraFieldsDj)
-                        {
-                            mkdbh = extraFieldsDj["KDBH"];
-                        }
-                        jsbeizhu = "该试件抗冻标号为：" + mkdbh.Trim() + ",不符合设计标号" + sItem["KDBH"] + "设计要求。";
-
-                    }
-
-                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格" || IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"]) == "不合格")
-                    {
-                        sItem["GH_ZLSS"] = "不合格";
-                    }
-                    else
-                    {
-                        sItem["GH_ZLSS"] = "合格";
-                    }
-
                     if (IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"]) == "不合格")
                     {
+                        jcxmCur = "相对动弹性模量";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["GH_DTML"] = "不合格";
                     }
                     else
@@ -531,14 +580,26 @@ namespace Calculates
                         sItem["GH_DTML"] = "合格";
                     }
 
-                    if ((IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"]) == "不合格") && (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"]) == "不合格"))
+                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格")
                     {
-                        mItemHg = false;
-                        jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                        jcxmCur = "质量损失";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["GH_ZLSS"] = "不合格";
                     }
                     else
                     {
-                        jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                        sItem["GH_ZLSS"] = "合格";
+                    }
+
+                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], true) == "符合" && IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"], true) == "符合")
+                    {
+                        sItem["JCJG"] = "合格";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目均符合要求。";
+                    }
+                    else
+                    {
+                        mItemHg = false;
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                     }
                 }
                 #endregion
@@ -548,17 +609,31 @@ namespace Calculates
                 {
                     sItem["KDYQ"] = "抗压强度损失率应" + mrsdrFf["QDSSL"] + "% 质量损失应" + mrsdrFf["ZLSSL"] + "%。";
 
+                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], false) == "不合格" || (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"], false) == "不合格" && sItem["KDBH"].Trim() != "D25" && sItem["KDBH"].Trim() != "D50"))
+                    {
+                        jcxmCur = "质量损失";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                    if (IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL1"], false) == "不合格" || (IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL2"], false) == "不合格" && sItem["KDBH"].Trim() != "D25" && sItem["KDBH"].Trim() != "D50"))
+                    {
+                        jcxmCur = "强度损失";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
                     if (sItem["KDBH"].Trim() != "D25" && sItem["KDBH"].Trim() != "D50")
                     {
-                        if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "合格" && IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL1"]) == "合格" && IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"]) == "合格" && IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL2"]) == "合格" && GetSafeDouble(sItem["DRCS2"]) >= GetSafeDouble(sItem["DRCS"]))
+                        if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "合格" && IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL1"]) == "合格" && IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL2"]) == "合格" && IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL2"]) == "合格" && GetSafeDouble(sItem["DRCS2"]) >= GetSafeDouble(sItem["DRCS"]) - 50)
                         {
                             sItem["JCJG"] = "合格";
-                            jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                            //jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目均符合要求。";
                         }
                         else
                         {
                             mItemHg = false;
-                            jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                            //jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                         }
                     }
                     else
@@ -566,12 +641,14 @@ namespace Calculates
                         sItem["DRCS2"] = "----";
                         if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "符合" && IsQualified(mrsdrFf["QDSSL"], sItem["QDSSL1"]) == "符合")
                         {
-                            jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                            //jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目均符合要求。";
                         }
                         else
                         {
                             mItemHg = false;
-                            jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                            //jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "" + sItem["KDBH"].Trim() + "设计要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                         }
                     }
                 }

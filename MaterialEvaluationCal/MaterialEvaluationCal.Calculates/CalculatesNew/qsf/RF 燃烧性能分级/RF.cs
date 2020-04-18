@@ -36,7 +36,8 @@ namespace Calculates
             int mbHggs1 = 0, mbHggs2 = 0, mbHggs3 = 0;
             bool sign = true, mark = true;
             string djjg = "";
-
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in SItem)
             {
@@ -877,7 +878,7 @@ namespace Calculates
                 else
                 {
                     mAllHg = false;
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
                 }
@@ -885,6 +886,7 @@ namespace Calculates
                 #region 火焰横向蔓延长度
                 if (jcxm.Contains("、火焰横向蔓延长度、"))
                 {
+                    jcxmCur = "火焰横向蔓延长度";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 20284-2006"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 20284-2006";
@@ -896,6 +898,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["W_HXMY"] = "否";
                         mAllHg = false;
                     }
@@ -912,6 +915,7 @@ namespace Calculates
                 #region 燃烧增长速率指数FIGRA
                 if (jcxm.Contains("、燃烧增长速率指数FIGRA、"))
                 {
+                    jcxmCur = "燃烧增长速率指数FIGRA";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 20284-2006"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 20284-2006";
@@ -927,6 +931,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["GH_FIGRA"] = "不合格";
                     }
                     //mbHggs3 = sItem["GH_FIGRA"] == "不合格" ? mbHggs3++ : mbHggs3;
@@ -943,6 +948,7 @@ namespace Calculates
                 #region 燃烧滴落物/微粒
                 if (jcxm.Contains("、燃烧滴落物/微粒、"))
                 {
+                    jcxmCur = "燃烧滴落物/微粒";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 20284-2006"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 20284-2006";
@@ -956,14 +962,28 @@ namespace Calculates
                     //    }
                     //}
 
-                    if (sItem["GH_D0"] == "合格")
+                    //if (sItem["GH_D0"] == "合格")
+                    //{
+                    //    sItem["W_RSDR"] = "无";
+                    //}
+                    //else
+                    //{
+                    //    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    //    sItem["W_RSDR"] = "有";
+                    //    mAllHg = false;
+                    //}
+
+                    switch (sItem["GH_D0"])
                     {
-                        sItem["W_RSDR"] = "无";
-                    }
-                    else
-                    {
-                        sItem["W_RSDR"] = "有";
-                        mAllHg = false;
+                        case "d0":
+                            sItem["W_RSDR"] = "600s内无燃烧滴落物/微粒";
+                            break;
+                        case "d1":
+                            sItem["W_RSDR"] = "600s内无燃烧滴落物/微粒，持续时间不超过10s";
+                            break;
+                        case "d2":
+                            sItem["W_RSDR"] = "未达到600s内无燃烧滴落物/微粒，持续时间不超过10s";
+                            break;
                     }
                 }
                 else
@@ -976,6 +996,7 @@ namespace Calculates
                 #region 总放热量
                 if (jcxm.Contains("、总放热量、"))
                 {
+                    jcxmCur = "总放热量";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 20284-2006"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 20284-2006";
@@ -989,6 +1010,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["GH_THR"] = "不合格";
                     }
 
@@ -1006,6 +1028,7 @@ namespace Calculates
                 #region 引燃滤纸现象
                 if (jcxm.Contains("、引燃滤纸现象、"))
                 {
+                    jcxmCur = "引燃滤纸现象";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 8626-2007"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 8626-2007";
@@ -1027,6 +1050,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["W_SFYR"] = "否";
                         sItem["GH_SFYR"] = "不合格";
                         //mbHggs1 = mbHggs1 + 1;
@@ -1045,6 +1069,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、焰尖高度、"))
                 {
+                    jcxmCur = "焰尖高度";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 8626-2007"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 8626-2007";
@@ -1075,13 +1100,14 @@ namespace Calculates
                     //    //mbHggs1 = mbHggs1 + 1;
                     //    mAllHg = false;
                     //}
-                    if (sItem["GH_YJGD"] == "合格")
+                    if (IsQualified("≤150", sItem["W_YJGD"], false) == "合格")
                     {
-                        sItem["W_YJGD"] = "是";
+                        sItem["GH_YJGD"] = "合格";
                     }
                     else
                     {
-                        sItem["W_YJGD"] = "否";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["GH_YJGD"] = "不合格";
                         mAllHg = false;
                     }
                 }
@@ -1096,17 +1122,19 @@ namespace Calculates
                 #region 持续燃烧时间
                 if (jcxm.Contains("、持续燃烧时间、"))
                 {
+                    jcxmCur = "持续燃烧时间";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 5464-2010"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 5464-2010";
                     }
-                    string drxs = IsQualified(sItem["G_RSSJ"], sItem["W_RSSJ"], true);
+                    string drxs = IsQualified(sItem["G_RSSJ"].Replace("=", ""), sItem["W_RSSJ"], true);
                     if (drxs == "符合")
                     {
                         sItem["GH_RSSJ"] = "合格";
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["GH_RSSJ"] = "不合格";
                         //mbhggs = mbhggs + 1;
                         mAllHg = false;
@@ -1123,6 +1151,7 @@ namespace Calculates
                 #region 质量损失率
                 if (jcxm.Contains("、质量损失率、"))
                 {
+                    jcxmCur = "质量损失率";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 5464-2010"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 5464-2010";
@@ -1134,6 +1163,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["GH_ZLSS"] = "不合格";
                         //mbhggs = mbhggs + 1;
                         mAllHg = false;
@@ -1150,6 +1180,7 @@ namespace Calculates
                 #region 炉内温升
                 if (jcxm.Contains("、炉内温升、"))
                 {
+                    jcxmCur = "质量损失率";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 5464-2010"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 5464-2010";
@@ -1161,6 +1192,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["GH_LNWS"] = "不合格";
                         //mbhggs = mbhggs + 1;
                         mAllHg = false;
@@ -1177,6 +1209,7 @@ namespace Calculates
                 #region 总热值
                 if (jcxm.Contains("、总热值、"))
                 {
+                    jcxmCur = "总热值";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 14402-2007"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 14402-2007";
@@ -1217,6 +1250,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["GH_RSRZ"] = "不符合" + sItem["RSCDJ"] + "级";
                         mAllHg = false;
                     }
@@ -1238,6 +1272,7 @@ namespace Calculates
                 #region 氧指数
                 if (jcxm.Contains("、氧指数、"))
                 {
+                    jcxmCur = "氧指数";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 2406.2-2009"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 2406.2-2009";
@@ -1274,6 +1309,10 @@ namespace Calculates
                             sItem["GH_RSYZZ"] = IsQualified(sItem["G_RSYZZ"], sItem["W_RSYZZ"], false);
                         }
                     }
+                    if (sItem["GH_RSYZZ"] == "不合格")
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                     //mbHggs1 = sItem["GH_RSYZZ"] == "不合格" ? mbHggs1++ : mbHggs1;
                     mAllHg = sItem["GH_RSYZZ"] == "不合格" ? false : mAllHg;
                 }
@@ -1286,50 +1325,161 @@ namespace Calculates
                 #endregion
 
                 #region 烟气生成速率SMOGRA
-                if (jcxm.Contains("、烟气生成速率SMOGRA、"))
+                if (jcxm.Contains("、烟气生成速率、"))
                 {
+                    jcxmCur = "烟气生成速率SMOGRA";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 20284-2006"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 20284-2006";
                     }
-                    string drxs = IsQualified(sItem["G_SMOGRA"], sItem["SMOGRA"], true);
-                    if (drxs == "符合")
+                    //string drxs = IsQualified(sItem["G_SMOGRA"], sItem["SMOGRA"], true);
+                    //if (drxs == "符合")
+                    //{
+                    //    sItem["GH_SMOGRA"] = "合格";
+                    //}
+                    //else
+                    //{
+                    //    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    //    sItem["GH_SMOGRA"] = "不合格";
+                    //    mAllHg = false;
+                    //}
+
+                    //switch (sItem["GH_SMOGRA"])
+                    //{
+                    //    case "s1":
+                    //        if (sItem["YPXZ"].Contains("平板状建筑材料"))
+                    //        {
+                    //            sItem["G_SMOGRA"] = "烟气生成速率指数SMOGRA≤30";
+                    //        }
+                    //        else if (sItem["YPXZ"].Contains("管状绝热材料"))
+                    //        {
+                    //            sItem["G_SMOGRA"] = "烟气生成速率指数SMOGRA≤105";
+                    //        }
+                    //        break;
+                    //    case "s2":
+                    //        if (sItem["YPXZ"].Contains("平板状建筑材料"))
+                    //        {
+                    //            sItem["G_SMOGRA"] = "烟气生成速率指数SMOGRA≤180";
+                    //        }
+                    //        else if (sItem["YPXZ"].Contains("管状绝热材料"))
+                    //        {
+                    //            sItem["G_SMOGRA"] = "烟气生成速率指数SMOGRA≤580";
+                    //        }
+                    //        break;
+                    //    case "s3":
+                    //        sItem["G_SMOGRA"] = "未达到烟气生成速率指数SMOGRA≤580";
+                    //        break;
+
+                    //}     
+
+                    switch (sItem["YPXZ"])
                     {
-                        //MItem[0]["GH_RSSJ"] = "合格";
+                        case "平板状建筑材料":
+                            if (GetSafeDouble(sItem["SMOGRA"]) <= 30)
+                            {
+                                sItem["G_SMOGRA"] = "≤30";
+                                sItem["GH_SMOGRA"] = "s1";
+                            }
+                            else if (GetSafeDouble(sItem["SMOGRA"]) <= 180)
+                            {
+                                sItem["G_SMOGRA"] = "≤180";
+                                sItem["GH_SMOGRA"] = "s2";
+                            }
+                            else
+                            {
+                                sItem["G_SMOGRA"] = ">180";
+                                sItem["GH_SMOGRA"] = "s3";
+                            }
+                            break;
+                        case "管状绝热材料":
+                            if (GetSafeDouble(sItem["SMOGRA"]) <= 105)
+                            {
+                                sItem["G_SMOGRA"] = "≤105";
+                                sItem["GH_SMOGRA"] = "s1";
+                            }
+                            else if (GetSafeDouble(sItem["SMOGRA"]) <= 580)
+                            {
+                                sItem["G_SMOGRA"] = "≤580";
+                                sItem["GH_SMOGRA"] = "s2";
+                            }
+                            else
+                            {
+                                sItem["G_SMOGRA"] = ">580";
+                                sItem["GH_SMOGRA"] = "s3";
+                            }
+                            break;
                     }
-                    else
-                    {
-                        //MItem[0]["GH_RSSJ"] = "不合格";
-                        //mbhggs = mbhggs + 1;
-                    }
+
                 }
                 else
                 {
+                    sItem["GH_SMOGRA"] = "----";
                     sItem["G_SMOGRA"] = "----";
                     sItem["SMOGRA"] = "----";
                 }
                 #endregion
 
                 #region 烟气产生量TSP600S
-                if (jcxm.Contains("、烟气产生量TSP600S、"))
+                if (jcxm.Contains("、总烟气生成量TSP600S、"))
                 {
+                    jcxmCur = "总烟气生成量TSP600S";
                     if (!MItem[0]["JCYJ"].Contains("GB/T 20284-2006"))
                     {
                         MItem[0]["JCYJ"] = MItem[0]["JCYJ"] + "、GB/T 20284-2006";
                     }
-                    string drxs = IsQualified(sItem["G_TSP"], sItem["TSP"], true);
-                    if (drxs == "符合")
+                    //string drxs = IsQualified(sItem["G_TSP"], sItem["TSP"], true);
+                    //if (drxs == "符合")
+                    //{
+                    //    sItem["GH_TSP"] = "合格";
+                    //}
+                    //else
+                    //{
+                    //    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    //    sItem["GH_TSP"] = "不合格";
+                    //    mAllHg = false;
+                    //}
+
+                    switch (sItem["YPXZ"])
                     {
-                        //MItem[0]["GH_RSSJ"] = "合格";
-                    }
-                    else
-                    {
-                        //MItem[0]["GH_RSSJ"] = "不合格";
-                        //mbhggs = mbhggs + 1;
+                        case "平板状建筑材料":
+                            if (GetSafeDouble(sItem["TSP"]) <= 50)
+                            {
+                                sItem["GH_TSP"] = "s1";
+                                sItem["G_TSP"] = "≤50";
+                            }
+                            else if (GetSafeDouble(sItem["TSP"]) <= 200)
+                            {
+                                sItem["GH_TSP"] = "s2";
+                                sItem["G_TSP"] = "≤200";
+                            }
+                            else
+                            {
+                                sItem["GH_TSP"] = "s3";
+                                sItem["G_TSP"] = ">200";
+                            }
+                            break;
+                        case "管状绝热材料":
+                            if (GetSafeDouble(sItem["TSP"]) <= 250)
+                            {
+                                sItem["GH_TSP"] = "s1";
+                                sItem["G_TSP"] = "≤250";
+                            }
+                            else if (GetSafeDouble(sItem["TSP"]) <= 1600)
+                            {
+                                sItem["GH_TSP"] = "s2";
+                                sItem["G_TSP"] = "≤1600";
+                            }
+                            else
+                            {
+                                sItem["GH_TSP"] = "s3";
+                                sItem["G_TSP"] = ">1600";
+                            }
+                            break;
                     }
                 }
                 else
                 {
+                    sItem["GH_TSP"] = "----";
                     sItem["TSP"] = "----";
                     sItem["G_TSP"] = "----";
                 }
@@ -1346,30 +1496,53 @@ namespace Calculates
                 //}
                 //#endregion
 
+                string sdj = ""; //产烟特性等级
+                if (sItem["GH_SMOGRA"].Contains("s") && sItem["GH_TSP"].Contains("s"))
+                {
+                    if (GetSafeDouble(sItem["GH_SMOGRA"].Replace("s", "")) > GetSafeDouble(sItem["GH_TSP"].Replace("s", "")))
+                    {
+                        sdj = "，产烟特性等级为 " + sItem["GH_SMOGRA"] + " 级";
+                    }
+                    else
+                    {
+                        sdj = "，产烟特性等级为 " + sItem["GH_TSP"] + " 级";
+                    }
+                }
+
+                string dlw = "";    //燃烧滴落物/微粒等级
+                if (sItem["GH_D0"].Contains("d"))
+                {
+                    dlw = "，燃烧滴落物/微粒等级为 " + sItem["GH_D0"] + " 级";
+                }
+
                 if (mAllHg)
                 {
-                    if (sItem["RSCDJ"] != "----")
+                    if (sItem["RSCDJ"] == "----")
                     {
                         sItem["JCJG"] = "符合" + sItem["RSDJ"] + "级";
-                        jsbeizhu = "该试样符合" + sItem["RSDJ"] + "级要求";
+                        //jsbeizhu = "该试样符合" + sItem["RSDJ"] + "级要求";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + sItem["RSDJ"] + "级材料要求" + sdj + dlw + "。";
                     }
                     else
                     {
                         sItem["JCJG"] = "符合" + sItem["RSDJ"] + "级";
-                        jsbeizhu = "该试样符合" + sItem["RSDJ"] + "中" + sItem["RSCDJ"] + "级要求";
+                        //jsbeizhu = "该试样符合" + sItem["RSDJ"] + "中" + sItem["RSCDJ"] + "级要求";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + sItem["RSDJ"] + "级材料要求，燃烧性能细化分级为" + sItem["RSCDJ"] + "级" + sdj + dlw + "。";
                     }
                 }
                 else
                 {
-                    if (sItem["RSCDJ"] != "----")
+                    if (sItem["RSCDJ"] == "----")
                     {
                         sItem["JCJG"] = "不符合" + sItem["RSDJ"] + "级";
-                        jsbeizhu = "该试样不符合" + sItem["RSDJ"] + "级要求";
+                        //jsbeizhu = "该试样不符合" + sItem["RSDJ"] + "级要求";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + sItem["RSDJ"] + "级要求。";
                     }
                     else
                     {
                         sItem["JCJG"] = "不符合" + sItem["RSDJ"] + "级";
-                        jsbeizhu = "该试样不符合" + sItem["RSDJ"] + "中" + sItem["RSCDJ"] + "级要求";
+                        //jsbeizhu = "该试样不符合" + sItem["RSDJ"] + "中" + sItem["RSCDJ"] + "级要求";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + sItem["RSDJ"] + "级材料，燃烧性能细化分级" + sItem["RSCDJ"] + "级要求。";
                     }
                 }
 

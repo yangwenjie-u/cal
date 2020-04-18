@@ -12,7 +12,7 @@ namespace Calculates
             bool mAllHg = true;
             var data = retData;
 
-            var SItem = data["S_TRD"];
+            var SItem = data["SJ_TRD"];
             var MItem = data["M_TRD"];
             var mjcjg = "不合格";
             var jsbeizhu = "依据" + MItem[0]["JCYJ"] + "，需采取防氡工程措施。";
@@ -40,7 +40,7 @@ namespace Calculates
             foreach (var sItem in SItem)
             {
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-                double dnd = double.Parse(sItem["DND1"]);
+                double dnd =  GetSafeDouble(sItem["DND1"]);
                 listArray.Add(dnd);
                 //if (dnd > 0)
                 //{
@@ -61,7 +61,7 @@ namespace Calculates
             MItem[0]["DNDAVERAGE"] = listArray.Average().ToString();
 
             MItem[0]["G_DND"] = "≤20000";
-            if (zddnd > 20000)
+            if (listArray.Max() > 20000)
             {
                 mAllHg = false;
             }

@@ -17,6 +17,8 @@ namespace Calculates
             string mJSFF;
             bool mAllHg;
             mAllHg = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             #endregion
 
             #region  集合取值
@@ -55,8 +57,8 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sitem["JCJG"] = "依据不详";
-                    mitem["JCJGMS"] = mitem["JCJGMS"] + "试件尺寸为空";
+                    sitem["JCJG"] = "不下结论";
+                    mitem["JCJGMS"] = "依据不详";
                     continue;
                 }
                 sitem["BPD"] = "----";
@@ -91,12 +93,14 @@ namespace Calculates
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (jcxm.Contains("、耐冲击性能、"))
                 {
+                    jcxmCur = "耐冲击性能";
                     if (sitem["NCJSM"].Trim() == "未破裂、孔洞满足要求")
                     {
                         MItem[0]["HG_NCJXN"] = "合格";
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["HG_NCJXN"] = "不合格";
                         mAllHg = false;
                     }
@@ -108,12 +112,14 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、耐贯穿性能、"))
                 {
+                    jcxmCur = "耐贯穿性能";
                     if (sitem["NGCSM"].Trim() == "未贯穿")
                     {
                         MItem[0]["HG_NGCXN"] = "合格";
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["HG_NGCXN"] = "不合格";
                         mAllHg = false;
                     }
@@ -143,12 +149,14 @@ namespace Calculates
                 #region 质量
                 if (jcxm.Contains("、质量、"))
                 {
+                    jcxmCur = "质量";
                     if (IsQualified(mitem["G_ZL"], sitem["ZL"], false) == "合格")
                     {
                         MItem[0]["HG_ZL"] = "合格";
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["HG_ZL"] = "不合格";
                         mAllHg = false;
                     }
@@ -164,6 +172,7 @@ namespace Calculates
                 #region 外观尺寸
                 if (jcxm.Contains("、外观尺寸、"))
                 {
+                    jcxmCur = "外观尺寸";
                     //double pc = 0; //尺寸偏差
                     //if (GetSafeDouble(sitem["BCGGCC"]) > 0)
                     //{
@@ -186,6 +195,7 @@ namespace Calculates
                     //}
                     if (MItem[0]["HG_CC"] == "不合格")
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                     }
                 }
@@ -200,6 +210,7 @@ namespace Calculates
                 #region 一般要求
                 if (jcxm.Contains("、一般要求、"))
                 {
+                    jcxmCur = "一般要求";
                     bool hg = true; //是否合格（一般要求）
                     if (sitem["YBYQ1"].Trim() != "无漏缝、缝均匀")
                     {
@@ -236,6 +247,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mitem["HG_YBYQ"] = "不合格";
                         mAllHg = false;
                     }
@@ -261,12 +273,12 @@ namespace Calculates
             if (mAllHg)
             {
                 mitem["JCJG"] = "合格";
-                mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
                 mitem["JCJG"] = "不合格";
-                mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
             #endregion
             /************************ 代码结束 *********************/

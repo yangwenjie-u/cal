@@ -23,7 +23,8 @@ namespace Calculates
             var MItem = data["M_LQX"];
             var extraE_LQX = data["E_LQX"];
             bool ywyc = true;
-
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in SItem)
             {
@@ -50,6 +51,7 @@ namespace Calculates
                     #region 密度（表干法、水中法、蜡封法）= 压实度
                     if (jcxm.Contains("、密度（表干法、水中法、蜡封法）、"))
                     {
+                        jcxmCur = "密度（表干法、水中法、蜡封法）";
                         if (!string.IsNullOrEmpty(sItem["SJYSD"]))
                         {
                             E_LQX["SJYSD"] = "≥" + sItem["SJYSD"];
@@ -66,6 +68,7 @@ namespace Calculates
                             E_LQX["SYSDPD"] = IsQualified(E_LQX["SJYSD"], E_LQX["SCYSD"], true);
                             if (E_LQX["SYSDPD"] == "不符合")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 ysdflag = false;
                             }
                             ywyc = Conversion.Val(E_LQX["SCYSD"]) > 100 ? false : ywyc;
@@ -76,6 +79,7 @@ namespace Calculates
                     #region 厚度
                     if (jcxm.Contains("、厚度、"))
                     {
+                        jcxmCur = "厚度";
                         if (E_LQX["SCHD"] == "----" || E_LQX["SCHD"] == "")
                         {
                             E_LQX["SCHD"] = "----";
@@ -138,6 +142,7 @@ namespace Calculates
                             E_LQX["SHDPD"] = IsQualified(stemp, E_LQX["SCHD"], true);
                             if (E_LQX["SHDPD"] == "不符合")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 hdflag = false;
                             }
                         }
@@ -157,11 +162,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样不符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
             if (!data.ContainsKey("M_LQX"))
             {

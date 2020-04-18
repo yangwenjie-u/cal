@@ -291,6 +291,22 @@ namespace Calculates
                     }
                 }
                 xd = Gs;
+
+                #region 处理未做氨检测的相关记录
+                for (int i = 1; i <= mCount; i++)
+                {
+                    string jcxm = "";
+                    sitem = SItem[i - 1];
+                    jcxm = '、' + sitem["JCXM"].Trim().Replace(",", "、") + "、";
+                    if (!jcxm.Contains("、氨、"))
+                    {
+                        sitem["G_A_ND"] = "----";
+                        sitem["W_ND_A"] = "----";
+                        sitem["AVG_A"] = "----";
+                        sitem["PD_A"] = "----";
+                    }
+                }
+                #endregion
             }
             //对 甲醛处理
             for (xd = 1; xd <= mCount; xd++)
@@ -357,6 +373,22 @@ namespace Calculates
                     }
                 }
                 xd = Gs;
+
+                #region 处理未做甲醛检测的相关记录
+                for (int i = 1; i <= mCount; i++)
+                {
+                    string jcxm = "";
+                    sitem = SItem[i - 1];
+                    jcxm = '、' + sitem["JCXM"].Trim().Replace(",", "、") + "、";
+                    if (!jcxm.Contains("、甲醛、"))
+                    {
+                        sitem["G_J_ND"] = "----";
+                        sitem["W_ND_J"] = "----";
+                        sitem["AVG_J"] = "----";
+                        sitem["PD_J"] = "----";
+                    }
+                }
+                #endregion
             }
             //对 苯处理
             for (xd = 1; xd <= mCount; xd++)
@@ -425,6 +457,22 @@ namespace Calculates
 
                 }
                 xd = Gs;
+
+                #region 处理未做苯检测的相关记录
+                for (int i = 1; i <= mCount; i++)
+                {
+                    string jcxm = "";
+                    sitem = SItem[i - 1];
+                    jcxm = '、' + sitem["JCXM"].Trim().Replace(",", "、") + "、";
+                    if (!jcxm.Contains("、苯、"))
+                    {
+                        sitem["G_B_ND"] = "----";
+                        sitem["W_ND_B"] = "----";
+                        sitem["AVG_B"] = "----";
+                        sitem["PD_B"] = "----";
+                    }
+                }
+                #endregion
             }
             //对 TVOC处理
             for (xd = 1; xd <= mCount; xd++)
@@ -493,6 +541,22 @@ namespace Calculates
                     }
                 }
                 xd = Gs;
+
+                #region 处理未做TVOC检测的相关记录
+                for (int i = 1; i <= mCount; i++)
+                {
+                    string jcxm = "";
+                    sitem = SItem[i - 1];
+                    jcxm = '、' + sitem["JCXM"].Trim().Replace(",", "、") + "、";
+                    if (!jcxm.Contains("、TVOC、"))
+                    {
+                        sitem["G_T_ND"] = "----";
+                        sitem["W_ND_T"] = "----";
+                        sitem["AVG_T"] = "----";
+                        sitem["PD_T"] = "----";
+                    }
+                }
+                #endregion
             }
             //对 氡处理
 
@@ -538,6 +602,22 @@ namespace Calculates
                     sitem["AVG_D"] = sitem["AVG_D"] == "0" ? "未检出" : sitem["AVG_D"];
                 }
                 xd = Gs;
+
+                #region 处理未做氡检测的相关记录
+                for (int i = 1; i <= mCount; i++)
+                {
+                    string jcxm = "";
+                    sitem = SItem[i - 1];
+                    jcxm = '、' + sitem["JCXM"].Trim().Replace(",", "、") + "、";
+                    if (!jcxm.Contains("、氡、"))
+                    {
+                        sitem["G_D_ND"] = "----";
+                        sitem["W_ND_D"] = "----";
+                        sitem["AVG_D"] = "----";
+                        sitem["PD_D"] = "----";
+                    }
+                }
+                #endregion
             }
             mbHggs = bHggs_A + bHggs_J + bHggs_B + bHggs_T + bHggs_D;
             MItem[0]["JCJG"] = mbHggs == 0 ? "合格" : "不合格";

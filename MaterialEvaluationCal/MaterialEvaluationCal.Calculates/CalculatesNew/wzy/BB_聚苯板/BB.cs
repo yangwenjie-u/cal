@@ -364,6 +364,8 @@ namespace Calculates
             }
 
             var mItem = MItem[0];
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in SItem)
             {
@@ -390,8 +392,8 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sItem["JCJG"] = "依据不详";
-                    mItem["JCJGMS"] = mItem["JCJGMS"] + "试件尺寸为空";
+                    sItem["JCJG"] = "不下结论";
+                    mItem["JCJGMS"] = "依据不详";
                     continue;
                 }
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
@@ -403,6 +405,7 @@ namespace Calculates
                     mbhggs = 0;
                     if (jcxm.Contains("、导热系数(10℃)、"))
                     {
+                        jcxmCur = "导热系数(10℃)";
                         mcd = mItem["G_DRXS1"].Length;
                         mdwz = mItem["G_DRXS1"].IndexOf(".") + 1;
                         mcd = mcd - mdwz + 1;
@@ -422,6 +425,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_DRXS1"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -435,6 +439,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、导热系数(25℃)、") || jcxm.Contains("、导热系数、"))
                     {
+                        jcxmCur = CurrentJcxm(jcxm, "导热系数(25℃),导热系数");
                         sItem["DRXS2"] = sItem["DRXS"];
                         mcd = mItem["G_DRXS2"].Length;
                         mdwz = mItem["G_DRXS2"].IndexOf(".") + 1;
@@ -454,6 +459,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_DRXS2"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -468,6 +474,7 @@ namespace Calculates
 
                     if (jcxm.Contains("、尺寸稳定性、"))
                     {
+                        jcxmCur = "尺寸稳定性";
                         if (calc_pd(mItem["G_CCWDX"], sItem["CCWDXC"]) == "符合")
                         {
                             mItem["HG_CCWDXC"] = "合格";
@@ -497,6 +504,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_CCWDXH"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -514,6 +522,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、表观密度、"))
                     {
+                        jcxmCur = "表观密度";
                         if (calc_pd(mItem["G_BGMD"], sItem["BGMD"]) == "符合")
                         {
                             mItem["HG_BGMD"] = "合格";
@@ -521,6 +530,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_BGMD"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -534,7 +544,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、抗拉强度、"))
                     {
-
+                        jcxmCur = "抗拉强度";
                         if (calc_pd(mItem["G_KLQD"], sItem["KLQD"]) == "符合")
                         {
                             mItem["HG_KLQD"] = "合格";
@@ -542,6 +552,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_KLQD"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -555,6 +566,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、热阻(10℃)、") && jcxm.Contains("、热阻(25℃)、"))
                     {
+                        jcxmCur = CurrentJcxm(jcxm, "热阻(10℃),热阻(25℃)");
                         if (calc_pd(mItem["G_RZ1"], sItem["RZ1"]) == "符合")
                         {
                             mItem["HG_RZ1"] = "合格";
@@ -573,6 +585,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_RZ2"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -589,6 +602,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、压缩强度、"))
                     {
+                        jcxmCur = "压缩强度";
                         if (calc_pd(mItem["G_YSQD"], sItem["YSQD"]) == "符合")
                         {
                             mItem["HG_YSQD"] = "合格";
@@ -596,6 +610,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_YSQD"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -609,6 +624,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、吸水率、"))
                     {
+                        jcxmCur = "吸水率";
                         if (calc_pd(mItem["G_XSL"], sItem["XSL"]) == "符合")
                         {
                             mItem["HG_XSL"] = "合格";
@@ -616,6 +632,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_XSL"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -629,12 +646,14 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、燃烧氧指数、") || jcxm.Contains("、氧指数、"))
                     {
+                        jcxmCur = CurrentJcxm(jcxm, "燃烧氧指数,氧指数");
                         sItem["YZSZXZ"] = "30";
                         if (sItem["YZSSYFF"].Trim() == "最小值法")
                         {
                             mItem["G_RSYZS"] = "≥" + sItem["YZSZXZ"];
                             if (mItem["HG_RSYZS"] == "不合格")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["RSYZS"] = "低于" + sItem["YZSZXZ"] + "%";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
@@ -651,6 +670,7 @@ namespace Calculates
                             {
                                 if (mItem["HG_RSYZS"] == "不合格")
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     mbhggs = mbhggs + 1;
                                     mFlag_Bhg = true;
                                 }
@@ -664,6 +684,7 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     mItem["HG_RSYZS"] = "不合格";
                                     mbhggs = mbhggs + 1;
                                     mFlag_Bhg = true;
@@ -680,6 +701,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、燃烧分级、") || jcxm.Contains("、燃烧等级E级、"))
                     {
+                        jcxmCur = CurrentJcxm(jcxm, "燃烧分级,燃烧等级E级");
                         if (sItem["RSFJ"] == "符合")
                         {
                             mItem["HG_RSFJ"] = "合格";
@@ -688,6 +710,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_RSFJ"] = "不合格";
                             sItem["RSFJJG"] = "不符合";
                             mbhggs = mbhggs + 1;
@@ -709,10 +732,10 @@ namespace Calculates
                     }
                     if (mbhggs >= 1)
                     {
-                        jsbeizhu = "该组试样不符合" + mItem["PDBZ"] + "标准要求。";
+                        jsbeizhu = "该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
                         sItem["JCJG"] = "不合格";
-                        if (mFlag_Bhg && mFlag_Hg)
-                            jsbeizhu = "该组试样所检项目部分符合" + mItem["PDBZ"] + "标准要求。";
+                        //if (mFlag_Bhg && mFlag_Hg)
+                        //    jsbeizhu = "该组试样所检项目部分符合" + mItem["PDBZ"] + "标准要求。";
                     }
                     mAllHg = (mAllHg && sItem["JCJG"] == "合格");
                     continue;
@@ -720,6 +743,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、导热系数(10℃)、"))
                 {
+                    jcxmCur = "导热系数(10℃)";
                     string drxs1 = calc_PB(mItem["G_DRXS1"], sItem["DRXS1"], true);
                     if (drxs1 == "符合")
                     {
@@ -728,6 +752,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_DRXS1"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -742,6 +767,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、导热系数(25℃)、") || jcxm.Contains("、导热系数、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "导热系数(25℃),导热系数");
                     string drxs1 = calc_PB(mItem["G_DRXS2"], sItem["DRXS2"], true);
                     if (drxs1 == "符合")
                     {
@@ -750,6 +776,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_DRXS2"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -764,6 +791,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、尺寸稳定性、"))
                 {
+                    jcxmCur = "尺寸稳定性";
                     if (GetSafeDouble(sItem["CCWDXCQ1_1"]) != 0)
                     {
                         sItem["CCWDXCQ1"] = Round((GetSafeDouble(sItem["CCWDXCQ1_1"]) + GetSafeDouble(sItem["CCWDXCQ1_2"]) + GetSafeDouble(sItem["CCWDXCQ1_3"])) / 3, 1).ToString();
@@ -832,6 +860,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_CCWDXC"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -844,6 +873,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_CCWDXK"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -856,6 +886,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_CCWDXH"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -874,42 +905,43 @@ namespace Calculates
 
                 if (jcxm.Contains("、表观密度、"))
                 {
+                    jcxmCur = "表观密度";
                     double mcd1, mkd1, mhd1, bgmdv1;
                     mcd1 = Round((GetSafeDouble(sItem["BGMDC1_1"]) + GetSafeDouble(sItem["BGMDC1_2"]) + GetSafeDouble(sItem["BGMDC1_3"])) / 3, 1);
                     mkd1 = Round((GetSafeDouble(sItem["BGMDK1_1"]) + GetSafeDouble(sItem["BGMDK1_2"]) + GetSafeDouble(sItem["BGMDK1_3"])) / 3, 1);
                     mhd1 = Round((GetSafeDouble(sItem["BGMDH1_1"]) + GetSafeDouble(sItem["BGMDH1_2"]) + GetSafeDouble(sItem["BGMDH1_3"]) + GetSafeDouble(sItem["BGMDH1_4"]) + GetSafeDouble(sItem["BGMDH1_5"])) / 5, 1);
                     //if (mcd1 != 0 && 0 >= GetSafeDouble(sItem["BGMDC1"]))
-                    if (mcd1 != 0 && !(GetSafeDouble(sItem["BGMDC1"]) > 0))
-                    {
+                    //if (mcd1 != 0 && !(GetSafeDouble(sItem["BGMDC1"]) > 0))
+                    //{
                         sItem["BGMDC1"] = Round(mcd1, 1).ToString();
                         sItem["BGMDK1"] = Round(mkd1, 1).ToString();
                         sItem["BGMDH1"] = Round(mhd1, 1).ToString();
-                    }
+                    //}
                     double mcd2, mkd2, mhd2, bgmdv2;
                     bgmdv1 = GetSafeDouble(sItem["BGMDC1"]) * GetSafeDouble(sItem["BGMDK1"]) * GetSafeDouble(sItem["BGMDH1"]);
                     mcd2 = Round((GetSafeDouble(sItem["BGMDC2_1"]) + GetSafeDouble(sItem["BGMDC2_2"]) + GetSafeDouble(sItem["BGMDC2_3"])) / 3, 1);
                     mkd2 = Round((GetSafeDouble(sItem["BGMDK2_1"]) + GetSafeDouble(sItem["BGMDK2_2"]) + GetSafeDouble(sItem["BGMDK2_3"])) / 3, 1);
                     mhd2 = Round((GetSafeDouble(sItem["BGMDH2_1"]) + GetSafeDouble(sItem["BGMDH2_2"]) + GetSafeDouble(sItem["BGMDH2_3"]) + GetSafeDouble(sItem["BGMDH2_4"]) + GetSafeDouble(sItem["BGMDH2_5"])) / 5, 1);
-                    if (mcd2 == 0 && GetSafeDouble(sItem["BGMDC2"]) > 0)
-                    { }
-                    else
-                    {
+                    //if (mcd2 == 0 && GetSafeDouble(sItem["BGMDC2"]) > 0)
+                    //{ }
+                    //else
+                    //{
                         sItem["BGMDC2"] = Round(mcd2, 1).ToString();
                         sItem["BGMDK2"] = Round(mkd2, 1).ToString();
                         sItem["BGMDH2"] = Round(mhd2, 1).ToString();
-                    }
+                    //}
                     bgmdv2 = GetSafeDouble(sItem["BGMDC2"]) * GetSafeDouble(sItem["BGMDK2"]) * GetSafeDouble(sItem["BGMDH2"]);
 
                     double mcd3, mkd3, mhd3, bgmdv3;
                     mcd3 = Round((GetSafeDouble(sItem["BGMDC3_1"]) + GetSafeDouble(sItem["BGMDC3_2"]) + GetSafeDouble(sItem["BGMDC3_3"])) / 3, 1);
                     mkd3 = Round((GetSafeDouble(sItem["BGMDK3_1"]) + GetSafeDouble(sItem["BGMDK3_2"]) + GetSafeDouble(sItem["BGMDK3_3"])) / 3, 1);
                     mhd3 = Round((GetSafeDouble(sItem["BGMDH3_1"]) + GetSafeDouble(sItem["BGMDH3_2"]) + GetSafeDouble(sItem["BGMDH3_3"]) + GetSafeDouble(sItem["BGMDH3_4"]) + GetSafeDouble(sItem["BGMDH3_5"])) / 5, 1);
-                    if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC3"]) > 0))
-                    {
+                    //if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC3"]) > 0))
+                    //{
                         sItem["BGMDC3"] = Round(mcd3, 1).ToString();
                         sItem["BGMDK3"] = Round(mkd3, 1).ToString();
                         sItem["BGMDH3"] = Round(mhd3, 1).ToString();
-                    }
+                    //}
                     bgmdv3 = GetSafeDouble(sItem["BGMDC3"]) * GetSafeDouble(sItem["BGMDK3"]) * GetSafeDouble(sItem["BGMDH3"]);
 
                     //double mcd4, mkd4, mhd4, bgmdv4;
@@ -1037,6 +1069,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_BGMD"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Hg = true;
@@ -1049,8 +1082,9 @@ namespace Calculates
                     mItem["G_BGMD"] = "----";
                 }
 
-                if (jcxm.Contains("、抗拉强度、"))
+                if (jcxm.Contains("、抗拉强度、") || jcxm.Contains("、垂直于板面方向的抗拉强度、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "抗拉强度,垂直于板面方向的抗拉强度");
                     double KLMJ1, KLMJ2, KLMJ3, KLMJ4, KLMJ5;
                     KLMJ1 = GetSafeDouble(sItem["KLC1"]) * GetSafeDouble(sItem["KLK1"]);
                     KLMJ2 = GetSafeDouble(sItem["KLC2"]) * GetSafeDouble(sItem["KLK2"]);
@@ -1072,6 +1106,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_KLQD"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Hg = true;
@@ -1086,6 +1121,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、热阻(10℃)、") && jcxm.Contains("、热阻(25℃)、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "热阻(10℃),热阻(25℃)");
                     string rz1 = calc_PB(mItem["G_RZ1"], sItem["RZ1"], true);
                     if (rz1 == "符合")
                     {
@@ -1094,6 +1130,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_RZ1"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Hg = true;
@@ -1106,6 +1143,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_RZ2"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Hg = true;
@@ -1123,49 +1161,61 @@ namespace Calculates
 
                 if (jcxm.Contains("、压缩强度、"))
                 {
-                    double mcd1, mkd1, mcd2, mkd2, mcd3, mkd3, mcd4, mkd4, mcd5, mkd5;
-                    mcd1 = Round((GetSafeDouble(sItem["BGMDC1_1"]) + GetSafeDouble(sItem["BGMDC1_2"]) + GetSafeDouble(sItem["BGMDC1_3"])) / 3, 1);
-                    mkd1 = Round((GetSafeDouble(sItem["BGMDK1_1"]) + GetSafeDouble(sItem["BGMDK1_2"]) + GetSafeDouble(sItem["BGMDK1_3"])) / 3, 1);
-                    mcd2 = Round((GetSafeDouble(sItem["BGMDC2_1"]) + GetSafeDouble(sItem["BGMDC2_2"]) + GetSafeDouble(sItem["BGMDC2_3"])) / 3, 1);
-                    mkd2 = Round((GetSafeDouble(sItem["BGMDK2_1"]) + GetSafeDouble(sItem["BGMDK2_2"]) + GetSafeDouble(sItem["BGMDK2_3"])) / 3, 1);
-                    mcd3 = Round((GetSafeDouble(sItem["BGMDC3_1"]) + GetSafeDouble(sItem["BGMDC3_2"]) + GetSafeDouble(sItem["BGMDC3_3"])) / 3, 1);
-                    mkd3 = Round((GetSafeDouble(sItem["BGMDK3_1"]) + GetSafeDouble(sItem["BGMDK3_2"]) + GetSafeDouble(sItem["BGMDK3_3"])) / 3, 1);
-                    mcd4 = Round((GetSafeDouble(sItem["BGMDC4_1"]) + GetSafeDouble(sItem["BGMDC4_2"]) + GetSafeDouble(sItem["BGMDC4_3"])) / 3, 1);
-                    mkd4 = Round((GetSafeDouble(sItem["BGMDK4_1"]) + GetSafeDouble(sItem["BGMDK4_2"]) + GetSafeDouble(sItem["BGMDK4_3"])) / 3, 1);
-                    mcd5 = Round((GetSafeDouble(sItem["BGMDC5_1"]) + GetSafeDouble(sItem["BGMDC5_2"]) + GetSafeDouble(sItem["BGMDC5_3"])) / 3, 1);
-                    mkd5 = Round((GetSafeDouble(sItem["BGMDK5_1"]) + GetSafeDouble(sItem["BGMDK5_2"]) + GetSafeDouble(sItem["BGMDK5_3"])) / 3, 1);
+                    jcxmCur = "压缩强度";
 
-                    if (mcd1 != 0 && !(GetSafeDouble(sItem["BGMDC1"]) > 0))
-                    {
-                        sItem["BGMDC1"] = Round(mcd1, 1).ToString();
-                        sItem["BGMDK1"] = Round(mkd1, 1).ToString();
-                    }
-                    if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC2"]) > 0))
-                    {
-                        sItem["BGMDC2"] = Round(mcd2, 1).ToString();
-                        sItem["BGMDK2"] = Round(mkd2, 1).ToString();
-                    }
-                    if (mcd3 != 0 && !(GetSafeDouble(sItem["BGMDC3"]) > 0))
-                    {
-                        sItem["BGMDC3"] = Round(mcd3, 1).ToString();
-                        sItem["BGMDK3"] = Round(mkd3, 1).ToString();
-                    }
-                    if (mcd4 != 0 && !(GetSafeDouble(sItem["BGMDC4"]) > 0))
-                    {
-                        sItem["BGMDC4"] = Round(mcd4, 1).ToString();
-                        sItem["BGMDK4"] = Round(mkd4, 1).ToString();
-                    }
-                    if (mcd5 != 0 && !(GetSafeDouble(sItem["BGMDC5"]) > 0))
-                    {
-                        sItem["BGMDC5"] = Round(mcd5, 1).ToString();
-                        sItem["BGMDK5"] = Round(mkd5, 1).ToString();
-                    }
+                    #region OLD
+                    //double mcd1, mkd1, mcd2, mkd2, mcd3, mkd3, mcd4, mkd4, mcd5, mkd5;
+                    //mcd1 = Round((GetSafeDouble(sItem["BGMDC1_1"]) + GetSafeDouble(sItem["BGMDC1_2"]) + GetSafeDouble(sItem["BGMDC1_3"])) / 3, 1);
+                    //mkd1 = Round((GetSafeDouble(sItem["BGMDK1_1"]) + GetSafeDouble(sItem["BGMDK1_2"]) + GetSafeDouble(sItem["BGMDK1_3"])) / 3, 1);
+                    //mcd2 = Round((GetSafeDouble(sItem["BGMDC2_1"]) + GetSafeDouble(sItem["BGMDC2_2"]) + GetSafeDouble(sItem["BGMDC2_3"])) / 3, 1);
+                    //mkd2 = Round((GetSafeDouble(sItem["BGMDK2_1"]) + GetSafeDouble(sItem["BGMDK2_2"]) + GetSafeDouble(sItem["BGMDK2_3"])) / 3, 1);
+                    //mcd3 = Round((GetSafeDouble(sItem["BGMDC3_1"]) + GetSafeDouble(sItem["BGMDC3_2"]) + GetSafeDouble(sItem["BGMDC3_3"])) / 3, 1);
+                    //mkd3 = Round((GetSafeDouble(sItem["BGMDK3_1"]) + GetSafeDouble(sItem["BGMDK3_2"]) + GetSafeDouble(sItem["BGMDK3_3"])) / 3, 1);
+                    //mcd4 = Round((GetSafeDouble(sItem["BGMDC4_1"]) + GetSafeDouble(sItem["BGMDC4_2"]) + GetSafeDouble(sItem["BGMDC4_3"])) / 3, 1);
+                    //mkd4 = Round((GetSafeDouble(sItem["BGMDK4_1"]) + GetSafeDouble(sItem["BGMDK4_2"]) + GetSafeDouble(sItem["BGMDK4_3"])) / 3, 1);
+                    //mcd5 = Round((GetSafeDouble(sItem["BGMDC5_1"]) + GetSafeDouble(sItem["BGMDC5_2"]) + GetSafeDouble(sItem["BGMDC5_3"])) / 3, 1);
+                    //mkd5 = Round((GetSafeDouble(sItem["BGMDK5_1"]) + GetSafeDouble(sItem["BGMDK5_2"]) + GetSafeDouble(sItem["BGMDK5_3"])) / 3, 1);
 
-                    mMj1 = GetSafeDouble(sItem["BGMDC1"]) * GetSafeDouble(sItem["BGMDK1"]);
-                    mMj2 = GetSafeDouble(sItem["BGMDC2"]) * GetSafeDouble(sItem["BGMDK2"]);
-                    mMj3 = GetSafeDouble(sItem["BGMDC3"]) * GetSafeDouble(sItem["BGMDK3"]);
-                    mMj4 = GetSafeDouble(sItem["BGMDC4"]) * GetSafeDouble(sItem["BGMDK4"]);
-                    mMj5 = GetSafeDouble(sItem["BGMDC5"]) * GetSafeDouble(sItem["BGMDK5"]);
+                    //if (mcd1 != 0 && !(GetSafeDouble(sItem["BGMDC1"]) > 0))
+                    //{
+                    //    sItem["BGMDC1"] = Round(mcd1, 1).ToString();
+                    //    sItem["BGMDK1"] = Round(mkd1, 1).ToString();
+                    //}
+                    //if (mcd2 != 0 && !(GetSafeDouble(sItem["BGMDC2"]) > 0))
+                    //{
+                    //    sItem["BGMDC2"] = Round(mcd2, 1).ToString();
+                    //    sItem["BGMDK2"] = Round(mkd2, 1).ToString();
+                    //}
+                    //if (mcd3 != 0 && !(GetSafeDouble(sItem["BGMDC3"]) > 0))
+                    //{
+                    //    sItem["BGMDC3"] = Round(mcd3, 1).ToString();
+                    //    sItem["BGMDK3"] = Round(mkd3, 1).ToString();
+                    //}
+                    //if (mcd4 != 0 && !(GetSafeDouble(sItem["BGMDC4"]) > 0))
+                    //{
+                    //    sItem["BGMDC4"] = Round(mcd4, 1).ToString();
+                    //    sItem["BGMDK4"] = Round(mkd4, 1).ToString();
+                    //}
+                    //if (mcd5 != 0 && !(GetSafeDouble(sItem["BGMDC5"]) > 0))
+                    //{
+                    //    sItem["BGMDC5"] = Round(mcd5, 1).ToString();
+                    //    sItem["BGMDK5"] = Round(mkd5, 1).ToString();
+                    //}
+
+                    //mMj1 = GetSafeDouble(sItem["BGMDC1"]) * GetSafeDouble(sItem["BGMDK1"]);
+                    //mMj2 = GetSafeDouble(sItem["BGMDC2"]) * GetSafeDouble(sItem["BGMDK2"]);
+                    //mMj3 = GetSafeDouble(sItem["BGMDC3"]) * GetSafeDouble(sItem["BGMDK3"]);
+                    //mMj4 = GetSafeDouble(sItem["BGMDC4"]) * GetSafeDouble(sItem["BGMDK4"]);
+                    //mMj5 = GetSafeDouble(sItem["BGMDC5"]) * GetSafeDouble(sItem["BGMDK5"]);
+
+
+                    #endregion
+
+                    mMj1 = GetSafeDouble(sItem["YSQDCD1"]) * GetSafeDouble(sItem["YSQDKD1"]);
+                    mMj2 = GetSafeDouble(sItem["YSQDCD2"]) * GetSafeDouble(sItem["YSQDKD2"]);
+                    mMj3 = GetSafeDouble(sItem["YSQDCD3"]) * GetSafeDouble(sItem["YSQDKD3"]);
+                    mMj4 = GetSafeDouble(sItem["YSQDCD4"]) * GetSafeDouble(sItem["YSQDKD4"]);
+                    mMj5 = GetSafeDouble(sItem["YSQDCD5"]) * GetSafeDouble(sItem["YSQDKD5"]);
 
                     if (mMj1 != 0 & mMj2 != 0 & mMj3 != 0 & mMj4 != 0 & mMj5 != 0)
                     {
@@ -1205,6 +1255,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_YSQD"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Hg = true;
@@ -1219,6 +1270,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、吸水率、"))
                 {
+                    jcxmCur = "吸水率";
                     string rz1 = calc_PB(mItem["G_XSL"], sItem["XSL"], true);
                     if (rz1 == "符合")
                     {
@@ -1227,6 +1279,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_XSL"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Hg = true;
@@ -1241,6 +1294,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、燃烧氧指数、"))
                 {
+                    jcxmCur = "燃烧氧指数";
                     string mnlfy = "";
                     if ("----" != sItem["RSNLFY1"])
                         mnlfy = mnlfy + sItem["RSNLFY1"].Trim();
@@ -1296,6 +1350,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_RSYZS"] = "不合格";
                             mbhggs++;
                         }
@@ -1315,6 +1370,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、燃烧分级、"))
                 {
+                    jcxmCur = "燃烧分级";
                     if ("符合" == sItem["RSFJ"])
                     {
                         mItem["HG_RSFJ"] = "合格";
@@ -1323,6 +1379,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mItem["HG_RSFJ"] = "不合格";
                         sItem["RSFJJG"] = "不符合";
                         mbhggs++;
@@ -1337,19 +1394,21 @@ namespace Calculates
                     mItem["G_RSFJ"] = "----";
                 }
 
+                
+
                 if (mbhggs == 0)
                 {
-                    jsbeizhu = "该组试样所检项目符合" + mItem["PDBZ"] + "标准要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                     sItem["JCJG"] = "合格";
                 }
                 else
                 {
-                    jsbeizhu = "该组试样不符合" + mItem["PDBZ"] + "标准要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
                     sItem["JCJG"] = "不合格";
-                    if (mFlag_Bhg & mFlag_Hg)
-                    {
-                        jsbeizhu = "该组试样所检项目部分符合" + mItem["PDBZ"] + "标准要求。";
-                    }
+                    //if (mFlag_Bhg & mFlag_Hg)
+                    //{
+                    //    jsbeizhu = "该组试样所检项目部分符合" + mItem["PDBZ"] + "标准要求。";
+                    //}
                 }
 
                 #region 添加最终报告

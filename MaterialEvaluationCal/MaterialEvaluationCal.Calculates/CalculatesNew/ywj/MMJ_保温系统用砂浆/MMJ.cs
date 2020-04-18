@@ -57,6 +57,8 @@ namespace Calculates
             var mbhggs = 0;
             var mFlag_Hg = false;
             var mFlag_Bhg = false;
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             Func<IDictionary<string, string>, IDictionary<string, string>, bool> sjtabcalc =
              delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem)
@@ -332,9 +334,9 @@ namespace Calculates
                 if (null == mrsDj)
                 {
                     mJSFF = "";
-                    jsbeizhu = "依据不详\r\n";
+                    jsbeizhu = "依据不详";
                     mAllHg = false;
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     continue;
                 }
                 g_Qd1 = Conversion.Val(mrsDj["QD1"]);
@@ -367,6 +369,7 @@ namespace Calculates
                     {
                         if (jcxm.Contains("、拉伸粘结强度(原强度)、") || jcxm.Contains("、拉伸粘结强度(干燥状态)、") || jcxm.Contains("、拉伸粘结强度(常温28d)、") || jcxm.Contains("、拉伸粘结原强度、"))
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "拉伸粘结强度(原强度),拉伸粘结强度(干燥状态),拉伸粘结强度(常温28d),拉伸粘结原强度");
                             sItem["MJ11"] = (Conversion.Val(sItem["CD11"]) * Conversion.Val(sItem["KD11"])).ToString();
                             sItem["MJ12"] = (Conversion.Val(sItem["CD12"]) * Conversion.Val(sItem["KD12"])).ToString();
                             sItem["MJ13"] = (Conversion.Val(sItem["CD13"]) * Conversion.Val(sItem["KD13"])).ToString();
@@ -396,9 +399,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD1"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -413,6 +418,7 @@ namespace Calculates
 
                         if (jcxm.Contains("、拉伸粘结强度(耐水)、") || jcxm.Contains("、拉伸粘结强度(浸水48h后)、") || jcxm.Contains("、浸水拉伸粘结强度(常温28d，浸水7d)、") || jcxm.Contains("、拉伸粘结耐水强度、"))
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "拉伸粘结强度(耐水),拉伸粘结强度(浸水48h后),浸水拉伸粘结强度(常温28d，浸水7d),拉伸粘结耐水强度");
                             sItem["MJ21"] = (Conversion.Val(sItem["CD21"]) * Conversion.Val(sItem["KD21"])).ToString();
                             sItem["MJ22"] = (Conversion.Val(sItem["CD22"]) * Conversion.Val(sItem["KD22"])).ToString();
                             sItem["MJ23"] = (Conversion.Val(sItem["CD23"]) * Conversion.Val(sItem["KD23"])).ToString();
@@ -443,9 +449,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD2"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -460,6 +468,7 @@ namespace Calculates
 
                         if (jcxm.Contains("、拉伸粘结强度(耐冻融)、") || jcxm.Contains("、拉伸粘结耐冻融强度、"))
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "拉伸粘结强度(耐冻融),拉伸粘结耐冻融强度");
                             sItem["MJ31"] = (Conversion.Val(sItem["CD31"]) * Conversion.Val(sItem["KD31"])).ToString();
                             sItem["MJ32"] = (Conversion.Val(sItem["CD32"]) * Conversion.Val(sItem["KD32"])).ToString();
                             sItem["MJ33"] = (Conversion.Val(sItem["CD33"]) * Conversion.Val(sItem["KD33"])).ToString();
@@ -490,9 +499,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD3"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
 
                         }
@@ -521,6 +532,7 @@ namespace Calculates
                         #region 拉伸粘结原强度
                         if (jcxm.Contains("、拉伸粘结原强度、"))
                         {
+                            jcxmCur = "拉伸粘结原强度";
                             sItem["MJ11"] = (Conversion.Val(sItem["CD11"]) * Conversion.Val(sItem["KD11"])).ToString();
                             sItem["MJ12"] = (Conversion.Val(sItem["CD12"]) * Conversion.Val(sItem["KD12"])).ToString();
                             sItem["MJ13"] = (Conversion.Val(sItem["CD13"]) * Conversion.Val(sItem["KD13"])).ToString();
@@ -562,9 +574,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD1"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -581,6 +595,7 @@ namespace Calculates
                         #region 拉伸粘结耐水强度
                         if (jcxm.Contains("、拉伸粘结耐水强度、"))
                         {
+                            jcxmCur = "拉伸粘结耐水强度";
                             sItem["MJ21"] = (Conversion.Val(sItem["CD21"]) * Conversion.Val(sItem["KD21"])).ToString();
                             sItem["MJ22"] = (Conversion.Val(sItem["CD22"]) * Conversion.Val(sItem["KD22"])).ToString();
                             sItem["MJ23"] = (Conversion.Val(sItem["CD23"]) * Conversion.Val(sItem["KD23"])).ToString();
@@ -621,9 +636,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD2"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -640,6 +657,7 @@ namespace Calculates
                         #region 拉伸粘结耐冻融强度
                         if (jcxm.Contains("、拉伸粘结耐冻融强度、"))
                         {
+                            jcxmCur = "拉伸粘结耐冻融强度";
                             sItem["MJ31"] = (Conversion.Val(sItem["CD31"]) * Conversion.Val(sItem["KD31"])).ToString();
                             sItem["MJ32"] = (Conversion.Val(sItem["CD32"]) * Conversion.Val(sItem["KD32"])).ToString();
                             sItem["MJ33"] = (Conversion.Val(sItem["CD33"]) * Conversion.Val(sItem["KD33"])).ToString();
@@ -682,9 +700,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD3"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -701,6 +721,7 @@ namespace Calculates
                         #region 压折比
                         if (jcxm.Contains("、压折比、"))
                         {
+                            jcxmCur = "压折比";
                             sItem["YZB"] = string.IsNullOrEmpty(sItem["KZQD"]) ? "----" : (double.Parse(sItem["KYQD"]) / double.Parse(sItem["KZQD"])).ToString("0.0");
                             if (sItem["YZB"] != "----" && double.Parse(sItem["YZB"]) <= yZbbz)
                             {
@@ -709,9 +730,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_YZB"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -725,6 +748,7 @@ namespace Calculates
                         #region 可操作时间
                         if (jcxm.Contains("、可操作时间、"))
                         {
+                            jcxmCur = "可操作时间";
                             if (Conversion.Val(sItem["KCZSJ"]) >= 1.5 && Conversion.Val(sItem["KCZSJ"]) <= 4)
                             {
                                 MItem[0]["HG_KCZSJ"] = "合格";
@@ -732,9 +756,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_KCZSJ"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -752,6 +778,7 @@ namespace Calculates
                         #region 拉伸粘结原强度
                         if (jcxm.Contains("、拉伸粘结原强度、"))
                         {
+                            jcxmCur = "拉伸粘结原强度";
                             sItem["MJ11"] = (Conversion.Val(sItem["CD11"]) * Conversion.Val(sItem["KD11"])).ToString();
                             sItem["MJ12"] = (Conversion.Val(sItem["CD12"]) * Conversion.Val(sItem["KD12"])).ToString();
                             sItem["MJ13"] = (Conversion.Val(sItem["CD13"]) * Conversion.Val(sItem["KD13"])).ToString();
@@ -797,9 +824,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD1"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -816,6 +845,7 @@ namespace Calculates
                         #region 拉伸粘结耐水强度
                         if (jcxm.Contains("、拉伸粘结耐水强度、"))
                         {
+                            jcxmCur = "拉伸粘结耐水强度";
                             sItem["MJ21"] = (Conversion.Val(sItem["CD21"]) * Conversion.Val(sItem["KD21"])).ToString();
                             sItem["MJ22"] = (Conversion.Val(sItem["CD22"]) * Conversion.Val(sItem["KD22"])).ToString();
                             sItem["MJ23"] = (Conversion.Val(sItem["CD23"]) * Conversion.Val(sItem["KD23"])).ToString();
@@ -860,9 +890,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD2"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -879,6 +911,7 @@ namespace Calculates
                         #region 拉伸粘结耐冻融强度
                         if (jcxm.Contains("、拉伸粘结耐冻融强度、"))
                         {
+                            jcxmCur = "拉伸粘结耐冻融强度";
                             sItem["MJ31"] = (Conversion.Val(sItem["CD31"]) * Conversion.Val(sItem["KD31"])).ToString();
                             sItem["MJ32"] = (Conversion.Val(sItem["CD32"]) * Conversion.Val(sItem["KD32"])).ToString();
                             sItem["MJ33"] = (Conversion.Val(sItem["CD33"]) * Conversion.Val(sItem["KD33"])).ToString();
@@ -925,9 +958,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_QD3"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -944,6 +979,7 @@ namespace Calculates
                         #region 压折比
                         if (jcxm.Contains("、压折比、"))
                         {
+                            jcxmCur = "压折比";
                             sItem["YZB"] = string.IsNullOrEmpty(sItem["KZQD"]) ? "----" : (double.Parse(sItem["KYQD"]) / double.Parse(sItem["KZQD"])).ToString("0.0");
                             if (sItem["YZB"] != "----" && double.Parse(sItem["YZB"]) <= yZbbz)
                             {
@@ -952,9 +988,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_YZB"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -968,6 +1006,7 @@ namespace Calculates
                         #region 可操作时间
                         if (jcxm.Contains("、可操作时间、"))
                         {
+                            jcxmCur = "可操作时间";
                             if (Conversion.Val(sItem["KCZSJ"]) >= 1.5 && Conversion.Val(sItem["KCZSJ"]) <= 4)
                             {
                                 MItem[0]["HG_KCZSJ"] = "合格";
@@ -975,9 +1014,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_KCZSJ"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -995,6 +1036,7 @@ namespace Calculates
                         #region 拉伸粘结强度(原强度)、拉伸粘结强度(干燥状态)、压剪粘结强度(原强度)、
                         if (jcxm.Contains("、拉伸粘结强度(原强度)、") || jcxm.Contains("、拉伸粘结强度(干燥状态)、") || jcxm.Contains("、压剪粘结强度(原强度)、") || jcxm.Contains("、拉伸粘结原强度、"))
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "拉伸粘结强度(原强度),拉伸粘结强度(干燥状态),压剪粘结强度(原强度),拉伸粘结原强度");
                             if (jcxm.Contains("、压剪粘结强度(原强度)、"))
                             {
                                 sItem["MJ11"] = (Conversion.Val(sItem["CD11"]) * Conversion.Val(sItem["KD11"])).ToString();
@@ -1048,9 +1090,11 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_QD1"] = "不合格";
                                     mbhggs = mbhggs + 1;
                                     mFlag_Bhg = true;
+                                    mAllHg = false;
                                 }
                             }
                             else
@@ -1096,9 +1140,11 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_QD1"] = "不合格";
                                     mbhggs = mbhggs + 1;
                                     mFlag_Bhg = true;
+                                    mAllHg = false;
                                 }
                             }
                         }
@@ -1116,6 +1162,7 @@ namespace Calculates
                         #region 拉伸粘结强度(耐水)、拉伸粘结强度(浸水48h后)、压剪粘结强度(耐水)、
                         if (jcxm.Contains("、拉伸粘结强度(耐水)、") || jcxm.Contains("、拉伸粘结强度(浸水48h后)、") || jcxm.Contains("、压剪粘结强度(耐水)、") || jcxm.Contains("、拉伸粘结耐水强度、"))
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "拉伸粘结强度(耐水),拉伸粘结强度(浸水48h后),压剪粘结强度(耐水),拉伸粘结耐水强度");
                             if (jcxm.Contains("、压剪粘结强度(耐水)、"))
                             {
                                 sItem["MJ21"] = (Conversion.Val(sItem["CD21"]) * Conversion.Val(sItem["KD21"])).ToString();
@@ -1168,9 +1215,11 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_QD2"] = "不合格";
                                     mbhggs = mbhggs + 1;
                                     mFlag_Bhg = true;
+                                    mAllHg = false;
                                 }
                             }
                             else
@@ -1215,9 +1264,11 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_QD2"] = "不合格";
                                     mbhggs = mbhggs + 1;
                                     mFlag_Bhg = true;
+                                    mAllHg = false;
                                 }
                             }
                         }
@@ -1236,6 +1287,7 @@ namespace Calculates
                         #region 拉伸粘结强度(耐冻融)、压剪粘结强度(耐冻融)、
                         if (jcxm.Contains("、拉伸粘结强度(耐冻融)、") || jcxm.Contains("、压剪粘结强度(耐冻融)、") || jcxm.Contains("、拉伸粘结耐冻融强度、"))
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "拉伸粘结强度(耐冻融),压剪粘结强度(耐冻融),拉伸粘结耐冻融强度");
                             if (jcxm.Contains("、压剪粘结强度(耐冻融)、"))
                             {
                                 sItem["MJ31"] = (Conversion.Val(sItem["CD31"]) * Conversion.Val(sItem["KD31"])).ToString();
@@ -1289,9 +1341,11 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_QD3"] = "不合格";
                                     mbhggs = mbhggs + 1;
                                     mFlag_Bhg = true;
+                                    mAllHg = false;
                                 }
                             }
                             else
@@ -1338,9 +1392,11 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_QD3"] = "不合格";
                                     mbhggs = mbhggs + 1;
                                     mFlag_Bhg = true;
+                                    mAllHg = false;
                                 }
                             }
                         }
@@ -1358,6 +1414,7 @@ namespace Calculates
                         #region 可操作时间、
                         if (jcxm.Contains("、可操作时间、"))
                         {
+                            jcxmCur = "可操作时间";
                             if (Conversion.Val(sItem["KCZSJ"]) >= 1.5 && Conversion.Val(sItem["KCZSJ"]) <= 4)
                             {
                                 MItem[0]["HG_KCZSJ"] = "合格";
@@ -1365,9 +1422,11 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_KCZSJ"] = "不合格";
                                 mbhggs = mbhggs + 1;
                                 mFlag_Bhg = true;
+                                mAllHg = false;
                             }
                         }
                         else
@@ -1392,11 +1451,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;

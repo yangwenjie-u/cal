@@ -47,6 +47,8 @@ namespace Calculates
             mAllHg = true;
             mFlag_Hg = false;
             mFlag_Bhg = false;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sitem in SItem)
             {
                 mCpmc = sitem["CPMC"];
@@ -69,7 +71,7 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
                     continue;
                 }
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
@@ -81,11 +83,13 @@ namespace Calculates
                     sum = 0;
                     if (jcxm.Contains("、耐碱断裂强力、"))
                     {
+                        jcxmCur = "耐碱断裂强力";
                         mitem["HG_LDQ"] = "合格";
                         if (Conversion.Val(sitem["LDQLJ"]) >= Conversion.Val(mitem["G_LDQLJ"]))
                             mitem["HG_LDQLJ"] = "合格";
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
                             mitem["HG_LDQLJ"] = "不合格";
                             mitem["HG_LDQ"] = "不合格";
                             mbhggs = mbhggs + 1;
@@ -95,6 +99,7 @@ namespace Calculates
                             mitem["HG_LDQLW"] = "合格";
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
                             mitem["HG_LDQLW"] = "不合格";
                             mitem["HG_LDQ"] = "不合格";
                             mbhggs = mbhggs + 1;
@@ -113,11 +118,13 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、耐碱断裂强力保留率、") || jcxm.Contains("、耐碱强力保留率、"))
                     {
+                        jcxmCur = CurrentJcxm(jcxm, "耐碱断裂强力保留率,耐碱强力保留率");
                         mitem["HG_LDQLB"] = "合格";
                         if (Conversion.Val(sitem["LDQLBJ"]) >= Conversion.Val(mitem["G_LDQLBJ"]))
                             mitem["HG_LDQLBJ"] = "合格";
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
                             mitem["HG_LDQLBJ"] = "不合格";
                             mitem["HG_LDQLB"] = "不合格";
                             mbhggs = mbhggs + 1;
@@ -128,6 +135,7 @@ namespace Calculates
                             mitem["HG_LDQLBW"] = "合格";
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
                             mitem["HG_LDQLBW"] = "不合格";
                             mitem["HG_LDQLB"] = "不合格";
                             mbhggs = mbhggs + 1;
@@ -147,12 +155,12 @@ namespace Calculates
                     mitem["JCJGMS"] = "";
                     if (mbhggs == 0)
                     {
-                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
                         sitem["JCJG"] = "合格";
                     }
                     if (mbhggs >= 1)
                     {
-                        mitem["JCJGMS"] = "该组试样所检项目不符合" + mitem["PDBZ"] + "标准要求。";
+                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
                         sitem["JCJG"] = "不合格";
                     }
                     mAllHg = (mAllHg && sitem["JCJG"] == "合格");
@@ -160,6 +168,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、断裂强力、"))
                 {
+                    jcxmCur = "断裂强力";
                     if ((Conversion.Val(sitem["CSQLJ1"]) + Conversion.Val(sitem["CSQLJ2"]) + Conversion.Val(sitem["CSQLJ3"]) + Conversion.Val(sitem["CSQLJ4"]) + Conversion.Val(sitem["CSQLJ5"])) != 0)
                     {
                         sitem["DLQLJ"] = Round((Conversion.Val(sitem["CSQLJ1"]) + Conversion.Val(sitem["CSQLJ2"]) + Conversion.Val(sitem["CSQLJ3"]) + Conversion.Val(sitem["CSQLJ4"]) + Conversion.Val(sitem["CSQLJ5"])) / 5, 0).ToString();
@@ -172,6 +181,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
                         mitem["HG_DLQLJ"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -186,6 +196,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
                         mitem["HG_DLQLW"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -203,6 +214,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、耐碱断裂强力、"))
                 {
+                    jcxmCur = "耐碱断裂强力";
                     if ((Conversion.Val(sitem["LDQLJ1"]) + Conversion.Val(sitem["LDQLJ2"]) + Conversion.Val(sitem["LDQLJ3"]) + Conversion.Val(sitem["LDQLJ4"]) + Conversion.Val(sitem["LDQLJ5"])) != 0)
                     {
                         sitem["LDQLJ"] = Round((Conversion.Val(sitem["LDQLJ1"]) + Conversion.Val(sitem["LDQLJ2"]) + Conversion.Val(sitem["LDQLJ3"]) + Conversion.Val(sitem["LDQLJ4"]) + Conversion.Val(sitem["LDQLJ5"])) / 5, 0).ToString();
@@ -217,6 +229,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
                         mitem["HG_LDQLJ"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -231,6 +244,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
                         mitem["HG_LDQLW"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -248,6 +262,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、耐碱断裂强力保留率、") || jcxm.Contains("、耐碱强力保留率、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "耐碱断裂强力保留率,耐碱强力保留率");
                     if ((Conversion.Val(sitem["CSQLJ1"]) * Conversion.Val(sitem["CSQLJ2"]) * Conversion.Val(sitem["CSQLJ3"]) * Conversion.Val(sitem["CSQLJ4"]) * Conversion.Val(sitem["CSQLJ5"])) != 0)
                     {
                         #region old
@@ -304,6 +319,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
                         mitem["HG_LDQLBJ"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -318,6 +334,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
                         mitem["HG_LDQLBW"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -335,6 +352,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、断裂应变、") || jcxm.Contains("、断裂伸长率、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "断裂应变,断裂伸长率");
                     if (Conversion.Val(sitem["DLYBLJ01"]) == 0 || Conversion.Val(sitem["DLYBLJ02"]) == 0 || Conversion.Val(sitem["DLYBLJ03"]) == 0 || Conversion.Val(sitem["DLYBLJ04"]) == 0 || Conversion.Val(sitem["DLYBLJ05"]) == 0)
                         sitem["DLYBJ"] = "0";
                     else
@@ -350,6 +368,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
                         mitem["HG_DLYBJ"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -362,6 +381,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
                         mitem["HG_DLYBW"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -381,6 +401,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、单位面积质量、"))
                 {
+                    jcxmCur = "单位面积质量";
                     if (Conversion.Val(sitem["MJ1"]) == 0 || Conversion.Val(sitem["MJ2"]) == 0 || Conversion.Val(sitem["MJ3"]) == 0)
                         sitem["DMJZL"] = "0";
                     else
@@ -398,6 +419,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mitem["HG_DMJZL"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
@@ -427,12 +449,12 @@ namespace Calculates
             if (mAllHg)
             {
                 mitem["JCJG"] = "合格";
-                mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
                 mitem["JCJG"] = "不合格";
-                mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
             }
             #endregion
             /************************ 代码结束 *********************/

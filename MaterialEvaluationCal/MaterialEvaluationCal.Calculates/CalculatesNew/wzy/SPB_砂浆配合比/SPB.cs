@@ -48,7 +48,7 @@ namespace Calculates
                 var mrsDj_filter = mrsDj.FirstOrDefault(u => u["MC"].Contains(mSjdj));
                 if (mrsDj_filter == null || mrsDj_filter.Count == 0)
                 {
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
                     break;
                 }
                 //计算龄期

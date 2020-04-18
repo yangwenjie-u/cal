@@ -63,6 +63,8 @@ namespace Calculates
             double mMj1, mMj2, mMj3, mMj4, mMj5, mMj6, mMj7, mMj8, mMj9, mMj10;
             double mMaxKyqd, mMinKyqd, mMidKyqd, mAvgKyqd;
             double mS, mBzz, mPjz;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             List<double> nArr = new List<double>();
 
 
@@ -76,6 +78,7 @@ namespace Calculates
                      sign = true;
                      if (jcxm.Contains("、抗压强度、"))
                      {
+                         jcxmCur = "抗压强度";
                          sign = true;
                          for (xd = 1; xd < 11; xd++)
                          {
@@ -132,6 +135,7 @@ namespace Calculates
 
                              if (sItem["QDPD"] == "不合格")
                              {
+                                 jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                  mbhggs = mbhggs + 1;
                                  mAllHg = false;
                                  mFlag_Hg = true;
@@ -162,6 +166,7 @@ namespace Calculates
                      }
                      if (jcxm.Contains("、抗风化性能、"))
                      {
+                         jcxmCur = "抗风化性能";
                          //if (jcxm.Contains("、冻融、"))
                          //{
                          sign = true;
@@ -193,13 +198,13 @@ namespace Calculates
 
                              if (sItem["DRPD"] == "不合格")
                              {
+                                 jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                  mbhggs = mbhggs + 1;
                                  mAllHg = false;
                                  mFlag_Hg = true;
                              }
                              else
                              {
-                                 sItem["PD_KYQD"] = "合格";
                                  mFlag_Hg = true;
                              }
                          }
@@ -236,15 +241,15 @@ namespace Calculates
                              sItem["BHXSPD"] = sign ? "合格" : "不合格";
 
 
-                             if (sItem["DRPD"] == "不合格")
+                             if (sItem["BHXSPD"] == "不合格")
                              {
+                                 jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                  mbhggs = mbhggs + 1;
                                  mAllHg = false;
                                  mFlag_Hg = true;
                              }
                              else
                              {
-                                 sItem["PD_KYQD"] = "合格";
                                  mFlag_Hg = true;
                              }
                          }
@@ -266,6 +271,7 @@ namespace Calculates
 
                      if (jcxm.Contains("、泛霜、"))
                      {
+                         jcxmCur = "泛霜";
                          sign = true;
 
                          for (xd = 0; xd < 6; xd++)
@@ -298,15 +304,15 @@ namespace Calculates
                              }
                              sItem["FSPD"] = sign ? "合格" : "不合格";
 
-                             if (sItem["DRPD"] == "不合格")
+                             if (sItem["FSPD"] == "不合格")
                              {
+                                 jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                  mbhggs = mbhggs + 1;
                                  mAllHg = false;
                                  mFlag_Hg = true;
                              }
                              else
                              {
-                                 sItem["PD_KYQD"] = "合格";
                                  mFlag_Hg = true;
                              }
                          }
@@ -327,6 +333,7 @@ namespace Calculates
 
                      if (jcxm.Contains("、石灰爆裂、"))
                      {
+                         jcxmCur = "石灰爆裂";
                          sign = true;
 
                          for (xd = 0; xd < 6; xd++)
@@ -362,15 +369,15 @@ namespace Calculates
                              }
                              sItem["FSPD"] = sign ? "合格" : "不合格";
 
-                             if (sItem["DRPD"] == "不合格")
+                             if (sItem["FSPD"] == "不合格")
                              {
+                                 jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                  mbhggs = mbhggs + 1;
                                  mAllHg = false;
                                  mFlag_Hg = true;
                              }
                              else
                              {
-                                 sItem["PD_KYQD"] = "合格";
                                  mFlag_Hg = true;
                              }
                          }
@@ -394,7 +401,7 @@ namespace Calculates
 
                      if (mbhggs == 0)
                      {
-                         jsbeizhu = "该组试件所检项目符合" + mItem["PDBZ"] + "标准要求。";
+                         jsbeizhu = "依据" + mItem["PDBZ"] + "的规定，所检项目均符合要求。";
                          sItem["JCJG"] = "合格";
                      }
 
@@ -402,12 +409,12 @@ namespace Calculates
                      {
                          sItem["JCJG"] = "不合格";
                          mAllHg = false;
-                         jsbeizhu = "该组试件不符合" + mItem["PDBZ"] + "标准要求。";
-                         if (mFlag_Bhg && mFlag_Hg)
-                         {
-                             jsbeizhu = "该组试件所检项目部分符合" + mItem["PDBZ"] + "标准要求。";
+                         jsbeizhu = "依据" + mItem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                         //if (mFlag_Bhg && mFlag_Hg)
+                         //{
+                         //    jsbeizhu = "该组试件所检项目部分符合" + mItem["PDBZ"] + "标准要求。";
 
-                         }
+                         //}
                      }
 
                      return mAllHg;
@@ -428,7 +435,7 @@ namespace Calculates
                     mXdy21 = 0;
                     mDy21 = 0;
                     mJSFF = "";
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     mAllHg = false;
                     continue;
                 }
@@ -958,7 +965,20 @@ namespace Calculates
                                 mSFwc = false;
                             }
                             else
+                            {
                                 sItem["DRPD"] = "----";
+                            }
+                            sItem["DRGM1"] = "----";
+                            sItem["DRGM2"] = "----";
+                            sItem["DRGM3"] = "----";
+                            sItem["DRGM4"] = "----";
+                            sItem["DRGM5"] = "----";
+                            sItem["DRYQ"] = "----";
+                            sItem["DRWG1"] = "----";
+                            sItem["DRWG2"] = "----";
+                            sItem["DRWG3"] = "----";
+                            sItem["DRWG4"] = "----";
+                            sItem["DRWG5"] = "----";
                         }
 
                         //吸水率和饱和系数
@@ -1017,7 +1037,15 @@ namespace Calculates
                             }
                         }
                         else
+                        {
+                            sItem["XSLBHXSYQ"] = "----";
+                            sItem["BHXSPD"] = "----";
+                            sItem["XSLPJZ"] = "----";
+                            sItem["XSLDKZD"] = "----";
+                            sItem["BHXSPJZ"] = "----";
+                            sItem["BHXSZDZ"] = "----";
                             mSFwc = false;
+                        }
                     }
                     else
                     {
@@ -1295,12 +1323,12 @@ namespace Calculates
                 MItem[0]["JCJG"] = "不合格";
             MItem[0]["JCJGMS"] = "";
             if (mAllHg)
-                MItem[0]["JCJGMS"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             else
             {
-                MItem[0]["JCJGMS"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                if (mFlag_Bhg && mFlag_Hg)
-                    MItem[0]["JCJGMS"] = "该组试样所检项目"+ bhgJcxm + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + bhgJcxm + "不符合要求。";
+                //if (mFlag_Bhg && mFlag_Hg)
+                //    MItem[0]["JCJGMS"] = "该组试样所检项目" + bhgJcxm + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
             }
             #endregion
             #endregion

@@ -34,6 +34,8 @@ namespace Calculates
             mFlag_Hg = false;
             mFlag_Bhg = false;
             string which = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
             #endregion
 
             #region  自定义函数
@@ -241,13 +243,14 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    MItem[0]["JCJG"] = "依据不详";
+                    MItem[0]["JCJG"] = "不下结论";
                     MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"] + "依据不详";
                     break;
                 }
                 string jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (jcxm.Contains("、内照射指数、") && MItem[0]["G_IRA"] != "----")
                 {
+                    jcxmCur = "内照射指数";
                     if (calc_pd(MItem[0]["G_IRA"], sitem["IRA"]) == "符合")
                     {
                         sitem["IRAPD"] = "合格";
@@ -256,6 +259,7 @@ namespace Calculates
                     else
                     {
                         sitem["IRAPD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
                     }
@@ -268,6 +272,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、外照射指数、") && MItem[0]["G_IRA"] != "----")
                 {
+                    jcxmCur = "外照射指数";
                     if (calc_pd(MItem[0]["G_IR"], sitem["IR"]) == "符合")
                     {
                         sitem["IRPD"] = "合格";
@@ -276,6 +281,7 @@ namespace Calculates
                     else
                     {
                         sitem["IRPD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
                     }
@@ -296,12 +302,12 @@ namespace Calculates
             if (mAllHg)
             {
                 MItem[0]["JCJG"] = "合格";
-                MItem[0]["JCJGMS"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
                 MItem[0]["JCJG"] = "不合格";
-                MItem[0]["JCJGMS"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 //if (mFlag_Bhg && mFlag_Hg)
                 //    MItem[0]["JCJGMS"] = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
             }

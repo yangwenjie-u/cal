@@ -37,6 +37,8 @@ namespace Calculates
             int mcd, mdwz = 0;
             bool sign = true;
             int mbHggs = 0;//统计合格数量
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sItem in S_FQS)
             {
                 itemHG = true;
@@ -47,7 +49,7 @@ namespace Calculates
                 if (null == extraFieldsDj)
                 {
                     mAllHg = false;
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     jsbeizhu = "不合格";
                     continue;
                 }
@@ -70,6 +72,7 @@ namespace Calculates
                 #region 表观密度
                 if (jcxm.Contains("、表观密度、"))
                 {
+                    jcxmCur = "表观密度";
                     sign = true;
                     sign = IsNumeric(sItem["W_MDPC"]) && !string.IsNullOrEmpty(sItem["W_MDPC"]) ? sign : false;
                     sign = IsNumeric(sItem["BCMD"]) && !string.IsNullOrEmpty(sItem["BCMD"]) ? sign : false;
@@ -79,6 +82,7 @@ namespace Calculates
                         sItem["GH_MD"] = 10 >= double.Parse(sItem["W_MDPC"]) ? "合格" : "不合格";
                         if ("不合格" == sItem["GH_MD"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             itemHG = false;
                             mAllHg = false;
                         }
@@ -100,6 +104,7 @@ namespace Calculates
                 #region 导热系数
                 if (jcxm.Contains("、导热系数、"))
                 {
+                    jcxmCur = "导热系数";
                     sign = true;
                     sign = IsNumeric(sItem["W_DRXS"]) && !string.IsNullOrEmpty(sItem["W_DRXS"]) ? sign : false;
                     mcd = sItem["G_DRXS"].Length;
@@ -119,6 +124,7 @@ namespace Calculates
                         sItem["GH_DRXS"] = IsQualified(sItem["G_DRXS"], sItem["W_DRXS"],false);
                         if ("不合格" == sItem["GH_DRXS"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             itemHG = false;
                             mAllHg = false;
                         }
@@ -139,6 +145,7 @@ namespace Calculates
                 #region 压缩强度
                 if (jcxm.Contains("、压缩强度、"))
                 {
+                    jcxmCur = "压缩强度";
                     sign = true;
                     sign = IsNumeric(sItem["W_YSQD"]) && !string.IsNullOrEmpty(sItem["W_YSQD"]) ? sign : false;
                     if (sign)
@@ -146,6 +153,7 @@ namespace Calculates
                         sItem["GH_YSQD"] = IsQualified(sItem["G_YSQD"], sItem["W_YSQD"], false);
                         if ("不合格" == sItem["GH_YSQD"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             itemHG = false;
                             mAllHg = false;
                         }
@@ -166,6 +174,7 @@ namespace Calculates
                 #region 垂直于板面的拉伸强度
                 if (jcxm.Contains("、垂直于板面的拉伸强度、"))
                 {
+                    jcxmCur = "垂直于板面的拉伸强度";
                     sign = true;
                     sign = IsNumeric(sItem["W_LSQD"]) && !string.IsNullOrEmpty(sItem["W_LSQD"]) ? sign : false;
                     if (sign)
@@ -173,6 +182,7 @@ namespace Calculates
                         sItem["GH_LSQD"] = IsQualified(sItem["G_LSQD"], sItem["W_LSQD"], false);
                         if ("不合格" == sItem["GH_LSQD"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             itemHG = false;
                             mAllHg = false;
                         }
@@ -193,6 +203,7 @@ namespace Calculates
                 #region 尺寸稳定性(-40℃)
                 if (jcxm.Contains("、尺寸稳定性(-40℃)、"))
                 {
+                    jcxmCur = "尺寸稳定性(-40℃)";
                     sign = true;
                     sign = IsNumeric(sItem["W_CDWDX"]) && !string.IsNullOrEmpty(sItem["W_CDWDX"]) ? sign : false;
                     sign = IsNumeric(sItem["W_KDWDX"]) && !string.IsNullOrEmpty(sItem["W_KDWDX"]) ? sign : false;
@@ -204,6 +215,7 @@ namespace Calculates
                         sItem["GH_HDWDX"] = IsQualified(sItem["G_HDWDX"], sItem["W_HDWDX"], false);
                         if ("不合格" == sItem["GH_CDWDX"] || "不合格" == sItem["GH_KDWDX"] || "不合格" == sItem["GH_HDWDX"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             itemHG = false;
                             mAllHg = false;
                         }
@@ -230,6 +242,7 @@ namespace Calculates
                 #region 尺寸稳定性(70℃)
                 if (jcxm.Contains("、尺寸稳定性(70℃)、"))
                 {
+                    jcxmCur = "尺寸稳定性(70℃)";
                     sign = true;
                     sign = IsNumeric(sItem["W_CDWDX1"]) && !string.IsNullOrEmpty(sItem["W_CDWDX1"]) ? sign : false;
                     sign = IsNumeric(sItem["W_KDWDX1"]) && !string.IsNullOrEmpty(sItem["W_KDWDX1"]) ? sign : false;
@@ -241,6 +254,7 @@ namespace Calculates
                         sItem["GH_HDWDX1"] = IsQualified(sItem["G_HDWDX1"], sItem["W_HDWDX1"], false);
                         if ("不合格" == sItem["GH_CDWDX1"] || "不合格" == sItem["GH_KDWDX1"] || "不合格" == sItem["GH_HDWDX1"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             itemHG = false;
                             mAllHg = false;
                         }
@@ -267,6 +281,7 @@ namespace Calculates
                 #region 尺寸稳定性(130℃)
                 if (jcxm.Contains("、尺寸稳定性(130℃)、"))
                 {
+                    jcxmCur = "尺寸稳定性(130℃)";
                     sign = true;
                     sign = IsNumeric(sItem["W_CDWDX2"]) && !string.IsNullOrEmpty(sItem["W_CDWDX2"]) ? sign : false;
                     sign = IsNumeric(sItem["W_KDWDX2"]) && !string.IsNullOrEmpty(sItem["W_KDWDX2"]) ? sign : false;
@@ -278,6 +293,7 @@ namespace Calculates
                         sItem["GH_HDWDX2"] = IsQualified(sItem["G_HDWDX2"], sItem["W_HDWDX2"], false);
                         if ("不合格" == sItem["GH_CDWDX2"] || "不合格" == sItem["GH_KDWDX2"] || "不合格" == sItem["GH_HDWDX2"])
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             itemHG = false;
                             mAllHg = false;
                         }
@@ -316,18 +332,18 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                if (mbHggs > 0)
-                {
-                    jsbeizhu = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
-                else
-                {
-                    jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
+                //if (mbHggs > 0)
+                //{
+                //    jsbeizhu = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
+                //}
+                //else
+                //{
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                //}
             }
 
             MItem[0]["JCJG"] = mjcjg;

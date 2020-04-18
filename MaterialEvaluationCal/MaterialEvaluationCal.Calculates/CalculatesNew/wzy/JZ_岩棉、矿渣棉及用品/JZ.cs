@@ -372,6 +372,8 @@ namespace Calculates
             #region 计算开始
             mGetBgbh = false;
             mAllHg = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sitem in SItem)
             {
                 string md11 = "", md12 = "";
@@ -611,7 +613,7 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、密度、"))
                 {
-
+                    jcxmCur = "密度";
                     //判定计算了≤≥±＜＞～
                     if (CPMC == "绝热用岩棉、矿渣棉及其制品(GB/T 11835-2016)" && zpxs == "棉")
                     {
@@ -746,7 +748,14 @@ namespace Calculates
                         mitem["G_MD"] = md1 + "～" + md2;
                     }
                     else
+                    {
                         mitem["GH_MD"] = IsQualified(mitem["G_MD"], mitem["W_PJMD"], false);
+                    }
+
+                    if (mitem["GH_MD"] == "不合格")
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                 }
                 else
                     sign = false;
@@ -759,7 +768,7 @@ namespace Calculates
                     mitem["G_MDDZ"] = "----";
                     mitem["G_MDBC"] = "----";
                     mitem["G_MD"] = "----";
-                    mitem["W_PJMD"] = "----";
+                    //mitem["W_PJMD"] = "----";
                 }
                 #endregion
 
@@ -768,6 +777,7 @@ namespace Calculates
                 mark = true;
                 if (jcxm.Contains("、热阻、"))
                 {
+                    jcxmCur = "热阻";
                     sum = 0;
                     for (xd = 1; xd <= 4; xd++)
                     {
@@ -886,9 +896,14 @@ namespace Calculates
                         mark = IsQualified(mitem["G_RZ"], mitem["W_RZ"], false) == "合格" ? mark : false;
                     mitem["G_RZ"] = mitem["G_RZ"] + "（标准要求值）,且" + bcz + "标称值";
                     if (mark)
+                    {
                         mitem["GH_RZ"] = "合格";
+                    }
                     else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mitem["GH_RZ"] = "不合格";
+                    }
                 }
                 else
                     sign = false;
@@ -905,10 +920,14 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、燃烧性能、"))
                 {
+                    jcxmCur = "燃烧性能";
                     mitem["GH_RSXN"] = "合格";
                     mitem["G_RSXN"] = "不燃材料";
                     if (mitem["W_RSXN"] == "不符合")
+                    {
                         mitem["GH_RSXN"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                 }
                 else
                 {
@@ -1008,6 +1027,7 @@ namespace Calculates
                 mark = true;
                 if (jcxm.Contains("、压缩强度、"))
                 {
+                    jcxmCur = "压缩强度";
                     if (CPMC == "绝热用岩棉、矿渣棉及其制品(GB/T 11835-2016)")
                     {
                         md = Conversion.Val(mitem["W_PJMD"].Trim());
@@ -1037,9 +1057,14 @@ namespace Calculates
 
 
                     if (mark == true)
+                    {
                         mitem["GH_YSQD"] = "合格";
+                    }
                     else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mitem["GH_YSQD"] = "不合格";
+                    }
                 }
                 else
                     sign = false;
@@ -1057,9 +1082,22 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、质量吸湿率、"))
                 {
+                    jcxmCur = "质量吸湿率";
                     sign = IsNumeric(mitem["W_ZLXSL"]) && !string.IsNullOrEmpty(mitem["W_ZLXSL"]) ? sign : false;
                     if (sign)
+                    {
                         mitem["GH_ZLXSL"] = IsQualified(mitem["G_ZLXSL"], mitem["W_ZLXSL"], false);
+                        if (mitem["GH_ZLXSL"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                    }
+                    else
+                    {
+                        mitem["GH_ZLXSL"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
                 }
                 else
                 {
@@ -1073,6 +1111,7 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、尺寸稳定性、"))
                 {
+                    jcxmCur = "尺寸稳定性";
                     sign = IsNumeric(mitem["W_CDWDX"]) && !string.IsNullOrEmpty(mitem["W_CDWDX"]) ? sign : false;
                     sign = IsNumeric(mitem["W_KDWDX"]) && !string.IsNullOrEmpty(mitem["W_KDWDX"]) ? sign : false;
                     sign = IsNumeric(mitem["W_HDWDX"]) && !string.IsNullOrEmpty(mitem["W_HDWDX"]) ? sign : false;
@@ -1081,6 +1120,10 @@ namespace Calculates
                         mitem["GH_CDWDX"] = IsQualified(mitem["G_CCWDX"], mitem["W_CDWDX"], false);
                         mitem["GH_KDWDX"] = IsQualified(mitem["G_CCWDX"], mitem["W_KDWDX"], false);
                         mitem["GH_HDWDX"] = IsQualified(mitem["G_CCWDX"], mitem["W_HDWDX"], false);
+                        if (mitem["GH_CDWDX"] == "不合格" || mitem["GH_KDWDX"] == "不合格" || mitem["GH_HDWDX"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -1099,9 +1142,21 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、短期吸水量、"))
                 {
+                    jcxmCur = "短期吸水量";
                     sign = IsNumeric(mitem["W_DQXSL"]) && !string.IsNullOrEmpty(mitem["W_DQXSL"]) ? sign : false;
                     if (sign)
+                    {
                         mitem["GH_DQXSL"] = IsQualified(mitem["G_DQXSL"], mitem["W_DQXSL"], false);
+                        if (mitem["GH_DQXSL"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                    }
+                    else
+                    {
+                        mitem["GH_DQXSL"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                 }
                 else
                 {
@@ -1116,6 +1171,7 @@ namespace Calculates
                 mark = true;
                 if (jcxm.Contains("、长期吸水量、"))
                 {
+                    jcxmCur = "长期吸水量";
                     sign = IsNumeric(mitem["W_CQXSL"]) && !string.IsNullOrEmpty(mitem["W_CQXSL"]) ? sign : false;
                     if (sign)
                     {
@@ -1129,9 +1185,14 @@ namespace Calculates
                         else
                             mark = IsQualified(mitem["G_CQXSL"], mitem["W_CQXSL"], false) == "合格" ? mark : false;
                         if (mark == true)
+                        {
                             mitem["GH_CQXSL"] = "合格";
+                        }
                         else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mitem["GH_CQXSL"] = "不合格";
+                        }
                     }
                 }
                 else
@@ -1147,6 +1208,7 @@ namespace Calculates
                 mark = true;
                 if (jcxm.Contains("、抗拉强度、"))
                 {
+                    jcxmCur = "抗拉强度";
                     sign = IsNumeric(mitem["W_KLQD"]) && !string.IsNullOrEmpty(mitem["W_KLQD"]) ? sign : false;
                     if (sign)
                     {
@@ -1161,9 +1223,14 @@ namespace Calculates
                             mark = IsQualified(mitem["G_KLQD"], mitem["W_KLQD"], false) == "合格" ? mark : false;
 
                         if (mark)
+                        {
                             mitem["GH_KLQD"] = "合格";
+                        }
                         else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mitem["GH_KLQD"] = "不合格";
+                        }
                     }
                 }
                 else
@@ -1178,12 +1245,17 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、粘结强度、"))
                 {
+                    jcxmCur = "粘结强度";
                     sign = IsNumeric(mitem["W_NJQD"]) && !string.IsNullOrEmpty(mitem["W_NJQD"]) ? sign : false;
                     if (sign)
                     {
                         if (!mitem["G_NJQD"].Trim().Contains("≥"))
                             mitem["G_NJQD"] = "≥" + mitem["G_NJQD"];
                         mitem["GH_NJQD"] = IsQualified(mitem["G_NJQD"], mitem["W_NJQD"], false);
+                        if (mitem["GH_NJQD"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -1198,9 +1270,16 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、浸水粘结强度保留率、"))
                 {
+                    jcxmCur = "浸水粘结强度保留率";
                     sign = IsNumeric(mitem["W_JSBLL"]) && !string.IsNullOrEmpty(mitem["W_JSBLL"]) ? sign : false;
                     if (sign)
+                    {
                         mitem["GH_JSBLL"] = IsQualified(mitem["G_JSBLL"], mitem["W_JSBLL"], false);
+                        if (mitem["GH_JSBLL"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                    }
                 }
                 else
                 {
@@ -1214,9 +1293,16 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、管壳偏心度、"))
                 {
+                    jcxmCur = "管壳偏心度";
                     sign = IsNumeric(mitem["W_GQPXD"]) && !string.IsNullOrEmpty(mitem["W_GQPXD"]) ? sign : false;
                     if (sign)
+                    { 
                         mitem["GH_GQPXD"] = IsQualified(mitem["G_GQPXD"], mitem["W_GQPXD"], false);
+                        if (mitem["GH_GQPXD"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                    }
                 }
                 else
                 {
@@ -1230,6 +1316,7 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、吸水率、") || jcxm.Contains("、吸水性、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "吸水率,吸水性");
                     if (sitem["XSXZB"].Trim().Contains("千克每立方"))
                     {
                         mdwz = sitem["XSXZB"].Trim().IndexOf("千克每立方") + 1;
@@ -1260,6 +1347,10 @@ namespace Calculates
                         if (!mitem["G_XSL"].Trim().Contains("≤"))
                             mitem["G_XSL"] = "≤" + mitem["G_XSL"];
                         mitem["GH_XSL"] = IsQualified(mitem["G_XSL"], mitem["W_XSL"], false);
+                        if (mitem["GH_XSL"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -1275,16 +1366,22 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、厚度偏差、"))
                 {
+                    jcxmCur = "厚度偏差";
                     sign = IsNumeric(mitem["W_HDPC"]) && !string.IsNullOrEmpty(mitem["W_HDPC"]) ? sign : false;
                     if (sign)
                     {
                         mitem["GH_HDPC"] = IsQualified(mitem["G_HDPC"], mitem["W_HDPC"], false);
+                        if (mitem["GH_HDPC"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
                         mitem["GH_HDPC"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
-                        
+
                 }
                 else
                 {
@@ -1345,16 +1442,22 @@ namespace Calculates
                     //}
                     #endregion
 
+                    jcxmCur = "长度允许偏差"; 
                     sign = IsNumeric(mitem["W_CDPC"]) && !string.IsNullOrEmpty(mitem["W_CDPC"]) ? sign : false;
                     if (sign)
                     {
                         mitem["GH_CDPC"] = IsQualified(mitem["G_CDPC"], mitem["W_CDPC"], false);
+                        if (mitem["GH_CDPC"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
                         mitem["GH_CDPC"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
-                        
+
                 }
                 else
                 {
@@ -1415,16 +1518,22 @@ namespace Calculates
                     //}
                     #endregion
 
+                    jcxmCur = "宽度允许偏差";
                     sign = IsNumeric(mitem["W_KDPC"]) && !string.IsNullOrEmpty(mitem["W_KDPC"]) ? sign : false;
                     if (sign)
                     {
                         mitem["GH_KDPC"] = IsQualified(mitem["G_KDPC"], mitem["W_KDPC"], false);
+                        if (mitem["GH_KDPC"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
                         mitem["GH_KDPC"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
-                        
+
                 }
                 else
                 {
@@ -1484,16 +1593,22 @@ namespace Calculates
                     //    }
                     //}
                     #endregion
+                    jcxmCur = "厚度允许偏差";
                     sign = IsNumeric(mitem["W_HDYXPC"]) && !string.IsNullOrEmpty(mitem["W_HDYXPC"]) ? sign : false;
                     if (sign)
                     {
                         mitem["GH_HDYXPC"] = IsQualified(mitem["G_HDYXPC"], mitem["W_HDYXPC"], false);
+                        if (mitem["GH_HDYXPC"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
                         mitem["GH_HDYXPC"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
-                        
+
                 }
                 else
                 {
@@ -1555,6 +1670,7 @@ namespace Calculates
                     //}
                     #endregion
 
+                    jcxmCur = "密度允许偏差";
                     #region GB/T 19686-2015
                     if (CPMC.Contains("19686")) //建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)
                     {
@@ -1562,7 +1678,7 @@ namespace Calculates
                         switch (sitem["YYLX"].Trim())
                         {
                             case "屋面和地板":
-                                if (GetSafeDouble(mitem["W_PJMD"]) >= 80)
+                                if (GetSafeDouble(sitem["BCMD"]) >= 80)
                                 {
                                     mitem["G_MDYXPC"] = md11;
                                 }
@@ -1572,7 +1688,7 @@ namespace Calculates
                                 }
                                 break;
                             case "幕墙":
-                                if (GetSafeDouble(mitem["W_PJMD"]) >= 80)
+                                if (GetSafeDouble(sitem["BCMD"]) >= 80)
                                 {
                                     mitem["G_MDYXPC"] = md11;
                                 }
@@ -1585,7 +1701,7 @@ namespace Calculates
                                 mitem["G_MDYXPC"] = md11;
                                 break;
                             case "钢结构及内保温":
-                                if (GetSafeDouble(mitem["W_PJMD"]) >= 80)
+                                if (GetSafeDouble(sitem["BCMD"]) >= 80)
                                 {
                                     mitem["G_MDYXPC"] = md11;
                                 }
@@ -1601,15 +1717,15 @@ namespace Calculates
                     if (CPMC.Contains("11835")) //GB/T11835—2016
                     {
                         sign = IsNumeric(mitem["W_MDYXPC"]) && !string.IsNullOrEmpty(mitem["W_MDYXPC"]) ? sign : false;
-  
-                        if (sign && IsQualified(md11, sitem["BCMD"], false) == "合格")  //判断标准密度是否符合要求
-                        {
+
+                        //if (sign && IsQualified(md11, sitem["BCMD"], false) == "合格")  //判断标准密度是否符合要求
+                        //{
                             mitem["GH_MDYXPC"] = IsQualified(mitem["G_MDYXPC"], mitem["W_MDYXPC"], false);
-                        }
-                        else
-                        {
-                            mitem["GH_MDYXPC"] = "不合格";
-                        }
+                        //}
+                        //else
+                        //{
+                        //    mitem["GH_MDYXPC"] = "不合格";
+                        //}
                     }
                     else
                     {
@@ -1617,10 +1733,15 @@ namespace Calculates
                         if (sign)
                         {
                             mitem["GH_MDYXPC"] = IsQualified(mitem["G_MDYXPC"], mitem["W_MDYXPC"], false);
+                            if (mitem["GH_MDYXPC"] == "不合格")
+                            {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
                         }
                         else
                         {
                             mitem["GH_MDYXPC"] = "不合格";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                     }
                 }
@@ -1683,35 +1804,46 @@ namespace Calculates
                     //}
                     #endregion
 
+                    jcxmCur = "导热系数";
                     if (CPMC.Contains("25975")) //GB/T 25975-2018
                     {
                         bool sign1 = true;
                         sign = IsNumeric(mitem["W_DRXS"]) && !string.IsNullOrEmpty(mitem["W_DRXS"]) ? sign : false;
                         sign1 = IsNumeric(sitem["BCDRXS"]) && !string.IsNullOrEmpty(sitem["BCDRXS"]) ? sign1 : false;
- 
+
                         if (sign1)
                         {
                             if (sign && IsQualified("≤" + sitem["BCDRXS"], mitem["W_DRXS"], false) == "合格") //有标准导热系数时还应不大于其标称值
-                            { 
+                            {
                                 mitem["GH_DRXS"] = IsQualified(mitem["G_DRXS"], mitem["W_DRXS"], false);
+                                if (mitem["GH_DRXS"] == "不合格")
+                                {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                }
                             }
                             else
                             {
                                 mitem["GH_DRXS"] = "不合格";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             }
                         }
                         else
                         {
                             if (sign)
-                            { 
+                            {
                                 mitem["GH_DRXS"] = IsQualified(mitem["G_DRXS"], mitem["W_DRXS"], false);
+                                if (mitem["GH_DRXS"] == "不合格")
+                                {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                }
                             }
                             else
                             {
                                 mitem["GH_DRXS"] = "不合格";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             }
                         }
-                      
+
                     }
                     else
                     {
@@ -1719,12 +1851,17 @@ namespace Calculates
                         if (sign)
                         {
                             mitem["GH_DRXS"] = IsQualified(mitem["G_DRXS"], mitem["W_DRXS"], false);
+                            if (mitem["GH_DRXS"] == "不合格")
+                            {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
                         }
                         else
                         {
                             mitem["GH_DRXS"] = "不合格";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
-                            
+
                     }
 
                 }
@@ -1763,32 +1900,32 @@ namespace Calculates
 
                 sitem["JCJG"] = mbHggs == 0 ? "合格" : "不合格";
                 mitem["JCJG"] = mbHggs == 0 ? "合格" : "不合格";
-                mitem["JCJGMS"] = mbHggs == 0 ? "该样品所检项目符合" + mitem["PDBZ"] + "标准要求。" : "该样品所检项目不符合" + mitem["PDBZ"] + "标准要求。";
-                if (mbHggs > 0 && (mitem["GH_MD"] == "合格" ||
-                mitem["GH_DRXS"] == "合格" ||
-                mitem["GH_RSXN"] == "合格" ||
-                mitem["GH_YSQD"] == "合格" ||
-                mitem["GH_XSL"] == "合格" ||
-                mitem["GH_RZ"] == "合格" ||
-                mitem["GH_CDWDX"] == "合格" ||
-                mitem["GH_KDWDX"] == "合格" ||
-                mitem["GH_HDWDX"] == "合格" ||
-                mitem["GH_ZLXSL"] == "合格" ||
-                mitem["GH_DQXSL"] == "合格" ||
-                mitem["GH_CQXSL"] == "合格" ||
-                mitem["GH_KLQD"] == "合格" ||
-                mitem["GH_NJQD"] == "合格" ||
-                mitem["GH_JSBLL"] == "合格" ||
-                mitem["GH_GQPXD"] == "合格" ||
-                mitem["GH_HDPC"] == "合格" ||
-                mitem["GH_KDPC"] == "合格" ||
-                mitem["GH_CDPC"] == "合格"||
-                mitem["GH_MDYXPC"] == "合格" ||
-                mitem["GH_HDYXPC"] == "合格"
-                ))
-                { 
-                    mitem["JCJGMS"] = "该样品所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
-                }
+                mitem["JCJGMS"] = mbHggs == 0 ? "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。" : "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                //if (mbHggs > 0 && (mitem["GH_MD"] == "合格" ||
+                //mitem["GH_DRXS"] == "合格" ||
+                //mitem["GH_RSXN"] == "合格" ||
+                //mitem["GH_YSQD"] == "合格" ||
+                //mitem["GH_XSL"] == "合格" ||
+                //mitem["GH_RZ"] == "合格" ||
+                //mitem["GH_CDWDX"] == "合格" ||
+                //mitem["GH_KDWDX"] == "合格" ||
+                //mitem["GH_HDWDX"] == "合格" ||
+                //mitem["GH_ZLXSL"] == "合格" ||
+                //mitem["GH_DQXSL"] == "合格" ||
+                //mitem["GH_CQXSL"] == "合格" ||
+                //mitem["GH_KLQD"] == "合格" ||
+                //mitem["GH_NJQD"] == "合格" ||
+                //mitem["GH_JSBLL"] == "合格" ||
+                //mitem["GH_GQPXD"] == "合格" ||
+                //mitem["GH_HDPC"] == "合格" ||
+                //mitem["GH_KDPC"] == "合格" ||
+                //mitem["GH_CDPC"] == "合格" ||
+                //mitem["GH_MDYXPC"] == "合格" ||
+                //mitem["GH_HDYXPC"] == "合格"
+                //))
+                //{
+                //    mitem["JCJGMS"] = "该样品所检项目部分符合" + mitem["PDBZ"] + "标准要求。";
+                //}
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
                 //}  }
 

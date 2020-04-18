@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,9 @@ namespace Calculates
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "合格";
+            int mbHggs = 0;
+            bool mark;  //标示逢长为----
+            mark = true;
             bool itemHG = true;//判断单组是否合格
             var S_XCS = data["S_XC"];
             //数据表数据
@@ -54,7 +58,7 @@ namespace Calculates
             string djjg = "";
             int xd, Gs = 0;
             int mbhggs = 0;//不合格数量
-
+            string bl;
 
             foreach (var sItem in S_XCS)
             {
@@ -83,7 +87,7 @@ namespace Calculates
                 sItem["BLZD"] = sItem["BLZDC"].Trim() + "×" + sItem["BLZDK"].Trim();
 
                 if (jcxm.Contains("、气密性能、"))
-                {      
+                {
                     //var extraFieldsMS_MC = extraMS_MC.Where(u => u["试验编号"] == sItem["WTDBH"] && u["CSYLB"] == "XC");
                     //var extraFieldsMS_MC = extraMS_MC.Where(u => u["SYSJBRECID"] == sItem["RECID"]);
                     int count = 1;
@@ -156,6 +160,50 @@ namespace Calculates
                     }
 
                     sum = 0;
+                    for (xd = 1; xd <= 3; xd++)
+                    {
+                        if (IsNumeric(sItem["FCQMZY" + xd]))
+                            md = Conversion.Val(sItem["FCQMZY" + xd].Trim());
+                        else
+                        {
+                            md = 0;
+                            mark = false;
+                        }
+                        nArr.Add(md);
+                        sum = sum + md;
+                    }
+                    pjmd = sum / 3;
+                    pjmd = Round(pjmd, 1);
+                    sItem["AVG_FZ"] = pjmd.ToString("F1");
+                    sum = 0;
+                    for (xd = 1; xd <= 3; xd++)
+                    {
+                        if (IsNumeric(sItem["FCQMFY" + xd]))
+                            md = Conversion.Val(sItem["FCQMFY" + xd].Trim());
+                        else
+                        {
+                            md = 0;
+                            mark = false;
+                        }
+                        nArr.Add(md);
+                        sum = sum + md;
+                    }
+                    pjmd = sum / 3;
+                    pjmd = Round(pjmd, 1);
+                    sItem["AVG_FF"] = pjmd.ToString("F1");
+                    if (sItem["AVG_FZ"] == "0.0" && sItem["AVG_FF"] == "0.0" && Conversion.Val(sItem["FCQMZY1"]) == 0 && Conversion.Val(sItem["FCQMZY2"]) == 0 && Conversion.Val(sItem["FCQMZY3"]) == 0 && Conversion.Val(sItem["FCQMFY1"]) == 0 && Conversion.Val(sItem["FCQMFY2"]) == 0 && Conversion.Val(sItem["FCQMFY3"]) == 0)
+                    {
+                        sItem["AVG_FZ"] = "----";
+                        sItem["FCQMZY1"] = "----";
+                        sItem["FCQMZY2"] = "----";
+                        sItem["FCQMZY3"] = "----";
+                        sItem["AVG_FF"] = "----";
+                        sItem["FCQMFY1"] = "----";
+                        sItem["FCQMFY2"] = "----";
+                        sItem["FCQMFY3"] = "----";
+                    }
+
+                    sum = 0;
                     for (int i = 1; i < 4; i++)
                     {
                         md = double.Parse(sItem["MJQMZY" + i].Trim());
@@ -185,36 +233,95 @@ namespace Calculates
 
                     flag = sItem["JCLB"] == "工程检测" ? true : false;
                     //气密性要求
+                    //sItem["QMXQ2YQ"] = sItem["QMXQ2YQ"].Trim();
+                    //sItem["QMXQ2YQ"] = IsNumeric(sItem["QMXQ2YQ"]) ? "≥" + sItem["QMXQ2YQ"] : sItem["QMXQ2YQ"];
+                    //if (IsQualified(sItem["QMXQ2YQ"], sItem["AVG_MZ"], true) == "符合")
+                    //{
+                    //    sItem["PD_QM"] = "符合";
+                    //}
+                    //else if (IsQualified(sItem["QMXQ2YQ"], sItem["AVG_MZ"], true) == "不符合")
+                    //{
+                    //    sItem["PD_QM"] = "不符合";
+                    //    mbhggs++;
+                    //}
+                    //else
+                    //{
+                    //    sItem["PD_QM"] = "----";
+                    //}
+
+                    sItem["QMXQ1YQ"] = sItem["QMXQ1YQ"].Trim();
+                    sItem["QMXQ1YQ"] = IsNumeric(sItem["QMXQ1YQ"]) ? "≥" + sItem["QMXQ1YQ"] : sItem["QMXQ1YQ"];
                     sItem["QMXQ2YQ"] = sItem["QMXQ2YQ"].Trim();
                     sItem["QMXQ2YQ"] = IsNumeric(sItem["QMXQ2YQ"]) ? "≥" + sItem["QMXQ2YQ"] : sItem["QMXQ2YQ"];
-                    if (IsQualified(sItem["QMXQ2YQ"], sItem["AVG_MZ"], true) == "符合")
-                    {
+                    if (IsQualified(sItem["QMXQ1YQ"], sItem["AVG_FZ"], true) == "符合" && IsQualified(sItem["QMXQ1YQ"], sItem["AVG_FF"], true) == "符合" && IsQualified(sItem["QMXQ2YQ"], sItem["AVG_MZ"], true) == "符合" && IsQualified(sItem["QMXQ2YQ"], sItem["AVG_MF"], true) == "符合")
                         sItem["PD_QM"] = "符合";
-                    }
-                    else if (IsQualified(sItem["QMXQ2YQ"], sItem["AVG_MZ"], true) == "不符合")
+                    else if (IsQualified(sItem["QMXQ1YQ"], sItem["AVG_FZ"], true) == "不符合" || IsQualified(sItem["QMXQ1YQ"], sItem["AVG_FF"], true) == "不符合" || IsQualified(sItem["QMXQ2YQ"], sItem["AVG_MZ"], true) == "不符合" || IsQualified(sItem["QMXQ2YQ"], sItem["AVG_MF"], true) == "不符合")
                     {
                         sItem["PD_QM"] = "不符合";
-                        mbhggs++;
+                        mbHggs = mbHggs + 1;
                     }
                     else
-                    {
                         sItem["PD_QM"] = "----";
+                    if (sItem["PD_QM"] == "不符合")
+                        mbhgjg = mbhgjg + "、气密性能";
+                    if (sItem["PD_QM"] == "符合")
+                        mhgjg = mhgjg + "、气密性能";
+                    if (sItem["PD_QM"] == "----")
+                        djjg = djjg + "、气密性能";
+
+                    if (!mark)
+                    {
+                        sItem["AVG_FZ"] = "----";
+                        sItem["AVG_FF"] = "----";
                     }
 
+                    var mrsDj_Filter = extraDJ[0];
                     Gs = extraDJ.Count;
-                    foreach (var extraFieldsDj in extraDJ)
+                    for (xd = 1; xd <= Gs; xd++)
                     {
-                        if (IsQualified(extraFieldsDj["MJYQ"], sItem["AVG_MZ"], true) == "符合")
+                        if (IsQualified(mrsDj_Filter["S_MJYQ"], sItem["AVG_MZ"], true) == "不符合" || IsQualified(mrsDj_Filter["S_FCYQ"], sItem["AVG_FZ"], true) == "不符合")
                         {
-                            sItem["DJ_QZ"] = "第" + extraFieldsDj["MJJB"].Trim() + "级";
+                            bl = (xd - 1).ToString();
+                            sItem["DJ_QZ"] = bl + "级";
+                            if (xd == 1)
+                                sItem["DJ_QZ"] = "不符合" + "任何级别";
                             break;
                         }
+                        if (xd >= extraDJ.Count())
+                            mrsDj_Filter = extraDJ[xd - 1];
+                        else
+                            mrsDj_Filter = extraDJ[xd];
                     }
-
-                    if (extraDJ == null)
+                    mrsDj_Filter = extraDJ[0];
+                    Gs = extraDJ.Count();
+                    for (xd = 1; xd <= Gs; xd++)
                     {
-                        sItem["DJ_QZ"] = "不符合任一级别";
+                        if (IsQualified(mrsDj_Filter["S_MJYQ"], sItem["AVG_MF"], true) == "不符合" || IsQualified(mrsDj_Filter["S_FCYQ"], sItem["AVG_FF"], true) == "不符合")
+                        {
+                            bl = (xd - 1).ToString();
+                            sItem["DJ_QF"] = bl + "级";
+                            if (xd == 1)
+                                sItem["DJ_QF"] = "不符合" + "任何级别";
+                            break;
+                        }
+                        if (xd >= extraDJ.Count())
+                            mrsDj_Filter = extraDJ[xd - 1];
+                        else
+                            mrsDj_Filter = extraDJ[xd];
                     }
+                    //foreach (var extraFieldsDj in extraDJ)
+                    //{
+                    //    if (IsQualified(extraFieldsDj["MJYQ"], sItem["AVG_MZ"], true) == "符合")
+                    //    {
+                    //        sItem["DJ_QZ"] = "第" + extraFieldsDj["MJJB"].Trim() + "级";
+                    //        break;
+                    //    }
+                    //}
+
+                    //if (extraDJ == null)
+                    //{
+                    //    sItem["DJ_QZ"] = "不符合任一级别";
+                    //}
 
                     switch (sItem["PD_QM"])
                     {

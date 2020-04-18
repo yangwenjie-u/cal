@@ -106,6 +106,8 @@ namespace Calculates
             #region  计算开始
             string which = "1";
             MItem[0]["JCJGMS"] = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sitem in SItem)
             {
                 string mSz = "0";
@@ -126,7 +128,7 @@ namespace Calculates
                 {
                     mQdyq = 0;
                     mJSFF = "";
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
                     break;
                 }
                 //计算龄期
@@ -204,12 +206,14 @@ namespace Calculates
             if (mAllHg)
             {
                 MItem[0]["JCJG"] = "合格";
-                MItem[0]["JCJGMS"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
+                jcxmCur = "抗水渗透性能";
+                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                 MItem[0]["JCJG"] = "不合格";
-                MItem[0]["JCJGMS"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
             #endregion
             /************************ 代码结束 *********************/

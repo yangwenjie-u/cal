@@ -223,6 +223,8 @@ namespace Calculates
             mitem["JCJGMS"] = "";
             zj1 = 0;
             zj2 = 0;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sitem in SItem)
             {
                 var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["PZ"].Contains(sitem["PZ"]));
@@ -239,8 +241,8 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sitem["JCJG"] = "依据不详";
-                    mitem["JCJGMS"] = mitem["JCJGMS"] + "试件尺寸为空";
+                    sitem["JCJG"] = "不下结论";
+                    mitem["JCJGMS"] = "依据不详";
                     continue;
                 }
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
@@ -254,6 +256,7 @@ namespace Calculates
                     mFlag_Bhg = false;
                     if (jcxm.Contains("、CaO和MgO含量、"))
                     {
+                        jcxmCur = "CaO和MgO含量";
                         sitem["PJMGO"] = Round((Conversion.Val(sitem["MGO_1"]) + Conversion.Val(sitem["MGO_2"])) / 2, 2).ToString("0.00");
                         if (IsQualified(mitem["G_YHM"], sitem["PJMGO"]) == "合格")
                         {
@@ -262,6 +265,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mitem["HG_MGO"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -273,6 +277,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mitem["HG_CJM"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -286,6 +291,7 @@ namespace Calculates
                     }
                     if (jcxm.Contains("、细度、"))
                     {
+                        jcxmCur = "细度";
                         if (IsQualified(mitem["G_XD1"], sitem["XD0_90"]) == "合格")
                         {
                             mitem["HG_XD1"] = "合格";
@@ -293,6 +299,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mitem["HG_XD1"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -304,6 +311,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mitem["HG_XD2"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -323,12 +331,12 @@ namespace Calculates
                     mitem["JCJGMS"] = "";
                     if (mbhggs == 0)
                     {
-                        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
+                        mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                         mitem["JCJG"] = "合格";
                     }
                     if (mbhggs >= 1)
                     {
-                        mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + "标准要求。";
+                        mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                         mitem["JCJG"] = "不合格";
                         if (mFlag_Bhg && mFlag_Hg)
                             mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
@@ -345,6 +353,7 @@ namespace Calculates
                     falg = false;
                     if (jcxm.Contains("、有效氧化钙、") && jcxm.Contains("、氧化镁含量、"))
                     {
+                        jcxmCur = CurrentJcxm(jcxm, "有效氧化钙,氧化镁含量");
                         sum = 0;
                         gmhl = 0;
                         for (xd = 1; xd <= 2; xd++)
@@ -397,9 +406,14 @@ namespace Calculates
                             //mFlag_Hg = true;
                             //break;
                         }
+                        else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                         //}
                         if (mitem["HG_MGO"] == "")
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mitem["HG_MGO"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -411,6 +425,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mitem["HG_CJM"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
@@ -425,6 +440,7 @@ namespace Calculates
 
                     if (jcxm.Contains("、有效氧化钙、") && !jcxm.Contains("、氧化镁含量、"))
                     {
+                        jcxmCur = CurrentJcxm(jcxm, "有效氧化钙,氧化镁含量");
                         falg = true;
                         sum = 0;
                         for (xd = 1; xd <= 2; xd++)
@@ -456,13 +472,15 @@ namespace Calculates
                         if (mbhggs > 0)
                         {
                             sitem["JCJG"] = "不合格";
-                            mitem["JCJGMS"] = "该组试样不符合" + sitem["PZ"].Trim() + "标准要求。";
-                            if (mFlag_Bhg && mFlag_Hg)
-                                mitem["JCJGMS"] = "该组试样所检项部分符合" + sitem["PZ"].Trim() + "标准要求。";
+                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                            //mitem["JCJGMS"] = "该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                            //if (mFlag_Bhg && mFlag_Hg)
+                            //    mitem["JCJGMS"] = "该组试样所检项部分符合" + sitem["PZ"].Trim() + "标准要求。";
                         }
                         else
                         {
-                            mitem["JCJGMS"] = "该组试样所检项符合" + sitem["PZ"].Trim() + "标准要求。";
+                            //mitem["JCJGMS"] = "该组试样所检项符合" + sitem["PZ"].Trim() + "标准要求。";
+                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                             sitem["JCJG"] = "合格";
                         }
                     }

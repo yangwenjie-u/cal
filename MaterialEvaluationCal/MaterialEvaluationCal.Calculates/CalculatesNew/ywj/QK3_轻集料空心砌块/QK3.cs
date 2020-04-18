@@ -43,6 +43,8 @@ namespace Calculates
             var jcxm = "";
             double mMaxKyqd, mMinKyqd, mMidKyqd, mAvgKyqd = 0;
             List<double> mtmpArray = new List<double>();
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in SItems)
             {
@@ -104,6 +106,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、干密度、"))
                 {
+                    jcxmCur = "干密度";
                     mtj1 = 0;
                     mtj1 = 0;
                     double mtj = 0;
@@ -143,6 +146,7 @@ namespace Calculates
                     //{
                     //    sItem["syr"] = "";
                     //}
+                    jcxmCur = "抗压强度";
                     sItem["QDYQ"] = "抗压强度平均值需≥" + GetSafeDouble(extraFieldsDj["PJBXY"]).ToString("0.0") + "MPa,\r\n 单块最小强度值需≥" + GetSafeDouble(extraFieldsDj["DKBXY"]).ToString("0.0") + "MPa";
 
                     sItem["QCD1"] = Math.Round((GetSafeDouble(sItem["QCD1_1"]) + GetSafeDouble(sItem["QCD1_2"])) / 2, 0).ToString();
@@ -187,6 +191,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["QDPD"] = "不合格";
                     }
 
@@ -196,6 +201,8 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmCur = "干密度";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["GMDPD"] = "不合格";
                     }
 
@@ -211,6 +218,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、含水率、"))
                 {
+                    jcxmCur = "含水率";
                     if (MItem[0]["PDBZ"].ToString().ToUpper().Contains("2011"))
                     {
                         sItem["XSLYQ"] = "≤18";
@@ -239,6 +247,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["XSLPD"] = "不合格";
                     }
                 }
@@ -257,6 +266,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、抗冻性、"))
                 {
+                    jcxmCur = "抗冻性";
                     sItem["KDYQ"] = "质量损失率≤5% \r\n 强度损失率≤25%";
                     sItem["ZLSSYQ"] = "≤5";
                     sItem["QDSSYQ"] = "≤25";
@@ -353,6 +363,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["KDPD"] = "不合格";
                         }
                     }
@@ -363,12 +374,19 @@ namespace Calculates
                     sign = false;
                 }
 
-                if (jcxm.Contains("、外观质量、"))
+                if (jcxm.Contains("、外观质量、") || jcxm.Contains("、尺寸偏差、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "外观质量,尺寸偏差");
                     if (Conversion.Val(sItem["WCBHGS"]) < 7)
+                    { 
                         sItem["WCPD"] = "合格";
+                    }
                     else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["WCPD"] = "不合格";
+                    }
+                        
                 }
                 else
                     sItem["WCPD"] = "----";
@@ -387,10 +405,11 @@ namespace Calculates
                 {
                     sItem["JCJG"] = "不合格";
                     mAllHg = false;
-                    jsbeizhu = "该组试样的检测结果不合格";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 }
                 else
                 {
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                     sItem["JCJG"] = "合格";
                 }
 

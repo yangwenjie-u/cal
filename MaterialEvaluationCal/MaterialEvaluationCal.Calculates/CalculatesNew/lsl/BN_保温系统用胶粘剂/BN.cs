@@ -37,7 +37,8 @@ namespace Calculates
             double mKyqd1, mKYQD2, mKyqd3, mKyqd4, mKyqd5, mKyqd6;
             double G_LSNJQD1 = 0, G_LSNJQD2 = 0, G_LSNJQD3 = 0, G_LSNJQD4 = 0, G_LSNJQD5 = 0, G_LSNJQD6 = 0, G_LSNJQD7 = 0, G_LSNJQD8 = 0;
             var jcxm = "";
-
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             Func<IDictionary<string, string>, IDictionary<string, string>, bool> sjtabcalc =
                 delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem)
@@ -52,13 +53,14 @@ namespace Calculates
 
                     if (jcxm.Contains("、与水泥砂浆拉伸粘结强度(干燥状态)、") && sign)
                     {
+                        jcxmCur = "与水泥砂浆拉伸粘结强度(干燥状态)";
                         if (Conversion.Val(sItem["YQD1"]) == 0)
                         {
                             return false;
 
                         }
 
-                        sItem["YQD1"] = Conversion.Val(sItem["YQD1"]).ToString("0.0");
+                        sItem["YQD1"] = Conversion.Val(sItem["YQD1"]).ToString("0.00");
                         mItem["HG_LSNJQD1"] = IsQualified(mItem["G_LSNJQD1"], sItem["YQD1"], false);
 
                         if (mItem["HG_LSNJQD1"] != "不合格")
@@ -67,6 +69,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mFlag_Bhg = true;
                             mbhggs = mbhggs + 1;
 
@@ -81,6 +84,7 @@ namespace Calculates
 
                     if (jcxm.Contains("、与水泥砂浆拉伸粘结强度(浸水48h)、") && sign)
                     {
+                        jcxmCur = "与水泥砂浆拉伸粘结强度(浸水48h)";
                         if (Conversion.Val(sItem["JSQD1"]) == 0)
                         {
                             return false;
@@ -91,10 +95,12 @@ namespace Calculates
 
                         if (mItem["HG_LSNJQD2"] != "不合格")
                         {
+                            
                             mFlag_Hg = true;
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mFlag_Bhg = true;
                             mbhggs = mbhggs + 1;
 
@@ -124,12 +130,13 @@ namespace Calculates
 
                     if (jcxm.Contains("、与EPS板拉伸粘结强度(干燥状态)、"))
                     {
+                        jcxmCur = "与EPS板拉伸粘结强度(干燥状态)";
                         if (Conversion.Val(sItem["YQD2"]) == 0 && sItem["YQDPHJM2"].Trim() == "")
                         {
                             return false;
                         }
 
-                        sItem["YQD2"] = Conversion.Val(sItem["YQD2"]).ToString("0.0");
+                        sItem["YQD2"] = Conversion.Val(sItem["YQD2"]).ToString("0.00");
 
                         if (sItem["YQDPHJM2)"].Trim() == "EPS板破坏")
                         {
@@ -137,6 +144,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_LSNJQD3"] = "不合格";
                         }
 
@@ -161,6 +169,7 @@ namespace Calculates
 
                     if (jcxm.Contains("、与EPS板拉伸粘结强度(浸水48h)、"))
                     {
+                        jcxmCur = "与EPS板拉伸粘结强度(浸水48h)";
                         if (Conversion.Val(sItem["JSQD2"]) == 0 && sItem["JSPHJM2"].Trim() == "")
                         {
                             return false;
@@ -175,6 +184,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mItem["HG_LSNJQD4"] = "不合格";
                         }
 
@@ -199,7 +209,7 @@ namespace Calculates
 
                     if (jcxm.Contains("、可操作时间、"))
                     {
-
+                        jcxmCur = "可操作时间";
                         mItem["HG_KCZSJ"] = IsQualified(mItem["G_KCZSJ"], sItem["KCZSJ"], false);
 
 
@@ -210,6 +220,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mFlag_Bhg = true;
                         }
                     }
@@ -222,27 +233,27 @@ namespace Calculates
 
 
 
-                    if (mItem["QRBM"].Contains("90"))
-                    {
-                        mItem["HG_KCZSJ"] = IsQualified(mItem["G_KCZSJ"], sItem["KCZSJ"], false);
+                    //if (mItem["QRBM"].Contains("90"))
+                    //{
+                    //    mItem["HG_KCZSJ"] = IsQualified(mItem["G_KCZSJ"], sItem["KCZSJ"], false);
 
 
-                        if (mItem["HG_KCZSJ"] != "不合格")
-                        {
-                            mbhggs += 1;
-                            mFlag_Hg = true;
-                        }
-                        else
-                        {
-                            mFlag_Bhg = true;
-                        }
-                    }
-                    else
-                    {
-                        sItem["KCZSJ"] = "----";
-                        mItem["G_KCZSJ"] = "----";
-                        mItem["HG_KCZSJ"] = "----";
-                    }
+                    //    if (mItem["HG_KCZSJ"] != "不合格")
+                    //    {
+                    //        mbhggs += 1;
+                    //        mFlag_Hg = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        mFlag_Bhg = true;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    sItem["KCZSJ"] = "----";
+                    //    mItem["G_KCZSJ"] = "----";
+                    //    mItem["HG_KCZSJ"] = "----";
+                    //}
 
                     if (mbhggs == 0)
                     {
@@ -251,7 +262,7 @@ namespace Calculates
                     }
                     if (mbhggs > 0)
                     {
-                        jsbeizhu = "该组试样所检项目不符合" + mItem["PDBZ"] + "标准要求。";
+                        jsbeizhu = "该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
                         sItem["JCJG"] = "不合格";
                         mAllHg = false;
                     }
@@ -293,7 +304,7 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sItem["JCJG"] = "依据不详";
+                    sItem["JCJG"] = "不下结论";
                     jsbeizhu = "依据不详";
                     mAllHg = false;
                 }
@@ -895,6 +906,7 @@ namespace Calculates
                         #region 拉伸粘结原强度
                         if (jcxm.Contains("、拉伸粘结原强度、"))
                         {
+                            jcxmCur = "拉伸粘结强度与水泥砂浆";
                             #region 与水泥砂浆
                             sItem["MJ11"] = (GetSafeDouble(sItem["CD11"]) * GetSafeDouble(sItem["KD11"])).ToString();
                             sItem["MJ12"] = (GetSafeDouble(sItem["CD12"]) * GetSafeDouble(sItem["KD12"])).ToString();
@@ -941,6 +953,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(原强度)、";
                                 MItem[0]["HG_LSNJQD1"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
@@ -949,6 +962,7 @@ namespace Calculates
                             #endregion
 
                             #region 与模塑板
+                            jcxmCur = "拉伸粘结强度与模塑板";
                             sItem["MJ31"] = (GetSafeDouble(sItem["CD31"]) * GetSafeDouble(sItem["KD31"])).ToString();
                             sItem["MJ32"] = (GetSafeDouble(sItem["CD32"]) * GetSafeDouble(sItem["KD32"])).ToString();
                             sItem["MJ33"] = (GetSafeDouble(sItem["CD33"]) * GetSafeDouble(sItem["KD33"])).ToString();
@@ -996,6 +1010,7 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(原强度)、";
                                     MItem[0]["HG_LSNJQD3"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
@@ -1011,6 +1026,7 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(原强度)、";
                                     MItem[0]["HG_LSNJQD3"] = "不合格";
                                     mbhggs++;
                                     mFlag_Bhg = true;
@@ -1035,6 +1051,7 @@ namespace Calculates
                         #region 拉伸粘结耐水强度(2h)
                         if (jcxm.Contains("、拉伸粘结耐水强度(2h)、"))
                         {
+                            jcxmCur = "拉伸粘结强度与水泥砂浆耐水强度(浸水48h,干燥2h)";
                             #region 与水泥砂浆
                             sItem["MJ21"] = (GetSafeDouble(sItem["CD21"]) * GetSafeDouble(sItem["KD21"])).ToString();
                             sItem["MJ22"] = (GetSafeDouble(sItem["CD22"]) * GetSafeDouble(sItem["KD22"])).ToString();
@@ -1081,6 +1098,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_LSNJQD2"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
@@ -1090,6 +1108,7 @@ namespace Calculates
                             #endregion
 
                             #region 与模塑板
+                            jcxmCur = "拉伸粘结强度与模塑板耐水强度(浸水48h,干燥2h)";
                             sItem["MJ41"] = (GetSafeDouble(sItem["CD41"]) * GetSafeDouble(sItem["KD41"])).ToString();
                             sItem["MJ42"] = (GetSafeDouble(sItem["CD42"]) * GetSafeDouble(sItem["KD42"])).ToString();
                             sItem["MJ43"] = (GetSafeDouble(sItem["CD43"]) * GetSafeDouble(sItem["KD43"])).ToString();
@@ -1136,6 +1155,7 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_LSNJQD4"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
@@ -1151,12 +1171,14 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_LSNJQD4"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
                                     mFlag_Bhg = true;
                                 }
                             }
+                            MItem[0]["G_LSNJQD4"] = MItem[0]["G_LSNJQD4"] + "，破坏发生在模塑板中";
                             #endregion
                         }
                         else
@@ -1173,6 +1195,7 @@ namespace Calculates
                         #region 拉伸粘结耐水强度(7d)
                         if (jcxm.Contains("、拉伸粘结耐水强度(7d)、"))
                         {
+                            jcxmCur = "拉伸粘结强度与水泥砂浆耐水强度(浸水48h,干燥7d)";
                             #region 与水泥砂浆
                             sItem["MJ51"] = (GetSafeDouble(sItem["CD51"]) * GetSafeDouble(sItem["KD51"])).ToString();
                             sItem["MJ52"] = (GetSafeDouble(sItem["CD52"]) * GetSafeDouble(sItem["KD52"])).ToString();
@@ -1219,6 +1242,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_LSNJQD5"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
@@ -1228,6 +1252,7 @@ namespace Calculates
                             #endregion
 
                             #region 与模塑板
+                            jcxmCur = "拉伸粘结强度与模塑板耐水强度(浸水48h,干燥7d)";
                             sItem["MJ71"] = (GetSafeDouble(sItem["CD71"]) * GetSafeDouble(sItem["KD71"])).ToString();
                             sItem["MJ72"] = (GetSafeDouble(sItem["CD72"]) * GetSafeDouble(sItem["KD72"])).ToString();
                             sItem["MJ73"] = (GetSafeDouble(sItem["CD73"]) * GetSafeDouble(sItem["KD73"])).ToString();
@@ -1274,6 +1299,7 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_LSNJQD7"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
@@ -1289,12 +1315,14 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_LSNJQD7"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
                                     mFlag_Bhg = true;
                                 }
                             }
+                            MItem[0]["G_LSNJQD8"] = MItem[0]["G_LSNJQD8"] + "，破坏发生在模塑板中";
                             #endregion
                         }
                         else
@@ -1311,6 +1339,7 @@ namespace Calculates
                         #region 可操作时间
                         if (jcxm.Contains("、可操作时间、"))
                         {
+                            jcxmCur = "可操作时间";
                             if (GetSafeDouble(sItem["KCZSJ"]) >= 1.5 && GetSafeDouble(sItem["KCZSJ"]) <= 4)
                             {
                                 MItem[0]["HG_KCZSJ"] = "合格";
@@ -1318,6 +1347,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_KCZSJ"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
@@ -1342,6 +1372,7 @@ namespace Calculates
                         #region 拉伸粘结原强度
                         if (jcxm.Contains("、拉伸粘结原强度、"))
                         {
+                            jcxmCur = "拉伸粘结强度与水泥砂浆(原强度)";
                             #region 与水泥砂浆
                             sItem["MJ11"] = (GetSafeDouble(sItem["CD11"]) * GetSafeDouble(sItem["KD11"])).ToString();
                             sItem["MJ12"] = (GetSafeDouble(sItem["CD12"]) * GetSafeDouble(sItem["KD12"])).ToString();
@@ -1385,6 +1416,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_LSNJQD1"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
@@ -1392,7 +1424,8 @@ namespace Calculates
                             }
                             #endregion
 
-                            #region 与模塑板
+                            #region 与聚苯板
+                            jcxmCur = "拉伸粘结强度与聚苯板(原强度)";
                             sItem["MJ31"] = (GetSafeDouble(sItem["CD31"]) * GetSafeDouble(sItem["KD31"])).ToString();
                             sItem["MJ32"] = (GetSafeDouble(sItem["CD32"]) * GetSafeDouble(sItem["KD32"])).ToString();
                             sItem["MJ33"] = (GetSafeDouble(sItem["CD33"]) * GetSafeDouble(sItem["KD33"])).ToString();
@@ -1437,6 +1470,7 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_LSNJQD3"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
@@ -1452,6 +1486,7 @@ namespace Calculates
                                 }
                                 else
                                 {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     MItem[0]["HG_LSNJQD3"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
@@ -1459,7 +1494,7 @@ namespace Calculates
                                 }
                             }
 
-
+                            MItem[0]["G_LSNJQD3"] = MItem[0]["G_LSNJQD3"] + "，破坏发生在模塑板中";
                             #endregion
                         }
                         else
@@ -1475,52 +1510,195 @@ namespace Calculates
                         #endregion
 
                         #region 拉伸粘结耐水强度
+                        //if (jcxm.Contains("、拉伸粘结耐水强度、"))
+                        //{
+                        //    jcxmCur = "拉伸粘结强度与水泥砂浆(耐水强度)";
+                        //    #region 与水泥砂浆
+                        //    sItem["MJ21"] = (GetSafeDouble(sItem["CD21"]) * GetSafeDouble(sItem["KD21"])).ToString();
+                        //    sItem["MJ22"] = (GetSafeDouble(sItem["CD22"]) * GetSafeDouble(sItem["KD22"])).ToString();
+                        //    sItem["MJ23"] = (GetSafeDouble(sItem["CD23"]) * GetSafeDouble(sItem["KD23"])).ToString();
+                        //    sItem["MJ24"] = (GetSafeDouble(sItem["CD24"]) * GetSafeDouble(sItem["KD24"])).ToString();
+                        //    sItem["MJ25"] = (GetSafeDouble(sItem["CD25"]) * GetSafeDouble(sItem["KD25"])).ToString();
+                        //    if (0 != GetSafeDouble(sItem["MJ21"]) || 0 != GetSafeDouble(sItem["MJ22"]) || 0 != GetSafeDouble(sItem["MJ23"])
+                        //        || 0 != GetSafeDouble(sItem["MJ24"]) || 0 != GetSafeDouble(sItem["MJ25"]))
+                        //    {
+                        //        mKyqd1 = Round(GetSafeDouble(sItem["JSQD11"]) / GetSafeDouble(sItem["MJ21"]), 3);
+                        //        mKYQD2 = Round(GetSafeDouble(sItem["JSQD12"]) / GetSafeDouble(sItem["MJ22"]), 3);
+                        //        mKyqd3 = Round(GetSafeDouble(sItem["JSQD13"]) / GetSafeDouble(sItem["MJ23"]), 3);
+                        //        mKyqd4 = Round(GetSafeDouble(sItem["JSQD14"]) / GetSafeDouble(sItem["MJ24"]), 3);
+                        //        mKyqd5 = Round(GetSafeDouble(sItem["JSQD15"]) / GetSafeDouble(sItem["MJ25"]), 3);
+
+                        //        sItem["NJQD21"] = Round(mKyqd1, 3).ToString();
+                        //        sItem["NJQD22"] = Round(mKYQD2, 3).ToString();
+                        //        sItem["NJQD23"] = Round(mKyqd3, 3).ToString();
+                        //        sItem["NJQD24"] = Round(mKyqd4, 3).ToString();
+                        //        sItem["NJQD25"] = Round(mKyqd5, 3).ToString();
+                        //    }
+
+                        //    if (0 != GetSafeDouble(sItem["NJQD21"]) || 0 != GetSafeDouble(sItem["NJQD23"]) || 0 != GetSafeDouble(sItem["NJQD22"])
+                        //        || 0 != GetSafeDouble(sItem["NJQD24"]) || 0 != GetSafeDouble(sItem["NJQD25"]))
+                        //    {
+                        //        List<double> mkyqdArray = new List<double>();
+                        //        mlongStr = sItem["NJQD21"] + "," + sItem["NJQD22"] + "," + sItem["NJQD23"] + "," + sItem["NJQD24"] + "," + sItem["NJQD25"];
+                        //        mtmpArray = mlongStr.Split(',');
+                        //        for (int i = 0; i < 5; i++)
+                        //        {
+                        //            mkyqdArray.Add(GetSafeDouble(mtmpArray[i]));
+                        //        }
+                        //        mkyqdArray.Sort();
+                        //        sItem["JSQD1"] = Round(mkyqdArray.Average(), 2).ToString();
+                        //    }
+
+                        //    if (GetSafeDouble(sItem["JSQD1"]) >= G_LSNJQD2)
+                        //    {
+                        //        MItem[0]["HG_LSNJQD2"] = "合格";
+                        //        mFlag_Hg = true;
+                        //    }
+                        //    else
+                        //    {
+                        //        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        //        MItem[0]["HG_LSNJQD2"] = "不合格";
+                        //        mAllHg = false;
+                        //        mbhggs++;
+                        //        mFlag_Bhg = true;
+                        //    }
+
+                        //    #endregion
+
+                        //    #region 与聚苯板
+                        //    jcxmCur = "拉伸粘结强度与聚苯板(耐水强度)";
+                        //    sItem["MJ41"] = (GetSafeDouble(sItem["CD41"]) * GetSafeDouble(sItem["KD41"])).ToString();
+                        //    sItem["MJ42"] = (GetSafeDouble(sItem["CD42"]) * GetSafeDouble(sItem["KD42"])).ToString();
+                        //    sItem["MJ43"] = (GetSafeDouble(sItem["CD43"]) * GetSafeDouble(sItem["KD43"])).ToString();
+                        //    sItem["MJ44"] = (GetSafeDouble(sItem["CD44"]) * GetSafeDouble(sItem["KD44"])).ToString();
+                        //    sItem["MJ45"] = (GetSafeDouble(sItem["CD45"]) * GetSafeDouble(sItem["KD45"])).ToString();
+                        //    if (0 != GetSafeDouble(sItem["MJ41"]) || 0 != GetSafeDouble(sItem["MJ42"]) || 0 != GetSafeDouble(sItem["MJ43"])
+                        //        || 0 != GetSafeDouble(sItem["MJ44"]) || 0 != GetSafeDouble(sItem["MJ45"]))
+                        //    {
+                        //        mKyqd1 = Round(GetSafeDouble(sItem["JSQD21"]) / GetSafeDouble(sItem["MJ41"]), 3);
+                        //        mKYQD2 = Round(GetSafeDouble(sItem["JSQD22"]) / GetSafeDouble(sItem["MJ42"]), 3);
+                        //        mKyqd3 = Round(GetSafeDouble(sItem["JSQD23"]) / GetSafeDouble(sItem["MJ43"]), 3);
+                        //        mKyqd4 = Round(GetSafeDouble(sItem["JSQD24"]) / GetSafeDouble(sItem["MJ44"]), 3);
+                        //        mKyqd5 = Round(GetSafeDouble(sItem["JSQD25"]) / GetSafeDouble(sItem["MJ45"]), 3);
+
+                        //        sItem["NJQD41"] = Round(mKyqd1, 3).ToString();
+                        //        sItem["NJQD42"] = Round(mKYQD2, 3).ToString();
+                        //        sItem["NJQD43"] = Round(mKyqd3, 3).ToString();
+                        //        sItem["NJQD44"] = Round(mKyqd4, 3).ToString();
+                        //        sItem["NJQD45"] = Round(mKyqd5, 3).ToString();
+                        //    }
+                        //    if (0 != GetSafeDouble(sItem["NJQD41"]) || 0 != GetSafeDouble(sItem["NJQD42"]) || 0 != GetSafeDouble(sItem["NJQD43"])
+                        //        || 0 != GetSafeDouble(sItem["NJQD44"]) || 0 != GetSafeDouble(sItem["NJQD45"]))
+                        //    {
+                        //        List<double> mkyqdArray = new List<double>();
+                        //        mlongStr = sItem["NJQD41"] + "," + sItem["NJQD42"] + "," + sItem["NJQD43"] + "," + sItem["NJQD44"] + "," + sItem["NJQD45"];
+                        //        mtmpArray = mlongStr.Split(',');
+                        //        for (int i = 0; i < 5; i++)
+                        //        {
+                        //            mkyqdArray.Add(GetSafeDouble(mtmpArray[i]));
+                        //        }
+                        //        mkyqdArray.Sort();
+                        //        sItem["JSQD2"] = Round(mkyqdArray.Average(), 2).ToString();
+                        //    }
+
+                        //    if (!string.IsNullOrEmpty(sItem["PHJMPD2"]))
+                        //    {
+                        //        if (GetSafeDouble(sItem["JSQD2"]) >= G_LSNJQD4 && sItem["PHJMPD2"] == "合格")//
+                        //        {
+                        //            MItem[0]["HG_LSNJQD4"] = "合格";
+                        //            mFlag_Hg = true;
+                        //        }
+                        //        else
+                        //        {
+                        //            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        //            MItem[0]["HG_LSNJQD4"] = "不合格";
+                        //            mAllHg = false;
+                        //            mbhggs++;
+                        //            mFlag_Bhg = true;
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        if (GetSafeDouble(sItem["JSQD2"]) >= G_LSNJQD4)//
+                        //        {
+                        //            MItem[0]["HG_LSNJQD4"] = "合格";
+                        //            mFlag_Hg = true;
+                        //        }
+                        //        else
+                        //        {
+                        //            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        //            MItem[0]["HG_LSNJQD4"] = "不合格";
+                        //            mAllHg = false;
+                        //            mbhggs++;
+                        //            mFlag_Bhg = true;
+                        //        }
+                        //    }
+                        //    MItem[0]["G_LSNJQD4"] = MItem[0]["G_LSNJQD4"] + "，破坏发生在模塑板中";
+                        //    #endregion
+                        //}
+                        //else
+                        //{
+                        //    sItem["JSQD1"] = "----";
+                        //    MItem[0]["HG_LSNJQD2"] = "----";
+                        //    MItem[0]["G_LSNJQD2"] = "----";
+                        //    sItem["JSQD2"] = "----";
+                        //    MItem[0]["HG_LSNJQD4"] = "----";
+                        //    MItem[0]["G_LSNJQD4"] = "----";
+                        //}
+                        #endregion
+
+                        #region 拉伸粘结耐水强度
                         if (jcxm.Contains("、拉伸粘结耐水强度、"))
                         {
+                            jcxmCur = "拉伸粘结强度与水泥砂浆(耐水强度)";
                             #region 与水泥砂浆
-                            sItem["MJ21"] = (GetSafeDouble(sItem["CD21"]) * GetSafeDouble(sItem["KD21"])).ToString();
-                            sItem["MJ22"] = (GetSafeDouble(sItem["CD22"]) * GetSafeDouble(sItem["KD22"])).ToString();
-                            sItem["MJ23"] = (GetSafeDouble(sItem["CD23"]) * GetSafeDouble(sItem["KD23"])).ToString();
-                            sItem["MJ24"] = (GetSafeDouble(sItem["CD24"]) * GetSafeDouble(sItem["KD24"])).ToString();
-                            sItem["MJ25"] = (GetSafeDouble(sItem["CD25"]) * GetSafeDouble(sItem["KD25"])).ToString();
-                            if (0 != GetSafeDouble(sItem["MJ21"]) || 0 != GetSafeDouble(sItem["MJ22"]) || 0 != GetSafeDouble(sItem["MJ23"])
-                                || 0 != GetSafeDouble(sItem["MJ24"]) || 0 != GetSafeDouble(sItem["MJ25"]))
+                            sItem["MJ51"] = (GetSafeDouble(sItem["CD51"]) * GetSafeDouble(sItem["KD51"])).ToString();
+                            sItem["MJ52"] = (GetSafeDouble(sItem["CD52"]) * GetSafeDouble(sItem["KD52"])).ToString();
+                            sItem["MJ53"] = (GetSafeDouble(sItem["CD53"]) * GetSafeDouble(sItem["KD53"])).ToString();
+                            sItem["MJ54"] = (GetSafeDouble(sItem["CD54"]) * GetSafeDouble(sItem["KD54"])).ToString();
+                            sItem["MJ55"] = (GetSafeDouble(sItem["CD55"]) * GetSafeDouble(sItem["KD55"])).ToString();
+                            sItem["MJ56"] = (GetSafeDouble(sItem["CD56"]) * GetSafeDouble(sItem["KD56"])).ToString();
+                            if (0 != GetSafeDouble(sItem["MJ51"]) || 0 != GetSafeDouble(sItem["MJ52"]) || 0 != GetSafeDouble(sItem["MJ53"])
+                                || 0 != GetSafeDouble(sItem["MJ54"]) || 0 != GetSafeDouble(sItem["MJ55"]) || 0 != GetSafeDouble(sItem["MJ56"]))
                             {
-                                mKyqd1 = Round(GetSafeDouble(sItem["JSQD11"]) / GetSafeDouble(sItem["MJ21"]), 3);
-                                mKYQD2 = Round(GetSafeDouble(sItem["JSQD12"]) / GetSafeDouble(sItem["MJ22"]), 3);
-                                mKyqd3 = Round(GetSafeDouble(sItem["JSQD13"]) / GetSafeDouble(sItem["MJ23"]), 3);
-                                mKyqd4 = Round(GetSafeDouble(sItem["JSQD14"]) / GetSafeDouble(sItem["MJ24"]), 3);
-                                mKyqd5 = Round(GetSafeDouble(sItem["JSQD15"]) / GetSafeDouble(sItem["MJ25"]), 3);
+                                mKyqd1 = Round(GetSafeDouble(sItem["YQD51"]) / GetSafeDouble(sItem["MJ51"]), 3);
+                                mKYQD2 = Round(GetSafeDouble(sItem["YQD52"]) / GetSafeDouble(sItem["MJ52"]), 3);
+                                mKyqd3 = Round(GetSafeDouble(sItem["YQD53"]) / GetSafeDouble(sItem["MJ53"]), 3);
+                                mKyqd4 = Round(GetSafeDouble(sItem["YQD54"]) / GetSafeDouble(sItem["MJ54"]), 3);
+                                mKyqd5 = Round(GetSafeDouble(sItem["YQD55"]) / GetSafeDouble(sItem["MJ55"]), 3);
+                                mKyqd6 = Round(GetSafeDouble(sItem["YQD56"]) / GetSafeDouble(sItem["MJ56"]), 3);
 
-                                sItem["NJQD21"] = Round(mKyqd1, 3).ToString();
-                                sItem["NJQD22"] = Round(mKYQD2, 3).ToString();
-                                sItem["NJQD23"] = Round(mKyqd3, 3).ToString();
-                                sItem["NJQD24"] = Round(mKyqd4, 3).ToString();
-                                sItem["NJQD25"] = Round(mKyqd5, 3).ToString();
+                                sItem["NJQD51"] = Round(mKyqd1, 3).ToString();
+                                sItem["NJQD52"] = Round(mKYQD2, 3).ToString();
+                                sItem["NJQD53"] = Round(mKyqd3, 3).ToString();
+                                sItem["NJQD54"] = Round(mKyqd4, 3).ToString();
+                                sItem["NJQD55"] = Round(mKyqd5, 3).ToString();
+                                sItem["NJQD56"] = Round(mKyqd6, 3).ToString();
                             }
 
-                            if (0 != GetSafeDouble(sItem["NJQD21"]) || 0 != GetSafeDouble(sItem["NJQD23"]) || 0 != GetSafeDouble(sItem["NJQD22"])
-                                || 0 != GetSafeDouble(sItem["NJQD24"]) || 0 != GetSafeDouble(sItem["NJQD25"]))
+                            if (0 != GetSafeDouble(sItem["NJQD51"]) || 0 != GetSafeDouble(sItem["NJQD53"]) || 0 != GetSafeDouble(sItem["NJQD52"])
+                                || 0 != GetSafeDouble(sItem["NJQD54"]) || 0 != GetSafeDouble(sItem["NJQD55"]) || 0 != GetSafeDouble(sItem["NJQD56"]))
                             {
                                 List<double> mkyqdArray = new List<double>();
-                                mlongStr = sItem["NJQD21"] + "," + sItem["NJQD22"] + "," + sItem["NJQD23"] + "," + sItem["NJQD24"] + "," + sItem["NJQD25"];
+                                mlongStr = sItem["NJQD51"] + "," + sItem["NJQD52"] + "," + sItem["NJQD53"] + "," + sItem["NJQD54"] + "," + sItem["NJQD55"] + "," + sItem["NJQD56"];
                                 mtmpArray = mlongStr.Split(',');
-                                for (int i = 0; i < 5; i++)
+                                for (int i = 0; i < 6; i++)
                                 {
                                     mkyqdArray.Add(GetSafeDouble(mtmpArray[i]));
                                 }
                                 mkyqdArray.Sort();
-                                sItem["JSQD1"] = Round(mkyqdArray.Average(), 2).ToString();
+                                sItem["YQD5"] = Round((mkyqdArray[1] + mkyqdArray[2] + mkyqdArray[3] + mkyqdArray[4]) / 4, 2).ToString();
                             }
 
-                            if (GetSafeDouble(sItem["JSQD1"]) >= G_LSNJQD2)
+                            if (GetSafeDouble(sItem["YQD5"]) >= G_LSNJQD7)
                             {
-                                MItem[0]["HG_LSNJQD2"] = "合格";
+                                MItem[0]["HG_LSNJQD5"] = "合格";
                                 mFlag_Hg = true;
                             }
                             else
                             {
-                                MItem[0]["HG_LSNJQD2"] = "不合格";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                MItem[0]["HG_LSNJQD5"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
                                 mFlag_Bhg = true;
@@ -1528,51 +1706,56 @@ namespace Calculates
 
                             #endregion
 
-                            #region 与模塑板
-                            sItem["MJ41"] = (GetSafeDouble(sItem["CD41"]) * GetSafeDouble(sItem["KD41"])).ToString();
-                            sItem["MJ42"] = (GetSafeDouble(sItem["CD42"]) * GetSafeDouble(sItem["KD42"])).ToString();
-                            sItem["MJ43"] = (GetSafeDouble(sItem["CD43"]) * GetSafeDouble(sItem["KD43"])).ToString();
-                            sItem["MJ44"] = (GetSafeDouble(sItem["CD44"]) * GetSafeDouble(sItem["KD44"])).ToString();
-                            sItem["MJ45"] = (GetSafeDouble(sItem["CD45"]) * GetSafeDouble(sItem["KD45"])).ToString();
-                            if (0 != GetSafeDouble(sItem["MJ41"]) || 0 != GetSafeDouble(sItem["MJ42"]) || 0 != GetSafeDouble(sItem["MJ43"])
-                                || 0 != GetSafeDouble(sItem["MJ44"]) || 0 != GetSafeDouble(sItem["MJ45"]))
+                            #region 与聚苯板
+                            jcxmCur = "拉伸粘结强度与聚苯板(耐水强度)";
+                            sItem["MJ71"] = (GetSafeDouble(sItem["CD71"]) * GetSafeDouble(sItem["KD71"])).ToString();
+                            sItem["MJ72"] = (GetSafeDouble(sItem["CD72"]) * GetSafeDouble(sItem["KD72"])).ToString();
+                            sItem["MJ73"] = (GetSafeDouble(sItem["CD73"]) * GetSafeDouble(sItem["KD73"])).ToString();
+                            sItem["MJ74"] = (GetSafeDouble(sItem["CD74"]) * GetSafeDouble(sItem["KD74"])).ToString();
+                            sItem["MJ75"] = (GetSafeDouble(sItem["CD75"]) * GetSafeDouble(sItem["KD75"])).ToString();
+                            sItem["MJ76"] = (GetSafeDouble(sItem["CD76"]) * GetSafeDouble(sItem["KD76"])).ToString();
+                            if (0 != GetSafeDouble(sItem["MJ71"]) || 0 != GetSafeDouble(sItem["MJ72"]) || 0 != GetSafeDouble(sItem["MJ73"])
+                                || 0 != GetSafeDouble(sItem["MJ74"]) || 0 != GetSafeDouble(sItem["MJ75"]) || 0 != GetSafeDouble(sItem["MJ76"]))
                             {
-                                mKyqd1 = Round(GetSafeDouble(sItem["JSQD21"]) / GetSafeDouble(sItem["MJ41"]), 3);
-                                mKYQD2 = Round(GetSafeDouble(sItem["JSQD22"]) / GetSafeDouble(sItem["MJ42"]), 3);
-                                mKyqd3 = Round(GetSafeDouble(sItem["JSQD23"]) / GetSafeDouble(sItem["MJ43"]), 3);
-                                mKyqd4 = Round(GetSafeDouble(sItem["JSQD24"]) / GetSafeDouble(sItem["MJ44"]), 3);
-                                mKyqd5 = Round(GetSafeDouble(sItem["JSQD25"]) / GetSafeDouble(sItem["MJ45"]), 3);
+                                mKyqd1 = Round(GetSafeDouble(sItem["YQD71"]) / GetSafeDouble(sItem["MJ71"]), 3);
+                                mKYQD2 = Round(GetSafeDouble(sItem["YQD72"]) / GetSafeDouble(sItem["MJ72"]), 3);
+                                mKyqd3 = Round(GetSafeDouble(sItem["YQD73"]) / GetSafeDouble(sItem["MJ73"]), 3);
+                                mKyqd4 = Round(GetSafeDouble(sItem["YQD74"]) / GetSafeDouble(sItem["MJ74"]), 3);
+                                mKyqd5 = Round(GetSafeDouble(sItem["YQD75"]) / GetSafeDouble(sItem["MJ75"]), 3);
+                                mKyqd6 = Round(GetSafeDouble(sItem["YQD76"]) / GetSafeDouble(sItem["MJ76"]), 3);
 
-                                sItem["NJQD41"] = Round(mKyqd1, 3).ToString();
-                                sItem["NJQD42"] = Round(mKYQD2, 3).ToString();
-                                sItem["NJQD43"] = Round(mKyqd3, 3).ToString();
-                                sItem["NJQD44"] = Round(mKyqd4, 3).ToString();
-                                sItem["NJQD45"] = Round(mKyqd5, 3).ToString();
+                                sItem["NJQD71"] = Round(mKyqd1, 3).ToString();
+                                sItem["NJQD72"] = Round(mKYQD2, 3).ToString();
+                                sItem["NJQD73"] = Round(mKyqd3, 3).ToString();
+                                sItem["NJQD74"] = Round(mKyqd4, 3).ToString();
+                                sItem["NJQD75"] = Round(mKyqd5, 3).ToString();
+                                sItem["NJQD76"] = Round(mKyqd6, 3).ToString();
                             }
-                            if (0 != GetSafeDouble(sItem["NJQD41"]) || 0 != GetSafeDouble(sItem["NJQD42"]) || 0 != GetSafeDouble(sItem["NJQD43"])
-                                || 0 != GetSafeDouble(sItem["NJQD44"]) || 0 != GetSafeDouble(sItem["NJQD45"]))
+                            if (0 != GetSafeDouble(sItem["NJQD71"]) || 0 != GetSafeDouble(sItem["NJQD72"]) || 0 != GetSafeDouble(sItem["NJQD73"])
+                                || 0 != GetSafeDouble(sItem["NJQD74"]) || 0 != GetSafeDouble(sItem["NJQD75"]) || 0 != GetSafeDouble(sItem["NJQD76"]))
                             {
                                 List<double> mkyqdArray = new List<double>();
-                                mlongStr = sItem["NJQD41"] + "," + sItem["NJQD42"] + "," + sItem["NJQD43"] + "," + sItem["NJQD44"] + "," + sItem["NJQD45"];
+                                mlongStr = sItem["NJQD71"] + "," + sItem["NJQD72"] + "," + sItem["NJQD73"] + "," + sItem["NJQD74"] + "," + sItem["NJQD75"] + "," + sItem["NJQD76"];
                                 mtmpArray = mlongStr.Split(',');
-                                for (int i = 0; i < 5; i++)
+                                for (int i = 0; i < 6; i++)
                                 {
                                     mkyqdArray.Add(GetSafeDouble(mtmpArray[i]));
                                 }
                                 mkyqdArray.Sort();
-                                sItem["JSQD2"] = Round(mkyqdArray.Average(), 2).ToString();
+                                sItem["JSQD7"] = Round((mkyqdArray[1] + mkyqdArray[2] + mkyqdArray[3] + mkyqdArray[4]) / 4, 2).ToString();
                             }
 
-                            if (!string.IsNullOrEmpty(sItem["PHJMPD2"]))
+                            if (!string.IsNullOrEmpty(sItem["PHJMPD7"]))
                             {
-                                if (GetSafeDouble(sItem["JSQD2"]) >= G_LSNJQD4 && sItem["PHJMPD2"] == "合格")//
+                                if (GetSafeDouble(sItem["JSQD7"]) >= G_LSNJQD8 && sItem["PHJMPD7"] == "合格")//
                                 {
-                                    MItem[0]["HG_LSNJQD4"] = "合格";
+                                    MItem[0]["HG_LSNJQD7"] = "合格";
                                     mFlag_Hg = true;
                                 }
                                 else
                                 {
-                                    MItem[0]["HG_LSNJQD4"] = "不合格";
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                    MItem[0]["HG_LSNJQD7"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
                                     mFlag_Bhg = true;
@@ -1582,33 +1765,37 @@ namespace Calculates
                             {
                                 if (GetSafeDouble(sItem["JSQD2"]) >= G_LSNJQD4)//
                                 {
-                                    MItem[0]["HG_LSNJQD4"] = "合格";
+                                    MItem[0]["HG_LSNJQD7"] = "合格";
                                     mFlag_Hg = true;
                                 }
                                 else
                                 {
-                                    MItem[0]["HG_LSNJQD4"] = "不合格";
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                    MItem[0]["HG_LSNJQD7"] = "不合格";
                                     mAllHg = false;
                                     mbhggs++;
                                     mFlag_Bhg = true;
                                 }
                             }
+                            MItem[0]["G_LSNJQD8"] = MItem[0]["G_LSNJQD8"] + "，破坏发生在模塑板中";
                             #endregion
                         }
                         else
                         {
-                            sItem["JSQD1"] = "----";
-                            MItem[0]["HG_LSNJQD2"] = "----";
-                            MItem[0]["G_LSNJQD2"] = "----";
-                            sItem["JSQD2"] = "----";
-                            MItem[0]["HG_LSNJQD4"] = "----";
+                            sItem["YQD5"] = "----";
+                            MItem[0]["HG_LSNJQD5"] = "----";
+                            MItem[0]["G_LSNJQD7"] = "----";
+                            sItem["JSQD7"] = "----";
+                            MItem[0]["HG_LSNJQD7"] = "----";
                             MItem[0]["G_LSNJQD4"] = "----";
                         }
                         #endregion
 
+
                         #region 拉伸粘结耐冻融强度
                         if (jcxm.Contains("、拉伸粘结耐冻融强度、"))
                         {
+                            jcxmCur = "拉伸粘结强度与水泥砂浆(耐冻融强度)";
                             #region 与水泥砂浆
                             sItem["MJ61"] = (GetSafeDouble(sItem["CD61"]) * GetSafeDouble(sItem["KD61"])).ToString();
                             sItem["MJ62"] = (GetSafeDouble(sItem["CD62"]) * GetSafeDouble(sItem["KD62"])).ToString();
@@ -1652,6 +1839,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_LSNJQD6"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
@@ -1660,6 +1848,7 @@ namespace Calculates
                             #endregion
 
                             #region 与聚苯板
+                            jcxmCur = "拉伸粘结强度与聚苯板(耐冻融强度)";
                             sItem["MJ81"] = (GetSafeDouble(sItem["CD81"]) * GetSafeDouble(sItem["KD81"])).ToString();
                             sItem["MJ82"] = (GetSafeDouble(sItem["CD82"]) * GetSafeDouble(sItem["KD82"])).ToString();
                             sItem["MJ83"] = (GetSafeDouble(sItem["CD83"]) * GetSafeDouble(sItem["KD83"])).ToString();
@@ -1702,11 +1891,13 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_LSNJQD8"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
                                 mFlag_Bhg = true;
                             }
+                            MItem[0]["G_LSNJQD6"] = MItem[0]["G_LSNJQD6"] + "，破坏发生在模塑板中";
                             #endregion
                         }
                         else
@@ -1723,6 +1914,7 @@ namespace Calculates
                         #region 可操作时间
                         if (jcxm.Contains("、可操作时间、"))
                         {
+                            jcxmCur = "可操作时间";
                             if (GetSafeDouble(sItem["KCZSJ"]) >= GetSafeDouble(MItem[0]["G_KCZSJ"]))
                             {
                                 MItem[0]["HG_KCZSJ"] = "合格";
@@ -1730,6 +1922,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["HG_KCZSJ"] = "不合格";
                                 mAllHg = false;
                                 mbhggs++;
@@ -1753,19 +1946,19 @@ namespace Calculates
 
                     if (mbhggs == 0)
                     {
-                        jsbeizhu = "该组试样所检项目符合上述标准要求。";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                         mAllHg = true;
                         sItem["JCJG"] = "合格";
                     }
                     else
                     {
-                        jsbeizhu = "该组试样不符合上述标准要求。";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
                         sItem["JCJG"] = "不合格";
                         mAllHg = false;
-                        if (mFlag_Bhg && mFlag_Hg)
-                        {
-                            jsbeizhu = "该组试样所检项目部分符合上述标准要求。";
-                        }
+                        //if (mFlag_Bhg && mFlag_Hg)
+                        //{
+                        //    jsbeizhu = "该组试样所检项目部分符合上述标准要求。";
+                        //}
                     }
                 }
             }

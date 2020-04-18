@@ -35,6 +35,9 @@ namespace Calculates
                 MItem.Add(m);
             }
 
+            var jcxmBhg = "";
+            var jcxmCur = "";
+
             foreach (var sItem in SItem)
             {
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
@@ -55,6 +58,7 @@ namespace Calculates
                 #region 有效钙加氧化镁含量
                 if (jcxm.Contains("、有效钙加氧化镁含量、"))
                 {
+                    jcxmCur = "有效钙加氧化镁含量";
                     double x1 = 0, x2 = 0, x3 = 0, x4 = 0;
                     x1 = Math.Round(GetSafeDouble(sItem["GMYSHL1_1"]) * GetSafeDouble(sItem["GMYSND1_1"]) * 0.028 / (GetSafeDouble(sItem["GMPSZL1_1"]) - GetSafeDouble(sItem["GMKPZL1_1"])) * 100, 1);
                     x2 = Math.Round(GetSafeDouble(sItem["GMYSHL1_2"]) * GetSafeDouble(sItem["GMYSND1_2"]) * 0.028 / (GetSafeDouble(sItem["GMPSZL1_2"]) - GetSafeDouble(sItem["GMKPZL1_2"])) * 100, 1);
@@ -71,6 +75,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["HG_YXGM"] = "不合格";
                         mAllHg = false;
                     }
@@ -86,6 +91,7 @@ namespace Calculates
                 #region 未消化残渣含量
                 if (jcxm.Contains("、未消化残渣含量、") && MItem[0]["G_MXHCZHL"] != "----")
                 {
+                    jcxmCur = "未消化残渣含量";
                     double sum = 0;
                     for (int i = 1; i < 4; i++)
                     {
@@ -98,6 +104,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["HG_MXHCZHL"] = "不合格";
                         mAllHg = false;
                     }
@@ -117,11 +124,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样不符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;

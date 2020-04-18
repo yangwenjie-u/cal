@@ -23,6 +23,8 @@ namespace Calculates
             bool sign = true;
             string mJSFF = "";
             double zj1 = 0, zj2 = 0, mMj1 = 0, mMj2 = 0, mMj3 = 0, mMj4 = 0, mMj5 = 0;
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in SItem)
             {
@@ -48,7 +50,7 @@ namespace Calculates
                 else
                 {
                     mAllHg = false;
-                    mjcjg = "不合格";
+                    mjcjg = "不下结论";
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
                 }
@@ -56,8 +58,10 @@ namespace Calculates
                 #region 外观要求
                 if (jcxm.Contains("、外观要求、"))
                 {
+                    jcxmCur = "外观要求";
                     if (MItem[0]["WG_HG"] == "不合格")
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                     }
                 }
@@ -72,8 +76,15 @@ namespace Calculates
                 #region 最大外径
                 if (jcxm.Contains("、最大外径、"))
                 {
-                    if (MItem[0]["ZDWJ_HG"] == "不合格")
+                    jcxmCur = "最大外径";
+                    if (MItem[0]["ZDWJ"] == "量规能通过套管")
                     {
+                        MItem[0]["ZDWJ_HG"] = "合格";
+                    }
+                    else 
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        MItem[0]["ZDWJ_HG"] = "不合格";
                         mAllHg = false;
                     }
                 }
@@ -88,8 +99,15 @@ namespace Calculates
                 #region 最小外径
                 if (jcxm.Contains("、最小外径、"))
                 {
-                    if (MItem[0]["ZXWJ_HG"] == "不合格")
+                    jcxmCur = "最小外径";
+                    if (MItem[0]["ZXWJ"] == "不能通过量规")
                     {
+                        MItem[0]["ZXWJ_HG"] = "合格";
+                    }
+                    else 
+                    {
+                        MItem[0]["ZXWJ_HG"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                     }
                 }
@@ -104,12 +122,17 @@ namespace Calculates
                 #region 最小壁厚
                 if (jcxm.Contains("、最小壁厚、"))
                 {
-                    if (!string.IsNullOrEmpty(MItem[0]["ZXBH"]) && !string.IsNullOrEmpty(MItem[0]["G_ZXBH"]) && (double.Parse(MItem[0]["ZXBH"]) < double.Parse(MItem[0]["G_ZXBH"])))
+                    jcxmCur = "最小壁厚";
+
+                    MItem[0]["ZXBH"] = Round((GetSafeDouble(sItem["BH1"]) + GetSafeDouble(sItem["BH2"]) + GetSafeDouble(sItem["BH3"]) + GetSafeDouble(sItem["BH4"])) / 4,1).ToString();
+
+                    if (!string.IsNullOrEmpty(MItem[0]["ZXBH"]) && !string.IsNullOrEmpty(MItem[0]["G_ZXBH"]) && (double.Parse(MItem[0]["ZXBH"]) >= double.Parse(MItem[0]["G_ZXBH"])))
                     {
                         MItem[0]["ZXBH_HG"] = "合格";
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["ZXBH_HG"] = "不合格";
                         mAllHg = false;
                     }
@@ -120,6 +143,23 @@ namespace Calculates
                     }
 
                     //壁厚均匀度
+                    jcxmCur = "壁厚均匀度";
+                    List<double> LArray = new List<double>();
+                    for (int i = 1; i < 13; i++)
+                    {
+                        LArray.Add(GetSafeDouble(sItem["BHJYD" + i]));
+                    }
+                    double avg = 0;
+                    avg = LArray.Average();
+                    MItem[0]["G_BHJYD"] = "-"+(0.1+0.1*avg).ToString("0.0")+"~"+ (0.1 + 0.1 * avg).ToString("0.0");
+
+                    LArray.Clear();
+                     for (int i = 1; i < 13; i++)
+                    {
+                        LArray.Add(GetSafeDouble(sItem["BHJYD" + i]) - avg);
+                    }
+                    MItem[0]["BHJYD"] = LArray.Min().ToString("0.0") + "~" + LArray.Max().ToString("0.0");
+
                     string g_BHJYD = MItem[0]["BHJYD"];
                     List<string> listBHJYD = new List<string>();
                     if (g_BHJYD.Contains("~") && (g_BHJYD.Split('~').Count() == 2))
@@ -130,23 +170,27 @@ namespace Calculates
                         {
                             var flag = IsQualified(MItem[0]["G_BHJYD"], listBHJYD[0]);
 
-                            if (flag == "合格")
+                            if (IsQualified(MItem[0]["G_BHJYD"], listBHJYD[0],false) == "合格" && IsQualified(MItem[0]["G_BHJYD"], listBHJYD[1], false) == "合格")
                             {
-                                MItem[0]["BHJYD_HG"] = IsQualified(MItem[0]["G_BHJYD"], listBHJYD[1]);
+                                MItem[0]["BHJYD_HG"] = "合格";
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 MItem[0]["BHJYD_HG"] = "不合格";
                                 mAllHg = false;
                             }
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             MItem[0]["BHJYD_HG"] = "不合格";
                             mAllHg = false;
                         }
                     }
-                    else {
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["BHJYD_HG"] = "不合格";
                         mAllHg = false;
                     }
@@ -230,8 +274,10 @@ namespace Calculates
                 #region 抗冲击性能
                 if (jcxm.Contains("、抗冲击性能、"))
                 {
+                    jcxmCur = "抗冲击性能";
                     if (MItem[0]["KCJ_HG"] == "不合格")
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                     }
                 }
@@ -248,11 +294,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样不符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
             if (!data.ContainsKey("M_TG"))
             {

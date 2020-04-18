@@ -24,6 +24,8 @@ namespace Calculates
             bool sign = true;
             string mJSFF = "";
             double zj1 = 0, zj2 = 0, mMj1 = 0, mMj2 = 0, mMj3 = 0, mMj4 = 0, mMj5 = 0;
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in SItem)
             {
@@ -42,7 +44,7 @@ namespace Calculates
                 else
                 {
                     mAllHg = false;
-                    mjcjg = "不合格";
+                    mjcjg = "不下结论";
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
                 }
@@ -52,6 +54,7 @@ namespace Calculates
                 {
                     double md1 = 0, md2 = 0, md = 0, xd1 = 0, xd2 = 0, xd = 0, ba = 0, kz = 0, b1 = 0;
 
+                    jcxmCur = "活性指数";
                     md1 = GetSafeDouble(sItem["S_JZQD7"]);
                     md2 = GetSafeDouble(sItem["S_SJQD7"]);
                     md = md1 != 0 ? Math.Round(md2 * 100 / md1, 1) : 0;
@@ -68,6 +71,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["HXZS_GH"] = "不合格";
                         mAllHg = false;
                     }
@@ -91,6 +95,7 @@ namespace Calculates
                 {
                     double md1 = 0, md2 = 0, md = 0, xd1 = 0, xd2 = 0, xd = 0, ba = 0, kz = 0, b1 = 0;
 
+                    jcxmCur = "流动度比";
                     md1 = GetSafeDouble(sItem["S_JZLD1"]);
                     md2 = GetSafeDouble(sItem["S_SJLD1"]);
                     md = md1 != 0 ? Math.Round(md2 * 100 / md1, 1) : 0;
@@ -108,6 +113,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["LDDB_GH"] = "不合格";
                         mAllHg = false;
                     }
@@ -128,7 +134,7 @@ namespace Calculates
                 {
 
                     double md1 = 0, md2 = 0, md = 0, xd1 = 0, xd2 = 0, b1 = 0, xd = 0;
-
+                    jcxmCur = "含水量";
                     md1 = GetSafeDouble(sItem["S_HGQ1"]) - GetSafeDouble(sItem["S_GGZL1"]);
                     md2 = GetSafeDouble(sItem["S_HGH1"]) - GetSafeDouble(sItem["S_GGZL1"]);
                     md = md1 - md2;
@@ -147,6 +153,7 @@ namespace Calculates
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["HSL_GH"] = "不合格";
                         mAllHg = false;
                     }
@@ -165,12 +172,14 @@ namespace Calculates
                 #region 烧失量
                 if (jcxm.Contains("、烧失量、"))
                 {
+                    jcxmCur = "烧失量";
                     if (Conversion.Val(sItem["W_SSL"]) <= Conversion.Val(sItem["G_SSL"]))
                     {
                         sItem["SSL_GH"] = "合格";
                     }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["SSL_GH"] = "不合格";
                         mAllHg = false;
                     }
@@ -190,11 +199,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样不符合标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
             if (!data.ContainsKey("M_KZD"))
             {

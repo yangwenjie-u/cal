@@ -17,7 +17,6 @@ namespace Calculates
             //获取帮助表数据
             var extraDJ = dataExtra["BZ_GMZ_DJ"];
             var extraWLXN = dataExtra["BZ_GMZWLXN"];
-            double mMj1, mMj2, mMj3, mMj4, mMj5, mMj6, mMj7, mMj8, mMj9, mMj10;
             string mlongStr = "";
             double[] mkyqdArray = new double[10];
             double[] mkyhzArray = new double[10];
@@ -55,6 +54,8 @@ namespace Calculates
             }
             int mHggs = 0;//统计合格数量
             bool sign = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sItem in S_GMZS)
             {
                 itemHG = true;
@@ -100,6 +101,7 @@ namespace Calculates
                     #region 抗压强度
                     if (jcxm.Contains("、抗压强度、"))
                     {
+                        jcxmCur = "抗压强度";
                         sign = true;
                         for (int i = 1; i < 11; i++)
                         {
@@ -121,6 +123,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["KYPD"] = "不合格";
                                 mAllHg = false;
                                 itemHG = false;
@@ -143,6 +146,7 @@ namespace Calculates
                     #region 抗折强度
                     if (jcxm.Contains("、抗折强度、"))
                     {
+                        jcxmCur = "抗折强度";
                         sign = true;
                         for (int i = 1; i < 11; i++)
                         {
@@ -164,6 +168,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["KZPD"] = "不合格";
                                 mAllHg = false;
                                 itemHG = false;
@@ -186,6 +191,7 @@ namespace Calculates
                     #region 抗冻性
                     if (jcxm.Contains("、抗冻性、"))
                     {
+                        jcxmCur = "抗冻性";
                         sign = true;
                         sign = IsNumeric(sItem["QDSSL"]) && !string.IsNullOrEmpty(sItem["QDSSL"]) ? sign : false;
                         if (sign)
@@ -198,6 +204,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["QDSSLPD"] = "不合格";
                                 mAllHg = false;
                                 itemHG = false;
@@ -215,6 +222,7 @@ namespace Calculates
                     #region 吸水率
                     if (jcxm.Contains("、吸水率、"))
                     {
+                        jcxmCur = "吸水率";
                         sign = true;
                         sign = IsNumeric(sItem["XSL"]) && !string.IsNullOrEmpty(sItem["XSL"]) ? sign : false;
                         if (sign)
@@ -227,6 +235,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["XSLPD"] = "不合格";
                                 mAllHg = false;
                                 itemHG = false;
@@ -244,6 +253,7 @@ namespace Calculates
                     #region 磨坑长度
                     if (jcxm.Contains("、磨坑长度、"))
                     {
+                        jcxmCur = "磨坑长度";
                         sign = true;
                         sign = IsNumeric(sItem["MKCD"]) && !string.IsNullOrEmpty(sItem["MKCD"]) ? sign : false;
                         if (sign)
@@ -256,6 +266,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["MKCDPD"] = "不合格";
                                 mAllHg = false;
                                 itemHG = false;
@@ -273,6 +284,7 @@ namespace Calculates
                     #region 耐磨度
                     if (jcxm.Contains("、耐磨性、"))
                     {
+                        jcxmCur = "耐磨性";
                         sign = true;
                         sign = IsNumeric(sItem["NMD"]) && !string.IsNullOrEmpty(sItem["NMD"]) ? sign : false;
                         if (sign)
@@ -285,6 +297,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["NMDPD"] = "不合格";
                                 mAllHg = false;
                                 itemHG = false;
@@ -302,6 +315,7 @@ namespace Calculates
                     #region 防滑性能
                     if (jcxm.Contains("、防滑性能、"))
                     {
+                        jcxmCur = "防滑性能";
                         sign = true;
                         sign = IsNumeric(sItem["FHX"]) && !string.IsNullOrEmpty(sItem["FHX"]) ? sign : false;
                         if (sign)
@@ -314,6 +328,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["FHXPD"] = "不合格";
                                 mAllHg = false;
                                 itemHG = false;
@@ -345,13 +360,24 @@ namespace Calculates
 
                     sItem["KZQDYQ"] = "抗折强度平均值需" + string.Format("{0:N2}", MItem[0]["G_KZPJZ"]) + "MPa，单块最小值需" + string.Format("{0:N1}", MItem[0]["G_KZMIN"]) + "MPa。";
                     //计算单组的抗压强度,并进行合格判断
-                    if (sItem["GGXH"] == "小于等于4")
+                    if (sItem["GGXH"] == "小于等于4")   //抗压
                     {
                         #region 抗压强度、抗折强度
                         if (jcxm.Contains("、抗压强度、") || jcxm.Contains("、抗折强度、"))
                         {
-                            double mMj = Round(GetSafeDouble(sItem["DBCD"]) * GetSafeDouble(sItem["DBKD"]), 1);
-                            sItem["MJ1"] = mMj.ToString();
+                            jcxmCur = CurrentJcxm(jcxm, "抗压强度,抗折强度");
+                            double mMj1 = 0, mMj2 = 0, mMj3 = 0, mMj4 = 0, mMj5 = 0, mMj6 = 0, mMj7 = 0, mMj8 = 0, mMj9 = 0, mMj10 = 0;
+                            //sItem["MJ1"] = mMj.ToString();
+                            mMj1 = GetSafeDouble(sItem["KYCD1"]) * GetSafeDouble(sItem["KYKD1"]);
+                            mMj2 = GetSafeDouble(sItem["KYCD2"]) * GetSafeDouble(sItem["KYKD2"]);
+                            mMj3 = GetSafeDouble(sItem["KYCD3"]) * GetSafeDouble(sItem["KYKD3"]);
+                            mMj4 = GetSafeDouble(sItem["KYCD4"]) * GetSafeDouble(sItem["KYKD4"]);
+                            mMj5 = GetSafeDouble(sItem["KYCD5"]) * GetSafeDouble(sItem["KYKD5"]);
+                            mMj6 = GetSafeDouble(sItem["KYCD6"]) * GetSafeDouble(sItem["KYKD6"]);
+                            mMj7 = GetSafeDouble(sItem["KYCD7"]) * GetSafeDouble(sItem["KYKD7"]);
+                            mMj8 = GetSafeDouble(sItem["KYCD8"]) * GetSafeDouble(sItem["KYKD8"]);
+                            mMj9 = GetSafeDouble(sItem["KYCD9"]) * GetSafeDouble(sItem["KYKD9"]);
+                            mMj10 = GetSafeDouble(sItem["KYCD10"]) * GetSafeDouble(sItem["KYKD10"]);
                             sItem["KYHZ1"] = Round(GetSafeDouble(sItem["KYHZ1"]), 1).ToString();
                             sItem["KYHZ2"] = GetSafeDouble(sItem["KYHZ2"]).ToString("0.0");
                             sItem["KYHZ3"] = GetSafeDouble(sItem["KYHZ3"]).ToString("0.0");
@@ -363,44 +389,44 @@ namespace Calculates
                             sItem["KYHZ9"] = GetSafeDouble(sItem["KYHZ9"]).ToString("0.0");
                             sItem["KYHZ10"] = GetSafeDouble(sItem["KYHZ10"]).ToString("0.0");
 
-                            if (mMj != 0)
-                                sItem["KYQD1"] = Round(1000 * GetSafeDouble(sItem["KYHZ1"]) / mMj, 1).ToString();
+                            if (mMj1 != 0)
+                                sItem["KYQD1"] = Round(1000 * GetSafeDouble(sItem["KYHZ1"]) / mMj1, 1).ToString();
                             else
                                 sItem["KYQD1"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD2"] = Round(1000 * GetSafeDouble(sItem["KYHZ2"]) / (mMj), 1).ToString();
+                            if (mMj2 != 0)
+                                sItem["KYQD2"] = Round(1000 * GetSafeDouble(sItem["KYHZ2"]) / (mMj2), 1).ToString();
                             else
                                 sItem["KYQD2"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD3"] = Round(1000 * GetSafeDouble(sItem["KYHZ3"]) / (mMj), 1).ToString();
+                            if (mMj3 != 0)
+                                sItem["KYQD3"] = Round(1000 * GetSafeDouble(sItem["KYHZ3"]) / (mMj3), 1).ToString();
                             else
                                 sItem["KYQD3"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD4"] = Round(1000 * GetSafeDouble(sItem["KYHZ4"]) / (mMj), 1).ToString();
+                            if (mMj4 != 0)
+                                sItem["KYQD4"] = Round(1000 * GetSafeDouble(sItem["KYHZ4"]) / (mMj4), 1).ToString();
                             else
                                 sItem["KYQD4"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD5"] = Round(1000 * GetSafeDouble(sItem["KYHZ5"]) / (mMj), 1).ToString();
+                            if (mMj5 != 0)
+                                sItem["KYQD5"] = Round(1000 * GetSafeDouble(sItem["KYHZ5"]) / (mMj5), 1).ToString();
                             else
                                 sItem["KYQD5"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD6"] = Round(1000 * GetSafeDouble(sItem["KYHZ6"]) / (mMj), 1).ToString();
+                            if (mMj6 != 0)
+                                sItem["KYQD6"] = Round(1000 * GetSafeDouble(sItem["KYHZ6"]) / (mMj6), 1).ToString();
                             else
                                 sItem["KYQD6"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD7"] = Round(1000 * GetSafeDouble(sItem["KYHZ7"]) / (mMj), 1).ToString();
+                            if (mMj7 != 0)
+                                sItem["KYQD7"] = Round(1000 * GetSafeDouble(sItem["KYHZ7"]) / (mMj7), 1).ToString();
                             else
                                 sItem["KYQD7"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD8"] = Round(1000 * GetSafeDouble(sItem["KYHZ8"]) / (mMj), 1).ToString();
+                            if (mMj8 != 0)
+                                sItem["KYQD8"] = Round(1000 * GetSafeDouble(sItem["KYHZ8"]) / (mMj8), 1).ToString();
                             else
                                 sItem["KYQD8"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD9"] = Round(1000 * GetSafeDouble(sItem["KYHZ9"]) / (mMj), 1).ToString();
+                            if (mMj9 != 0)
+                                sItem["KYQD9"] = Round(1000 * GetSafeDouble(sItem["KYHZ9"]) / (mMj9), 1).ToString();
                             else
                                 sItem["KYQD9"] = "0";
-                            if (mMj != 0)
-                                sItem["KYQD10"] = Round(1000 * GetSafeDouble(sItem["KYHZ10"]) / (mMj), 1).ToString();
+                            if (mMj10 != 0)
+                                sItem["KYQD10"] = Round(1000 * GetSafeDouble(sItem["KYHZ10"]) / (mMj10), 1).ToString();
                             else
                                 sItem["KYQD10"] = "0";
 
@@ -423,6 +449,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["KYPD"] = "不合格";
                                 mAllHg = false;
                                 mFlag_Bhg = true;
@@ -436,20 +463,26 @@ namespace Calculates
                         #region 抗冻性
                         if (jcxm.Contains("、抗冻性、"))
                         {
-                            double mMj = Round(GetSafeDouble(sItem["DBCD"]) * GetSafeDouble(sItem["DBKD"]), 1);
-                            sItem["MJ1"] = mMj.ToString();
+                            jcxmCur = "抗冻性";
+                            double mMj1 = 0, mMj2 = 0, mMj3 = 0, mMj4 = 0, mMj5 = 0;
+                            mMj1 = GetSafeDouble(sItem["KDCD1"]) * GetSafeDouble(sItem["KDKD1"]);
+                            mMj2 = GetSafeDouble(sItem["KDCD2"]) * GetSafeDouble(sItem["KDKD2"]);
+                            mMj3 = GetSafeDouble(sItem["KDCD3"]) * GetSafeDouble(sItem["KDKD3"]);
+                            mMj4 = GetSafeDouble(sItem["KDCD4"]) * GetSafeDouble(sItem["KDKD4"]);
+                            mMj5 = GetSafeDouble(sItem["KDCD5"]) * GetSafeDouble(sItem["KDKD5"]);
+
                             sItem["DHKYHZ1"] = Round(GetSafeDouble(sItem["DHKYHZ1"]), 1).ToString();
                             sItem["DHKYHZ2"] = Round(GetSafeDouble(sItem["DHKYHZ2"]), 1).ToString();
                             sItem["DHKYHZ3"] = Round(GetSafeDouble(sItem["DHKYHZ3"]), 1).ToString();
                             sItem["DHKYHZ4"] = Round(GetSafeDouble(sItem["DHKYHZ4"]), 1).ToString();
                             sItem["DHKYHZ5"] = Round(GetSafeDouble(sItem["DHKYHZ5"]), 1).ToString();
-                            if (mMj != 0)
+                            if (mMj1 != 0 && mMj2 != 0 && mMj3 != 0 && mMj4 != 0 && mMj5 != 0 )
                             {
-                                sItem["DHKYQD1"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ1"]) / (mMj), 1).ToString();
-                                sItem["DHKYQD2"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ2"]) / (mMj), 1).ToString();
-                                sItem["DHKYQD3"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ3"]) / (mMj), 1).ToString();
-                                sItem["DHKYQD4"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ4"]) / (mMj), 1).ToString();
-                                sItem["DHKYQD5"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ5"]) / (mMj), 1).ToString();
+                                sItem["DHKYQD1"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ1"]) / (mMj1), 1).ToString();
+                                sItem["DHKYQD2"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ2"]) / (mMj2), 1).ToString();
+                                sItem["DHKYQD3"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ3"]) / (mMj3), 1).ToString();
+                                sItem["DHKYQD4"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ4"]) / (mMj4), 1).ToString();
+                                sItem["DHKYQD5"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ5"]) / (mMj5), 1).ToString();
                             }
                             else
                             {
@@ -459,7 +492,11 @@ namespace Calculates
                                 sItem["DHKYQD4"] = "0";
                                 sItem["DHKYQD5"] = "0";
                             }
-                            //抗压平均值
+                            //冻前抗压平均值 
+                            double mDqky = 0;
+                            mDqky = (GetSafeDouble(sItem["DQKYHZ1"]) + GetSafeDouble(sItem["DQKYHZ2"]) + GetSafeDouble(sItem["DQKYHZ3"]) + GetSafeDouble(sItem["DQKYHZ4"]) + GetSafeDouble(sItem["DQKYHZ5"])) / 5;
+
+                            //冻后抗压平均值
                             mPjz = (GetSafeDouble(sItem["DHKYQD1"]) + GetSafeDouble(sItem["DHKYQD2"]) + GetSafeDouble(sItem["DHKYQD3"]) + GetSafeDouble(sItem["DHKYQD4"]) + GetSafeDouble(sItem["DHKYQD5"])) / 5;
                             sItem["DHKYPJ"] = Round((mPjz), 1).ToString();
                             //标准值计算、判定，平均值判定，单组合格判定
@@ -470,7 +507,15 @@ namespace Calculates
                             Array.Sort(mkyhzArray1);
                             mMaxKyqd = mkyhzArray1[4];
                             mMinKyqd = Round(mkyhzArray1[0], 1);
-                            sItem["QDSSL"] = Round((GetSafeDouble(sItem["KYPJ"]) - GetSafeDouble(sItem["DHKYPJ"])) / GetSafeDouble(sItem["KYPJ"]) * 100, 1).ToString();
+                            if (mDqky>0)
+                            {
+                                sItem["QDSSL"] = Round((mDqky - GetSafeDouble(sItem["DHKYPJ"])) / mDqky * 100, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["QDSSL"] = "0";
+                            }
+                            
 
                             if (IsQualified(sItem["QDSSLYQ"], sItem["QDSSL"]) == "符合")
                             {
@@ -479,6 +524,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["QDSSLPD"] = "不合格";
                                 mFlag_Bhg = true;
                             }
@@ -488,11 +534,12 @@ namespace Calculates
                             sItem["QDSSLPD"] = "----";
                         #endregion
                     }
-                    else
+                    else //抗折
                     {
                         #region 抗压强度、抗折强度
                         if (jcxm.Contains("、抗压强度、") || jcxm.Contains("、抗折强度、"))
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "抗压强度,抗折强度");
                             sItem["KZHZ1"] = Round(GetSafeDouble(sItem["KZHZ1"]), 2).ToString();
                             sItem["KZHZ2"] = Round(GetSafeDouble(sItem["KZHZ2"]), 2).ToString();
                             sItem["KZHZ3"] = Round(GetSafeDouble(sItem["KZHZ3"]), 2).ToString();
@@ -538,6 +585,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["JCJG"] = "不合格";
                                 sItem["KZPD"] = "不合格";
                                 mFlag_Bhg = true;
@@ -552,20 +600,26 @@ namespace Calculates
                         #region 抗冻性
                         if (jcxm.Contains("、抗冻性、"))
                         {
-                            double mMj = Round(GetSafeDouble(sItem["DBCD"]) * GetSafeDouble(sItem["DBKD"]), 1);
-                            sItem["MJ1"] = mMj.ToString();
+                            jcxmCur = "抗冻性";
+                            double mMj1 = 0, mMj2 = 0, mMj3 = 0, mMj4 = 0, mMj5 = 0;
+                            mMj1 = GetSafeDouble(sItem["KDCD1"]) * GetSafeDouble(sItem["KDKD1"]);
+                            mMj2 = GetSafeDouble(sItem["KDCD2"]) * GetSafeDouble(sItem["KDKD2"]);
+                            mMj3 = GetSafeDouble(sItem["KDCD3"]) * GetSafeDouble(sItem["KDKD3"]);
+                            mMj4 = GetSafeDouble(sItem["KDCD4"]) * GetSafeDouble(sItem["KDKD4"]);
+                            mMj5 = GetSafeDouble(sItem["KDCD5"]) * GetSafeDouble(sItem["KDKD5"]);
+
                             sItem["DHKYHZ1"] = Round(GetSafeDouble(sItem["DHKYHZ1"]), 1).ToString();
                             sItem["DHKYHZ2"] = Round(GetSafeDouble(sItem["DHKYHZ2"]), 1).ToString();
                             sItem["DHKYHZ3"] = Round(GetSafeDouble(sItem["DHKYHZ3"]), 1).ToString();
                             sItem["DHKYHZ4"] = Round(GetSafeDouble(sItem["DHKYHZ4"]), 1).ToString();
                             sItem["DHKYHZ5"] = Round(GetSafeDouble(sItem["DHKYHZ5"]), 1).ToString();
-                            if (mMj != 0)
+                            if (mMj1 != 0 && mMj2 != 0 && mMj3 != 0 && mMj4 != 0 && mMj5 != 0)
                             {
-                                sItem["DHKYQD1"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ1"]) / (mMj), 1).ToString();
-                                sItem["DHKYQD2"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ2"]) / (mMj), 1).ToString();
-                                sItem["DHKYQD3"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ3"]) / (mMj), 1).ToString();
-                                sItem["DHKYQD4"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ4"]) / (mMj), 1).ToString();
-                                sItem["DHKYQD5"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ5"]) / (mMj), 1).ToString();
+                                sItem["DHKYQD1"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ1"]) / (mMj1), 1).ToString();
+                                sItem["DHKYQD2"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ2"]) / (mMj2), 1).ToString();
+                                sItem["DHKYQD3"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ3"]) / (mMj3), 1).ToString();
+                                sItem["DHKYQD4"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ4"]) / (mMj4), 1).ToString();
+                                sItem["DHKYQD5"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ5"]) / (mMj5), 1).ToString();
                             }
                             else
                             {
@@ -575,7 +629,11 @@ namespace Calculates
                                 sItem["DHKYQD4"] = "0";
                                 sItem["DHKYQD5"] = "0";
                             }
-                            //抗压平均值
+                            //冻前抗压平均值 
+                            double mDqky = 0;
+                            mDqky = (GetSafeDouble(sItem["DQKYHZ1"]) + GetSafeDouble(sItem["DQKYHZ2"]) + GetSafeDouble(sItem["DQKYHZ3"]) + GetSafeDouble(sItem["DQKYHZ4"]) + GetSafeDouble(sItem["DQKYHZ5"])) / 5;
+
+                            //冻后抗压平均值
                             mPjz = (GetSafeDouble(sItem["DHKYQD1"]) + GetSafeDouble(sItem["DHKYQD2"]) + GetSafeDouble(sItem["DHKYQD3"]) + GetSafeDouble(sItem["DHKYQD4"]) + GetSafeDouble(sItem["DHKYQD5"])) / 5;
                             sItem["DHKYPJ"] = Round((mPjz), 1).ToString();
                             //标准值计算、判定，平均值判定，单组合格判定
@@ -586,7 +644,15 @@ namespace Calculates
                             Array.Sort(mkyhzArray1);
                             mMaxKyqd = mkyhzArray1[4];
                             mMinKyqd = Round(mkyhzArray1[0], 1);
-                            sItem["QDSSL"] = Round((GetSafeDouble(sItem["KZPJ"]) - GetSafeDouble(sItem["DHKYPJ"])) / GetSafeDouble(sItem["KZPJ"]) * 100, 1).ToString();
+                            //sItem["QDSSL"] = Round((GetSafeDouble(sItem["KZPJ"]) - GetSafeDouble(sItem["DHKYPJ"])) / GetSafeDouble(sItem["KZPJ"]) * 100, 1).ToString();
+                            if (mDqky > 0)
+                            {
+                                sItem["QDSSL"] = Round((mDqky - GetSafeDouble(sItem["DHKYPJ"])) / mDqky * 100, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["QDSSL"] = "0";
+                            }
 
                             if (IsQualified(sItem["QDSSLYQ"], sItem["QDSSL"]) == "符合")
                             {
@@ -595,6 +661,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["QDSSLPD"] = "不合格";
                                 mFlag_Bhg = true;
                             }
@@ -665,6 +732,7 @@ namespace Calculates
                     #region 磨坑长度
                     if (jcxm.Contains("、磨坑长度、"))
                     {
+                        jcxmCur = "磨坑长度";
                         if (IsQualified(sItem["MKCDYQ"], sItem["MKCD"]) == "符合")
                         {
                             sItem["MKCDPD"] = "合格";
@@ -672,6 +740,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["MKCDPD"] = "不合格";
                             mFlag_Bhg = true;
                         }
@@ -683,6 +752,7 @@ namespace Calculates
                     #region 耐磨性
                     if (jcxm.Contains("、耐磨性、"))
                     {
+                        jcxmCur = "耐磨性";
                         if (IsQualified(sItem["NMDYQ"], sItem["NMD"]) == "符合")
                         {
                             sItem["NMDPD"] = "合格";
@@ -690,6 +760,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["NMDPD"] = "不合格";
                             mFlag_Bhg = true;
                         }
@@ -701,7 +772,7 @@ namespace Calculates
                     #region 吸水率
                     if (jcxm.Contains("、吸水率、"))
                     {
-
+                        jcxmCur = "吸水率";
                         sItem["XSL1"] = Round((Conversion.Val(sItem["XSLM1_1"]) - Conversion.Val(sItem["XSLM0_1"])) / (Conversion.Val(sItem["XSLM0_1"])) * 100, 2).ToString();
                         sItem["XSL2"] = Round((Conversion.Val(sItem["XSLM1_2"]) - Conversion.Val(sItem["XSLM0_2"])) / (Conversion.Val(sItem["XSLM0_2"])) * 100, 2).ToString();
                         sItem["XSL3"] = Round((Conversion.Val(sItem["XSLM1_3"]) - Conversion.Val(sItem["XSLM0_3"])) / (Conversion.Val(sItem["XSLM0_3"])) * 100, 2).ToString();
@@ -717,6 +788,7 @@ namespace Calculates
                         }
                         else
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["XSLPD"] = "不合格";
                             mFlag_Bhg = true;
                         }
@@ -728,6 +800,7 @@ namespace Calculates
                     #region 防滑性能
                     if (jcxm.Contains("、防滑性能、"))
                     {
+                        jcxmCur = "防滑性能";
                         sign = true;
                         sign = IsNumeric(sItem["FHX"]) && !string.IsNullOrEmpty(sItem["FHX"]) ? sign : false;
                         if (sign)
@@ -741,6 +814,7 @@ namespace Calculates
                             }
                             else
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 sItem["FHXPD"] = "不合格";
                                 mAllHg = false;
                                 mFlag_Bhg = true;
@@ -785,14 +859,14 @@ namespace Calculates
             if (mAllHg)
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
                 mjcjg = "不合格";
-                jsbeizhu = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                if (mFlag_Bhg && mFlag_Hg)
-                    jsbeizhu = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                //if (mFlag_Bhg && mFlag_Hg)
+                //    jsbeizhu = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
             }
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
