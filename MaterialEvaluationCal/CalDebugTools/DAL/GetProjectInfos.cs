@@ -211,9 +211,9 @@ namespace CalDebugTools
                 var retSDataJosn = JsonHelper.GetAfferentDataJson2($"S_{BH}", sqlStr, connType, m_json);
                 listDataJson.Add(retSDataJosn);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return "";
+                return ex.Message;
             }
             StringBuilder sb = new StringBuilder("");
 

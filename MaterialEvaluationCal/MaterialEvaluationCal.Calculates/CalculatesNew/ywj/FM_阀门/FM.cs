@@ -43,6 +43,7 @@ namespace Calculates
             string mJSFF = "";
             double zj1, zj2 = 0;
             double md1, md2, md, pjmd = 0;
+            bool jyGs = true;
 
             Func<IDictionary<string, string>, IDictionary<string, string>, bool> sjtabcalc = delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem)
             {
@@ -222,13 +223,41 @@ namespace Calculates
                     jsbeizhu = jsbeizhu + "试件尺寸为空/r/n";
                     continue;
                 }
+                
                 //不合格数量
-                sItem["MF_GS"] = (GetSafeDouble(sItem["FMGS"]) - GetSafeDouble(sItem["MFSY"])).ToString();
-                sItem["QT_GS"] = (GetSafeDouble(sItem["FMGS"]) - GetSafeDouble(sItem["KTSY"])).ToString();
+                if (Conversion.Val(sItem["MFSY"]) > Conversion.Val(sItem["FMGS"]))
+                {
+                    sItem["MF_GS"] = "----";
+                    sItem["MFSY"] = "合格数量不能大于总阀门个数";
+                    jyGs = false;
+                }
+                else
+                {
+                    sItem["MF_GS"] = (Conversion.Val(sItem["FMGS"]) - Conversion.Val(sItem["MFSY"])).ToString();
+                }
+
+                if (Conversion.Val(sItem["KTSY"]) > Conversion.Val(sItem["FMGS"]))
+                {
+                    sItem["QT_GS"] = "----";
+                    sItem["KTSY"] = "合格数量不能大于总阀门个数";
+                    jyGs = false;
+                }
+                else
+                {
+                    sItem["QT_GS"] = (Conversion.Val(sItem["FMGS"]) - Conversion.Val(sItem["KTSY"])).ToString();
+                }
+                if (!jyGs)
+                {
+                    break;
+                }
+
+                bool hgKt = true;
+                bool hgMf = true;
                 if (GetSafeDouble(sItem["MF_GS"]) > 0)
                 {
                     sItem["MFSYPD"] = "不合格";
                     sign = false;
+                    hgMf = false;
                 }
                 else
                 {
@@ -239,18 +268,32 @@ namespace Calculates
                 {
                     sItem["KTSYPD"] = "不合格";
                     sign = false;
+                    hgKt = false;
                 }
                 else
                 {
                     sItem["KTSYPD"] = "合格";
                 }
-                if (sign)
+                if (sign && hgKt && hgMf)
                 {
-                    jsbeizhu = "依据标准工业阀门" + MItem[0]["PDBZ"] + "检验，所检项目符合标准要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                 }
                 else
                 {
-                    jsbeizhu = "依据标准工业阀门" + MItem[0]["PDBZ"] + "检验，所检项目不符合标准要求。";
+                    if (!hgKt && !hgMf)
+                    {
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均不符合要求。";
+                    }
+                    else if (!hgKt && hgMf)
+                    {
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目壳体试验不符合要求。";
+                    }
+                    else if (hgKt && !hgMf)
+                    {
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目密封试验不符合要求。";
+                    }
+
+
                 }
 
                 mgcyl = Math.Round(1.1 * Conversion.Val(sItem["GCYL"]), 2).ToString("0.00") + "MPa";

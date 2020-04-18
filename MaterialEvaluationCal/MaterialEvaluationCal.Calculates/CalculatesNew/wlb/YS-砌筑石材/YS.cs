@@ -14,7 +14,7 @@ namespace Calculates
             /***********************代码开始********************/
             #region
             //获取帮助表数据
-            //var extraDJ = dataExtra["BZ_YS_DJ"];
+            var extraDJ = dataExtra["BZ_YSXSDJ"];
 
             bool mAllHg = true;
             var data = retData;
@@ -38,51 +38,113 @@ namespace Calculates
             double sum = 0;
             string Hgxm = "";
             string BHGXM = "";
-
+            bool sign = true;
             foreach (var sItem in S_YSS)
             {
-
+                //获得换算系数
+                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["GGXH"] == sItem["GGXH"]);
+                if (null == extraFieldsDj)
+                {
+                    mAllHg = false;
+                    sItem["JCJG"] = "不合格";
+                    continue;
+                }
+                else
+                {
+                    sItem["KYZSXS"] = extraFieldsDj["HSXS"].Trim();
+                }
                 itemHG = true;
                 string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
+                string sjqd = "";
+
+                #region 获取设计强度等级
+                if (sItem["SJDJ"].Contains("20"))
+                {
+                    sjqd = "≥20";
+                }
+                else if (sItem["SJDJ"].Contains("30"))
+                {
+                    sjqd = "≥30";
+                }
+                else if (sItem["SJDJ"].Contains("40"))
+                {
+                    sjqd = "≥40";
+                }
+                else if (sItem["SJDJ"].Contains("50"))
+                {
+                    sjqd = "≥50";
+                }
+                else if (sItem["SJDJ"].Contains("60"))
+                {
+                    sjqd = "≥60";
+                }
+                else if (sItem["SJDJ"].Contains("80"))
+                {
+                    sjqd = "≥80";
+                }
+                else if (sItem["SJDJ"].Contains("80"))
+                {
+                    sjqd = "≥100";
+                }
+                else
+                {
+                    sjqd = "----";
+                }
+                #endregion
 
                 #region 抗压强度
                 if (jcxm.Contains("、抗压强度、"))
                 {
-                    //循环得到每个抗压强度值
-                    //double sum = 0;
-                    double md1, md2;
-                    for (int i = 1; i <= 6; i++)
+                    sum = 0;
+                    for (int i = 1; i < 4; i++)
                     {
-                        md1 = GetSafeDouble(sItem["S_JMJ" + i]);
-                        md2 = GetSafeDouble(sItem["S_PHHZ" + i]);
-                        md1 = md2 / md1;
-                        md1 = Math.Round(md1, 1);
-                        sItem["W_KY" + i] = md1.ToString("0.0");
-                        sum = sum + md1;//和
+                        sign = IsNumeric(sItem["SYPHHZ" + i].Trim());
+                        sign = IsNumeric(sItem["SYCD" + i].Trim());
+                        sign = IsNumeric(sItem["SYKD" + i].Trim());
                     }
-                    sum = Math.Round(sum / 6, 1);//平均值
-                    sItem["W_KY"] = sum.ToString("0.0");
+                    if (sign)
+                    {
+                        //抗压强度MPa = 破坏荷载（kN） / 面积mm²
+                        for (int i = 1; i < 4; i++)
+                        {
+                            sItem["DKKYQD" + i] = Round(GetSafeDouble(sItem["SYPHHZ" + i].Trim()) * 1000 / (GetSafeDouble(sItem["SYCD" + i].Trim()) * GetSafeDouble(sItem["SYKD" + i].Trim())), 1).ToString("0.0"); ;
+                            sum = sum + GetSafeDouble(sItem["DKKYQD" + i]);
+                        }
+                        //平均抗压强度
+                        sItem["KYQDPJ"] = Round(sum / 3, 1).ToString("0.0");
+                        //换算  抗压强度代表值
+                        sItem["KYDBQD"] = Round(GetSafeDouble(sItem["KYQDPJ"]) * GetSafeDouble(sItem["KYZSXS"]), 1).ToString("0.0");
+                    }
+                    else
+                    {
+                        throw new SystemException("试验数据录入有误");
+                    }
+
+                    MItem[0]["PD_KY"] = IsQualified(sjqd, sItem["KYDBQD"], true);
+                    if (MItem[0]["PD_KY"] == "符合")
+                    {
+                        Hgxm = Hgxm + "抗压强度";
+                    }
+                    else if (MItem[0]["PD_KY"] == "不符合")
+                    {
+                        BHGXM = BHGXM + "抗压强度";
+                        itemHG = false;
+                    }
+
                 }
                 else
                 {
-                    for (int i = 1; i <= 6; i++)
+                    sItem["KYQDPJ"] = "----";
+                    sItem["KYDBQD"] = "----";
+                    for (int i = 1; i < 4; i++)
                     {
-                        sItem["W_KY" + i] = "----";
+                        sItem["DKKYQD" + i] = "----";
+                        sItem["SYPHHZ" + i] = "----";
                     }
-                    sItem["W_KY"] = "----";
                 }
                 #endregion
 
-                MItem[0]["PD_KY"] = IsQualified(sItem["SJ_KY"], sItem["W_KY"], true);
-                if (MItem[0]["PD_KY"] == "符合")
-                {
-                    Hgxm = Hgxm + "抗压强度";
-                }
-                else if (MItem[0]["PD_KY"] == "不符合")
-                {
-                    BHGXM = BHGXM + "抗压强度";
-                    itemHG = false;
-                }
+
 
 
                 //单组判断
@@ -97,17 +159,13 @@ namespace Calculates
             }
 
             //添加最终报告
-            if (Hgxm.Length>0)
+            if (Hgxm.Length > 0)
             {
-                jsbeizhu = "经检测，该岩石试样所检项目" + Hgxm + "，符合委托方提供的设计要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目抗压强度符合要求。";
             }
-            else if (BHGXM.Length>0)
+            else if (BHGXM.Length > 0)
             {
-                jsbeizhu = "经检测，该岩石试样所检项目" + BHGXM + "，不符合委托方提供的设计要求。";
-            }
-            else
-            {
-                jsbeizhu = "经试验，该岩石试样所检项目结果详见报告";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目抗压强度不符合要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;

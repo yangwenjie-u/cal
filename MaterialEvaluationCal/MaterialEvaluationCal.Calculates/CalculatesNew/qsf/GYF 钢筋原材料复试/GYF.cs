@@ -15,8 +15,7 @@ namespace Calculates
             /************************ 代码开始 *********************/
             bool mAllHg = true;
             string jcxm = "", mjcjg = "不合格", jsbeizhu = "";
-
-
+            var jcxmBhg = "";
 
             var data = retData;
             List<double> mtmpArray = new List<double>();
@@ -166,8 +165,8 @@ namespace Calculates
 
             Func<IDictionary<string, string>, int, string> calc_kl = delegate (IDictionary<string, string> sItem, int count)
                  {
-                    //求屈服强度及抗拉强度
-                    double mMidVal = 0;
+                     //求屈服强度及抗拉强度
+                     double mMidVal = 0;
                      string mMj = "", mkl = "";
                      if (string.IsNullOrEmpty(sItem["ZJ"]))
                      {
@@ -494,6 +493,15 @@ namespace Calculates
                     continue;
                 }
 
+                if (sItem["DBSL"] != "60吨")
+                {
+                    mxlgs = 6;
+                }
+                else
+                {
+                    mxwgs = 4;
+                }
+
                 var extraFieldsZlpc = ZlpcData.FirstOrDefault(u => u["ZJ"].Trim() == sItem["ZJ"].Trim());
                 if (extraFieldsZlpc != null)
                 {
@@ -586,6 +594,7 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_ZLPC"] = " 不符合";
+                        jcxmBhg += "重量偏差" + "、";
                     }
                 }
                 else
@@ -607,7 +616,7 @@ namespace Calculates
                 mallBHG_QF = mallBHG_QF + find_singlezb_bhg(MItem[0], sItem, "qf", mQfqd, (int)mxlgs);
                 mallBHG_KL = mallBHG_KL + find_singlezb_bhg(MItem[0], sItem, "kl", mKlqd, (int)mxlgs);
                 mallBHG_SC = mallBHG_SC + find_singlezb_bhg(MItem[0], sItem, "SCL", mScl, (int)mxlgs);
-                if (jcxm.Contains("、冷弯、"))
+                if (jcxm.Contains("、弯曲、"))
                 {
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mxlgs);
                 }
@@ -623,12 +632,14 @@ namespace Calculates
                     sItem["SCL2"] = "----";
                     sItem["SCL3"] = "----";
                     sItem["SCL4"] = "----";
+                    sItem["SCL5"] = "----";
+                    sItem["SCL6"] = "----";
                     if (MItem[0]["PDBZ"].Contains("1499.2") || MItem[0]["PDBZ"].Contains("1499.1"))
                     {
                         for (int i = 1; i <= mxlgs; i++)
                         {
                             double md1 = 0, md2 = 0, md = 0;
-                            md1 = GetSafeDouble(sItem["DHJL" + i]);
+                            md1 = GetSafeDouble(sItem["DHJL1"]);
                             md2 = GetSafeDouble(sItem["DQJL0" + i]);
                             md = md1 - md2;
                             md1 = GetSafeDouble(sItem["DQJL0" + i]);
@@ -661,7 +672,6 @@ namespace Calculates
                         {
                             sItem["QDQFB" + i] = Math.Round(GetSafeDouble(sItem["KLQD" + i]) / GetSafeDouble(sItem["QFQD" + i]), 2).ToString();
                             sItem["QFQFB" + i] = Math.Round(GetSafeDouble(sItem["QFQD" + i]) / mQfqd, 2).ToString();
-                            //If(CDec(Val(mrssubTable.Fields("qdqfb" & i))) >= CDec(Val(mrsDj!qdqfb)) Or CDec(Val(mrsDj!qdqfb)) = 0) And(CDec(Val(mrssubTable.Fields("qfqfb" & i))) <= CDec(Val(mrsDj!qfqfb)) Or CDec(Val(mrsDj!qfqfb)) = 0) Then
                             if ((GetSafeDouble(sItem["QDQFB" + i]) >= GetSafeDouble(extraFieldsDj["QDQFB"]) || GetSafeDouble(extraFieldsDj["QDQFB"]) == 0) && (GetSafeDouble(sItem["QFQFB" + i]) <= GetSafeDouble(extraFieldsDj["QFQFB"]) || GetSafeDouble(extraFieldsDj["QFQFB"]) == 0))
                             {
                                 mkzhggs = mkzhggs + 1;
@@ -699,6 +709,8 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LW"] = "不符合";
+                        jcxmBhg += "反向弯曲" + "、";
+
                     }
                 }
                 #endregion
@@ -707,6 +719,8 @@ namespace Calculates
                 if (sItem["JCJG_KZ"] == "不符合" || sItem["JCJG_LS"] == "不符合")
                 {
                     sItem["JCJG_LS"] = "不符合";
+                    jcxmBhg += "拉伸" + "、";
+
                 }
 
                 if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合" || sItem["JCJG_ZLPC"] == "不符合")
@@ -717,29 +731,25 @@ namespace Calculates
                 else
                 {
                     sItem["JCJG"] = "合格";
-                    MItem[0]["FJJJ3"] = MItem[0]["FJJJ3"] + sItem["ZH_G"] + "#";
+                    MItem[0]["FJJJ3"] = MItem[0]["FJJJ3"] + "#";
                 }
                 #endregion
                 mAllHg = (mAllHg && (sItem["JCJG"] == "合格"));
-                if (mAllHg)
-                {
-                    jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
-                else
-                {
-                    jsbeizhu = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
             }
 
             #region 添加最终报告
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+            }
+            else
+            {
+                mjcjg = "不合格";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
 
-
             MItem[0]["JCJG"] = mjcjg;
-
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             /************************ 代码结束 *********************/

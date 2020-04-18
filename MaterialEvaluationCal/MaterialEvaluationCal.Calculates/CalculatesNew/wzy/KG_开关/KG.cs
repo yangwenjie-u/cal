@@ -14,17 +14,15 @@ namespace Calculates
             /************************ 代码开始 *********************/
             #region
             var data = retData;
-            //获取帮助表数据
             var extraDJ = dataExtra["BZ_KG_DJ"];
-            //获取主表数据
             var MItem = data["M_KG"];
-            //获取从表表数据
             var SItem = data["S_KG"];
             string jcxm = "", mjcjg = "不合格", jsbeizhu = "", jcjg = "";
-            string mJSFF = "";
             bool itemHG = true;//判断单组是否合格
-            int mbHggs = 0;//记录合格数量
+            int mbHggs = 0;//记录不合格数量
             bool mAllHg = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             #region 获取等级表中标准要求
             foreach (var sItem in SItem)
@@ -62,657 +60,674 @@ namespace Calculates
                     MItem[0]["G_NLH"] = string.IsNullOrEmpty(extraFieldsDj["NLH"]) ? "" : extraFieldsDj["NLH"].Trim();
                     MItem[0]["G_DZ"] = string.IsNullOrEmpty(extraFieldsDj["DZ"]) ? "" : extraFieldsDj["DZ"].Trim();
                     MItem[0]["G_JX"] = string.IsNullOrEmpty(extraFieldsDj["JX"]) ? "" : extraFieldsDj["JX"].Trim();
-                    mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["JSFF"].Trim().ToLower();
                 }
                 else
                 {
                     mAllHg = false;
                     mjcjg = "不合格";
+                    mbHggs += 1;
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
                 }
                 #endregion
                 //开始计算
-                if (mJSFF == "")
-                {
-                    #region  标志
-                    if (jcxm.Contains("、标志、"))
-                    {
-                        if (3 > GetSafeDouble(MItem[0]["BZ"]) && 0 <= GetSafeDouble(MItem[0]["BZ"]))
-                        {
-                            MItem[0]["BZ_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["BZ_HG"] = "合格";
-                            mbHggs++;
-                        }
 
-                        if ("-1" == MItem[0]["BZ"])
-                        {
-                            MItem[0]["BZ_HG"] = "----";
-                        }
+                #region  标志
+                if (jcxm.Contains("、标志、"))
+                {
+                    jcxmCur = "标志";
+
+                    if (3 > GetSafeDouble(MItem[0]["BZ"]) && 0 <= GetSafeDouble(MItem[0]["BZ"]))
+                    {
+                        MItem[0]["BZ_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs += 1;
                     }
                     else
                     {
-                        MItem[0]["BZ"] = "-1";
+                        MItem[0]["BZ_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["BZ"])
+                    {
                         MItem[0]["BZ_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["BZ"] = "-1";
+                    MItem[0]["BZ_HG"] = "----";
+                }
+                #endregion
 
-                    #region  防潮
-                    if (jcxm.Contains("、防潮、"))
+                #region  防潮
+                if (jcxm.Contains("、防潮、"))
+                {
+                    jcxmCur = "防潮";
+
+                    if (3 > GetSafeDouble(MItem[0]["FC"]) && 0 <= GetSafeDouble(MItem[0]["FC"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["FC"]) && 0 <= GetSafeDouble(MItem[0]["FC"]))
-                        {
-                            MItem[0]["FC_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["FC_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["FC"])
-                        {
-                            MItem[0]["FC_HG"] = "----";
-                        }
+                        MItem[0]["FC_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
-                        MItem[0]["FC"] = "-1";
+                        MItem[0]["FC_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["FC"])
+                    {
                         MItem[0]["FC_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["FC"] = "-1";
+                    MItem[0]["FC_HG"] = "----";
+                }
+                #endregion
 
-                    #region  端子
-                    if (jcxm.Contains("、端子、"))
+                #region  端子
+                if (jcxm.Contains("、端子、"))
+                {
+                    jcxmCur = "端子";
+                    if (3 > GetSafeDouble(MItem[0]["DZ"]) && 0 <= GetSafeDouble(MItem[0]["DZ"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["DZ"]) && 0 <= GetSafeDouble(MItem[0]["DZ"]))
-                        {
-                            MItem[0]["DZ_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["DZ_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["DZ"])
-                        {
-                            MItem[0]["DZ_HG"] = "----";
-                        }
+                        MItem[0]["DZ_HG"] = "不合格";
+                        mAllHg = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["DZ"] = "-1";
+                        MItem[0]["DZ_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["DZ"])
+                    {
                         MItem[0]["DZ_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["DZ"] = "-1";
+                    MItem[0]["DZ_HG"] = "----";
+                }
+                #endregion
 
-                    #region  电气间隙
-                    if (jcxm.Contains("、电气间隙、"))
+                #region  电气间隙
+                if (jcxm.Contains("、电气间隙、"))
+                {
+                    jcxmCur = "电气间隙";
+                    if (3 > GetSafeDouble(MItem[0]["JX"]) && 0 <= GetSafeDouble(MItem[0]["JX"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["JX"]) && 0 <= GetSafeDouble(MItem[0]["JX"]))
-                        {
-                            MItem[0]["JX_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["JX_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["JX"])
-                        {
-                            MItem[0]["JX_HG"] = "----";
-                        }
+                        MItem[0]["JX_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
-                        MItem[0]["JX"] = "-1";
+                        MItem[0]["JX_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["JX"])
+                    {
                         MItem[0]["JX_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["JX"] = "-1";
+                    MItem[0]["JX_HG"] = "----";
+                }
+                #endregion
 
-                    #region  结构
-                    if (jcxm.Contains("、结构、"))
+                #region  结构
+                if (jcxm.Contains("、结构、"))
+                {
+                    jcxmCur = "结构";
+                    if (3 > GetSafeDouble(MItem[0]["JG1"]) && 0 <= GetSafeDouble(MItem[0]["JG1"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["JG1"]) && 0 <= GetSafeDouble(MItem[0]["JG1"]))
-                        {
-                            MItem[0]["JG1_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["JG1_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if (3 > GetSafeDouble(MItem[0]["JG2"]) && 0 <= GetSafeDouble(MItem[0]["JG2"]))
-                        {
-                            MItem[0]["JG2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["JG2_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["JG1"])
-                        {
-                            MItem[0]["JG1_HG"] = "----";
-                        }
-
-                        if ("-1" == MItem[0]["JG2"])
-                        {
-                            MItem[0]["JG2_HG"] = "----";
-                        }
+                        MItem[0]["JG1_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
-                        MItem[0]["JG1"] = "-1";
+                        MItem[0]["JG1_HG"] = "合格";
+                    }
+
+                    if (3 > GetSafeDouble(MItem[0]["JG2"]) && 0 <= GetSafeDouble(MItem[0]["JG2"]))
+                    {
+                        MItem[0]["JG2_HG"] = "不合格";
+                        mAllHg = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、"; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        itemHG = false;
+                    }
+                    else
+                    {
+                        MItem[0]["JG2_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["JG1"])
+                    {
                         MItem[0]["JG1_HG"] = "----";
-                        MItem[0]["JG2"] = "-1";
+                    }
+
+                    if ("-1" == MItem[0]["JG2"])
+                    {
                         MItem[0]["JG2_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["JG1"] = "-1";
+                    MItem[0]["JG1_HG"] = "----";
+                    MItem[0]["JG2"] = "-1";
+                    MItem[0]["JG2_HG"] = "----";
+                }
+                #endregion
 
-                    #region  电气强度
-                    /*if (jcxm.Contains("、电气强度、"))
+                #region  电气强度
+                /*if (jcxm.Contains("、电气强度、"))
+                {
+                    if (3 > GetSafeDouble(MItem[0]["DQD1"]) && 0 <= GetSafeDouble(MItem[0]["DQD1"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["DQD1"]) && 0 <= GetSafeDouble(MItem[0]["DQD1"]))
-                        {
-                            MItem[0]["DQD1_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["DQD1_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if (3 > GetSafeDouble(MItem[0]["DQD2"]) && 0 <= GetSafeDouble(MItem[0]["DQD2"]))
-                        {
-                            MItem[0]["DQD2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["DQD2_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if (3 > GetSafeDouble(MItem[0]["DQD3"]) && 0 <= GetSafeDouble(MItem[0]["DQD3"]))
-                        {
-                            MItem[0]["DQD3_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["DQD3_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["DQD1"])
-                        {
-                            MItem[0]["DQD1_HG"] = "----";
-                        }
-
-                        if ("-1" == MItem[0]["DQD2"])
-                        {
-                            MItem[0]["DQD2_HG"] = "----";
-                        }
-
-                        if ("-1" == MItem[0]["DQD3"])
-                        {
-                            MItem[0]["DQD3_HG"] = "----";
-                        }
+                        MItem[0]["DQD1_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["DQD1"] = "-1";
+                        MItem[0]["DQD1_HG"] = "合格";
+                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                    if (3 > GetSafeDouble(MItem[0]["DQD2"]) && 0 <= GetSafeDouble(MItem[0]["DQD2"]))
+                    {
+                        MItem[0]["DQD2_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                    else
+                    {
+                        MItem[0]["DQD2_HG"] = "合格";
+                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                    if (3 > GetSafeDouble(MItem[0]["DQD3"]) && 0 <= GetSafeDouble(MItem[0]["DQD3"]))
+                    {
+                        MItem[0]["DQD3_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                    else
+                    {
+                        MItem[0]["DQD3_HG"] = "合格";
+                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                    if ("-1" == MItem[0]["DQD1"])
+                    {
                         MItem[0]["DQD1_HG"] = "----";
-                        MItem[0]["DQD2"] = "-1";
-                        MItem[0]["DQD2_HG"] = "----";
-                        MItem[0]["DQD3"] = "-1";
-                        MItem[0]["DQD3_HG"] = "----";
-                    }*/
-                    #endregion
+                    }
 
-                    #region  耐老化
-                    if (jcxm.Contains("、耐老化、"))
+                    if ("-1" == MItem[0]["DQD2"])
                     {
-                        if (3 > GetSafeDouble(MItem[0]["NLH"]) && 0 <= GetSafeDouble(MItem[0]["NLH"]))
-                        {
-                            MItem[0]["NLH_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["NLH_HG"] = "合格";
-                            mbHggs++;
-                        }
+                        MItem[0]["DQD2_HG"] = "----";
+                    }
 
-                        if ("-1" == MItem[0]["NLH"])
-                        {
-                            MItem[0]["NLH_HG"] = "----";
-                        }
+                    if ("-1" == MItem[0]["DQD3"])
+                    {
+                        MItem[0]["DQD3_HG"] = "----";
+                    }
+                }
+                else
+                {
+                    MItem[0]["DQD1"] = "-1";
+                    MItem[0]["DQD1_HG"] = "----";
+                    MItem[0]["DQD2"] = "-1";
+                    MItem[0]["DQD2_HG"] = "----";
+                    MItem[0]["DQD3"] = "-1";
+                    MItem[0]["DQD3_HG"] = "----";
+                }*/
+                #endregion
+
+                #region  耐老化
+                if (jcxm.Contains("、耐老化、"))
+                {
+                    jcxmCur = "耐老化";
+                    if (3 > GetSafeDouble(MItem[0]["NLH"]) && 0 <= GetSafeDouble(MItem[0]["NLH"]))
+                    {
+                        MItem[0]["NLH_HG"] = "不合格";
+                        mAllHg = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、"; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["NLH"] = "-1";
+                        MItem[0]["NLH_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["NLH"])
+                    {
                         MItem[0]["NLH_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["NLH"] = "-1";
+                    MItem[0]["NLH_HG"] = "----";
+                }
+                #endregion
 
-                    #region  绝缘电阻
-                    /*if (jcxm.Contains("、绝缘电阻、"))
+                #region  绝缘电阻
+                /*if (jcxm.Contains("、绝缘电阻、"))
+                {
+                    if (3 > GetSafeDouble(MItem[0]["JYDZ1"]) && 0 <= GetSafeDouble(MItem[0]["JYDZ1"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["JYDZ1"]) && 0 <= GetSafeDouble(MItem[0]["JYDZ1"]))
-                        {
-                            MItem[0]["JYDZ1_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["JYDZ1_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if (3 > GetSafeDouble(MItem[0]["JYDZ2"]) && 0 <= GetSafeDouble(MItem[0]["JYDZ2"]))
-                        {
-                            MItem[0]["JYDZ2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["JYDZ2_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if (3 > GetSafeDouble(MItem[0]["JYDZ3"]) && 0 <= GetSafeDouble(MItem[0]["JYDZ3"]))
-                        {
-                            MItem[0]["JYDZ3_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["JYDZ3_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["JYDZ1"])
-                        {
-                            MItem[0]["JYDZ1_HG"] = "----";
-                        }
-
-                        if ("-1" == MItem[0]["JYDZ2"])
-                        {
-                            MItem[0]["JYDZ2_HG"] = "----";
-                        }
-
-                        if ("-1" == MItem[0]["JYDZ3"])
-                        {
-                            MItem[0]["JYDZ3_HG"] = "----";
-                        }
+                        MItem[0]["JYDZ1_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["JYDZ1"] = "-1";
+                        MItem[0]["JYDZ1_HG"] = "合格";
+                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                    if (3 > GetSafeDouble(MItem[0]["JYDZ2"]) && 0 <= GetSafeDouble(MItem[0]["JYDZ2"]))
+                    {
+                        MItem[0]["JYDZ2_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                    else
+                    {
+                        MItem[0]["JYDZ2_HG"] = "合格";
+                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                    if (3 > GetSafeDouble(MItem[0]["JYDZ3"]) && 0 <= GetSafeDouble(MItem[0]["JYDZ3"]))
+                    {
+                        MItem[0]["JYDZ3_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                    else
+                    {
+                        MItem[0]["JYDZ3_HG"] = "合格";
+                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                    if ("-1" == MItem[0]["JYDZ1"])
+                    {
                         MItem[0]["JYDZ1_HG"] = "----";
-                        MItem[0]["JYDZ2"] = "-1";
-                        MItem[0]["JYDZ2_HG"] = "----";
-                        MItem[0]["JYDZ3"] = "-1";
-                        MItem[0]["JYDZ3_HG"] = "----";
-                    }*/
-                    #endregion
+                    }
 
-                    #region  截流部件及连接
-                    if (jcxm.Contains("、截流部件及连接、"))
+                    if ("-1" == MItem[0]["JYDZ2"])
                     {
-                        if (3 > GetSafeDouble(MItem[0]["LD1"]) && 0 <= GetSafeDouble(MItem[0]["LD1"]))
-                        {
-                            MItem[0]["LD1_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["LD1_HG"] = "合格";
-                            mbHggs++;
-                        }
+                        MItem[0]["JYDZ2_HG"] = "----";
+                    }
 
-                        if (3 > GetSafeDouble(MItem[0]["LD2"]) && 0 <= GetSafeDouble(MItem[0]["LD2"]))
-                        {
-                            MItem[0]["LD2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["LD2_HG"] = "合格";
-                            mbHggs++;
-                        }
+                    if ("-1" == MItem[0]["JYDZ3"])
+                    {
+                        MItem[0]["JYDZ3_HG"] = "----";
+                    }
+                }
+                else
+                {
+                    MItem[0]["JYDZ1"] = "-1";
+                    MItem[0]["JYDZ1_HG"] = "----";
+                    MItem[0]["JYDZ2"] = "-1";
+                    MItem[0]["JYDZ2_HG"] = "----";
+                    MItem[0]["JYDZ3"] = "-1";
+                    MItem[0]["JYDZ3_HG"] = "----";
+                }*/
+                #endregion
 
-                        if ("-1" == MItem[0]["LD1"])
-                        {
-                            MItem[0]["LD1_HG"] = "----";
-                        }
-
-                        if ("-1" == MItem[0]["LD2"])
-                        {
-                            MItem[0]["LD2_HG"] = "----";
-                        }
+                #region  截流部件及连接
+                if (jcxm.Contains("、截流部件及连接、"))
+                {
+                    jcxmCur = "截流部件及连接";
+                    if (3 > GetSafeDouble(MItem[0]["LD1"]) && 0 <= GetSafeDouble(MItem[0]["LD1"]))
+                    {
+                        MItem[0]["LD1_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
-                        MItem[0]["LD1"] = "-1";
+                        MItem[0]["LD1_HG"] = "合格";
+                    }
+
+                    if (3 > GetSafeDouble(MItem[0]["LD2"]) && 0 <= GetSafeDouble(MItem[0]["LD2"]))
+                    {
+                        MItem[0]["LD2_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        MItem[0]["LD2_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["LD1"])
+                    {
                         MItem[0]["LD1_HG"] = "----";
-                        MItem[0]["LD2"] = "-1";
+                    }
+
+                    if ("-1" == MItem[0]["LD2"])
+                    {
                         MItem[0]["LD2_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["LD1"] = "-1";
+                    MItem[0]["LD1_HG"] = "----";
+                    MItem[0]["LD2"] = "-1";
+                    MItem[0]["LD2_HG"] = "----";
+                }
+                #endregion
 
-                    #region  耐漏电起痕
-                    if (jcxm.Contains("、耐漏电起痕、"))
+                #region  耐漏电起痕
+                if (jcxm.Contains("、耐漏电起痕、"))
+                {
+                    jcxmCur = "耐漏电起痕";
+
+                    if (3 > GetSafeDouble(MItem[0]["JYQH"]) && 0 <= GetSafeDouble(MItem[0]["JYQH"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["JYQH"]) && 0 <= GetSafeDouble(MItem[0]["JYQH"]))
-                        {
-                            MItem[0]["JYQH_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["JYQH_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["JYQH"])
-                        {
-                            MItem[0]["JYQH_HG"] = "----";
-                        }
+                        MItem[0]["JYQH_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
-                        MItem[0]["JYQH"] = "-1";
+                        MItem[0]["JYQH_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["JYQH"])
+                    {
                         MItem[0]["JYQH_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["JYQH"] = "-1";
+                    MItem[0]["JYQH_HG"] = "----";
+                }
+                #endregion
 
-                    #region  机械强度
-                    if (jcxm.Contains("、机械强度、"))
+                #region  机械强度
+                if (jcxm.Contains("、机械强度、"))
+                {
+                    jcxmCur = "耐漏电起痕";
+                    if (3 > GetSafeDouble(MItem[0]["JXQD"]) && 0 <= GetSafeDouble(MItem[0]["JXQD"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["JXQD"]) && 0 <= GetSafeDouble(MItem[0]["JXQD"]))
-                        {
-                            MItem[0]["JXQD_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["JXQD_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["JXQD"])
-                        {
-                            MItem[0]["JXQD_HG"] = "----";
-                        }
+                        MItem[0]["JXQD_HG"] = "不合格";
+                        mAllHg = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["JXQD"] = "-1";
+                        MItem[0]["JXQD_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["JXQD"])
+                    {
                         MItem[0]["JXQD_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["JXQD"] = "-1";
+                    MItem[0]["JXQD_HG"] = "----";
+                }
+                #endregion
 
-                    #region  爬电距离
-                    /*if (jcxm.Contains("、爬电距离、"))
+                #region  爬电距离
+                /*if (jcxm.Contains("、爬电距离、"))
+                {
+                    if (3 > GetSafeDouble(MItem[0]["PDJL"]) && 0 <= GetSafeDouble(MItem[0]["PDJL"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["PDJL"]) && 0 <= GetSafeDouble(MItem[0]["PDJL"]))
-                        {
-                            MItem[0]["PDJL_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["PDJL_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["PDJL"])
-                        {
-                            MItem[0]["PDJL_HG"] = "----";
-                        }
+                        MItem[0]["PDJL_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["PDJL"] = "-1";
+                        MItem[0]["PDJL_HG"] = "合格";
+                        mbHggs++;  jcxmBhg+=jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                    if ("-1" == MItem[0]["PDJL"])
+                    {
                         MItem[0]["PDJL_HG"] = "----";
-                    }*/
-                    #endregion
+                    }
+                }
+                else
+                {
+                    MItem[0]["PDJL"] = "-1";
+                    MItem[0]["PDJL_HG"] = "----";
+                }*/
+                #endregion
 
-                    #region  耐热
-                    if (jcxm.Contains("、耐热、"))
+                #region  耐热
+                if (jcxm.Contains("、耐热、"))
+                {
+                    jcxmCur = "耐热";
+                    if (3 > GetSafeDouble(MItem[0]["NR1"]) && 0 <= GetSafeDouble(MItem[0]["NR1"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["NR1"]) && 0 <= GetSafeDouble(MItem[0]["NR1"]))
-                        {
-                            MItem[0]["NR1_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["NR1_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if (3 > GetSafeDouble(MItem[0]["NR2"]) && 0 <= GetSafeDouble(MItem[0]["NR2"]))
-                        {
-                            MItem[0]["NR2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["NR2_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if (3 > GetSafeDouble(MItem[0]["NR3"]) && 0 <= GetSafeDouble(MItem[0]["NR3"]))
-                        {
-                            MItem[0]["NR3_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["NR3_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["NR1"])
-                        {
-                            MItem[0]["NR1_HG"] = "----";
-                        }
-
-                        if ("-1" == MItem[0]["NR2"])
-                        {
-                            MItem[0]["NR2_HG"] = "----";
-                        }
-
-                        if ("-1" == MItem[0]["NR3"])
-                        {
-                            MItem[0]["NR3_HG"] = "----";
-                        }
+                        MItem[0]["NR1_HG"] = "不合格";
+                        mAllHg = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["NR1"] = "-1";
+                        MItem[0]["NR1_HG"] = "合格";
+                    }
+
+                    if (3 > GetSafeDouble(MItem[0]["NR2"]) && 0 <= GetSafeDouble(MItem[0]["NR2"]))
+                    {
+                        MItem[0]["NR2_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        MItem[0]["NR2_HG"] = "合格";
+                    }
+
+                    if (3 > GetSafeDouble(MItem[0]["NR3"]) && 0 <= GetSafeDouble(MItem[0]["NR3"]))
+                    {
+                        MItem[0]["NR3_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        MItem[0]["NR3_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["NR1"])
+                    {
                         MItem[0]["NR1_HG"] = "----";
-                        MItem[0]["NR2"] = "-1";
+                    }
+
+                    if ("-1" == MItem[0]["NR2"])
+                    {
                         MItem[0]["NR2_HG"] = "----";
-                        MItem[0]["NR3"] = "-1";
+                    }
+
+                    if ("-1" == MItem[0]["NR3"])
+                    {
                         MItem[0]["NR3_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["NR1"] = "-1";
+                    MItem[0]["NR1_HG"] = "----";
+                    MItem[0]["NR2"] = "-1";
+                    MItem[0]["NR2_HG"] = "----";
+                    MItem[0]["NR3"] = "-1";
+                    MItem[0]["NR3_HG"] = "----";
+                }
+                #endregion
 
-                    #region  正常操作1
-                    if (jcxm.Contains("、正常操作1、") || jcxm.Contains("、开关正常操作次数、"))
+                #region  正常操作1
+                if (jcxm.Contains("、正常操作1、") || jcxm.Contains("、开关正常操作次数、"))
+                {
+                    jcxmCur = CurrentJcxm(jcxm, "正常操作1,开关正常操作次数");
+
+                    if (3 > GetSafeDouble(MItem[0]["ZCCZ1"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ1"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["ZCCZ1"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ1"]))
-                        {
-                            MItem[0]["ZCCZ1_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["ZCCZ1_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["ZCCZ1"])
-                        {
-                            MItem[0]["ZCCZ1_HG"] = "----";
-                        }
+                        MItem[0]["ZCCZ1_HG"] = "不合格";
+                        mAllHg = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["ZCCZ1"] = "-1";
+                        MItem[0]["ZCCZ1_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["ZCCZ1"])
+                    {
                         MItem[0]["ZCCZ1_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["ZCCZ1"] = "-1";
+                    MItem[0]["ZCCZ1_HG"] = "----";
+                }
+                #endregion
 
-                    #region  正常操作2
-                    if (jcxm.Contains("、正常操作2、") || jcxm.Contains("、开关正常操作次数、"))
+                #region  正常操作2
+                if (jcxm.Contains("、正常操作2、") || jcxm.Contains("、开关正常操作次数、"))
+                {
+                    jcxmCur = CurrentJcxm(jcxm, "正常操作2,开关正常操作次数");
+                    if (3 > GetSafeDouble(MItem[0]["ZCCZ2"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ2"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["ZCCZ2"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ2"]))
-                        {
-                            MItem[0]["ZCCZ2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["ZCCZ2_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["ZCCZ2"])
-                        {
-                            MItem[0]["ZCCZ2_HG"] = "----";
-                        }
+                        MItem[0]["ZCCZ2_HG"] = "不合格";
+                        mAllHg = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        itemHG = false;
                     }
                     else
                     {
-                        MItem[0]["ZCCZ2"] = "-1";
+                        MItem[0]["ZCCZ2_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["ZCCZ2"])
+                    {
                         MItem[0]["ZCCZ2_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["ZCCZ2"] = "-1";
+                    MItem[0]["ZCCZ2_HG"] = "----";
+                }
+                #endregion
 
-                    #region  正常操作3
-                    if (jcxm.Contains("、正常操作3、") || jcxm.Contains("、开关正常操作次数、"))
+                //#region  正常操作3
+                //if (jcxm.Contains("、正常操作3、") || jcxm.Contains("、开关正常操作次数、"))
+                //{
+                //    jcxmCur = CurrentJcxm(jcxm, "正常操作3,开关正常操作次数");
+                //    if (3 > GetSafeDouble(MItem[0]["ZCCZ3"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ3"]))
+                //    {
+                //        MItem[0]["ZCCZ3_HG"] = "不合格";
+                //        mAllHg = false;
+                //        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                //        itemHG = false;
+                //    }
+                //    else
+                //    {
+                //        MItem[0]["ZCCZ3_HG"] = "合格";
+                //    }
+
+                //    if ("-1" == MItem[0]["ZCCZ3"])
+                //    {
+                //        MItem[0]["ZCCZ3_HG"] = "----";
+                //    }
+                //}
+                //else
+                //{
+                //    MItem[0]["ZCCZ3"] = "-1";
+                //    MItem[0]["ZCCZ3_HG"] = "----";
+                //}
+                //#endregion
+
+                #region  通断能力1
+                if (jcxm.Contains("、通断能力1、") || jcxm.Contains("、开关通断能力、"))
+                {
+                    jcxmCur = CurrentJcxm(jcxm, "通断能力1,开关通断能力");
+                    if (3 > GetSafeDouble(MItem[0]["TDNL1"]) && 0 <= GetSafeDouble(MItem[0]["TDNL1"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["ZCCZ3"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ3"]))
-                        {
-                            MItem[0]["ZCCZ3_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["ZCCZ3_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["ZCCZ3"])
-                        {
-                            MItem[0]["ZCCZ3_HG"] = "----";
-                        }
+                        MItem[0]["TDNL1_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
-                        MItem[0]["ZCCZ3"] = "-1";
-                        MItem[0]["ZCCZ3_HG"] = "----";
+                        MItem[0]["TDNL1_HG"] = "合格";
                     }
-                    #endregion
 
-                    #region  通断能力1
-                    if (jcxm.Contains("、通断能力1、") || jcxm.Contains("、开关通断能力、"))
+                    if ("-1" == MItem[0]["TDNL1"])
                     {
-                        if (3 > GetSafeDouble(MItem[0]["TDNL1"]) && 0 <= GetSafeDouble(MItem[0]["TDNL1"]))
-                        {
-                            MItem[0]["TDNL1_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["TDNL1_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["TDNL1"])
-                        {
-                            MItem[0]["TDNL1_HG"] = "----";
-                        }
-                    }
-                    else
-                    {
-                        MItem[0]["TDNL1"] = "-1";
                         MItem[0]["TDNL1_HG"] = "----";
                     }
-                    #endregion
+                }
+                else
+                {
+                    MItem[0]["TDNL1"] = "-1";
+                    MItem[0]["TDNL1_HG"] = "----";
+                }
+                #endregion
 
-                    #region  通断能力2
-                    if (jcxm.Contains("、通断能力2、") || jcxm.Contains("、开关通断能力、"))
+                #region  通断能力2
+                if (jcxm.Contains("、通断能力2、") || jcxm.Contains("、开关通断能力、"))
+                {
+                    jcxmCur = CurrentJcxm(jcxm, "通断能力2,开关通断能力");
+                    if (3 > GetSafeDouble(MItem[0]["TDNL2"]) && 0 <= GetSafeDouble(MItem[0]["TDNL2"]))
                     {
-                        if (3 > GetSafeDouble(MItem[0]["TDNL2"]) && 0 <= GetSafeDouble(MItem[0]["TDNL2"]))
-                        {
-                            MItem[0]["TDNL2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            MItem[0]["TDNL2_HG"] = "合格";
-                            mbHggs++;
-                        }
-
-                        if ("-1" == MItem[0]["TDNL2"])
-                        {
-                            MItem[0]["TDNL2_HG"] = "----";
-                        }
+                        MItem[0]["TDNL2_HG"] = "不合格";
+                        mAllHg = false;
+                        itemHG = false;
+                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
-                        MItem[0]["TDNL2"] = "-1";
+                        MItem[0]["TDNL2_HG"] = "合格";
+                    }
+
+                    if ("-1" == MItem[0]["TDNL2"])
+                    {
                         MItem[0]["TDNL2_HG"] = "----";
                     }
-                    #endregion
                 }
+                else
+                {
+                    MItem[0]["TDNL2"] = "-1";
+                    MItem[0]["TDNL2_HG"] = "----";
+                }
+                #endregion
                 //单组判断
                 if (itemHG)
                 {
@@ -728,17 +743,17 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                if (mbHggs > 0)
+                if (mbHggs == 0)
                 {
-                    jsbeizhu = "该组试样所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                 }
                 else
                 {
-                    jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 }
             }
 

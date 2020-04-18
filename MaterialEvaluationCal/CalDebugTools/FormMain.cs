@@ -198,7 +198,7 @@ namespace CalDebugTools
         private void btn_Debug_Click(object sender, EventArgs e)
         {
             SaveXMinfos();
-            IsQualified(">-150","-");
+            var df = IsQualified("±150", "1424");
             //测试乌海
             if (this.ck_other.Checked)
             {
@@ -212,7 +212,7 @@ namespace CalDebugTools
         }
 
         private void Debug(string jydbh = "", string whWtdbh = "")
-        {
+        { 
             string jcxmBH = this.txt_jcxmbh.Text.Trim();
             List<string> listJYDBH = new List<string>();
             var quertBH = "";
@@ -1144,15 +1144,18 @@ namespace CalDebugTools
                 min_bl = true;
 
                 sign = true;
+
+
             }
             if (sj.IndexOf('±') != -1)
             {
                 length = sj.Length;
                 dw = sj.IndexOf('±');
                 dw += 1;
-                min_sjz = Convert.ToDecimal(sj.Substring(0, dw - 1));
-                max_sjz = Convert.ToDecimal(sj.Substring(dw, length - dw));
-
+                min_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(0, dw - 1)));
+                max_sjz = Convert.ToDecimal(Conversion.Val(sj.Substring(dw, length - dw)));
+                min_sjz = Convert.ToDecimal(min_sjz - max_sjz);
+                max_sjz = Convert.ToDecimal(min_sjz + 2 * max_sjz);
                 max_bl = true;
                 min_bl = true;
 

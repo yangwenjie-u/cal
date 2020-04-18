@@ -320,13 +320,15 @@ namespace Calculates
                                 MItem[0]["JCJG_B"] = "合格";
                                 MItem[0]["JCJG_L"] = "不合格";
                                 jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，梁不符合标准要求。";
                             }
                             else if (GetSafeDouble(MItem[0]["BHGL"]) >= 80)
                             {
                                 mAllHg = false;
                                 MItem[0]["JCJG_B"] = "复试";
                                 MItem[0]["JCJG_L"] = "不合格";
-                                jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                //jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，梁不符合标准要求。";
                             }
                             else
                             {
@@ -343,7 +345,8 @@ namespace Calculates
                                 mAllHg = false;
                                 MItem[0]["JCJG_B"] = "合格";
                                 MItem[0]["JCJG_L"] = "不合格";
-                                jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                //jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，板不符合标准要求。";
                             }
                             else if (GetSafeDouble(MItem[0]["BHGL"]) >= 80)
                             {
@@ -383,28 +386,32 @@ namespace Calculates
                                     mAllHg = false;
                                     MItem[0]["JCJG_B"] = "合格";
                                     MItem[0]["JCJG_L"] = "复试";
-                                    jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，梁不符合标准要求。";
                                 }
                                 else if (GetSafeDouble(MItem[0]["BHGL"]) >= 80 && GetSafeDouble(MItem[0]["LHGL"]) >= 90)
                                 {
                                     mAllHg = false;
                                     MItem[0]["JCJG_B"] = "复试";
                                     MItem[0]["JCJG_L"] = "合格";
-                                    jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，板不符合标准要求。";
                                 }
                                 else if (GetSafeDouble(MItem[0]["BHGL"]) >= 80 && GetSafeDouble(MItem[0]["LHGL"]) >= 80)
                                 {
                                     mAllHg = false;
                                     MItem[0]["JCJG_B"] = "复试";
                                     MItem[0]["JCJG_L"] = "复试";
-                                    jsbeizhu = "以上所检项中，板、梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，板、梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，梁不符合标准要求。";
                                 }
                                 else if (GetSafeDouble(MItem[0]["BHGL"]) < 80 && GetSafeDouble(MItem[0]["LHGL"]) >= 90)
                                 {
                                     mAllHg = false;
                                     MItem[0]["JCJG_B"] = "不合格";
                                     MItem[0]["JCJG_L"] = "合格";
-                                    jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，板不符合标准要求。";
                                 }
                                 else if (GetSafeDouble(MItem[0]["BHGL"]) < 80 && GetSafeDouble(MItem[0]["LHGL"]) >= 80)
                                 {
@@ -412,21 +419,24 @@ namespace Calculates
                                     MItem[0]["JCJG_B"] = "不合格";
                                     MItem[0]["JCJG_L"] = "复试";
 
-                                    jsbeizhu = "以上所检项中，板、梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，板、梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，板、梁不符合标准要求。";
                                 }
                                 else if (GetSafeDouble(MItem[0]["BHGL"]) >= 90 && GetSafeDouble(MItem[0]["LHGL"]) < 80)
                                 {
                                     mAllHg = false;
                                     MItem[0]["JCJG_B"] = "合格";
                                     MItem[0]["JCJG_L"] = "不合格";
-                                    jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，梁不符合标准要求。";
                                 }
                                 else if (GetSafeDouble(MItem[0]["BHGL"]) >= 80 && GetSafeDouble(MItem[0]["LHGL"]) < 80)
                                 {
                                     mAllHg = false;
                                     MItem[0]["JCJG_B"] = "复试";
                                     MItem[0]["JCJG_L"] = "不合格";
-                                    jsbeizhu = "以上所检项中，板、梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，板、梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，板、梁不符合标准要求。";
                                 }
                                 else
                                 {
@@ -450,14 +460,16 @@ namespace Calculates
                                     mAllHg = false;
                                     MItem[0]["JCJG_B"] = "----";
                                     MItem[0]["JCJG_L"] = "复试";
-                                    jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，梁不符合标准要求。";
                                 }
                                 else if (GetSafeDouble(MItem[0]["LHGL"]) < 80)
                                 {
                                     mAllHg = false;
                                     MItem[0]["JCJG_B"] = "----";
                                     MItem[0]["JCJG_L"] = "不合格";
-                                    jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，梁不符合标准要求。";
                                 }
                             }
                             else if (GetSafeDouble(MItem[0]["ZCGJL"]) == 0)
@@ -473,14 +485,16 @@ namespace Calculates
                                     mAllHg = false;
                                     MItem[0]["JCJG_L"] = "----";
                                     MItem[0]["JCJG_B"] = "复试";
-                                    jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，板不符合标准要求。";
                                 }
                                 else if (GetSafeDouble(MItem[0]["BHGL"]) < 80)
                                 {
                                     mAllHg = false;
                                     MItem[0]["JCJG_L"] = "----";
                                     MItem[0]["JCJG_B"] = "不合格";
-                                    jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    //jsbeizhu = "以上所检项中，板不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，板不符合标准要求。";
                                 }
                             }
                         }
@@ -494,7 +508,8 @@ namespace Calculates
                                 mAllHg = false;
                                 MItem[0]["JCJG_B"] = "合格";
                                 MItem[0]["JCJG_L"] = "不合格";
-                                jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                //jsbeizhu = "以上所检项中，梁不符合" + MItem[0]["PDBZ"] + "标准要求";
+                                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，以上所检项中，梁不符合标准要求。";
                             }
                             else
                             {
@@ -621,18 +636,19 @@ namespace Calculates
             if (mAllHg)
             {
                 mjcjg = "合格";
-                jsbeizhu = "以上所检项符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                if (GetSafeDouble(MItem[0]["ZCGJB"]) < 0 || GetSafeDouble(MItem[0]["ZCGJL"]) <= 0 && !gjjjpd)
-                {
-                    jsbeizhu = jsbeizhu + "，钢筋间距不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
-                else
-                {
-                    jsbeizhu = "以上所检项部分符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
+                //if (GetSafeDouble(MItem[0]["ZCGJB"]) < 0 || GetSafeDouble(MItem[0]["ZCGJL"]) <= 0 && !gjjjpd)
+                //{
+                //    jsbeizhu = jsbeizhu + "，钢筋间距不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                //}
+                //else
+                //{
+                //    jsbeizhu = "以上所检项部分符合" + MItem[0]["PDBZ"] + "标准要求。";
+                //}
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目墙柱梁板保护层实测厚度不符合要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;

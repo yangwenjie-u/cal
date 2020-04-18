@@ -12,7 +12,6 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
-
             #region 参数定义
             string mcalBh, mlongStr;
             double mDyCount, mXyCount, zmDycount, zmXycount;
@@ -47,7 +46,8 @@ namespace Calculates
                 delegate (IDictionary<string, string> mrssjTable_Filter)
                 {
                     //计算回弹最后值HTZHZ
-                    double[] mhtzArray = new double[16];
+                    //double[] mhtzArray = new double[16];
+                    List<double> mhtzArray = new List<double>();
                     List<string> mtmpArray = new List<string>();
                     string mfuncVal = string.Empty;
                     string mlongStr_fun = string.Empty;
@@ -77,24 +77,25 @@ namespace Calculates
                     }
                     mSum_fun = 0;
                     for (int i = 0; i < 16; i++)
-                    {
-                        mhtzArray[i] = GetSafeDouble(mtmpArray[i]);
+                    {   
+                        mhtzArray.Add(GetSafeDouble(mtmpArray[i]));
                         mSum_fun += mhtzArray[i];
                     }
                     //数组排序
-                    int min;
-                    for (int i = 0; i < mhtzArray.Length; i++)
-                    {
-                        min = i;
-                        for (int j = i + 1; j < mhtzArray.Length; j++)
-                        {
-                            if (mhtzArray[j] < mhtzArray[min])
-                                min = j;
-                        }
-                        double t = mhtzArray[min];
-                        mhtzArray[min] = mhtzArray[i];
-                        mhtzArray[i] = t;
-                    }
+                    //int min;
+                    //for (int i = 0; i < mhtzArray.Count; i++)
+                    //{
+                    //    min = i;
+                    //    for (int j = i + 1; j < mhtzArray.Count; j++)
+                    //    {
+                    //        if (mhtzArray[j] < mhtzArray[min])
+                    //            min = j;
+                    //    }
+                    //    double t = mhtzArray[min];
+                    //    mhtzArray[min] = mhtzArray[i];
+                    //    mhtzArray[i] = t;
+                    //}
+                    mhtzArray.Sort();
                     mMaxHtz_fun = mhtzArray[15] + mhtzArray[14] + mhtzArray[13];
                     mMinHtz_fun = mhtzArray[0] + mhtzArray[1] + mhtzArray[2];
                     mHtzhz_fun = Math.Round((mSum_fun - mMaxHtz_fun - mMinHtz_fun) / 10, 1);
@@ -201,8 +202,8 @@ namespace Calculates
                 mBsfs = sitem["BSFS"];
                 //var mrssjTable2 = mrssjTable;
                 //var mrssjTable2 = mrssjTable.Where(mrssjTable_Filter => mrssjTable_Filter["DZBH"].Equals(sitem["DZBH"].ToString()));
-                var mrssjTable2 = mrssjTable.Where(mrssjTable_Filter => mrssjTable_Filter["SYSJBRECID"].Equals(sitem["RECID"]));
-                c_Ht = mrssjTable.Count();
+                var mrssjTable2 = mrssjTable.Where(mrssjTable_Filter => mrssjTable_Filter["SYSJBRECID"] == sitem["RECID"]);
+                c_Ht = mrssjTable2.Count();
                 if (c_Ht == 0)
                     break;
                 //sitem["LQ"] = ((GetSafeDateTime(MItem[0]["SYRQ"]) - GetSafeDateTime(DateTime.Now.ToShortDateString())).Days - (GetSafeDateTime(sitem["ZZRQ"]) - GetSafeDateTime(DateTime.Now.ToShortDateString())).Days).ToString();

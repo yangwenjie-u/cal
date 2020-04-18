@@ -156,38 +156,65 @@ namespace CalDebugTools.Forms
                 //数据表
                 if (rd_other.Checked)
                 {
-                    string[] otherlist = txtother.Text.Split('|');
-                    foreach (string tableName in otherlist)
+
+                    // 表名称1，别名1,别名2，别名3|表名称2，别名1，别名2|。。。。
+                    List<string> yTableNames = txtother.Text.Split('|').ToList();
+
+                    string yTableName = "";
+                    string searchName = "";
+
+                    //表名称1，别名1
+                    List<string> tableNameList = new List<string>();
+                    foreach (string tableName in yTableNames)
                     {
-                        listStr.Add(tableName);
-                        regexStr = tableName.ToUpper() + "\\[\"(.+?)\\]";
-                        string data_tablename = tableName;
-
-                        rg = new Regex(regexStr, RegexOptions.Multiline | RegexOptions.Singleline);
-                        matches = rg.Matches(strCode);
-                        foreach (Match item2 in matches)
+                        tableNameList = tableName.Split(',').ToList();
+                        if (tableNameList.Count == 1)
                         {
-                            try
+                            yTableName = tableNameList[0];
+                        }
+                        else
+                        {
+                            yTableName = tableNameList[0];
+                            for (int i = 1; i < tableNameList.Count(); i++)
                             {
-                                itemVal = item2.Groups[1].Value.Replace("\"", "");
-                                itemVal = itemVal.Contains("+") ? itemVal.Split('+')[0] : itemVal;
-                                if (!resultCode.Contains("," + itemVal + ","))
+                                searchName = tableNameList[i].Trim();
+                                listStr.Add(searchName);
+                                regexStr = searchName.Trim().ToUpper() + "\\[\"(.+?)\\]";
+                                string data_tablename = yTableName.Trim();
+
+                                rg = new Regex(regexStr, RegexOptions.Multiline | RegexOptions.Singleline);
+                                matches = rg.Matches(strCode);
+                                foreach (Match item2 in matches)
                                 {
-                                    resultCode += itemVal + ",";
+                                    try
+                                    {
+                                        itemVal = item2.Groups[1].Value.Replace("\"", "");
+                                        itemVal = itemVal.Contains("+") ? itemVal.Split('+')[0] : itemVal;
+                                        if (!resultCode.Contains("," + itemVal + ","))
+                                        {
+                                            resultCode += itemVal + ",";
 
-                                    //判断zdzd表是否有字段，没有的话添加
+                                            //判断zdzd表是否有字段，没有的话添加
 
-                                    _manage.InsertTableFieldToZDZD("ZDZD_" + xmbh, tableName, itemVal);
+                                            _manage.InsertTableFieldToZDZD("ZDZD_" + xmbh, yTableName, itemVal);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        resultCode = "";
+                                    }
                                 }
                             }
-                            catch
-                            {
-                                resultCode = "";
-                            }
                         }
-                        table_name += data_tablename + ",";
+                        //yTableName = tableName.Split(',')[0];
+                        //yOtherName = tableName.Split(',')[1];
+
+                        table_name += yTableName + ",";
                     }
-                    table_name = table_name.TrimEnd(',');
+                    string[] otherlist = txtother.Text.Split('|');
+
+
+                    //table_name = table_name.TrimEnd(',');
                 }
 
                 List<string> Ifields = new List<string>();
@@ -401,7 +428,7 @@ namespace CalDebugTools.Forms
                                 if (!string.IsNullOrEmpty(fieldLeft) && fieldLeft.IndexOf('=') == -1)
                                 {
                                     //if (!Ofields.Contains(item) && !Ifields.Contains(item))
-                                        Ifields.Add(item);
+                                    Ifields.Add(item);
                                 }
 
                                 if (fieldLeft.Contains("="))

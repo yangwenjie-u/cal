@@ -194,11 +194,11 @@ namespace Calculates
 
                 if ("无效"==sItem["KYPJ"])
                 {
-                    jsbeizhu = "该组试样强度代表值无效。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
                 }
                 else
                 {
-                    jsbeizhu = "该组试样强度代表值" + sItem["KYPJ"] + "MPa，" + "占设计强度" + sItem["DDSJQD"] + "%。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sItem["KYPJ"] + "MPa，" + "占设计强度" + sItem["DDSJQD"] + "%。";
                 }
                 //单组判断
                 if (itemHG)

@@ -38,6 +38,7 @@ namespace CalDebugTools.Forms
             //ZDZD_ZX
             SqlBase _sqlBase = new SqlBase(ESqlConnType.ConnectionStringMain);
             SqlBase _DebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
+            SqlBase ngJCJG = new SqlBase(ESqlConnType.ConnectionStringJCJG);
 
             //string sqlStr = string.Format($"SELECT 表名 = D.name,字段序号 = A.colorder,字段名 = A.name,字段说明 = isnull(G.[value], ''),类型 = B.name,占用字节数 = A.Length " +
             //   $"FROM syscolumns A  Left Join systypes B On A.xusertype = B.xusertype Inner Join sysobjects D On A.id = D.id and D.xtype = 'U' and D.name <> 'dtproperties'" +
@@ -68,7 +69,13 @@ namespace CalDebugTools.Forms
                 }
                 sql = $"select * into ZDZD_{syxmbh} from jcjt_wh.dbo.ZDZD_{syxmbh} where sjbmc like 'S_{syxmbh}' or sjbmc like 'M_{syxmbh}'";
                 //sql = $"select * into ZDZD_{syxmbh} from ITSV.jcjt_wh.dbo.ZDZD_{syxmbh} where sjbmc like 'S_{syxmbh}' or sjbmc like 'M_{syxmbh}'";
-                _DebugTool.ExecuteNonQuery(sql);
+                //sql = $"alter table zdzd_{syxmbh} drop column sj_zs";
+                try
+                {
+                    _sqlBase.ExecuteNonQuery(sql);
+                }
+                catch
+                { }
             }
             //select* from ITSV.jcjt_wh.dbo.ZDZD_ZX where sjbmc like 'S_%' or sjbmc like 'M_%'
         }

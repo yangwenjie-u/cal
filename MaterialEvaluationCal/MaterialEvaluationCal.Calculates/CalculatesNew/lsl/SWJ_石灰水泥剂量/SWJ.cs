@@ -51,13 +51,13 @@ namespace Calculates
 
                 if (sItem["S_PDJG"] == "符合")
                 {
-                    jsbeizhu = jsbeizhu+ "符合设计要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                     sItem["JCJG"] = "合格";
                 }
 
                 if (sItem["S_PDJG"] == "不符合")
                 {
-                    jsbeizhu = jsbeizhu + "不符合设计要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目EDTA法不符合要求。";
                     mAllHg = false;
                 }
             }

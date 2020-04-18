@@ -116,21 +116,15 @@ namespace Calculates
                 {
                     sItem["JCJG"] = "合格";
                     mItem["JCJG"] = "合格";
-                    jsbeizhu = "该组样品符合设计要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                 }
                 else if (sItem["JL"] == "不符合")
                 {
                     sItem["JCJG"] = "不合格";
                     mItem["JCJG"] = "不合格";
-                    jsbeizhu = "该组样品不符合设计要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目不符合要求。";
                     jcjgHg = false;
                     mAllHg = false;
-                }
-                else
-                {
-                    sItem["JCJG"] = "合格";
-                    mItem["JCJG"] = "合格";
-                    jsbeizhu = "该组样品检测结果如上。";
                 }
                 #endregion
             }
