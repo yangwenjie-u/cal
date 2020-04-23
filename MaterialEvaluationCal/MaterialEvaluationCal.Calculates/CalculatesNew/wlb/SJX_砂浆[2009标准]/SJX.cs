@@ -77,8 +77,8 @@ namespace Calculates
                 }
                 else
                 {
-                    mSz = string.IsNullOrEmpty(extraFieldsDj["SZ"]) ? 0 : double.Parse(extraFieldsDj["SZ"]);
-                    mQdyq = string.IsNullOrEmpty(extraFieldsDj["QDYQ"]) ? 0 : double.Parse(extraFieldsDj["QDYQ"]);
+                    mSz = string.IsNullOrEmpty(extraFieldsDj["SZ"]) ? 0 : GetSafeDouble(extraFieldsDj["SZ"]);
+                    mQdyq = string.IsNullOrEmpty(extraFieldsDj["QDYQ"]) ? 0 : GetSafeDouble(extraFieldsDj["QDYQ"]);
                     mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["QDYQ"].ToLower();
                 }
                 //if (0 != sItem["SYHJWD"].Length)
@@ -95,20 +95,20 @@ namespace Calculates
                     {
                         //FormatNumber(Round(CDec(sitem["drxs), mcd), mcd, vbTrue, , vbFalse)
                         //c#可以用    Math.Round(GetSafeDouble(sItem["DRXS"]), mcd).ToString();
-                        sItem["KYQD1"] = Math.Round(1350 * double.Parse(sItem["KYHZ1"]) / mMj, 1).ToString("0.0");
-                        sItem["KYQD2"] = Math.Round(1350 * double.Parse(sItem["KYHZ2"]) / mMj, 1).ToString("0.0");
-                        sItem["KYQD3"] = Math.Round(1350 * double.Parse(sItem["KYHZ3"]) / mMj, 1).ToString("0.0");
+                        sItem["KYQD1"] = Math.Round(1350 * GetSafeDouble(sItem["KYHZ1"].Trim()) / mMj, 1).ToString("0.0");
+                        sItem["KYQD2"] = Math.Round(1350 * GetSafeDouble(sItem["KYHZ2"].Trim()) / mMj, 1).ToString("0.0");
+                        sItem["KYQD3"] = Math.Round(1350 * GetSafeDouble(sItem["KYHZ3"].Trim()) / mMj, 1).ToString("0.0");
                         mlongStr = sItem["KYQD1"].ToString() + "," + sItem["KYQD2"].ToString() + "," + sItem["KYQD3"].ToString();
                         mtmpArray = mlongStr.Split(',').ToList();
                         for (int vp = 0; vp < 3; vp++)
                         {
-                            mkyqdArray.Add(double.Parse(mtmpArray[vp]));
+                            mkyqdArray.Add(GetSafeDouble(mtmpArray[vp]));
                         }
                         mkyqdArray.Sort();
                         mMaxKyqd = mkyqdArray[2];
                         mMinKyqd = mkyqdArray[0];
                         mMidKyqd = mkyqdArray[1];
-                        mAvgKyqd = Math.Round(mkyqdArray.Average(),2);
+                        mAvgKyqd = Math.Round(mkyqdArray.Average(), 2);
 
                         jsbeizhu = "";
                         sItem["MIDAVG"] = "0";
@@ -134,8 +134,8 @@ namespace Calculates
                                 }
                                 if (mSz != 0)
                                 {
-                                    sItem["DDSJQD"] = Math.Round(double.Parse(sItem["KYPJ"]) / mSz * 100, 0).ToString();
-                                    if (double.Parse(sItem["DDSJQD"]) <= mQdyq)
+                                    sItem["DDSJQD"] = Math.Round(GetSafeDouble(sItem["KYPJ"]) / mSz * 100, 0).ToString();
+                                    if (GetSafeDouble(sItem["DDSJQD"]) <= mQdyq)
                                     {
                                         itemHG = false;
                                         mAllHg = false;
@@ -153,8 +153,8 @@ namespace Calculates
                                 }
                                 if (mSz != 0)
                                 {
-                                    sItem["DDSJQD"] = Math.Round(double.Parse(sItem["KYPJ"]) / mSz * 100, 0).ToString();
-                                    if (double.Parse(sItem["DDSJQD"]) <= mQdyq)
+                                    sItem["DDSJQD"] = Math.Round(GetSafeDouble(sItem["KYPJ"]) / mSz * 100, 0).ToString();
+                                    if (GetSafeDouble(sItem["DDSJQD"]) <= mQdyq)
                                     {
                                         itemHG = false;
                                         mAllHg = false;
@@ -169,8 +169,8 @@ namespace Calculates
                                 sItem["KYPJ"] = Math.Round(mAvgKyqd, 1).ToString();
                                 if (mSz != 0)
                                 {
-                                    sItem["DDSJQD"] = Math.Round(double.Parse(sItem["KYPJ"]) / mSz * 100, 0).ToString();
-                                    if (double.Parse(sItem["DDSJQD"]) <= mQdyq)
+                                    sItem["DDSJQD"] = Math.Round(GetSafeDouble(sItem["KYPJ"]) / mSz * 100, 0).ToString();
+                                    if (GetSafeDouble(sItem["DDSJQD"]) <= mQdyq)
                                     {
                                         itemHG = false;
                                         mAllHg = false;
@@ -192,7 +192,7 @@ namespace Calculates
                     #endregion
                 }
 
-                if ("无效"==sItem["KYPJ"])
+                if ("无效" == sItem["KYPJ"])
                 {
                     jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
                 }

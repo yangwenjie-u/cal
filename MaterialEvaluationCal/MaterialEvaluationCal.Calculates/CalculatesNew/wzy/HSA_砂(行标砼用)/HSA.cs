@@ -296,6 +296,20 @@ namespace Calculates
                         mFJSYB5_2 = Round(GetSafeDouble(sitem["SYZL5_2"]) / msyzl * 100, 1);
                         mFJSYB6_2 = Round(GetSafeDouble(sitem["SYZL6_2"]) / msyzl * 100, 1);
                         mFJSYB7_2 = Round(GetSafeDouble(sitem["DPZL_2"]) / msyzl * 100, 1);
+                        sitem["FJSY1_1"] = mFJSYB1.ToString("0.0");
+                        sitem["FJSY1_2"] = mFJSYB2.ToString("0.0");
+                        sitem["FJSY1_3"] = mFJSYB3.ToString("0.0");
+                        sitem["FJSY1_4"] = mFJSYB4.ToString("0.0");
+                        sitem["FJSY1_5"] = mFJSYB5.ToString("0.0");
+                        sitem["FJSY1_6"] = mFJSYB6.ToString("0.0");
+                        sitem["FJSY1_7"] = mFJSYB7.ToString("0.0");
+                        sitem["FJSY2_1"] = mFJSYB1_2.ToString("0.0");
+                        sitem["FJSY2_2"] = mFJSYB2_2.ToString("0.0");
+                        sitem["FJSY2_3"] = mFJSYB3_2.ToString("0.0");
+                        sitem["FJSY2_4"] = mFJSYB4_2.ToString("0.0");
+                        sitem["FJSY2_5"] = mFJSYB5_2.ToString("0.0");
+                        sitem["FJSY2_6"] = mFJSYB6_2.ToString("0.0");
+                        sitem["FJSY2_7"] = mFJSYB7_2.ToString("0.0");
                     }
                     mljsyb1 = Round(mFJSYB1, 1);
                     mljsyb2 = Round((mFJSYB1 + mFJSYB2), 1);
@@ -304,6 +318,13 @@ namespace Calculates
                     mljsyb5 = Round((mFJSYB1 + mFJSYB2 + mFJSYB3 + mFJSYB4 + mFJSYB5), 1);
                     mljsyb6 = Round((mFJSYB1 + mFJSYB2 + mFJSYB3 + mFJSYB4 + mFJSYB5 + mFJSYB6), 1);
                     mljsyb7 = Round((mFJSYB1 + mFJSYB2 + mFJSYB3 + mFJSYB4 + mFJSYB5 + mFJSYB6 + mFJSYB7), 1);
+                    sitem["LJSY1_1"] = mljsyb1.ToString("0.0");
+                    sitem["LJSY1_2"] = mljsyb2.ToString("0.0");
+                    sitem["LJSY1_3"] = mljsyb3.ToString("0.0");
+                    sitem["LJSY1_4"] = mljsyb4.ToString("0.0");
+                    sitem["LJSY1_5"] = mljsyb5.ToString("0.0");
+                    sitem["LJSY1_6"] = mFJSYB6_2.ToString("0.0");
+                    sitem["LJSY1_7"] = mFJSYB7_2.ToString("0.0");
                     mljsyb1_2 = Round((mFJSYB1_2), 1);
                     mljsyb2_2 = Round((mFJSYB1_2 + mFJSYB2_2), 1);
                     mljsyb3_2 = Round((mFJSYB1_2 + mFJSYB2_2 + mFJSYB3_2), 1);
@@ -311,13 +332,21 @@ namespace Calculates
                     mljsyb5_2 = Round((mFJSYB1_2 + mFJSYB2_2 + mFJSYB3_2 + mFJSYB4_2 + mFJSYB5_2), 1);
                     mljsyb6_2 = Round((mFJSYB1_2 + mFJSYB2_2 + mFJSYB3_2 + mFJSYB4_2 + mFJSYB5_2 + mFJSYB6_2), 1);
                     mljsyb7_2 = Round((mFJSYB1_2 + mFJSYB2_2 + mFJSYB3_2 + mFJSYB4_2 + mFJSYB5_2 + mFJSYB6_2 + mFJSYB7_2), 1);
-                    sitem["LJSYB1_PJ"] = Round((mljsyb1 + mljsyb1_2) / 2, 0).ToString();
-                    sitem["LJSYB2_PJ"] = Round((mljsyb2 + mljsyb2_2) / 2, 0).ToString();
-                    sitem["LJSYB3_PJ"] = Round((mljsyb3 + mljsyb3_2) / 2, 0).ToString();
-                    sitem["LJSYB4_PJ"] = Round((mljsyb4 + mljsyb4_2) / 2, 0).ToString();
-                    sitem["LJSYB5_PJ"] = Round((mljsyb5 + mljsyb5_2) / 2, 0).ToString();
-                    sitem["LJSYB6_PJ"] = Round((mljsyb6 + mljsyb6_2) / 2, 0).ToString();
-                    sitem["LJSYB7_PJ"] = Round((mljsyb7 + mljsyb7_2) / 2, 0).ToString();
+                    sitem["LJSY2_1"] = mljsyb1_2.ToString("0.0");
+                    sitem["LJSY2_2"] = mljsyb2_2.ToString("0.0");
+                    sitem["LJSY2_3"] = mljsyb3_2.ToString("0.0");
+                    sitem["LJSY2_4"] = mljsyb4_2.ToString("0.0");
+                    sitem["LJSY2_5"] = mljsyb5_2.ToString("0.0");
+                    sitem["LJSY2_6"] = mljsyb6_2.ToString("0.0");
+                    sitem["LJSY2_7"] = mljsyb7_2.ToString("0.0");
+                    //最终筛余
+                    sitem["LJSYB1_PJ"] = Round((mljsyb1 + mljsyb1_2) / 2, 0).ToString("0");
+                    sitem["LJSYB2_PJ"] = Round((mljsyb2 + mljsyb2_2) / 2, 0).ToString("0");
+                    sitem["LJSYB3_PJ"] = Round((mljsyb3 + mljsyb3_2) / 2, 0).ToString("0");
+                    sitem["LJSYB4_PJ"] = Round((mljsyb4 + mljsyb4_2) / 2, 0).ToString("0");
+                    sitem["LJSYB5_PJ"] = Round((mljsyb5 + mljsyb5_2) / 2, 0).ToString("0");
+                    sitem["LJSYB6_PJ"] = Round((mljsyb6 + mljsyb6_2) / 2, 0).ToString("0");
+                    sitem["LJSYB7_PJ"] = Round((mljsyb7 + mljsyb7_2) / 2, 0).ToString("0");
                     //判断累计筛余率是否满足标准
                     foreach (var mrsHS_item in mrsHS)
                     {
@@ -383,6 +412,8 @@ namespace Calculates
                     {
                         mxdms1 = Round((((mljsyb2 + mljsyb3 + mljsyb4 + mljsyb5 + mljsyb6) - mljsyb1 * 5) / (100 - mljsyb1)), 2);
                         mxdms2 = Round((((mljsyb2_2 + mljsyb3_2 + mljsyb4_2 + mljsyb5_2 + mljsyb6_2) - mljsyb1_2 * 5) / (100 - mljsyb1_2)), 2);
+                        sitem["XDMS1"] = mxdms1.ToString("0.00");
+                        sitem["XDMS2"] = mxdms2.ToString("0.00");
                         sitem["XDMS"] = Round(((mxdms1 + mxdms2) / 2), 1).ToString();
                     }
                     if (GetSafeDouble(sitem["XDMS"]) >= 3.1 && GetSafeDouble(sitem["XDMS"]) <= 3.7)
@@ -397,7 +428,6 @@ namespace Calculates
                     {
                         sitem["XDMSPD"] = "不符合";
                     }
-
 
                     if (Math.Abs(mxdms1 - mxdms2) > 0.2)
                     {
@@ -812,7 +842,7 @@ namespace Calculates
                                 sitem["HNLPD"] = "两次结果之差超过0.5%需重新取样试验";
                                 sitem["HNLPD"] = "重新试验";
                             }
-                                
+
                         }
                     }
                     else
@@ -864,7 +894,7 @@ namespace Calculates
                     #region 堆积密度
                     if (jcxm.Contains("、堆积密度、"))
                     {
-                        
+
                         //紧密密度|| 堆积密度 = （容量桶和试样总质量m2(kg)-容量桶的质量m1(kg) ）/容量桶体积L  * 1000 精确到10kg/m³
                         if (Conversion.Val(sitem["DJMDV"]) != 0)
                         {
@@ -1029,7 +1059,7 @@ namespace Calculates
                     sitem["XSLPD"] = "";
                     if (jcxm.Contains("、吸水率、"))
                     {
-                        
+
                         //吸水率% = 500 -（烘干烧杯与试样总质量m2（g） -烧杯质量m1（g））/烘干烧杯与试样总质量m2（g） -烧杯质量m1（g）  *  100%
                         double mxsl1 = 0;
                         double mxsl2 = 0;
@@ -1270,11 +1300,11 @@ namespace Calculates
             {
                 mitem["JCJG"] = "不合格";
                 //mitem["JCJGMS"] = "该组试样所检项目不符合上述标准要求。";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + "检测项目"+ jcxmBhg.TrimEnd('、') + ",不符合≤25的混凝土用砂。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + "检测项目" + jcxmBhg.TrimEnd('、') + ",不符合≤25的混凝土用砂。";
                 //依据+判定标准，+所属项目属于+#F:s_HSA.JPPD#  +#F:s_HSA.XDMSPD#，符合≤25（强度等级）的混凝土用砂
             }
-                #endregion
+            #endregion
             /************************ 代码结束 *********************/
-            }
         }
     }
+}

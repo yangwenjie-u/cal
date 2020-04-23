@@ -49,13 +49,13 @@ namespace Calculates
             //            LQ = 28;
             //        }
             //    }
-            //    var KYHZ1 = Convert.ToDouble(S_HNT["KYHZ1"]);
-            //    var KYHZ2 = Convert.ToDouble(S_HNT["KYHZ2"]);
-            //    var KYHZ3 = Convert.ToDouble(S_HNT["KYHZ3"]);
+            //    var KYHZ1 = GetSafeDouble(S_HNT["KYHZ1"]);
+            //    var KYHZ2 = GetSafeDouble(S_HNT["KYHZ2"]);
+            //    var KYHZ3 = GetSafeDouble(S_HNT["KYHZ3"]);
             //    var SJCC = S_HNT["SJCC"];
             //    var SJDJ = S_HNT["SJDJ"];
 
-            //    var SJCCDouble = Convert.ToDouble(SJCC);
+            //    var SJCCDouble = GetSafeDouble(SJCC);
             //    var SJCCMJ = SJCCDouble * SJCCDouble;
 
             //    var HSXS = 1.0;
@@ -103,8 +103,8 @@ namespace Calculates
             //        {
             //            var sz = DJ["SZ"].Trim();
             //            var qdyq = DJ["QDYQ"].Trim();
-            //            mSz = Convert.ToDouble(sz);
-            //            mQdyq = Convert.ToDouble(qdyq);
+            //            mSz = GetSafeDouble(sz);
+            //            mQdyq = GetSafeDouble(qdyq);
             //        }
             //    }
 
@@ -118,10 +118,10 @@ namespace Calculates
             //        KYPJ = MiddleKYQD.ToString("0.0");
             //        if (mSz > 0)
             //        {
-            //            ddsjqd = Math.Round(Convert.ToDouble(KYPJ) / mSz * 100, 0).ToString();
+            //            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
             //            if (mQdyq > 0)
             //            {
-            //                if (Convert.ToDouble(ddsjqd) > mQdyq)
+            //                if (GetSafeDouble(ddsjqd) > mQdyq)
             //                {
             //                    jcjg = "合格";
             //                }
@@ -154,10 +154,10 @@ namespace Calculates
             //        KYPJ = MiddleKYQD.ToString("0.0");
             //        if (mSz > 0)
             //        {
-            //            ddsjqd = Math.Round(Convert.ToDouble(KYPJ) / mSz * 100, 0).ToString();
+            //            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
             //            if (mQdyq > 0)
             //            {
-            //                if (Convert.ToDouble(ddsjqd) > mQdyq)
+            //                if (GetSafeDouble(ddsjqd) > mQdyq)
             //                {
             //                    jcjg = "合格";
             //                }
@@ -198,10 +198,10 @@ namespace Calculates
             //        hzcase = 4;
             //        if (mSz > 0)
             //        {
-            //            ddsjqd = Math.Round(Convert.ToDouble(KYPJ) / mSz * 100, 0).ToString();
+            //            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
             //            if (mQdyq > 0)
             //            {
-            //                if (Convert.ToDouble(ddsjqd) > mQdyq)
+            //                if (GetSafeDouble(ddsjqd) > mQdyq)
             //                {
             //                    jcjg = "合格";
             //                }
@@ -297,7 +297,7 @@ namespace Calculates
                 var mrsgg = extraGG.FirstOrDefault(x => x["MC"].Trim().Equals(sItem["GGXH"], StringComparison.OrdinalIgnoreCase));
                 if (mrsgg != null)
                 {
-                    sItem["SJCC"] = Double.Parse(mrsgg["CD"]).ToString("0");
+                    sItem["SJCC"] = GetSafeDouble(mrsgg["CD"]).ToString("0");
                     sItem["HSXS"] = mrsgg["HSXS"];
                 }
                 else
@@ -331,13 +331,13 @@ namespace Calculates
                     }
                 }
 
-                var KYHZ1 = Convert.ToDouble(sItem["KYHZ1"]);
-                var KYHZ2 = Convert.ToDouble(sItem["KYHZ2"]);
-                var KYHZ3 = Convert.ToDouble(sItem["KYHZ3"]);
+                var KYHZ1 = GetSafeDouble(sItem["KYHZ1"]);
+                var KYHZ2 = GetSafeDouble(sItem["KYHZ2"]);
+                var KYHZ3 = GetSafeDouble(sItem["KYHZ3"]);
                 var SJCC = sItem["SJCC"];
                 var SJDJ = sItem["SJDJ"];
 
-                var SJCCDouble = Convert.ToDouble(SJCC);
+                var SJCCDouble = GetSafeDouble(SJCC);
                 var SJCCMJ = SJCCDouble * SJCCDouble;
 
                 var HSXS = 1.0;
@@ -391,8 +391,8 @@ namespace Calculates
                     {
                         var sz = DJ["SZ"].Trim();
                         var qdyq = DJ["QDYQ"].Trim();
-                        mSz = Convert.ToDouble(sz);
-                        mQdyq = Convert.ToDouble(qdyq);
+                        mSz = GetSafeDouble(sz);
+                        mQdyq = GetSafeDouble(qdyq);
                     }
                     else
                     {
@@ -417,10 +417,10 @@ namespace Calculates
                         KYPJ = MiddleKYQD.ToString("0.0");
                         if (mSz > 0)
                         {
-                            ddsjqd = Math.Round(Convert.ToDouble(KYPJ) / mSz * 100, 0).ToString();
+                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
                             if (mQdyq > 0)
                             {
-                                if (Convert.ToDouble(ddsjqd) > mQdyq)
+                                if (GetSafeDouble(ddsjqd) > mQdyq)
                                 {
                                     jcjg = "合格";
                                 }
@@ -459,10 +459,10 @@ namespace Calculates
                         hzcase = 4;
                         if (mSz > 0)
                         {
-                            ddsjqd = Math.Round(Convert.ToDouble(KYPJ) / mSz * 100, 0).ToString();
+                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
                             if (mQdyq > 0)
                             {
-                                if (Convert.ToDouble(ddsjqd) > mQdyq)
+                                if (GetSafeDouble(ddsjqd) > mQdyq)
                                 {
                                     jcjg = "合格";
                                 }
@@ -495,10 +495,10 @@ namespace Calculates
                         KYPJ = MiddleKYQD.ToString("0.0");
                         if (mSz > 0)
                         {
-                            ddsjqd = Math.Round(Convert.ToDouble(KYPJ)  / mSz * 100, 0).ToString();
+                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
                             if (mQdyq > 0)
                             {
-                                if (Convert.ToDouble(ddsjqd) > mQdyq)
+                                if (GetSafeDouble(ddsjqd) > mQdyq)
                                 {
                                     jcjg = "合格";
                                 }
@@ -529,10 +529,10 @@ namespace Calculates
                         KYPJ = MiddleKYQD.ToString("0.0");
                         if (mSz > 0)
                         {
-                            ddsjqd = Math.Round(Convert.ToDouble(KYPJ) / mSz * 100, 0).ToString();
+                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
                             if (mQdyq > 0)
                             {
-                                if (Convert.ToDouble(ddsjqd) > mQdyq)
+                                if (GetSafeDouble(ddsjqd) > mQdyq)
                                 {
                                     jcjg = "合格";
                                 }
@@ -571,10 +571,10 @@ namespace Calculates
                         hzcase = 4;
                         if (mSz > 0)
                         {
-                            ddsjqd = Math.Round(Convert.ToDouble(KYPJ)/ mSz * 100, 0).ToString();
+                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
                             if (mQdyq > 0)
                             {
-                                if (Convert.ToDouble(ddsjqd) > mQdyq)
+                                if (GetSafeDouble(ddsjqd) > mQdyq)
                                 {
                                     jcjg = "合格";
                                 }
@@ -611,11 +611,11 @@ namespace Calculates
 
                 if (KYPJ == "试验结果无效")
                 {
-                    jgsm = "该组试样强度代表值无效。";
+                    jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
                 }
                 else
                 {
-                    jgsm = "该组试样强度代表值" + sItem["KYPJ"] + "MPa，" + "达到设计强度" + sItem["DDSJQD"] + "%。";
+                    jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sItem["KYPJ"] + "MPa，" + "达到设计强度" + sItem["DDSJQD"] + "%。";
                 }
 
             }
@@ -626,6 +626,7 @@ namespace Calculates
             }
             if (!data.ContainsKey("M_HNT"))
             {
+
                 data["M_HNT"] = new List<IDictionary<string, string>>();
             }
 

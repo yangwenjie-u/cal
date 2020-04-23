@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace Calculates
 {
@@ -24,13 +25,16 @@ namespace Calculates
             var MItem = data["M_WCX"];
             //var EItem = data["E_WCX"];
             var mItem = MItem[0];
+            double sum = 0;
 
             foreach (var sItem in SItem)
             {
 
                 bool jcjgHg = true;
-                double md1, md2, md3, pjmd, sum, md, sStzl, sSmd, sSzl1, sSzl2, sGtzl1, sGtzl2, sHsl1, sHsl2;
+                double md1, md2, md3, pjmd,  md, sStzl, sSmd, sSzl1, sSzl2, sGtzl1, sGtzl2, sHsl1, sHsl2,pcxs,fHsl;
                 int hggs = 0;
+                int count = 0;
+
                 #region
                 //for (int i = 1; i <= 1; i++)
                 //{
@@ -71,6 +75,92 @@ namespace Calculates
                 //}
                 #endregion
 
+                //计算 
+                sum = 0;
+                double sysl = GetSafeDouble(sItem["SYSL"]);
+                for (int i = 1; i <= sysl; i++)
+                {
+                    if (IsNumeric(sItem["YSQSJZL" + i].Trim()) && IsNumeric(sItem["JSQSJZL" + i].Trim()) && IsNumeric(sItem["JSHSJZL" + i].Trim()))
+                    {
+                        //养生期质量损失 = 养生前试件质量 - 浸水前试件质量  取整
+                        sItem["YSQZLSS" + i] = Round(GetSafeDouble(sItem["YSQSJZL" + i].Trim()) - GetSafeDouble(sItem["JSQSJZL" + i].Trim()), 0).ToString("0");
+                        //浸水后吸水量  = 浸水后试件质量 - 浸水前试件质量  取整
+                        sItem["JSHXSL" + i] = Round(GetSafeDouble(sItem["JSHSJZL" + i].Trim()) - GetSafeDouble(sItem["JSQSJZL" + i].Trim()), 0).ToString("0");
+                        //抗压强度 = 试样破坏时最大压力（N）/ 试样破坏截面积
+                        sItem["KYQD" + i] = Round((GetSafeDouble(sItem["ZDYL" + i].Trim()) * 1000) / ((GetSafeDouble(sItem["SJZJ" + i].Trim()) * GetSafeDouble(sItem["SJZJ" + i].Trim()) * 3.14159) / 4), 1).ToString("0.0");
+                        sum = sum + GetSafeDouble(sItem["KYQD" + i]);
+                    }
+                    else
+                    {
+                        throw new SystemException("试验数据录入有误");
+                    }
+                }
+                //平均抗压强度
+                sItem["PJKYQD"] = Round(sum / sysl, 1).ToString("0.0");
+                //计算标准差
+                sum = 0;
+                for (int i = 1; i <= sysl; i++)
+                {
+                    sum = sum + Math.Pow(GetSafeDouble(sItem["KYQD" + i]) - GetSafeDouble(sItem["PJKYQD"]) , 2);
+                }
+                sItem["BZC"] = Round(Math.Sqrt(sum / (sysl - 1)), 2).ToString("0.00");
+                //三倍均方差剔除异常值
+                sum = 0;
+                fHsl = 0;
+                for (int i = 1; i <= sysl; i++)
+                {
+                    if (GetSafeDouble(sItem["BZC"]) * 3 >= Math.Abs( GetSafeDouble(sItem["KYQD"+i]) - GetSafeDouble(sItem["PJKYQD"])))
+                    {
+                        sum = sum + GetSafeDouble(sItem["KYQD" + i]);
+                        fHsl++;
+                    }
+                    else
+                    {
+                        sItem["KYQD" + i] = "3倍均方差剔除";
+                        count++;
+                    }
+                }
+                if (sysl == 6 && count > 1)
+                {
+                    sItem["PJKYQD"] = "重做";
+                }
+                else
+                {
+                    sItem["PJKYQD"] = Round(sum / fHsl, 1).ToString("0.0");
+                }
+                if (sysl == 9 && count > 2)
+                {
+                    sItem["PJKYQD"] = "重做";
+                }
+                else
+                {
+                    sItem["PJKYQD"] = Round(sum / fHsl, 1).ToString("0.0");
+                }
+                if (sysl == 13 && count > 3)
+                {
+                    sItem["PJKYQD"] = "重做";
+                }
+                else
+                {
+                    sItem["PJKYQD"] = Round(sum / fHsl, 1).ToString("0.0");
+                }
+
+                //偏差系数
+                pcxs = 100 * Round(GetSafeDouble(sItem["BZC"]) / GetSafeDouble(sItem["PJKYQD"]), 3);
+                sItem["PCXS"] = pcxs.ToString("0.0");
+                //有效试件判定
+                if (sysl == 6 && GetSafeDouble(sItem["PCXS"]) > 6)
+                {
+                    sItem["PJKYQD"] =  "无效试件，重做";
+                }
+                if (sysl == 9 && GetSafeDouble(sItem["PCXS"]) > 10)
+                {
+                    sItem["PJKYQD"] = "无效试件，重做";
+                }
+                if (sysl == 13 && GetSafeDouble(sItem["PCXS"]) > 15)
+                {
+                    sItem["PJKYQD"] = "无效试件，重做";
+                }
                 //计算RC值
                 //sItem["CQS"] = EItem.Count.ToString();
                 md1 = GetSafeDouble(sItem["PJKYQD"]);
@@ -85,7 +175,8 @@ namespace Calculates
                 }
                 pjmd = Round(md1 - 1.645 * md2, 1);
                 sItem["RC0_95"] = Round(pjmd, 1).ToString("0.0");
-                md1 = Round(GetSafeDouble(sItem["SJQD"]), 1);
+                string[] sArray =  sItem["SJQD"].Split('>');
+                md1 = Round(GetSafeDouble(sArray[1]), 1);
                 md2 = Round(GetSafeDouble(sItem["PCXS"]), 1);
                 //计算得到的偏差系数为百分数
                 md2 = md2 / 100;

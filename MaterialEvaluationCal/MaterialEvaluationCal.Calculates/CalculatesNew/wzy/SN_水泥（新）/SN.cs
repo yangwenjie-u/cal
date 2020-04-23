@@ -71,6 +71,7 @@ namespace Calculates
             //}
             mitem["SYZT"] = "0";
             mjcxm = "、";
+            bool bgmbFlag = false;
             foreach (var sitem in SItem)
             {
                 /*水灰比计算 用水量 / 水泥量  取两位小数*/
@@ -1128,6 +1129,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、强度（28天）、"))
                 {
+                    bgmbFlag = true;
                     if (Conversion.Val(sitem["KYPJ3"]) != 0)
                     {
                         if (Conversion.Val(sitem["KYPJ28"]) == 0)
@@ -1162,7 +1164,7 @@ namespace Calculates
                 mitem["JCJG"] = "不合格";
             mitem["JCJGMS"] = "";
             int mLQ = (GetSafeDateTime(mitem["SYRQ"]) - GetSafeDateTime(mitem["SYRQQ"])).Days;
-            if (mitem["SYZT"] == "1")
+            if (mitem["SYZT"] == "1" && bgmbFlag)
             {
                 if (mLQ == 3)
                 {

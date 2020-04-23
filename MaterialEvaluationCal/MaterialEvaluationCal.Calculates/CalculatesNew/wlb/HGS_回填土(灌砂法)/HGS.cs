@@ -44,6 +44,7 @@ namespace Calculates
             mAllHg = true;
             vi = 0;
             mitem["JCJGMS"] = "";
+            bool sign = true;
             foreach (var sitem in SItem)
             {
                 //sitem["GCBW"] = mitem["GCBW"];//报告展示用
@@ -90,18 +91,37 @@ namespace Calculates
                 {
                     if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
-                        //if ("不用套环法" == sitem["YWTH"])
-                        //{
+                        sign = true;
+                        sign = IsNumeric(sitem["RQHSZLMY1"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["RQHSZLMY1_2"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["LSMD"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["RQANDSYZLMY4"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["RQANDSYZLMY4_2"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["HJGT1"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["HJGT2"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["HZL1"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["HZL2"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["HJST1"].Trim()) ? sign : false;
+                        sign = IsNumeric(sitem["HJST2"].Trim()) ? sign : false;
+                        if (sign)
+                        {
+                            //if ("不用套环法" == sitem["YWTH"])
+                            //{
                             /*不用套环法*/
                             //试坑内耗砂质量g = 量砂容器质量加原有量砂质量my1（g）- 量砂容器质量加剩余量砂质量my7（g）
                             sitem["SKNHSZL"] = (GetSafeDouble(sitem["RQHSZLMY1"].Trim()) - GetSafeDouble(sitem["RQHSZLMY7"].Trim())).ToString();
+                            sitem["SKNHSZL2"] = (GetSafeDouble(sitem["RQHSZLMY1_2"].Trim()) - GetSafeDouble(sitem["RQHSZLMY7_2"].Trim())).ToString();
+                            //试坑体积  试坑内耗砂质量 / 量砂密度
+                            sitem["SHIKENGTJ"] = Round(GetSafeDouble(sitem["SKNHSZL"]) / GetSafeDouble(sitem["LSMD"].Trim()), 2).ToString("0.00");
+                            sitem["SHIKENGTJ2"] = Round(GetSafeDouble(sitem["SKNHSZL2"]) / GetSafeDouble(sitem["LSMD"].Trim()), 2).ToString("0.00");
+
                             //试样质量m0 =  试验质量加试样容器质量my4(1)（g）  -  试样容器质量my6(1)（g）     平行试验
-                            sitem["SYZLM0"] = (GetSafeDouble(sitem["RQANDSYZLMY4"].Trim()) - GetSafeDouble(sitem["SYRQZLMY6"].Trim())).ToString();
-                            sitem["SYZLM02"] = (GetSafeDouble(sitem["RQANDSYZLMY4_2"].Trim()) - GetSafeDouble(sitem["SYRQZLMY6_2"].Trim())).ToString();
+                            //sitem["SYZLM0"] = (GetSafeDouble(sitem["RQANDSYZLMY4"].Trim()) - GetSafeDouble(sitem["SYRQZLMY6"].Trim())).ToString();
+                            //sitem["SYZLM02"] = (GetSafeDouble(sitem["RQANDSYZLMY4_2"].Trim()) - GetSafeDouble(sitem["SYRQZLMY6_2"].Trim())).ToString();
 
                             //试样湿密度 = 试样质量m0/试坑内耗砂质量g/量砂密度g/cm3
-                            sitem["SYMD"] = Round(GetSafeDouble(sitem["SYZLM0"].Trim()) / GetSafeDouble(sitem["SKNHSZL"].Trim()) / GetSafeDouble(sitem["LSMD"].Trim()), 2).ToString("0.00");
-                            sitem["SYMD2"] = Round(GetSafeDouble(sitem["SYZLM02"].Trim()) / GetSafeDouble(sitem["SKNHSZL"].Trim()) / GetSafeDouble(sitem["LSMD"].Trim()), 2).ToString("0.00");
+                            sitem["SYMD"] = Round(GetSafeDouble(sitem["RQANDSYZLMY4"].Trim()) / GetSafeDouble(sitem["SHIKENGTJ"]), 2).ToString("0.00");
+                            sitem["SYMD2"] = Round(GetSafeDouble(sitem["RQANDSYZLMY4_2"].Trim()) / GetSafeDouble(sitem["SHIKENGTJ2"]), 2).ToString("0.00");
 
                             //含水率计算
                             sitem["GTZL1"] = (GetSafeDouble(sitem["HJGT1"].Trim()) - GetSafeDouble(sitem["HZL1"].Trim())).ToString("0.0000"); //干土质量计算
@@ -122,47 +142,52 @@ namespace Calculates
                             sitem["SYGMD2"] = Round(GetSafeDouble(sitem["SYMD2"]) / (1 + 0.01 * GetSafeDouble(sitem["PJHSL"])), 2).ToString("0.00");
                             //平均干密度
                             sitem["SYPJGMD"] = Round((GetSafeDouble(sitem["SYGMD1"]) + GetSafeDouble(sitem["SYGMD2"])) / 2, 2).ToString("0.00");
-                        //}
-                        //else
-                        //{
+                            //}
+                            //else
+                            //{
 
-                        //}
-                       
+                            //}
 
-                        if (Conversion.Val(sitem["ZDGMD"]) != 0)
-                        {
-                            //干密度 / 最大干密度 = 压实度
-                            double mysd = Round(100 * (GetSafeDouble(sitem["SYPJGMD"]) / GetSafeDouble(sitem["ZDGMD"].Trim())), 0);
-                            sitem["YSD"] = mysd.ToString("0");
-                        }
-                        else
-                            sitem["YSD"] = "0";
-                        if (GetSafeDouble(sitem["SJYSD"]) == -1 && (GetSafeDouble(sitem["ZDGMD"].Trim())) > 0)
-                        {
-                            if (GetSafeDouble(sitem["SYPJGMD"]) >= GetSafeDouble(sitem["ZDGMD"].Trim()))
+
+                            if (Conversion.Val(sitem["ZDGMD"]) != 0)
                             {
-                                vi = vi + 1;
-                                sitem["DZHGPD"] = "符合要求";
+                                //干密度 / 最大干密度 = 压实度
+                                double mysd = Round(100 * (GetSafeDouble(sitem["SYPJGMD"]) / GetSafeDouble(sitem["ZDGMD"].Trim())), 1);
+                                sitem["YSD"] = mysd.ToString("0.0");
+                            }
+                            else
+                                sitem["YSD"] = "0";
+                            if (GetSafeDouble(sitem["SJYSD"]) == -1 && (GetSafeDouble(sitem["ZDGMD"].Trim())) > 0)
+                            {
+                                if (GetSafeDouble(sitem["SYPJGMD"]) >= GetSafeDouble(sitem["ZDGMD"].Trim()))
+                                {
+                                    vi = vi + 1;
+                                    sitem["DZHGPD"] = "符合要求";
+                                }
+                                else
+                                {
+                                    sitem["DZHGPD"] = "不合格";
+                                }
+
                             }
                             else
                             {
-                                sitem["DZHGPD"] = "不合格";
+                                if (Conversion.Val(sitem["YSD"]) >= Conversion.Val(sitem["SJYSD"]))
+                                {
+                                    vi = vi + 1;
+                                    sitem["DZHGPD"] = "符合要求";
+                                }
+                                else
+                                {
+                                    sitem["DZHGPD"] = "不合格";
+                                }
                             }
-
                         }
                         else
                         {
-                            if (GetSafeDouble(sitem["SYPJGMD"]) >= GetSafeDouble(sitem["SJYSD"].Trim()))
-                            {
-                                vi = vi + 1;
-                                sitem["DZHGPD"] = "符合要求";
-                            }
-                            else
-                            {
-                                sitem["DZHGPD"] = "不合格";
-                            }
+                            throw new SystemException("数据录入有误"); 
                         }
-
+                      
                     }
                     else
                     {

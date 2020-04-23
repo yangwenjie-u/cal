@@ -231,7 +231,15 @@ namespace Calculates
                         {
                             //计算回弹最后值HTZHZ
                             mHtzhz = calc_htzhz(mrssjTable_Filter);
-                            mHtqdz = Round(0.75 * mHtzhz + 0.0079 * mHtzhz * mHtzhz - 7.83 + GetSafeDouble(sitem["QXHTXZXS"]), 1);
+                            if (MItem[0]["HTXH"] == "4.5J")
+                            {
+                                mHtqdz = Round(0.75 * mHtzhz + 0.0079 * mHtzhz * mHtzhz - 7.83 + GetSafeDouble(sitem["QXHTXZXS"]), 1);
+                            }
+                            else if (MItem[0]["HTXH"] == "5.5J")
+                            {
+                                mHtqdz = Round(2.51246 * Math.Pow(mHtzhz,0.889), 1);
+                            }
+                            mrssjTable_Filter["HTQDZ"] = mHtqdz.ToString("0.0");
                             s_Htqdz = s_Htqdz + mHtqdz;
                             if (mHtqdz < 20)
                             {
@@ -422,18 +430,18 @@ namespace Calculates
                     mAllHg = false;
                 else
                     mAllHg = true;
-                MItem[0]["JCJGMS"] = "该批构件混凝土强度" + MItem[0]["QDTDZ"] + "MPa，" + "占设计强度" + MItem[0]["DDSJQD"] + " %。";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该批构件混凝土强度" + MItem[0]["QDTDZ"] + "MPa，" + "占设计强度" + MItem[0]["DDSJQD"] + " %。";
             }
             else
             {
                 if (Conversion.Val(MItem[0]["DDSJQD"]) > 100)
                 {
-                    MItem[0]["JCJGMS"] = "该次检测混凝土强度全部大于等于设计强度。";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度全部大于等于设计强度。";
                     mAllHg = true;
                 }
                 else
                 {
-                    MItem[0]["JCJGMS"] = "该次检测混凝土强度部分小于设计强度。";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度部分小于设计强度。";
                     mAllHg = false;
                 }
             }

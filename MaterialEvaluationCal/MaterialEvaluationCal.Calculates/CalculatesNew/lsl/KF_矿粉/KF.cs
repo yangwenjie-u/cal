@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
+using System;
 
 namespace Calculates
 {
@@ -26,6 +28,8 @@ namespace Calculates
             var EKF_MD = data["EKF_MD"][0];
             var jcxmBhg = "";
             var jcxmCur = "";
+            //取水温密度修正值
+            var mrsDj = dataExtra["BZ_XJL_DJ"];
 
             foreach (var sItem in SItem)
             {
@@ -68,17 +72,32 @@ namespace Calculates
                         sItem["PJLJTGBFL_0075"] = Round((GetSafeDouble(sItem["LJTGBFL1_0075"]) + GetSafeDouble(sItem["LJTGBFL2_0075"])) / 2, 1).ToString("0.0");
 
                         //< 0.075mm筛孔含量
-                        sItem["SKHL_0075"] = Round(GetSafeDouble(sItem["PJLJTGBFL_0075"])/100 * GetSafeDouble(sItem["SYYL"]), 1).ToString("0.0");
+                        sItem["SKHL_0075"] = Round(GetSafeDouble(sItem["PJLJTGBFL_0075"]) / 100 * GetSafeDouble(sItem["SYYL"]), 1).ToString("0.0");
 
-                        //判定 0.6mm  0.15mm  0.015mm筛孔 平均累计通过率是否符合规范 BZZ_06   100%  BZZ_03 ----  BZZ_015  90~100  BZZ_0075  75-100
-                        string hgpd_015 = IsQualified(sItem["BZZ_015"],sItem["PJLJTGBFL_015"],true);
+                        //判定 0.6mm  0.15mm  0.015mm筛孔 平均累计通过率是否符合规范 BZZ_06   100%  BZZ_03 ----  BZZ_015  90～100  BZZ_0075  75～100
+                        if ("城市快速路、主干路" == sItem["YT"])
+                        {
+                            sItem["BZZ_06"] = "100";
+                            sItem["BZZ_03"] = "----";
+                            sItem["BZZ_015"] = "90～100";
+                            sItem["BZZ_0075"] = "75～100";
+                        }
+                        else
+                        {
+                            sItem["BZZ_06"] = "100";
+                            sItem["BZZ_03"] = "----";
+                            sItem["BZZ_015"] = "90～100";
+                            sItem["BZZ_0075"] = "70～100";
+                        }
+                        string hgpd_015 = IsQualified(sItem["BZZ_015"], sItem["PJLJTGBFL_015"], true);
                         string hgpd_0075 = IsQualified(sItem["BZZ_0075"], sItem["PJLJTGBFL_0075"], true);
-                        if (100 == GetSafeDouble(sItem["PJLJTGBFL_06"]) && "符合"== hgpd_015 && "符合" == hgpd_0075)
+                        if (100 == GetSafeDouble(sItem["PJLJTGBFL_06"]) && "符合" == hgpd_015 && "符合" == hgpd_0075)
                         {
                             sItem["SFPD"] = "合格";
                         }
                         else
                         {
+                            jcjgHg = false;
                             mAllHg = false;
                             sItem["SFPD"] = "不合格";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
@@ -103,6 +122,24 @@ namespace Calculates
                 #region 密度
                 if (jcxm.Contains("、密度、"))
                 {
+                    double wd1 = Conversion.Val(EKF_MD["WD1"]);
+                    double wd2 = Conversion.Val(EKF_MD["WD2"]);
+                    var mrsDj_Filter1 = mrsDj.FirstOrDefault(x => x["SW"] == wd1.ToString());
+                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["SW"] == wd2.ToString());
+                    if (null == mrsDj_Filter1 || null == mrsDj_Filter2)
+                    {
+                        sItem["JCJG"] = "不下结论";
+                        mAllHg = false;
+                        continue;
+                    }
+                    if ("城市快速路、主干路" == sItem["YT"])
+                    {
+                        sItem["G_MD"] = "≥2.50";
+                    }
+                    else
+                    {
+                        sItem["G_MD"] = "≥2.45";
+                    }
                     jcxmCur = "密度";
                     if (IsNumeric(EKF_MD["ZLQ1"]) && IsNumeric(EKF_MD["ZLQ2"]) && IsNumeric(EKF_MD["ZLH1"]) && IsNumeric(EKF_MD["ZLH2"])
                         && IsNumeric(EKF_MD["DSZ1"]) && IsNumeric(EKF_MD["DSZ2"]) && IsNumeric(EKF_MD["DSC1"]) && IsNumeric(EKF_MD["DSC2"]))
@@ -114,20 +151,28 @@ namespace Calculates
                         }
                         //平均密度
                         EKF_MD["MD"] = Round((GetSafeDouble(EKF_MD["MD1"]) + GetSafeDouble(EKF_MD["MD2"])) / 2, 3).ToString("0.000");
-                        double xdmd1 = Round(GetSafeDouble(EKF_MD["MD1"]) / GetSafeDouble(EKF_MD["WD1"]), 3);
-                        double xdmd2 = Round(GetSafeDouble(EKF_MD["MD2"]) / GetSafeDouble(EKF_MD["WD2"]), 3);
+                        double xdmd1 = Round(GetSafeDouble(EKF_MD["MD1"]) / GetSafeDouble(mrsDj_Filter1["SMD"]), 3);
+                        double xdmd2 = Round(GetSafeDouble(EKF_MD["MD2"]) / GetSafeDouble(mrsDj_Filter2["SMD"]), 3);
                         //平均相对密度
                         EKF_MD["XDMD"] = Round((xdmd1 + xdmd2) / 2, 3).ToString("0.000");
                         sItem["W_MD"] = EKF_MD["MD"];
 
                         sItem["MD_GH"] = IsQualified(sItem["G_MD"], sItem["W_MD"], true);
-                        if (sItem["MD_GH"] == "不符合") mAllHg = false;
-                        if (sItem["MD_GH"] == "不符合")
+                        if (Math.Abs( GetSafeDouble(EKF_MD["MD1"]) - GetSafeDouble(EKF_MD["MD2"])) > 0.01)
                         {
-                            mAllHg = false;
-                            sItem["MD_GH"] = "不合格";
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sItem["MD_GH"] = "两次试验差值大于0.01";
                         }
+                        else
+                        {
+                            if (sItem["MD_GH"] == "不符合")
+                            {
+                                jcjgHg = false;
+                                mAllHg = false;
+                                sItem["MD_GH"] = "不合格";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
+                        }
+
                     }
                     else
                     {
@@ -149,6 +194,7 @@ namespace Calculates
                     sItem["SXZS_GH"] = IsQualified(sItem["G_SXZS"], sItem["W_SXZS"], true);
                     if (sItem["SXZS_GH"] == "不符合")
                     {
+                        jcjgHg = false;
                         mAllHg = false;
                         sItem["SXZS_GH"] = "不合格";
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
@@ -162,67 +208,29 @@ namespace Calculates
                 }
                 #endregion
 
-                //MItem[0]["BHG_JCXM"] = bhg_jcxm;
-                //jsbeizhu = "";
-                //{
-                //    jsbeizhu = "该试样的检测结果详见报告。";
-                //}
-                //if (jcjgHg)
-                //{
-                //    sItem["JCJG"] = "合格";
-                //    MItem[0]["JCJG"] = "合格";
-                //}
-                //else
-                //{
-                //    sItem["JCJG"] = "不合格";
-                //    MItem[0]["JCJG"] = "不合格";
-                //}
-                //mAllHg = mAllHg & sItem["JCJG"] == "合格" ? true : false;
+                if (jcjgHg)
+                {
+                    sItem["JCJG"] = "合格";
+                }
+                else
+                {
+                    sItem["JCJG"] = "不合格";
+                }
             }
-            //if (mAllHg)
-            //{
-            //    MItem[0]["JCJG"] = "合格";
-            //}
-            //else
-            //{
-            //    MItem[0]["JCJG"] = "不合格";
-            //}
 
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样所检项目符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
 
-            //#region 添加最终报告
-            //if (mAllHg)
-            //{
-            //    mjcjg = "合格";
-            //}
-            //if (!data.ContainsKey("M_KF"))
-            //{
-            //    data["M_KF"] = new List<IDictionary<string, string>>();
-            //}
-            //var M_KF = data["M_KF"];
-            //if (M_KF.Count == 0)
-            //{
-            //    IDictionary<string, string> m = new Dictionary<string, string>();
-            //    m["JCJG"] = mjcjg;
-            //    m["JCJGMS"] = jsbeizhu;
-            //    M_KF.Add(m);
-            //}
-            //else
-            //{
-            //    M_KF[0]["JCJG"] = mjcjg;
-            //    M_KF[0]["JCJGMS"] = jsbeizhu;
-            //}
             #endregion
         }
     }
