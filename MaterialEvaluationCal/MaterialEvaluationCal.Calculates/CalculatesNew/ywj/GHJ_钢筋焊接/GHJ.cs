@@ -38,6 +38,7 @@ namespace Calculates
             var jcxm = "";
             var jcxmBhg = "";
             var jcxmCur = "";
+            var ggph = "";//钢筋牌号
 
             bool gIs2HforRyyq_cd = true;//   '标注2个试件在焊缝或热影响区脆断
             bool gIs3HforRyyq_cd = true;// '标注2个试件在焊缝或热影响区脆断
@@ -47,7 +48,7 @@ namespace Calculates
             Func<IDictionary<string, string>, IDictionary<string, string>, string, double, int, int> find_singlezb_bhg =
                 delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, string zbName, double mbzValue, int count)
                 {
-                   
+
                     int mcnt = 0;//计算单组合格个数
                                  //int mCurBhg_qf;//计算单组不合格个数
                     int this_bhg = 0;//当前组单个指标不合格累加
@@ -487,6 +488,8 @@ namespace Calculates
             foreach (var sItem in sItems)
             {
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+                ggph = sItem["GCLX_PH"];
+
                 sItem["FJ"] = false.ToString();
                 mZh = Double.Parse(sItem["ZH_G"]);
                 //mZh = 0;
@@ -503,7 +506,7 @@ namespace Calculates
                 {
                     jsbeizhu = "依据不详";
                     mFlag_Bhg = true;
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     continue;
                 }
                 else
@@ -529,7 +532,6 @@ namespace Calculates
                 }
 
                 //试验温度
-                //MItem[0]["SYWD"] = sItem["SYHJWD"] + "℃";
                 #endregion
 
                 if (MItem[0]["PDBZ"].Contains("18-2012"))
@@ -735,7 +737,7 @@ namespace Calculates
                         sItem["HG_LW"] = "0";
                     }
 
-                    if (jcxm.Contains("、冷弯、")|| jcxm.Contains("、弯曲、"))
+                    if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                     {
                         int Gs = 0;
                         for (int i = 1; i < 4; i++)
@@ -787,7 +789,7 @@ namespace Calculates
                 if (sItem["JCJG"] == "合格")
                 {
                     MItem[0]["FJJJ3"] = MItem[0]["FJJJ3"] + mZh.ToString().Trim() + "#";
-             
+
                 }
                 if (sItem["JCJG"] == "不合格")
                 {
@@ -821,7 +823,6 @@ namespace Calculates
                         check_hj_double_Fj(MItem[0], sItem, mHggs_klqd, mHggs_scl, mHggs_lw, mFsgs_klqd, mFsgs_scl, mFsgs_lw, mZh);
                     }
                 }
-
                 mAllHg = mAllHg && (sItem["JCJG"] == "合格");
                 #endregion
             }
@@ -830,35 +831,33 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
-
-                MItem[0]["FJJJ3"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                MItem[0]["FJJJ3"] = jsbeizhu;
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
             {
-                MItem[0]["FJJJ2"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。"; ;
+                MItem[0]["FJJJ2"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。"; 
                     MItem[0]["FJJJ2"] = jsbeizhu;
                 }
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"]))
             {
-                MItem[0]["FJJJ1"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。"; ;
+                MItem[0]["FJJJ1"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。"; 
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。"; ;
                     MItem[0]["FJJJ1"] = jsbeizhu;
                 }
-             
             }
 
             //if (!string.IsNullOrEmpty(mwxzh))

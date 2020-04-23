@@ -28,7 +28,6 @@ namespace Calculates
             var MItem = data["M_GHF"];
 
             if (MItem.Count == 0)
-            //if (M_HNT == default || M_HNT.Count == 0)
             {
                 IDictionary<string, string> m = new Dictionary<string, string>();
                 m["JCJG"] = mjcjg;
@@ -37,7 +36,6 @@ namespace Calculates
             }
 
             var mAllHg = true;
-            var mItemHg = true;
 
             string mgjlb = "";////设计等级名称
             string mKlqd, mScl, mLw, mLwjd, mLwzj, mXlgs, mXwgs, mHggs_klqd, mHggs_scl, mHggs_lw = "";
@@ -49,8 +47,6 @@ namespace Calculates
             bool gIs2HforRyyq_cd = true;//   '标注2个试件在焊缝或热影响区脆断
             bool gIs3HforRyyq_cd = true;// '标注2个试件在焊缝或热影响区脆断
             int mWxgs = 0;
-            int mbhggs = 0;//不合格数量
-
             #region 局部函数
 
             //返回值为每组每种指标不合格总数  ' mbzValue 是单前判断指标的标准值, count 是一组中的检测个数
@@ -380,10 +376,15 @@ namespace Calculates
             MItem[0]["FJJJ3"] = "";
 
             var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+            var ggph = "";//钢筋牌号
             foreach (var sItem in SItems)
             {
                 mgjlb = sItem["GJLB"];
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+                ggph = sItem["GCLX_PH"];
+
                 // 试验温度
                 MItem[0]["SYWD"] = sItem["SYHJWD"] + "℃";
 
@@ -575,46 +576,46 @@ namespace Calculates
                 {
                     //if (Convert.ToInt32(MItem[0]["JYDBH"]) > 150700000)
                     //{
-                        var Gs = 0;
-                        for (int i = 1; i < 7; i++)
+                    var Gs = 0;
+                    for (int i = 1; i < 7; i++)
+                    {
+                        if (Convert.ToDouble(sItem["LW" + i]) >= 0.5)
                         {
-                            if (Convert.ToDouble(sItem["LW" + i]) >= 0.5)
-                            {
-                                Gs = Gs + 1;
-                            }
+                            Gs = Gs + 1;
                         }
+                    }
 
-                        if (Gs <= 2)
-                        {
-                            sItem["JCJG_LW"] = "符合";
-                        }
-                        else
-                        {
-                            sItem["JCJG_LW"] = "不符合";
-                        }
+                    if (Gs <= 2)
+                    {
+                        sItem["JCJG_LW"] = "符合";
+                    }
+                    else
+                    {
+                        sItem["JCJG_LW"] = "不符合";
+                    }
 
-                        if (GetSafeDouble(sItem["HG_LW"]) == 0)
-                        {
-                            sItem["HG_LW"] = "0";
-                        }
-                        if (GetSafeDouble(sItem["HG_LW"]) > GetSafeDouble(mHggs_lw))
-                        {
-                            sItem["JCJG_LW"] = "符合";
-                        }
-                        else
-                        {
-                            sItem["JCJG_LW"] = "不符合";
-                            mAllHg = false;
-                        }
+                    if (GetSafeDouble(sItem["HG_LW"]) == 0)
+                    {
+                        sItem["HG_LW"] = "0";
+                    }
+                    if (GetSafeDouble(sItem["HG_LW"]) > GetSafeDouble(mHggs_lw))
+                    {
+                        sItem["JCJG_LW"] = "符合";
+                    }
+                    else
+                    {
+                        sItem["JCJG_LW"] = "不符合";
+                        mAllHg = false;
+                    }
 
-                        if (GetSafeDouble(sItem["HG_LW"]) >= GetSafeDouble(mHggs_lw))
-                        {
-                            sItem["JCJG_LW"] = "符合";
-                        }
-                        else
-                        {
-                            sItem["JCJG_LW"] = "不符合";
-                        }
+                    if (GetSafeDouble(sItem["HG_LW"]) >= GetSafeDouble(mHggs_lw))
+                    {
+                        sItem["JCJG_LW"] = "符合";
+                    }
+                    else
+                    {
+                        sItem["JCJG_LW"] = "不符合";
+                    }
                     //}
                 }
                 else
@@ -628,24 +629,22 @@ namespace Calculates
                     sItem["LW6"] = "-1";
                 }
 
-                if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合")
+
+                sItem["JCJG"] = "合格";
+
+                if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LS"] == "无效")
                 {
                     sItem["JCJG"] = "不合格";
                     mAllHg = false;
-                    jsbeizhu = "该组试样的检测结果不合格";
+                    jcxmCur = CurrentJcxm(jcxm, "拉伸,抗拉强度");
+                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                 }
-                else
+                if (sItem["JCJG_LW"] == "不符合")
                 {
-                    if (sItem["JCJG_LS"] == "无效")
-                    {
-                        sItem["JCJG"] = "不合格";
-                        mAllHg = false;
-                        jsbeizhu = "该组试样的检测结果不合格";
-                    }
-                    else
-                    {
-                        sItem["JCJG"] = "合格";
-                    }
+                    sItem["JCJG"] = "不合格";
+                    mAllHg = false;
+                    jcxmCur = CurrentJcxm(jcxm, "冷弯,弯曲");
+                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                 }
             }
 
@@ -653,25 +652,23 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
             }
             else
             {
                 mjcjg = "不合格";
                 if (mWxgs >= 1)
                 {
-                    jsbeizhu = "该组试样无效，应检验原材。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样无效，应检验原材。";
                 }
                 else
                 {
-                    jsbeizhu = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
-
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。"; ;
                 }
             }
 
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
-
             #endregion
             #endregion
         }

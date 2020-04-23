@@ -93,6 +93,7 @@
     <Compile Include="CalculatesNew\wzy\TL_涂料物理力学\TL.cs" />
     <Compile Include="CalculatesNew\wzy\TP_混凝土普通砖\TP.cs" />
     <Compile Include="CalculatesNew\wzy\XGL_砂%28国标砌筑用%29\XGL.cs" />
+    <Compile Include="CalculatesNew\wzy\YKJ_扣件\YKJBAK.cs" />
     <Compile Include="CalculatesNew\wzy\ZDC_基桩低应变动测\ZDC.cs" />
     <Compile Include="CalculatesNew\wzy\CGL-石子%28国标%29\CGL.cs" />
     <Compile Include="CalculatesNew\wzy\BB_聚苯板\BB.cs" />

@@ -610,7 +610,6 @@ namespace Calculates
 
                 #endregion
 
-                //var mZh = "组号";
                 var mZh = sItem["ZH_G"];
 
                 if ("不符合" == sItem["JCJG_LS"] && "不符合" == sItem["JCJG_LW"] && "不合格" == sItem["JCJG_CJ"] && "不合格" == sItem["JCJG_YD"])
@@ -619,7 +618,6 @@ namespace Calculates
                     MItem[0]["FJJJ2"] = MItem[0]["FJJJ2"] + mZh + "#";
                     mAllHg = false;
                     mFlag_Bhg = true;
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 }
                 else
                 {
@@ -628,7 +626,6 @@ namespace Calculates
                         sItem["JCJG"] = "复试";
                         MItem[0]["FJJJ1"] = MItem[0]["FJJJ1"] + mZh + "#";
                         mAllHg = false;
-                        jsbeizhu = "该组试样的检测结果中有需要复试";
                         mFlag_Bhg = true;
                     }
                     else

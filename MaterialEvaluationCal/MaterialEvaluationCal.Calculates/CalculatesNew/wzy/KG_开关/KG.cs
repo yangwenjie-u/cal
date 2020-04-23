@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
+﻿using System.Linq;
 
 namespace Calculates
 {
@@ -620,22 +615,25 @@ namespace Calculates
                 #region  正常操作2
                 if (jcxm.Contains("、正常操作2、") || jcxm.Contains("、开关正常操作次数、"))
                 {
-                    jcxmCur = CurrentJcxm(jcxm, "正常操作2,开关正常操作次数");
-                    if (3 > GetSafeDouble(MItem[0]["ZCCZ2"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ2"]))
-                    {
-                        MItem[0]["ZCCZ2_HG"] = "不合格";
-                        mAllHg = false;
-                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        itemHG = false;
-                    }
-                    else
-                    {
-                        MItem[0]["ZCCZ2_HG"] = "合格";
-                    }
-
                     if ("-1" == MItem[0]["ZCCZ2"])
                     {
                         MItem[0]["ZCCZ2_HG"] = "----";
+                        MItem[0]["ZCCZ2"] = "-1";
+                    }
+                    else
+                    {
+                        jcxmCur = CurrentJcxm(jcxm, "正常操作2,开关正常操作次数");
+                        if (3 > GetSafeDouble(MItem[0]["ZCCZ2"]) && 0 <= GetSafeDouble(MItem[0]["ZCCZ2"]))
+                        {
+                            MItem[0]["ZCCZ2_HG"] = "不合格";
+                            mAllHg = false;
+                            mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            itemHG = false;
+                        }
+                        else
+                        {
+                            MItem[0]["ZCCZ2_HG"] = "合格";
+                        }
                     }
                 }
                 else
@@ -705,22 +703,26 @@ namespace Calculates
                 if (jcxm.Contains("、通断能力2、") || jcxm.Contains("、开关通断能力、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "通断能力2,开关通断能力");
-                    if (3 > GetSafeDouble(MItem[0]["TDNL2"]) && 0 <= GetSafeDouble(MItem[0]["TDNL2"]))
-                    {
-                        MItem[0]["TDNL2_HG"] = "不合格";
-                        mAllHg = false;
-                        itemHG = false;
-                        mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                    }
-                    else
-                    {
-                        MItem[0]["TDNL2_HG"] = "合格";
-                    }
-
                     if ("-1" == MItem[0]["TDNL2"])
                     {
                         MItem[0]["TDNL2_HG"] = "----";
                     }
+                    else
+                    {
+                        if (3 > GetSafeDouble(MItem[0]["TDNL2"]) && 0 <= GetSafeDouble(MItem[0]["TDNL2"]))
+                        {
+                            MItem[0]["TDNL2_HG"] = "不合格";
+                            mAllHg = false;
+                            itemHG = false;
+                            mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                        else
+                        {
+                            MItem[0]["TDNL2_HG"] = "合格";
+                        }
+                    }
+
+
                 }
                 else
                 {
