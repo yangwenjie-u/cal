@@ -126,7 +126,7 @@ namespace Calculates
                     if ("符合" != sitem["HG_RQZZT"] && "合格" != sitem["HG_RQZZT"])
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -147,7 +147,7 @@ namespace Calculates
                     if ("符合" != sitem["HG_SGX"] && "合格" != sitem["HG_SGX"])
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -176,7 +176,7 @@ namespace Calculates
                     if (sitem["HG_BGSJ"] == "不合格")
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -212,15 +212,20 @@ namespace Calculates
                     {
                         sitem["HG_NJQD"] = IsQualified(mitem["G_NJQD"], sitem["NJQD"], false);
                         mbhggs = sitem["HG_NJQD"] == "不合格" ? mbhggs + 1 : mbhggs;
-                        if (sitem["HG_NJQD"] != "不合格")
+                        if (sitem["HG_NJQD"] == "合格")
+                        {
                             mFlag_Hg = true;
+                        }
                         else
-                            mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        {
+                            mFlag_Bhg = true;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
                         sitem["HG_NJQD"] = "重新试验";
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mbhggs = mbhggs + 1;
                     }
                 }
@@ -231,7 +236,7 @@ namespace Calculates
                     mitem["G_NJQD"] = "----";
                 }
 
-                if (jcxm.Contains("、粘结强度(浸水后)、"))
+                if (jcxm.Contains("、粘结强度(浸水后)、") && dDj == "N型")
                 {
                     jcxmCur = "粘结强度(浸水后)";
 
@@ -253,15 +258,20 @@ namespace Calculates
                     {
                         sitem["HG_JNJQD"] = IsQualified(mitem["G_JNJQD"], sitem["JNJQD"], false);
                         mbhggs = sitem["HG_JNJQD"] == "不合格" ? mbhggs + 1 : mbhggs;
-                        if (sitem["HG_JNJQD"] != "不合格")
+                        if (sitem["HG_JNJQD"] == "合格")
+                        {
                             mFlag_Hg = true;
+                        }
                         else
-                            mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        {
+                            mFlag_Bhg = true; 
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
                         sitem["HG_JNJQD"] = "重新试验";
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mbhggs = mbhggs + 1;
                     }
                 }
@@ -304,7 +314,7 @@ namespace Calculates
                     if (mitem["HG_DNJQD"] == "不合格")
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -325,7 +335,7 @@ namespace Calculates
                     if ("符合" != sitem["HG_NSX"] && "合格" != sitem["HG_NSX"])
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -345,7 +355,7 @@ namespace Calculates
                     if ("合格" != sitem["HG_NJX"] && sitem["HG_NJX"] != "符合")
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -366,7 +376,7 @@ namespace Calculates
                     if ("合格" != sitem["HG_DWWDX"] && sitem["HG_DWWDX"] != "符合")
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -380,14 +390,16 @@ namespace Calculates
                     mitem["G_DWWDX"] = "----";
                 }
 
-                if (jcxm.Contains("、腻子膜柔韧性、") || jcxm.Contains("、柔韧性、"))
+                //室内 柔韧性  只有R型做
+                //外墙 腻子膜柔韧性 T型　不做
+                if ((jcxm.Contains("、腻子膜柔韧性、") && dLx != "T型") || (jcxm.Contains("、柔韧性、") && dLx != "R型"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "腻子膜柔韧性,柔韧性");
 
                     if ("合格" != sitem["HG_NZMRRX"] && sitem["HG_NZMRRX"] != "符合")
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -429,13 +441,13 @@ namespace Calculates
                         mitem["G_CHGZKLX"] = "无裂纹";
                     }
 
-                    if (sitem["HG_CHGZKLX"] =="合格")
+                    if (sitem["HG_CHGZKLX"] == "合格")
                     {
                         mFlag_Hg = true;
                     }
                     else
                     {
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mbhggs = mbhggs + 1;
                     }
                 }
@@ -452,7 +464,7 @@ namespace Calculates
                     if ("合格" != mitem["HG_DMX"] && mitem["HG_DMX"] != "符合")
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -495,7 +507,7 @@ namespace Calculates
                     else
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
 
                 }
@@ -517,7 +529,7 @@ namespace Calculates
                     else
                     {
                         mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;    
+                        mFlag_Bhg = true;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                 }

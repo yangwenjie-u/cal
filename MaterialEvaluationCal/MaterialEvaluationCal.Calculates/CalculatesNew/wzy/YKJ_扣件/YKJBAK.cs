@@ -7,7 +7,7 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class YKJ : BaseMethods
+    public class YKJ2 : BaseMethods
     {
         public void Calc()
         {
@@ -31,7 +31,6 @@ namespace Calculates
 
             var jcxmBhg = "";
             var jcxmCur = "";
-
             #endregion
 
             #region  计算开始
@@ -60,13 +59,6 @@ namespace Calculates
                     mitem["ZYB"] = mrsDj_Filter2["ZYB"];//主要项RE
                     mitem["YBH"] = mrsDj_Filter2["YBH"];//一般项AC
                     mitem["YBB"] = mrsDj_Filter2["YBB"];//一般项RE
-
-                    mitem["HG_ZJKH"] = IsQualified("≤7.00", sitem["ZJPJKH7"]);
-                    if (mitem["HG_ZJKH"] == "合格")
-                    {
-                        mitem["HG_ZJKH"] = IsQualified("≤0.50", sitem["ZJPJKH10"]);
-                    }
-                    mitem["HG_ZJNZGD"] = IsQualified("≤70.0", sitem["W_ZJNZGD"]);
 
                     //直角主要项不合格数   
                     int zjzyb = 0;
@@ -160,12 +152,6 @@ namespace Calculates
                     mitem["ZYB"] = mrsDj_Filter2["ZYB"];
                     mitem["YBH"] = mrsDj_Filter2["YBH"];
                     mitem["YBB"] = mrsDj_Filter2["YBB"];
-
-                    mitem["HG_XZKH"] = IsQualified("≤7.00", sitem["XZPJKH7"]);
-                    if (mitem["HG_XZKH"] == "合格")
-                    {
-                        mitem["HG_XZKH"] = IsQualified("≤0.50", sitem["XZPJKH10"]);
-                    }
                     #region  旋转主要项不合格数
                     int zjzyb = 0;
                     if (sitem.Keys.Contains("XZLW"))
@@ -338,14 +324,14 @@ namespace Calculates
             {
                 mAllHg = false;
                 if (mitem["ZJZPD"] == "不合格")
-                    mjgsm += "直角扣件、";
+                    mjgsm = "直角扣件、";
                 if (mitem["XZZPD"] == "不合格")
                 {
-                    mjgsm += "旋转扣件、";
+                    mjgsm = "旋转扣件、";
                 }
                 if (mitem["DJZPD"] == "不合格")
                 {
-                    mjgsm += "对接扣件、";
+                    mjgsm = "对接扣件、";
                 }
 
                 if (mitem["ZJZPD"] == "不合格" || mitem["XZZPD"] == "不合格" || mitem["DJZPD"] == "不合格")

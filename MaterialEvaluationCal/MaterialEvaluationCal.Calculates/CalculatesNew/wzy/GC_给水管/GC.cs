@@ -261,6 +261,10 @@ namespace Calculates
                         List<double> listWJ = new List<double>();
                         // 2.平均外径
                         count = count >= 12 ? 12 : count;
+                        if (mSjdj == "给水用硬聚氯乙烯(PVC - U)管材")
+                        {
+                            count = 8;
+                        }
                         for (int j = 1; j <= count; j++)
                         {
                             md1 = GetSafeDouble(sitem["WJ" + i + "_" + +j]);
