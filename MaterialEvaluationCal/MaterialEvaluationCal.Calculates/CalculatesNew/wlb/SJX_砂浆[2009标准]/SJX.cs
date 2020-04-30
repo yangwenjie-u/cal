@@ -81,6 +81,7 @@ namespace Calculates
                     mQdyq = string.IsNullOrEmpty(extraFieldsDj["QDYQ"]) ? 0 : GetSafeDouble(extraFieldsDj["QDYQ"]);
                     mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["QDYQ"].ToLower();
                 }
+
                 //if (0 != sItem["SYHJWD"].Length)
                 //{
                 //    MItem[0]["SYWD"] = sItem["SYHJWD"] + "℃";
@@ -149,7 +150,7 @@ namespace Calculates
                                 jsbeizhu = "最大最小强度值均未超出中间值的15%,试验结果取平均值";
                                 if (mSjcc != 0 && mSjcc1 != 0)
                                 {
-                                    sItem["KYPJ"] = Math.Round(mMidKyqd, 1).ToString();
+                                    sItem["KYPJ"] = Math.Round(mMidKyqd, 1).ToString("0.0");
                                 }
                                 if (mSz != 0)
                                 {

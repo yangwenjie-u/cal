@@ -196,7 +196,8 @@ namespace Calculates
                 {
                     md1 = GetSafeDouble(sItem["RC0_95"]);
                     md2 = GetSafeDouble(sItem["SJQD"]);
-                    sItem["JL"] = md1 >= md2 ? "符合" : "不符合";
+                    sItem["JL"] = IsQualified(md2.ToString(),md1.ToString(),true);
+                    //sItem["JL"] = md1 >= md2 ? "符合" : "不符合";
                     mAllHg = md1 >= md2 ? mAllHg : false;
                     jcjgHg = mAllHg;
                     hggs = md1 >= md2 ? hggs + 1 : hggs;
