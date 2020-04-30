@@ -27,6 +27,10 @@ namespace Calculates
                 mItem["JCJGMS"] = jsbeizhu;
                 MItem.Add(mItem);
             }
+            else
+            {
+                MItem[0]["YS"] = "(报告正文共"+MItem[0]["ZWYS"]+"页，附图表"+MItem[0]["FTYS"]+"页)";
+            }
 
             /************************ 代码结束 *********************/
             #endregion

@@ -1519,13 +1519,13 @@ namespace Calculates
                 {
                     if (sItem["RSCDJ"] == "----")
                     {
-                        sItem["JCJG"] = "符合" + sItem["RSDJ"] + "级";
+                        sItem["JCJG"] = "符合" + sItem["RSCDJ"] + "级";
                         //jsbeizhu = "该试样符合" + sItem["RSDJ"] + "级要求";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + sItem["RSDJ"] + "级材料要求" + sdj + dlw + "。";
                     }
                     else
                     {
-                        sItem["JCJG"] = "符合" + sItem["RSDJ"] + "级";
+                        sItem["JCJG"] = "符合" + sItem["RSCDJ"] + "级";
                         //jsbeizhu = "该试样符合" + sItem["RSDJ"] + "中" + sItem["RSCDJ"] + "级要求";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + sItem["RSDJ"] + "级材料要求，燃烧性能细化分级为" + sItem["RSCDJ"] + "级" + sdj + dlw + "。";
                     }
@@ -1534,13 +1534,13 @@ namespace Calculates
                 {
                     if (sItem["RSCDJ"] == "----")
                     {
-                        sItem["JCJG"] = "不符合" + sItem["RSDJ"] + "级";
+                        sItem["JCJG"] = "不符合" + sItem["RSCDJ"] + "级";
                         //jsbeizhu = "该试样不符合" + sItem["RSDJ"] + "级要求";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + sItem["RSDJ"] + "级要求。";
                     }
                     else
                     {
-                        sItem["JCJG"] = "不符合" + sItem["RSDJ"] + "级";
+                        sItem["JCJG"] = "不符合" + sItem["RSCDJ"] + "级";
                         //jsbeizhu = "该试样不符合" + sItem["RSDJ"] + "中" + sItem["RSCDJ"] + "级要求";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + sItem["RSDJ"] + "级材料，燃烧性能细化分级" + sItem["RSCDJ"] + "级要求。";
                     }

@@ -27,6 +27,10 @@ namespace Calculates
                 m["JCJGMS"] = jsbeizhu;
                 MItem.Add(m);
             }
+            else
+            {
+                MItem[0]["YS"] = "(报告正文共" + MItem[0]["ZWYS"] + "页)";
+            }
 
             var mItem = MItem[0];
             string mJSFF;

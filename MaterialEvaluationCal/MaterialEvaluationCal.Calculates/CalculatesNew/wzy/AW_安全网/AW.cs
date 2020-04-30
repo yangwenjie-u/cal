@@ -204,6 +204,7 @@ namespace Calculates
                     sitem["KD"] = "----";
                     mitem["G_CCYXPC"] = "----";
                     sitem["BCGGCC"] = "----";
+                    MItem[0]["HG_CC"] = "----";
                 }
                 #endregion
 
@@ -212,7 +213,7 @@ namespace Calculates
                 {
                     jcxmCur = "一般要求";
                     bool hg = true; //是否合格（一般要求）
-                    if (sitem["YBYQ1"].Trim() != "无漏缝、缝均匀")
+                    if (sitem["YBYQ1"].Trim() != "无漏缝、缝边均匀")
                     {
                         hg = false;
                     }

@@ -567,7 +567,8 @@ namespace Calculates
                 sitem = SItem[xd - 1];
                 sArr[1, xd] = sitem["FJWZ"].Trim();
                 bl = sitem["ND_D"].Trim();
-                sitem["W_ND_D"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("F0") : bl;
+                //sitem["W_ND_D"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("F0") : bl;
+                sitem["W_ND_D"] = IsNumeric(bl) ? Conversion.Val(bl).ToString() : bl;
                 sArr[2, xd] = IsNumeric(bl) ? sitem["W_ND_D"] : "0";
                 sitem["G_D_ND"] = mrsDj_Filter["G_D_ND"];
             }
@@ -592,11 +593,12 @@ namespace Calculates
                     sum = sum + md;
                 }
                 md = sum / (Gs - xd + 1);
-                md = Round(md, 0);
+                //md = Round(md, 0);
                 for (Itemp = xd; Itemp <= Gs; Itemp++)
                 {
                     sitem = SItem[Itemp - 1];
-                    sitem["AVG_D"] = md.ToString("F0");
+                    //sitem["AVG_D"] = md.ToString("F0");
+                    sitem["AVG_D"] = md.ToString();
                     sitem["PD_D"] = calc_PB(sitem["G_D_ND"], sitem["AVG_D"], false);
                     bHggs_D = sitem["PD_D"] == "不合格" ? bHggs_D + 1 : bHggs_D;
                     sitem["AVG_D"] = sitem["AVG_D"] == "0" ? "未检出" : sitem["AVG_D"];
