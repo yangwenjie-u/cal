@@ -323,6 +323,7 @@ namespace CalDebugTools.Forms
         {
             DataTable dtCopy = this.data_result.DataSource as DataTable;
 
+            //return;
             if (dtCopy == null)
             {
                 return;

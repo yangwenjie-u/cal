@@ -104,7 +104,7 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
                     mitem["JCJGMS"] = "找不到对应的等级";
                 }
 

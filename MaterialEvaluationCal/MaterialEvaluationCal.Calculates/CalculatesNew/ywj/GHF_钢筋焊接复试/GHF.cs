@@ -385,14 +385,11 @@ namespace Calculates
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
                 ggph = sItem["GCLX_PH"];
 
-                // 试验温度
-                MItem[0]["SYWD"] = sItem["SYHJWD"] + "℃";
-
                 #region 
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u.Keys.Contains("GJLB") && u.Values.Contains(mgjlb.Trim()) && u.Keys.Contains("PH") && u.Values.Contains(sItem["GCLX_PH"].Trim()));
                 if (null == extraFieldsDj)
                 {
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     mAllHg = false;
                     jsbeizhu = "依据不详";
                     continue;
@@ -550,6 +547,7 @@ namespace Calculates
                     }
                     else
                     {
+
                         if (x <= 2 && y >= 4 && x + y == 6)
                         {
                             sItem["JCJG_LS"] = "符合";
@@ -649,6 +647,7 @@ namespace Calculates
             }
 
             #region 添加最终报告
+            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
