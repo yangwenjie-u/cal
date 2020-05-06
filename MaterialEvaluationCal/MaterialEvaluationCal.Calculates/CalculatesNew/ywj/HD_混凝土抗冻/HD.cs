@@ -337,6 +337,7 @@ namespace Calculates
                 {
 
                     #region 质量损失
+                    #region 冻融结束时
                     qdVal = 0;
                     mtmpArray.Clear();
                     for (int i = 1; i < 4; i++)
@@ -344,7 +345,6 @@ namespace Calculates
                         sItem["DQZL2_" + i] = (sItem["DQZL2_" + i] == "" || Double.Parse(sItem["DQZL2_" + i]) == 0) ? sItem["DQZL" + i] : sItem["DQZL2_" + i];
                         sItem["ZLSSL1_" + i] = Math.Round((Double.Parse(sItem["DQZL" + i]) - GetSafeDouble(sItem["DHZL1_" + i])) / GetSafeDouble(sItem["DQZL" + i]) * 100, 2).ToString("0.00");
                         qdVal = Double.Parse(sItem["ZLSSL1_" + i]) < 0 ? 0 : Double.Parse(sItem["ZLSSL1_" + i]);
-
 
                         mtmpArray.Add(qdVal);
                     }
@@ -404,14 +404,14 @@ namespace Calculates
                         {
                             sItem["ZLSSL2"] = Math.Round(mAvgKyqd, 1).ToString("0.0");
                         }
-
+                        
                         #endregion
                     }
                     else
                     {
-                        sItem["DQZL2_1"] = "----";
-                        sItem["DQZL2_2"] = "----";
-                        sItem["DQZL2_3"] = "----";
+                        //sItem["DQZL2_1"] = "----";
+                        //sItem["DQZL2_2"] = "----";
+                        //sItem["DQZL2_3"] = "----";
                         sItem["DHZL2_1"] = "----";
                         sItem["DHZL2_2"] = "----";
                         sItem["DHZL2_3"] = "----";
@@ -420,7 +420,92 @@ namespace Calculates
                         sItem["ZLSSL2_3"] = "----";
                         sItem["ZLSSL2"] = "----";
                     }
+                    #endregion
 
+                    #region 冻融结束前一次
+                    qdVal = 0;
+                    mtmpArray.Clear();
+                    for (int i = 1; i < 4; i++)
+                    {
+                        sItem["DQZL2_" + i] = (sItem["DQZL2_" + i] == "" || Double.Parse(sItem["DQZL2_" + i]) == 0) ? sItem["DQZL" + i] : sItem["DQZL2_" + i];
+                        sItem["ZLSSL3_" + i] = Math.Round((Double.Parse(sItem["DQZL" + i]) - GetSafeDouble(sItem["DHZL3_" + i])) / GetSafeDouble(sItem["DQZL" + i]) * 100, 2).ToString("0.00");
+                        qdVal = Double.Parse(sItem["ZLSSL3_" + i]) < 0 ? 0 : Double.Parse(sItem["ZLSSL3_" + i]);
+
+                        mtmpArray.Add(qdVal);
+                    }
+                    mtmpArray.Sort();
+                    mMaxKyqd = mtmpArray[2];
+                    mMinKyqd = mtmpArray[0];
+                    mMidKyqd = mtmpArray[1];
+                    mAvgKyqd = mtmpArray.Average();
+
+                    if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd) > 1)
+                    {
+                        sItem["ZLSSL3"] = Math.Round(mMidKyqd, 1).ToString("0.0");
+                    }
+                    if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd) <= 1)
+                    {
+                        sItem["ZLSSL3"] = Math.Round((mMidKyqd + mMinKyqd) / 2, 1).ToString("0.0");
+                    }
+                    if ((mMaxKyqd - mMidKyqd) <= 1 && (mMidKyqd - mMinKyqd) > 1)
+                    {
+                        sItem["ZLSSL3"] = Math.Round((mMaxKyqd + mMidKyqd) / 2, 1).ToString("0.0");
+                    }
+                    if ((mMaxKyqd - mMidKyqd) <= 1 && (mMidKyqd - mMinKyqd) <= 1)
+                    {
+                        sItem["ZLSSL3"] = Math.Round(mAvgKyqd, 1).ToString("0.0");
+                    }
+
+                    mtmpArray.Clear();
+                    if ("D25" != sItem["KDBH"].Trim() && sItem["KDBH"].Trim() != "D50" && sItem["KDBH"].Contains("D"))
+                    {
+                        #region ZLSSL4
+                        for (int i = 1; i < 4; i++)
+                        {
+                            qdVal = Math.Round((Double.Parse(sItem["DQZL2_" + i]) - GetSafeDouble(sItem["DHZL4_" + i])) / GetSafeDouble(sItem["DQZL2_" + i]) * 100, 2);
+                            sItem["ZLSSL4_" + i] = qdVal.ToString("0.00");
+                            qdVal = Double.Parse(sItem["ZLSSL4_" + i]) < 0 ? 0 : Double.Parse(sItem["ZLSSL4_" + i]);
+                            mtmpArray.Add(qdVal);
+                        }
+                        mtmpArray.Sort();
+                        mMaxKyqd = mtmpArray[2];
+                        mMinKyqd = mtmpArray[0];
+                        mMidKyqd = mtmpArray[1];
+                        mAvgKyqd = mtmpArray.Average();
+
+                        if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd) > 1)
+                        {
+                            sItem["ZLSSL4"] = Math.Round(mMidKyqd, 1).ToString("0.0");
+                        }
+                        if ((mMaxKyqd - mMidKyqd) > 1 && (mMidKyqd - mMinKyqd) <= 1)
+                        {
+                            sItem["ZLSSL4"] = Math.Round((mMidKyqd + mMinKyqd) / 2, 1).ToString("0.0");
+                        }
+                        if ((mMaxKyqd - mMidKyqd) <= 1 && (mMidKyqd - mMinKyqd) > 1)
+                        {
+                            sItem["ZLSSL4"] = Math.Round((mMaxKyqd + mMidKyqd) / 2, 1).ToString("0.0");
+                        }
+                        if ((mMaxKyqd - mMidKyqd) <= 1 && (mMidKyqd - mMinKyqd) <= 1)
+                        {
+                            sItem["ZLSSL4"] = Math.Round(mAvgKyqd, 1).ToString("0.0");
+                        }
+
+                        #endregion
+                    }
+                    else
+                    {
+                        //sItem["DQZL2_1"] = "----";
+                        //sItem["DQZL2_2"] = "----";
+                        //sItem["DQZL2_3"] = "----";
+                        sItem["DHZL4_1"] = "----";
+                        sItem["DHZL4_2"] = "----";
+                        sItem["DHZL4_3"] = "----";
+                        sItem["ZLSSL4_1"] = "----";
+                        sItem["ZLSSL4_2"] = "----";
+                        sItem["ZLSSL4_3"] = "----";
+                        sItem["ZLSSL4"] = "----";
+                    }
+                    #endregion
                     #endregion
                 }
                 else
@@ -580,7 +665,7 @@ namespace Calculates
                         sItem["GH_DTML"] = "合格";
                     }
 
-                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格")
+                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格" && IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL3"]) == "不合格")
                     {
                         jcxmCur = "质量损失";
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
@@ -591,7 +676,7 @@ namespace Calculates
                         sItem["GH_ZLSS"] = "合格";
                     }
 
-                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"], true) == "符合" && IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"], true) == "符合")
+                    if (sItem["GH_DTML"] == "合格" && sItem["GH_ZLSS"] == "合格")
                     {
                         sItem["JCJG"] = "合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + sItem["KDBH"].Trim() + "的规定，所检项目均符合要求。";

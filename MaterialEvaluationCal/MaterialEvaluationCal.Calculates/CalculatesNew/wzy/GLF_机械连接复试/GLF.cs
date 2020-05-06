@@ -256,7 +256,7 @@ namespace Calculates
                     sitem["G_JXLJ"] = "钢筋拉断时，接头试件实际抗拉强度大于等于钢筋抗拉强度标准值；连接件破坏时，接头试件实际抗拉强度大于等于1.10倍钢筋抗拉强度标准值";
                     for (int i = 1; i <= mxlgs; i++)
                     {
-                        if (Conversion.Val(sitem["DKJ" + i]) == 1 || Conversion.Val(sitem["DKJ" + i]) == 2)
+                        if (sitem["DKJ" + i] == "1" || sitem["DKJ" + i] == "2" || sitem["DKJ" + i] == "3")
                         {
                             if (Conversion.Val(sitem["KLQD" + i]) >= GetSafeDouble(extraFieldsDj["KLQDBZZ"]))
                             {

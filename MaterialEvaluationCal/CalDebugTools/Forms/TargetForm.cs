@@ -266,7 +266,19 @@ namespace CalDebugTools.Forms
             var sqlFields = "";
             var sqlFields2 = "";
             var sqlWhere = "";
-            DataSet ds = _sqlBase.ExecuteDataset($"select  zdmc,sy from ZDZD_{syxmbh} where  SJBMC ='BZ_{syxmbh}_DJ'");
+            var whereFields = "";
+
+            if (!string.IsNullOrEmpty(txtSerchFields.Text))
+            {
+                whereFields = " and  zdmc in ('";
+                var df = txtSerchFields.Text.Split(',');
+                foreach (var item in df)
+                {
+                    whereFields += item.Trim() + "','";
+                }
+                whereFields = whereFields.TrimEnd('\'').TrimEnd(',') + ")";
+            }
+            DataSet ds = _sqlBase.ExecuteDataset($"select  zdmc,sy from ZDZD_{syxmbh} where  SJBMC ='BZ_{syxmbh}_DJ' " + whereFields);
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 foreach (DataRow item in ds.Tables[0].Rows)
@@ -345,6 +357,22 @@ namespace CalDebugTools.Forms
             CreateTableColumn("H");
         }
 
+
+        private void btn_Customize_Click(object sender, EventArgs e)
+        {
+            string tableName = txt_customize.Text;
+            if (string.IsNullOrEmpty(tableName))
+            {
+                MessageBox.Show("请输入自定义表名称");
+                return;
+            }
+            if (MessageBox.Show($"添加到自定义表{tableName}表?", "Confirm Message", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            {
+                return;
+            }
+            CreateTableColumn("C");
+
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -388,6 +416,17 @@ namespace CalDebugTools.Forms
                 return;
             }
 
+            if (type == "C")
+            {
+                sqlstr = string.Format($" select top 1 * FROM  {txt_customize.Text}");
+
+                if (_sqlBase.ExecuteDataset(sqlstr) == null)
+                {
+                    MessageBox.Show($"自定义表{txt_customize.Text}不存在！");
+                    return;
+                }
+            }
+
             int queryCount = 0;//返回受影响的行数
 
 
@@ -402,6 +441,9 @@ namespace CalDebugTools.Forms
                     break;
                 case "H":
                     tableName = "BZ_" + xmbh + "_DJ";
+                    break;
+                case "C":
+                    tableName = txt_customize.Text;
                     break;
             }
             try
@@ -490,7 +532,6 @@ namespace CalDebugTools.Forms
         {
 
         }
-
 
     }
 }

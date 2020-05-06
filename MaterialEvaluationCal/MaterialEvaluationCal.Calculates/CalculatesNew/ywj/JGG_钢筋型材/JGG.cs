@@ -125,13 +125,13 @@ namespace Calculates
                 jcxm2 = "、" + sItem["JCXM"].Replace(',', '、') + "、";
                 if (jcxm2.Contains("、拉伸、"))
                 {
+
                     if (double.Parse(sItem["HG_QF"]) >= mHggs_klqd_f && double.Parse(sItem["HG_KL"]) >= mHggs_klqd_f && double.Parse(sItem["HG_SC"]) >= mHggs_scl_f)
                         sItem["JCJG_LS"] = "符合";
                     else
                     {
                         sItem["JCJG_LS"] = "不符合";
                         mAllHg = false;
-                        jsbeizhu += "检测项 拉伸 不合格";
                     }
                 }
                 else
@@ -147,7 +147,6 @@ namespace Calculates
                     {
                         sItem["JCJG_LW"] = "不符合";
                         mAllHg = false;
-                        jsbeizhu += "检测项 冷弯 不合格";
                     }
                 }
                 else
@@ -262,6 +261,7 @@ namespace Calculates
 
                 if (null == extraFieldsDj)
                 {
+                    sItem["JCJG"] = "不下结论";
                     jsbeizhu = "牌号" + sItem["GCLX_PH"] + mSjdj + "试件尺寸为空\r\n";
                     mAllHg = false;
                     continue;
@@ -284,21 +284,12 @@ namespace Calculates
                 mFsgs_lw = extraFieldsDj["ZFSGS_LW"];
 
                 mlwzj = Double.Parse(extraFieldsDj["LWZJ"]);// '冷弯直径和角度
-                mlwjd = GetSafeInt(extraFieldsDj["LWJD"]).ToString() ;
+                mlwjd = GetSafeInt(extraFieldsDj["LWJD"]).ToString();
                 MFFWQCS = extraFieldsDj["FFWQCS"];
 
                 mxlgs = double.Parse(extraFieldsDj["XLGS"]);
                 mxwgs = extraFieldsDj["XWGS"];
                 sItem["G_CJ"] = extraFieldsDj["CJBZZ"];
-                if (sItem["RCLLX"].Trim() == "退火")
-                {
-                    sItem["G_YD"] = string.IsNullOrEmpty(extraFieldsDj["TYDBZZ"]) ? "0" : extraFieldsDj["TYDBZZ"];
-                }
-                else
-                {
-                    sItem["G_YD"] = string.IsNullOrEmpty(extraFieldsDj["WYDBZZ"]) ? "0" : extraFieldsDj["WYDBZZ"];
-                }
-                //MItem[0]["BGNAME"] = extraFieldsDj["BGNAME"];
 
                 mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["JSFF"].Trim().ToLower();
                 #endregion
@@ -484,7 +475,6 @@ namespace Calculates
                 if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
                     mallBhg_lw = mallBhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, double.Parse(mxwgs));
-
                 }
 
                 if (jcxm.Contains("、冲击试验、"))
@@ -508,7 +498,6 @@ namespace Calculates
                             mcjcnt = mcjcnt + 1;
                         }
 
-
                         mcjpj = Math.Round((Conversion.Val(sItem["CJSY1"]) + Conversion.Val(sItem["CJSY2"])) / 2, 1);
 
                         if (mcjpj > cjbzz && mcjcnt < 1)
@@ -519,7 +508,7 @@ namespace Calculates
                         else
                         {
                             sItem["JCJG_CJ"] = "复试";
-                            jsbeizhu += "冲击试验 需复试 \r\n";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mAllHg = false;
                             mFlag_Bhg = true;
                         }
@@ -547,15 +536,18 @@ namespace Calculates
                         else
                         {
                             sItem["JCJG_CJ"] = "复试";
-                            jsbeizhu += "冲击试验需复试 \r\n";
+                            jcxmCur = "、冲击试验、";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                             mAllHg = false;
                             mFlag_Bhg = true;
                         }
 
                         if (mcjcnt7 >= 2)
                         {
+                            jcxmCur = "、冲击试验、";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["JCJG_CJ"] = "不合格";
-                            jsbeizhu += "冲击试验不合格 \r\n";
                             mFlag_Bhg = true;
                             mAllHg = false;
                         }
@@ -570,47 +562,22 @@ namespace Calculates
                     sItem["CJPJ"] = "----";
                 }
 
-                if (jcxm.Contains("、硬度、"))
-                {
-                    jcxmCur = "硬度";
-
-                    var mydcnt = 0;
-                    for (int i = 1; i < 4; i++)
-                    {
-                        sItem["YD" + i] = Math.Round((Conversion.Val(sItem["YD" + i + "_1"]) + Conversion.Val(sItem["YD" + i + "_2"]) + Conversion.Val(sItem["YD" + i + "_3"])) / 3, 1).ToString();
-
-                        if (Conversion.Val(sItem["YD" + i]) > Double.Parse(extraFieldsDj["YDBZZ"]))
-                        {
-                            mydcnt += 1;
-                        }
-                    }
-                    var mydpj = 0;
-                    if (mydpj >= double.Parse(extraFieldsDj["YDBZZ"]) && mydcnt < 1)
-                    {
-                        sItem["JCJG_YD"] = "合格";
-                        mFlag_Hg = true;
-                    }
-                    else
-                    {
-                        sItem["JCJG_YD"] = "复试";
-                        jsbeizhu += "硬度需复试 \r\n";
-                        mFlag_Bhg = true;
-                        mAllHg = false;
-                    }
-                }
-                else
-                {
-                    sItem["JCJG_YD"] = "----";
-                    sItem["YD1"] = "----";
-                    sItem["YD2"] = "----";
-                    sItem["YD3"] = "----";
-                }
-
                 all_zb_jl(MItem[0], sItem, double.Parse(mHggs_qfqd), double.Parse(mHggs_klqd), double.Parse(mHggs_scl), double.Parse(mHggs_lw));
 
                 #endregion
 
                 var mZh = sItem["ZH_G"];
+
+                if (sItem["JCJG_LS"] == "不符合")
+                {
+                    jcxmCur = "、拉伸、";
+                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                }
+                if (sItem["JCJG_LW"] == "不符合")
+                {
+                    jcxmCur = CurrentJcxm(jcxm, "弯曲,冷弯");
+                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                }
 
                 if ("不符合" == sItem["JCJG_LS"] && "不符合" == sItem["JCJG_LW"] && "不合格" == sItem["JCJG_CJ"] && "不合格" == sItem["JCJG_YD"])
                 {

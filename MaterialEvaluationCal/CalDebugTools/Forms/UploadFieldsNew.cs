@@ -244,8 +244,8 @@ namespace CalDebugTools.Forms
                 var zdmc = "";
                 foreach (DataRow item in redata.Tables[0].Rows)
                 {
-                    zdmc = item["ZDMC"].ToString();
-                    dtLX = item["LX"].ToString();
+                    zdmc = item["ZDMC"].ToString().ToUpper();
+                    dtLX = item["LX"].ToString().ToUpper();
 
                     if (IfieldsAllMatch.Contains(zdmc))
                     {

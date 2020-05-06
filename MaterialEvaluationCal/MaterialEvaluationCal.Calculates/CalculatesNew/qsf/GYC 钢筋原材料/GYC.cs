@@ -472,10 +472,7 @@ namespace Calculates
                 string mJSFF = "", sZlpc = "", LwBzyq = "";
                 double md = 0, md1 = 0, md2 = 0;
                 mGJLB = string.IsNullOrEmpty(sItem["GJLB"]) ? "" : sItem["GJLB"];
-                if (!string.IsNullOrEmpty(sItem["SYHJWD"]) && sItem["SYHJWD"].Length != 0)
-                {
-                    MItem[0]["SYWD"] = sItem["SYHJWD"] + "℃";
-                }
+
 
                 //'从设计等级表中取得相应的计算数值、等级标准
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["GJLB"] == mGJLB && GetSafeDouble(u["ZJFW1"]) < GetSafeDouble(sItem["ZJ"]) && GetSafeDouble(u["ZJFW2"]) > GetSafeDouble(sItem["ZJ"]));
@@ -537,6 +534,7 @@ namespace Calculates
                 {
                     SLLZL = 0;
                     sZlpc = "0";
+                    mAllHg = false;
                     sItem["JCJG"] = "不下结论";
                     continue;
                 }
@@ -982,10 +980,6 @@ namespace Calculates
             {
                 jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。";
                 MItem[0]["FJJJ1"] = jsbeiZHu;
-
-            }
-            if (mSFwc)
-            {
 
             }
             MItem[0]["JCJGMS"] = jsbeiZHu;

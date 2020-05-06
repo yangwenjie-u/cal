@@ -550,7 +550,7 @@ namespace Calculates
                 {
                     nArr = new double[4];
                     //只要对p3处理即可了
-                    if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "外开单扇无受力杆件" || sitem["DSLB"] == "外开单扇有受力杆件"))
+                    if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "外开单扇无受力杆件"))
                     {
                         for (xd = 1; xd <= 3; xd++)
                             sitem["MIN_ZP" + xd] = "----";
@@ -585,7 +585,8 @@ namespace Calculates
                         md = Round(md, 1);
                         sitem["MIN_ZP3"] = md.ToString("F1");
                     }
-                    if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "内开单扇无受力杆件" || sitem["DSLB"] == "内开单扇有受力杆件"))
+                    //if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "内开单扇无受力杆件" || sitem["DSLB"] == "内开单扇有受力杆件"))
+                    if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "内开单扇无受力杆件"))
                     {
                         for (xd = 1; xd <= 3; xd++)
                             sitem["MIN_FP" + xd] = "----";
@@ -696,7 +697,7 @@ namespace Calculates
                     {
                         MItem[0]["BEIZHU1"] = "此窗为无受力杆件内开单扇平开窗，抗风压性能仅进行正压检测。" + MItem[0]["BEIZHU1"];
                     }
-                    else
+                    else if(sitem["DSLB"] == "外开单扇无受力杆件")
                     {
                         MItem[0]["BEIZHU1"] = "此窗为无受力杆件外开单扇平开窗，抗风压性能仅进行负压检测。" + MItem[0]["BEIZHU1"];
                     }

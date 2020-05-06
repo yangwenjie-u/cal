@@ -226,6 +226,32 @@ namespace CalDebugTools
 
         }
 
+        public string GetWTDBH(string ypbh)
+        {
+            string ParData = "";
+            var _sqlBase2 = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringWH);
+
+            string sqlStr =  $"select wtdbh from s_by join m_by on m_by.recid = s_by.byzbrecid  where ypbh = '{ypbh}'";
+            try
+            {
+                DataSet ds = _sqlBase2.ExecuteDataset(sqlStr);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    foreach (DataRow dr in ds.Tables[0].Rows)
+                    {
+                     return   dr["wtdbh"].ToString();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+     
+            return ParData;
+
+        }
 
         public string GetYtableJson(string ytable, string datafiled, string BH, string jydbh, ESqlConnType connType)
         {
