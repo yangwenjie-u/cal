@@ -198,7 +198,7 @@ namespace CalDebugTools
         private void btn_Debug_Click(object sender, EventArgs e)
         {
             SaveXMinfos();
-            var df = IsQualified("±150", "1424");
+            //var df = IsQualified("±150", "1424");
             //测试乌海
             if (this.ck_other.Checked)
             {
@@ -211,14 +211,21 @@ namespace CalDebugTools
                 Debug();
         }
 
-        private void Debug(string jydbh = "", string whWtdbh = "")
-        { 
+        private void Debug(string jydbh = "", string quertBH = "")
+        {
             string jcxmBH = this.txt_jcxmbh.Text.Trim();
             List<string> listJYDBH = new List<string>();
-            var quertBH = "";
+            var whWtdbh = "";
             #region 传入参数
             string strIOParams = "";
             string strIParams = "";
+            whWtdbh = _projectInfo.GetWTDBH(quertBH);
+
+            if (string.IsNullOrEmpty(whWtdbh))
+            {
+                MessageBox.Show("通过单组编号找不到对应的委托单编号");
+                return;
+            }
             //查询输入输出字段
             List<string> zdzdIOParms = _manage.GetIOFields(jcxmBH, whWtdbh);
             //查询输入字段
@@ -229,6 +236,7 @@ namespace CalDebugTools
                 //获取乌海的数据
                 quertBH = whWtdbh;
                 //参数
+
                 strIOParams = GetParams(zdzdIOParms, whWtdbh, ESqlConnType.ConnectionStringWH, "WH");
                 strIParams = GetParams(zdzdIParms, whWtdbh, ESqlConnType.ConnectionStringWH, "WH");
             }
@@ -266,10 +274,10 @@ namespace CalDebugTools
             IDictionary<string, IList<IDictionary<string, string>>> dicIOParams = null;
             dicIOParams = Common.DBUtility.JsonHelper.GetAfferentDictionaryNew(strIOParams);
 
-            IDictionary<string, IList<IDictionary<string, string>>> dicIParams = null;
+            IDictionary<string, IList<IDictionary<string, string>>> dicIParams = new Dictionary<string, IList<IDictionary<string, string>>>(StringComparer.OrdinalIgnoreCase);
             dicIParams = Common.DBUtility.JsonHelper.GetAfferentDictionaryNew(strIParams);
             //帮助表
-            Dictionary<string, IList<IDictionary<string, string>>> listExtraData = new Dictionary<string, IList<IDictionary<string, string>>>();
+            Dictionary<string, IList<IDictionary<string, string>>> listExtraData = new Dictionary<string, IList<IDictionary<string, string>>>(StringComparer.OrdinalIgnoreCase);
             if (!string.IsNullOrEmpty(this.txt_helper.Text.Trim()))
             {
                 listExtraData = GetExtraData(this.txt_helper.Text.Trim());

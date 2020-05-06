@@ -293,7 +293,7 @@ namespace Calculates
                     {
                         for (int i = 1; i < 4; i++)
                         {
-                            if (!IsNumeric(sItem["PBSN" + i]) || !IsNumeric(sItem["PBS" + i]) || !IsNumeric(sItem["PBSA" + i]) || !IsNumeric(sItem["PBSZ" + i]) || !IsNumeric(sItem["JTZL" + i]) || !IsNumeric(sItem["JTSYZL" + i]))
+                            if (!IsNumeric(sItem["PBSN" + i]) || !IsNumeric(sItem["PBCHL1" + i]) || !IsNumeric(sItem["PBCHL2" + i]) || !IsNumeric(sItem["PBS" + i]) || !IsNumeric(sItem["PBSA" + i]) || !IsNumeric(sItem["PBSZ" + i]) || !IsNumeric(sItem["JTZL" + i]) || !IsNumeric(sItem["JTSYZL" + i]))
                             {
                                 throw new Exception("请输入泌水率数据");
                             }
@@ -301,12 +301,14 @@ namespace Calculates
                         mTmpArray.Clear();
                         for (int i = 1; i < 4; i++)
                         {
-                            sItem["JPHWZL_" + i] = ((Conversion.Val(sItem["PBSN" + i]) + Conversion.Val(sItem["PBS" + i])) + (Conversion.Val(sItem["PBSA" + i]) + Conversion.Val(sItem["PBSZ" + i]))).ToString();
+                            //基准拌合物总质量
+                            sItem["JPHWZL_" + i] = (Conversion.Val(sItem["PBSN" + i]) + Conversion.Val(sItem["PBCHL1" + i]) + Conversion.Val(sItem["PBCHL2" + i]) + Conversion.Val(sItem["PBS" + i]) + (Conversion.Val(sItem["PBSA" + i]) + Conversion.Val(sItem["PBSZ" + i]))).ToString();
+                            //泌水基准拌合物用水量1
                             sItem["MJBYS_" + i] = sItem["PBS" + i];
                             sItem["JSYZL_" + i] = (Conversion.Val(sItem["JTSYZL" + i]) - Conversion.Val(sItem["JTZL" + i])).ToString();
                             if (IsNumeric(sItem["JMSZL_" + i]))
                             {
-                                sItem["JMSL_" + i] = Round(Conversion.Val(sItem["JMSZL_" + i]) / Conversion.Val(sItem["MJBYS_" + i]) / Conversion.Val(sItem["JPHWZL_" + i]) / Conversion.Val(sItem["JSYZL_" + i]) * 100, 2).ToString();
+                                sItem["JMSL_" + i] = Round(Conversion.Val(sItem["JMSZL_" + i]) / ((Conversion.Val(sItem["MJBYS_" + i]) / Conversion.Val(sItem["JPHWZL_" + i])) * Conversion.Val(sItem["JSYZL_" + i])) * 100, 2).ToString();
                                 mTmpArray.Add(GetSafeDouble(sItem["JMSL_" + i]));
                             }
                         }
@@ -354,7 +356,7 @@ namespace Calculates
                     {
                         for (int i = 1; i < 4; i++)
                         {
-                            if (!IsNumeric(sItem["SPBSN" + i]) || !IsNumeric(sItem["SPBS" + i]) || !IsNumeric(sItem["SPBSA" + i]) || !IsNumeric(sItem["SPBSZ" + i]) || !IsNumeric(sItem["SPBWJJ1" + i]) || !IsNumeric(sItem["SPBWJJ2" + i])
+                            if (!IsNumeric(sItem["SPBSN" + i]) || !IsNumeric(sItem["SPBCHL1" + i]) || !IsNumeric(sItem["SPBCHL2" + i]) || !IsNumeric(sItem["SPBS" + i]) || !IsNumeric(sItem["SPBSA" + i]) || !IsNumeric(sItem["SPBSZ" + i]) || !IsNumeric(sItem["SPBWJJ1" + i]) || !IsNumeric(sItem["SPBWJJ2" + i])
                                  || !IsNumeric(sItem["STSYZL" + i]) || !IsNumeric(sItem["STZL" + i]))
                             {
                                 throw new Exception("请输入泌水率数据");
@@ -362,13 +364,13 @@ namespace Calculates
                         }
                         mTmpArray.Clear();
                         for (int i = 1; i < 4; i++)
-                        {
-                            sItem["SPHWZL_" + i] = (Conversion.Val(sItem["SPBSN" + i]) + Conversion.Val(sItem["SPBS" + i])) + (Conversion.Val(sItem["SPBSA" + i]) + Conversion.Val(sItem["SPBSZ" + i]) + (Conversion.Val(sItem["SPBWJJ1" + i]) + Conversion.Val(sItem["SPBWJJ2" + i]))).ToString();
+                        {//
+                            sItem["SPHWZL_" + i] = (Conversion.Val(sItem["SPBSN" + i]) + Conversion.Val(sItem["SPBCHL1" + i]) + Conversion.Val(sItem["SPBCHL2" + i]) + Conversion.Val(sItem["SPBSA" + i]) + Conversion.Val(sItem["SPBSZ" + i]) + Conversion.Val(sItem["SPBWJJ1" + i]) + Conversion.Val(sItem["SPBWJJ2" + i])).ToString();
                             sItem["MSBYS_" + i] = sItem["SPBS" + i];
                             sItem["SSYZL_" + i] = (Conversion.Val(sItem["STSYZL" + i]) - Conversion.Val(sItem["STZL" + i])).ToString();
                             if (IsNumeric(sItem["SMSZL_" + i]))
                             {
-                                sItem["SMSL_" + i] = Round(Conversion.Val(sItem["SMSZL_" + i]) / Conversion.Val(sItem["MSBYS_" + i]) / Conversion.Val(sItem["SPHWZL_" + i]) / Conversion.Val(sItem["SSYZL_" + i]) * 100, 2).ToString();
+                                sItem["SMSL_" + i] = Round(Conversion.Val(sItem["SMSZL_" + i]) / ((Conversion.Val(sItem["MSBYS_" + i]) / Conversion.Val(sItem["SPHWZL_" + i])) * Conversion.Val(sItem["SSYZL_" + i])) * 100, 2).ToString();
                                 mTmpArray.Add(GetSafeDouble(sItem["SMSL_" + i]));
                             }
                         }

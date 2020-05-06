@@ -312,6 +312,7 @@ namespace Calculates
                                 else
                                 {
                                     this_bhg = this_bhg + 1;
+                                    sItem["JCJG_LS"] = "不符合";
                                 }
                             }
                             sItem["HG_QF"] = mcnt.ToString();
@@ -326,6 +327,7 @@ namespace Calculates
                                 else
                                 {
                                     this_bhg = this_bhg + 1;
+                                    sItem["JCJG_LS"] = "不符合";
                                 }
                             }
                             sItem["HG_KL"] = mcnt.ToString();
@@ -340,7 +342,7 @@ namespace Calculates
                                 else
                                 {
                                     this_bhg = this_bhg + 1;
-
+                                    sItem["JCJG_LS"] = "不符合";
                                 }
                             }
                             sItem["HG_SC"] = mcnt.ToString();
@@ -369,6 +371,7 @@ namespace Calculates
                                     else
                                     {
                                         this_bhg = this_bhg + 1;
+                                        sItem["JCJG_LW"] = "不符合";
                                     }
                                 }
                             }
@@ -389,30 +392,30 @@ namespace Calculates
 
                     if (jcxm.Contains("、拉伸、"))
                     {
-                        if (Conversion.Val(sItem["HG_QF"]) >= mHggs_QFQD && Conversion.Val(sItem["HG_KL"]) >= mHggs_KLQD && Conversion.Val(sItem["HG_SC"]) >= mHggs_SCL)
-                        {
-                            sItem["JCJG_LS"] = "符合";
-                        }
-                        else
-                        {
-                            sItem["JCJG_LS"] = "不符合";
-                        }
+                        //if (Conversion.Val(sItem["HG_QF"]) >= mHggs_QFQD && Conversion.Val(sItem["HG_KL"]) >= mHggs_KLQD && Conversion.Val(sItem["HG_SC"]) >= mHggs_SCL)
+                        //{
+                        //    sItem["JCJG_LS"] = "符合";
+                        //}
+                        //else
+                        //{
+                        //    sItem["JCJG_LS"] = "不符合";
+                        //}
                     }
                     else
                     {
                         sItem["JCJG_LS"] = "----";
                     }
 
-                    if (jcxm.Contains("、冷弯、"))
+                    if (jcxm.Contains("、弯曲、"))
                     {
-                        if (Conversion.Val(sItem["HG_LW"]) - mHggs_LW > -0.00001)
-                        {
-                            sItem["JCJG_LW"] = "符合";
-                        }
-                        else
-                        {
-                            sItem["JCJG_LW"] = "不符合";
-                        }
+                        //if (Conversion.Val(sItem["HG_LW"]) - mHggs_LW > -0.00001)
+                        //{
+                        //    sItem["JCJG_LW"] = "符合";
+                        //}
+                        //else
+                        //{
+                        //    sItem["JCJG_LW"] = "不符合";
+                        //}
                     }
                     else
                     {
@@ -744,6 +747,8 @@ namespace Calculates
             }
 
             #region 添加最终报告
+            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";

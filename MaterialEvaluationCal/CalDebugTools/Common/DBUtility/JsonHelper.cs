@@ -154,7 +154,7 @@ namespace CalDebugTools.Common.DBUtility
         {
             try
             {
-                IDictionary<string, IList<IDictionary<string, string>>> dataExtra = new Dictionary<string, IList<IDictionary<string, string>>>();
+                IDictionary<string, IList<IDictionary<string, string>>> dataExtra = new Dictionary<string, IList<IDictionary<string, string>>>(StringComparer.OrdinalIgnoreCase);
                 var json_main = new { data = new object(), message = string.Empty };
                 var stract_class = DeserializeAnonymousType(json, json_main);
                 string json_str = stract_class.data.ToString().TrimStart('[').TrimEnd(']').TrimStart('{').TrimEnd('}');
