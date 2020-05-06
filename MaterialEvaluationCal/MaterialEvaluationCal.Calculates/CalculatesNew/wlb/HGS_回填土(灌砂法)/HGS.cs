@@ -62,7 +62,7 @@ namespace Calculates
                         else
                             sitem["YSD"] = Round(100 * Conversion.Val(sitem["GMD"]) / Conversion.Val(sitem["ZDGMD"]), 0).ToString("");
                         mskys = Round(Conversion.Val(sitem["RQYS"]) - Conversion.Val(sitem["RQSS"]) - Conversion.Val(sitem["ZDYSL"]), 0);
-                        msktj = Round(mskys / Conversion.Val(sitem["BZSMD"]), 1);
+                        msktj = Round(mskys / Conversion.Val(mitem["BZSMD"]), 1);
                         sitem["SKYS"] = mskys.ToString();
                         sitem["SKTJ"] = msktj.ToString("0.0");
                         msmd = Round(Conversion.Val(sitem["QBCL"]) / msktj, 2);   //湿密度计算

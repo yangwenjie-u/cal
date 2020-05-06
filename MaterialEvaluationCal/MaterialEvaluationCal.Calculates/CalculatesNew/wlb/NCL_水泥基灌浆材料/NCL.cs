@@ -794,7 +794,6 @@ namespace Calculates
                 }
                 #endregion
 
-
                 #region 坍落度
                 if (jcxm.Contains("、坍落度、"))
                 {
@@ -1067,7 +1066,6 @@ namespace Calculates
                     sItem["G_KYQD1"] = "----";
                 }
                 #endregion
-
 
                 #region 3天抗压强度
                 if (jcxm.Contains("、3天抗压强度、"))
@@ -1392,7 +1390,6 @@ namespace Calculates
                     sItem["G_KYQD28"] = "----";
                 }
                 #endregion
-
 
                 #region 对钢筋锈蚀作用
                 if (jcxm.Contains("、对钢筋锈蚀作用、"))
