@@ -3,6 +3,8 @@ bin/
 obj/
 
 
+
+
 /MaterialEvaluationCal/packages/
 /MaterialEvaluationCal/packages/EntityFramework.6.2.0/*.p7s
 /MaterialEvaluationCal/packages/EntityFramework.6.2.0/*.nupkg

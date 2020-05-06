@@ -42,6 +42,8 @@ namespace Calculates
             var mbhggs = 0;
             int mbHggs1, mbHggs2, mbHggs = 0;
             bool sign = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in sItems)
             {
@@ -50,12 +52,12 @@ namespace Calculates
 
                 if (extraDJ.Count < 1)
                 {
-                    jsbeizhu = "试件尺寸为空\r\n";
+                    jsbeizhu = "依据不详";
                     mAllHg = false;
                     sItem["JCJG"] = "不合格";
                     continue;
                 }
-                var mrsDj = extraDJ[0];
+                var mrsDj = extraDJ.FirstOrDefault(u => u["JCYJ"] == sItem["JCYJ"]);
 
                 sItem["G_SMC1"] = mrsDj["G_SMC1"];
                 sItem["G_MMC1"] = mrsDj["G_MMC1"];
@@ -69,6 +71,8 @@ namespace Calculates
                 sItem["G_PJQD2"] = mrsDj["G_NJQDPJ2"];
                 sItem["G_QDMIN1"] = mrsDj["G_NJQDMIN1"];
                 sItem["G_QDMIN2"] = mrsDj["G_NJQDMIN2"];
+                MItem[0]["G_NJQD"] = mrsDj["G_NJQDPJ1"];
+                MItem[0]["G_NJQD2"] = mrsDj["G_NJQDPJ2"];
 
                 //mrsmainTable!which = "bgnh_99、bgnh、bgnh_1、bgnh_2、bgnh_3"
 
@@ -79,10 +83,12 @@ namespace Calculates
 
                 if (jcxm.Contains("、高温淋水循环、") && jcxm.Contains("、加热冷冻循环、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "高温淋水循环,加热冷冻循环");
                     if (sItem["GH_SMC1"] == "合格")
                         sItem["W_SMC1"] = "无";
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(饰面层)、";
                         mbHggs1 = mbHggs1 + 1;
                         sItem["W_SMC1"] = "有裂缝、起泡、剥落";
                     }
@@ -90,6 +96,7 @@ namespace Calculates
                         sItem["W_SMC2"] = "无";
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(饰面层)、";
                         mbHggs2 = mbHggs2 + 1;
                         sItem["W_SMC2"] = "有裂缝、起泡、剥落";
                     }
@@ -97,7 +104,7 @@ namespace Calculates
                         sItem["W_MMC1"] = "无";
                     else
                     {
-                        mbHggs1 = mbHggs1 + 1;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(抹面层)、";
                         mbHggs1 = mbHggs1 + 1;
                         sItem["W_MMC1"] = "有裂缝、起泡、剥落";
                     }
@@ -106,19 +113,33 @@ namespace Calculates
                         sItem["W_MMC2"] = "无";
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(抹面层)、";
                         mbHggs2 = mbHggs2 + 1;
                         sItem["W_MMC2"] = "有裂缝、起泡、剥落";
                     }
                     if (sItem["GH_BWC1"] == "合格" && sItem["GH_CK1"] == "合格")
-                    { }
-                    else
                     {
-                        mbHggs1 = mbHggs1 + 1;
+                        sItem["W_BWC1"] = "无";
+                        sItem["W_CK1"] = "无";
                     }
-                    if (sItem["GH_BWC2"] == "合格" && sItem["GH_CK2"] == "合格") { }
                     else
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(保温层或窗口)、";
+                        mbHggs1 = mbHggs1 + 1;
+                        sItem["W_BWC1"] = "有裂缝、起泡、剥落";
+                        sItem["W_CK1"] = "有裂缝、起泡、剥落";
+                    }
+                    if (sItem["GH_BWC2"] == "合格" && sItem["GH_CK2"] == "合格")
+                    {
+                        sItem["W_BWC2"] = "无";
+                        sItem["W_CK2"] = "无";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(保温层或窗口)、";
                         mbHggs2 = mbHggs2 + 1;
+                        sItem["W_BWC2"] = "有裂缝、起泡、剥落";
+                        sItem["W_CK2"] = "有裂缝、起泡、剥落";
                     }
                     if (mbHggs1 == 0)
                     {
@@ -156,6 +177,142 @@ namespace Calculates
                 {
                     //MItem[0]["WHICH"] = "bgnh_99、bgnh、bgnh_1、bgnh_2、bgnh_3、bgnh_4";
                 }
+
+                #region 外保温拉拔
+                if (jcxm.Contains("、外保温拉拔、"))
+                {
+                    jcxmCur = "外保温拉拔";
+                    double mj1 = 0, mj2 = 0, mj3 = 0, mj4 = 0, mj5 = 0, mj6 = 0;
+                    mj1 = GetSafeDouble(sItem["CD1"]) * GetSafeDouble(sItem["KD1"]);
+                    mj2 = GetSafeDouble(sItem["CD2"]) * GetSafeDouble(sItem["KD2"]);
+                    mj3 = GetSafeDouble(sItem["CD3"]) * GetSafeDouble(sItem["KD3"]);
+                    mj4 = GetSafeDouble(sItem["CD4"]) * GetSafeDouble(sItem["KD4"]);
+                    mj5 = GetSafeDouble(sItem["CD5"]) * GetSafeDouble(sItem["KD5"]);
+                    mj6 = GetSafeDouble(sItem["CD6"]) * GetSafeDouble(sItem["KD6"]);
+                    #region JGJ144
+                    int zxz = 0;
+                    if (mj1 != 0 && mj2 != 0 && mj3 != 0 && mj4 != 0 && mj5 != 0)
+                    {
+                        sItem["NJQD1"] = (GetSafeDouble(sItem["HZ1"]) / mj1).ToString("0.00");
+                        sItem["NJQD2"] = (GetSafeDouble(sItem["HZ2"]) / mj2).ToString("0.00");
+                        sItem["NJQD3"] = (GetSafeDouble(sItem["HZ3"]) / mj3).ToString("0.00");
+                        sItem["NJQD4"] = (GetSafeDouble(sItem["HZ4"]) / mj4).ToString("0.00");
+                        sItem["NJQD5"] = (GetSafeDouble(sItem["HZ5"]) / mj5).ToString("0.00");
+                        sItem["NJQD"] = ((GetSafeDouble(sItem["NJQD1"]) + GetSafeDouble(sItem["NJQD2"]) + GetSafeDouble(sItem["NJQD3"]) + GetSafeDouble(sItem["NJQD4"]) + GetSafeDouble(sItem["NJQD5"])) / 5).ToString("0.00");
+                        for (int i = 1; i < 6; i++)
+                        {
+                            if (GetSafeDouble(sItem["NJQD" + i]) >= double.Parse(MItem[0]["G_NJQD"].Replace("≥","")) * 0.75 && GetSafeDouble(sItem["NJQD" + i]) < double.Parse(MItem[0]["G_NJQD"].Replace("≥", "")))
+                            {
+                                zxz++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        sItem["NJQD"] = "0";
+                        sItem["NJQD1"] = "0";
+                        sItem["NJQD2"] = "0";
+                        sItem["NJQD3"] = "0";
+                        sItem["NJQD4"] = "0";
+                        sItem["NJQD5"] = "0";
+                    }
+                    if (IsQualified(MItem[0]["G_NJQD"], sItem["NJQD"], false) == "合格" && zxz <= 1 && sItem["PHJMPD"] == "合格")
+                    {
+                        MItem[0]["HG_NJQD"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        MItem[0]["HG_NJQD"] = "不合格";
+                        mAllHg = false;
+                    }
+
+                    #endregion
+
+                    #region GB/T29906 、JG158 
+                    if (sItem["JCYJ"].Contains("29906") || sItem["JCYJ"].Contains("158"))
+                    {
+                        if (mj1 != 0 && mj2 != 0 && mj3 != 0 && mj4 != 0 && mj5 != 0 && mj6 != 0)
+                        {
+                            sItem["NJQD1"] = (GetSafeDouble(sItem["HZ1"]) / mj1).ToString("0.00");
+                            sItem["NJQD2"] = (GetSafeDouble(sItem["HZ2"]) / mj2).ToString("0.00");
+                            sItem["NJQD3"] = (GetSafeDouble(sItem["HZ3"]) / mj3).ToString("0.00");
+                            sItem["NJQD4"] = (GetSafeDouble(sItem["HZ4"]) / mj4).ToString("0.00");
+                            sItem["NJQD5"] = (GetSafeDouble(sItem["HZ5"]) / mj5).ToString("0.00");
+                            sItem["NJQD6"] = (GetSafeDouble(sItem["HZ6"]) / mj5).ToString("0.00");
+
+                            if (GetSafeDouble(sItem["NJQD1"]) != 0 && GetSafeDouble(sItem["NJQD2"]) != 0 && GetSafeDouble(sItem["NJQD3"]) != 0 && GetSafeDouble(sItem["NJQD4"]) != 0 && GetSafeDouble(sItem["NJQD5"]) != 0 && GetSafeDouble(sItem["NJQD6"]) != 0)
+                            {
+                                List<double> lArray = new List<double>();
+                                for (int i = 1; i < 7; i++)
+                                {
+                                    lArray.Add(Conversion.Val(sItem["NJQD" + i]));
+                                }
+                                lArray.Sort();
+                                lArray.Remove(lArray.Max());
+                                lArray.Remove(lArray.Min());
+                                sItem["NJQD"] = Round(lArray.Average(), 2).ToString();
+                            }
+                            if (IsQualified(MItem[0]["G_NJQD"], sItem["NJQD"], false) == "合格")
+                            {
+                                MItem[0]["HG_NJQD"] = "合格";
+                            }
+                            else
+                            {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                MItem[0]["HG_NJQD"] = "不合格";
+                                mAllHg = false;
+                            }
+
+                        }
+                    }
+                    #endregion
+                }
+                else
+                {
+                    sItem["NJQD"] = "----";
+                    MItem[0]["HG_NJQD"] = "----";
+                    MItem[0]["G_NJQD"] = "----";
+                }
+                #endregion
+
+                #region 饰面砖拉拔
+                if (jcxm.Contains("、饰面砖拉拔、"))
+                {
+                    jcxmCur = "饰面砖拉拔";
+                    double mj1 = 0, mj2 = 0, mj3 = 0;
+                    mj1 = GetSafeDouble(sItem["CD21"]) * GetSafeDouble(sItem["KD21"]);
+                    mj2 = GetSafeDouble(sItem["CD22"]) * GetSafeDouble(sItem["KD22"]);
+                    mj3 = GetSafeDouble(sItem["CD23"]) * GetSafeDouble(sItem["KD23"]);
+
+                    if (mj1 != 0 && mj2 != 0 && mj3 != 0)
+                    {
+                        sItem["NJQD21"] = (GetSafeDouble(sItem["HZ21"]) / mj1).ToString("0.00");
+                        sItem["NJQD22"] = (GetSafeDouble(sItem["HZ22"]) / mj2).ToString("0.00");
+                        sItem["NJQD23"] = (GetSafeDouble(sItem["HZ23"]) / mj3).ToString("0.00");
+                        sItem["NJQD20"] = ((GetSafeDouble(sItem["NJQD21"]) + GetSafeDouble(sItem["NJQD22"]) + GetSafeDouble(sItem["NJQD23"])) / 3).ToString("0.00");
+
+                    }
+                    if (IsQualified(MItem[0]["G_NJQD2"], sItem["NJQD20"], false) == "合格" && sItem["PHJMPD2"] == "合格")
+                    {
+                        MItem[0]["HG_NJQD2"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        MItem[0]["HG_NJQD2"] = "不合格";
+                        mAllHg = false;
+                    }
+
+                }
+                else
+                {
+                    MItem[0]["HG_NJQD2"] = "----";
+                    MItem[0]["G_NJQD2"] = "----";
+                    sItem["NJQD20"] = "----";
+                }
+                #endregion
+
                 mbHggs = mbHggs1 + mbHggs2;
                 mbHggs = sItem["GH_PJQD1"] == "不合格" ? mbHggs + 1 : mbHggs;
                 mbHggs = sItem["GH_PJQD2"] == "不合格" ? mbHggs + 1 : mbHggs;
@@ -181,11 +338,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                jsbeizhu = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;
