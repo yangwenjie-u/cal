@@ -183,7 +183,8 @@ namespace Calculates
                 {
                     mfmzl = "其它类型阀";
                 }
-                zj1 = Convert.ToDouble(sItem["FMZJ"]);
+                zj1 = Conversion.Val(sItem["GGXH"]);
+                //zj1 = Convert.ToDouble(sItem["FMZJ"]);
                 if (zj1 == 63)
                 {
                     zj1 = 50;
@@ -303,7 +304,8 @@ namespace Calculates
                 sItem["MF_YL"] = mgcyl.Replace("MPa", "");
                 sItem["MF_SJ"] = mrsYlsj["MFSY"];
 
-                mmfxll = Math.Round(Double.Parse(sItem["FMZJ"]) * Conversion.Val(mrsMfxll["ZJBS"]), 2).ToString("0.00");
+                //mmfxll = Math.Round(Conversion.Val(sItem["FMZJ"]) * Conversion.Val(mrsMfxll["ZJBS"]), 2).ToString("0.00");
+                mmfxll = Math.Round(Conversion.Val(sItem["GGXH"]) * Conversion.Val(mrsMfxll["ZJBS"]), 2).ToString("0.00");
                 if (sItem["SJDJ"] == "A级")
                 {
                     sItem["MFSYYQ"] = "20℃ " + mgcyl + "持续≥" + mrsYlsj["MFSY"] + "s 无渗漏。";

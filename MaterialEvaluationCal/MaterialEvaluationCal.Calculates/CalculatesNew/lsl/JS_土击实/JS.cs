@@ -221,12 +221,12 @@ namespace Calculates
                 for (int i = 1; i <= 6; i++)
                 {
                     //模桶加湿土质量
-                    if (double.Parse(sItem["MTJST" + i]) != 0)
+                    if (GetSafeDouble(sItem["MTJST" + i]) != 0)
                     {
                         //湿土质量
-                        sStzl = double.Parse(sItem["MTJST" + i]) - double.Parse(mItem["MTZL"]);
+                        sStzl = GetSafeDouble(sItem["MTJST" + i].Trim()) - GetSafeDouble(mItem["MTZL"].Trim());
                         sItem["STZL1_" + i] = sStzl.ToString();
-                        if (double.Parse(mItem["MTTJ"]) == 0)
+                        if (GetSafeDouble(mItem["MTTJ"].Trim()) == 0)
                         {
                             sSmd = 0;
                             sItem["SMD1_" + i] = "0";
@@ -234,17 +234,17 @@ namespace Calculates
                         else
                         {
                             //计算湿密度
-                            sSmd = Round(sStzl / double.Parse(mItem["MTTJ"]), 2);
+                            sSmd = Round(sStzl / GetSafeDouble(mItem["MTTJ"].Trim()), 2);
                             sItem["SMD1_" + i] = sSmd.ToString("0.00");
                         }
                         //水质量 = 盒加湿土质量 - 盒加干土质量
-                        sSzl1 = double.Parse(sItem["HJST" + i + "1"]) - double.Parse(sItem["HJGT" + i + "1"]);
-                        sSzl2 = double.Parse(sItem["HJST" + i + "2"]) - double.Parse(sItem["HJGT" + i + "2"]);
+                        sSzl1 = GetSafeDouble(sItem["HJST" + i + "1"].Trim()) - GetSafeDouble(sItem["HJGT" + i + "1"].Trim());
+                        sSzl2 = GetSafeDouble(sItem["HJST" + i + "2"].Trim()) - GetSafeDouble(sItem["HJGT" + i + "2"].Trim());
                         //水分质量
                         sItem["SZL1_" + i] = Round((sSzl1 + sSzl2) / 2, 2).ToString("0.00");
                         //干土质量
-                        sGtzl1 = double.Parse(sItem["HJGT" + i + "1"]) - double.Parse(sItem["HZL" + i + "1"]);
-                        sGtzl2 = double.Parse(sItem["HJGT" + i + "2"]) - double.Parse(sItem["HZL" + i + "2"]);
+                        sGtzl1 = GetSafeDouble(sItem["HJGT" + i + "1"].Trim()) - GetSafeDouble(sItem["HZL" + i + "1"].Trim());
+                        sGtzl2 = GetSafeDouble(sItem["HJGT" + i + "2"].Trim()) - GetSafeDouble(sItem["HZL" + i + "2"].Trim());
                         //干土质量
                         sItem["GTZL1_" + i] = Round((sGtzl1+ sGtzl2)/2,2).ToString("0.00");
                         if (sGtzl1 == 0)
@@ -267,12 +267,12 @@ namespace Calculates
                         }
                         //计算平均含水率时应该先判断两个含水率的差值应不大于1%
                         if (sHsl1 == 0 || sHsl2 == 0)
-                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2), 1).ToString();
+                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2), 1).ToString("0.0");
                         else
-                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString();
-                        sItem["GMD" + i] = Round(sSmd / (1 + 0.01 * double.Parse(sItem["PJHSL" + i])), 2).ToString("0.00");
-                        x[i] = double.Parse(sItem["PJHSL" + i]);
-                        y[i] = double.Parse(sItem["GMD" + i]);
+                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString("0.00");
+                        sItem["GMD" + i] = Round(sSmd / (1 + 0.01 * GetSafeDouble(sItem["PJHSL" + i])), 2).ToString("0.00");
+                        x[i] = GetSafeDouble(sItem["PJHSL" + i]);
+                        y[i] = GetSafeDouble(sItem["GMD" + i]);
                         n = n + 1;
                     }
                     else
@@ -300,27 +300,27 @@ namespace Calculates
                             Ymax = x[i];
                     }
                     string qdstr = qd(x, y, n, Xmin, Ymin, Xmax, Ymax);
-                    qcxmax = double.Parse(qdstr.Split('@')[0]);
-                    qcymax = double.Parse(qdstr.Split('@')[1]);
+                    qcxmax = GetSafeDouble(qdstr.Split('@')[0]);
+                    qcymax = GetSafeDouble(qdstr.Split('@')[1]);
 
-                    mItem["ZDGMD1"] = Round(qcymax, 2).ToString();
-                    mItem["ZJHSL1"] = Round(qcxmax, 1).ToString();
+                    mItem["ZDGMD1"] = Round(qcymax, 2).ToString("0.00");
+                    mItem["ZJHSL1"] = Round(qcxmax, 1).ToString("0.0");
                 }
                 else
                 {
-                    mItem["ZDGMD1"] = Round(0, 2).ToString();
-                    mItem["ZJHSL1"] = Round(0, 1).ToString();
+                    mItem["ZDGMD1"] = Round(0, 2).ToString("0.00");
+                    mItem["ZJHSL1"] = Round(0, 1).ToString("0.0");
                 }
 
                 n = 0;
                 for (int i = 1; i <= 6; i++)
                 {
-                    if (0 != double.Parse(sItem["S_MTJST" + i]))
+                    if (0 != GetSafeDouble(sItem["S_MTJST" + i].Trim()))
                     {
-                        sStzl = double.Parse(sItem["S_MTJST" + i]) - double.Parse(mItem["MTZL"]);
+                        sStzl = GetSafeDouble(sItem["S_MTJST" + i].Trim()) - GetSafeDouble(mItem["MTZL"].Trim());
                         //湿土质量
                         sItem["STZL2_" + i] = sStzl.ToString();
-                        if (double.Parse(mItem["MTTJ"]) == 0)
+                        if (GetSafeDouble(mItem["MTTJ"].Trim()) == 0)
                         {
                             sSmd = 0;
                             sItem["SMD2_" + i] = "0";
@@ -328,15 +328,15 @@ namespace Calculates
                         else
                         {
                             //计算湿密度
-                            sSmd = Round(sStzl / double.Parse(mItem["MTTJ"]), 2);
+                            sSmd = Round(sStzl / GetSafeDouble(mItem["MTTJ"].Trim()), 2);
                             sItem["SMD2_" + i] = sSmd.ToString("0.00");
                         }
-                        sSzl1 = double.Parse(sItem["S_HJST" + i + "1"]) - double.Parse(sItem["S_HJGT" + i + "1"]);
-                        sSzl2 = double.Parse(sItem["S_HJST" + i + "2"]) - double.Parse(sItem["S_HJGT" + i + "2"]);
+                        sSzl1 = GetSafeDouble(sItem["S_HJST" + i + "1"].Trim()) - GetSafeDouble(sItem["S_HJGT" + i + "1"].Trim());
+                        sSzl2 = GetSafeDouble(sItem["S_HJST" + i + "2"].Trim()) - GetSafeDouble(sItem["S_HJGT" + i + "2"].Trim());
                         //水分质量
                         sItem["SZL2_" + i] = Round((sSzl1 + sSzl2) / 2, 2).ToString("0.00");
-                        sGtzl1 = double.Parse(sItem["S_HJGT" + i + "1"]) - double.Parse(sItem["S_HZL" + i + "1"]);
-                        sGtzl2 = double.Parse(sItem["S_HJGT" + i + "2"]) - double.Parse(sItem["S_HZL" + i + "2"]);
+                        sGtzl1 = GetSafeDouble(sItem["S_HJGT" + i + "1"].Trim()) - GetSafeDouble(sItem["S_HZL" + i + "1"].Trim());
+                        sGtzl2 = GetSafeDouble(sItem["S_HJGT" + i + "2"].Trim()) - GetSafeDouble(sItem["S_HZL" + i + "2"].Trim());
                         //干土质量
                         sItem["GTZL2_" + i] = Round((sGtzl1 + sGtzl2) / 2, 2).ToString("0.00");
                         if (sGtzl1 == 0) sHsl1 = 0;
@@ -345,15 +345,15 @@ namespace Calculates
                         else sHsl2 = Round(sSzl2 / sGtzl2 * 100, 1);
                         if (sHsl1 == 0 || sHsl2 == 0)
                         {
-                            sItem["S_PJHSL" + i] = Round((sHsl1 + sHsl2), 1).ToString();
+                            sItem["S_PJHSL" + i] = Round((sHsl1 + sHsl2), 1).ToString("0.0");
                         }
                         else
                         {
-                            sItem["S_PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString();
+                            sItem["S_PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString("0.0");
                         }
-                        sItem["S_GMD" + i] = Round(sSmd / (1 + 0.01 * double.Parse(sItem["S_PJHSL" + i])), 2).ToString();
-                        x[i] = double.Parse(sItem["S_PJHSL" + i]);
-                        y[i] = double.Parse(sItem["S_GMD" + i]);
+                        sItem["S_GMD" + i] = Round(sSmd / (1 + 0.01 * GetSafeDouble(sItem["S_PJHSL" + i])), 2).ToString("0.00");
+                        x[i] = GetSafeDouble(sItem["S_PJHSL" + i]);
+                        y[i] = GetSafeDouble(sItem["S_GMD" + i]);
                         n = n + 1;
                     }
                     else
@@ -381,31 +381,31 @@ namespace Calculates
                             Ymax = x[i];
                     }
                     string qdstr = qd(x, y, n, Xmin, Ymin, Xmax, Ymax);
-                    qcxmax = double.Parse(qdstr.Split('@')[0]);
-                    qcymax = double.Parse(qdstr.Split('@')[1]);
+                    qcxmax = GetSafeDouble(qdstr.Split('@')[0]);
+                    qcymax = GetSafeDouble(qdstr.Split('@')[1]);
                     mItem["ZDGMD2"] = Round(qcymax, 2).ToString();
                     mItem["ZJHSL2"] = Round(qcxmax, 1).ToString();
                 }
                 else
                 {
-                    mItem["ZDGMD2"] = Round(0, 2).ToString();
-                    mItem["ZJHSL2"] = Round(0, 1).ToString();
+                    mItem["ZDGMD2"] = Round(0, 2).ToString("0.00");
+                    mItem["ZJHSL2"] = Round(0, 1).ToString("0.0");
                 }
-                if (double.Parse(mItem["ZDGMD1"]) * double.Parse(mItem["ZDGMD2"]) == 0)
+                if (GetSafeDouble(mItem["ZDGMD1"]) * GetSafeDouble(mItem["ZDGMD2"]) == 0)
                 {
-                    mItem["ZDGMD"] = Round(double.Parse(mItem["ZDGMD1"]) + double.Parse(mItem["ZDGMD2"]), 2).ToString("0.00");
-                }
-                else
-                {
-                    mItem["ZDGMD"] = Round((double.Parse(mItem["ZDGMD1"]) + double.Parse(mItem["ZDGMD2"])) / 2, 2).ToString("0.00");
-                }
-                if (double.Parse(mItem["ZJHSL1"]) * double.Parse(mItem["ZJHSL2"]) == 0)
-                {
-                    mItem["ZJHSL"] = Round(double.Parse(mItem["ZJHSL1"]) + double.Parse(mItem["ZJHSL2"]), 1).ToString("0.0");
+                    mItem["ZDGMD"] = Round(GetSafeDouble(mItem["ZDGMD1"]) + GetSafeDouble(mItem["ZDGMD2"]), 2).ToString("0.00");
                 }
                 else
                 {
-                    mItem["ZJHSL"] = Round((double.Parse(mItem["ZJHSL1"]) + double.Parse(mItem["ZJHSL2"])) / 2, 1).ToString("0.0");
+                    mItem["ZDGMD"] = Round((GetSafeDouble(mItem["ZDGMD1"]) + GetSafeDouble(mItem["ZDGMD2"])) / 2, 2).ToString("0.00");
+                }
+                if (GetSafeDouble(mItem["ZJHSL1"]) * GetSafeDouble(mItem["ZJHSL2"]) == 0)
+                {
+                    mItem["ZJHSL"] = Round(GetSafeDouble(mItem["ZJHSL1"]) + GetSafeDouble(mItem["ZJHSL2"]), 1).ToString("0.0");
+                }
+                else
+                {
+                    mItem["ZJHSL"] = Round((GetSafeDouble(mItem["ZJHSL1"]) + GetSafeDouble(mItem["ZJHSL2"])) / 2, 1).ToString("0.0");
                 }
                 bool flag, sign;
                 mItem["S_BZ"] = "1";
@@ -423,9 +423,9 @@ namespace Calculates
                     sign = IsNumeric(mItem["S_XSL"].Trim()) ? sign : false;
                     if (sign)
                     {
-                        dArray[1] = double.Parse(mItem["S_BFL"]);
-                        dArray[2] = double.Parse(mItem["S_MTJ"]);
-                        dArray[3] = double.Parse(mItem["S_XSL"]);
+                        dArray[1] = GetSafeDouble(mItem["S_BFL"]);
+                        dArray[2] = GetSafeDouble(mItem["S_MTJ"]);
+                        dArray[3] = GetSafeDouble(mItem["S_XSL"]);
                         qcymax = ((1 - 0.01 * dArray[1]) / qcymax) + 0.01 * dArray[1] / dArray[2];
                         qcymax = 1 / qcymax;
                         qcymax = Round(qcymax, 2);
@@ -451,9 +451,9 @@ namespace Calculates
                     sign = IsNumeric(mItem["S_XSL"]) ? sign : false;
                     if (sign)
                     {
-                        dArray[1] = double.Parse(mItem["S_BFL"].Trim());
-                        dArray[2] = double.Parse(mItem["S_MTJ"].Trim());
-                        dArray[3] = double.Parse(mItem["S_XSL"].Trim());
+                        dArray[1] = GetSafeDouble(mItem["S_BFL"].Trim());
+                        dArray[2] = GetSafeDouble(mItem["S_MTJ"].Trim());
+                        dArray[3] = GetSafeDouble(mItem["S_XSL"].Trim());
                         qcymax = qcymax * (1 - 0.01 * dArray[1]) + 0.9 * 0.01 * dArray[1] * dArray[2];
                         qcymax = Round(qcymax, 2);
                         qcxmax = qcxmax * (1 - 0.1 * dArray[1]) + 0.01 * dArray[1] * dArray[3];

@@ -1,5 +1,9 @@
-﻿using Microsoft.VisualBasic;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace Calculates
 {
@@ -34,8 +38,13 @@ namespace Calculates
             {
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
+
                 if (jcxm.Contains("、界限含水率、") || jcxm.Contains("、液限、") || jcxm.Contains("、塑限、"))
                 {
+                    if (sItem["SXZB"] =="补做")
+                    {
+                        throw new SystemException("两个含水率的差值≥2%，应补做试验。");
+                    }
                     sItem["GH_JXHSL"] = "符合";
                     string yx = IsQualified(sItem["SJ_YX"], sItem["YX"], true);
                     string sx = IsQualified(sItem["SJ_SX"], sItem["SX"], true);

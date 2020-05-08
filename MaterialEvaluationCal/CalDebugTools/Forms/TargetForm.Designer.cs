@@ -42,11 +42,15 @@
             this.btn_save = new System.Windows.Forms.Button();
             this.btn_load = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.txtSerchFields = new System.Windows.Forms.TextBox();
             this.txt_ssjcx = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.txt_SFieldeStartIndex = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_Customize = new System.Windows.Forms.Button();
+            this.txt_customize = new System.Windows.Forms.TextBox();
             this.btn_helper = new System.Windows.Forms.Button();
             this.btn_S_only = new System.Windows.Forms.Button();
             this.btn_M_only = new System.Windows.Forms.Button();
@@ -67,10 +71,6 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtSerchFields = new System.Windows.Forms.TextBox();
-            this.txt_customize = new System.Windows.Forms.TextBox();
-            this.btn_Customize = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -82,8 +82,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(63, 44);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(47, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(82, 15);
             this.label1.TabIndex = 0;
@@ -91,25 +90,22 @@
             // 
             // txt_xmbh
             // 
-            this.txt_xmbh.Location = new System.Drawing.Point(157, 41);
-            this.txt_xmbh.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_xmbh.Location = new System.Drawing.Point(118, 33);
             this.txt_xmbh.Name = "txt_xmbh";
-            this.txt_xmbh.Size = new System.Drawing.Size(132, 25);
+            this.txt_xmbh.Size = new System.Drawing.Size(100, 25);
             this.txt_xmbh.TabIndex = 1;
             // 
             // txt_fieldMs
             // 
-            this.txt_fieldMs.Location = new System.Drawing.Point(669, 40);
-            this.txt_fieldMs.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_fieldMs.Location = new System.Drawing.Point(502, 32);
             this.txt_fieldMs.Name = "txt_fieldMs";
-            this.txt_fieldMs.Size = new System.Drawing.Size(132, 25);
+            this.txt_fieldMs.Size = new System.Drawing.Size(100, 25);
             this.txt_fieldMs.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(575, 44);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(431, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 15);
             this.label2.TabIndex = 2;
@@ -117,17 +113,15 @@
             // 
             // txt_fieldName
             // 
-            this.txt_fieldName.Location = new System.Drawing.Point(423, 40);
-            this.txt_fieldName.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_fieldName.Location = new System.Drawing.Point(317, 32);
             this.txt_fieldName.Name = "txt_fieldName";
-            this.txt_fieldName.Size = new System.Drawing.Size(132, 25);
+            this.txt_fieldName.Size = new System.Drawing.Size(100, 25);
             this.txt_fieldName.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(343, 44);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label3.Location = new System.Drawing.Point(257, 35);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(67, 15);
             this.label3.TabIndex = 4;
@@ -135,10 +129,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1086, 106);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(814, 85);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 29);
+            this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 6;
             this.button1.Text = "添加字段";
             this.button1.UseVisualStyleBackColor = true;
@@ -146,18 +139,16 @@
             // 
             // txt_fieldType
             // 
-            this.txt_fieldType.Location = new System.Drawing.Point(159, 82);
-            this.txt_fieldType.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_fieldType.Location = new System.Drawing.Point(119, 66);
             this.txt_fieldType.Name = "txt_fieldType";
-            this.txt_fieldType.Size = new System.Drawing.Size(132, 25);
+            this.txt_fieldType.Size = new System.Drawing.Size(100, 25);
             this.txt_fieldType.TabIndex = 8;
             this.txt_fieldType.Text = "nvarchar(20)";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(64, 86);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Location = new System.Drawing.Point(48, 69);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(82, 15);
             this.label4.TabIndex = 7;
@@ -166,7 +157,8 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(343, 86);
+            this.label5.Location = new System.Drawing.Point(257, 69);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(112, 15);
             this.label5.TabIndex = 9;
@@ -174,20 +166,18 @@
             // 
             // txt_STabCount
             // 
-            this.txt_STabCount.Location = new System.Drawing.Point(468, 84);
-            this.txt_STabCount.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_STabCount.Location = new System.Drawing.Point(351, 67);
             this.txt_STabCount.Name = "txt_STabCount";
-            this.txt_STabCount.Size = new System.Drawing.Size(29, 25);
+            this.txt_STabCount.Size = new System.Drawing.Size(23, 25);
             this.txt_STabCount.TabIndex = 10;
             this.txt_STabCount.Text = "1";
             this.txt_STabCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_STabCount_KeyPress);
             // 
             // btn_save
             // 
-            this.btn_save.Location = new System.Drawing.Point(597, 164);
-            this.btn_save.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_save.Location = new System.Drawing.Point(448, 131);
             this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(100, 29);
+            this.btn_save.Size = new System.Drawing.Size(75, 23);
             this.btn_save.TabIndex = 12;
             this.btn_save.Text = "保存";
             this.btn_save.UseVisualStyleBackColor = true;
@@ -195,10 +185,9 @@
             // 
             // btn_load
             // 
-            this.btn_load.Location = new System.Drawing.Point(452, 162);
-            this.btn_load.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_load.Location = new System.Drawing.Point(339, 130);
             this.btn_load.Name = "btn_load";
-            this.btn_load.Size = new System.Drawing.Size(100, 29);
+            this.btn_load.Size = new System.Drawing.Size(75, 23);
             this.btn_load.TabIndex = 14;
             this.btn_load.Text = "加载标准表";
             this.btn_load.UseVisualStyleBackColor = true;
@@ -239,23 +228,38 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1724, 319);
+            this.panel1.Size = new System.Drawing.Size(1293, 191);
             this.panel1.TabIndex = 15;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(14, 158);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(127, 15);
+            this.label14.TabIndex = 39;
+            this.label14.Text = "自定义查询字段：";
+            // 
+            // txtSerchFields
+            // 
+            this.txtSerchFields.Location = new System.Drawing.Point(115, 155);
+            this.txtSerchFields.Name = "txtSerchFields";
+            this.txtSerchFields.Size = new System.Drawing.Size(546, 25);
+            this.txtSerchFields.TabIndex = 40;
             // 
             // txt_ssjcx
             // 
-            this.txt_ssjcx.Location = new System.Drawing.Point(669, 117);
-            this.txt_ssjcx.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_ssjcx.Location = new System.Drawing.Point(502, 94);
             this.txt_ssjcx.Name = "txt_ssjcx";
-            this.txt_ssjcx.Size = new System.Drawing.Size(211, 25);
+            this.txt_ssjcx.Size = new System.Drawing.Size(159, 25);
             this.txt_ssjcx.TabIndex = 38;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(545, 120);
+            this.label13.Location = new System.Drawing.Point(409, 96);
+            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(97, 15);
             this.label13.TabIndex = 37;
@@ -263,10 +267,9 @@
             // 
             // txt_SFieldeStartIndex
             // 
-            this.txt_SFieldeStartIndex.Location = new System.Drawing.Point(468, 111);
-            this.txt_SFieldeStartIndex.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_SFieldeStartIndex.Location = new System.Drawing.Point(351, 89);
             this.txt_SFieldeStartIndex.Name = "txt_SFieldeStartIndex";
-            this.txt_SFieldeStartIndex.Size = new System.Drawing.Size(29, 25);
+            this.txt_SFieldeStartIndex.Size = new System.Drawing.Size(23, 25);
             this.txt_SFieldeStartIndex.TabIndex = 36;
             this.txt_SFieldeStartIndex.Text = "1";
             this.txt_SFieldeStartIndex.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SFieldeStartIndex_KeyPress);
@@ -274,7 +277,8 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(343, 113);
+            this.label12.Location = new System.Drawing.Point(257, 90);
+            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(112, 15);
             this.label12.TabIndex = 35;
@@ -287,19 +291,38 @@
             this.groupBox1.Controls.Add(this.btn_helper);
             this.groupBox1.Controls.Add(this.btn_S_only);
             this.groupBox1.Controls.Add(this.btn_M_only);
-            this.groupBox1.Location = new System.Drawing.Point(1243, 20);
+            this.groupBox1.Location = new System.Drawing.Point(932, 16);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(212, 217);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Size = new System.Drawing.Size(159, 174);
             this.groupBox1.TabIndex = 34;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "独立添加";
             // 
+            // btn_Customize
+            // 
+            this.btn_Customize.Location = new System.Drawing.Point(30, 110);
+            this.btn_Customize.Name = "btn_Customize";
+            this.btn_Customize.Size = new System.Drawing.Size(75, 23);
+            this.btn_Customize.TabIndex = 29;
+            this.btn_Customize.Text = "添加自定义表字典";
+            this.btn_Customize.UseVisualStyleBackColor = true;
+            this.btn_Customize.Click += new System.EventHandler(this.btn_Customize_Click);
+            // 
+            // txt_customize
+            // 
+            this.txt_customize.Location = new System.Drawing.Point(30, 139);
+            this.txt_customize.Margin = new System.Windows.Forms.Padding(2);
+            this.txt_customize.Name = "txt_customize";
+            this.txt_customize.Size = new System.Drawing.Size(76, 25);
+            this.txt_customize.TabIndex = 28;
+            // 
             // btn_helper
             // 
-            this.btn_helper.Location = new System.Drawing.Point(40, 102);
-            this.btn_helper.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_helper.Location = new System.Drawing.Point(30, 82);
             this.btn_helper.Name = "btn_helper";
-            this.btn_helper.Size = new System.Drawing.Size(100, 29);
+            this.btn_helper.Size = new System.Drawing.Size(75, 23);
             this.btn_helper.TabIndex = 27;
             this.btn_helper.Text = "添加帮助表字典";
             this.btn_helper.UseVisualStyleBackColor = true;
@@ -307,10 +330,9 @@
             // 
             // btn_S_only
             // 
-            this.btn_S_only.Location = new System.Drawing.Point(40, 62);
-            this.btn_S_only.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_S_only.Location = new System.Drawing.Point(30, 50);
             this.btn_S_only.Name = "btn_S_only";
-            this.btn_S_only.Size = new System.Drawing.Size(100, 28);
+            this.btn_S_only.Size = new System.Drawing.Size(75, 22);
             this.btn_S_only.TabIndex = 20;
             this.btn_S_only.Text = "添加从表字段";
             this.btn_S_only.UseVisualStyleBackColor = true;
@@ -318,10 +340,9 @@
             // 
             // btn_M_only
             // 
-            this.btn_M_only.Location = new System.Drawing.Point(40, 26);
-            this.btn_M_only.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_M_only.Location = new System.Drawing.Point(30, 21);
             this.btn_M_only.Name = "btn_M_only";
-            this.btn_M_only.Size = new System.Drawing.Size(100, 29);
+            this.btn_M_only.Size = new System.Drawing.Size(75, 23);
             this.btn_M_only.TabIndex = 26;
             this.btn_M_only.Text = "添加主表字段";
             this.btn_M_only.UseVisualStyleBackColor = true;
@@ -330,9 +351,10 @@
             // chk_SFXS
             // 
             this.chk_SFXS.AutoSize = true;
-            this.chk_SFXS.Location = new System.Drawing.Point(1013, 87);
+            this.chk_SFXS.Location = new System.Drawing.Point(760, 70);
+            this.chk_SFXS.Margin = new System.Windows.Forms.Padding(2);
             this.chk_SFXS.Name = "chk_SFXS";
-            this.chk_SFXS.Size = new System.Drawing.Size(59, 19);
+            this.chk_SFXS.Size = new System.Drawing.Size(56, 19);
             this.chk_SFXS.TabIndex = 33;
             this.chk_SFXS.Text = "显示";
             this.chk_SFXS.UseVisualStyleBackColor = true;
@@ -340,7 +362,8 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(919, 87);
+            this.label7.Location = new System.Drawing.Point(689, 70);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(75, 15);
             this.label7.TabIndex = 32;
@@ -349,9 +372,10 @@
             // chk_syncJcJG
             // 
             this.chk_syncJcJG.AutoSize = true;
-            this.chk_syncJcJG.Location = new System.Drawing.Point(1013, 132);
+            this.chk_syncJcJG.Location = new System.Drawing.Point(760, 106);
+            this.chk_syncJcJG.Margin = new System.Windows.Forms.Padding(2);
             this.chk_syncJcJG.Name = "chk_syncJcJG";
-            this.chk_syncJcJG.Size = new System.Drawing.Size(59, 19);
+            this.chk_syncJcJG.Size = new System.Drawing.Size(56, 19);
             this.chk_syncJcJG.TabIndex = 30;
             this.chk_syncJcJG.Text = "同步";
             this.chk_syncJcJG.UseVisualStyleBackColor = true;
@@ -359,7 +383,8 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(919, 132);
+            this.label11.Location = new System.Drawing.Point(689, 106);
+            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(75, 15);
             this.label11.TabIndex = 29;
@@ -367,16 +392,18 @@
             // 
             // txt_lx
             // 
-            this.txt_lx.Location = new System.Drawing.Point(816, 82);
+            this.txt_lx.Location = new System.Drawing.Point(612, 66);
+            this.txt_lx.Margin = new System.Windows.Forms.Padding(2);
             this.txt_lx.Name = "txt_lx";
-            this.txt_lx.Size = new System.Drawing.Size(64, 25);
+            this.txt_lx.Size = new System.Drawing.Size(49, 25);
             this.txt_lx.TabIndex = 28;
             this.txt_lx.Text = "S";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(735, 87);
+            this.label10.Location = new System.Drawing.Point(551, 70);
+            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(75, 15);
             this.label10.TabIndex = 27;
@@ -384,17 +411,17 @@
             // 
             // txt_bzCount
             // 
-            this.txt_bzCount.Location = new System.Drawing.Point(671, 85);
-            this.txt_bzCount.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_bzCount.Location = new System.Drawing.Point(503, 68);
             this.txt_bzCount.Name = "txt_bzCount";
-            this.txt_bzCount.Size = new System.Drawing.Size(29, 25);
+            this.txt_bzCount.Size = new System.Drawing.Size(23, 25);
             this.txt_bzCount.TabIndex = 25;
             this.txt_bzCount.Text = "1";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(545, 88);
+            this.label9.Location = new System.Drawing.Point(409, 70);
+            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(112, 15);
             this.label9.TabIndex = 24;
@@ -403,8 +430,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(34, 171);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label8.Location = new System.Drawing.Point(26, 137);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(112, 15);
             this.label8.TabIndex = 22;
@@ -412,11 +438,10 @@
             // 
             // txt_where
             // 
-            this.txt_where.Location = new System.Drawing.Point(156, 162);
-            this.txt_where.Margin = new System.Windows.Forms.Padding(4);
+            this.txt_where.Location = new System.Drawing.Point(117, 130);
             this.txt_where.Multiline = true;
             this.txt_where.Name = "txt_where";
-            this.txt_where.Size = new System.Drawing.Size(264, 25);
+            this.txt_where.Size = new System.Drawing.Size(199, 21);
             this.txt_where.TabIndex = 23;
             // 
             // panel2
@@ -424,19 +449,17 @@
             this.panel2.Controls.Add(this.radio_m);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.radio_s);
-            this.panel2.Location = new System.Drawing.Point(833, 25);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4);
+            this.panel2.Location = new System.Drawing.Point(625, 20);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(353, 50);
+            this.panel2.Size = new System.Drawing.Size(265, 40);
             this.panel2.TabIndex = 19;
             // 
             // radio_m
             // 
             this.radio_m.AutoSize = true;
-            this.radio_m.Location = new System.Drawing.Point(146, 15);
-            this.radio_m.Margin = new System.Windows.Forms.Padding(4);
+            this.radio_m.Location = new System.Drawing.Point(110, 12);
             this.radio_m.Name = "radio_m";
-            this.radio_m.Size = new System.Drawing.Size(58, 19);
+            this.radio_m.Size = new System.Drawing.Size(55, 19);
             this.radio_m.TabIndex = 15;
             this.radio_m.Text = "主表";
             this.radio_m.UseVisualStyleBackColor = true;
@@ -444,8 +467,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 19);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(3, 13);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(129, 15);
             this.label6.TabIndex = 17;
@@ -455,10 +477,9 @@
             // 
             this.radio_s.AutoSize = true;
             this.radio_s.Checked = true;
-            this.radio_s.Location = new System.Drawing.Point(225, 14);
-            this.radio_s.Margin = new System.Windows.Forms.Padding(4);
+            this.radio_s.Location = new System.Drawing.Point(169, 11);
             this.radio_s.Name = "radio_s";
-            this.radio_s.Size = new System.Drawing.Size(58, 19);
+            this.radio_s.Size = new System.Drawing.Size(55, 19);
             this.radio_s.TabIndex = 16;
             this.radio_s.TabStop = true;
             this.radio_s.Text = "从表";
@@ -471,13 +492,12 @@
             this.tableLayoutPanel1.Controls.Add(this.dataGridView2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.dataGridView1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 319);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 191);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.061489F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.93851F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1724, 423);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.1737F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.8263F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1293, 403);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // dataGridView2
@@ -486,12 +506,11 @@
             this.dataGridView2.ColumnHeadersHeight = 29;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView2.Location = new System.Drawing.Point(4, 4);
-            this.dataGridView2.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridView2.Location = new System.Drawing.Point(3, 3);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersWidth = 40;
             this.dataGridView2.RowTemplate.Height = 23;
-            this.dataGridView2.Size = new System.Drawing.Size(1716, 30);
+            this.dataGridView2.Size = new System.Drawing.Size(1287, 35);
             this.dataGridView2.TabIndex = 13;
             // 
             // dataGridView1
@@ -500,58 +519,20 @@
             this.dataGridView1.ColumnHeadersHeight = 29;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(4, 42);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 44);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 40;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(1716, 377);
+            this.dataGridView1.Size = new System.Drawing.Size(1287, 356);
             this.dataGridView1.TabIndex = 11;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(18, 197);
-            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(127, 15);
-            this.label14.TabIndex = 39;
-            this.label14.Text = "自定义查询字段：";
-            // 
-            // txtSerchFields
-            // 
-            this.txtSerchFields.Location = new System.Drawing.Point(153, 194);
-            this.txtSerchFields.Margin = new System.Windows.Forms.Padding(4);
-            this.txtSerchFields.Name = "txtSerchFields";
-            this.txtSerchFields.Size = new System.Drawing.Size(727, 25);
-            this.txtSerchFields.TabIndex = 40;
-            // 
-            // txt_customize
-            // 
-            this.txt_customize.Location = new System.Drawing.Point(40, 174);
-            this.txt_customize.Name = "txt_customize";
-            this.txt_customize.Size = new System.Drawing.Size(100, 25);
-            this.txt_customize.TabIndex = 28;
-            // 
-            // btn_Customize
-            // 
-            this.btn_Customize.Location = new System.Drawing.Point(40, 137);
-            this.btn_Customize.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_Customize.Name = "btn_Customize";
-            this.btn_Customize.Size = new System.Drawing.Size(100, 29);
-            this.btn_Customize.TabIndex = 29;
-            this.btn_Customize.Text = "添加自定义表字典";
-            this.btn_Customize.UseVisualStyleBackColor = true;
-            this.btn_Customize.Click += new System.EventHandler(this.btn_Customize_Click);
             // 
             // TargetForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1724, 742);
+            this.ClientSize = new System.Drawing.Size(1293, 594);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TargetForm";
             this.Text = "TargetForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TargetForm_FormClosed);

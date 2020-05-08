@@ -60,6 +60,7 @@
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
+    <Compile Include="CalculatesNew\wlb\CT_沥青混合料抽提\CT.cs" />
     <Compile Include="CalculatesNew\wlb\SCY_土工\SCY.cs" />
     <Compile Include="CalculatesNew\wlb\HHD_回填土%28环刀法%29\HHD.cs" />
     <Compile Include="CalculatesNew\wlb\HGW_回填土（灌水法）\HGW.cs" />

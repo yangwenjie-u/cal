@@ -238,7 +238,7 @@ namespace Calculates
                     //if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
                     //{
                     List<string> listWJ_G = new List<string>();
-                    listWJ_G = MItem[0]["G_PJWJ"].Split('~').ToList();
+                    listWJ_G = MItem[0]["G_PJWJ"].Split('～').ToList();
                     if (listWJ_G.Count != 2)
                     {
                         throw new Exception("请输入平均外径标准范围.");
@@ -249,7 +249,7 @@ namespace Calculates
 
                     //壁厚
                     List<string> listBH_G = new List<string>();
-                    listBH_G = MItem[0]["G_GCBH"].Split('~').ToList();
+                    listBH_G = MItem[0]["G_GCBH"].Split('～').ToList();
                     if (listWJ_G.Count != 2)
                     {
                         throw new Exception("请输入平均壁厚标准范围.");
@@ -319,11 +319,11 @@ namespace Calculates
                     }
                     if (GetSafeDouble(MItem[0]["PJWJ1"]) > GetSafeDouble(MItem[0]["PJWJ2"]))
                     {
-                        MItem[0]["PJWJ"] = MItem[0]["PJWJ2"] + "~" + MItem[0]["PJWJ1"];
+                        MItem[0]["PJWJ"] = MItem[0]["PJWJ2"] + "～" + MItem[0]["PJWJ1"];
                     }
                     else if (GetSafeDouble(MItem[0]["PJWJ1"]) < GetSafeDouble(MItem[0]["PJWJ2"]))
                     {
-                        MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "~" + MItem[0]["PJWJ2"];
+                        MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
                     }
                     else
                     {
@@ -331,11 +331,11 @@ namespace Calculates
                     }
                     if (GetSafeDouble(sitem["PJBH1"]) > GetSafeDouble(sitem["PJBH2"]))
                     {
-                        sitem["PJBH"] = sitem["PJBH2"] + "~" + sitem["PJBH1"];
+                        sitem["PJBH"] = sitem["PJBH2"] + "～" + sitem["PJBH1"];
                     }
                     else if (GetSafeDouble(sitem["PJBH1"]) < GetSafeDouble(sitem["PJBH2"]))
                     {
-                        sitem["PJBH"] = sitem["PJBH1"] + "~" + sitem["PJBH2"];
+                        sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
                     }
                     else
                     {

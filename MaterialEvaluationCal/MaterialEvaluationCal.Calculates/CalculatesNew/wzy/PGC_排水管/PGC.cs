@@ -17,7 +17,10 @@ namespace Calculates
             var mrsDj = dataExtra["BZ_PGC_DJ"];
             var mrscyfa = dataExtra["BZ_GCCYFA"];
             var mrslccj = dataExtra["BZ_GCLCCJ"];
-            var mrsYysycs = dataExtra["BZ_GCYYSYCS"];
+            //var mrsYysycs = dataExtra["BZ_GCYYSYCS"];
+            var mrsWgcc = dataExtra["BZ_GCWGCC"];
+
+
             var MItem = data["M_PGC"];
             var mitem = MItem[0];
             var SItem = data["S_PGC"];
@@ -98,7 +101,7 @@ namespace Calculates
                 }
                 else
                 {
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
                     mitem["JCJGMS"] = mitem["JCJGMS"] + "获取标准要求出错，找不到对应项";
                     continue;
                 }
@@ -217,12 +220,19 @@ namespace Calculates
                     }
 
                     #region
-                    ////平均外径
-                    //var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["WJ"] == sitem["GCWJ"]);
-                    //if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
-                    //{
+                    //平均外径
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"]);
+                    if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
+                    {
+                        MItem[0]["G_PJWJ"] = mrsWgcc_Filter["WJMin"] + "～" + mrsWgcc_Filter["WJMax"];
+                        MItem[0]["G_GCBH"] = mrsWgcc_Filter["BHMIN"] + "～" + mrsWgcc_Filter["BHMAX"];
+                    }
+                    else
+                    {
+                        throw new Exception("获取规格尺寸信息失败");
+                    }
                     List<string> listWJ_G = new List<string>();
-                    listWJ_G = MItem[0]["G_PJWJ"].Split('~').ToList();
+                    listWJ_G = MItem[0]["G_PJWJ"].Split('～').ToList();
                     if (listWJ_G.Count != 2)
                     {
                         throw new Exception("请输入平均外径标准范围.");
@@ -232,7 +242,7 @@ namespace Calculates
 
                     //壁厚
                     List<string> listBH_G = new List<string>();
-                    listBH_G = MItem[0]["G_GCBH"].Split('~').ToList();
+                    listBH_G = MItem[0]["G_GCBH"].Split('～').ToList();
                     if (listWJ_G.Count != 2)
                     {
                         throw new Exception("请输入平均壁厚标准范围.");
@@ -298,11 +308,11 @@ namespace Calculates
                     }
                     if (GetSafeDouble(MItem[0]["PJWJ1"]) > GetSafeDouble(MItem[0]["PJWJ2"]))
                     {
-                        MItem[0]["PJWJ"] = MItem[0]["PJWJ2"] + "~" + MItem[0]["PJWJ1"];
+                        MItem[0]["PJWJ"] = MItem[0]["PJWJ2"] + "～" + MItem[0]["PJWJ1"];
                     }
                     else if (GetSafeDouble(MItem[0]["PJWJ1"]) < GetSafeDouble(MItem[0]["PJWJ2"]))
                     {
-                        MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "~" + MItem[0]["PJWJ2"];
+                        MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
                     }
                     else
                     {
@@ -310,11 +320,11 @@ namespace Calculates
                     }
                     if (GetSafeDouble(sitem["PJBH1"]) > GetSafeDouble(sitem["PJBH2"]))
                     {
-                        sitem["PJBH"] = sitem["PJBH2"] + "~" + sitem["PJBH1"];
+                        sitem["PJBH"] = sitem["PJBH2"] + "～" + sitem["PJBH1"];
                     }
                     else if (GetSafeDouble(sitem["PJBH1"]) < GetSafeDouble(sitem["PJBH2"]))
                     {
-                        sitem["PJBH"] = sitem["PJBH1"] + "~" + sitem["PJBH2"];
+                        sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
                     }
                     else
                     {
