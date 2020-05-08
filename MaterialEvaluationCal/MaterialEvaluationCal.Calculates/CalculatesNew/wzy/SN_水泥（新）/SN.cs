@@ -75,9 +75,9 @@ namespace Calculates
             foreach (var sitem in SItem)
             {
                 /*水灰比计算 用水量 / 水泥量  取两位小数*/
-                if (!string.IsNullOrEmpty(sitem["YSLSHB"]) && !string.IsNullOrEmpty(sitem["SLLSHB"]))
+                if (!string.IsNullOrEmpty(mitem["LDDYSL"].Trim()) && !string.IsNullOrEmpty(sitem["SLLSHB"]))
                 {
-                    mitem["SHB"] = Round(GetSafeDouble(sitem["YSLSHB"]) / GetSafeDouble(sitem["SLLSHB"]), 2).ToString("0.00");
+                    mitem["SHB"] = Round(GetSafeDouble(mitem["LDDYSL"].Trim()) / GetSafeDouble(sitem["SLLSHB"]), 2).ToString("0.00");
                 }
 
                 mSjdj = sitem["SJDJ"];            //设计等级名称
@@ -789,7 +789,7 @@ namespace Calculates
                         {
                             //mitem["XDSK"] = "80";
                             mitem["G_XD2"] = mrsDj_Filter["XDBZ2"];
-                            if (IsQualified(mitem["G_XD2"], mitem["XDSY"]) == "符合")
+                            if (IsQualified(mitem["G_XD2"], mitem["XDSY"],true) == "符合")
                             {
                                 mitem["XD_HG"] = "合格";
                                 xd_hg = true;
@@ -812,7 +812,7 @@ namespace Calculates
                         {
                             //mitem["XDSK"] = "45";
                             mitem["G_XD2"] = mrsDj_Filter["XDBZ3"];
-                            if (IsQualified(mitem["G_XD2"], mitem["XDSY"]) == "符合")
+                            if (IsQualified(mitem["G_XD2"], mitem["XDSY"], true) == "符合")
                             {
                                 mitem["XD_HG"] = "合格";
                                 xd_hg = true;
@@ -1182,13 +1182,15 @@ namespace Calculates
                 else
                 {
                     if (mAllHg)
-                        mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+                        mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合标准要求。";
                     else
                     {
-                        mitem["JCJGMS"] = "该组试样不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
+                        mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样所检项目" + bhgJcxm + "不符合标准要求。";
+                        //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样不符合标准要求。";
                         if (mFlag_Bhg && mFlag_Hg)
                         {
-                            mitem["JCJGMS"] = "该组试样所检项目" + bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
+                            //mitem["JCJGMS"] = "该组试样所检项目" + bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
+                            //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样所检项目" + bhgJcxm + "不符合标准要求。";
                         }
 
                     }
@@ -1197,12 +1199,12 @@ namespace Calculates
             else
             {
                 if (mAllHg)
-                    mitem["JCJGMS"] = "28天强度检测前，该组试样所检项目符合标准要求。";
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，28天强度检测前，该组试样所检项目符合标准要求。";
                 else
                 {
-                    mitem["JCJGMS"] = "28天强度检测前，该组试样不符合标准要求。";
-                    if (mFlag_Bhg && mFlag_Hg)
-                        mitem["JCJGMS"] = "28天强度检测前，该组试样所检项目" + bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，28天强度检测前，所检项目"+bhgJcxm+"不符合要求。";
+                    //if (mFlag_Bhg && mFlag_Hg)
+                       // mitem["JCJGMS"] = "28天强度检测前，该组试样所检项目" + bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
                 }
             }
             #endregion

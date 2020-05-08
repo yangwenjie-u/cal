@@ -28,7 +28,7 @@ namespace Calculates
                 data["M_SCY"] = new List<IDictionary<string, string>>();
             }
             var MItem = data["M_SCY"];
-            var ET_SF = data["ET_SF"][0];
+            //var ET_SF = data["ET_SF"][0];
             double sum = 0;
             if (MItem == null)
             {
@@ -42,126 +42,90 @@ namespace Calculates
             foreach (var sItem in S_SCYS)
             {
                 #region 颗粒分析
-                //筛前总土质量   小于2mm土质量
-                if (IsNumeric(ET_SF["SQZTZL"].Trim()) && IsNumeric(ET_SF["XTZL"].Trim()))
-                {
-                    //小于2mm土占总土质量 %
-                    ET_SF["XTBL"] = Round(GetSafeDouble(ET_SF["XTZL"].Trim()) / GetSafeDouble(ET_SF["SQZTZL"].Trim()), 1).ToString("0.0");
-                }
-                sign = true;
-                //细筛总质量（小于2mm取样质量）
-                sign = IsNumeric(ET_SF["XSFZL"]) && GetSafeDouble(ET_SF["XSFZL"]) != 0 ? sign : false;
-                if (sign)
-                {
-                    ET_SF["XSFZL"] = "数据不合法";
-                    break;
-                }
-                //如果2mm筛下的土小于试验总质量的10% 可省略细筛筛析
-                if (GetSafeDouble(ET_SF["XTBL"]) >= 10)
-                {
-                    //细筛
-                    sign = true;
-                    for (int i = 1; i <= 7; i++)
-                    {
-                        if (IsNumeric(ET_SF["XLSZL" + i]))
-                        {
-                            sign = true;
-                        }
-                        else
-                        {
-                            sign = false;
-                        }
-                    }
-                    if (sign)
-                    {
-                        for (int i = 1; i < 6; i++)
-                        {
-                            //细筛余通过占总土质量百分   小于该孔径的土质量占总土质量百分比 =  小于该孔径的土质量/土总质量
-                            ET_SF["TGBF" + (i + 6)] = Round(GetSafeDouble(ET_SF["XTGBF" + i]) * GetSafeDouble(ET_SF["XTZL"]) / GetSafeDouble(ET_SF["SQZTZL"].Trim()), 1).ToString("0.0");
-                        }
-                        for (int i = 1; i < 6; i++)
-                        {
+                //sign = true;
+                //sign = IsNumeric(sItem["SQZZL"].Trim());//筛前总质量
+                //sign = IsNumeric(sItem["XSZZL"].Trim());//小于2mm取样质量
+                //sign = IsNumeric(sItem["XTZL"].Trim());//小于2mm试样质量
+                //if (sign)
+                //{
+                //    //小于2mm试样占总质量百分数
+                //    sItem["XTBL"] = Round(GetSafeDouble(sItem["XTZL"].Trim()) / GetSafeDouble(sItem["SQZZL"].Trim()) * 100, 1).ToString("0.0");
+                //    //累计留筛土
+                //    sItem["CLJLSTZL60"] = sItem["CFJSTZL60"].Trim();
+                //    sItem["CLJLSTZL40"] = Round(GetSafeDouble(sItem["CLJLSTZL60"]) + GetSafeDouble(sItem["CFJSTZL40"]), 1).ToString("0.0");
+                //    sItem["CLJLSTZL20"] = Round(GetSafeDouble(sItem["CLJLSTZL40"]) + GetSafeDouble(sItem["CFJSTZL20"]), 1).ToString("0.0");
+                //    sItem["CLJLSTZL10"] = Round(GetSafeDouble(sItem["CLJLSTZL20"]) + GetSafeDouble(sItem["CFJSTZL10"]), 1).ToString("0.0"); ;
+                //    sItem["CLJLSTZL5"] = Round(GetSafeDouble(sItem["CLJLSTZL10"]) + GetSafeDouble(sItem["CFJSTZL5"]), 1).ToString("0.0");
+                //    sItem["CLJLSTZL2"] = Round(GetSafeDouble(sItem["CLJLSTZL5"]) + GetSafeDouble(sItem["CFJSTZL2"]), 1).ToString("0.0");
+                //    sItem["XLJLSTZL2"] = sItem["XFJSTZL2"].Trim();
+                //    sItem["XLJLSTZL1"] = Round(GetSafeDouble(sItem["XLJLSTZL2"]) + GetSafeDouble(sItem["XFJSTZL1"]), 1).ToString("0.0");
+                //    sItem["XLJLSTZL05"] = Round(GetSafeDouble(sItem["XLJLSTZL1"]) + GetSafeDouble(sItem["XFJSTZL05"]), 1).ToString("0.0");
+                //    sItem["XLJLSTZL025"] = Round(GetSafeDouble(sItem["XLJLSTZL05"]) + GetSafeDouble(sItem["XFJSTZL025"]), 1).ToString("0.0");
+                //    sItem["XLJLSTZL0075"] = Round(GetSafeDouble(sItem["XLJLSTZL025"]) + GetSafeDouble(sItem["XFJSTZL0075"]), 1).ToString("0.0");
+                //    sItem["LJSYZLSD"] = Round(GetSafeDouble(sItem["XLJLSTZL0075"]) + GetSafeDouble(sItem["SDSY"]), 1).ToString("0.0");
+                //    //小于该粒径土质量
+                //    sItem["CXYLJSYZL60"] = Round(GetSafeDouble(sItem["SQZZL"].Trim()) - GetSafeDouble(sItem["CLJLSTZL60"]), 1).ToString("0.0");
+                //    sItem["CXYLJSYZL40"] = Round(GetSafeDouble(sItem["SQZZL"].Trim()) - GetSafeDouble(sItem["CLJLSTZL40"]), 1).ToString("0.0");
+                //    sItem["CXYLJSYZL20"] = Round(GetSafeDouble(sItem["SQZZL"].Trim()) - GetSafeDouble(sItem["CLJLSTZL20"]), 1).ToString("0.0");
+                //    sItem["CXYLJSYZL10"] = Round(GetSafeDouble(sItem["SQZZL"].Trim()) - GetSafeDouble(sItem["CLJLSTZL10"]), 1).ToString("0.0");
+                //    sItem["CXYLJSYZL5"] = Round(GetSafeDouble(sItem["SQZZL"].Trim()) - GetSafeDouble(sItem["CLJLSTZL5"]), 1).ToString("0.0");
+                //    sItem["CXYLJSYZL2"] = Round(GetSafeDouble(sItem["SQZZL"].Trim()) - GetSafeDouble(sItem["CLJLSTZL2"]), 1).ToString("0.0");
+                //    sItem["XXYLJSYZL2"] = Round(GetSafeDouble(sItem["XTZL"].Trim()) - GetSafeDouble(sItem["XLJLSTZL2"]), 1).ToString("0.0");
+                //    sItem["XXYLJSYZL1"] = Round(GetSafeDouble(sItem["XTZL"].Trim()) - GetSafeDouble(sItem["XLJLSTZL1"]), 1).ToString("0.0");
+                //    sItem["XXYLJSYZL05"] = Round(GetSafeDouble(sItem["XTZL"].Trim()) - GetSafeDouble(sItem["XLJLSTZL05"]), 1).ToString("0.0");
+                //    sItem["XXYLJSYZL025"] = Round(GetSafeDouble(sItem["XTZL"].Trim()) - GetSafeDouble(sItem["XLJLSTZL025"]), 1).ToString("0.0");
+                //    sItem["XXYLJSYZL0075"] = Round(GetSafeDouble(sItem["XTZL"].Trim()) - GetSafeDouble(sItem["XLJLSTZL0075"]), 1).ToString("0.0");
+                //    sItem["XYLJSYZLSD"] = Round(GetSafeDouble(sItem["XTZL"].Trim()) - GetSafeDouble(sItem["LJSYZLSD"]), 1).ToString("0.0");
+                //    //占总土质量百分比 
+                //    sItem["CTGZBFL60"] = Round(GetSafeDouble(sItem["CXYLJSYZL60"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGZBFL40"] = Round(GetSafeDouble(sItem["CXYLJSYZL40"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGZBFL20"] = Round(GetSafeDouble(sItem["CXYLJSYZL20"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGZBFL10"] = Round(GetSafeDouble(sItem["CXYLJSYZL10"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGZBFL5"] = Round(GetSafeDouble(sItem["CXYLJSYZL5"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGZBFL2"] = Round(GetSafeDouble(sItem["CXYLJSYZL2"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["XTGZBFL2"] = Round(GetSafeDouble(sItem["XXYLJSYZL2"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["XTGZBFL1"] = Round(GetSafeDouble(sItem["XXYLJSYZL1"]) / GetSafeDouble(sItem["XTZL"]) * GetSafeDouble(sItem["XTGZBFL2"]), 1).ToString("0.0");
+                //    sItem["XTGZBFL05"] = Round(GetSafeDouble(sItem["XXYLJSYZL05"]) / GetSafeDouble(sItem["XTZL"]) * GetSafeDouble(sItem["XTGZBFL2"]), 1).ToString("0.0");
+                //    sItem["XTGZBFL025"] = Round(GetSafeDouble(sItem["XXYLJSYZL025"]) / GetSafeDouble(sItem["XTZL"]) * GetSafeDouble(sItem["XTGZBFL2"]), 1).ToString("0.0");
+                //    sItem["XTGZBFL0075"] = Round(GetSafeDouble(sItem["XXYLJSYZL0075"]) / GetSafeDouble(sItem["XTZL"]) * GetSafeDouble(sItem["XTGZBFL2"]), 1).ToString("0.0");
+                //    sItem["TGZBFSD"] = Round(GetSafeDouble(sItem["XYLJSYZLSD"]) / GetSafeDouble(sItem["XTZL"]) * GetSafeDouble(sItem["XTGZBFL0075"]), 2).ToString("0.00");
 
-                            sum = 0;
-                            for (int j = i + 1; j <= 6; j++)
-                            {
-                                sum = sum + GetSafeDouble(ET_SF["XLSZL" + j]);
-                            }
-                            //细筛余通过质量  小于该筛孔的土质量y
-                            ET_SF["XTGZL" + i] = sum.ToString("0.0");
-                           
-                        }
-                        for (int i = 1; i < 6; i++)
-                        {
-                            //细筛余通过百分 小于该孔径的土质量百分比 = 小于该孔径的土质量 / 小于2mm的试样质量 * 0.075mm处占总土质量百分比
-                            ET_SF["XTGBF" + i] = Round(100 * sum / GetSafeDouble(ET_SF["XSFZL"].Trim()) * GetSafeDouble(ET_SF["TGBF11"]), 1).ToString("0.0");
-                        }
-                    }
-                    else
-                    {
-                        throw new SystemException("细筛余数据录入有误");
-                    }
-                }
-                else
-                {
-                    for (int i = 1; i < 6; i++)
-                    {
-                        ET_SF["XTGZL" + i] = "----";
-                        ET_SF["XTGBF" + i] = "----";
-                        ET_SF["TGBF" + (i + 6)] = "----";
-                    }
-                }
+                //    //小于该粒径土质量百分比
+                //    sItem["CTGBFL60"] = Round(GetSafeDouble(sItem["CXYLJSYZL60"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");//y轴  大 > 小
+                //    sItem["CTGBFL40"] = Round(GetSafeDouble(sItem["CXYLJSYZL40"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGBFL20"] = Round(GetSafeDouble(sItem["CXYLJSYZL20"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGBFL10"] = Round(GetSafeDouble(sItem["CXYLJSYZL10"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGBFL5"] = Round(GetSafeDouble(sItem["CXYLJSYZL5"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["CTGBFL2"] = Round(GetSafeDouble(sItem["CXYLJSYZL2"]) / GetSafeDouble(sItem["SQZZL"]) * 100, 1).ToString("0.0");
+                //    sItem["XTGBFL2"] = Round(GetSafeDouble(sItem["XXYLJSYZL2"]) / GetSafeDouble(sItem["XTZL"]) * 100, 1).ToString("0.0");
+                //    sItem["XTGBFL1"] = Round(GetSafeDouble(sItem["XXYLJSYZL1"]) / GetSafeDouble(sItem["XTZL"]) * 100, 1).ToString("0.0");
+                //    sItem["XTGBFL05"] = Round(GetSafeDouble(sItem["XXYLJSYZL05"]) / GetSafeDouble(sItem["XTZL"]) * 100, 1).ToString("0.0");
+                //    sItem["XTGBFL025"] = Round(GetSafeDouble(sItem["XXYLJSYZL025"]) / GetSafeDouble(sItem["XTZL"]) * 100, 1).ToString("0.0");
+                //    sItem["XTGBFL0075"] = Round(GetSafeDouble(sItem["XXYLJSYZL0075"]) / GetSafeDouble(sItem["XTZL"]) * 100, 1).ToString("0.0");
+                //    sItem["TGBFSD"] = Round(GetSafeDouble(sItem["XYLJSYZLSD"]) / GetSafeDouble(sItem["XTZL"]) * 100, 1).ToString("0.0");
 
-                //如果2mm筛下的土大于试验总质量的90% 即2mm筛上的土小于试验总质量的10%  可省略粗筛筛析
-                if (GetSafeDouble(ET_SF["XTBL"]) > 90)
-                {
-                    //粗筛
-                    for (int i = 1; i <= 7; i++)
-                    {
-                        if (IsNumeric(ET_SF["CLSZL" + i]))
-                        {
-                            sign = true;
-                        }
-                        else
-                        {
-                            sign = false;
-                        }
-                    }
-                    if (sign)
-                    {
-                        for (int i = 1; i < 7; i++)
-                        {
-                            sum = 0;
-                            for (int j = i + 1; j <= 7; j++)
-                            {
-                                sum = sum + GetSafeDouble(ET_SF["CLSZL" + j]);
-                            }
-                            //粗筛余通过质量 小于该筛孔的土质量g
-                            ET_SF["CTGZL" + i] = sum.ToString("0.0");
-                            //粗筛余通过百分 小于该筛孔土质量百分率
-                            ET_SF["CTGBF" + i] = Round(100 * sum / GetSafeDouble(ET_SF["SQZTZL"].Trim()), 1).ToString("0.0");
-                           
-                        }
-                        for (int i = 1; i < 7; i++)
-                        {
-                            //筛余通过百分   小于该孔径的土质量占总土质量百分比 =  小于该孔径的土质量/土总质量 * 2mm处占总土质量百分比
-                            ET_SF["TGBF" + i] = Round(100 * sum / GetSafeDouble(ET_SF["SQZTZL"].Trim()) * GetSafeDouble(ET_SF["TGBF6"].Trim()), 1).ToString("0.0");
-                        }
-                    }
-                    else
-                    {
-                        throw new SystemException("粗筛余数据录入有误");
-                    }
-                }
-                else
-                {
-                    for (int i = 1; i < 6; i++)
-                    {
-                        ET_SF["CTGZL" + i] = "----";
-                        ET_SF["CTGBF" + i] = "----";
-                        ET_SF["TGBF" + i] = "----";
-                    }
-                }
+                //    //大于2mm砾粒占(%)
+                //    sItem["DYBFL"] = Round(100 - GetSafeDouble(sItem["XTGZBFL2"]),1).ToString("0.0");
+                //    //2～0.075mm砂粒占(%)
+                //    sItem["QJBFL"] = Round(GetSafeDouble(sItem["XLJLSTZL0075"]) / GetSafeDouble(sItem["SQZZL"].Trim()) * 100, 1).ToString("0.0");
+                //    //大于0.075mm粗粒占(%)
+                //    sItem["DYBFL0075"] = Round((GetSafeDouble(sItem["XLJLSTZL0075"]) + GetSafeDouble(sItem["CLJLSTZL2"])) / GetSafeDouble(sItem["SQZZL"].Trim()) * 100, 1).ToString("0.0");
+                //    #region
+                //    /**
+                //     * 根据级配曲线 获得 d60  d30 d10 的粒径值    
+                //     * d60  占总土质量60%对应 的粒径
+                //     * d30  占总土质量30%对应 的粒径
+                //     * d10  占总土质量10%对应 的粒径
+                //     * 
+                //     * 不均匀系数  sItem["BJYXS"] = Round(d60 / d10,1).ToString("0.0"); 
+                //     * 曲率系数    sItem["QLXS"] = Round((d30 * d30)/(d60 * d10),1).ToString("0.0");
+                //     */
+                //    #endregion
+                //}
+                //else
+                //{
+                //    throw new SystemException("筛前总质量、小于2mm取样质量或小于2mm试样质量数据录入有误。");
+                //}
                 #endregion
 
                 itemHG = true;
@@ -170,12 +134,23 @@ namespace Calculates
                 #region 颗粒分析
                 if (jcxm.Contains("、颗粒分析、"))
                 {
-                    sItem["GH_SF"] = IsQualified(sItem["SJ_SF1"], sItem["W_SF1"], true);
-                    if (sItem["GH_SF"] == "不符合")
+                    if (GetSafeDouble(sItem["BJYXS"]) >=5 && GetSafeDouble(sItem["QLXS"])  >=1 && GetSafeDouble(sItem["QLXS"]) <= 3)
+                    {
+                        sItem["JCJG"] = "合格";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目属级配良好砂砾。";
+                    }
+                    else
                     {
                         mAllHg = false;
+                        sItem["JCJG"] = "不合格";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目属级配不良砂砾。";
                     }
-                    sign = true;
+                    //sItem["GH_SF"] = IsQualified(sItem["SJ_SF1"], sItem["W_SF1"], true);
+                    //if (sItem["GH_SF"] == "不符合")
+                    //{
+                    //    mAllHg = false;
+                    //}
+                    //sign = true;
                 }
                 else
                 {
@@ -184,18 +159,17 @@ namespace Calculates
                     sItem["GH_SF"] = "----";
                 }
                 #endregion
-
             }
 
             //添加最终报告
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组样品所检项目符合标准要求。";
+                //jsbeizhu = "该组样品所检项目符合标准要求。";
             }
             else
             {
-                jsbeizhu = "该组样品所检项目不符合标准要求。";
+                //jsbeizhu = "该组样品所检项目不符合标准要求。";
 
             }
 

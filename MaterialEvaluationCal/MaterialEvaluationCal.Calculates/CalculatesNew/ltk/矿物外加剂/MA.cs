@@ -207,15 +207,7 @@ namespace Calculates
                 return sign ? hgjl : bhgjl;
             };*/
             #endregion
-            #region 主表处理
-            if (MItem.Count == 0)
-            {
-                IDictionary<string, string> m = new Dictionary<string, string>();
-                m["JCJG"] = mjcjg;
-                m["JCJGMS"] = jsbeizhu;
-                MItem.Add(m);
-            }
-            #endregion
+            
             #region 从表处理
             foreach (var sItem in SItem)
             {

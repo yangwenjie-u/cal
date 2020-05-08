@@ -12,7 +12,7 @@ namespace Calculates
     {
         public void Calc()
         {
-            /***********************代码开始 * ********************/
+            /************************ 代码开始 *********************/
             #region
             //获取帮助表数据
             //var extraDJ = dataExtra["BZ_GUT_DJ"];
@@ -45,65 +45,67 @@ namespace Calculates
 
             foreach (var sItem in S_GUTS)
             {
-                itemHG = true;
-                string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-                sybz = sItem["SYBZ"].Trim();
-                //设计等级名称
-                mSjdj = sItem["YSDJ"];
-                if (string.IsNullOrEmpty(mSjdj))
-                {
-                    mSjdj = "";
-                }
-
-                //if (0 < double.Parse(MItem[0]["FJCOUNT"]))
+                //报告总页数
+                //sItem["BGYS"] = "报告总页数：" + sItem["BGYS"].Trim() + "页";
+                //itemHG = true;
+                //string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
+                //sybz = sItem["SYBZ"].Trim();
+                ////设计等级名称
+                //mSjdj = sItem["YSDJ"];
+                //if (string.IsNullOrEmpty(mSjdj))
                 //{
-                //    for (int i = 1; i < double.Parse(MItem[0]["FJCOUNT"]); i++)
-                //    {
-                //        bgfjs = (10 + i - 1).ToString("0");
-                //    }
-
+                //    mSjdj = "";
                 //}
-                //计算修正系数
-                //MItem[0]["BGZS"] =(double.Parse(MItem[0]["BGZS"]) + 1).ToString();
-                if ("Ⅱ级" == sItem["YSDJ"] && "Ⅲ级" == sItem["PDDJ"])
-                {
-                    sItem["JCJG"] = "不合格";
-                    mAllHg = false;
-                }
-                else
-                {
-                    sItem["JCJG"] = "合格";
-                    mjcjg = "合格";
-                    hgs++;
-                }
 
-                if (sybz.Contains("50661") && "米" == MItem[0]["SFFS"])
-                {
-                    hfcd = double.Parse(sItem["HFCD"]);
-                    hfs = (hfcd - 1) / 0.3 + 2;
-                }
+                ////if (0 < double.Parse(MItem[0]["FJCOUNT"]))
+                ////{
+                ////    for (int i = 1; i < double.Parse(MItem[0]["FJCOUNT"]); i++)
+                ////    {
+                ////        bgfjs = (10 + i - 1).ToString("0");
+                ////    }
+
+                ////}
+                ////计算修正系数
+                ////MItem[0]["BGZS"] =(double.Parse(MItem[0]["BGZS"]) + 1).ToString();
+                //if ("Ⅱ级" == sItem["YSDJ"] && "Ⅲ级" == sItem["PDDJ"])
+                //{
+                //    sItem["JCJG"] = "不合格";
+                //    mAllHg = false;
+                //}
+                //else
+                //{
+                //    sItem["JCJG"] = "合格";
+                //    mjcjg = "合格";
+                //    hgs++;
+                //}
+
+                //if (sybz.Contains("50661") && "米" == MItem[0]["SFFS"])
+                //{
+                //    hfcd = double.Parse(sItem["HFCD"]);
+                //    hfs = (hfcd - 1) / 0.3 + 2;
+                //}
             }
 
             //添加最终报告
-            bhgs = S_GUTS.Count - hgs;
-            if (sybz.Contains("50205"))
-            {
-                jsbeizhu = "本次共检焊缝" + S_GUTS.Count + "条，其中达到" + mSjdj + "焊缝水平" + hgs + "条，未达到" + mSjdj + "焊缝水平" + bhgs + "条。";
-            }
-            else
-            {
-                if ("条" == MItem[0]["SFFS"])
-                {
-                    jsbeizhu = "本次共检焊缝" + S_GUTS.Count + "处，其中合格" + S_GUTS.Count + "处，合格率100%。";
-                }
-                else
-                {
-                    jsbeizhu = "本次共检焊缝" + hfs + "处，其中合格" + hfs + "处，合格率100%。";
-                }
-            }
+            //bhgs = S_GUTS.Count - hgs;
+            //if (sybz.Contains("50205"))
+            //{
+            //    jsbeizhu = "本次共检焊缝" + S_GUTS.Count + "条，其中达到" + mSjdj + "焊缝水平" + hgs + "条，未达到" + mSjdj + "焊缝水平" + bhgs + "条。";
+            //}
+            //else
+            //{
+            //    if ("条" == MItem[0]["SFFS"])
+            //    {
+            //        jsbeizhu = "本次共检焊缝" + S_GUTS.Count + "处，其中合格" + S_GUTS.Count + "处，合格率100%。";
+            //    }
+            //    else
+            //    {
+            //        jsbeizhu = "本次共检焊缝" + hfs + "处，其中合格" + hfs + "处，合格率100%。";
+            //    }
+            //}
 
-            MItem[0]["JCJG"] = mjcjg;
-            MItem[0]["JCJGMS"] = jsbeizhu;
+            //MItem[0]["JCJG"] = mjcjg;
+            //MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             /************************ 代码结束 ********************/
         }
