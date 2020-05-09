@@ -289,108 +289,117 @@ namespace Calculates
                     //合成矿料相对密度 ==（100-沥青用量）/（（100/理论最大密度）-（沥青用量/沥青相对密度））
                     decimal hcmtjxdmd = 0;
                     hcmtjxdmd = Math.Round((100 - GetSafeDecimal(mitem["W_LQHL"], 2)) / (Math.Round((100 / llmd), 3) - (GetSafeDecimal(mitem["W_LQHL"], 2) / GetSafeDecimal(mitem["LQXDMD"], 2))), 3);
-if()
-                    for (int i = 1; i < 7; i++)
-                    {
-                        #region 参数检查：是否为数字 
-                        //试件的空中质量(g)
-                        if (!IsNumeric(sitem["SJKZZL" + i]))
-                        {
-                            throw new Exception("请输入正确的试件的空中质量" + i);
-                        }
-                        //试件的水中质量(g)
-                        if (!IsNumeric(sitem["SJSZZL" + i]))
-                        {
-                            throw new Exception("请输入正确的 试件的水中质量" + i);
-                        }
-                        //试件的表干质量(g)
-                        if (!IsNumeric(sitem["SJBGZL" + i]))
-                        {
-                            throw new Exception("请输入正确的 试件的表干质量" + i);
-                        }
-
-
-                        #endregion
-                        //表干-空中质量
-                        md1 = GetSafeDecimal(sitem["SJBGZL" + i]) - GetSafeDecimal(sitem["SJKZZL" + i]);
-                        //表干-水中质量
-                        md2 = GetSafeDecimal(sitem["SJBGZL" + i]) - GetSafeDecimal(sitem["SJSZZL" + i]);
-                        //吸水率
-                        md = Math.Round(md1 / md2 * 100, 1);
-                        sitem["XSL" + i] = md.ToString();
-
-                        //毛体积相对密度  ==空中质量/（表干-水中质量）
-                        mtjxdmd = Math.Round(GetSafeDecimal(sitem["SJKZZL" + i]) / md2, 3);
-
-                        //毛体积密度  ==毛体积相对密度* 水的密度（0.9971）
-                        //sitem["MXEMD" + i] = mtjxdmd.ToString();
-
-                        sitem["MXEMD" + i] = Math.Round(mtjxdmd * S25md, 3).ToString();
-                        //理论最大相对密度
-
-                        //llmd = (decimal)1.02;
-
-                        //空隙率  ==（1-(毛体积相对密度/混合料理论最大密度)）*100
-                        kxl = Math.Round((1 - mtjxdmd / llmd) * 100, 1);
-                        sitem["MXEMD" + i] = kxl.ToString();
-                        kxlList.Add(kxl);
-                        //矿料间隙率  ==（1-（毛体积相对密度/最大理论密度）*（100-沥青含量）/100  ）*100
-                        //毛体积相对密度/最大理论密度
-                        jxl = Math.Round((1 - (mtjxdmd / hcmtjxdmd) * (100 - GetSafeDecimal(mitem["W_LQHL"])) / 100) * 100, 1);
-                        sitem["KLJXL" + i] = jxl.ToString();
-                        jxlList.Add(jxl);
-
-                        // 沥青饱和度 ==（间隙率-空隙率）/空隙率*100
-                        bhd = Math.Round((jxl - kxl) / jxl * 100, 1);
-                        sitem["KLBHD" + i] = bhd.ToString();
-                        bhdList.Add(bhd);
-                        //稳定度（KN）
-                        wdd = Convert.ToDecimal(sitem["SCWDD" + i]);
-                        wddList.Add(wdd);
-                        //流值
-                        sjlz = Convert.ToDecimal(sitem["SJLZ" + i]);
-                        sjlzList.Add(sjlz);
-
-
-
-                        // Pa  W_LQHL  沥青含量（石油比）
-
-                        // 被吸收的沥青质量占总质量的百分比 == ((合成矿料相对密度- 理论密度)/(合成矿料相对密度* 理论密度))*25度沥青相对密度*100
-                        md1 = Math.Round(((hcmtjxdmd - llmd) / (hcmtjxdmd * llmd)) * GetSafeDecimal(mitem["LQXDMD"], 2) * 100, 3);
-                        //有效沥青含量
-                        md2 = GetSafeDecimal(mitem["W_LQHL"]);
-                        //md1 = Math.Round(((hcmtjxdmd - llmd) / (hcmtjxdmd * llmd)) * GetSafeDecimal(mitem["LQXDMD"], 2) * 100, 3);
-
-                        // 有效沥青百分率==毛体积相对密度*有效沥青含量/25度沥青相对密度
-                        lqtjbfl = Math.Round(mtjxdmd * md2 / GetSafeDecimal(mitem["LQXDMD"], 2), 1);
-                        sitem["LQTJBFL" + i] = lqtjbfl.ToString();
-                        lqtjbflList.Add(lqtjbfl);
-                    }
-                    //取7组代表平均值：1.空隙率、2.间隙率、3.饱和度，
-                    sitem["W_KSL"] =Convert.ToString(kxlList.Average());
-                    sitem["KLJXL"] = Convert.ToString(jxlList.Average());
-                    sitem["KLBHD"] = Convert.ToString(bhdList.Average());
-                    sitem["W_WDD"] = Convert.ToString(wddList.Average());
-                    sitem["W_SJLZ"] = Convert.ToString(sjlzList.Average());
-                    if (IsQualified(sitem["G_KSL"],sitem["W_KSL"],false)=="不合格"||
-                        IsQualified(sitem["G_KLJXL"], sitem["KLJXL"], false) == "不合格" ||
-                        IsQualified(sitem["G_KLBHD"], sitem["KLBHD"], false) == "不合格" ||
-                        IsQualified(sitem["G_WDD"], sitem["W_WDD"], false) == "不合格" ||
-                        IsQualified(sitem["G_SJLZ"], sitem["W_SJLZ"], false) == "不合格" 
-                        )
-                    {
-                        mbhggs = mbhggs + 1;
-                        sitem["MXEWDDSYDZPD"] = "不合格";
-                    }
-                    else
-                    {
-                        sitem["MXEWDDSYDZPD"] = "合格";
-                    }
                     
-                    
-                    
+                    switch(sitem["MXEMDFF"]){
+                        
+                        case "表干法":
 
-                 
+                            for (int i = 1; i < 7; i++)
+                            {
+                                #region 参数检查：是否为数字 
+                                //试件的空中质量(g)
+                                if (!IsNumeric(sitem["SJKZZL" + i]))
+                                {
+                                    throw new Exception("请输入正确的试件的空中质量" + i);
+                                }
+                                //试件的水中质量(g)
+                                if (!IsNumeric(sitem["SJSZZL" + i]))
+                                {
+                                    throw new Exception("请输入正确的 试件的水中质量" + i);
+                                }
+                                //试件的表干质量(g)
+                                if (!IsNumeric(sitem["SJBGZL" + i]))
+                                {
+                                    throw new Exception("请输入正确的 试件的表干质量" + i);
+                                }
+                                #endregion
+                                
+                                //表干-空中质量
+                                md1 = GetSafeDecimal(sitem["SJBGZL" + i]) - GetSafeDecimal(sitem["SJKZZL" + i]);
+                                //表干-水中质量
+                                md2 = GetSafeDecimal(sitem["SJBGZL" + i]) - GetSafeDecimal(sitem["SJSZZL" + i]);
+                                //吸水率
+                                md = Math.Round(md1 / md2 * 100, 1);
+                                sitem["XSL" + i] = md.ToString();
+
+                                 //毛体积相对密度  ==空中质量/（表干-水中质量）
+                                mtjxdmd = Math.Round(GetSafeDecimal(sitem["SJKZZL" + i]) / md2, 3);
+
+                                //毛体积密度  ==毛体积相对密度* 水的密度（0.9971）
+                                //sitem["MXEMD" + i] = mtjxdmd.ToString();
+
+                                //
+                                sitem["MXEMD" + i] = Math.Round(mtjxdmd * S25md, 3).ToString();
+                                //理论最大相对密度
+
+                                //llmd = (decimal)1.02;
+
+                                //空隙率  ==（1-(毛体积相对密度/混合料理论最大密度)）*100
+                                kxl = Math.Round((1 - mtjxdmd / llmd) * 100, 1);
+                                sitem["MXEMD" + i] = kxl.ToString();
+                                kxlList.Add(kxl);
+                                //矿料间隙率  ==（1-（毛体积相对密度/最大理论密度）*（100-沥青含量）/100  ）*100
+                                //毛体积相对密度/最大理论密度
+                                jxl = Math.Round((1 - (mtjxdmd / hcmtjxdmd) * (100 - GetSafeDecimal(mitem["W_LQHL"])) / 100) * 100, 1);
+                                sitem["KLJXL" + i] = jxl.ToString();
+                                jxlList.Add(jxl);
+
+                                // 沥青饱和度 ==（间隙率-空隙率）/空隙率*100
+                                bhd = Math.Round((jxl - kxl) / jxl * 100, 1);
+                                sitem["KLBHD" + i] = bhd.ToString();
+                                bhdList.Add(bhd);
+                                //稳定度（KN）
+                                wdd = Convert.ToDecimal(sitem["SCWDD" + i]);
+                                wddList.Add(wdd);
+                                //流值
+                                sjlz = Convert.ToDecimal(sitem["SJLZ" + i]);
+                                sjlzList.Add(sjlz);
+
+
+
+                                // Pa  W_LQHL  沥青含量（石油比）
+
+                                // 被吸收的沥青质量占总质量的百分比 == ((合成矿料相对密度- 理论密度)/(合成矿料相对密度* 理论密度))*25度沥青相对密度*100
+                                md1 = Math.Round(((hcmtjxdmd - llmd) / (hcmtjxdmd * llmd)) * GetSafeDecimal(mitem["LQXDMD"], 2) * 100, 3);
+                                //有效沥青含量
+                                md2 = GetSafeDecimal(mitem["W_LQHL"]);
+                                //md1 = Math.Round(((hcmtjxdmd - llmd) / (hcmtjxdmd * llmd)) * GetSafeDecimal(mitem["LQXDMD"], 2) * 100, 3);
+
+                                // 有效沥青百分率==毛体积相对密度*有效沥青含量/25度沥青相对密度
+                                lqtjbfl = Math.Round(mtjxdmd * md2 / GetSafeDecimal(mitem["LQXDMD"], 2), 1);
+                                sitem["LQTJBFL" + i] = lqtjbfl.ToString();
+                                lqtjbflList.Add(lqtjbfl);
+                            }
+                    
+                            //取7组代表平均值：1.空隙率、2.间隙率、3.饱和度，
+                            sitem["W_KSL"] =Convert.ToString(kxlList.Average());
+                            sitem["KLJXL"] = Convert.ToString(jxlList.Average());
+                            sitem["KLBHD"] = Convert.ToString(bhdList.Average());
+                            sitem["W_WDD"] = Convert.ToString(wddList.Average());
+                            sitem["W_SJLZ"] = Convert.ToString(sjlzList.Average());
+                            if (IsQualified(sitem["G_KSL"],sitem["W_KSL"],false)=="不合格"||
+                                IsQualified(sitem["G_KLJXL"], sitem["KLJXL"], false) == "不合格" ||
+                                IsQualified(sitem["G_KLBHD"], sitem["KLBHD"], false) == "不合格" ||
+                                IsQualified(sitem["G_WDD"], sitem["W_WDD"], false) == "不合格" ||
+                                IsQualified(sitem["G_SJLZ"], sitem["W_SJLZ"], false) == "不合格" 
+                                )
+                            {
+                                mbhggs = mbhggs + 1;
+                                sitem["MXEWDDSYDZPD"] = "不合格";
+                            }
+                            else
+                            {
+                                sitem["MXEWDDSYDZPD"] = "合格";
+                            }
+                            break;
+                        
+                        case "水中重法":
+
+                            break;
+                    }
+
+
+
 
 
 
