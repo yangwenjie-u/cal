@@ -59,10 +59,11 @@ namespace Calculates
                         string yx1 = IsQualified(sItem["SJ_YX"], sItem["YX"], true);
                         string sx1 = IsQualified(sItem["SJ_SX"], sItem["SX"], true);
                         string sxzb1 = IsQualified(sItem["SJ_SXZB"], sItem["SXZB"], true);
-                        if (yx1 == "----" || sx1 == "----" || sxzb1 == "----")
+                        if (yx1 == "----" && sx1 == "----" && sxzb1 == "----")
                         {
                             sItem["GH_JXHSL"] = "----";
                         }
+
                     }
                 }
                 else

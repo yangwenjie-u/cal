@@ -43,7 +43,7 @@ namespace Calculates
                 bool mark;
 
                 #region 筛分析  颗粒级配
-                if (jcxm.Contains("、筛分析、"))
+                if (jcxm.Contains("、筛分析、") || jcxm.Contains("、颗粒级配、"))
                 {
                     jcxmCur = "筛分析";
                     sign = true;
