@@ -451,7 +451,7 @@ namespace CalDebugTools.Forms
                 //主表 从表添加记录
                 var startIndex = 0;
                 var alterM = "";
-                if (txt_STabCount.Text == "1")
+                if (txt_STabCount.Text == "1" && txt_SFieldeStartIndex.Text == "1")
                 {
                     alterM += $"alter table {tableName} add {fieldName} {fieldType};";
                 }
@@ -481,7 +481,7 @@ namespace CalDebugTools.Forms
                 string sqlStr = "";
 
                 List<string> lst = new List<string>();
-                if (txt_STabCount.Text == "1")
+                if (txt_STabCount.Text == "1" && txt_SFieldeStartIndex.Text == "1")
                 {
                     sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
         $"VALUES('{tableName}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', 'False', '', 'False', '{chksfxs}', '0', '367.0000', 'False', 'False', '', '', '', 'S', '367.0000', 'True', '', '', '', 'True', '{ssjcx}', 'True', '', '{txtLX}', NULL, NULL, NULL, NULL, NULL, '{locstionStr}')  ";

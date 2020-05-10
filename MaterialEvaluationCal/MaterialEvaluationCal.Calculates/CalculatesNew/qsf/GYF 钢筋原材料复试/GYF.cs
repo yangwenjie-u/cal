@@ -16,6 +16,7 @@ namespace Calculates
             bool mAllHg = true;
             string jcxm = "", mjcjg = "不合格", jsbeizhu = "";
             var jcxmBhg = "";
+            var jcxmCur = "";
             var ggph = "";//钢筋牌号
 
             var data = retData;
@@ -76,7 +77,7 @@ namespace Calculates
                    for (int i = 1; i <= count; i++)
                    {
                        mScl = (100 * (Conversion.Val(sItem["SCZ" + i]) == 0 ? 0 : ((Conversion.Val(sItem["SCZ" + i]) - Conversion.Val(sItem["CD"])) / Conversion.Val(sItem["CD"])))).ToString();
-                       if (mItem["PDBZ"].Contains("带肋") || mItem["PDBZ"].Contains("1499.1"))
+                       if (mItem["PDBZ"].Contains("带肋") || mItem["PDBZ"].Contains("1`99.1"))
                        {
                            if (Conversion.Val(mScl) >= 10)
                            {
@@ -405,8 +406,7 @@ namespace Calculates
                     {
                         sItem["JCJG_LS"] = "----";
                     }
-
-                    if (jcxm.Contains("、弯曲、"))
+                    if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                     {
                         //if (Conversion.Val(sItem["HG_LW"]) - mHggs_LW > -0.00001)
                         //{
@@ -420,10 +420,10 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LW"] = "----";
-                        sItem["LW1"] = "-1";
-                        sItem["LW2"] = "-1";
-                        sItem["LW3"] = "-1";
-                        sItem["LW4"] = "-1";
+                        sItem["LW1"] = "----";
+                        sItem["LW2"] = "----";
+                        sItem["LW3"] = "----";
+                        sItem["LW4"] = "----";
                     }
 
                     return "";
@@ -521,6 +521,17 @@ namespace Calculates
                 #endregion
 
                 #region 计算开始
+
+                if (string.IsNullOrEmpty(sItem["WXZJ"]))
+                {
+                    sItem["WXZJ"] = mlwzj.ToString();
+                }
+               
+                if (string.IsNullOrEmpty(sItem["WQJD"]))
+                {
+                    sItem["WQJD"] = mLwjd.ToString();
+                }
+            
                 if (mlwzj == 0 && mffwqcs != 0)
                 {
                     LwBzyq = "弯曲次数不小于" + mffwqcs.ToString() + "次，受弯曲部位表面无裂纹";
@@ -537,6 +548,7 @@ namespace Calculates
                     {
                         LwBzyq = LwBzyq + "=" + mlwzj.ToString() + "a弯曲" + mLwjd.ToString() + "度后，受弯曲部位表面无裂纹";
                     }
+
                 }
 
                 if (extraFieldsDj["QFQDBZZ"] == "----")
@@ -582,6 +594,7 @@ namespace Calculates
                 #region 重量偏差
                 if (jcxm.Contains("、重量偏差、"))
                 {
+                    jcxmCur = "重量偏差";
                     Double zcd = 0;
                     zcd = GetSafeDouble(sItem["Z_CD1"]) + GetSafeDouble(sItem["Z_CD2"]) + GetSafeDouble(sItem["Z_CD3"]) + GetSafeDouble(sItem["Z_CD4"]) + GetSafeDouble(sItem["Z_CD5"]) + GetSafeDouble(sItem["Z_CD6"]) + GetSafeDouble(sItem["Z_CD7"]) + GetSafeDouble(sItem["Z_CD8"]) + GetSafeDouble(sItem["Z_CD9"]) + GetSafeDouble(sItem["Z_CD10"]);
                     sItem["ZLPC"] = Math.Round(100 * (GetSafeDouble(sItem["Z_ZZL"]) - sLlzl * zcd) / (sLlzl * zcd), 0).ToString();
@@ -593,6 +606,7 @@ namespace Calculates
                     {
                         sItem["JCJG_ZLPC"] = " 不符合";
                         jcxmBhg += "重量偏差" + "、";
+                        mbhggs = mbhggs + 1;
                     }
                 }
                 else
@@ -614,7 +628,8 @@ namespace Calculates
                 mallBHG_QF = mallBHG_QF + find_singlezb_bhg(MItem[0], sItem, "qf", mQfqd, (int)mxlgs);
                 mallBHG_KL = mallBHG_KL + find_singlezb_bhg(MItem[0], sItem, "kl", mKlqd, (int)mxlgs);
                 mallBHG_SC = mallBHG_SC + find_singlezb_bhg(MItem[0], sItem, "SCL", mScl, (int)mxlgs);
-                if (jcxm.Contains("、弯曲、"))
+
+                if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mxlgs);
                 }
@@ -622,6 +637,7 @@ namespace Calculates
                 if (jcxm.Contains("、抗震要求、"))
                 {
                     int mkzhggs = 0;
+                    jcxmCur = "抗震要求";
                     sItem["G_ZSCL"] = "≥" + extraFieldsDj["ZSCL"];
                     sItem["G_KZYQ"] = "实测强屈比≥" + extraFieldsDj["QDQFB"] + "，实测标准屈服比≤" + extraFieldsDj["QFQFB"] + "，最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
                     mHggs_scl = 0;
@@ -680,10 +696,12 @@ namespace Calculates
                     if (mkzhggs == mxlgs)
                     {
                         sItem["JCJG_KZ"] = "符合";
+
                     }
                     else
                     {
                         sItem["JCJG_KZ"] = "不符合";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                 }
                 else
@@ -698,6 +716,7 @@ namespace Calculates
                 #region 反向弯曲
                 if (jcxm.Contains("、反向弯曲、"))
                 {
+                    jcxmCur = "反向弯曲";
                     sItem["G_LWWZ"] = "弯心直径d=" + (mlwzj + 1).ToString() + "a弯曲90°后，反向弯曲20° 弯曲部位表面无裂纹。";
                     if (sItem["FXWQ1"] == "1" && sItem["FXWQ2"] == "1")
                     {
@@ -706,25 +725,44 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LW"] = "不符合";
-                        jcxmBhg += "反向弯曲" + "、";
-
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
+                }
+                else
+                {
+                    sItem["FXWQ1"] = "----";
+                    sItem["FXWQ2"] = "----";
                 }
                 #endregion
 
                 //如果只做4根，报告上需要修改
                 if (mxlgs == 4)
                 {
-                    sItem["LW5"] = "----";
-                    sItem["LW6"] = "----";
-                    sItem["KLHZ5"] = "----";
-                    sItem["KLHZ6"] = "----";
-                    sItem["QFHZ5"] = "----";
+                    sItem["SCZJ6"] = "----";
+                    sItem["SCZJ5"] = "----";
                     sItem["QFHZ6"] = "----";
+                    sItem["QFHZ5"] = "----";
+                    sItem["KLHZ6"] = "----";
+                    sItem["KLHZ5"] = "----";
                     sItem["DLQK5"] = "----";
                     sItem["DLQK6"] = "----";
                     sItem["SCZ5"] = "----";
                     sItem["SCZ6"] = "----";
+                    sItem["QFQD5"] = "----";
+                    sItem["QFQD6"] = "----";
+                    sItem["KLQD5"] = "----";
+                    sItem["KLQD6"] = "----";
+                    sItem["SCL5"] = "----";
+                    sItem["SCL6"] = "----";
+                    sItem["ZSCL5"] = "----";
+                    sItem["ZSCL6"] = "----";
+                    sItem["QDQFB5"] = "----";
+                    sItem["QDQFB6"] = "----";
+                    sItem["QFQFB5"] = "----";
+                    sItem["QFQFB6"] = "----";
+                    sItem["LW5"] = "----";
+                    sItem["LW6"] = "----";
+                    sItem["FXWQ2"] = "----";
                 }
                 if (sItem["JCJG_KZ"] == "不符合" || sItem["JCJG_LS"] == "不符合")
                 {
@@ -764,7 +802,6 @@ namespace Calculates
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             /************************ 代码结束 *********************/
-
             #endregion
         }
     }

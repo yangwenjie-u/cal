@@ -421,18 +421,18 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LW"] = "----";
-                        sItem["LW1"] = "-1";
-                        sItem["LW2"] = "-1";
-                        sItem["LW3"] = "-1";
+                        sItem["LW1"] = "----";
+                        sItem["LW2"] = "----";
+                        sItem["LW3"] = "----";
                         //if (gCurSylb == "ghf" || gCurSylb == "GHF")
                         //{
-                        //    sItem["LW4"] = "-1";
-                        //    sItem["LW5"] = "-1";
-                        //    sItem["LW6"] = "-1";
+                        //    sItem["LW4"] ="----";
+                        //    sItem["LW5"] ="----";
+                        //    sItem["LW6"] ="----";
                         //}
                         //if (gCurSylb == "gyf" || gCurSylb == "GYF")
                         //{
-                        //    sItem["LW4"] = "-1";
+                        //    sItem["LW4"] ="----";
                         //}
                     }
 
@@ -539,6 +539,22 @@ namespace Calculates
                     continue;
                 }
 
+
+                if (string.IsNullOrEmpty(sItem["LWZJ"]))
+                {
+                    sItem["LWZJ"] = mLWZJ.ToString();
+                }
+             
+                if (string.IsNullOrEmpty(sItem["LWJD"]))
+                {
+                    sItem["LWJD"] = mLwjd.ToString();
+                }
+               
+                if (string.IsNullOrEmpty(sItem["FXWQZJ"]))
+                {
+                    //sItem["FXWQZJ"] = MFFWQCS.ToString();
+                }
+
                 if ((MItem[0]["PDBZ"].Contains("1499.2-2018") || MItem[0]["PDBZ"].Contains("1499.1-2017")) && GetSafeDouble(sItem["ZJ"]) <= 12 && sItem["SFTZ"] == "否")
                 {
                     sItem["G_ZLPC"] = "±6";
@@ -617,6 +633,10 @@ namespace Calculates
                     double zCD = 0;
                     if (Conversion.Val(sItem["Z_ZZL"]) < 0.1)
                     {
+                        sItem["JCJG_ZLPC"] = "不符合";
+                        mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mbhggs = mbhggs + 1;
                     }
                     else
                     {
@@ -688,6 +708,17 @@ namespace Calculates
                 if (Conversion.Val(sItem["DBSL"]) <= 60)
                 {
                     mXLGS = 2;
+                    sItem["SCZJ3"] = "----";
+                    sItem["QFHZ3"] = "----";
+                    sItem["KLHZ3"] = "----";
+                    sItem["DLWZ3"] = "----";
+                    sItem["SCZ3"] = "----";
+                    sItem["ZSCL3"] = "----";
+                    sItem["QFQD3"] = "----";
+                    sItem["KLQD3"] = "----";
+                    sItem["SCL3"] = "----";
+                    sItem["QDQFB3"] = "----";
+                    sItem["QFQFB3"] = "----";
                 }
                 else
                 {
@@ -808,6 +839,10 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mbhggs = mbhggs + 1;
                     }
+                }
+                else
+                {
+                    sItem["FXWQ1"] = "----";
                 }
                 #endregion
                 //宏观金相,截面维氏硬度,微观组织 是2018新增

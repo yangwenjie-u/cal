@@ -562,12 +562,12 @@ namespace Calculates
                 else
                 {
                     sItem["JCJG_LS"] = "----";
-                    sItem["DKJ1"] = "-1";
-                    sItem["DKJ2"] = "-1";
-                    sItem["DKJ3"] = "-1";
-                    sItem["DKJ4"] = "-1";
-                    sItem["DKJ5"] = "-1";
-                    sItem["DKJ6"] = "-1";
+                    sItem["DKJ1"] ="----";
+                    sItem["DKJ2"] ="----";
+                    sItem["DKJ3"] ="----";
+                    sItem["DKJ4"] ="----";
+                    sItem["DKJ5"] ="----";
+                    sItem["DKJ6"] ="----";
                 }
 
                 if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
@@ -619,12 +619,12 @@ namespace Calculates
                 else
                 {
                     sItem["JCJG_LW"] = "----";
-                    sItem["LW1"] = "-1";
-                    sItem["LW2"] = "-1";
-                    sItem["LW3"] = "-1";
-                    sItem["LW4"] = "-1";
-                    sItem["LW5"] = "-1";
-                    sItem["LW6"] = "-1";
+                    sItem["LW1"] ="----";
+                    sItem["LW2"] ="----";
+                    sItem["LW3"] ="----";
+                    sItem["LW4"] ="----";
+                    sItem["LW5"] ="----";
+                    sItem["LW6"] ="----";
                 }
 
 

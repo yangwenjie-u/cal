@@ -247,7 +247,15 @@ namespace Calculates
                 int this_bhg = 0;
                 string bhggsbj = "";
                 if (sitem["YPSL"] == "4根")
+                {
                     mxlgs = 4;
+                    sitem["KLHZ5"] = "----";
+                    sitem["KLHZ6"] = "----";
+                    sitem["DKJ5"] = "----";
+                    sitem["DKJ6"] = "----";
+                    sitem["KLQD5"] = "----";
+                    sitem["KLQD6"] = "----";
+                }
                 calc_kl(sitem, mxlgs);
 
                 if (extraFieldsDj["JB"].Contains("Ⅰ"))
