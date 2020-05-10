@@ -298,7 +298,7 @@ namespace Calculates
                     double mcxxc = GetSafeDouble(MItem[0]["SXZ"]) - GetSafeDouble(MItem[0]["XXZ"]);
                     if (mcxxc > 5 && mcxxc > 0.1 * GetSafeDouble(MItem[0]["PJZ"]))
                     {
-                        MItem[0]["JCJGMS"] = "推定上下限值之差大于5.0MPa 和0.10平均值的较大值。";
+                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，推定上下限值之差大于5.0MPa 和0.10平均值的较大值。";
                         MItem[0]["KYPJ"] = "0";
                     }
                     else
@@ -313,7 +313,7 @@ namespace Calculates
                     mAllHg = false;
                 else
                     mAllHg = true;
-                MItem[0]["JCJGMS"] = "该批构件混凝土强度" + MItem[0]["KYPJ"] + "MPa，" + "占设计强度" + SItem[0]["SJDDJ"] + "%。";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该批构件混凝土强度" + MItem[0]["KYPJ"] + "MPa，" + "占设计强度" + SItem[0]["SJDDJ"] + "%。";
             }
             else
             {
@@ -337,9 +337,9 @@ namespace Calculates
 
 
                     if (mAllHg)
-                    MItem[0]["JCJGMS"] = "该次检测混凝土强度全部大于等于设计强度。";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度全部大于等于设计强度。";
                 else
-                    MItem[0]["JCJGMS"] = "该次检测混凝土强度部分小于设计强度。";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度部分小于设计强度。";
             }
             //主表总判断赋值
             if (mAllHg)
