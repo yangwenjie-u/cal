@@ -401,9 +401,9 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LS"] = "----";
-                        sItem["DKJ1"] = "-1";
-                        sItem["DKJ2"] = "-1";
-                        sItem["DKJ3"] = "-1";
+                        sItem["DKJ1"] = "----";
+                        sItem["DKJ2"] = "----";
+                        sItem["DKJ3"] = "----";
                     }
 
 
@@ -422,9 +422,9 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LW"] = "----";
-                        sItem["LW1"] = "-1";
-                        sItem["LW2"] = "-1";
-                        sItem["LW3"] = "-1";
+                        sItem["LW1"] = "----";
+                        sItem["LW2"] = "----";
+                        sItem["LW3"] = "----";;
                     }
                     if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合")
                     {
@@ -728,9 +728,9 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LS"] = "----";
-                        sItem["DKJ1"] = "-1";
-                        sItem["DKJ2"] = "-1";
-                        sItem["DKJ3"] = "-1";
+                        sItem["DKJ1"] = "----";
+                        sItem["DKJ2"] = "----";
+                        sItem["DKJ3"] = "----";
                     }
 
                     var hg_lw = sItem["HG_LW"];
@@ -771,9 +771,9 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LW"] = "----";
-                        sItem["LW1"] = "-1";
-                        sItem["LW2"] = "-1";
-                        sItem["LW3"] = "-1";
+                        sItem["LW1"] = "----";
+                        sItem["LW2"] = "----";
+                        sItem["LW3"] = "----";
                         sItem["HG_LW"] = "0";
                     }
 

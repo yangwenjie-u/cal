@@ -34,32 +34,45 @@ namespace Calculates
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
                 //sItem["S_AVG"] = Round((GetSafeDouble(sItem["SYDDL1"]) + GetSafeDouble(sItem["SYDDL2"])) / 2,1).ToString("0.0");
-                sItem["S_PDJG"] = IsQualified(sItem["S_SJJL"],sItem["S_AVG"],true);
-                if (sItem["S_PDJG"] == "不符合")
-                {
-                    sItem["JCJG"] = "不合格";
-                    mAllHg = false;
-                }
-                if (sItem["S_PDJG"] == "----")
-                {
-                    jsbeizhu = "经检测，该混合料中的"+sItem["JCXM"]+ "为"+sItem["S_AVG"]+ "%。";
-                }
-                else
-                {
-                    jsbeizhu = "经检测，该混合料中的" + sItem["JCXM"] + "为" + sItem["S_AVG"] + "%，";
-                }
 
-                if (sItem["S_PDJG"] == "符合")
+                if (jcxm.Contains("、标准曲线、"))
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                     sItem["JCJG"] = "合格";
+                    jsbeizhu = "标准曲线";
                 }
 
-                if (sItem["S_PDJG"] == "不符合")
+                #region EDTA滴定法
+                if (jcxm.Contains("、EDTA滴定法、"))
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目EDTA法不符合要求。";
-                    mAllHg = false;
+                    sItem["S_PDJG"] = IsQualified(sItem["S_SJJL"], sItem["S_AVG"], true);
+                    if (sItem["S_PDJG"] == "不符合")
+                    {
+                        sItem["JCJG"] = "不合格";
+                        mAllHg = false;
+                    }
+                    if (sItem["S_PDJG"] == "----")
+                    {
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，经检测该混合料中的" + sItem["JCXM"] + "为" + sItem["S_AVG"] + "%。";
+                    }
+                    else
+                    {
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，经检测该混合料中的" + sItem["JCXM"] + "为" + sItem["S_AVG"] + "%，";
+                    }
+
+                    if (sItem["S_PDJG"] == "符合")
+                    {
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+                        sItem["JCJG"] = "合格";
+                    }
+
+                    if (sItem["S_PDJG"] == "不符合")
+                    {
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目EDTA滴定法不符合要求。";
+                        mAllHg = false;
+                    }
                 }
+                #endregion
+
             }
 
             #region 添加最终报告

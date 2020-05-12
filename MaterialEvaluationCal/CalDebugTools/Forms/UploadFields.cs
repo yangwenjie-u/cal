@@ -242,7 +242,7 @@ namespace CalDebugTools.Forms
                 var zdmc = "";
                 foreach (DataRow item in redata.Tables[0].Rows)
                 {
-                    zdmc = item["ZDMC"].ToString();
+                    zdmc = item["ZDMC"].ToString().ToUpper();
                     if (zdmc.Contains("JCJG"))
                     {
                     }
@@ -426,7 +426,7 @@ namespace CalDebugTools.Forms
                                 string str2 = codelist[i].Substring(num);
 
                                 //字段左侧没有“=”号，肯定是I类型
-                                if (!string.IsNullOrEmpty(fieldLeft) && fieldLeft.IndexOf('=') == -1)
+                                if (string.IsNullOrEmpty(fieldLeft) || fieldLeft.IndexOf('=') == -1)
                                 {
                                     //if (!Ofields.Contains(item) && !Ifields.Contains(item))
                                     Ifields.Add(item);

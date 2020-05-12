@@ -13,6 +13,7 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
 
+            #region  计算开始
             #region  参数定义
             int mKlqd, mScl, mLw;
             int mHggs_klqd, mHggs_scl, mHggs_lw, mxlgs, mxwgs, mZh;
@@ -178,7 +179,6 @@ namespace Calculates
             var ggph = "";//钢筋牌号
             #endregion
 
-            #region  计算开始
             //循环从表
             foreach (var sitem in SItem)
             {
@@ -253,6 +253,14 @@ namespace Calculates
                 if (sitem["YPSL"].Trim() == "2根")
                 {
                     mxlgs = 2;
+                    sitem["KLHZ3"] = "----";
+                    sitem["DKJ3"] = "----";
+                    sitem["KLQD3"] = "----";
+                    sitem["DXLS3"] = "----";
+                    sitem["ZDLZSCL3"] = "----";
+                    sitem["GYLFFLY3"] = "----";
+                    sitem["DBXLY4_3"] = "----";
+                    sitem["DBXLY8_3"] = "----";
                 }
                 //求屈服强度及抗拉强度(自定义函数)
                 calc_kl(sitem, mxlgs);
@@ -262,7 +270,7 @@ namespace Calculates
                     sitem["G_JXLJ"] = "钢筋拉断时，接头试件实际抗拉强度大于等于钢筋抗拉强度标准值；连接件破坏时，接头试件实际抗拉强度大于等于1.10倍钢筋抗拉强度标准值";
                     for (int i = 1; i <= mxlgs; i++)
                     {
-                        if (sitem["DKJ" + i] == "1" || sitem["DKJ" + i] == "2"|| sitem["DKJ" + i] == "3")
+                        if (sitem["DKJ" + i] == "1" || sitem["DKJ" + i] == "2" || sitem["DKJ" + i] == "3")
                         {
                             if (Conversion.Val(sitem["KLQD" + i]) >= GetSafeDouble(extraFieldsDj["KLQDBZZ"]))
                             {
@@ -329,7 +337,7 @@ namespace Calculates
                         mFlag_Bhg = true;
                     }
                     else
-                    { 
+                    {
                         jcxmBhg += jcxmBhg.Contains("拉伸") ? "" : "拉伸" + "、";
                     }
                 }
@@ -339,7 +347,14 @@ namespace Calculates
                 if (jcxm.Contains("、单向拉伸残余形变、"))
                 {
                     jcxmCur = "单向拉伸残余形变";
-                    sitem["DXLS"] = Math.Round((Conversion.Val(sitem["DXLS1"]) + Conversion.Val(sitem["DXLS2"]) + Conversion.Val(sitem["DXLS3"])) / 3, 2).ToString("0.00");
+                    if (mxlgs == 2)
+                    {
+                        sitem["DXLS"] = Math.Round((Conversion.Val(sitem["DXLS1"]) + Conversion.Val(sitem["DXLS2"])) / 2, 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        sitem["DXLS"] = Math.Round((Conversion.Val(sitem["DXLS1"]) + Conversion.Val(sitem["DXLS2"]) + Conversion.Val(sitem["DXLS3"])) / 3, 2).ToString("0.00");
+                    }
                     if (IsQualified(sitem["G_DXLS"], sitem["DXLS"]) == "合格")
                     {
                         mbxhg = mbxhg + 1;
@@ -364,7 +379,14 @@ namespace Calculates
                 if (jcxm.Contains("、最大力总伸长率、"))
                 {
                     jcxmCur = "最大力总伸长率";
-                    sitem["ZDLZSCL"] = Math.Round((Conversion.Val(sitem["ZDLZSCL1"]) + Conversion.Val(sitem["ZDLZSCL2"]) + Conversion.Val(sitem["ZDLZSCL3"])) / 3, 1).ToString("0.0");
+                    if (mxlgs == 2)
+                    {
+                        sitem["ZDLZSCL"] = Math.Round((Conversion.Val(sitem["ZDLZSCL1"]) + Conversion.Val(sitem["ZDLZSCL2"])) / 2, 1).ToString("0.0");
+                    }
+                    else
+                    {
+                        sitem["ZDLZSCL"] = Math.Round((Conversion.Val(sitem["ZDLZSCL1"]) + Conversion.Val(sitem["ZDLZSCL2"]) + Conversion.Val(sitem["ZDLZSCL3"])) / 3, 1).ToString("0.0");
+                    }
                     if (IsQualified(sitem["G_ZDLZSCL"], sitem["ZDLZSCL"]) == "合格")
                     {
                         mbxhg = mbxhg + 1;
@@ -389,7 +411,14 @@ namespace Calculates
                 if (jcxm.Contains("、高应力反复拉压残余形变、"))
                 {
                     jcxmCur = "高应力反复拉压残余形变";
-                    sitem["GYLFFLY"] = Math.Round((Conversion.Val(sitem["GYLFFLY1"]) + Conversion.Val(sitem["GYLFFLY2"]) + Conversion.Val(sitem["GYLFFLY3"])) / 3, 1).ToString("0.0");
+                    if (mxlgs == 2)
+                    {
+                        sitem["GYLFFLY"] = Math.Round((Conversion.Val(sitem["GYLFFLY1"]) + Conversion.Val(sitem["GYLFFLY2"])) / 2, 1).ToString("0.0");
+                    }
+                    else
+                    {
+                        sitem["GYLFFLY"] = Math.Round((Conversion.Val(sitem["GYLFFLY1"]) + Conversion.Val(sitem["GYLFFLY2"]) + Conversion.Val(sitem["GYLFFLY3"])) / 3, 1).ToString("0.0");
+                    }
                     if (IsQualified(sitem["G_GYLFFLY"], sitem["GYLFFLY"]) == "合格")
                     {
                         mbxhg = mbxhg + 1;
@@ -413,8 +442,16 @@ namespace Calculates
                 if (jcxm.Contains("大变形反复拉压残余形变"))
                 {
                     jcxmCur = "大变形反复拉压残余形变";
-                    sitem["DBXFFLY4"] = Math.Round((Conversion.Val(sitem["DBXLY4_1"]) + Conversion.Val(sitem["DBXLY4_2"]) + Conversion.Val(sitem["DBXLY4_3"])) / 3, 1).ToString();
-                    sitem["DBXFFLY8"] = Math.Round((Conversion.Val(sitem["DBXLY8_1"]) + Conversion.Val(sitem["DBXLY8_2"]) + Conversion.Val(sitem["DBXLY8_3"])) / 3, 1).ToString();
+                    if (mxlgs == 2)
+                    {
+                        sitem["DBXFFLY4"] = Math.Round((Conversion.Val(sitem["DBXLY4_1"]) + Conversion.Val(sitem["DBXLY4_2"])) / 2, 1).ToString();
+                        sitem["DBXFFLY8"] = Math.Round((Conversion.Val(sitem["DBXLY8_1"]) + Conversion.Val(sitem["DBXLY8_2"])) / 2, 1).ToString();
+                    }
+                    else
+                    {
+                        sitem["DBXFFLY4"] = Math.Round((Conversion.Val(sitem["DBXLY4_1"]) + Conversion.Val(sitem["DBXLY4_2"]) + Conversion.Val(sitem["DBXLY4_3"])) / 3, 1).ToString();
+                        sitem["DBXFFLY8"] = Math.Round((Conversion.Val(sitem["DBXLY8_1"]) + Conversion.Val(sitem["DBXLY8_2"]) + Conversion.Val(sitem["DBXLY8_3"])) / 3, 1).ToString();
+                    }
                     if (sitem["G_DBXFFLY8"] != "----")
                     {
                         if ((IsQualified(sitem["G_DBXFFLY4"], sitem["DBXFFLY4"]) == "合格") && (IsQualified(sitem["G_DBXFFLY8"], sitem["DBXFFLY8"]) == "合格"))
