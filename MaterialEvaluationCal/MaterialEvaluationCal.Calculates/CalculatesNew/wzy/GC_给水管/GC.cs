@@ -221,7 +221,17 @@ namespace Calculates
 
                     //测试的数量4-12个
                     //1 长度 2.平均外径 3.不圆度 4.壁厚公差
-                    int count = Convert.ToInt32(sitem["ZJCSGS"]);
+                    int count = GetSafeInt(sitem["ZJCSGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCSGS"]);
+
+                    if (mSjdj== "给水低密度管材")
+                    {
+                        count = 5;
+                    }
+                    if (mSjdj == "给水用硬聚氯乙烯(PVC-U)管材")
+                    {
+                        count = 8;
+                    }
+
 
                     if (count < 4)
                     {
