@@ -527,6 +527,8 @@ namespace Calculates
                     }
                     if (sitem["JPJMSL"] == "重做" || sitem["SPJMSL"] == "重做")
                     {
+                        sitem["MSLB"] = "-----";
+
                         mbhggs = mbhggs + 1;
                         if (sitem["JPJMSL"] == "重做" && sitem["SPJMSL"] == "重做")
                             MItem[0]["HG_MSL"] = "基准受检重做";
@@ -555,7 +557,7 @@ namespace Calculates
                 else
                 {
                     MItem[0]["G_MSL"] = "----";
-                    sitem["MSLB"] = "-----";
+                   // sitem["MSLB"] = "-----";
                     MItem[0]["HG_MSL"] = "----";
                 }
                 if (jcxm.Contains("、初凝时间差、"))

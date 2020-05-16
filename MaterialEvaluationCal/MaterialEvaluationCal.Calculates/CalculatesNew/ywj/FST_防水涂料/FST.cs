@@ -190,8 +190,11 @@ namespace Calculates
                         else
                             mFlag_Bhg = true;
                     }
-                    else if (Gs < 3)
+                    else
+                    {
                         sitem["HG_NJQD"] = "重新试验";
+                        sitem["NJQD"] = "----";
+                    }
                 }
                 else
                 {
@@ -490,6 +493,7 @@ namespace Calculates
                         mitem["HG_SLQD"] = "需复试";
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        sitem["SLQDPJ"] = "----";
                     }
                 }
                 else
