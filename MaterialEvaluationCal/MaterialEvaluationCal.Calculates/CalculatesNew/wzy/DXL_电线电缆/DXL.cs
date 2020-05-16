@@ -111,6 +111,12 @@ namespace Calculates
                     var yIndex = 1;
                     foreach (var Y_DXL in mrssjTable)
                     {
+                        if (Y_DXL == null || Y_DXL.Count == 0)
+                        {
+                            throw new Exception("请输入导体试验数据");
+
+                        }
+
                         #region 实测20℃电阻值(Ω/km)
                         //md = Conversion.Val(MItem[0]["H_SYBC"]);  //试样标长
                         //md1 = Conversion.Val(Y_DXL["E_ZDZ"]);  //正电阻
@@ -121,6 +127,8 @@ namespace Calculates
                         //if (MItem[0]["H_DZDW"].Trim() == "μΩ")
                         //    sum = sum / 1000000;
                         //sqz = 1000 * sum * xd / md;
+
+
                         sqz = GetSafeDouble(Y_DXL["E_SCDZ"]);//实测20℃电阻值(Ω/km)
                         Y_DXL["ZH"] = yIndex.ToString();
                         yIndex++;
