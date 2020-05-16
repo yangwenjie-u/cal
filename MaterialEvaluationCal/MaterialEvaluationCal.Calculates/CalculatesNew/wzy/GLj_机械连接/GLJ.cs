@@ -261,6 +261,7 @@ namespace Calculates
                     sitem["GYLFFLY3"] = "----";
                     sitem["DBXLY4_3"] = "----";
                     sitem["DBXLY8_3"] = "----";
+                    sitem["SCZJ3"] = "----";
                 }
                 //求屈服强度及抗拉强度(自定义函数)
                 calc_kl(sitem, mxlgs);
@@ -372,6 +373,9 @@ namespace Calculates
                 else
                 {
                     sitem["DXLS"] = "----";
+                    sitem["DXLS1"] = "----";
+                    sitem["DXLS2"] = "----";
+                    sitem["DXLS3"] = "----";
                     sitem["JCJG_DXLS"] = "----";
                 }
 
@@ -405,6 +409,9 @@ namespace Calculates
                 {
                     sitem["JCJG_ZSCL"] = "----";
                     sitem["ZDLZSCL"] = "----";
+                    sitem["ZDLZSCL1"] = "----";
+                    sitem["ZDLZSCL2"] = "----";
+                    sitem["ZDLZSCL3"] = "----";
                 }
 
                 //高应力反复拉压残余形变
@@ -437,6 +444,9 @@ namespace Calculates
                 {
                     sitem["JCJG_GYL"] = "----";
                     sitem["GYLFFLY"] = "----";
+                    sitem["GYLFFLY1"] = "----";
+                    sitem["GYLFFLY2"] = "----";
+                    sitem["GYLFFLY3"] = "----";
                 }
                 //大变形反复拉压残余形变
                 if (jcxm.Contains("大变形反复拉压残余形变"))
@@ -490,6 +500,12 @@ namespace Calculates
                     sitem["DBXFFLY4"] = "----";
                     sitem["DBXFFLY8"] = "----";
                     sitem["JCJG_DBX"] = "----";
+                    sitem["DBXLY4_1"] = "----";
+                    sitem["DBXLY4_2"] = "----";
+                    sitem["DBXLY4_3"] = "----";
+                    sitem["DBXLY8_1"] = "----";
+                    sitem["DBXLY8_2"] = "----";
+                    sitem["DBXLY8_3"] = "----";
                 }
                 //-----------------------单组检测结果判定------------------------------------------
                 this_bhg = 0;

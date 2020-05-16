@@ -292,7 +292,7 @@ namespace Calculates
                     if (!string.IsNullOrEmpty(sItem["PBSN1"]) || sItem["PBSN1"] != "----")
                     {
                         for (int i = 1; i < 4; i++)
-                        {
+                        {    //                                                    掺合料                                                      水用量1                        砂                               石子                          基准筒质量1      
                             if (!IsNumeric(sItem["PBSN" + i]) || !IsNumeric(sItem["PBCHL1" + i]) || !IsNumeric(sItem["PBCHL2" + i]) || !IsNumeric(sItem["PBS" + i]) || !IsNumeric(sItem["PBSA" + i]) || !IsNumeric(sItem["PBSZ" + i]) || !IsNumeric(sItem["JTZL" + i]) || !IsNumeric(sItem["JTSYZL" + i]))
                             {
                                 throw new Exception("请输入泌水率数据");
@@ -301,10 +301,12 @@ namespace Calculates
                         mTmpArray.Clear();
                         for (int i = 1; i < 4; i++)
                         {
-                            //基准拌合物总质量
+                            //基准拌合物总质量                      水泥                              掺合料1                                       掺合料1                         水用量1                                 砂                                石子                 
                             sItem["JPHWZL_" + i] = (Conversion.Val(sItem["PBSN" + i]) + Conversion.Val(sItem["PBCHL1" + i]) + Conversion.Val(sItem["PBCHL2" + i]) + Conversion.Val(sItem["PBS" + i]) + (Conversion.Val(sItem["PBSA" + i]) + Conversion.Val(sItem["PBSZ" + i]))).ToString();
-                            //泌水基准拌合物用水量1
+                            //泌水基准拌合物用水量1   
                             sItem["MJBYS_" + i] = sItem["PBS" + i];
+
+                            //基准试样质量1               //基准筒及试样质量1                     基准筒质量2
                             sItem["JSYZL_" + i] = (Conversion.Val(sItem["JTSYZL" + i]) - Conversion.Val(sItem["JTZL" + i])).ToString();
                             if (IsNumeric(sItem["JMSZL_" + i]))
                             {
@@ -470,7 +472,7 @@ namespace Calculates
                             }
                         }
                         for (int i = 1; i < 4; i++)
-                        {
+                        {                                                                               //SYBHL
                             sItem["JJDYS_" + i] = Round(Conversion.Val(sItem["PBS" + i]) / Conversion.Val(sItem["SYBHL"]) * 1000, 2).ToString();
                             sItem["JSDYS_" + i] = Round(Conversion.Val(sItem["SPBS" + i]) / Conversion.Val(sItem["SYBHL"]) * 1000, 2).ToString();
                             sItem["JSL_" + i] = Round((Conversion.Val(sItem["JJDYS_" + i]) - Conversion.Val(sItem["JSDYS_" + i])) / Conversion.Val(sItem["JJDYS_" + i]) * 100, 1).ToString();

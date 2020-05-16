@@ -133,8 +133,10 @@ namespace Calculates
                     jcxmCur = "外观颜色";
                     MItem[0]["G_WG"] = "管材内外表面应清洁、光滑, 不应有气泡、明显的划伤、凹陷、杂质、颜色不均等缺陷。 管材两端应切割平整, 并与管材轴线垂直。";
                     MItem[0]["G_BZ"] = "管材应为黑色或蓝色, 黑色管材上应共挤出 至少三条蓝色条, 色条应沿管材圆周方向均匀分布。蓝色管材仅用于暗敷。";
-                    if (mSjdj.Contains("给水用聚乙烯"))
+                    if (mSjdj.Contains("给水用硬聚氯乙烯(PVC-U)管材"))
                     {
+                        MItem[0]["G_WG"] = "管材内外壁应光滑平整，无明显划痕、凹陷、可见杂质和其他影响到达本部分要求的表面缺陷。管材切口应平整且与轴线垂直。";
+                        MItem[0]["G_BZ"] = "管材颜色由供需双方商定，色泽应均匀一致";
 
                     }
                     else if (mSjdj.Contains("给水用低密度聚乙烯"))
@@ -221,7 +223,7 @@ namespace Calculates
 
                     //测试的数量4-12个
                     //1 长度 2.平均外径 3.不圆度 4.壁厚公差
-                    int count = Convert.ToInt32(sitem["ZJCSGS"]);
+                    int count = GetSafeInt(sitem["ZJCSGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCSGS"]);
 
                     if (count < 4)
                     {

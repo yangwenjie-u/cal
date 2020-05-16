@@ -1201,6 +1201,11 @@ namespace CalDebugTools
             return sign ? hgjl : bhgjl;
         }
 
-
+        private void 小工具ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TestForm manage = new TestForm(this);
+            this.Hide();
+            manage.Show();
+        }
     }
 }

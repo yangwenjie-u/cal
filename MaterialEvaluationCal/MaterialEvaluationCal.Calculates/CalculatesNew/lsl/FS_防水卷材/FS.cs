@@ -253,8 +253,9 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sItem["JCJG"] = "依据不详";
+                    sItem["JCJG"] = "不下结论";
                     jsbeizhu = "找不到对应的等级";
+                    mbhggs++;
                     continue;
                 }
 

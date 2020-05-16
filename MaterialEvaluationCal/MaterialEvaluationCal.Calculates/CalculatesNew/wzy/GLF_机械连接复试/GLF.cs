@@ -255,6 +255,10 @@ namespace Calculates
                     sitem["DKJ6"] = "----";
                     sitem["KLQD5"] = "----";
                     sitem["KLQD6"] = "----";
+                    sitem["ZDLZSCL5"] = "----";
+                    sitem["ZDLZSCL6"] = "----";
+                    sitem["SCZJ5"] = "----";
+                    sitem["SCZJ6"] = "----";
                 }
                 calc_kl(sitem, mxlgs);
 
@@ -344,6 +348,9 @@ namespace Calculates
                 else
                 {
                     sitem["DXLS"] = "----";
+                    sitem["DXLS1"] = "----";
+                    sitem["DXLS2"] = "----";
+                    sitem["DXLS3"] = "----";
                     sitem["JCJG_DXLS"] = "----";
                 }
 
@@ -351,8 +358,15 @@ namespace Calculates
                 if (jcxm.Contains("、最大力总伸长率、"))
                 {
                     jcxmCur = "最大力总伸长率";
-                    sitem["ZDLZSCL"] = Math.Round((Conversion.Val(sitem["ZDLZSCL1"]) + Conversion.Val(sitem["ZDLZSCL2"]) + Conversion.Val(sitem["ZDLZSCL3"])) / 3, 1).ToString("0.0");
-                    if (IsQualified(sitem["g_ZDLZSCL"], sitem["ZDLZSCL"]) == "不合格")
+                    if (mxlgs == 4)
+                    {
+                        sitem["ZDLZSCL"] = Math.Round((Conversion.Val(sitem["ZDLZSCL1"]) + Conversion.Val(sitem["ZDLZSCL2"]) + Conversion.Val(sitem["ZDLZSCL3"]) + Conversion.Val(sitem["ZDLZSCL4"])) / 4, 1).ToString("0.0");
+                    }
+                    else
+                    {
+                        sitem["ZDLZSCL"] = Math.Round((Conversion.Val(sitem["ZDLZSCL1"]) + Conversion.Val(sitem["ZDLZSCL2"]) + Conversion.Val(sitem["ZDLZSCL3"]) + Conversion.Val(sitem["ZDLZSCL4"]) + Conversion.Val(sitem["ZDLZSCL5"]) + Conversion.Val(sitem["ZDLZSCL6"])) / 6, 1).ToString("0.0");
+                    }
+                    if (IsQualified(sitem["G_ZDLZSCL"], sitem["ZDLZSCL"]) == "不合格")
                     {
                         mbxbhgs = mbxbhgs + 1;
                         sitem["JCJG_ZSCL"] = "不符合";
@@ -368,6 +382,12 @@ namespace Calculates
                 {
                     sitem["JCJG_ZSCL"] = "----";
                     sitem["ZDLZSCL"] = "----";
+                    sitem["ZDLZSCL1"] = "----";
+                    sitem["ZDLZSCL2"] = "----";
+                    sitem["ZDLZSCL3"] = "----";
+                    sitem["ZDLZSCL4"] = "----";
+                    sitem["ZDLZSCL5"] = "----";
+                    sitem["ZDLZSCL6"] = "----";
                 }
 
                 //高应力反复拉压残余形变
@@ -391,6 +411,9 @@ namespace Calculates
                 {
                     sitem["JCJG_GYL"] = "----";
                     sitem["GYLFFLY"] = "----";
+                    sitem["GYLFFLY1"] = "----";
+                    sitem["GYLFFLY2"] = "----";
+                    sitem["GYLFFLY3"] = "----";
                 }
                 //大变形反复拉压残余形变
                 if (jcxm.Contains("大变形反复拉压残余形变"))
@@ -398,7 +421,7 @@ namespace Calculates
                     jcxmCur = "大变形反复拉压残余形变";
                     sitem["DBXFFLY4"] = Math.Round((Conversion.Val(sitem["DBXLY4_1"]) + Conversion.Val(sitem["DBXLY4_2"]) + Conversion.Val(sitem["DBXLY4_3"])) / 3, 1).ToString();
                     sitem["DBXFFLY8"] = Math.Round((Conversion.Val(sitem["DBXLY8_1"]) + Conversion.Val(sitem["DBXLY8_2"]) + Conversion.Val(sitem["DBXLY8_3"])) / 3, 1).ToString();
-                    if (sitem["g_DBXFFLY8"] != "----")
+                    if (sitem["G_DBXFFLY8"] != "----")
                     {
                         if ((IsQualified(sitem["G_DBXFFLY4"], sitem["DBXFFLY4"]) == "不合格") || (IsQualified(sitem["G_DBXFFLY8"], sitem["DBXFFLY8"]) == "不合格"))
                         {
@@ -432,6 +455,13 @@ namespace Calculates
                     sitem["DBXFFLY4"] = "----";
                     sitem["DBXFFLY8"] = "----";
                     sitem["JCJG_DBX"] = "----";
+                    sitem["DBXLY4_1"] = "----";
+                    sitem["DBXLY4_2"] = "----";
+                    sitem["DBXLY4_3"] = "----";
+                    sitem["DBXLY8_1"] = "----";
+                    sitem["DBXLY8_2"] = "----";
+                    sitem["DBXLY8_3"] = "----";
+
                 }
                 //-----------------------单组检测结果判定------------------------------------------
                 this_bhg = 0;
@@ -489,6 +519,7 @@ namespace Calculates
 
             MItem[0]["JCJGMS"] = mjgsm;
             #endregion
+
             /************************ 代码结束 *********************/
         }
     }
