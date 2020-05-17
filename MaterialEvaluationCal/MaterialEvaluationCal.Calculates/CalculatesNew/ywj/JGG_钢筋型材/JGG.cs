@@ -354,6 +354,7 @@ namespace Calculates
                     md = Conversion.Val(sItem["ZJ"].Trim()) / 2;
                     md = Math.Round(3.14159 * Math.Pow(md, 2), 3);
                     sItem["MJ"] = md.ToString("0.000");
+                    sItem["GG"] = "Φ:" + sItem["ZJ"].Trim();
                 }
 
                 //求伸长率
