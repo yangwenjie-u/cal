@@ -292,7 +292,7 @@ namespace Calculates
                     if (!string.IsNullOrEmpty(sItem["PBSN1"]) || sItem["PBSN1"] != "----")
                     {
                         for (int i = 1; i < 4; i++)
-                        {    //                                                    掺合料                                                      水用量1                        砂                               石子                          基准筒质量1      
+                        {
                             if (!IsNumeric(sItem["PBSN" + i]) || !IsNumeric(sItem["PBCHL1" + i]) || !IsNumeric(sItem["PBCHL2" + i]) || !IsNumeric(sItem["PBS" + i]) || !IsNumeric(sItem["PBSA" + i]) || !IsNumeric(sItem["PBSZ" + i]) || !IsNumeric(sItem["JTZL" + i]) || !IsNumeric(sItem["JTSYZL" + i]))
                             {
                                 throw new Exception("请输入泌水率数据");
@@ -301,12 +301,10 @@ namespace Calculates
                         mTmpArray.Clear();
                         for (int i = 1; i < 4; i++)
                         {
-                            //基准拌合物总质量                      水泥                              掺合料1                                       掺合料1                         水用量1                                 砂                                石子                 
+                            //基准拌合物总质量
                             sItem["JPHWZL_" + i] = (Conversion.Val(sItem["PBSN" + i]) + Conversion.Val(sItem["PBCHL1" + i]) + Conversion.Val(sItem["PBCHL2" + i]) + Conversion.Val(sItem["PBS" + i]) + (Conversion.Val(sItem["PBSA" + i]) + Conversion.Val(sItem["PBSZ" + i]))).ToString();
-                            //泌水基准拌合物用水量1   
-                            sItem["MJBYS_" + i] = sItem["PBS" + i];
-
-                            //基准试样质量1               //基准筒及试样质量1                     基准筒质量2
+                            //泌水基准拌合物用水量1
+                            sItem["MSBYS_" + i] = sItem["PBS" + i];
                             sItem["JSYZL_" + i] = (Conversion.Val(sItem["JTSYZL" + i]) - Conversion.Val(sItem["JTZL" + i])).ToString();
                             if (IsNumeric(sItem["JMSZL_" + i]))
                             {
@@ -372,6 +370,7 @@ namespace Calculates
                             sItem["SSYZL_" + i] = (Conversion.Val(sItem["STSYZL" + i]) - Conversion.Val(sItem["STZL" + i])).ToString();
                             if (IsNumeric(sItem["SMSZL_" + i]))
                             {
+
                                 sItem["SMSL_" + i] = Round(Conversion.Val(sItem["SMSZL_" + i]) / ((Conversion.Val(sItem["MSBYS_" + i]) / Conversion.Val(sItem["SPHWZL_" + i])) * Conversion.Val(sItem["SSYZL_" + i])) * 100, 2).ToString();
                                 mTmpArray.Add(GetSafeDouble(sItem["SMSL_" + i]));
                             }
@@ -472,7 +471,7 @@ namespace Calculates
                             }
                         }
                         for (int i = 1; i < 4; i++)
-                        {                                                                               //SYBHL
+                        {
                             sItem["JJDYS_" + i] = Round(Conversion.Val(sItem["PBS" + i]) / Conversion.Val(sItem["SYBHL"]) * 1000, 2).ToString();
                             sItem["JSDYS_" + i] = Round(Conversion.Val(sItem["SPBS" + i]) / Conversion.Val(sItem["SYBHL"]) * 1000, 2).ToString();
                             sItem["JSL_" + i] = Round((Conversion.Val(sItem["JJDYS_" + i]) - Conversion.Val(sItem["JSDYS_" + i])) / Conversion.Val(sItem["JJDYS_" + i]) * 100, 1).ToString();
@@ -547,7 +546,7 @@ namespace Calculates
                 {
                     jcxmCur = "含气量";
                     sum = 0;
-                    for (xd = 1; xd < 3; xd++)
+                    for (xd = 1; xd < 4; xd++)
                     {
                         md1 = Conversion.Val(sItem["BHWHQL_" + xd]);
                         md2 = Conversion.Val(sItem["SSHQL_" + xd]);
@@ -555,7 +554,7 @@ namespace Calculates
                         sum += md;
                     }
                     md = sum / 2;
-                    sItem["PJHQL"] = md.ToString();
+                    sItem["PJHQL"] = Math.Round(md, 1).ToString();
 
 
                     MItem[0]["HG_HQL"] = IsQualified(MItem[0]["G_HQL"], sItem["PJHQL"]);
@@ -787,7 +786,7 @@ namespace Calculates
                         {
                             throw new Exception("请输入初凝时间差参数");
                         }
-                        sItem["CNSJC_" + i] = (Conversion.Val(sItem["CNSJT_" + i]) - Conversion.Val(sItem["CNJZT_" + i])).ToString();
+                        sItem["CNSJC_" + i] = (Conversion.Val(sItem["CNSJT_" + i]) - Conversion.Val(sItem["CNJZT_" + i])).ToString("0");
                         mTmpArray.Add(GetSafeDouble(sItem["CNSJC_" + i]));
                     }
                     mTmpArray.Sort();
@@ -863,7 +862,7 @@ namespace Calculates
                         {
                             throw new Exception("请输入终凝时间差参数");
                         }
-                        sItem["ZNSJC_" + i] = (Conversion.Val(sItem["ZNSJT_" + i]) - Conversion.Val(sItem["ZNJZT_" + i])).ToString();
+                        sItem["ZNSJC_" + i] = (Conversion.Val(sItem["ZNSJT_" + i]) - Conversion.Val(sItem["ZNJZT_" + i])).ToString("0");
                         mTmpArray.Add(GetSafeDouble(sItem["ZNSJC_" + i]));
                     }
                     mTmpArray.Sort();
@@ -933,7 +932,7 @@ namespace Calculates
                 {
                     jcxmCur = "相对耐久性";
                     sum = 0;
-                    for (xd = 1; xd < 3; xd++)
+                    for (xd = 1; xd < 4; xd++)
                     {
                         if (!IsNumeric(sItem["XDRHJP_" + xd]) || !IsNumeric(sItem["XDRHJP_" + xd]) || !IsNumeric(sItem["XJPCZ_" + xd]) || !IsNumeric(sItem["XJPCZ_" + xd]))
                         {
@@ -1067,6 +1066,7 @@ namespace Calculates
                                     sItem["SQDDBZ" + mlq + xd1] = Round(mAvgKyqd * mhsxs, 1).ToString("0.0");
                             }
                         }
+
                         if (sItem["JQDDBZ" + mlq + "1"] != "" && sItem["JQDDBZ" + mlq + "1"] != "----")
                         {
                             for (xd1 = 1; xd1 <= 3; xd1++)
@@ -1083,7 +1083,10 @@ namespace Calculates
                                 sItem["PJQDB" + mlq] = "重做";
                             else
                             {
-                                string mlongStr = sItem["QDB" + mlq + "1"] + "," + sItem["QDB" + mlq + "2"] + "," + sItem["QDB" + mlq + "3"];
+                                string mlongStr = "";
+                                //基准强度代表值 PJJQDDBZ
+                                #region 基准强度代表值
+                                mlongStr = sItem["JQDDBZ" + mlq + "1"] + "," + sItem["JQDDBZ" + mlq + "2"] + "," + sItem["JQDDBZ" + mlq + "3"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (vp = 0; vp <= 2; vp++)
                                     mkyqdArray[vp] = GetSafeDouble(mtmpArray[vp]);
@@ -1092,20 +1095,44 @@ namespace Calculates
                                 mMinKyqd = mkyqdArray[0];
                                 mMidKyqd = mkyqdArray[1];
                                 mAvgKyqd = mkyqdArray.Average();
-                                MItem[0]["JCJGMS"] = "";
-                                //计算抗压平均、达到设计强度、及进行单组合格判定
-
                                 if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJQDB" + mlq] = "重做";
+                                    sItem["PJJQDDBZ" + mlq] = "重做";
                                 //"最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
                                 if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJQDB" + mlq] = Round(mMidKyqd, 0).ToString();
+                                    sItem["PJJQDDBZ" + mlq] = Round(mMidKyqd, 0).ToString();
                                 //"最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
                                 if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJQDB" + mlq] = Round(mMidKyqd, 0).ToString();
+                                    sItem["PJJQDDBZ" + mlq] = Round(mMidKyqd, 0).ToString();
                                 //"最大最小强度值均未超出中间值的15%,试验结果取平均值"
                                 if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJQDB" + mlq] = Round(mAvgKyqd, 0).ToString();
+                                    sItem["PJJQDDBZ" + mlq] = Round(mAvgKyqd, 0).ToString();
+                                #endregion
+
+                                #region 基准强度代表值
+                                mlongStr = sItem["SQDDBZ" + mlq + "1"] + "," + sItem["SQDDBZ" + mlq + "2"] + "," + sItem["SQDDBZ" + mlq + "3"];
+                                mtmpArray = mlongStr.Split(',');
+                                for (vp = 0; vp <= 2; vp++)
+                                    mkyqdArray[vp] = GetSafeDouble(mtmpArray[vp]);
+                                Array.Sort(mkyqdArray);
+                                mMaxKyqd = mkyqdArray[2];
+                                mMinKyqd = mkyqdArray[0];
+                                mMidKyqd = mkyqdArray[1];
+                                mAvgKyqd = mkyqdArray.Average();
+                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
+                                    sItem["PJQDDBZ" + mlq] = "重做";
+                                //"最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
+                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
+                                    sItem["PJQDDBZ" + mlq] = Round(mMidKyqd, 0).ToString();
+                                //"最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
+                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
+                                    sItem["PJQDDBZ" + mlq] = Round(mMidKyqd, 0).ToString();
+                                //"最大最小强度值均未超出中间值的15%,试验结果取平均值"
+                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
+                                    sItem["PJQDDBZ" + mlq] = Round(mAvgKyqd, 0).ToString();
+
+                                #endregion
+                                sItem["PJQDB" + mlq] = Round(GetSafeDouble(sItem["PJJQDDBZ" + mlq]) / GetSafeDouble(sItem["PJQDDBZ" + mlq]) * 100, 0).ToString();
+
                             }
                         }
                         if (sItem["PJQDB" + mlq] == "重做")
@@ -1139,7 +1166,7 @@ namespace Calculates
                 if (jcxm.Contains("、收缩率比、"))
                 {
                     jcxmCur = "收缩率比";
-                    for (xd = 1; xd < 3; xd++)
+                    for (xd = 1; xd < 4; xd++)
                     {
                         sItem["SSLJ" + xd] = Round((Conversion.Val(sItem["SSLJL0_" + xd]) - Conversion.Val(sItem["SSLJLT_" + xd])) / (Conversion.Val(sItem["SSLJLB_" + xd])) * Math.Pow(10, 6), 1).ToString();
                         sItem["SSLS" + xd] = Round((Conversion.Val(sItem["SSLSL0_" + xd]) - Conversion.Val(sItem["SSLSLT_" + xd])) / (Conversion.Val(sItem["SSLSLB_" + xd])) * Math.Pow(10, 6), 1).ToString();
