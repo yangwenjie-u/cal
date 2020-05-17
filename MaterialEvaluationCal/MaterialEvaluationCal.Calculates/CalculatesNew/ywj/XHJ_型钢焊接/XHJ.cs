@@ -18,6 +18,9 @@ namespace Calculates
             var mjcjg = "不合格";
             var jsbeizhu = "该组试样的检测结果全部合格";
             var sItems = data["S_XHJ"];
+            var ggph = "";
+            var jcxmBhg = "";
+
 
             if (!data.ContainsKey("M_XHJ"))
             {
@@ -651,33 +654,36 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+          
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
             {
-                MItem[0]["FJJJ3"] = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
 
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                MItem[0]["FJJJ3"] = jsbeizhu;
+
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
             {
-                MItem[0]["FJJJ2"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求";
+                MItem[0]["FJJJ2"] = jsbeizhu;
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "该组试样部分符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
-                    MItem[0]["FJJJ2"] = "该组试样部分符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                    MItem[0]["FJJJ2"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。";
                 }
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"]))
             {
-                MItem[0]["FJJJ1"] = "该组试样不符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求";
+                MItem[0]["FJJJ1"] = jsbeizhu;
                 if (mFlag_Hg && mFlag_Bhg)
                 {
                     jsbeizhu = "该组试样部分符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
-                    MItem[0]["FJJJ1"] = "该组试样部分符合" + MItem[0]["PDBZ"] + "标准要求，另取双倍样复试。";
+                    MItem[0]["FJJJ2"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。";
                 }
             }
 

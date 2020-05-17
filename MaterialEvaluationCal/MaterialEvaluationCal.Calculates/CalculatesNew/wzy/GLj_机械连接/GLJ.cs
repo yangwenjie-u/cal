@@ -580,7 +580,8 @@ namespace Calculates
                     MItem[0]["FJJJ1"] = mjgsm;
                 }
             }
-            MItem[0]["JCJGMS"] = MItem[0]["FJJJ3"] + MItem[0]["FJJJ2"] + MItem[0]["FJJJ1"];
+            MItem[0]["JCJGMS"] = mjgsm;
+            //MItem[0]["JCJGMS"] = MItem[0]["FJJJ3"] + MItem[0]["FJJJ2"] + MItem[0]["FJJJ1"];
             #endregion
             /************************ 代码结束 *********************/
         }
