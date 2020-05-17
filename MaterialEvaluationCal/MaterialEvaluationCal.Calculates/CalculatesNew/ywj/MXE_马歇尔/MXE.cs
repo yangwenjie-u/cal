@@ -119,19 +119,6 @@ namespace Calculates
                     mitem["JCJGMS"] = "找不到对应的等级";
                     continue;
                 }
-
-                //从设计等级表中取得相应的计算数值、等级标准
-                //var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj) && x["ZF"].Contains(dZf) && x["BZH"].Contains(dBzh));
-                //if (mrsDj_item != null && mrsDj_item.Count() > 0)
-                //{
-
-                //}
-                //else
-                //{
-                //    mJSFF = "";
-                //    sitem["JCJG"] = "依据不详";
-                //    mitem["JCJGMS"] = "找不到对应的等级";
-                //}
                 //25℃时水的密度
                 #endregion
 

@@ -255,8 +255,7 @@ namespace Calculates
                     mJSFF = "";
                     sItem["JCJG"] = "不下结论";
                     jsbeizhu = "找不到对应的等级";
-                    mbhggs = 1;
-                    continue;
+   mbhggs++;                    continue;
                 }
 
                 double md, md1, md2, sum;

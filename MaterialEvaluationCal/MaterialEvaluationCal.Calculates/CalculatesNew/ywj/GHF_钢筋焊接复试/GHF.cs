@@ -38,7 +38,9 @@ namespace Calculates
             var mAllHg = true;
 
             string mgjlb = "";////设计等级名称
-            string mKlqd, mScl, mLw, mLwjd, mLwzj, mXlgs, mXwgs, mHggs_klqd, mHggs_scl, mHggs_lw = "";
+            string mKlqd = "";
+            double mZh, mScl, mLw, mLwjd, mLwzj = 0;
+            double mHggs_klqd, mHggs_scl, mHggs_lw, mXlgs, mXwgs = 0;
             string SclBzyq, LwBzyq = "";
             bool msffs, mLsfs, mLwfs = true;
             int mallbhg_kl = 0;
@@ -234,6 +236,103 @@ namespace Calculates
                   return this_bhg;
               };
 
+
+            //开始判定单项指标是否合格,根据单项指标再判定单组结论是否合格
+            Func<IDictionary<string, string>, IDictionary<string, string>, double, double, double, bool> all_hj_zb_jl =
+                delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, double mHggs_klqd2, double mHggs_scl2, double mHggs_lw2)
+                {
+                    var hg_kl = sItem["HG_KL"];
+                    if (string.IsNullOrEmpty(hg_kl))
+                    {
+                        sItem["HG_KL"] = "0";
+                    }
+
+                    var hg_sc = sItem["HG_SC"];
+                    if (string.IsNullOrEmpty(hg_sc))
+                    {
+                        sItem["HG_SC"] = "0";
+                    }
+                    var hg_lw = sItem["HG_LW"];
+                    if (string.IsNullOrEmpty(hg_lw))
+                    {
+                        sItem["HG_LW"] = "0";
+                    }
+                    var jcxm2 = "、" + sItem["JCXM"] + "、";
+
+                    if (jcxm2.Contains("、拉伸、"))
+                    {
+                        if (Convert.ToDouble(hg_kl) >= mHggs_klqd2 && Convert.ToDouble(hg_sc) >= mHggs_scl2)
+                        {
+                            sItem["JCJG_LS"] = "符合";
+                        }
+                        else
+                        {
+                            sItem["JCJG_LS"] = "不符合";
+                        }
+                    }
+                    else
+                    {
+                        sItem["JCJG_LS"] = "----";
+                        sItem["DKJ1"] = "----";
+                        sItem["DKJ2"] = "----";
+                        sItem["DKJ3"] = "----";
+                        sItem["DKJ4"] = "----";
+                        sItem["DKJ5"] = "----";
+                        sItem["DKJ6"] = "----";
+                        sItem["DLTZ1"] = "----";
+                        sItem["DLTZ2"] = "----";
+                        sItem["DLTZ3"] = "----";
+                        sItem["DLTZ4"] = "----";
+                        sItem["DLTZ5"] = "----";
+                        sItem["DLTZ6"] = "----";
+                    }
+
+
+                    if (jcxm2.Contains("、冷弯、") || jcxm2.Contains("、弯曲、"))
+                    {
+                        if (Convert.ToDouble(hg_lw) > mHggs_lw2)
+                        {
+                            sItem["JCJG_LW"] = "符合";
+                        }
+                        else
+                        {
+                            sItem["JCJG_LW"] = "不符合";
+                            mAllHg = false;
+                        }
+                    }
+                    else
+                    {
+                        sItem["JCJG_LW"] = "----";
+                        sItem["LW1"] = "----";
+                        sItem["LW2"] = "----";
+                        sItem["LW3"] = "----";
+                        sItem["LW4"] = "----";
+                        sItem["LW5"] = "----";
+                        sItem["LW6"] = "----";
+                        sItem["HG_LW1"] = "----";
+                        sItem["HG_LW2"] = "----";
+                        sItem["HG_LW3"] = "----";
+                        sItem["HG_LW4"] = "----";
+                        sItem["HG_LW5"] = "----";
+                        sItem["HG_LW6"] = "----";
+                    }
+                    if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合")
+                    {
+                        sItem["JCJG"] = "不合格";
+                        mAllHg = false;
+                        return false;
+                    }
+                    else
+                    {
+                        sItem["JCJG"] = "合格";
+                        mAllHg = false;
+                        return true;
+
+                    }
+
+                };
+
+
             ///求屈服强度及抗拉强度
             Func<IDictionary<string, string>, int, int> calc_kl = delegate (IDictionary<string, string> sItem, int count)
             {
@@ -369,6 +468,9 @@ namespace Calculates
                 return 0;
             };
 
+
+
+
             #endregion
 
             MItem[0]["FJJJ1"] = "";
@@ -399,20 +501,18 @@ namespace Calculates
                     sItem["SJDJ"] = extraFieldsDj["MC"];
                     mKlqd = extraFieldsDj["KLQDBZZ"];//单组标准值
 
-                    mScl = extraFieldsDj["SCLBZZ"];
-                    mLw = extraFieldsDj["LWBZZ"];
 
-                    mLwjd = extraFieldsDj["LWJD"];// '冷弯角度和冷弯直径
-                    mLwzj = extraFieldsDj["LWZJ"];
 
-                    mHggs_klqd = extraFieldsDj["ZHGGS_KLQD"]; //'单组合格个数
-                    mHggs_scl = extraFieldsDj["ZHGGS_SCL"];
-                    mHggs_lw = extraFieldsDj["ZHGGS_LW"];
 
-                    mLwzj = extraFieldsDj["LWZJ"]; //'冷弯直径和角度
-                    mLwjd = extraFieldsDj["LWJD"];
-                    mXlgs = extraFieldsDj["XLGS"];
-                    mXwgs = extraFieldsDj["XWGS"];
+                    mScl = Double.Parse(extraFieldsDj["SCLBZZ"]);
+                    mLw = Double.Parse(extraFieldsDj["LWBZZ"]);
+                    mLwjd = Double.Parse(extraFieldsDj["LWJD"]);//冷弯角度和冷弯直径
+                    mHggs_klqd = Double.Parse(extraFieldsDj["ZHGGS_KLQD"]);//单组合格个数
+                    mHggs_scl = Double.Parse(extraFieldsDj["ZHGGS_SCL"]);
+                    mHggs_lw = Double.Parse(extraFieldsDj["ZHGGS_LW"]);
+                    mLwzj = Double.Parse(extraFieldsDj["LWZJ"]);//冷弯直径和角度
+                    mXlgs = Double.Parse(extraFieldsDj["XLGS"]);
+                    mXwgs = Double.Parse(extraFieldsDj["XWGS"]);
 
 
                     if (sItem["JCXM"].Trim().Contains("、拉伸、") || (sItem["JCXM"].Trim().Contains("、抗拉强度、")))
@@ -459,175 +559,189 @@ namespace Calculates
                 sItem["G_DLWZ"] = SclBzyq;
                 sItem["G_LWWZ"] = LwBzyq;
 
-                if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
-                {
-                    sItem["G_LWWZ"] = "----";
-                }
                 //求抗拉强度
-                int count = (int)GetSafeDouble(mXlgs);
+                int count = (int)mXlgs;
 
                 calc_kl(sItem, count);
 
-                mallbhg_lw = mallbhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", GetSafeDouble(mLw), count);
+                mallbhg_lw = mallbhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, count);
 
                 //求抗拉强度,断口,冷弯 合格个数,并且返回值为不同组不合格数的累加值
                 if (!MItem[0]["PDBZ"].Contains("18-2012"))
                 {
                     //GetSafeDouble(mLw), GetSafeInt(mXwgs));
                     mallbhg_kl = mallbhg_kl + find_singlezb_bhg(MItem[0], sItem, "kl", GetSafeDouble(mKlqd), count);
-                    mallbhg_sc = mallbhg_sc + find_dkj_bhg(MItem[0], sItem, GetSafeDouble(mScl), count);
-                    continue;
+                    mallbhg_sc = mallbhg_sc + find_dkj_bhg(MItem[0], sItem, mScl, count);
+
+                    if (!all_hj_zb_jl(MItem[0], sItem, mHggs_klqd, mHggs_scl, mHggs_lw))
+                    {
+                        mAllHg = false;
+                    }
                 }
 
-                if (jcxm.Contains("、拉伸、") || jcxm.Contains("、抗拉强度、"))
+                else
                 {
-                    for (int i = 1; i < 7; i++)
+                    if (jcxm.Contains("、拉伸、") || jcxm.Contains("、抗拉强度、"))
                     {
-                        switch (sItem["DKJ" + i])
+                        for (int i = 1; i < 7; i++)
                         {
-                            case "1":
-                                sItem["DLTZ" + i] = "断于焊缝之外，延性断裂";
-                                break;
-                            case "2":
-                                sItem["DLTZ" + i] = "断于焊缝，延性断裂";
-                                break;
-                            case "3":
-                                sItem["DLTZ" + i] = "断于焊缝之外，脆性断裂";
-                                break;
-                            case "4":
-                                sItem["DLTZ" + i] = "断于焊缝，脆性断裂";
-                                break;
-                            case "5":
-                                sItem["DLTZ" + i] = "既断于热影响区又脆断";
-                                break;
-                            case "6":
-                                sItem["DLTZ" + i] = "断于热影响区，延性断裂";
-                                break;
-                            case "7":
-                                sItem["DLTZ" + i] = "断于钢筋母材，延性断裂";
-                                break;
-                            case "8":
-                                sItem["DLTZ" + i] = "断于钢筋母材，脆性断裂";
-                                break;
-                            case "9":
-                                sItem["DLTZ" + i] = "断于焊缝，脆性断裂(焊口开裂)";
-                                break;
+                            switch (sItem["DKJ" + i])
+                            {
+                                case "1":
+                                    sItem["DLTZ" + i] = "断于焊缝之外，延性断裂";
+                                    break;
+                                case "2":
+                                    sItem["DLTZ" + i] = "断于焊缝，延性断裂";
+                                    break;
+                                case "3":
+                                    sItem["DLTZ" + i] = "断于焊缝之外，脆性断裂";
+                                    break;
+                                case "4":
+                                    sItem["DLTZ" + i] = "断于焊缝，脆性断裂";
+                                    break;
+                                case "5":
+                                    sItem["DLTZ" + i] = "既断于热影响区又脆断";
+                                    break;
+                                case "6":
+                                    sItem["DLTZ" + i] = "断于热影响区，延性断裂";
+                                    break;
+                                case "7":
+                                    sItem["DLTZ" + i] = "断于钢筋母材，延性断裂";
+                                    break;
+                                case "8":
+                                    sItem["DLTZ" + i] = "断于钢筋母材，脆性断裂";
+                                    break;
+                                case "9":
+                                    sItem["DLTZ" + i] = "断于焊缝，脆性断裂(焊口开裂)";
+                                    break;
+                            }
                         }
-                    }
 
-                    int dkj, kl = 0;
-                    int x = 0;
-                    int y = 0;
-                    for (int i = 1; i < 7; i++)
-                    {
-                        kl = GetSafeInt(sItem["KLQD" + i]);
-                        dkj = GetSafeInt(sItem["DKJ" + i]);
-
-                        dkj = dkj == 6 ? 7 : dkj;
-                        dkj = dkj == 5 ? 4 : dkj;
-                        dkj = dkj == 9 ? 4 : dkj;
-
-                        if ((kl < GetSafeInt(mKlqd) && dkj == 7) || dkj == 8)
+                        int dkj, kl = 0;
+                        int x = 0;
+                        int y = 0;
+                        for (int i = 1; i < 7; i++)
                         {
-                            mWxgs = mWxgs + 1;
+                            kl = GetSafeInt(sItem["KLQD" + i]);
+                            dkj = GetSafeInt(sItem["DKJ" + i]);
+
+                            dkj = dkj == 6 ? 7 : dkj;
+                            dkj = dkj == 5 ? 4 : dkj;
+                            dkj = dkj == 9 ? 4 : dkj;
+
+                            if ((kl < GetSafeInt(mKlqd) && dkj == 7) || dkj == 8)
+                            {
+                                mWxgs = mWxgs + 1;
+                            }
+                            if (kl >= GetSafeInt(mKlqd) && (dkj == 5 || dkj == 4))
+                            {
+                                x = x + 1;
+                            }
+                            if (kl >= GetSafeInt(mKlqd) && (dkj == 7 || dkj == 6))
+                            {
+                                y = y + 1;
+                            }
                         }
-                        if (kl >= GetSafeInt(mKlqd) && (dkj == 5 || dkj == 4))
-                        {
-                            x = x + 1;
-                        }
-                        if (kl >= GetSafeInt(mKlqd) && (dkj == 7 || dkj == 6))
-                        {
-                            y = y + 1;
-                        }
-                    }
 
-                    if (mWxgs >= 1)
-                    {
-                        sItem["JCJG_LS"] = "无效";
-                    }
-                    else
-                    {
-
-                        if (x <= 2 && y >= 4 && x + y == 6)
+                        if (mWxgs >= 1)
                         {
-                            sItem["JCJG_LS"] = "符合";
+                            sItem["JCJG_LS"] = "无效";
                         }
                         else
                         {
-                            sItem["JCJG_LS"] = "不符合";
 
+                            if (x <= 2 && y >= 4 && x + y == 6)
+                            {
+                                sItem["JCJG_LS"] = "符合";
+                            }
+                            else
+                            {
+                                sItem["JCJG_LS"] = "不符合";
+
+                            }
                         }
                     }
-                }
-                else
-                {
-                    sItem["JCJG_LS"] = "----";
-                    sItem["DKJ1"] ="----";
-                    sItem["DKJ2"] ="----";
-                    sItem["DKJ3"] ="----";
-                    sItem["DKJ4"] ="----";
-                    sItem["DKJ5"] ="----";
-                    sItem["DKJ6"] ="----";
-                }
-
-                if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
-                {
-                    //if (Convert.ToInt32(MItem[0]["JYDBH"]) > 150700000)
-                    //{
-                    var Gs = 0;
-                    for (int i = 1; i < 7; i++)
+                    else
                     {
-                        if (Convert.ToDouble(sItem["LW" + i]) >= 0.5)
+                        sItem["JCJG_LS"] = "----";
+                        sItem["DKJ1"] = "----";
+                        sItem["DKJ2"] = "----";
+                        sItem["DKJ3"] = "----";
+                        sItem["DKJ4"] = "----";
+                        sItem["DKJ5"] = "----";
+                        sItem["DKJ6"] = "----";
+                        sItem["DLTZ1"] = "----";
+                        sItem["DLTZ2"] = "----";
+                        sItem["DLTZ3"] = "----";
+                        sItem["DLTZ4"] = "----";
+                        sItem["DLTZ5"] = "----";
+                        sItem["DLTZ6"] = "----";
+                    }
+
+                    if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
+                    {
+                        //if (Convert.ToInt32(MItem[0]["JYDBH"]) > 150700000)
+                        //{
+                        var Gs = 0;
+                        for (int i = 1; i < 7; i++)
                         {
-                            Gs = Gs + 1;
+                            if (Convert.ToDouble(sItem["LW" + i]) >= 0.5)
+                            {
+                                Gs = Gs + 1;
+                            }
                         }
-                    }
 
-                    if (Gs <= 2)
-                    {
-                        sItem["JCJG_LW"] = "符合";
+                        if (Gs <= 2)
+                        {
+                            sItem["JCJG_LW"] = "符合";
+                        }
+                        else
+                        {
+                            sItem["JCJG_LW"] = "不符合";
+                        }
+
+                        if (GetSafeDouble(sItem["HG_LW"]) == 0)
+                        {
+                            sItem["HG_LW"] = "0";
+                        }
+                        if (GetSafeDouble(sItem["HG_LW"]) > mHggs_lw)
+                        {
+                            sItem["JCJG_LW"] = "符合";
+                        }
+                        else
+                        {
+                            sItem["JCJG_LW"] = "不符合";
+                            mAllHg = false;
+                        }
+
+                        if (GetSafeDouble(sItem["HG_LW"]) >= mHggs_lw)
+                        {
+                            sItem["JCJG_LW"] = "符合";
+                        }
+                        else
+                        {
+                            sItem["JCJG_LW"] = "不符合";
+                        }
+                        //}
                     }
                     else
                     {
-                        sItem["JCJG_LW"] = "不符合";
+                        sItem["JCJG_LW"] = "----";
+                        sItem["LW1"] = "----";
+                        sItem["LW2"] = "----";
+                        sItem["LW3"] = "----";
+                        sItem["LW4"] = "----";
+                        sItem["LW5"] = "----";
+                        sItem["LW6"] = "----";
+                        sItem["HG_LW1"] = "----";
+                        sItem["HG_LW2"] = "----";
+                        sItem["HG_LW3"] = "----";
+                        sItem["HG_LW4"] = "----";
+                        sItem["HG_LW5"] = "----";
+                        sItem["HG_LW6"] = "----";
                     }
 
-                    if (GetSafeDouble(sItem["HG_LW"]) == 0)
-                    {
-                        sItem["HG_LW"] = "0";
-                    }
-                    if (GetSafeDouble(sItem["HG_LW"]) > GetSafeDouble(mHggs_lw))
-                    {
-                        sItem["JCJG_LW"] = "符合";
-                    }
-                    else
-                    {
-                        sItem["JCJG_LW"] = "不符合";
-                        mAllHg = false;
-                    }
-
-                    if (GetSafeDouble(sItem["HG_LW"]) >= GetSafeDouble(mHggs_lw))
-                    {
-                        sItem["JCJG_LW"] = "符合";
-                    }
-                    else
-                    {
-                        sItem["JCJG_LW"] = "不符合";
-                    }
-                    //}
                 }
-                else
-                {
-                    sItem["JCJG_LW"] = "----";
-                    sItem["LW1"] ="----";
-                    sItem["LW2"] ="----";
-                    sItem["LW3"] ="----";
-                    sItem["LW4"] ="----";
-                    sItem["LW5"] ="----";
-                    sItem["LW6"] ="----";
-                }
-
-
                 sItem["JCJG"] = "合格";
 
                 if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LS"] == "无效")

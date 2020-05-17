@@ -148,11 +148,17 @@ namespace Calculates
                         MItem[0]["G_WG"] = "管材内外壁不允许有气泡、凹陷、明显的杂质和不规则波纹等其他明显缺陷。管材两端应平整且与轴线垂直，插口端位于波谷取。管材波谷区应紧密熔断，不应出现脱开现象。";
                         MItem[0]["G_BZ"] = "管材的内外层各自的颜色应均匀一致，外层一般为黑色,其他颜色时可由供需双方协商。";
                     }
-                    else if (mSjdj == "埋地排水用钢带增强聚乙烯(PE)螺旋波纹管 ")
+                    else if (mSjdj == "埋地排水用钢带增强聚乙烯(PE)螺旋波纹管")
                     {
                         MItem[0]["G_BZ"] = "管材颜色宜为黑色，色泽应均匀。当采用其他颜色时，可由供需双方协商。";
                         MItem[0]["G_WG"] = "管材内表面应光滑平整，外部波纹形应规整；管材内外壁应无气泡、无裂纹和可见杂质。管材采用螺旋形端口时，切口应选在管材波谷的无钢带处，且切口两端应在管材的同一纵向线。管材采用平面形端口时，切口应与管材轴线垂直。管材在切割后的断面应修整，无毛刺，管材端口及空腔部分应密封，不允许钢带外露。。";
                     }
+                    else if (mSjdj == "排水用芯层发泡硬聚氯乙烯(PVC-U)管材")
+                    {
+                        MItem[0]["G_BZ"] = "管材内外表层一般为白色或者灰色，可由供需双方协商。";
+                        MItem[0]["G_WG"] = "管材内表面应光滑平整，不允许有气泡、砂眼、裂口和明显的痕纹、杂质、色泽不均匀及分解变色线；管材端口应平整且与轴线垂直；管材芯层与外表面曾应紧密熔接，无分脱现象。";
+                    }
+
 
                     if (MItem[0]["WG_HG"] == "合格" && MItem[0]["BZ_HG"] == "合格")
                     {
@@ -212,16 +218,16 @@ namespace Calculates
 
                     //测试的数量4-12个
                     //1 长度 2.平均外径 3.不圆度 4.壁厚公差
-                    int count = Convert.ToInt32(sitem["ZJCLGS"]);
+                    int count = GetSafeDouble(sitem["ZJCLGS"])==0? 4 : GetSafeInt(sitem["ZJCLGS"]);
 
                     if (count < 4)
                     {
                         throw new Exception("要求直径测量数量不能小于4个");
                     }
-
+                    
                     #region
                     //平均外径
-                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"]);
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"] &&x["HGDBH"] == sitem["GXL"]);
                     if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
                     {
                         MItem[0]["G_PJWJ"] = mrsWgcc_Filter["WJMin"] + "～" + mrsWgcc_Filter["WJMax"];
@@ -237,8 +243,6 @@ namespace Calculates
                     {
                         throw new Exception("请输入平均外径标准范围.");
                     }
-                    //MItem[0]["G_PJWJ"] = listWJ_G[0];//平均外径最小
-                    //MItem[0]["G_PJWJ1"] = listWJ_G[1];//平均外径最大 
 
                     //壁厚
                     List<string> listBH_G = new List<string>();

@@ -719,6 +719,7 @@ namespace Calculates
                     sItem["SCL3"] = "----";
                     sItem["QDQFB3"] = "----";
                     sItem["QFQFB3"] = "----";
+                    sItem["DHJL3"] = "----";
                 }
                 else
                 {

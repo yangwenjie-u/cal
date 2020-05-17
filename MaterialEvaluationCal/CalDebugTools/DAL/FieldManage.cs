@@ -156,8 +156,6 @@ namespace CalDebugTools.DAL
             return result;
         }
 
-
-
         public List<string> GetIOFields(string xmbh, string wtdbh)
         {
             List<string> lisResult = new List<string>();
@@ -270,7 +268,6 @@ namespace CalDebugTools.DAL
             }
         }
 
-
         /// <summary>
         /// 获取参数（乌海）
         /// </summary>
@@ -297,7 +294,6 @@ namespace CalDebugTools.DAL
             //return strParams;
 
         }
-
         public int InsertParam(CalculateParam param)
         {
             try
@@ -342,8 +338,6 @@ namespace CalDebugTools.DAL
                 return -1;
             }
         }
-
-
         public int UpdateParam(CalculateParam info)
         {
 
@@ -371,7 +365,6 @@ namespace CalDebugTools.DAL
             return -1;
 
         }
-
         public DataSet GetSettingFieldsInfos()
         {
             DataSet Ds = new DataSet();
@@ -386,7 +379,6 @@ namespace CalDebugTools.DAL
             }
             return Ds;
         }
-
 
         /// <summary>
         /// 添加配置字段到物理表
@@ -520,6 +512,13 @@ $"";
         }
 
 
+        public void InsertBZInfos(List<string> sqlList)
+        {
+            foreach (var item in sqlList)
+            {
+                _sqlBase.ExecuteNonQuery(item);
+            }
+        }
 
     }
 }

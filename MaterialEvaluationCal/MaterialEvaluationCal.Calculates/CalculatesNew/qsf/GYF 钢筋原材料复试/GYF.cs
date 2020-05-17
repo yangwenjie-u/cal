@@ -500,6 +500,31 @@ namespace Calculates
                 if (Conversion.Val(sItem["DBSL"]) <= 60)
                 {
                     mxwgs = 4;
+
+                    sItem["SCZJ5"] = "----";
+                    sItem["SCZJ6"] = "----";
+                    sItem["QFHZ5"] = "----";
+                    sItem["QFHZ6"] = "----";
+                    sItem["KLHZ5"] = "----";
+                    sItem["KLHZ6"] = "----";
+                    sItem["DLWZ5"] = "----";
+                    sItem["DLWZ6"] = "----";
+                    sItem["SCZ5"] = "----";
+                    sItem["SCZ6"] = "----";
+                    sItem["ZSCL5"] = "----";
+                    sItem["ZSCL6"] = "----";
+                    sItem["QFQD5"] = "----";
+                    sItem["QFQD6"] = "----";
+                    sItem["KLQD5"] = "----";
+                    sItem["KLQD6"] = "----";
+                    sItem["SCL5"] = "----";
+                    sItem["SCL6"] = "----";
+                    sItem["QDQFB5"] = "----";
+                    sItem["QDQFB6"] = "----";
+                    sItem["QFQFB5"] = "----";
+                    sItem["QFQFB6"] = "----";
+                    sItem["DHJL5"] = "----";
+                    sItem["DHJL6"] = "----";
                 }
                 else
                 {
