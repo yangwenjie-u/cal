@@ -122,7 +122,7 @@ namespace Calculates
                 }
                 var jcxm2 = "";
                 jcxm2 = "、" + sItem["JCXM"].Replace(',', '、') + "、";
-                if (jcxm2.Contains("、拉伸、"))
+                if (jcxm2.Contains("拉伸"))
                 {
                     if (Double.Parse(sItem["HG_QF"]) >= mHggs_klqd_f && Double.Parse(sItem["HG_KL"]) >= mHggs_klqd_f && Double.Parse(sItem["HG_SC"]) >= mHggs_scl_f)
                         sItem["JCJG_LS"] = "符合";
@@ -522,7 +522,7 @@ namespace Calculates
 
                 if (sItem["JCJG_LS"] == "不符合")
                 {
-                    jcxmCur = "、拉伸、";
+                    jcxmCur = "拉伸";
                     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                 }
                 if (sItem["JCJG_LW"] == "不符合")

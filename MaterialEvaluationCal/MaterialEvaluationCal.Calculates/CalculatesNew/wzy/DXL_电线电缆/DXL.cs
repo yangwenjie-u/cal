@@ -228,6 +228,7 @@ namespace Calculates
                     }
                     else
                     {
+                        mbhggs++;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Bhg = true;
                     }
@@ -258,6 +259,7 @@ namespace Calculates
                     }
                     else
                     {
+                        mbhggs++;
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Bhg = true;
                     }
