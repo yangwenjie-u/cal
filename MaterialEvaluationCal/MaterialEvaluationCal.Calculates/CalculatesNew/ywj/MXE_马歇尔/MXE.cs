@@ -402,6 +402,7 @@ namespace Calculates
                                 break;
                         }
 
+                        //（1-（2.344/2.463））
                         //空隙率  ==（1-(毛体积相对密度/混合料理论最大密度)）*100
                         kxl = Math.Round((1 - mtjxdmd / llmd) * 100, 1);
                         sitem["KSL" + i] = kxl.ToString();
@@ -412,7 +413,7 @@ namespace Calculates
                         sitem["KLJXL" + i] = jxl.ToString();
                         jxlList.Add(jxl);
 
-                        // 沥青饱和度 ==（间隙率-空隙率）/空隙率*100
+                        // 沥青饱和度 ==（间隙率-空隙率）/间隙率*100
                         bhd = Math.Round((jxl - kxl) / jxl * 100, 1);
                         sitem["KLBHD" + i] = bhd.ToString();
                         bhdList.Add(bhd);
@@ -430,13 +431,13 @@ namespace Calculates
                         //有效沥青含量
                         md2 = GetSafeDecimal(mitem["W_LQHL"]);
                         //md1 = Math.Round(((hcmtjxdmd - llmd) / (hcmtjxdmd * llmd)) * GetSafeDecimal(mitem["LQXDMD"], 2) * 100, 3);
-
+                        //2.344*4.7/1.02
                         // 有效沥青百分率==毛体积相对密度*有效沥青含量/25度沥青相对密度
                         lqtjbfl = Math.Round(mtjxdmd * md2 / GetSafeDecimal(mitem["LQXDMD"], 2), 1);
                         sitem["LQTJBFL" + i] = lqtjbfl.ToString();
                         lqtjbflList.Add(lqtjbfl);
                     }
-
+                    
 
                     Gs = 1;
                     sum = 0;

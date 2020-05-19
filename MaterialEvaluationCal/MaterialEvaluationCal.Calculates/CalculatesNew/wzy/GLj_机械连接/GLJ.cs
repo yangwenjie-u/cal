@@ -578,7 +578,7 @@ namespace Calculates
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"].Trim()))
             {
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
                 MItem[0]["FJJJ3"] = mjgsm;
             }
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"].Trim()))

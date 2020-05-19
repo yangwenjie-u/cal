@@ -500,10 +500,6 @@ namespace Calculates
                 {
                     sItem["SJDJ"] = extraFieldsDj["MC"];
                     mKlqd = extraFieldsDj["KLQDBZZ"];//单组标准值
-
-
-
-
                     mScl = Double.Parse(extraFieldsDj["SCLBZZ"]);
                     mLw = Double.Parse(extraFieldsDj["LWBZZ"]);
                     mLwjd = Double.Parse(extraFieldsDj["LWJD"]);//冷弯角度和冷弯直径
@@ -578,41 +574,28 @@ namespace Calculates
                         mAllHg = false;
                     }
                 }
-
                 else
                 {
                     if (jcxm.Contains("、拉伸、") || jcxm.Contains("、抗拉强度、"))
                     {
-                        for (int i = 1; i < 7; i++)
+                        for (int i = 1; i < count + 1; i++)
                         {
                             switch (sItem["DKJ" + i])
                             {
                                 case "1":
-                                    sItem["DLTZ" + i] = "断于焊缝之外，延性断裂";
+                                    sItem["DLTZ" + i] = "断于母材,延性断裂";
                                     break;
                                 case "2":
-                                    sItem["DLTZ" + i] = "断于焊缝，延性断裂";
+                                    sItem["DLTZ" + i] = "断于母材,脆性断裂";
                                     break;
                                 case "3":
-                                    sItem["DLTZ" + i] = "断于焊缝之外，脆性断裂";
+                                    sItem["DLTZ" + i] = "断于焊缝,脆性断裂";
                                     break;
                                 case "4":
-                                    sItem["DLTZ" + i] = "断于焊缝，脆性断裂";
+                                    sItem["DLTZ" + i] = "断于热影响区,延性断裂";
                                     break;
                                 case "5":
-                                    sItem["DLTZ" + i] = "既断于热影响区又脆断";
-                                    break;
-                                case "6":
-                                    sItem["DLTZ" + i] = "断于热影响区，延性断裂";
-                                    break;
-                                case "7":
-                                    sItem["DLTZ" + i] = "断于钢筋母材，延性断裂";
-                                    break;
-                                case "8":
-                                    sItem["DLTZ" + i] = "断于钢筋母材，脆性断裂";
-                                    break;
-                                case "9":
-                                    sItem["DLTZ" + i] = "断于焊缝，脆性断裂(焊口开裂)";
+                                    sItem["DLTZ" + i] = "断于热影响区,脆性断裂";
                                     break;
                             }
                         }
@@ -620,24 +603,25 @@ namespace Calculates
                         int dkj, kl = 0;
                         int x = 0;
                         int y = 0;
-                        for (int i = 1; i < 7; i++)
+                        for (int i = 1; i < count + 1; i++)
                         {
                             kl = GetSafeInt(sItem["KLQD" + i]);
                             dkj = GetSafeInt(sItem["DKJ" + i]);
 
-                            dkj = dkj == 6 ? 7 : dkj;
-                            dkj = dkj == 5 ? 4 : dkj;
-                            dkj = dkj == 9 ? 4 : dkj;
+                            //断于热影响区，延性断裂 等效 断于钢筋母材，延性断裂 ；
+                            //断于热影响区，脆性断裂 等效 断于焊缝，脆性断裂  ；
+                            dkj = dkj == 4 ? 1 : dkj;
+                            dkj = dkj == 5 ? 3 : dkj;
 
-                            if ((kl < GetSafeInt(mKlqd) && dkj == 7) || dkj == 8)
+                            if (kl < GetSafeInt(mKlqd))
                             {
                                 mWxgs = mWxgs + 1;
                             }
-                            if (kl >= GetSafeInt(mKlqd) && (dkj == 5 || dkj == 4))
+                            if (kl >= GetSafeInt(mKlqd) && (dkj == 1))
                             {
                                 x = x + 1;
                             }
-                            if (kl >= GetSafeInt(mKlqd) && (dkj == 7 || dkj == 6))
+                            if (kl >= GetSafeInt(mKlqd) && (dkj == 3))
                             {
                                 y = y + 1;
                             }
