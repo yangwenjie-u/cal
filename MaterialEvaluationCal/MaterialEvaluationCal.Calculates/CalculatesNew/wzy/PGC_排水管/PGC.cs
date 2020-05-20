@@ -218,16 +218,16 @@ namespace Calculates
 
                     //测试的数量4-12个
                     //1 长度 2.平均外径 3.不圆度 4.壁厚公差
-                    int count = GetSafeDouble(sitem["ZJCLGS"])==0? 4 : GetSafeInt(sitem["ZJCLGS"]);
+                    int count = GetSafeDouble(sitem["ZJCLGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCLGS"]);
 
                     if (count < 4)
                     {
                         throw new Exception("要求直径测量数量不能小于4个");
                     }
-                    
+
                     #region
                     //平均外径
-                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"] &&x["HGDBH"] == sitem["GXL"]);
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"] && x["HGDBH"] == sitem["GXL"]);
                     if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
                     {
                         MItem[0]["G_PJWJ"] = mrsWgcc_Filter["WJMin"] + "～" + mrsWgcc_Filter["WJMax"];
@@ -781,9 +781,13 @@ namespace Calculates
                             zxhsl3 = Math.Abs(Double.Parse((100 * (GetSafeDouble(MItem[0]["HSLL0_3"]) - GetSafeDouble(MItem[0]["HSLLI_3"])) / GetSafeDouble(MItem[0]["HSLL0_3"])).ToString("0.00")));
                         }
                         MItem[0]["ZXHSL"] = ((zxhsl1 + zxhsl2 + zxhsl3) / 3).ToString("0.0") + "%";
-
                     }
                     mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL"], false);
+
+                    if (mSjdj == "排水用芯层发泡硬聚氯乙烯(PVC-U)管材")
+                    {
+                        mitem["G_ZXHSL"] += mitem["G_ZXHSL"] + "，且不分脱、不破裂";
+                    }
                     if (mitem["ZXHSL_HG"] == "合格")
                     {
                         mFlag_Hg = true;

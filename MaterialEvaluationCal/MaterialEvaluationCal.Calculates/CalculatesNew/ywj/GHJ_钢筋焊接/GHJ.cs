@@ -536,7 +536,7 @@ namespace Calculates
 
                 if (MItem[0]["PDBZ"].Contains("18-2012"))
                 {
-                    SclBzyq = "3个试件均断于母材，呈延性断裂或其中一个试件断于焊缝，呈脆性断裂，其抗拉强度大于或等于钢筋母材抗拉强度标准值。";
+                    SclBzyq = "3个试件均断于钢筋母材，呈延性断裂或其中一个试件断于焊缝，呈脆性断裂，其抗拉强度大于或等于钢筋母材抗拉强度标准值。";
                 }
                 else
                 {
@@ -574,14 +574,14 @@ namespace Calculates
                     kj3 = (int)Double.Parse(sItem["DKJ3"]);
 
                     // 旧值   valueFixed--断于焊缝之外，延性断裂,1,1 | 断于焊缝，延性断裂,2,0 | 断于焊缝之外，脆性断裂,3,0 | 断于焊缝，脆性断裂,4,0 | 既断于热影响区又脆断,5,0 | 断于热影响区，延性断裂,6,0 | 断于焊缝，脆性断裂(焊口开裂),7,0
-                    //1为断于母材,延性断裂；2为断于母材,脆性断裂；3为断于焊缝,脆性断裂；4为断于热影响区,延性断裂；5为断于热影响区,脆性断裂
+                    //1为断于钢筋母材,延性断裂；2为断于母材,脆性断裂；3为断于焊缝,脆性断裂；4为断于热影响区,延性断裂；5为断于热影响区,脆性断裂
                     switch (kj1.ToString())
                     {
                         case "1":
-                            sItem["DLTZ1"] = "断于母材,延性断裂";
+                            sItem["DLTZ1"] = "断于钢筋母材,延性断裂";
                             break;
                         case "2":
-                            sItem["DLTZ1"] = "断于母材,脆性断裂";
+                            sItem["DLTZ1"] = "断于钢筋母材,脆性断裂";
                             break;
                         case "3":
                             sItem["DLTZ1"] = "断于焊缝,脆性断裂";
@@ -596,10 +596,10 @@ namespace Calculates
                     switch (kj2.ToString())
                     {
                         case "1":
-                            sItem["DLTZ2"] = "断于母材,延性断裂";
+                            sItem["DLTZ2"] = "断于钢筋母材,延性断裂";
                             break;
                         case "2":
-                            sItem["DLTZ2"] = "断于母材,脆性断裂";
+                            sItem["DLTZ2"] = "断于钢筋母材,脆性断裂";
                             break;
                         case "3":
                             sItem["DLTZ2"] = "断于焊缝,脆性断裂";
@@ -615,10 +615,10 @@ namespace Calculates
                     switch (kj3.ToString())
                     {
                         case "1":
-                            sItem["DLTZ3"] = "断于母材,延性断裂";
+                            sItem["DLTZ3"] = "断于钢筋母材,延性断裂";
                             break;
                         case "2":
-                            sItem["DLTZ3"] = "断于母材,脆性断裂";
+                            sItem["DLTZ3"] = "断于钢筋母材,脆性断裂";
                             break;
                         case "3":
                             sItem["DLTZ3"] = "断于焊缝,脆性断裂";

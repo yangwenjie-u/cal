@@ -583,10 +583,10 @@ namespace Calculates
                             switch (sItem["DKJ" + i])
                             {
                                 case "1":
-                                    sItem["DLTZ" + i] = "断于母材,延性断裂";
+                                    sItem["DLTZ" + i] = "断于钢筋母材,延性断裂";
                                     break;
                                 case "2":
-                                    sItem["DLTZ" + i] = "断于母材,脆性断裂";
+                                    sItem["DLTZ" + i] = "断于钢筋母材,脆性断裂";
                                     break;
                                 case "3":
                                     sItem["DLTZ" + i] = "断于焊缝,脆性断裂";
