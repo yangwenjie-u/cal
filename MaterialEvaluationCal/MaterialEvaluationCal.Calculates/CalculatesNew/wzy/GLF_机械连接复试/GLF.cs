@@ -208,7 +208,7 @@ namespace Calculates
                 if (null == extraFieldsDj)
                 {
                     mbxbhgs += 1;
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
                     continue;
                 }
                 else
@@ -322,16 +322,10 @@ namespace Calculates
                         else
                         {
                             bhggsbj = bhggsbj + i;
-                          
                         }
 
                     }
                     sitem["HG_KL"] = mcnt.ToString();
-                }
-
-                if (bhggsbj != null)
-                {
-                    jcxmBhg += jcxmBhg.Contains("拉伸试验") ? "" : "拉伸试验" + "、";
                 }
 
                 //单向拉伸残余形变
@@ -344,7 +338,6 @@ namespace Calculates
                         mbxbhgs = mbxbhgs + 1;
                         sitem["JCJG_DXLS"] = "不符合";
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-
                     }
                     else
                     {

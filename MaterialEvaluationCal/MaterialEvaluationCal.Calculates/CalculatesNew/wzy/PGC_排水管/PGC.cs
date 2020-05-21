@@ -784,9 +784,13 @@ namespace Calculates
                             zxhsl3 = Math.Abs(Double.Parse((100 * (GetSafeDouble(MItem[0]["HSLL0_3"]) - GetSafeDouble(MItem[0]["HSLLI_3"])) / GetSafeDouble(MItem[0]["HSLL0_3"])).ToString("0.00")));
                         }
                         MItem[0]["ZXHSL"] = ((zxhsl1 + zxhsl2 + zxhsl3) / 3).ToString("0.0") + "%";
-
                     }
                     mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL"], false);
+
+                    if (mSjdj == "排水用芯层发泡硬聚氯乙烯(PVC-U)管材")
+                    {
+                        mitem["G_ZXHSL"] += mitem["G_ZXHSL"] + "，且不分脱、不破裂";
+                    }
                     if (mitem["ZXHSL_HG"] == "合格")
                     {
                         mFlag_Hg = true;
