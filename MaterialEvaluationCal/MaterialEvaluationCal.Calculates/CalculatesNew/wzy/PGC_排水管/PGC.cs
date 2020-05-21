@@ -218,16 +218,16 @@ namespace Calculates
 
                     //测试的数量4-12个
                     //1 长度 2.平均外径 3.不圆度 4.壁厚公差
-                    int count = GetSafeDouble(sitem["ZJCLGS"])==0? 4 : GetSafeInt(sitem["ZJCLGS"]);
+                    int count = GetSafeDouble(sitem["ZJCLGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCLGS"]);
 
                     if (count < 4)
                     {
                         throw new Exception("要求直径测量数量不能小于4个");
                     }
-                    
+
                     #region
                     //平均外径
-                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"] &&x["HGDBH"] == sitem["GXL"]);
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"] && x["HGDBH"] == sitem["GXL"]);
                     if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
                     {
                         MItem[0]["G_PJWJ"] = mrsWgcc_Filter["WJMin"] + "～" + mrsWgcc_Filter["WJMax"];
@@ -526,6 +526,9 @@ namespace Calculates
                 if (jcxm.Contains("、软化温度、") || jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
+                    var PJ =Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])/2),1);
+
+                    mitem["RHWD"] = PJ.ToString();
                     mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
 
                     if (mitem["RHWD_HG"] == "合格")
