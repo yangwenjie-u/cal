@@ -13,6 +13,7 @@ namespace Calculates
         {
             #region
             var extraDJ = dataExtra["BZ_ZF_DJ"];
+
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "该组试样的检测结果全部合格";
@@ -36,7 +37,6 @@ namespace Calculates
             var jcxm = "";
             var jcxmBhg = "";
             var jcxmCur = "";
-
 
             double md1, md2, md, sum, Gs, pjmd = 0;
             int xd = 0;
@@ -121,7 +121,7 @@ namespace Calculates
                         sItem["PD_KYQD"] = "不合格";
                         mbhggs = mbhggs + 1;
                         mAllHg = false;
-                        jcxmBhg += jcxmCur + ",";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
@@ -142,7 +142,7 @@ namespace Calculates
                     jcxmCur = "抗折强度";
 
                     string GG = !string.IsNullOrEmpty(sItem["GG"]) && sItem["GG"].ToLower().Replace("*", "x").Contains("x") ? sItem["GG"] : "";
-
+       
                     int ZGKJ = 160;
                     if (string.IsNullOrEmpty(GG))
                     {
@@ -208,7 +208,8 @@ namespace Calculates
                             sItem["PD_KZQD"] = "不合格";
                             mbhggs = mbhggs + 1;
                             mAllHg = false;
-                            jcxmBhg += jcxmCur + ",";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                         }
                         else
                         {
@@ -346,8 +347,7 @@ namespace Calculates
                     sItem["KDXJL"] = sItem["PD_DHQD"] == "不合格" || sItem["PD_ZLSS"] == "不合格" ? "不符合" : "符合";
                     if (sItem["KDXJL"] == "不符合")
                     {
-                        jcxmBhg += jcxmCur + ",";
-
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     sItem["KDXJL"] = sItem["KDXJL"] + sItem["SJDJ"] + "强度等级";
 
@@ -360,11 +360,11 @@ namespace Calculates
                 sItem["JCJG"] = mbhggs == 0 ? "合格" : "不合格";
                 if (mbhggs != 0)
                 {
-                    MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"] + jcxmBhg.TrimEnd(',') + "不符合" + MItem[0]["PDBZ"] + sItem["SJDJ"] + "强度等级标准要求。";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 }
                 else
                 {
-                    MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"] + "符合" + MItem[0]["PDBZ"] + sItem["SJDJ"] + "强度等级标准要求。";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                 }
 
                 mAllHg = (mAllHg && sItem["JCJG"] == "合格");
