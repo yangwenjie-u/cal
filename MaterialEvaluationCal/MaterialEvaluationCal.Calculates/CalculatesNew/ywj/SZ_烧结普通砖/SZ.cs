@@ -634,7 +634,8 @@ namespace Calculates
                         MItem[0]["G_PJZ"] = mYqpjz.ToString();
                         MItem[0]["G_BZZ"] = mXdy21.ToString();
                         MItem[0]["G_MIN"] = mDy21.ToString();
-                        sItem["QDYQ"] = "抗压强度平均值需≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0").Trim() + "MPa。当变异系数δ≤0.21时，强度标准值需≥" + Conversion.Val(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa，当变异系数δ＞0.21时，单块最小强度值需≥" + Conversion.Val(MItem[0]["G_MIN"]).ToString("0.0").Trim() + "MPa。";
+                        //sItem["QDYQ"] = "抗压强度平均值需≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0").Trim() + "MPa。当变异系数δ≤0.21时，强度标准值需≥" + Conversion.Val(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa，当变异系数δ＞0.21时，单块最小强度值需≥" + Conversion.Val(MItem[0]["G_MIN"]).ToString("0.0").Trim() + "MPa。";
+                        sItem["QDYQ"] = "抗压强度平均值需≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0").Trim() + "MPa，强度标准值需≥" + Conversion.Val(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa。";
                         //变异系数
                         if (mPjz != 0)
                             sItem["BYXS"] = Round(mS / mPjz, 2).ToString();
@@ -659,7 +660,7 @@ namespace Calculates
                         else
                             mMinKyqd = Round(mkyhzArray[0], 1);
                         sItem["QDMIN"] = Round(mMinKyqd, 1).ToString();
-                        mBzz = Round(mPjz - 1.8 * mS, 1);
+                        mBzz = Round(mPjz - 1.83 * mS, 1);
                         sItem["BZZ"] = Round(mBzz, 1).ToString();
                         if (which == "1" || which == "11")
                         {
@@ -833,6 +834,7 @@ namespace Calculates
                     {
                         if (GetSafeDouble(MItem[0]["CCJC"]) != 0)
                         {
+                            var wcdj = extraWCDJ.FirstOrDefault(u => u["ZLB"] == "烧结普通砖" && u["MC"] == "优等品" && u["cc"] == sItem[""]);
                             MItem[0]["G_PJPC"] = extraWCDJ[0]["PJPC"];
                             MItem[0]["G_CCJC"] = extraWCDJ[0]["CCJC"];
                             if (Math.Abs(GetSafeDouble(MItem[0]["PJPC"])) <= GetSafeDouble(extraWCDJ[0]["PJPC"]) && GetSafeDouble(MItem[0]["CCJC"]) <= GetSafeDouble(extraWCDJ[0]["CCJC"]))
@@ -1053,6 +1055,15 @@ namespace Calculates
                         sItem["BHXSPD"] = "----";
                         sItem["FSPD"] = "----";
                         sItem["SHBLPD"] = "----";
+                        sItem["XSLBHXSYQ"] = "----";
+                        sItem["XSLPJZ"] = "----";
+                        sItem["XSLDKZD"] = "----";
+                        sItem["BHXSPJZ"] = "----";
+                        sItem["BHXSZDZ"] = "----";
+                        for (int i = 1; i < 6; i++)
+                        {
+                            sItem["DRWG" + i] = "----";
+                        }
                     }
                     #endregion
 
@@ -1164,6 +1175,10 @@ namespace Calculates
                     else
                     {
                         sItem["FSPD"] = "----";
+                        for (int i = 1; i < 6; i++)
+                        {
+                            sItem["FSCD" + i] = "----";
+                        }
                     }
                     #endregion
 

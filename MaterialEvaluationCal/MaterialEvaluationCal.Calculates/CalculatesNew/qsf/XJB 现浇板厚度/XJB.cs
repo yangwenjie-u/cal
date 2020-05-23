@@ -43,7 +43,7 @@ namespace Calculates
             {
                 zs++;
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-                sItem["W_YXPC"] = "-5~10";
+                sItem["W_YXPC"] = "-5～10";
 
                 #region 楼板实测厚度
                 if (jcxm.Contains("、楼板实测厚度、"))

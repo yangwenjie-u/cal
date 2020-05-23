@@ -206,7 +206,7 @@ namespace Calculates
                         sItem["GMDPD"] = "不合格";
                     }
 
-                    sItem["MDDJFW"] = "密度等级范围≤" + GetSafeDouble(sItem["MDDJFW"]).ToString("0") + "kg/m³。";
+                    sItem["MDDJFW"] = "密度等级范围≤" + GetSafeDouble(sItem["MDDJFW"]).ToString("0") + "kg/m&scsup3&scend。";
 
 
                 }
