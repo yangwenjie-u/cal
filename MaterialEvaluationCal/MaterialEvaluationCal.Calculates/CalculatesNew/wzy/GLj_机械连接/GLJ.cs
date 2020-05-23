@@ -27,7 +27,7 @@ namespace Calculates
             var jcxm = "";
             var jcxmBhg = "";
             var jcxmCur = "";
-
+            var mjcjg = "不合格";
             mAllHg = true;
             mFlag_Hg = false;
             mFlag_Bhg = false;
@@ -217,6 +217,8 @@ namespace Calculates
                 if (null == extraFieldsDj)
                 {
                     sitem["JCJG"] = "依据不详";
+                    mjcjg = "不下结论";
+                    mAllHg = false;
                     continue;
                 }
                 else
@@ -579,13 +581,11 @@ namespace Calculates
 
             //综合判断
             string mjgsm = string.Empty;
-            if (mAllHg)
+            if (mAllHg && mjcjg != "----")
             {
+                mjcjg = "合格";
                 mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggjb + "要求。";
-                MItem[0]["JCJG"] = "合格";
             }
-            else
-                MItem[0]["JCJG"] = "不合格";
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"].Trim()))
             {
@@ -606,6 +606,14 @@ namespace Calculates
                     MItem[0]["FJJJ1"] = mjgsm;
                 }
             }
+            MItem[0]["JCJG"] = mjcjg;
+
+            if (mjcjg == "不下结论")
+            {
+                MItem[0]["JCJG"] = mjcjg;
+                mjgsm = "";
+            }
+
             MItem[0]["JCJGMS"] = mjgsm;
             //MItem[0]["JCJGMS"] = MItem[0]["FJJJ3"] + MItem[0]["FJJJ2"] + MItem[0]["FJJJ1"];
             #endregion

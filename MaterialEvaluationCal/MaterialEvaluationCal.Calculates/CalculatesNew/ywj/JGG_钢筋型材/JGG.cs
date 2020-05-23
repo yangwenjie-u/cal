@@ -251,7 +251,7 @@ namespace Calculates
                 }
 
                 #region  标准表
-                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["MC"] == mSjdj.Trim() && u["ZJM"] == hd_fw.Trim());
+                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["MC"] == mSjdj.Trim() && u["ZJM"] == hd_fw.Trim() && u["QYFX"] == sItem["QYFX"].Trim());
                 if (null == extraFieldsDj)
                 {
                     extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["MC"] == mSjdj.Trim());
@@ -465,7 +465,7 @@ namespace Calculates
                 var mallBhg_sc = 0;
                 for (int i = 1; i < mxlgs + 1; i++)
                 {
-                    if (Conversion.Val(sItem["SCL" + i]) - mScl > 0.00001)
+                    if (GetSafeInt(sItem["SCL" + i]) - (int)mScl >= 0)
                         sItem["HG_SC"] = (Conversion.Val(sItem["HG_SC"]) + 1).ToString();
                     else
                         mallBhg_sc += 1;
@@ -515,7 +515,6 @@ namespace Calculates
                     }
                     else
                     {
-
                         mcjpj = Math.Round((Conversion.Val(sItem["CJSY1"]) + Conversion.Val(sItem["CJSY2"]) + Conversion.Val(sItem["CJSY3"])) / 3, 1);
 
                         sItem["CJPJ"] = Math.Round(mcjpj, 1).ToString();
@@ -661,10 +660,10 @@ namespace Calculates
             {
                 mjcjg = "合格";
             }
-
-            if (string.IsNullOrEmpty(mJcjg))
+            if (mjcjg == "不下结论")
             {
-                mjcjg = mJcjg;
+                MItem[0]["JCJG"] = mjcjg;
+                jsbeizhu = "";
             }
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;

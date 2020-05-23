@@ -32,7 +32,7 @@ namespace Calculates
                 m["JCJGMS"] = jsbeizhu;
                 MItem.Add(m);
             }
-            var mAllHg = false;
+            var mAllHg = true;
             var mFlag_Hg = false;
             var mFlag_Bhg = false;
             var jcxm = "";
@@ -507,6 +507,7 @@ namespace Calculates
                     jsbeizhu = "依据不详";
                     mFlag_Bhg = true;
                     sItem["JCJG"] = "不下结论";
+                    mjcjg= "不下结论";
                     continue;
                 }
                 else
@@ -749,7 +750,6 @@ namespace Calculates
                         mFlag_Bhg = true;
                     }
                 }
-                mjcjg = sItem["JCJG"];
                 #region//开始判定单项指标是否合格,根据单项指标再判定单组结论是否合格
                 if (sItem["JCJG"] == "合格")
                 {
@@ -795,6 +795,7 @@ namespace Calculates
             #region 添加最终报告
             jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
 
+            
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
@@ -835,6 +836,10 @@ namespace Calculates
                 jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样无效，应检验母材。"; ;
             }
             MItem[0]["JCJG"] = mjcjg;
+            if (mjcjg == "不下结论")
+            {
+                jsbeizhu = "";
+            }
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             #endregion
