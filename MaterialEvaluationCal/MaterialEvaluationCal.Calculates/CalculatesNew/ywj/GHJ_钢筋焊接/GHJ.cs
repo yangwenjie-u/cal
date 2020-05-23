@@ -793,38 +793,38 @@ namespace Calculates
             }
 
             #region 添加最终报告
-            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
 
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
                 MItem[0]["FJJJ3"] = jsbeizhu;
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 MItem[0]["FJJJ2"] = jsbeizhu;
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。";
                     MItem[0]["FJJJ2"] = jsbeizhu;
                 }
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 MItem[0]["FJJJ1"] = jsbeizhu;
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。"; ;
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
                     MItem[0]["FJJJ1"] = jsbeizhu;
                 }
             }

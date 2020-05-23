@@ -140,7 +140,8 @@ namespace Calculates
 
                         foreach (var item in mrsDj_Filter)
                         {
-                            if (Conversion.Val(item["BCJMJ"]) == Conversion.Val(sitem["S_BCJMJ"]))//标称截面积(mm<sup>2</sup>)
+                            //if (Conversion.Val(item["BCJMJ"]) == Conversion.Val(sitem["S_BCJMJ"]))//标称截面积(mm<sup>2</sup>)
+                            if (Conversion.Val(item["BCJMJ"]) == Conversion.Val(sitem["E_JMJSJ"]))//标称截面积(mm<sup>2</sup>)
                             {
                                 sd = item["ZDDZ"].Trim();
                                 break;
@@ -152,6 +153,8 @@ namespace Calculates
                             sm = sd.Substring(sd.IndexOf(".") + 1);
 
                         Y_DXL["E_SJDZ"] = sd == "" ? "----" : sd;  //设计20℃电阻值(Ω/km)
+                        Y_DXL["E_SCDZ"] = sqz.ToString("F1");//实测20℃电阻值(Ω/km)
+
                         if (sm.Length == 1)
                         {
                             sqz = Round(sqz, 1);

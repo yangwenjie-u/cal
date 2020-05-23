@@ -745,11 +745,11 @@ namespace Calculates
             }
 
             #region 添加最终报告
-            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合" + ggph + "要求。";
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合" + ggph + "要求。";
             }
             else
             {
@@ -760,7 +760,7 @@ namespace Calculates
                 }
                 else
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。"; ;
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复试不符合" + ggph + "要求。"; ;
                 }
             }
 

@@ -177,6 +177,7 @@ namespace Calculates
             var MItem = data["M_GLJ"];
             var SItem = data["S_GLJ"];
             var ggph = "";//钢筋牌号
+            var ggjb = "";//钢筋接头级别
             #endregion
 
             //循环从表
@@ -265,6 +266,8 @@ namespace Calculates
                 }
                 //求屈服强度及抗拉强度(自定义函数)
                 calc_kl(sitem, mxlgs);
+
+                ggjb = extraFieldsDj["JB"] + "接头";
                 if (extraFieldsDj["JB"].Contains("Ⅰ"))
                 {
                     mcnt = 0;
@@ -509,7 +512,7 @@ namespace Calculates
                 }
                 //-----------------------单组检测结果判定------------------------------------------
                 this_bhg = 0;
-                for (int i = 0; i < mxlgs; i++)
+                for (int i = 1; i < mxlgs + 1; i++)
                 {
                     if (bhggsbj.Trim().Contains(i.ToString()))
                     {
@@ -517,6 +520,8 @@ namespace Calculates
                         jcxmBhg += jcxmBhg.Contains("拉伸") ? "" : "拉伸" + "、";
                     }
                 }
+
+
                 if (mbxbhgs == 0 && mbxhg == 0)
                 {
                     sitem["JCJG_BX"] = "----";
@@ -535,16 +540,20 @@ namespace Calculates
                 {
                     if (this_bhg == 0)
                     {
+                        mFlag_Hg = true;
                         sitem["JCJG"] = "合格";
                         MItem[0]["FJJJ3"] = MItem[0]["FJJJ3"] + "1#";
                     }
                     if (this_bhg >= 2)
                     {
+                        mFlag_Bhg = true;
+
                         sitem["JCJG"] = "不合格";
                         MItem[0]["FJJJ2"] = MItem[0]["FJJJ2"] + "1#";
                     }
                     if (this_bhg == 1)
                     {
+                        mFlag_Bhg = true;
                         sitem["JCJG"] = "不合格";
                         MItem[0]["FJJJ1"] = MItem[0]["FJJJ1"] + "1#";
                     }
@@ -552,6 +561,8 @@ namespace Calculates
                 }
                 if (sitem["JCJG_BX"] == "不符合")
                 {
+                    mFlag_Bhg = true;
+
                     if (this_bhg == 0)
                     {
                         sitem["JCJG"] = "不合格";
@@ -570,7 +581,7 @@ namespace Calculates
             string mjgsm = string.Empty;
             if (mAllHg)
             {
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggjb + "要求。";
                 MItem[0]["JCJG"] = "合格";
             }
             else
@@ -578,18 +589,17 @@ namespace Calculates
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"].Trim()))
             {
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合" + ggjb + "要求。";
                 MItem[0]["FJJJ3"] = mjgsm;
             }
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"].Trim()))
             {
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggjb + "要求。";
                 MItem[0]["FJJJ2"] = mjgsm;
-
             }
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"].Trim()))
             {
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，需要复试。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggjb + "要求，另取双倍样复试。";
                 MItem[0]["FJJJ1"] = mjgsm;
                 if (mFlag_Bhg && mFlag_Hg)
                 {

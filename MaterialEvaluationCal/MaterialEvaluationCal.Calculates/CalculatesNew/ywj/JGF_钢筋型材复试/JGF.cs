@@ -17,6 +17,7 @@ namespace Calculates
             var jsbeizhu = "";
             var jgsm = "";
             var jcjg = "";
+            var mJcjg = "";//记录最终报告是否不下结论
             var SItems = retData["S_JGF"];
 
             if (!retData.ContainsKey("M_JGF"))
@@ -234,6 +235,7 @@ namespace Calculates
                 if (null == mrsDj)
                 {
                     sItem["JCJG"] = "不下结论";
+                    mJcjg = "不下结论";
                     jsbeizhu = "牌号" + sItem["GCLX_PH"] + mSjdj + "试件尺寸为空\r\n";
                     mAllHg = false;
                     continue;
@@ -517,13 +519,23 @@ namespace Calculates
 
                 #endregion
 
-                //var mZh = "组号";
-                var mZh = sItem["ZH_G"];
-
                 if (sItem["JCJG_LS"] == "不符合")
                 {
-                    jcxmCur = "拉伸";
-                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    if (double.Parse(sItem["HG_QF"]) < double.Parse(mHggs_qfqd))
+                    {
+                        jcxmCur = "屈服强度";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    if (double.Parse(sItem["HG_KL"]) < double.Parse(mHggs_klqd))
+                    {
+                        jcxmCur = "抗拉强度";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    if (double.Parse(sItem["HG_SC"]) < double.Parse(mHggs_lw))
+                    {
+                        jcxmCur = "伸长率";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                 }
                 if (sItem["JCJG_LW"] == "不符合")
                 {
@@ -531,30 +543,32 @@ namespace Calculates
                     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                 }
 
+
+
                 if (sItem["JCJG_LS"].Contains("不") || sItem["JCJG_LW"].Contains("不") || sItem["JCJG_CJ"].Contains("不") || sItem["JCJG_YD"].Contains("不"))
                 {
                     sItem["JCJG"] = "不合格";
-                    MItem[0]["FJJJ2"] = MItem[0]["FJJJ2"] + mZh + "#";
+                    MItem[0]["FJJJ2"] = MItem[0]["FJJJ2"] + "1#";
                     mAllHg = false;
                     jsbeizhu += "该组试样的检测结果不合格\r\n";
                 }
                 else
                 {
                     sItem["JCJG"] = "合格";
-                    MItem[0]["FJJJ3"] = MItem[0]["FJJJ3"] + mZh + "#";
+                    MItem[0]["FJJJ3"] = MItem[0]["FJJJ3"] + "1#";
 
                 }
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合要求。";
                 MItem[0]["FJJJ3"] = jsbeizhu;
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复试不符合要求。";
                 MItem[0]["FJJJ2"] = jsbeizhu;
             }
             #region 添加最终报告

@@ -35,6 +35,7 @@ namespace Calculates
             var jcxmBhg = "";
             var jcxmCur = "";
             var ggph = "";//钢筋牌号
+            var ggjb = "";//钢筋接头级别
             #endregion
 
             #region  自定义函数
@@ -262,6 +263,7 @@ namespace Calculates
                 }
                 calc_kl(sitem, mxlgs);
 
+                ggjb = extraFieldsDj["JB"] + "接头";
                 if (extraFieldsDj["JB"].Contains("Ⅰ"))
                 {
                     mcnt = 0;
@@ -326,6 +328,21 @@ namespace Calculates
 
                     }
                     sitem["HG_KL"] = mcnt.ToString();
+                }
+
+                //拉伸
+                if (jcxm.Contains("、拉伸、"))
+                {
+                    jcxmCur = "拉伸";
+
+                    if (bhggsbj == "")
+                    {
+                        //mFlag_Bhg = true;
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains("拉伸") ? "" : "拉伸" + "、";
+                    }
                 }
 
                 //单向拉伸残余形变
@@ -465,11 +482,12 @@ namespace Calculates
                 }
                 //-----------------------单组检测结果判定------------------------------------------
                 this_bhg = 0;
-                for (int i = 0; i < mxlgs; i++)
+                for (int i = 0; i < mxlgs + 1; i++)
                 {
                     if (bhggsbj.Trim().Contains(i.ToString()))
                     {
                         this_bhg++;
+                        jcxmBhg += jcxmBhg.Contains("拉伸") ? "" : "拉伸" + "、";
                     }
                 }
                 if (mbxbhgs == 0 && mbxhgs == 0)
@@ -509,12 +527,12 @@ namespace Calculates
             if (mAllHg)
             {
                 MItem[0]["JCJG"] = "合格";
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合" + ggjb + "要求。";
             }
             else
             {
                 MItem[0]["JCJG"] = "不合格";
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复试不符合" + ggjb + "要求。";
             }
 
             MItem[0]["JCJGMS"] = mjgsm;
