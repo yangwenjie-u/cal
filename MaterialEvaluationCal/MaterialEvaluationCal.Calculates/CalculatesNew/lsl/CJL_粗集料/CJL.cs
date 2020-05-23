@@ -62,8 +62,9 @@ namespace Calculates
                 #region 筛分
                 if (jcxm.Contains("、筛分、"))
                 {
-                    sign = true;
                     jcxmCur = "筛分";
+                    sign = true;
+                    
                     sum = 0;
                     for (int i = 1; i < 3; i++)
                     {
@@ -453,7 +454,7 @@ namespace Calculates
                     }
                     #endregion
                     if (sfpd1 == "不合格" || sfpd2 == "不合格" || sfpd3 == "不合格" || sfpd4 == "不合格" || sfpd5 == "不合格" || sfpd6 == "不合格"
-                         || sfpd7 == "不合格" || sfpd8 == "不合格" || sfpd9 == "不合格" || sfpd10 == "不合格" || sfpd11 == "不合格" || sfpd12 == "不合格" || sfpd2 == "不合格")
+                         || sfpd7 == "不合格" || sfpd8 == "不合格" || sfpd9 == "不合格" || sfpd10 == "不合格" || sfpd11 == "不合格" || sfpd12 == "不合格" || sfpd13 == "不合格")
                     {
                         sItem["SFX_GH"] = "不符合" + sItem["GGXH"];
                         mAllHg = false;

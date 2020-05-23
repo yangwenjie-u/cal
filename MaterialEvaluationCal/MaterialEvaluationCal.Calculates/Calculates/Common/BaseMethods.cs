@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
 namespace Calculates
 {
     public partial class BaseMethods : BaseData
@@ -534,10 +533,9 @@ namespace Calculates
         /// <returns></returns>
         public static bool IsNumeric(string str)
         {
-            str = str.Trim();
             //^-?\\d+(\\.\\d+)?$
             //^[+-]?\d*[.]?\d*$
-            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^[+-]?\d+[.]?\d*$"))//通过正则表达式验证输入的是否是数字
+            if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str.Trim(), @"^[+-]?\d+[.]?\d*$"))//通过正则表达式验证输入的是否是数字
             //if (!string.IsNullOrEmpty(str) && Regex.IsMatch(str, @"^\d*[.]?\d*$"))//通过正则表达式验证输入的是否是数字
             {
                 return true;

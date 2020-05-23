@@ -104,7 +104,7 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
                     mitem["JCJGMS"] = "找不到对应的等级";
                 }
 
@@ -392,7 +392,9 @@ namespace Calculates
 
                 //室内 柔韧性  只有R型做
                 //外墙 腻子膜柔韧性 T型　不做
-                if ((jcxm.Contains("、腻子膜柔韧性、") && dLx != "T型") || (jcxm.Contains("、柔韧性、") && dLx != "R型"))
+                if ((jcxm.Contains("、腻子膜柔韧性、") || jcxm.Contains("、柔韧性、")) && ((dCpmc == "建筑室内用腻子" && dLx == "R型")|| (dCpmc == "外企" && dLx != "T型")))
+
+                //if ((jcxm.Contains("、腻子膜柔韧性、")|| jcxm.Contains("、柔韧性、") && dLx == "R型") && (jcxm.Contains("、柔韧性、") && dCpmc== "建筑室内用腻子"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "腻子膜柔韧性,柔韧性");
 

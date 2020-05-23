@@ -401,9 +401,9 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LS"] = "----";
-                        sItem["DKJ1"] = "-1";
-                        sItem["DKJ2"] = "-1";
-                        sItem["DKJ3"] = "-1";
+                        sItem["DKJ1"] = "----";
+                        sItem["DKJ2"] = "----";
+                        sItem["DKJ3"] = "----";
                     }
 
 
@@ -422,9 +422,9 @@ namespace Calculates
                     else
                     {
                         sItem["JCJG_LW"] = "----";
-                        sItem["LW1"] = "-1";
-                        sItem["LW2"] = "-1";
-                        sItem["LW3"] = "-1";
+                        sItem["LW1"] = "----";
+                        sItem["LW2"] = "----";
+                        sItem["LW3"] = "----"; 
                     }
                     if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合")
                     {
@@ -536,7 +536,7 @@ namespace Calculates
 
                 if (MItem[0]["PDBZ"].Contains("18-2012"))
                 {
-                    SclBzyq = "3个试件均断于母材，呈延性断裂或其中一个试件断于焊缝，呈脆性断裂，其抗拉强度大于或等于钢筋母材抗拉强度标准值。";
+                    SclBzyq = "3个试件均断于钢筋母材，呈延性断裂或其中一个试件断于焊缝，呈脆性断裂，其抗拉强度大于或等于钢筋母材抗拉强度标准值。";
                 }
                 else
                 {
@@ -573,162 +573,125 @@ namespace Calculates
                     kj2 = (int)Double.Parse(sItem["DKJ2"]);
                     kj3 = (int)Double.Parse(sItem["DKJ3"]);
 
+                    // 旧值   valueFixed--断于焊缝之外，延性断裂,1,1 | 断于焊缝，延性断裂,2,0 | 断于焊缝之外，脆性断裂,3,0 | 断于焊缝，脆性断裂,4,0 | 既断于热影响区又脆断,5,0 | 断于热影响区，延性断裂,6,0 | 断于焊缝，脆性断裂(焊口开裂),7,0
+                    //1为断于钢筋母材,延性断裂；2为断于母材,脆性断裂；3为断于焊缝,脆性断裂；4为断于热影响区,延性断裂；5为断于热影响区,脆性断裂
                     switch (kj1.ToString())
                     {
                         case "1":
-                            sItem["DLTZ1"] = "断于焊缝之外，延性断裂";
+                            sItem["DLTZ1"] = "断于钢筋母材,延性断裂";
                             break;
                         case "2":
-                            sItem["DLTZ1"] = "断于焊缝，延性断裂";
+                            sItem["DLTZ1"] = "断于钢筋母材,脆性断裂";
                             break;
                         case "3":
-                            sItem["DLTZ1"] = "断于焊缝之外，脆性断裂";
+                            sItem["DLTZ1"] = "断于焊缝,脆性断裂";
                             break;
                         case "4":
-                            sItem["DLTZ1"] = "断于焊缝，脆性断裂";
+                            sItem["DLTZ1"] = "断于热影响区,延性断裂";
                             break;
                         case "5":
-                            sItem["DLTZ1"] = "既断于热影响区又脆断";
-                            break;
-                        case "6":
-                            sItem["DLTZ1"] = "断于热影响区，延性断裂";
-                            break;
-                        case "7":
-                            sItem["DLTZ1"] = "断于钢筋母材，延性断裂";
-                            break;
-                        case "8":
-                            sItem["DLTZ1"] = "断于钢筋母材，脆性断裂";
-                            break;
-                        case "9":
-                            sItem["DLTZ1"] = "断于焊缝，脆性断裂(焊口开裂)";
+                            sItem["DLTZ1"] = "断于热影响区,脆性断裂";
                             break;
                     }
-
                     switch (kj2.ToString())
                     {
                         case "1":
-                            sItem["DLTZ2"] = "断于焊缝之外，延性断裂";
+                            sItem["DLTZ2"] = "断于钢筋母材,延性断裂";
                             break;
                         case "2":
-                            sItem["DLTZ2"] = "断于焊缝，延性断裂";
+                            sItem["DLTZ2"] = "断于钢筋母材,脆性断裂";
                             break;
                         case "3":
-                            sItem["DLTZ2"] = "断于焊缝之外，脆性断裂";
+                            sItem["DLTZ2"] = "断于焊缝,脆性断裂";
                             break;
                         case "4":
-                            sItem["DLTZ2"] = "断于焊缝，脆性断裂";
+                            sItem["DLTZ2"] = "断于热影响区,延性断裂";
                             break;
                         case "5":
-                            sItem["DLTZ2"] = "既断于热影响区又脆断";
+                            sItem["DLTZ2"] = "断于热影响区,脆性断裂";
                             break;
-                        case "6":
-                            sItem["DLTZ2"] = "断于热影响区，延性断裂";
-                            break;
-                        case "7":
-                            sItem["DLTZ2"] = "断于钢筋母材，延性断裂";
-                            break;
-                        case "8":
-                            sItem["DLTZ2"] = "断于钢筋母材，脆性断裂";
-                            break;
-                        case "9":
-                            sItem["DLTZ2"] = "断于焊缝，脆性断裂(焊口开裂)";
-                            break;
-                    }
 
+                    }
                     switch (kj3.ToString())
                     {
                         case "1":
-                            sItem["DLTZ3"] = "断于焊缝之外，延性断裂";
+                            sItem["DLTZ3"] = "断于钢筋母材,延性断裂";
                             break;
                         case "2":
-                            sItem["DLTZ3"] = "断于焊缝，延性断裂";
+                            sItem["DLTZ3"] = "断于钢筋母材,脆性断裂";
                             break;
                         case "3":
-                            sItem["DLTZ3"] = "断于焊缝之外，脆性断裂";
+                            sItem["DLTZ3"] = "断于焊缝,脆性断裂";
                             break;
                         case "4":
-                            sItem["DLTZ3"] = "断于焊缝，脆性断裂";
+                            sItem["DLTZ3"] = "断于热影响区,延性断裂";
                             break;
                         case "5":
-                            sItem["DLTZ3"] = "既断于热影响区又脆断";
-                            break;
-                        case "6":
-                            sItem["DLTZ3"] = "断于热影响区，延性断裂";
-                            break;
-                        case "7":
-                            sItem["DLTZ3"] = "断于钢筋母材，延性断裂";
-                            break;
-                        case "8":
-                            sItem["DLTZ3"] = "断于钢筋母材，脆性断裂";
-                            break;
-                        case "9":
-                            sItem["DLTZ3"] = "断于焊缝，脆性断裂(焊口开裂)";
+                            sItem["DLTZ3"] = "断于热影响区,脆性断裂";
                             break;
                     }
 
                     #region  //应检测中心要求修改
                     //断于热影响区，延性断裂 等效 断于钢筋母材，延性断裂 ；
                     //断于热影响区，脆性断裂 等效 断于焊缝，脆性断裂  ；
-                    //断于焊缝，脆性断裂(焊口开裂) 等效 断于焊缝，脆性断裂；
-                    kj1 = kj1 == 6 ? 7 : kj1;
-                    kj1 = kj1 == 5 ? 4 : kj1;
-                    kj1 = kj1 == 9 ? 4 : kj1;
+                    kj1 = kj1 == 4 ? 1 : kj1;
+                    kj1 = kj1 == 5 ? 3 : kj1;
 
-                    kj2 = kj2 == 6 ? 7 : kj2;
-                    kj2 = kj2 == 5 ? 4 : kj2;
-                    kj2 = kj2 == 9 ? 4 : kj2;
+                    kj2 = kj2 == 4 ? 1 : kj2;
+                    kj2 = kj2 == 5 ? 3 : kj2;
 
-                    kj3 = kj3 == 6 ? 7 : kj3;
-                    kj3 = kj3 == 5 ? 4 : kj3;
-                    kj3 = kj3 == 9 ? 4 : kj3;
+                    kj3 = kj3 == 4 ? 1 : kj3;
+                    kj3 = kj3 == 5 ? 3 : kj3;
+
                     #endregion
 
                     if (jcxm.Contains("、拉伸、") || jcxm.Contains("、抗拉强度、"))
                     {
-                        if (kl1 >= mKlqd && kl2 >= mKlqd && (kj1 == 7 || kj1 == 6) && (kj2 == 7 || kj2 == 6) && kl3 >= mKlqd && (kj3 == 7 || kj3 == 6) || (kl1 >= mKlqd && (kj1 == 7 || kj1 == 6) &&
-                    kl2 >= mKlqd && (kj2 == 7 || kj2 == 6) && kl3 >= mKlqd && (kj3 == 4 || kj3 == 5))
-                    || (kl3 >= mKlqd && (kj3 == 7 || kj3 == 6) && kl2 >= mKlqd && (kj2 == 7 || kj2 == 6) && kl1 >= mKlqd && (kj1 == 4 || kj1 == 5))
-                    || (kl1 >= mKlqd && (kj1 == 7 || kj1 == 6) && kl3 >= mKlqd && (kj3 == 7 || kj3 == 6) && kl2 >= mKlqd && (kj2 == 4 || kj2 == 5)))
+                        //合格 
+                        // 3个断于母材延性 抗拉强度>=标准值
+                        // 2个断于母材延性，抗拉强度>=标准值1倍，另一个断于焊缝脆性
+
+                        //复验
+                        // 2个断于母材延性，抗拉强度>=标准值1倍； 另一个断于焊缝/热影响区，脆性断裂  抗拉强度<标准值1倍
+                        // 1个断于母材延性，抗拉强度>=标准值1倍； 另2个断于焊缝/热影响区，脆性断裂  
+                        // 3个断于焊缝脆性， 抗拉强度>=标准值
+
+                        //不合格
+                        //1个抗拉强度<标准值1倍
+                        var md = kj3 + kj2 + kj1;
+                        if (kl1 < mKlqd || kl2 < mKlqd || kl3 < mKlqd)
                         {
+                            jcxmCur = CurrentJcxm(jcxm, "拉伸,抗拉强度");
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sItem["JCJG_LS"] = "不符合";
+                            mFlag_Bhg = true;
+                        }
+                        else if (md == 3 && (kl1 >= mKlqd && kl2 >= mKlqd && kl3 >= mKlqd))
+                        {
+                            // 三个断于母材 抗拉强度>=标准值
+                            sItem["JCJG_LS"] = "符合";
+
+                        }
+                        else if (md == 5 && (kl1 >= mKlqd && kl2 >= mKlqd && kl3 >= mKlqd))
+                        {
+                            //2个断于母材延性，抗拉强度>=标准值1倍
+                            //1给断于焊缝脆性
                             sItem["JCJG_LS"] = "符合";
                         }
                         else
                         {
+                            sItem["JCJG_LS"] = "复试";
+                            mFlag_Bhg = true;
                             jcxmCur = CurrentJcxm(jcxm, "拉伸,抗拉强度");
-                            if ((kl1 >= mKlqd && (kj1 == 5 || kj1 == 4) && kl2 >= mKlqd && (kj2 == 5 || kj2 == 4) && kl3 >= mKlqd && (kj3 == 5 || kj3 == 4))
-                                || ((kl1 >= mKlqd && (kj1 == 7 || kj1 == 6) && kl2 >= mKlqd && (kj2 == 7 || kj2 == 6) && kl3 < mKlqd && (kj3 == 4 || kj3 == 5))
-                                || (kl1 >= mKlqd && (kj1 == 6 || kj1 == 7) && kl2 < mKlqd && (kj2 == 4 || kj2 == 5) && kl3 >= mKlqd && (kj3 == 6 || kj3 == 7))
-                                || (kl3 >= mKlqd && (kj3 == 6 || kj3 == 7) && kl2 >= mKlqd && (kj2 == 6 || kj2 == 7) && kl1 < mKlqd && (kj1 == 5 || kj1 == 4)))
-                                || ((kl1 >= mKlqd && (kj1 == 6 || kj1 == 7) && (kj2 == 5 || kj2 == 4) && (kj3 == 5 || kj3 == 4))
-                                || (kl2 >= mKlqd && (kj2 == 6 || kj2 == 7) && (kj1 == 5 || kj1 == 4) && (kj3 == 5 || kj3 == 4))
-                                || (kl3 >= mKlqd && (kj3 == 6 || kj3 == 7) && (kj2 == 5 || kj2 == 4) && (kj1 == 5 || kj1 == 4))))
-                            {
-                                sItem["JCJG_LS"] = "复试";
-                                mFlag_Bhg = true;
-                            }
-                            else
-                            {
-                                if ((kj1 == 8 || kj2 == 8 || kj3 == 8) || (kl1 < mKlqd && kj1 == 7) || (kl2 < mKlqd && kj2 == 7) || (kl3 < mKlqd && kj3 == 7))
-                                {
-                                    sItem["JCJG_LS"] = "无效";
-                                    mFlag_Bhg = true;
-                                }
-                                else
-                                {
-                                    sItem["JCJG_LS"] = "不符合";
-                                    mFlag_Bhg = true;
-                                }
-
-                            }
-
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                     }
                     else
                     {
                         sItem["JCJG_LS"] = "----";
-                        sItem["DKJ1"] = "-1";
-                        sItem["DKJ2"] = "-1";
-                        sItem["DKJ3"] = "-1";
+                        sItem["DKJ1"] = "----";
+                        sItem["DKJ2"] = "----";
+                        sItem["DKJ3"] = "----";
                     }
 
                     var hg_lw = sItem["HG_LW"];
@@ -749,7 +712,6 @@ namespace Calculates
                         }
                         if (Gs <= 1)
                         {
-
                             sItem["JCJG_LW"] = "符合";
 
                         }
@@ -757,19 +719,22 @@ namespace Calculates
                         {
                             jcxmCur = CurrentJcxm(jcxm, "冷弯,弯曲");
                             sItem["JCJG_LW"] = "复试";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                         }
                         else
                         {
                             jcxmCur = CurrentJcxm(jcxm, "冷弯,弯曲");
                             sItem["JCJG_LW"] = "不符合";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                     }
                     else
                     {
                         sItem["JCJG_LW"] = "----";
-                        sItem["LW1"] = "-1";
-                        sItem["LW2"] = "-1";
-                        sItem["LW3"] = "-1";
+                        sItem["LW1"] = "----";
+                        sItem["LW2"] = "----";
+                        sItem["LW3"] = "----";
                         sItem["HG_LW"] = "0";
                     }
 
@@ -828,43 +793,47 @@ namespace Calculates
             }
 
             #region 添加最终报告
+            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
+
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
                 MItem[0]["FJJJ3"] = jsbeizhu;
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
             {
-                MItem[0]["FJJJ2"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                MItem[0]["FJJJ2"] = jsbeizhu;
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。"; 
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。";
                     MItem[0]["FJJJ2"] = jsbeizhu;
                 }
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"]))
             {
-                MItem[0]["FJJJ1"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。"; 
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                MItem[0]["FJJJ1"] = jsbeizhu;
                 if (mFlag_Hg && mFlag_Bhg)
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。"; ;
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
                     MItem[0]["FJJJ1"] = jsbeizhu;
                 }
             }
 
-            //if (!string.IsNullOrEmpty(mwxzh))
-            //{
-            //    mwxzh = "该组试样无效，应检验母材。";
-            //    jsbeizhu = "该组试样无效，应检验母材。";
-            //}
+            if (!string.IsNullOrEmpty(mwxzh))
+            {
+                mwxzh = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样无效，应检验母材。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样无效，应检验母材。"; ;
+            }
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion

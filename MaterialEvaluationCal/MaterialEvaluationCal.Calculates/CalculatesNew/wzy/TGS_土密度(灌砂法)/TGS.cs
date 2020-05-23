@@ -61,7 +61,7 @@ namespace Calculates
                         else
                             sitem["YSD"] = Round(100 * Conversion.Val(sitem["GMD"]) / Conversion.Val(sitem["ZDGMD"]), 0).ToString("");
                         mskys = Round(Conversion.Val(sitem["RQYS"]) - Conversion.Val(sitem["RQSS"]) - Conversion.Val(sitem["ZDYSL"]), 0);
-                        msktj = Round(mskys / Conversion.Val(sitem["BZSMD"]), 1);
+                        msktj = Round(mskys / Conversion.Val(mitem["BZSMD"]), 1);
                         sitem["SKYS"] = mskys.ToString();
                         sitem["SKTJ"] = msktj.ToString("0.0");
                         msmd = Round(Conversion.Val(sitem["QBCL"]) / msktj, 2);   //湿密度计算
@@ -103,7 +103,7 @@ namespace Calculates
                         }
                         //If (Val(sitem["ZDGMD)) = -1 AND (VAL(SITEM["sjysd)) = -1 Then MsgBox "错误：干密度设计值和压实度设计值不能同时为-1"
                         mskys = Round((Conversion.Val(sitem["rqys"]) - Conversion.Val(sitem["RQSS"]) - Conversion.Val(sitem["ZDYSL"])), 0);
-                        msktj = Round((mskys / (Conversion.Val(sitem["BZSMD"]))), 2);
+                        msktj = Round((mskys / (Conversion.Val(mitem["BZSMD"]))), 2);
                         sitem["SKYS"] = mskys.ToString();
                         sitem["SKTJ"] = msktj.ToString("0.00");
                         double msmd = Round((Conversion.Val(sitem["QBCL"]) / msktj), 2); //湿密度计算

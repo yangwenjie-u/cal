@@ -141,15 +141,17 @@ namespace Calculates
                     flag = true;
                     jcxmCur = "抗折强度";
 
-                    string GG = !string.IsNullOrEmpty(sItem["GG"]) && sItem["GG"].ToLower().Contains("x") ? sItem["GG"] : "";
+                    string GG = !string.IsNullOrEmpty(sItem["GG"]) && sItem["GG"].ToLower().Replace("*", "x").Contains("x") ? sItem["GG"] : "";
+       
                     int ZGKJ = 160;
                     if (string.IsNullOrEmpty(GG))
                     {
                         flag = false;
+                        throw new Exception("请输入砖规格。");
                     }
                     else
                     {
-                        GG = GG.Substring(0, sItem["GG"].ToLower().IndexOf('x'));
+                        GG = GG.Substring(0, sItem["GG"].ToLower().Replace("*", "x").IndexOf('x'));
                     }
                     if (GG != "190")
                     {
@@ -348,7 +350,7 @@ namespace Calculates
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     sItem["KDXJL"] = sItem["KDXJL"] + sItem["SJDJ"] + "强度等级";
-           
+
                 }
                 else
                     sItem["KDXJL"] = "----";

@@ -62,7 +62,7 @@ namespace Calculates
                         else
                             sitem["YSD"] = Round(100 * Conversion.Val(sitem["GMD"]) / Conversion.Val(sitem["ZDGMD"]), 0).ToString("");
                         mskys = Round(Conversion.Val(sitem["RQYS"]) - Conversion.Val(sitem["RQSS"]) - Conversion.Val(sitem["ZDYSL"]), 0);
-                        msktj = Round(mskys / Conversion.Val(sitem["BZSMD"]), 1);
+                        msktj = Round(mskys / Conversion.Val(mitem["BZSMD"]), 1);
                         sitem["SKYS"] = mskys.ToString();
                         sitem["SKTJ"] = msktj.ToString("0.0");
                         msmd = Round(Conversion.Val(sitem["QBCL"]) / msktj, 2);   //湿密度计算
@@ -94,7 +94,7 @@ namespace Calculates
                         sign = true;
                         sign = IsNumeric(sitem["RQHSZLMY1"].Trim()) ? sign : false;
                         sign = IsNumeric(sitem["RQHSZLMY1_2"].Trim()) ? sign : false;
-                        sign = IsNumeric(sitem["LSMD"].Trim()) ? sign : false;
+                        sign = IsNumeric(mitem["BZSMD"].Trim()) ? sign : false;
                         sign = IsNumeric(sitem["RQANDSYZLMY4"].Trim()) ? sign : false;
                         sign = IsNumeric(sitem["RQANDSYZLMY4_2"].Trim()) ? sign : false;
                         sign = IsNumeric(sitem["HJGT1"].Trim()) ? sign : false;
@@ -112,8 +112,8 @@ namespace Calculates
                             sitem["SKNHSZL"] = (GetSafeDouble(sitem["RQHSZLMY1"].Trim()) - GetSafeDouble(sitem["RQHSZLMY7"].Trim())).ToString();
                             sitem["SKNHSZL2"] = (GetSafeDouble(sitem["RQHSZLMY1_2"].Trim()) - GetSafeDouble(sitem["RQHSZLMY7_2"].Trim())).ToString();
                             //试坑体积  试坑内耗砂质量 / 量砂密度
-                            sitem["SHIKENGTJ"] = Round(GetSafeDouble(sitem["SKNHSZL"]) / GetSafeDouble(sitem["LSMD"].Trim()), 2).ToString("0.00");
-                            sitem["SHIKENGTJ2"] = Round(GetSafeDouble(sitem["SKNHSZL2"]) / GetSafeDouble(sitem["LSMD"].Trim()), 2).ToString("0.00");
+                            sitem["SHIKENGTJ"] = Round(GetSafeDouble(sitem["SKNHSZL"]) / GetSafeDouble(mitem["BZSMD"].Trim()), 2).ToString("0.00");
+                            sitem["SHIKENGTJ2"] = Round(GetSafeDouble(sitem["SKNHSZL2"]) / GetSafeDouble(mitem["BZSMD"].Trim()), 2).ToString("0.00");
 
                             //试样质量m0 =  试验质量加试样容器质量my4(1)（g）  -  试样容器质量my6(1)（g）     平行试验
                             //sitem["SYZLM0"] = (GetSafeDouble(sitem["RQANDSYZLMY4"].Trim()) - GetSafeDouble(sitem["SYRQZLMY6"].Trim())).ToString();
@@ -122,6 +122,7 @@ namespace Calculates
                             //试样湿密度 = 试样质量m0/试坑内耗砂质量g/量砂密度g/cm3
                             sitem["SYMD"] = Round(GetSafeDouble(sitem["RQANDSYZLMY4"].Trim()) / GetSafeDouble(sitem["SHIKENGTJ"]), 2).ToString("0.00");
                             sitem["SYMD2"] = Round(GetSafeDouble(sitem["RQANDSYZLMY4_2"].Trim()) / GetSafeDouble(sitem["SHIKENGTJ2"]), 2).ToString("0.00");
+                            sitem["SYSMDPJ"] = Round((GetSafeDouble(sitem["SYMD"]) + GetSafeDouble(sitem["SYMD2"])) / 2, 2).ToString("0.00");
 
                             //含水率计算
                             sitem["GTZL1"] = (GetSafeDouble(sitem["HJGT1"].Trim()) - GetSafeDouble(sitem["HZL1"].Trim())).ToString("0.0000"); //干土质量计算
@@ -211,7 +212,7 @@ namespace Calculates
                     //    }
                     //    //If (Val(sitem["ZDGMD)) = -1 AND (VAL(SITEM["sjysd)) = -1 Then MsgBox "错误：干密度设计值和压实度设计值不能同时为-1"
                     //    mskys = Round((Conversion.Val(sitem["rqys"]) - Conversion.Val(sitem["RQSS"]) - Conversion.Val(sitem["ZDYSL"])), 0);
-                    //    msktj = Round((mskys / (Conversion.Val(sitem["BZSMD"]))), 1);
+                    //    msktj = Round((mskys / (Conversion.Val(mitem["BZSMD"]))), 1);
                     //    sitem["SKYS"] = mskys.ToString();
                     //    sitem["SKTJ"] = msktj.ToString("0.0");
                     //    double msmd = Round((Conversion.Val(sitem["QBCL"]) / msktj), 2); //湿密度计算

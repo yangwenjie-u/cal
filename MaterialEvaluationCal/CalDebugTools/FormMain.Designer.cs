@@ -67,6 +67,7 @@
             this.tool_StrReplace = new System.Windows.Forms.ToolStripMenuItem();
             this.zdzd表数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.target_Tools = new System.Windows.Forms.ToolStripMenuItem();
+            this.小工具ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_AddFields = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_uploadFields = new System.Windows.Forms.ToolStripMenuItem();
@@ -359,7 +360,7 @@
             this.tab_debug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tab_debug.Name = "tab_debug";
             this.tab_debug.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tab_debug.Size = new System.Drawing.Size(1269, 440);
+            this.tab_debug.Size = new System.Drawing.Size(1269, 442);
             this.tab_debug.TabIndex = 1;
             this.tab_debug.Text = "调试输出";
             this.tab_debug.UseVisualStyleBackColor = true;
@@ -371,7 +372,7 @@
             this.ritResult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ritResult.Multiline = true;
             this.ritResult.Name = "ritResult";
-            this.ritResult.Size = new System.Drawing.Size(1263, 436);
+            this.ritResult.Size = new System.Drawing.Size(1263, 438);
             this.ritResult.TabIndex = 0;
             // 
             // tapCompare
@@ -381,7 +382,7 @@
             this.tapCompare.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tapCompare.Name = "tapCompare";
             this.tapCompare.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tapCompare.Size = new System.Drawing.Size(1269, 440);
+            this.tapCompare.Size = new System.Drawing.Size(1269, 442);
             this.tapCompare.TabIndex = 2;
             this.tapCompare.Text = "数据比较";
             this.tapCompare.UseVisualStyleBackColor = true;
@@ -398,7 +399,7 @@
             this.dataGridViewResult.ReadOnly = true;
             this.dataGridViewResult.RowHeadersWidth = 51;
             this.dataGridViewResult.RowTemplate.Height = 27;
-            this.dataGridViewResult.Size = new System.Drawing.Size(1263, 436);
+            this.dataGridViewResult.Size = new System.Drawing.Size(1263, 438);
             this.dataGridViewResult.TabIndex = 0;
             this.dataGridViewResult.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridViewResult_CellPainting);
             // 
@@ -409,7 +410,7 @@
             this.tab_batch.Margin = new System.Windows.Forms.Padding(4);
             this.tab_batch.Name = "tab_batch";
             this.tab_batch.Padding = new System.Windows.Forms.Padding(4);
-            this.tab_batch.Size = new System.Drawing.Size(1269, 440);
+            this.tab_batch.Size = new System.Drawing.Size(1269, 442);
             this.tab_batch.TabIndex = 3;
             this.tab_batch.Text = "批量调试";
             this.tab_batch.UseVisualStyleBackColor = true;
@@ -427,7 +428,7 @@
             this.DataGridViewRowBitch.ReadOnly = true;
             this.DataGridViewRowBitch.RowHeadersWidth = 51;
             this.DataGridViewRowBitch.RowTemplate.Height = 23;
-            this.DataGridViewRowBitch.Size = new System.Drawing.Size(1261, 432);
+            this.DataGridViewRowBitch.Size = new System.Drawing.Size(1261, 434);
             this.DataGridViewRowBitch.TabIndex = 0;
             this.DataGridViewRowBitch.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridViewRowBitch_CellMouseDoubleClick);
             // 
@@ -460,7 +461,8 @@
             this.tool_StrConver,
             this.tool_StrReplace,
             this.zdzd表数据ToolStripMenuItem,
-            this.target_Tools});
+            this.target_Tools,
+            this.小工具ToolStripMenuItem});
             this.项目管理2ToolStripMenuItem.Name = "项目管理2ToolStripMenuItem";
             this.项目管理2ToolStripMenuItem.Size = new System.Drawing.Size(68, 26);
             this.项目管理2ToolStripMenuItem.Text = "小工具";
@@ -468,30 +470,37 @@
             // tool_StrConver
             // 
             this.tool_StrConver.Name = "tool_StrConver";
-            this.tool_StrConver.Size = new System.Drawing.Size(201, 26);
+            this.tool_StrConver.Size = new System.Drawing.Size(224, 26);
             this.tool_StrConver.Text = "字段转大写";
             this.tool_StrConver.Click += new System.EventHandler(this.tool_StrConver_Click);
             // 
             // tool_StrReplace
             // 
             this.tool_StrReplace.Name = "tool_StrReplace";
-            this.tool_StrReplace.Size = new System.Drawing.Size(201, 26);
+            this.tool_StrReplace.Size = new System.Drawing.Size(224, 26);
             this.tool_StrReplace.Text = "批量替换";
             this.tool_StrReplace.Click += new System.EventHandler(this.tool_StrReplace_Click);
             // 
             // zdzd表数据ToolStripMenuItem
             // 
             this.zdzd表数据ToolStripMenuItem.Name = "zdzd表数据ToolStripMenuItem";
-            this.zdzd表数据ToolStripMenuItem.Size = new System.Drawing.Size(201, 26);
+            this.zdzd表数据ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.zdzd表数据ToolStripMenuItem.Text = "zdzd表数据同步";
             this.zdzd表数据ToolStripMenuItem.Click += new System.EventHandler(this.zdzd表数据ToolStripMenuItem_Click);
             // 
             // target_Tools
             // 
             this.target_Tools.Name = "target_Tools";
-            this.target_Tools.Size = new System.Drawing.Size(201, 26);
+            this.target_Tools.Size = new System.Drawing.Size(224, 26);
             this.target_Tools.Text = "指标管理";
             this.target_Tools.Click += new System.EventHandler(this.target_Tools_Click);
+            // 
+            // 小工具ToolStripMenuItem
+            // 
+            this.小工具ToolStripMenuItem.Name = "小工具ToolStripMenuItem";
+            this.小工具ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.小工具ToolStripMenuItem.Text = "小工具";
+            this.小工具ToolStripMenuItem.Click += new System.EventHandler(this.小工具ToolStripMenuItem_Click);
             // 
             // 设置ToolStripMenuItem
             // 
@@ -650,6 +659,7 @@
         private System.Windows.Forms.ToolStripMenuItem zdzd表数据ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem target_Tools;
         private System.Windows.Forms.ToolStripMenuItem tool_UploadFieldNew;
+        private System.Windows.Forms.ToolStripMenuItem 小工具ToolStripMenuItem;
     }
 }
 

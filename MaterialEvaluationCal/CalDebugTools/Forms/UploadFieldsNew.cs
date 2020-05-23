@@ -214,7 +214,7 @@ namespace CalDebugTools.Forms
                 List<string> IfieldsContain = new List<string>();
 
                 List<string> OfieldsAllMatch = new List<string>();
-                    List<string> OfieldsContain = new List<string>();
+                List<string> OfieldsContain = new List<string>();
 
                 foreach (var field in Ifields)
                 {
@@ -244,8 +244,8 @@ namespace CalDebugTools.Forms
                 var zdmc = "";
                 foreach (DataRow item in redata.Tables[0].Rows)
                 {
-                    zdmc = item["ZDMC"].ToString();
-                    dtLX = item["LX"].ToString();
+                    zdmc = item["ZDMC"].ToString().ToUpper();
+                    dtLX = item["LX"].ToString().ToUpper();
 
                     if (IfieldsAllMatch.Contains(zdmc))
                     {
@@ -488,7 +488,7 @@ namespace CalDebugTools.Forms
             }
 
             //字段左侧没有“=”号，肯定是I类型
-            if (!string.IsNullOrEmpty(fieldLeft) && fieldLeft.IndexOf('=') == -1)
+            if (string.IsNullOrEmpty(fieldLeft) || fieldLeft.IndexOf('=') == -1)
             {
                 if (!Ofields.Contains(field) && !Ifields.Contains(field))
                     Ifields.Add(field);

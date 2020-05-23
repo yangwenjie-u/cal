@@ -14,6 +14,9 @@ namespace Calculates
             #region
             //获取帮助表数据
             var extraDJ = dataExtra["BZ_NCL_DJ"];
+            var extraLDD = dataExtra["BZ_NCLLDD"];
+            var extraNCLDJ = dataExtra["BZ_NCLDJ"];
+            var extraNCLKYQD = dataExtra["BZ_NCLKYQD"];
 
             bool mAllHg = true;
             var data = retData;
@@ -36,52 +39,20 @@ namespace Calculates
             }
             List<double> mkyqdArray = new List<double>();
             List<string> mtmpArray = new List<string>();
+            List<string> qslArray = new List<string>();
+
             bool sign, flag = true;
             string mlongStr = "";
             double mMaxKyqd, mMinKyqd, mAvgKyqd, mMidKyqd = 0;
+            double mMaxQsl, mMinQsl, mAvgQsl, mMidQsl = 0;
             int mbHggs = 0;//检测项目合格数量
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in S_NCLS)
             {
                 itemHG = true;
                 string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-
-                //从设计等级表中取得相应的计算数值、等级标准
-                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["XH"].Trim() == sItem["XH"]);
-                if (null == extraFieldsDj)
-                {
-                    mAllHg = false;
-                    sItem["JCJG"] = "不合格";
-                    jsbeizhu = "不合格";
-                    continue;
-                }
-                else
-                {
-                    sItem["G_ZDJLLJ"] = extraFieldsDj["ZDJLLJ"];
-                    sItem["G_LDDCSZ"] = extraFieldsDj["LDDCSZ"];
-                    sItem["G_LDDBLZ"] = extraFieldsDj["LDDBLZ"];
-                    sItem["G_TLDCSZ"] = extraFieldsDj["TLDCSZ"];
-                    sItem["G_TLDBLZ"] = extraFieldsDj["TLDBLZ"];
-                    sItem["G_TLKZDC"] = extraFieldsDj["TLKZDC"];
-                    sItem["G_TLKZDB"] = extraFieldsDj["TLKZDB"];
-                    sItem["G_KYQD1"] = extraFieldsDj["KYQD1"];
-                    sItem["G_KYQD3"] = extraFieldsDj["KYQD3"];
-                    sItem["G_KYQD28"] = extraFieldsDj["KYQD28"];
-                    sItem["G_PZL3"] = extraFieldsDj["PZL3"];
-                    sItem["G_PZL24"] = extraFieldsDj["PZL24"];
-                    sItem["G_MSL"] = extraFieldsDj["MSL"];
-                    sItem["G_SJB"] = extraFieldsDj["SJB"];
-                    sItem["G_CNSJ"] = extraFieldsDj["CNSJ"];
-                    sItem["G_ZNSJ"] = extraFieldsDj["ZNSJ"];
-                    sItem["G_LDD60"] = extraFieldsDj["LDD60"];
-                    sItem["G_MSL24"] = extraFieldsDj["MSL24"];
-                    sItem["G_MSL3"] = extraFieldsDj["MSL3"];
-                    sItem["G_YLMSL"] = extraFieldsDj["YLMSL"];
-                    sItem["G_KYQD7"] = extraFieldsDj["KYQD7"];
-                    sItem["G_KZQD3"] = extraFieldsDj["KZQD3"];
-                    sItem["G_KZQD7"] = extraFieldsDj["KZQD7"];
-                    sItem["G_KZQD28"] = extraFieldsDj["KZQD28"];
-                }
 
                 #region 满足条件进入vb跳转代码
                 if (!string.IsNullOrEmpty(MItem[0]["SJTABS"]))
@@ -715,85 +686,157 @@ namespace Calculates
                 }
                 #endregion
 
-                #region 最大集料粒径
-                if (jcxm.Contains("、最大集料粒径、"))
+                #region 最大集料粒径 细度
+                if (jcxm.Contains("、最大集料粒径、") || jcxm.Contains("、细度、"))
                 {
+                    jcxmCur = "细度";
                     if ("Ⅳ类" == sItem["XH"])
                     {
-                        if (IsQualified("＞4.75", sItem["ZDJLLJ"], true) == "符合" && IsQualified("≤16", sItem["ZDJLLJ"], true) == "符合")
+                        sItem["XDYQ"] = "最大粒径＞4.75mm 并且≤25mm";
+                        if (IsQualified("＞4.75", sItem["ZDLJ"], true) == "符合" && IsQualified("≤25", sItem["ZDLJ"], true) == "符合")
                         {
-                            sItem["HG_ZDJLLJ"] = "合格";
-                            mbHggs++;
+                            sItem["XDPD"] = "符合要求";
                         }
                         else
                         {
-                            sItem["HG_ZDJLLJ"] = "不合格";
                             itemHG = false;
                             mAllHg = false;
+                            sItem["XDPD"] = "不符合要求";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
+                        sItem["XDDW"] = "mm";
+                        sItem["XDJCJG"] = sItem["ZDLJ"].Trim();
                     }
                     else
                     {
-                        if (IsQualified(sItem["G_ZDJLLJ"], sItem["ZDJLLJ"], true) == "符合")
+                        //细度
+                        if (IsNumeric(sItem["SYZL"].Trim()) && IsNumeric(sItem["SYWZL"].Trim()))
                         {
-                            sItem["HG_ZDJLLJ"] = "合格";
-                            mbHggs++;
+                            sItem["SYBFS"] = Round(GetSafeDouble(sItem["SYWZL"].Trim()) / GetSafeDouble(sItem["SYZL"].Trim()) * 100, 1).ToString("0.0");
+                            sItem["XDYQ"] = "0";
+                            if (GetSafeDouble(sItem["SYBFS"]) > 0)
+                            {
+                                itemHG = false;
+                                mAllHg = false;
+                                sItem["XDPD"] = "不符合要求";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
+                            else
+                            {
+                                sItem["XDPD"] = "符合要求";
+                            }
                         }
                         else
                         {
-                            sItem["HG_ZDJLLJ"] = "不合格";
-                            itemHG = false;
-                            mAllHg = false;
+                            throw new SystemException("细度试验数据录入有误");
                         }
+                        sItem["XDDW"] = "%";
+                        sItem["XDJCJG"] = sItem["SYBFS"];
                     }
                 }
                 else
                 {
-                    sItem["G_ZDJLLJ"] = "----";
-                    sItem["HG_ZDJLLJ"] = "----";
-                    sItem["ZDJLLJ"] = "----";
+                    sItem["XDPD"] = "----";
+                    sItem["SYBFS"] = "----";
+                    sItem["XDYQ"] = "----";
+                    sItem["XDDW"] = "----";
+                    sItem["XDJCJG"] = "----";
                 }
                 #endregion
 
                 #region 流动度
                 if (jcxm.Contains("、流动度、"))
                 {
-                    flag = true;
-                    sign = true;
-                    sign = IsQualified(sItem["G_LDDCSZ"], sItem["LDDCSZ"], false) == "不合格" ? false : sign;
-                    sign = IsQualified(sItem["G_LDDBLZ"], sItem["LDDBLZ"], false) == "不合格" ? false : sign;
-                    flag = IsQualified(sItem["G_LDDCSZ"], sItem["LDDCSZ"], false) == "----" ? false : flag;
-                    flag = IsQualified(sItem["G_LDDBLZ"], sItem["LDDBLZ"], false) == "----" ? false : flag;
-                    if (sign)
+                    jcxmCur = "流动度";
+                    //获取标准值
+                    var extraFieldsLDD = extraLDD.FirstOrDefault(u => u["LDDXM"].Trim() == sItem["LDDLB"] && u["LDDLB"] == sItem["XH"]);
+                    if (null == extraFieldsLDD)
                     {
-                        sItem["HG_LDD"] = sign ? "合格" : "不合格";
-                        if ("不合格" == sItem["HG_LDD"])
+                        sItem["JCJG"] = "不下结论";
+                        mAllHg = false;
+                        continue;
+                    }
+                    sign = true;
+                    if ("截锥流动度" == sItem["LDDLB"])
+                    {
+                        sign = IsNumeric(sItem["CSLDHX"].Trim());
+                        sign = IsNumeric(sItem["LDDHX"].Trim());
+                        sign = IsNumeric(sItem["CSLDZX"].Trim());
+                        sign = IsNumeric(sItem["LDDZX"].Trim());
+                        if (sign)
                         {
-                            itemHG = false;
-                            mAllHg = false;
+                            sItem["CSLDDB"] = Round((GetSafeDouble(sItem["CSLDHX"].Trim()) + GetSafeDouble(sItem["CSLDZX"].Trim())) / 2, 0).ToString("0.0");
+                            sItem["LDDDB"] = Round((GetSafeDouble(sItem["LDDHX"].Trim()) + GetSafeDouble(sItem["LDDZX"].Trim())) / 2, 0).ToString("0.0");
+
+                            if ("符合" == IsQualified(extraFieldsLDD["CSLDDYQ"], sItem["CSLDDB"], true) && "符合" == IsQualified(extraFieldsLDD["LDDYQ"], sItem["LDDDB"], true))
+                            {
+                                sItem["LDDPD"] = "符合要求";
+                            }
+                            else if ("不符合" == IsQualified(extraFieldsLDD["CSLDDYQ"], sItem["CSLDDB"], true) && "不符合" == IsQualified(extraFieldsLDD["LDDYQ"], sItem["LDDDB"], true))
+                            {
+                                itemHG = false;
+                                mAllHg = false;
+                                sItem["LDDPD"] = "不符合要求";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
+                            else
+                            {
+                                sItem["LDDPD"] = "----";
+                            }
                         }
                         else
                         {
-                            mbHggs++;
+                            throw new SystemException("流动度试验数据录入有误");
                         }
+                        sItem["CSLDDYQ"] = extraFieldsLDD["CSLDDYQ"];
+                        sItem["LDDYQ"] = extraFieldsLDD["LDDYQ"];
+                        sItem["CSZDW"] = "mm";
+                        sItem["DWBLZ"] = "mm";
+                        sItem["CSLDDJG"] = sItem["CSLDDB"];
+                        sItem["LDDJG"] = sItem["LDDDB"];
                     }
                     else
                     {
-                        sItem["HG_LDD"] = "不合格";
-                        itemHG = false;
-                        mAllHg = false;
+                        //流锥流动度
+                        sign = IsNumeric(sItem["CSLCSJ"].Trim());
+                        sign = IsNumeric(sItem["LCSJ"].Trim());
+                        if (sign)
+                        {
+                            if ("符合" == IsQualified(extraFieldsLDD["CSLDDYQ"], sItem["CSLCSJ"], true) && "符合" == IsQualified(extraFieldsLDD["LDDYQ"], sItem["LCSJ"], true))
+                            {
+                                sItem["LDDPD"] = "符合要求";
+                            }
+                            else
+                            {
+                                itemHG = false;
+                                mAllHg = false;
+                                sItem["LDDPD"] = "不符合要求";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
+                        }
+                        else
+                        {
+                            throw new SystemException("流动度试验数据录入有误");
+                        }
+                        sItem["CSLDDYQ"] = extraFieldsLDD["CSLDDYQ"];
+                        sItem["LDDYQ"] = extraFieldsLDD["LDDYQ"];
+                        sItem["CSZDW"] = "s";
+                        sItem["DWBLZ"] = "s";
+                        sItem["CSLDDJG"] = sItem["CSLCSJ"];
+                        sItem["LDDJG"] = sItem["LCSJ"];
                     }
                 }
                 else
                 {
-                    sItem["G_LDDCSZ"] = "----";
-                    sItem["HG_LDD"] = "----";
-                    sItem["G_LDDBLZ"] = "----";
-                    sItem["LDDCSZ"] = "----";
-                    sItem["LDDBLZ"] = "----";
+                    sItem["CSLDDYQ"] = "----";
+                    sItem["LDDYQ"] = "----";
+                    sItem["LDDPD"] = "----";
+                    sItem["CSZDW"] = "----";
+                    sItem["DWBLZ"] = "----";
+                    sItem["CSLDDJG"] = "----";
+                    sItem["LDDJG"] = "----";
                 }
                 #endregion
-
 
                 #region 坍落度
                 if (jcxm.Contains("、坍落度、"))
@@ -869,53 +912,102 @@ namespace Calculates
                 #region 竖向膨胀率
                 if (jcxm.Contains("、竖向膨胀率、"))
                 {
-                    flag = true;
+                    jcxmCur = "竖向膨胀率";
                     sign = true;
-                    sign = IsQualified(sItem["G_PZL24"], sItem["PZL24"], true) == "不符合" ? false : sign;
-                    sign = IsQualified(sItem["G_PZL3"], sItem["PZL3"], true) == "不符合" ? false : sign;
-                    flag = IsQualified(sItem["G_PZL24"], sItem["PZL24"], true) == "不符合" ? false : flag;
-                    flag = IsQualified(sItem["G_PZL3"], sItem["PZL3"], true) == "不符合" ? false : flag;
-
+                    for (int i = 1; i < 4; i++)
+                    {
+                        sign = IsNumeric(sItem["GD3_" + i].Trim());
+                        sign = IsNumeric(sItem["GD24_" + i].Trim());
+                        sign = IsNumeric(sItem["CSGD" + i].Trim());
+                    }
                     if (sign)
                     {
-                        sItem["HG_PZL"] = flag ? "合格" : "----";
-                        if (!flag)
+                        //竖向膨胀率 = (试件龄期为t时的高度读数 - 试件高度的初始读数) / 试件基准高度  *100
+                        for (int i = 1; i < 4; i++)
                         {
-                            itemHG = false;
+                            //3h竖向膨胀率
+                            sItem["SXPZL" + i] = Round((GetSafeDouble(sItem["GD3_" + i].Trim()) - GetSafeDouble(sItem["CSGD" + i].Trim())) / GetSafeDouble(sItem["JZGD" + i].Trim()) * 100, 3).ToString("0.000");
+                            //24h竖向膨胀率
+                            sItem["SXPZL24_" + i] = Round((GetSafeDouble(sItem["GD24_" + i].Trim()) - GetSafeDouble(sItem["CSGD" + i].Trim())) / GetSafeDouble(sItem["JZGD" + i].Trim()) * 100, 3).ToString("0.000");
+                        }
+                        //3h竖向膨胀率平均值
+                        sItem["SXPZL"] = Round((GetSafeDouble(sItem["SXPZL1"]) + GetSafeDouble(sItem["SXPZL2"]) + GetSafeDouble(sItem["SXPZL3"])) / 3, 3).ToString("0.000");
+                        //24h竖向膨胀率平均值
+                        sItem["SXPZL24"] = Round((GetSafeDouble(sItem["SXPZL24_1"]) + GetSafeDouble(sItem["SXPZL24_2"]) + GetSafeDouble(sItem["SXPZL24_3"])) / 3, 3).ToString("0.000");
+                        //3h与24h竖向膨胀率之差
+                        sItem["PZLZC"] = Math.Abs(Round(GetSafeDouble(sItem["SXPZL"]) - GetSafeDouble(sItem["SXPZL24"]), 3)).ToString("0.000");
+                        //获取标准值
+                        var extraFieldsNCLDJ = extraNCLDJ.FirstOrDefault();
+
+                        if (null == extraFieldsNCLDJ)
+                        {
+                            sItem["JCJG"] = "不下结论";
                             mAllHg = false;
+                            continue;
                         }
                         else
                         {
-                            mbHggs++;
+                            //3h竖向膨胀率要求
+                            sItem["SXPZLYQ3H"] = extraFieldsNCLDJ["PZL3H"];
+                            //3h与24h膨胀率之差要求
+                            sItem["SXPZLYQ"] = extraFieldsNCLDJ["PZLC"];
+                        }
+                        if ("A85" == sItem["KYQDDJ"])
+                        {
+                            sItem["SXPZLYQ3H"] = "0.02～3.5";
+                        }
+                        if ("符合" == IsQualified(sItem["SXPZLYQ3H"], sItem["SXPZL"], true) && "符合" == IsQualified(sItem["SXPZLYQ"], sItem["PZLZC"], true))
+                        {
+                            sItem["PZLDXPD"] = "符合要求";
+                        }
+                        else
+                        {
+                            itemHG = false;
+                            mAllHg = false;
+                            sItem["PZLDXPD"] = "不符合要求";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                     }
                     else
                     {
-                        sItem["HG_PZL"] = "不合格";
-                        itemHG = false;
-                        mAllHg = false;
+                        throw new SystemException("竖向膨胀率试验数据录入有误");
                     }
+
                 }
                 else
                 {
-                    sItem["G_PZL3"] = "----";
-                    sItem["G_PZL24"] = "----";
-                    sItem["HG_PZL"] = "----";
-                    sItem["PZL3"] = "----";
-                    sItem["PZL24"] = "----";
+                    sItem["PZLDXPD"] = "----";
+                    sItem["SXPZLYQ"] = "----";
+                    sItem["SXPZLYQ3H"] = "----";
+                    sItem["SXPZL"] = "----";
+                    sItem["PZLZC"] = "----";
                 }
                 #endregion
 
                 #region 1天抗压强度
                 if (jcxm.Contains("、1天抗压强度、"))
                 {
-                    //水泥算法
-                    if ("40" == sItem["SJCC"])
+                    jcxmCur = "1天抗压强度";
+                    //获取标准值
+                    var extraFieldsNCLKYQD = extraNCLKYQD.FirstOrDefault(u => u["JCXMMC"] == "1天抗压强度" && u["KYQDDJ"] == sItem["KYQDDJ"]);
+                    if (null == extraFieldsNCLKYQD)
                     {
-                        double mmj = 0.625;
+                        sItem["JCJG"] = "不下结论";
+                        mAllHg = false;
+                        continue;
+                    }
+                    else
+                    {
+                        sItem["G_KYQD1"] = extraFieldsNCLKYQD["KYQDYQ"];
+                    }
+                    //水泥算法  
+                    if ("Ⅳ类" != sItem["XH"])
+                    {
+                        //double mmj = 0.625;
+                        double mmj = 1600;
                         for (int i = 1; i < 7; i++)
                         {
-                            sItem["KYQD" + i + "_1"] = Math.Round(double.Parse(sItem["KYHZ" + i + "_1"]) * mmj, 1).ToString();
+                            sItem["KYQD" + i + "_1"] = Math.Round(GetSafeDouble(sItem["KYHZ" + i + "_1"].Trim()) * 1000 / mmj, 1).ToString();
                         }
                         mlongStr = sItem["KYQD1_1"] + "," + sItem["KYQD2_1"] + "," + sItem["KYQD3_1"] + ","
                             + sItem["KYQD4_1"] + "," + sItem["KYQD5_1"] + "," + sItem["KYQD6_1"];
@@ -923,7 +1015,7 @@ namespace Calculates
 
                         for (int vp = 0; vp < 6; vp++)
                         {
-                            mkyqdArray.Add(double.Parse(mtmpArray[vp]));
+                            mkyqdArray.Add(GetSafeDouble(mtmpArray[vp]));
                         }
                         mkyqdArray.Sort();
                         mMaxKyqd = mkyqdArray[mkyqdArray.Count - 1];
@@ -980,30 +1072,32 @@ namespace Calculates
                     }
                     else
                     {
-                        //混凝土算法
-                        double mmj = 10000;
-                        double mHsxs = 0.95;
+                        //混凝土算法  Ⅳ类灌浆材料
+                        //double mmj = 10000;
+                        double mmj = 22500;
+                        //double mHsxs = 0.95;
                         for (int i = 1; i < 4; i++)
                         {
-                            sItem["KYQD" + i + "_1"] = Math.Round(1000 * double.Parse(sItem["KYHZ" + i + "_1"]) / mmj, 1).ToString();
+                            sItem["KYQD" + i + "_1"] = Math.Round(1000 * GetSafeDouble(sItem["KYHZ" + i + "_1"].Trim()) / mmj, 1).ToString();
                         }
                         mlongStr = sItem["KYQD1_1"] + "," + sItem["KYQD2_1"] + "," + sItem["KYQD3_1"];
                         mtmpArray = mlongStr.Split(',').ToList();
                         for (int vp = 0; vp < 3; vp++)
                         {
-                            mkyqdArray.Add(double.Parse(mtmpArray[vp]));
+                            mkyqdArray.Add(GetSafeDouble(mtmpArray[vp]));
                         }
                         mkyqdArray.Sort();
-                        mMaxKyqd = mkyqdArray[5];
-                        mMinKyqd = mkyqdArray[3];
-                        mMidKyqd = mkyqdArray[4];
+                        mMaxKyqd = mkyqdArray[2];
+                        mMinKyqd = mkyqdArray[0];
+                        mMidKyqd = mkyqdArray[1];
                         mAvgKyqd = Math.Round((mMaxKyqd + mMidKyqd + mMinKyqd) / 3, 1);
                         if (mMidKyqd != 0)
                         {
                             double md = 0;
                             if (mMaxKyqd - mMidKyqd > Math.Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Math.Round(mMidKyqd * 0.15, 1))
                             {
-                                sItem["KYPJ"] = "无效";
+                                //sItem["KYPJ"] = "无效";
+                                sItem["KYPJ_1"] = "无效";
                             }
                             if (mMaxKyqd - mMidKyqd > Math.Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Math.Round(mMidKyqd * 0.15, 1))
                             {
@@ -1017,47 +1111,50 @@ namespace Calculates
                             {
                                 md = mAvgKyqd;
                             }
-                            if (md != 0)
-                            {
-                                if (Math.Round(md,0)<=55)
-                                {
-                                    mHsxs = 0.95;
-                                }
-                                else if (Math.Round(md, 0) <= 65)
-                                {
-                                    mHsxs = 0.94;
-                                }
-                                else if (Math.Round(md, 0) <= 75)
-                                {
-                                    mHsxs = 0.93;
-                                }
-                                else if (Math.Round(md, 0) <= 85)
-                                {
-                                    mHsxs = 0.92;
-                                }
-                                else if (Math.Round(md, 0) <= 95)
-                                {
-                                    mHsxs = 0.91;
-                                }
-                                else if (Math.Round(md, 0) >= 96)
-                                {
-                                    mHsxs = 0.9;
-                                }
-                                md = Math.Round(md * mHsxs, 1);
-                                sItem["KYPJ_1"] = md.ToString("0.0");
-                            }
+                            //if (md != 0)
+                            //{
+                            //    if (Math.Round(md,0)<=55)
+                            //    {
+                            //        mHsxs = 0.95;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 65)
+                            //    {
+                            //        mHsxs = 0.94;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 75)
+                            //    {
+                            //        mHsxs = 0.93;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 85)
+                            //    {
+                            //        mHsxs = 0.92;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 95)
+                            //    {
+                            //        mHsxs = 0.91;
+                            //    }
+                            //    else if (Math.Round(md, 0) >= 96)
+                            //    {
+                            //        mHsxs = 0.9;
+                            //    }
+                            //    md = Math.Round(md * mHsxs, 1);
+                            //    sItem["KYPJ_1"] = md.ToString("0.0");
+                            //}
+                            sItem["KYPJ_1"] = md.ToString("0.0");
                         }
                     }
 
                     sItem["HG_KYQD1"] = IsQualified(sItem["G_KYQD1"], sItem["KYPJ_1"], false);
                     if ("不合格" == sItem["HG_KYQD1"])
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_KYQD1"] = "不符合要求";
                         itemHG = false;
                         mAllHg = false;
                     }
                     else
                     {
-                        mbHggs++;
+                        sItem["HG_KYQD1"] = "符合要求";
                     }
                 }
                 else
@@ -1068,17 +1165,31 @@ namespace Calculates
                 }
                 #endregion
 
-
                 #region 3天抗压强度
                 if (jcxm.Contains("、3天抗压强度、"))
                 {
-                    //水泥算法
-                    if ("40" == sItem["SJCC"])
+                    mkyqdArray = new List<double>();
+                    jcxmCur = "3天抗压强度";
+                    //获取标准值
+                    var extraFieldsNCLKYQD = extraNCLKYQD.FirstOrDefault(u => u["JCXMMC"] == "3天抗压强度" && u["KYQDDJ"] == sItem["KYQDDJ"]);
+                    if (null == extraFieldsNCLKYQD)
                     {
-                        double mmj = 0.625;
+                        sItem["JCJG"] = "不下结论";
+                        mAllHg = false;
+                        continue;
+                    }
+                    else
+                    {
+                        sItem["G_KYQD3"] = extraFieldsNCLKYQD["KYQDYQ"];
+                    }
+                    //水泥算法
+                    if ("Ⅳ类" != sItem["XH"])
+                    {
+                        //double mmj = 0.625;
+                        double mmj = 1600;
                         for (int i = 1; i < 7; i++)
                         {
-                            sItem["KYQD" + i + "_3"] = Math.Round(double.Parse(sItem["KYHZ" + i + "_3"]) * mmj, 1).ToString();
+                            sItem["KYQD" + i + "_3"] = Math.Round(GetSafeDouble(sItem["KYHZ" + i + "_3"].Trim()) * 1000 / mmj, 1).ToString();
                         }
                         mlongStr = sItem["KYQD1_3"] + "," + sItem["KYQD2_3"] + "," + sItem["KYQD3_3"] + ","
                             + sItem["KYQD4_3"] + "," + sItem["KYQD5_3"] + "," + sItem["KYQD6_3"];
@@ -1086,7 +1197,7 @@ namespace Calculates
 
                         for (int vp = 0; vp < 6; vp++)
                         {
-                            mkyqdArray.Add(double.Parse(mtmpArray[vp]));
+                            mkyqdArray.Add(GetSafeDouble(mtmpArray[vp]));
                         }
                         mkyqdArray.Sort();
                         mMaxKyqd = mkyqdArray[mkyqdArray.Count - 1];
@@ -1144,29 +1255,30 @@ namespace Calculates
                     else
                     {
                         //混凝土算法
-                        double mmj = 10000;
-                        double mHsxs = 0.95;
+                        double mmj = 22500;
+                        //double mHsxs = 0.95;
                         for (int i = 1; i < 4; i++)
                         {
-                            sItem["KYQD" + i + "_3"] = Math.Round(1000 * double.Parse(sItem["KYHZ" + i + "_3"]) / mmj, 1).ToString();
+                            sItem["KYQD" + i + "_3"] = Math.Round(1000 * GetSafeDouble(sItem["KYHZ" + i + "_3"].Trim()) / mmj, 1).ToString();
                         }
                         mlongStr = sItem["KYQD1_3"] + "," + sItem["KYQD2_3"] + "," + sItem["KYQD3_3"];
                         mtmpArray = mlongStr.Split(',').ToList();
                         for (int vp = 0; vp < 3; vp++)
                         {
-                            mkyqdArray.Add(double.Parse(mtmpArray[vp]));
+                            mkyqdArray.Add(GetSafeDouble(mtmpArray[vp]));
                         }
                         mkyqdArray.Sort();
-                        mMaxKyqd = mkyqdArray[5];
-                        mMinKyqd = mkyqdArray[3];
-                        mMidKyqd = mkyqdArray[4];
+                        mMaxKyqd = mkyqdArray[2];
+                        mMinKyqd = mkyqdArray[0];
+                        mMidKyqd = mkyqdArray[1];
                         mAvgKyqd = Math.Round((mMaxKyqd + mMidKyqd + mMinKyqd) / 3, 1);
                         if (mMidKyqd != 0)
                         {
                             double md = 0;
                             if (mMaxKyqd - mMidKyqd > Math.Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Math.Round(mMidKyqd * 0.15, 1))
                             {
-                                sItem["KYPJ"] = "无效";
+                                //sItem["KYPJ"] = "无效";
+                                sItem["KYPJ_3"] = "无效";
                             }
                             if (mMaxKyqd - mMidKyqd > Math.Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Math.Round(mMidKyqd * 0.15, 1))
                             {
@@ -1180,48 +1292,52 @@ namespace Calculates
                             {
                                 md = mAvgKyqd;
                             }
-                            if (md != 0)
-                            {
-                                if (Math.Round(md, 0) <= 55)
-                                {
-                                    mHsxs = 0.95;
-                                }
-                                else if (Math.Round(md, 0) <= 65)
-                                {
-                                    mHsxs = 0.94;
-                                }
-                                else if (Math.Round(md, 0) <= 75)
-                                {
-                                    mHsxs = 0.93;
-                                }
-                                else if (Math.Round(md, 0) <= 85)
-                                {
-                                    mHsxs = 0.92;
-                                }
-                                else if (Math.Round(md, 0) <= 95)
-                                {
-                                    mHsxs = 0.91;
-                                }
-                                else if (Math.Round(md, 0) >= 96)
-                                {
-                                    mHsxs = 0.9;
-                                }
-                                md = Math.Round(md * mHsxs, 1);
-                                sItem["KYPJ_3"] = md.ToString("0.0");
-                            }
+                            //if (md != 0)
+                            //{
+                            //    if (Math.Round(md, 0) <= 55)
+                            //    {
+                            //        mHsxs = 0.95;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 65)
+                            //    {
+                            //        mHsxs = 0.94;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 75)
+                            //    {
+                            //        mHsxs = 0.93;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 85)
+                            //    {
+                            //        mHsxs = 0.92;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 95)
+                            //    {
+                            //        mHsxs = 0.91;
+                            //    }
+                            //    else if (Math.Round(md, 0) >= 96)
+                            //    {
+                            //        mHsxs = 0.9;
+                            //    }
+                            //    md = Math.Round(md * mHsxs, 1);
+                            //    sItem["KYPJ_3"] = md.ToString("0.0");
+                            //}
+                            sItem["KYPJ_3"] = md.ToString("0.0");
                         }
                     }
 
                     sItem["HG_KYQD3"] = IsQualified(sItem["G_KYQD3"], sItem["KYPJ_3"], false);
                     if ("不合格" == sItem["HG_KYQD3"])
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_KYQD3"] = "不符合要求";
                         itemHG = false;
                         mAllHg = false;
                     }
                     else
                     {
-                        mbHggs++;
+                        sItem["HG_KYQD3"] = "符合要求";
                     }
+
                 }
                 else
                 {
@@ -1234,13 +1350,29 @@ namespace Calculates
                 #region 28天抗压强度
                 if (jcxm.Contains("、28天抗压强度、"))
                 {
-                    //水泥算法
-                    if ("40" == sItem["SJCC"])
+                    mkyqdArray = new List<double>();
+                    jcxmCur = "28天抗压强度";
+                    //获取标准值
+                    var extraFieldsNCLKYQD = extraNCLKYQD.FirstOrDefault(u => u["JCXMMC"] == "28天抗压强度" && u["KYQDDJ"] == sItem["KYQDDJ"]);
+                    if (null == extraFieldsNCLKYQD)
                     {
-                        double mmj = 0.625;
+                        sItem["JCJG"] = "不下结论";
+                        mAllHg = false;
+                        continue;
+                    }
+                    else
+                    {
+                        sItem["G_KYQD28"] = extraFieldsNCLKYQD["KYQDYQ"];
+                    }
+                    //水泥算法
+                    //if ("40" == sItem["SJCC"])
+                    if ("Ⅳ类" != sItem["XH"])
+                    {
+                        //double mmj = 0.625;
+                        double mmj = 1600;
                         for (int i = 1; i < 7; i++)
                         {
-                            sItem["KYQD"+ i] = Math.Round(double.Parse(sItem["KYHZ" + i]) * mmj, 1).ToString();
+                            sItem["KYQD" + i] = Math.Round(GetSafeDouble(sItem["KYHZ" + i].Trim()) * 1000 / mmj, 1).ToString();
                         }
                         mlongStr = sItem["KYQD1"] + "," + sItem["KYQD2"] + "," + sItem["KYQD3"] + ","
                             + sItem["KYQD4"] + "," + sItem["KYQD5"] + "," + sItem["KYQD6"];
@@ -1248,7 +1380,7 @@ namespace Calculates
 
                         for (int vp = 0; vp < 6; vp++)
                         {
-                            mkyqdArray.Add(double.Parse(mtmpArray[vp]));
+                            mkyqdArray.Add(GetSafeDouble(mtmpArray[vp]));
                         }
                         mkyqdArray.Sort();
                         mMaxKyqd = mkyqdArray[mkyqdArray.Count - 1];
@@ -1306,22 +1438,22 @@ namespace Calculates
                     else
                     {
                         //混凝土算法
-                        double mmj = 10000;
-                        double mHsxs = 0.95;
+                        double mmj = 22500;
+                        //double mHsxs = 0.95;
                         for (int i = 1; i < 4; i++)
                         {
-                            sItem["KYQD" + i] = Math.Round(1000 * double.Parse(sItem["KYHZ" + i]) / mmj, 1).ToString();
+                            sItem["KYQD" + i] = Math.Round(1000 * GetSafeDouble(sItem["KYHZ" + i]) / mmj, 1).ToString();
                         }
                         mlongStr = sItem["KYQD1"] + "," + sItem["KYQD2"] + "," + sItem["KYQD3"];
                         mtmpArray = mlongStr.Split(',').ToList();
                         for (int vp = 0; vp < 3; vp++)
                         {
-                            mkyqdArray.Add(double.Parse(mtmpArray[vp]));
+                            mkyqdArray.Add(GetSafeDouble(mtmpArray[vp]));
                         }
                         mkyqdArray.Sort();
-                        mMaxKyqd = mkyqdArray[5];
-                        mMinKyqd = mkyqdArray[3];
-                        mMidKyqd = mkyqdArray[4];
+                        mMaxKyqd = mkyqdArray[2];
+                        mMinKyqd = mkyqdArray[0];
+                        mMidKyqd = mkyqdArray[1];
                         mAvgKyqd = Math.Round((mMaxKyqd + mMidKyqd + mMinKyqd) / 3, 1);
                         if (mMidKyqd != 0)
                         {
@@ -1342,48 +1474,52 @@ namespace Calculates
                             {
                                 md = mAvgKyqd;
                             }
-                            if (md != 0)
-                            {
-                                if (Math.Round(md, 0) <= 55)
-                                {
-                                    mHsxs = 0.95;
-                                }
-                                else if (Math.Round(md, 0) <= 65)
-                                {
-                                    mHsxs = 0.94;
-                                }
-                                else if (Math.Round(md, 0) <= 75)
-                                {
-                                    mHsxs = 0.93;
-                                }
-                                else if (Math.Round(md, 0) <= 85)
-                                {
-                                    mHsxs = 0.92;
-                                }
-                                else if (Math.Round(md, 0) <= 95)
-                                {
-                                    mHsxs = 0.91;
-                                }
-                                else if (Math.Round(md, 0) >= 96)
-                                {
-                                    mHsxs = 0.9;
-                                }
-                                md = Math.Round(md * mHsxs, 1);
-                                sItem["KYPJ"] = md.ToString("0.0");
-                            }
+                            //if (md != 0)
+                            //{
+                            //    if (Math.Round(md, 0) <= 55)
+                            //    {
+                            //        mHsxs = 0.95;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 65)
+                            //    {
+                            //        mHsxs = 0.94;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 75)
+                            //    {
+                            //        mHsxs = 0.93;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 85)
+                            //    {
+                            //        mHsxs = 0.92;
+                            //    }
+                            //    else if (Math.Round(md, 0) <= 95)
+                            //    {
+                            //        mHsxs = 0.91;
+                            //    }
+                            //    else if (Math.Round(md, 0) >= 96)
+                            //    {
+                            //        mHsxs = 0.9;
+                            //    }
+                            //    md = Math.Round(md * mHsxs, 1);
+                            //    sItem["KYPJ"] = md.ToString("0.0");
+                            //}
+                            sItem["KYPJ"] = md.ToString("0.0");
                         }
                     }
 
                     sItem["HG_KYQD28"] = IsQualified(sItem["G_KYQD28"], sItem["KYPJ"], false);
                     if ("不合格" == sItem["HG_KYQD28"])
                     {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_KYQD28"] = "不符合要求";
                         itemHG = false;
                         mAllHg = false;
                     }
                     else
                     {
-                        mbHggs++;
+                        sItem["HG_KYQD28"] = "符合要求";
                     }
+
                 }
                 else
                 {
@@ -1392,7 +1528,6 @@ namespace Calculates
                     sItem["G_KYQD28"] = "----";
                 }
                 #endregion
-
 
                 #region 对钢筋锈蚀作用
                 if (jcxm.Contains("、对钢筋锈蚀作用、"))
@@ -1420,22 +1555,74 @@ namespace Calculates
                 #region 泌水率
                 if (jcxm.Contains("、泌水率、"))
                 {
-                    sItem["HG_MSL"] = IsQualified(sItem["G_MSL"], sItem["MSL"], false);
-                    if ("不合格" == sItem["HG_MSL"])
+                    jcxmCur = "泌水率";
+                    sign = true;
+                    for (int i = 1; i < 4; i++)
                     {
-                        itemHG = false;
-                        mAllHg = false;
+                        sign = IsNumeric(sItem["QSZL" + i].Trim());
+                        sign = IsNumeric(sItem["SYBHYSL" + i].Trim());
+                        sign = IsNumeric(sItem["SYBHWZZL" + i].Trim());
+                        sign = IsNumeric(sItem["TJSYZL" + i].Trim());
+                        sign = IsNumeric(sItem["RLTZL" + i].Trim());
+                    }
+
+                    if (sign)
+                    {
+                        //混凝土拌合物试样质量
+                        for (int i = 1; i < 4; i++)
+                        {
+                            //容量筒及试样总质量 - 容量筒质量
+                            sItem["HNTSYZL" + i] = Round(GetSafeDouble(sItem["TJSYZL" + i].Trim()) - GetSafeDouble(sItem["RLTZL" + i].Trim()), 0).ToString("0");
+                            //泌水率 = 泌水总量(mL) /[ (试验拌制混凝土拌合物拌合用水量mL / 试验拌制混凝土拌合物的总质量g) * 混凝土拌合物试样质量]   * 100
+                            sItem["QSL" + i] = Round(GetSafeDouble(sItem["QSZL" + i].Trim()) / (GetSafeDouble(sItem["SYBHYSL" + i].Trim())
+                                / GetSafeDouble(sItem["SYBHWZZL" + i].Trim()) * GetSafeDouble(sItem["HNTSYZL" + i])) * 100, 0).ToString("0");
+                            qslArray.Add(sItem["QSL" + i]);
+                        }
+                        qslArray.Sort();
+                        mMaxQsl = GetSafeDouble(qslArray[2]);
+                        mMidQsl = GetSafeDouble(qslArray[1]);
+                        mMinQsl = GetSafeDouble(qslArray[0]);
+                        if (mMaxQsl - mMidQsl <= mMidQsl * 0.15 && mMidQsl - mMinQsl <= mMidQsl * 0.15)
+                        {
+                            //取平均值
+                            sItem["QSL"] = Round((mMaxQsl + mMidQsl + mMinQsl) / 3, 0).ToString("0");
+                        }
+                        else if (mMaxQsl - mMidQsl > mMidQsl * 0.15 && mMidQsl - mMinQsl > mMidQsl * 0.15)
+                        {
+                            throw new SystemException("沁水率试验中三个测值的最大值与最小值与中间值之差均超过中间值的15%，应重新试验。");
+                        }
+                        else
+                        {
+                            //以中间值为试验结果
+                            sItem["QSL"] = mMidQsl.ToString("0");
+                        }
+                        //判定  设计值
+                        sItem["QSLYQ"] = "0";
+                        if (GetSafeDouble(sItem["QSL"]) > 0)
+                        {
+                            itemHG = false;
+                            sItem["QSLPD"] = "不符合要求";
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                        else
+                        {
+                            sItem["QSLPD"] = "符合要求";
+                        }
                     }
                     else
                     {
-                        mbHggs++;
+                        throw new SystemException("沁水率试验数据录入有误");
                     }
                 }
                 else
                 {
-                    sItem["G_MSL"] = "----";
-                    sItem["MSL"] = "----";
-                    sItem["HG_MSL"] = "----";
+                    sItem["QSLPD"] = "----";
+                    sItem["QSL"] = "----";
+                    sItem["QSLYQ"] = "----";
+                    //    sItem["G_MSL"] = "----";
+                    //    sItem["MSL"] = "----";
+                    //    sItem["HG_MSL"] = "----";
                 }
                 #endregion
 
@@ -1454,18 +1641,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                if (mbHggs >0)
-                {
-                    jsbeizhu = "该组试样所检项目部分不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
-                else
-                {
-                    jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求	。";
             }
 
             MItem[0]["JCJG"] = mjcjg;
