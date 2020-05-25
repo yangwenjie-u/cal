@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System.Collections.Generic;
+using Microsoft.VisualBasic;
 
 namespace Calculates
 {
@@ -44,7 +45,9 @@ namespace Calculates
                 #region EDTA滴定法
                 if (jcxm.Contains("、EDTA滴定法、"))
                 {
-                    sItem["S_PDJG"] = IsQualified(sItem["S_SJJL"], sItem["S_AVG"], true);
+                    double S_SJJL = Conversion.Val(sItem["S_SJJL"]);
+                    string sjjl = "≥" + S_SJJL;
+                    sItem["S_PDJG"] = IsQualified(sjjl, sItem["S_AVG"], true);
                     if (sItem["S_PDJG"] == "不符合")
                     {
                         sItem["JCJG"] = "不合格";
@@ -56,7 +59,7 @@ namespace Calculates
                     }
                     else
                     {
-                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，经检测该混合料中的" + sItem["JCXM"] + "为" + sItem["S_AVG"] + "%，";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，经检测该混合料中的" + sItem["JCXM"] + "为" + sItem["S_AVG"] + "%。";
                     }
 
                     if (sItem["S_PDJG"] == "符合")
@@ -67,6 +70,7 @@ namespace Calculates
 
                     if (sItem["S_PDJG"] == "不符合")
                     {
+                        sItem["JCJG"] = "不合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目EDTA滴定法不符合要求。";
                         mAllHg = false;
                     }

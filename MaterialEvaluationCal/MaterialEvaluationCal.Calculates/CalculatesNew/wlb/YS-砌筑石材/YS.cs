@@ -82,7 +82,7 @@ namespace Calculates
                 {
                     sjqd = "≥80";
                 }
-                else if (sItem["SJDJ"].Contains("80"))
+                else if (sItem["SJDJ"].Contains("100"))
                 {
                     sjqd = "≥100";
                 }
@@ -161,11 +161,13 @@ namespace Calculates
             //添加最终报告
             if (Hgxm.Length > 0)
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目抗压强度符合要求。";
+                mjcjg = "合格";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else if (BHGXM.Length > 0)
             {
                 jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目抗压强度不符合要求。";
+                mjcjg = "不合格";
             }
 
             MItem[0]["JCJG"] = mjcjg;
