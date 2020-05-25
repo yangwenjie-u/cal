@@ -97,11 +97,11 @@ namespace Calculates
                         }
                         if (sItem["XDKZZ"] == "----")
                         {
-                            sItem["HG_XD"] = "----";
+                            MItem[0]["HG_XD"] = "----";
                         }
                         else
                         {
-                            sItem["HG_XD"] = IsQualified(sItem["XDKZZ"], sItem["XD"],true);
+                            MItem[0]["HG_XD"] = IsQualified(sItem["XDKZZ"], sItem["XD"],true);
                         }
                         MItem[0]["G_XD"] = sItem["XDKZZ"];
                         if (MItem[0]["HG_XD"] == "不符合")

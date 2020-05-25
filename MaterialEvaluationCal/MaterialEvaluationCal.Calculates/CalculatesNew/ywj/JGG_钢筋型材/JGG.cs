@@ -16,8 +16,9 @@ namespace Calculates
             var mjcjg = "不合格";
             var jsbeizhu = "";
             var jgsm = "";
-            var jcjg = "";
+            var mJcjg = "";//记录最终报告是否不下结论
             var SItems = retData["S_JGG"];
+
 
             if (!retData.ContainsKey("M_JGG"))
             {
@@ -100,8 +101,6 @@ namespace Calculates
                 return 0;
             };
 
-
-
             Func<IDictionary<string, string>, IDictionary<string, string>, double, double, double, double, int> all_zb_jl = delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, double mHggs_qfqd_f, double mHggs_klqd_f, double mHggs_scl_f, double mHggs_lw_f)
             {
                 if (null == sItem["HG_QF"])
@@ -123,9 +122,8 @@ namespace Calculates
                 }
                 var jcxm2 = "";
                 jcxm2 = "、" + sItem["JCXM"].Replace(',', '、') + "、";
-                if (jcxm2.Contains("、拉伸、"))
+                if (jcxm2.Contains("拉伸"))
                 {
-
                     if (double.Parse(sItem["HG_QF"]) >= mHggs_klqd_f && double.Parse(sItem["HG_KL"]) >= mHggs_klqd_f && double.Parse(sItem["HG_SC"]) >= mHggs_scl_f)
                         sItem["JCJG_LS"] = "符合";
                     else
@@ -139,7 +137,7 @@ namespace Calculates
                     sItem["JCJG_LS"] = "----";
                 }
 
-                if (jcxm2.Contains("、冷弯、") || jcxm2.Contains("、弯曲、"))
+                if (jcxm2.Contains("冷弯") || jcxm2.Contains("弯曲"))
                 {
                     if (double.Parse(sItem["HG_LW"]) - mHggs_lw_f > -0.00001)
                         sItem["JCJG_LW"] = "符合";
@@ -253,7 +251,7 @@ namespace Calculates
                 }
 
                 #region  标准表
-                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["MC"] == mSjdj.Trim() && u["ZJM"] == hd_fw.Trim());
+                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["MC"] == mSjdj.Trim() && u["ZJM"] == hd_fw.Trim() && u["QYFX"] == sItem["QYFX"].Trim());
                 if (null == extraFieldsDj)
                 {
                     extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["MC"] == mSjdj.Trim());
@@ -262,6 +260,7 @@ namespace Calculates
                 if (null == extraFieldsDj)
                 {
                     sItem["JCJG"] = "不下结论";
+                    mJcjg = "不下结论";
                     jsbeizhu = "牌号" + sItem["GCLX_PH"] + mSjdj + "试件尺寸为空\r\n";
                     mAllHg = false;
                     continue;
@@ -284,7 +283,7 @@ namespace Calculates
                 mFsgs_lw = extraFieldsDj["ZFSGS_LW"];
 
                 mlwzj = Double.Parse(extraFieldsDj["LWZJ"]);// '冷弯直径和角度
-                mlwjd = GetSafeInt(extraFieldsDj["LWJD"]).ToString();
+                mlwjd = GetSafeDouble(extraFieldsDj["LWJD"]).ToString();
                 MFFWQCS = extraFieldsDj["FFWQCS"];
 
                 mxlgs = double.Parse(extraFieldsDj["XLGS"]);
@@ -354,6 +353,7 @@ namespace Calculates
                     md = Conversion.Val(sItem["ZJ"].Trim()) / 2;
                     md = Math.Round(3.14159 * Math.Pow(md, 2), 3);
                     sItem["MJ"] = md.ToString("0.000");
+                    sItem["GG"] = "Φ:" + sItem["ZJ"].Trim();
                 }
 
                 //求伸长率
@@ -465,7 +465,7 @@ namespace Calculates
                 var mallBhg_sc = 0;
                 for (int i = 1; i < mxlgs + 1; i++)
                 {
-                    if (Conversion.Val(sItem["SCL" + i]) - mScl > 0.00001)
+                    if (GetSafeInt(sItem["SCL" + i]) - (int)mScl >= 0)
                         sItem["HG_SC"] = (Conversion.Val(sItem["HG_SC"]) + 1).ToString();
                     else
                         mallBhg_sc += 1;
@@ -515,7 +515,6 @@ namespace Calculates
                     }
                     else
                     {
-
                         mcjpj = Math.Round((Conversion.Val(sItem["CJSY1"]) + Conversion.Val(sItem["CJSY2"]) + Conversion.Val(sItem["CJSY3"])) / 3, 1);
 
                         sItem["CJPJ"] = Math.Round(mcjpj, 1).ToString();
@@ -536,7 +535,7 @@ namespace Calculates
                         else
                         {
                             sItem["JCJG_CJ"] = "复试";
-                            jcxmCur = "、冲击试验、";
+                            jcxmCur = "冲击试验";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
 
                             mAllHg = false;
@@ -545,7 +544,7 @@ namespace Calculates
 
                         if (mcjcnt7 >= 2)
                         {
-                            jcxmCur = "、冲击试验、";
+                            jcxmCur = "冲击试验";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             sItem["JCJG_CJ"] = "不合格";
                             mFlag_Bhg = true;
@@ -566,23 +565,43 @@ namespace Calculates
 
                 #endregion
 
-                var mZh = sItem["ZH_G"];
-
                 if (sItem["JCJG_LS"] == "不符合")
                 {
-                    jcxmCur = "、拉伸、";
-                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    if (double.Parse(sItem["HG_QF"]) < double.Parse(mHggs_qfqd))
+                    {
+                        jcxmCur = "屈服强度";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    if (double.Parse(sItem["HG_KL"]) < double.Parse(mHggs_klqd))
+                    {
+                        jcxmCur = "抗拉强度";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    if (double.Parse(sItem["HG_SC"]) < double.Parse(mHggs_lw))
+                    {
+                        jcxmCur = "伸长率";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                 }
+                else
+                {
+                    mFlag_Hg = true;
+                }
+
                 if (sItem["JCJG_LW"] == "不符合")
                 {
                     jcxmCur = CurrentJcxm(jcxm, "弯曲,冷弯");
                     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                 }
+                else
+                {
+                    mFlag_Hg = true;
+                }
 
                 if ("不符合" == sItem["JCJG_LS"] && "不符合" == sItem["JCJG_LW"] && "不合格" == sItem["JCJG_CJ"] && "不合格" == sItem["JCJG_YD"])
                 {
                     sItem["JCJG"] = "不合格";
-                    MItem[0]["FJJJ2"] = MItem[0]["FJJJ2"] + mZh + "#";
+                    MItem[0]["FJJJ2"] = MItem[0]["FJJJ2"] + "1#";
                     mAllHg = false;
                     mFlag_Bhg = true;
                 }
@@ -591,7 +610,7 @@ namespace Calculates
                     if ("不符合" == sItem["JCJG_LS"] || "不符合" == sItem["JCJG_LW"] || "复试" == sItem["JCJG_CJ"] || "复试" == sItem["JCJG_YD"])
                     {
                         sItem["JCJG"] = "复试";
-                        MItem[0]["FJJJ1"] = MItem[0]["FJJJ1"] + mZh + "#";
+                        MItem[0]["FJJJ1"] = MItem[0]["FJJJ1"] + "1#";
                         mAllHg = false;
                         mFlag_Bhg = true;
                     }
@@ -599,11 +618,10 @@ namespace Calculates
                     {
                         mFlag_Hg = true;
                         sItem["JCJG"] = "合格";
-                        MItem[0]["FJJJ3"] = MItem[0]["FJJJ3"] + mZh + "#";
+                        MItem[0]["FJJJ3"] = MItem[0]["FJJJ3"] + "1#";
                     }
                 }
             }
-
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
             {
@@ -642,10 +660,14 @@ namespace Calculates
             {
                 mjcjg = "合格";
             }
-
+            if (mjcjg == "不下结论")
+            {
+                MItem[0]["JCJG"] = mjcjg;
+                jsbeizhu = "";
+            }
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
-            #endregion 
+            #endregion
             #endregion
         }
     }

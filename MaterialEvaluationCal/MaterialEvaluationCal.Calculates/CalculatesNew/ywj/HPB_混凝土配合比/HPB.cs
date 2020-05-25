@@ -52,20 +52,115 @@ namespace Calculates.HPB_混凝土配合比
                 mItemHg = true;
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
 
+                #region 用料配合比计算
+                if (IsNumeric(MItem[0]["T_CLSN"]))
+                {
+                    //水
+                    if (IsNumeric(MItem[0]["T_CLS"]))
+                    {
+                        MItem[0]["T_PBS"] = Round(GetSafeDouble(MItem[0]["T_CLS"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBS"] = "0";
+                    }
+                    //砂
+                    if (IsNumeric(MItem[0]["T_CLSA"]))
+                    {
+                        MItem[0]["T_PBSA"] = Round(GetSafeDouble(MItem[0]["T_CLSA"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBSA"] = "0";
+                    }
+                    //石子
+                    if (IsNumeric(MItem[0]["T_CLSI"]))
+                    {
+                        MItem[0]["T_PBSI"] = Round(GetSafeDouble(MItem[0]["T_CLSI"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBSI"] = "0";
+                    }
 
-                if (null == sItem["ZZRQ"])
+                    //外加剂1
+                    if (IsNumeric(MItem[0]["T_CLWJJ1"]))
+                    {
+                        MItem[0]["T_PBWJJ1"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBWJJ1"] = "0";
+                    }
+                    //外加剂2
+                    if (IsNumeric(MItem[0]["T_CLWJJ2"]))
+                    {
+                        MItem[0]["T_PBWJJ2"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBWJJ2"] = "0";
+                    }
+
+                    //外加剂3
+                    if (IsNumeric(MItem[0]["T_CLWJJ3"]))
+                    {
+                        MItem[0]["T_PBWJJ3"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ3"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBWJJ3"] = "0";
+                    }
+
+                    //掺合料1
+                    if (IsNumeric(MItem[0]["T_CLCHL1"]))
+                    {
+                        MItem[0]["T_PBCHL1"] = Round(GetSafeDouble(MItem[0]["T_CLCHL1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBCHL1"] = "0";
+                    }
+                    //掺合料2
+                    if (IsNumeric(MItem[0]["T_CLCHL2"]))
+                    {
+                        MItem[0]["T_PBCHL2"] = Round(GetSafeDouble(MItem[0]["T_CLCHL2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBCHL2"] = "0";
+                    }
+                    //掺合料3
+                    if (IsNumeric(MItem[0]["T_CLCHL3"]))
+                    {
+                        MItem[0]["T_PBCHL3"] = Round(GetSafeDouble(MItem[0]["T_CLCHL3"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBCHL3"] = "0";
+                    }
+
+                }
+                #endregion
+
+                if (!string.IsNullOrEmpty(sItem["ZZRQ"]))
                 {
                     MItem[0]["SYRQQ1"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(7).ToShortDateString();
                     MItem[0]["SYRQQ2"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
                 }
+       
 
                 var dateTime = new DateTime();
-                if (jcxm.Contains("、7天强度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、7天强度、") || jcxm.Contains("、配合比、"))
                 {
                     if (DateTime.TryParse(sItem["ZZRQ"], out dateTime))
                     {
                         sItem["YQSYRQ"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
                     }
+                }
+                else
+                {
+                    sItem["KYPJ_7"] = "----";
                 }
 
                 if (Conversion.Val(sItem["KYPJ_71"]) > 0)
@@ -76,7 +171,7 @@ namespace Calculates.HPB_混凝土配合比
                     }
                     MItem[0]["SYRQQ1"] = "";
                 }
-                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、配合比、"))
                 {
                     if ((-0.001 <= Conversion.Val(sItem["KYPJ_7"]) && -0.001 <= Conversion.Val(sItem["KYPJ"])) && (null == sItem["TOMARK"] || Conversion.Val(sItem["TOMARK"]) <= 0))
                     {
@@ -84,7 +179,7 @@ namespace Calculates.HPB_混凝土配合比
                     }
                 }
 
-                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、28天强度、")  || jcxm.Contains("、配合比、"))
                 {
                     if (0 == Conversion.Val(sItem["KYPJ1"]))
                     {
@@ -107,7 +202,7 @@ namespace Calculates.HPB_混凝土配合比
                     MItem[0]["SYRQQ2"] = "";
                 }
 
-                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、28天强度、")  || jcxm.Contains("、配合比、"))
                 {
                     if (-0 <= Conversion.Val(sItem["KYPJ_7"]) && (null == sItem["KYPJ"] || Conversion.Val(sItem["KYPJ"]) <= 0))
                     {
@@ -122,8 +217,9 @@ namespace Calculates.HPB_混凝土配合比
                     }
                 }
 
-                if (jcxm.Contains("、抗渗、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、抗渗、") || jcxm.Contains("、配合比、"))
                 {
+
                     sItem["DDKSDJ"] = "P" + (Conversion.Val(sItem["KSQD1"]) * 10 - 2).ToString();
                 }
                 else
@@ -131,7 +227,7 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["DDKSDJ"] = "----";
                 }
 
-                if (jcxm.Contains("、泌水率、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、泌水率、") || jcxm.Contains("、配合比、"))
                 {
                     sItem["MSL"] = (Math.Round((100 * Conversion.Val(sItem["MSL1"]) / Conversion.Val(sItem["MSL2"])) / 10, 0) * 10).ToString(); ;
                 }
@@ -142,7 +238,7 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["MSL2"] = "----";
                 }
 
-                if (jcxm.Contains("、含气量、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、含气量、") || jcxm.Contains("、配合比、"))
                 {
                     sItem["HQL"] = (Math.Round(Conversion.Val(sItem["HQL1"]) - Conversion.Val(sItem["HQL2"]), 1)).ToString("0.0"); ;
                 }
@@ -153,7 +249,7 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["HQL2"] = "----";
                 }
 
-                if (jcxm.Contains("、表观密度、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、表观密度、")  || jcxm.Contains("、配合比、"))
                 {
                 }
                 else
@@ -164,7 +260,7 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["TZL"] = "----";
                 }
 
-                if (jcxm.Contains("、凝结时间、") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、凝结时间、") || jcxm.Contains("、配合比、"))
                 {
                     sItem["CNSJ"] = (Math.Round((Conversion.Val(sItem["T1CN"]) + Conversion.Val(sItem["T2CN"]) + Conversion.Val(sItem["T3CN"]) / 3 / 5), 0) * 5).ToString("0"); ;
                 }

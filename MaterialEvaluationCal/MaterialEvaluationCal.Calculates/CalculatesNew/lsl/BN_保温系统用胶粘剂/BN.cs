@@ -1657,37 +1657,37 @@ namespace Calculates
                             sItem["MJ53"] = (GetSafeDouble(sItem["CD53"]) * GetSafeDouble(sItem["KD53"])).ToString();
                             sItem["MJ54"] = (GetSafeDouble(sItem["CD54"]) * GetSafeDouble(sItem["KD54"])).ToString();
                             sItem["MJ55"] = (GetSafeDouble(sItem["CD55"]) * GetSafeDouble(sItem["KD55"])).ToString();
-                            sItem["MJ56"] = (GetSafeDouble(sItem["CD56"]) * GetSafeDouble(sItem["KD56"])).ToString();
+                            //sItem["MJ56"] = (GetSafeDouble(sItem["CD56"]) * GetSafeDouble(sItem["KD56"])).ToString();
                             if (0 != GetSafeDouble(sItem["MJ51"]) || 0 != GetSafeDouble(sItem["MJ52"]) || 0 != GetSafeDouble(sItem["MJ53"])
-                                || 0 != GetSafeDouble(sItem["MJ54"]) || 0 != GetSafeDouble(sItem["MJ55"]) || 0 != GetSafeDouble(sItem["MJ56"]))
+                                || 0 != GetSafeDouble(sItem["MJ54"]) || 0 != GetSafeDouble(sItem["MJ55"]))
                             {
                                 mKyqd1 = Round(GetSafeDouble(sItem["YQD51"]) / GetSafeDouble(sItem["MJ51"]), 3);
                                 mKYQD2 = Round(GetSafeDouble(sItem["YQD52"]) / GetSafeDouble(sItem["MJ52"]), 3);
                                 mKyqd3 = Round(GetSafeDouble(sItem["YQD53"]) / GetSafeDouble(sItem["MJ53"]), 3);
                                 mKyqd4 = Round(GetSafeDouble(sItem["YQD54"]) / GetSafeDouble(sItem["MJ54"]), 3);
                                 mKyqd5 = Round(GetSafeDouble(sItem["YQD55"]) / GetSafeDouble(sItem["MJ55"]), 3);
-                                mKyqd6 = Round(GetSafeDouble(sItem["YQD56"]) / GetSafeDouble(sItem["MJ56"]), 3);
+                                //mKyqd6 = Round(GetSafeDouble(sItem["YQD56"]) / GetSafeDouble(sItem["MJ56"]), 3);
 
                                 sItem["NJQD51"] = Round(mKyqd1, 3).ToString();
                                 sItem["NJQD52"] = Round(mKYQD2, 3).ToString();
                                 sItem["NJQD53"] = Round(mKyqd3, 3).ToString();
                                 sItem["NJQD54"] = Round(mKyqd4, 3).ToString();
                                 sItem["NJQD55"] = Round(mKyqd5, 3).ToString();
-                                sItem["NJQD56"] = Round(mKyqd6, 3).ToString();
+                                //sItem["NJQD56"] = Round(mKyqd6, 3).ToString();
                             }
 
                             if (0 != GetSafeDouble(sItem["NJQD51"]) || 0 != GetSafeDouble(sItem["NJQD53"]) || 0 != GetSafeDouble(sItem["NJQD52"])
-                                || 0 != GetSafeDouble(sItem["NJQD54"]) || 0 != GetSafeDouble(sItem["NJQD55"]) || 0 != GetSafeDouble(sItem["NJQD56"]))
+                                || 0 != GetSafeDouble(sItem["NJQD54"]) || 0 != GetSafeDouble(sItem["NJQD55"]))
                             {
                                 List<double> mkyqdArray = new List<double>();
-                                mlongStr = sItem["NJQD51"] + "," + sItem["NJQD52"] + "," + sItem["NJQD53"] + "," + sItem["NJQD54"] + "," + sItem["NJQD55"] + "," + sItem["NJQD56"];
+                                mlongStr = sItem["NJQD51"] + "," + sItem["NJQD52"] + "," + sItem["NJQD53"] + "," + sItem["NJQD54"] + "," + sItem["NJQD55"];
                                 mtmpArray = mlongStr.Split(',');
-                                for (int i = 0; i < 6; i++)
+                                for (int i = 0; i < 5; i++)
                                 {
                                     mkyqdArray.Add(GetSafeDouble(mtmpArray[i]));
                                 }
                                 mkyqdArray.Sort();
-                                sItem["YQD5"] = Round((mkyqdArray[1] + mkyqdArray[2] + mkyqdArray[3] + mkyqdArray[4]) / 4, 2).ToString();
+                                sItem["YQD5"] = Round((mkyqdArray[0] + mkyqdArray[1] + mkyqdArray[2] + mkyqdArray[3] + mkyqdArray[4]) / 5, 2).ToString();
                             }
 
                             if (GetSafeDouble(sItem["YQD5"]) >= G_LSNJQD7)
@@ -1713,36 +1713,36 @@ namespace Calculates
                             sItem["MJ73"] = (GetSafeDouble(sItem["CD73"]) * GetSafeDouble(sItem["KD73"])).ToString();
                             sItem["MJ74"] = (GetSafeDouble(sItem["CD74"]) * GetSafeDouble(sItem["KD74"])).ToString();
                             sItem["MJ75"] = (GetSafeDouble(sItem["CD75"]) * GetSafeDouble(sItem["KD75"])).ToString();
-                            sItem["MJ76"] = (GetSafeDouble(sItem["CD76"]) * GetSafeDouble(sItem["KD76"])).ToString();
+                            //sItem["MJ76"] = (GetSafeDouble(sItem["CD76"]) * GetSafeDouble(sItem["KD76"])).ToString();
                             if (0 != GetSafeDouble(sItem["MJ71"]) || 0 != GetSafeDouble(sItem["MJ72"]) || 0 != GetSafeDouble(sItem["MJ73"])
-                                || 0 != GetSafeDouble(sItem["MJ74"]) || 0 != GetSafeDouble(sItem["MJ75"]) || 0 != GetSafeDouble(sItem["MJ76"]))
+                                || 0 != GetSafeDouble(sItem["MJ74"]) || 0 != GetSafeDouble(sItem["MJ75"]))
                             {
                                 mKyqd1 = Round(GetSafeDouble(sItem["YQD71"]) / GetSafeDouble(sItem["MJ71"]), 3);
                                 mKYQD2 = Round(GetSafeDouble(sItem["YQD72"]) / GetSafeDouble(sItem["MJ72"]), 3);
                                 mKyqd3 = Round(GetSafeDouble(sItem["YQD73"]) / GetSafeDouble(sItem["MJ73"]), 3);
                                 mKyqd4 = Round(GetSafeDouble(sItem["YQD74"]) / GetSafeDouble(sItem["MJ74"]), 3);
                                 mKyqd5 = Round(GetSafeDouble(sItem["YQD75"]) / GetSafeDouble(sItem["MJ75"]), 3);
-                                mKyqd6 = Round(GetSafeDouble(sItem["YQD76"]) / GetSafeDouble(sItem["MJ76"]), 3);
+                                //mKyqd6 = Round(GetSafeDouble(sItem["YQD76"]) / GetSafeDouble(sItem["MJ76"]), 3);
 
                                 sItem["NJQD71"] = Round(mKyqd1, 3).ToString();
                                 sItem["NJQD72"] = Round(mKYQD2, 3).ToString();
                                 sItem["NJQD73"] = Round(mKyqd3, 3).ToString();
                                 sItem["NJQD74"] = Round(mKyqd4, 3).ToString();
                                 sItem["NJQD75"] = Round(mKyqd5, 3).ToString();
-                                sItem["NJQD76"] = Round(mKyqd6, 3).ToString();
+                                //sItem["NJQD76"] = Round(mKyqd6, 3).ToString();
                             }
                             if (0 != GetSafeDouble(sItem["NJQD71"]) || 0 != GetSafeDouble(sItem["NJQD72"]) || 0 != GetSafeDouble(sItem["NJQD73"])
-                                || 0 != GetSafeDouble(sItem["NJQD74"]) || 0 != GetSafeDouble(sItem["NJQD75"]) || 0 != GetSafeDouble(sItem["NJQD76"]))
+                                || 0 != GetSafeDouble(sItem["NJQD74"]) || 0 != GetSafeDouble(sItem["NJQD75"]))
                             {
                                 List<double> mkyqdArray = new List<double>();
-                                mlongStr = sItem["NJQD71"] + "," + sItem["NJQD72"] + "," + sItem["NJQD73"] + "," + sItem["NJQD74"] + "," + sItem["NJQD75"] + "," + sItem["NJQD76"];
+                                mlongStr = sItem["NJQD71"] + "," + sItem["NJQD72"] + "," + sItem["NJQD73"] + "," + sItem["NJQD74"] + "," + sItem["NJQD75"];
                                 mtmpArray = mlongStr.Split(',');
-                                for (int i = 0; i < 6; i++)
+                                for (int i = 0; i < 5; i++)
                                 {
                                     mkyqdArray.Add(GetSafeDouble(mtmpArray[i]));
                                 }
                                 mkyqdArray.Sort();
-                                sItem["JSQD7"] = Round((mkyqdArray[1] + mkyqdArray[2] + mkyqdArray[3] + mkyqdArray[4]) / 4, 2).ToString();
+                                sItem["JSQD7"] = Round((mkyqdArray[0] + mkyqdArray[1] + mkyqdArray[2] + mkyqdArray[3] + mkyqdArray[4]) / 5, 2).ToString();
                             }
 
                             if (!string.IsNullOrEmpty(sItem["PHJMPD7"]))

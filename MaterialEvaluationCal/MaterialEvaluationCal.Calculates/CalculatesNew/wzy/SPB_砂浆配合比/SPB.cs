@@ -49,6 +49,7 @@ namespace Calculates
                 if (mrsDj_filter == null || mrsDj_filter.Count == 0)
                 {
                     sitem["JCJG"] = "不下结论";
+                    mAllHg = false;
                     break;
                 }
                 //计算龄期
@@ -58,7 +59,67 @@ namespace Calculates
                 bool sign;
 
                 string jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
-                if (sitem["JCXM"].Contains("7天强度") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+
+                #region 用料配合比计算
+                if (IsNumeric(MItem[0]["T_CLSN"]))
+                {
+                    //水
+                    if (IsNumeric(MItem[0]["T_CLS"]))
+                    {
+                        MItem[0]["T_PBS"] = Round(GetSafeDouble(MItem[0]["T_CLS"])/GetSafeDouble(MItem[0]["T_CLSN"]),2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBS"] = "0";
+                    }
+                    //砂
+                    if (IsNumeric(MItem[0]["T_CLSA"]))
+                    {
+                        MItem[0]["T_PBSA"] = Round(GetSafeDouble(MItem[0]["T_CLSA"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBSA"] = "0";
+                    }
+                    //外加剂1
+                    if (IsNumeric(MItem[0]["T_CLWJJ1"]))
+                    {
+                        MItem[0]["T_PBWJJ1"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBWJJ1"] = "0";
+                    }
+                    //外加剂2
+                    if (IsNumeric(MItem[0]["T_CLWJJ2"]))
+                    {
+                        MItem[0]["T_PBWJJ2"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBWJJ2"] = "0";
+                    }
+                    //掺合料1
+                    if (IsNumeric(MItem[0]["T_CLCHL1"]))
+                    {
+                        MItem[0]["T_PBCHL1"] = Round(GetSafeDouble(MItem[0]["T_CLCHL1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBCHL1"] = "0";
+                    }
+                    //掺合料2
+                    if (IsNumeric(MItem[0]["T_CLCHL2"]))
+                    {
+                        MItem[0]["T_PBCHL2"] = Round(GetSafeDouble(MItem[0]["T_CLCHL2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                    }
+                    else
+                    {
+                        MItem[0]["T_PBCHL2"] = "0";
+                    }
+                }
+                #endregion
+                if (sitem["JCXM"].Contains("7天强度") || jcxm.Contains("、配合比、"))
                 {
 
                     if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
@@ -86,14 +147,19 @@ namespace Calculates
                         sitem["KYQD" + xd + "_7"] = "----";
                     sitem["KYPJ_7"] = "----";
                 }
-                if (sitem["JCXM"].Contains("28天强度") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (sitem["JCXM"].Contains("28天强度") || jcxm.Contains("、配合比、"))
                 {
                     if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
                     {
                         DateTime dtnow = DateTime.Now;
                         if (DateTime.TryParse(sitem["ZZRQ"], out dtnow))
+                        {
                             sitem["YQSYRQ"] = GetSafeDateTime(sitem["ZZRQ"]).AddDays(28).ToString("yyyy-MM-dd HH:mm:ss");
-                        sitem["KYPJ"] = "----";
+                        }
+                        else
+                        {
+                            sitem["KYPJ"] = "----";
+                        }
                     }
                     for (xd = 1; xd < 4; xd++)
                     {
@@ -123,7 +189,7 @@ namespace Calculates
                     sitem["QDSSL"] = "----";
                     sitem["ZLSSL"] = "----";
                 }
-                if (sitem["JCXM"].Contains("拉伸粘结强度") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (sitem["JCXM"].Contains("拉伸粘结强度") || jcxm.Contains("、配合比、"))
                 {
 
                 }
@@ -131,7 +197,7 @@ namespace Calculates
                 {
                     sitem["NJQD"] = "----";
                 }
-                if (sitem["JCXM"].Contains("凝结时间") || jcxm.Contains("、理论配合比、") || jcxm.Contains("、配合比、"))
+                if (sitem["JCXM"].Contains("凝结时间") || jcxm.Contains("、配合比、"))
                 {
                     sitem["ZNSJ"] = (Round(((GetSafeDouble(sitem["T1ZN"]) + GetSafeDouble(sitem["T2ZN"])) / 2) / 5, 0) * 5).ToString();
                 }

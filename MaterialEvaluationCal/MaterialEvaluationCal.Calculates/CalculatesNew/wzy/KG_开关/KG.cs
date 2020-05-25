@@ -709,17 +709,21 @@ namespace Calculates
                     }
                     else
                     {
-                        if (3 > GetSafeDouble(MItem[0]["TDNL2"]) && 0 <= GetSafeDouble(MItem[0]["TDNL2"]))
-                        {
-                            MItem[0]["TDNL2_HG"] = "不合格";
-                            mAllHg = false;
-                            itemHG = false;
-                            mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        }
-                        else
-                        {
-                            MItem[0]["TDNL2_HG"] = "合格";
-                        }
+                      
+                       
+
+                            if (3 > GetSafeDouble(MItem[0]["TDNL2"]) && 0 <= GetSafeDouble(MItem[0]["TDNL2"]))
+                            {
+                                MItem[0]["TDNL2_HG"] = "不合格";
+                                mAllHg = false;
+                                itemHG = false;
+                                mbHggs++; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
+                            else
+                            {
+                                MItem[0]["TDNL2_HG"] = "合格";
+                            }
+                        
                     }
 
 

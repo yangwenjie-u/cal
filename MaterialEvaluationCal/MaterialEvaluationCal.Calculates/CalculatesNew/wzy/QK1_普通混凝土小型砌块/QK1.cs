@@ -165,7 +165,7 @@ namespace Calculates
                     if (null != extraFieldsDj)
                     {
                         gzssl = GetSafeDouble(extraFieldsDj["XXGZSSZ"]);
-                        MItem[0]["G_GZSSL"] = extraFieldsDj["XXGZSSZ"];
+                        MItem[0]["G_GZSSL"] = "≤" + extraFieldsDj["XXGZSSZ"]+ "mm/m";
                     }
                     else
                     {
@@ -204,7 +204,7 @@ namespace Calculates
                     if (extraFieldsDj != null)
                     {
                         bzhsl = GetSafeDouble(extraFieldsDj["XXGZSSZ"]);
-                        MItem[0]["G_HSL"] = "≤" + bzhsl.ToString();
+                        MItem[0]["G_HSL"] = "≤" + bzhsl.ToString()+ "mm/m";
                     }
                     else
                     {

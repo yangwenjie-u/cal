@@ -298,7 +298,7 @@ namespace Calculates
                         {
                             sum = sum + (GetSafeDouble(sitem["LDQLJ" + i]) / GetSafeDouble(sitem["CSQLJ" + i]));
                         }
-                        sitem["LDQLBJ"] = Round(sum / 5 * 100, 1).ToString("0.0");
+                        sitem["LDQLBJ"] = Round(sum / 5 * 100, 1).ToString("0");
 
 
                         //纬向 断裂强力保留率(%)
@@ -307,7 +307,7 @@ namespace Calculates
                         {
                             sum = sum + (GetSafeDouble(sitem["LDQLW" + i]) / GetSafeDouble(sitem["CSQLW" + i]));
                         }
-                        sitem["LDQLBW"] = Round(sum / 5 * 100, 1).ToString("0.0");
+                        sitem["LDQLBW"] = Round(sum / 5 * 100, 1).ToString("0");
 
                     }
 

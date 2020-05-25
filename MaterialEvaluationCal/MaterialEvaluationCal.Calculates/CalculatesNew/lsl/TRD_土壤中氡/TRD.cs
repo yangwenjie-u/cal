@@ -36,6 +36,12 @@ namespace Calculates
             string BHGXM = "", Hgxm = "";
             double zddnd = 0, zxdnd = 99999;
 
+            //计算覆盖面积
+            if (mItem !=null && IsNumeric(mItem["CD"]) && IsNumeric(mItem["KD"]))
+            {
+                mItem["FGMJ"] = Round(GetSafeDouble(mItem["CD"]) * GetSafeDouble(mItem["KD"]), 2).ToString();
+            }
+
             List<double> listArray = new List<double>();
             foreach (var sItem in SItem)
             {
