@@ -18,6 +18,7 @@ namespace Calculates
             var jcxmBhg = "";
             var jcxmCur = "";
             var ggph = "";//钢筋牌号
+            var mJCJG = "";
 
             var data = retData;
             List<double> mtmpArray = new List<double>();
@@ -441,7 +442,7 @@ namespace Calculates
                 //获取钢筋类别
                 if (string.IsNullOrEmpty(sItem["GJLB"]))
                 {
-                    sItem["GJLB"] = "";
+                    sItem["GJLB"] = "----";
                 }
                 double mScl = 0;
                 //以下代码有问题
@@ -476,6 +477,7 @@ namespace Calculates
                     mAllHg = false;
                     sItem["JCJG"] = "不下结论";
                     jsbeizhu = "依据不详";
+                    mJCJG = "不下结论";
                     continue;
                 }
 
@@ -638,14 +640,33 @@ namespace Calculates
                 {
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mxlgs);
                 }
+                else
+                { }
                 #region 抗震要求
-                if (jcxm.Contains("、抗震要求、"))
+                if (jcxm.Contains("、抗震要求、") || jcxm.Contains("、最大力总伸长率、") || jcxm.Contains("、拉伸、"))
                 {
                     int mkzhggs = 0;
-                    jcxmCur = "抗震要求";
+                    jcxmCur = "最大力总伸长率";
                     sItem["G_ZSCL"] = "≥" + extraFieldsDj["ZSCL"];
-                    sItem["G_KZYQ"] = "实测强屈比≥" + extraFieldsDj["QDQFB"] + "，实测标准屈服比≤" + extraFieldsDj["QFQFB"] + "，最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
+
+                    if (sItem["GCLX_PH"].ToUpper().EndsWith("E"))
+                    {
+                        sItem["G_KZYQ"] = "实测强屈比≥" + extraFieldsDj["QDQFB"] + "，实测标准屈服比≤" + extraFieldsDj["QFQFB"] + "，最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
+                        if (string.IsNullOrEmpty(sItem["DQJL01"]))
+                        {
+                            sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
+                        }
+                    }
+                    else
+                    {
+                        sItem["G_KZYQ"] = "最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
+                        if (string.IsNullOrEmpty(sItem["DQJL01"]))
+                        {
+                            sItem["DQJL01"] = "100";
+                        }
+                    }
                     mHggs_scl = 0;
+
                     sItem["G_SCL"] = "----";
                     sItem["SCL1"] = "----";
                     sItem["SCL2"] = "----";
@@ -654,10 +675,7 @@ namespace Calculates
                     sItem["SCL5"] = "----";
                     sItem["SCL6"] = "----";
 
-                    if (string.IsNullOrEmpty(sItem["DQJL01"]))
-                    {
-                        sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
-                    }
+
                     if (MItem[0]["PDBZ"].Contains("1499.2") || MItem[0]["PDBZ"].Contains("1499.1"))
                     {
                         for (int i = 1; i <= mxlgs; i++)
@@ -683,10 +701,33 @@ namespace Calculates
                                 sItem["QDQFB" + i] = Math.Round(GetSafeDouble(sItem["KLQD" + i]) / GetSafeDouble(sItem["QFQD" + i]), 2).ToString("0.00");
                                 sItem["QFQFB" + i] = Math.Round(GetSafeDouble(sItem["QFQD" + i]) / mQfqd, 2).ToString("0.00");
                             }
-
-                            if ((GetSafeDouble(sItem["QDQFB" + i]) >= GetSafeDouble(extraFieldsDj["QDQFB"]) || GetSafeDouble(extraFieldsDj["QDQFB"]) == 0) && (GetSafeDouble(sItem["QFQFB" + i]) <= GetSafeDouble(extraFieldsDj["QFQFB"]) || GetSafeDouble(extraFieldsDj["QFQFB"]) == 0) && (GetSafeDouble(sItem["ZSCL" + i]) >= GetSafeDouble(extraFieldsDj["ZSCL"]) || GetSafeDouble(extraFieldsDj["ZSCL"]) == 0))
+                            if (sItem["GCLX_PH"].ToUpper().EndsWith("E"))
                             {
-                                mkzhggs = mkzhggs + 1;
+                                if ((Conversion.Val(sItem["QDQFB" + i]) < Conversion.Val(extraFieldsDj["QDQFB"])))
+                                {
+                                    jcxmBhg += jcxmBhg.Contains("强屈比") ? "" : "强屈比" + "、";
+                                    mkzhggs++;
+                                }
+                                if ((Conversion.Val(sItem["QFQFB" + i]) > Conversion.Val(extraFieldsDj["QFQFB"])))
+                                {
+                                    jcxmBhg += jcxmBhg.Contains("标准屈服比") ? "" : "标准屈服比" + "、";
+                                    mkzhggs++;
+
+                                }
+
+                                if ((Conversion.Val(sItem["ZSCL" + i]) < Conversion.Val(extraFieldsDj["ZSCL"])))
+                                {
+                                    jcxmBhg += jcxmBhg.Contains("最大力总伸长率") ? "" : "最大力总伸长率" + "、";
+                                    mkzhggs++;
+                                }
+                            }
+                            else
+                            {
+                                if ((Conversion.Val(sItem["ZSCL" + i]) < Conversion.Val(extraFieldsDj["ZSCL"])))
+                                {
+                                    jcxmBhg += jcxmBhg.Contains("最大力总伸长率") ? "" : "最大力总伸长率" + "、";
+                                    mkzhggs++;
+                                }
                             }
                         }
                     }
@@ -696,9 +737,12 @@ namespace Calculates
                         {
                             sItem["QDQFB" + i] = Math.Round(GetSafeDouble(sItem["KLQD" + i]) / GetSafeDouble(sItem["QFQD" + i]), 2).ToString();
                             sItem["QFQFB" + i] = Math.Round(GetSafeDouble(sItem["QFQD" + i]) / mQfqd, 2).ToString();
-                            if ((GetSafeDouble(sItem["QDQFB" + i]) >= GetSafeDouble(extraFieldsDj["QDQFB"]) || GetSafeDouble(extraFieldsDj["QDQFB"]) == 0) && (GetSafeDouble(sItem["QFQFB" + i]) <= GetSafeDouble(extraFieldsDj["QFQFB"]) || GetSafeDouble(extraFieldsDj["QFQFB"]) == 0))
+                            if ((Conversion.Val(sItem["QDQFB" + i]) >= Conversion.Val(extraFieldsDj["QDQFB"]) || Conversion.Val(extraFieldsDj["QDQFB"]) == 0) && (Conversion.Val(sItem["QFQFB" + i]) <= Conversion.Val(extraFieldsDj["QFQFB"]) || Conversion.Val(extraFieldsDj["QFQFB"]) == 0))
                             {
-                                mkzhggs = mkzhggs + 1;
+                            }
+                            else
+                            {
+                                mkzhggs++;
                             }
                         }
                     }
@@ -755,6 +799,7 @@ namespace Calculates
                 else
                 {
                     sItem["JCJG_LW"] = "----";
+                    sItem["G_LWWZ"] = "----";
                     sItem["LW1"] = "----";
                     sItem["LW2"] = "----";
                     sItem["LW3"] = "----";
@@ -781,6 +826,7 @@ namespace Calculates
                 {
                     sItem["FXWQ1"] = "----";
                     sItem["FXWQ2"] = "----";
+                    sItem["G_LWWZ"] = "----";
                 }
                 #endregion
 
@@ -835,20 +881,25 @@ namespace Calculates
             }
 
             #region 添加最终报告
-            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合" + ggph + "要求。";
+            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复验均符合" + ggph + "要求。";
 
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复验均符合" + ggph + "要求。";
             }
             else
             {
                 mjcjg = "不合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复试不符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复验不符合" + ggph + "要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;
+            if (mJCJG == "不下结论")
+            {
+                MItem[0]["JCJG"] = mJCJG;
+                jsbeizhu = "";
+            }
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             /************************ 代码结束 *********************/

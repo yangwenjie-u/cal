@@ -426,7 +426,7 @@ namespace Calculates
                 var mallBhg_sc = 0;
                 for (int i = 1; i < mxlgs + 1; i++)
                 {
-                    if (Conversion.Val(sItem["SCL" + i]) - mScl > 0.00001)
+                    if (GetSafeInt(sItem["SCL" + i]) - (int)mScl >= 0)
                         sItem["HG_SC"] = (Conversion.Val(sItem["HG_SC"]) + 1).ToString();
                     else
                         mallBhg_sc += 1;
@@ -562,13 +562,13 @@ namespace Calculates
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复验均符合要求。";
                 MItem[0]["FJJJ3"] = jsbeizhu;
             }
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复试不符合要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复验不符合要求。";
                 MItem[0]["FJJJ2"] = jsbeizhu;
             }
             #region 添加最终报告
@@ -578,7 +578,11 @@ namespace Calculates
             {
                 mjcjg = "合格";
             }
-
+            if (mjcjg == "不下结论")
+            {
+                MItem[0]["JCJG"] = mjcjg;
+                jsbeizhu = "";
+            }
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion

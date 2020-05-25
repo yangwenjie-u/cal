@@ -246,7 +246,11 @@ namespace Calculates
                 if (jcxm.Contains("、阻燃试验、"))
                 {
                     jcxmCur = "阻燃试验";
+                    if (string.IsNullOrEmpty(sitem["ZJJSTHQD"])|| string.IsNullOrEmpty(sitem["XYJSZJ"]))
+                    {
+                        throw new Exception("阻燃试验录入数据异常，请检测。");
 
+                    }
                     //燃烧向下延伸至距离上支架的下缘大于540mm，判定不合格
 
                     MItem[0]["ZR_HG"] = IsQualified("≤540", sitem["XYJSZJ"]);
@@ -266,6 +270,8 @@ namespace Calculates
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mFlag_Bhg = true;
                     }
+
+
                 }
                 else
                 {

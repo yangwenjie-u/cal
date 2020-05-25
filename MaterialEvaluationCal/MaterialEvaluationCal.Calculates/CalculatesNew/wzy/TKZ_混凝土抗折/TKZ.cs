@@ -64,6 +64,7 @@ namespace Calculates
                     sitem["SJCC"] = "0";
                     sitem["HSXS"] = "0";
                     mitem["JCJGMS"] = mitem["JCJGMS"] + "规格不祥。";
+                    mitem["JCJG"] = "不下结论";
                     continue;
                 }
                 mHsxs = GetSafeDouble(sitem["HSXS"]);
@@ -84,13 +85,14 @@ namespace Calculates
                     mJSFF = "";
                     sitem["JCJG"] = "依据不详";
                     mitem["JCJGMS"] = mitem["JCJGMS"] + "设计等级为空或不存在";
+                    mitem["JCJG"] = "不下结论";
                     continue;
                 }
                 sitem["LQ"] = (GetSafeDateTime(mitem["SYRQ"]) - GetSafeDateTime(sitem["ZZRQ"])).Days.ToString();
                 sitem["DDSJQD"] = "0";
-                sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
-                sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
-                sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
+                sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
+                sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
+                sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                 if (sitem["DYZJW1"] == "1" || sitem["DYZJW2"] == "1" || sitem["DYZJW3"] == "1")
                     mJSFF = "special";
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
@@ -112,9 +114,10 @@ namespace Calculates
                             if (mMaxkzqd - mMidkzqd > Round(mMidkzqd * 0.15, 1) && mMidkzqd - mMinkzqd > Round(mMidkzqd * 0.15, 1))
                             {
                                 sitem["KZPJ"] = "无效";
-                                sitem["DDSJQD"] = "不作评定";
+                                sitem["DDSJQD"] = "不下结论";
                                 sitem["HZCASE"] = "1";
-                                sitem["JCJG"] = "不作评定";
+                                sitem["JCJG"] = "不下结论";
+                                mitem["JCJG"] = "不下结论";
                             }
                             if ((mMaxkzqd - mMidkzqd) > Round(mMidkzqd * 0.15, 1) && (mMidkzqd - mMinkzqd) <= Round(mMidkzqd * 0.15, 1))
                             {
@@ -148,7 +151,7 @@ namespace Calculates
                             {
                                 sitem["HZCASE"] = "4";
                                 if (mHsxs != 0)
-                                    sitem["KZPJ"] = Round((Conversion.Val(sitem["KZQD1"]) + Conversion.Val(sitem["KZQD2"]) + Conversion.Val(sitem["KZQD3"])) / 3, 1).ToString();
+                                    sitem["KZPJ"] = Round((Conversion.Val(sitem["KZQD1"]) + Conversion.Val(sitem["KZQD2"]) + Conversion.Val(sitem["KZQD3"])) / 3, 1).ToString("0.0");
                                 if (mSz != 0)
                                 {
                                     sitem["DDSJQD"] = Round(Conversion.Val(sitem["KZPJ"]) / mSz * 100, 0).ToString();
@@ -172,11 +175,11 @@ namespace Calculates
                     {
                         if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "0" && sitem["DYZJW3"] == "0")
                         {
-                            sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
-                            sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
+                            sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
+                            sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             if (Math.Abs(Conversion.Val(sitem["KZQD3"]) - Conversion.Val(sitem["KZQD2"])) <= Round(Conversion.Val(sitem["KZQD2"]) * 0.15, 1) && Math.Abs(Conversion.Val(sitem["KZQD3"]) - Conversion.Val(sitem["KZQD2"])) <= Round(Conversion.Val(sitem["KZQD3"]) * 0.15, 1))
                             {
-                                sitem["KZPJ"] = Round((Conversion.Val(sitem["KZQD2"]) + Conversion.Val(sitem["KZQD3"])) / 2, 1).ToString();
+                                sitem["KZPJ"] = Round((Conversion.Val(sitem["KZQD2"]) + Conversion.Val(sitem["KZQD3"])) / 2, 1).ToString("0.0");
                                 if (mSz != 0)
                                 {
                                     sitem["DDSJQD"] = Round(Conversion.Val(sitem["KZPJ"]) / mSz * 100, 0).ToString();
@@ -189,16 +192,17 @@ namespace Calculates
                             else
                             {
                                 sitem["KZPJ"] = "无效";
-                                sitem["JCJG"] = "不作评定";
+                                sitem["JCJG"] = "不下结论";
+                                mitem["JCJG"] = "不下结论";
                             }
                         }
                         if (sitem["DYZJW2"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW3"] == "0")
                         {
-                            sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
-                            sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
+                            sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
+                            sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             if (Math.Abs(Conversion.Val(sitem["KZQD3"]) - Conversion.Val(sitem["KZQD1"])) <= Round(Conversion.Val(sitem["KZQD1"]) * 0.15, 1) && Math.Abs(Conversion.Val(sitem["KZQD3"]) - Conversion.Val(sitem["KZQD1"])) <= Round(Conversion.Val(sitem["KZQD3"]) * 0.15, 1))
                             {
-                                sitem["KZPJ"] = Round((Conversion.Val(sitem["KZQD1"]) + Conversion.Val(sitem["KZQD3"])) / 2, 1).ToString();
+                                sitem["KZPJ"] = Round((Conversion.Val(sitem["KZQD1"]) + Conversion.Val(sitem["KZQD3"])) / 2, 1).ToString("0.0");
                                 if (mSz != 0)
                                 {
                                     sitem["DDSJQD"] = Round(Conversion.Val(sitem["KZPJ"]) / mSz * 100, 0).ToString();
@@ -211,16 +215,17 @@ namespace Calculates
                             else
                             {
                                 sitem["KZPJ"] = "无效";
-                                sitem["JCJG"] = "不作评定";
+                                sitem["JCJG"] = "不下结论";
+                                mitem["JCJG"] = "不下结论";
                             }
                         }
                         if (sitem["DYZJW3"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW2"] == "0")
                         {
-                            sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
-                            sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString();
+                            sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
+                            sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             if (Math.Abs(Conversion.Val(sitem["KZQD2"]) - Conversion.Val(sitem["KZQD1"])) <= Round(Conversion.Val(sitem["KZQD1"]) * 0.15, 1) && Math.Abs(Conversion.Val(sitem["KZQD2"]) - Conversion.Val(sitem["KZQD1"])) <= Round(Conversion.Val(sitem["KZQD2"]) * 0.15, 1))
                             {
-                                sitem["KZPJ"] = Round((Conversion.Val(sitem["KZQD1"]) + Conversion.Val(sitem["KZQD2"])) / 2, 1).ToString();
+                                sitem["KZPJ"] = Round((Conversion.Val(sitem["KZQD1"]) + Conversion.Val(sitem["KZQD2"])) / 2, 1).ToString("0.0");
                                 if (mSz != 0)
                                 {
                                     sitem["DDSJQD"] = Round(Conversion.Val(sitem["KZPJ"]) / mSz * 100, 0).ToString();
@@ -233,23 +238,27 @@ namespace Calculates
                             else
                             {
                                 sitem["KZPJ"] = "无效";
-                                sitem["JCJG"] = "不作评定";
+                                sitem["JCJG"] = "不下结论";
+                                mitem["JCJG"] = "不下结论";
                             }
                         }
                         if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "1")
                         {
                             sitem["KZPJ"] = "无效";
-                            sitem["JCJG"] = "不作评定";
+                            sitem["JCJG"] = "不下结论";
+                            mitem["JCJG"] = "不下结论";
                         }
                         if (sitem["DYZJW1"] == "1" && sitem["DYZJW3"] == "1")
                         {
                             sitem["KZPJ"] = "无效";
-                            sitem["JCJG"] = "不作评定";
+                            sitem["JCJG"] = "不下结论";
+                            mitem["JCJG"] = "不下结论";
                         }
                         if (sitem["DYZJW3"] == "1" && sitem["DYZJW2"] == "1")
                         {
                             sitem["KZPJ"] = "无效";
-                            sitem["JCJG"] = "不作评定";
+                            sitem["JCJG"] = "不下结论";
+                            mitem["JCJG"] = "不下结论";
                         }
                     }
                     else

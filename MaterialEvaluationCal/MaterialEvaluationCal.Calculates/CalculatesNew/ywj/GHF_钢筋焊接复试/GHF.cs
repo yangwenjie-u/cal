@@ -494,6 +494,7 @@ namespace Calculates
                     sItem["JCJG"] = "不下结论";
                     mAllHg = false;
                     jsbeizhu = "依据不详";
+                    mjcjg = "不下结论";
                     continue;
                 }
                 else
@@ -745,26 +746,29 @@ namespace Calculates
             }
 
             #region 添加最终报告
-            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合" + ggph + "要求。";
+            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复验均符合" + ggph + "要求。";
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合" + ggph + "要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复验均符合" + ggph + "要求。";
             }
             else
             {
-                mjcjg = "不合格";
                 if (mWxgs >= 1)
                 {
                     jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样无效，应检验原材。";
                 }
                 else
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复试不符合" + ggph + "要求。"; ;
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复验不符合" + ggph + "要求。"; ;
                 }
             }
 
             MItem[0]["JCJG"] = mjcjg;
+            if (mjcjg == "不下结论")
+            {
+                jsbeizhu = "";
+            }
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             #endregion
