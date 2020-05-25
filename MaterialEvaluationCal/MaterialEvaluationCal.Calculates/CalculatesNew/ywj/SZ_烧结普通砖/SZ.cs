@@ -114,7 +114,7 @@ namespace Calculates
                              //If mItem["JYDBH >= "181100001" Then
                              //mItem["which = 1
 
-                             sItem["QDYQ"] = "抗压强度平均值≥" + Double.Parse(mItem["G_PJZ"]).ToString("0") + "MPa。强度标准值≥" + Double.Parse(mItem["G_BZZ"]).ToString("0.0") + "MPa。";
+                             sItem["QDYQ"] = "抗压强度平均值≥" + Double.Parse(mItem["G_PJZ"]).ToString("0.0") + "MPa。强度标准值≥" + Double.Parse(mItem["G_BZZ"]).ToString("0.0") + "MPa。";
                              md2 = md1 / pjmd;
                              md2 = Math.Round(md2, 2);
                              sItem["BYXS"] = md2.ToString("0.00");
@@ -634,8 +634,8 @@ namespace Calculates
                         MItem[0]["G_PJZ"] = mYqpjz.ToString();
                         MItem[0]["G_BZZ"] = mXdy21.ToString();
                         MItem[0]["G_MIN"] = mDy21.ToString();
-                        //sItem["QDYQ"] = "抗压强度平均值需≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0").Trim() + "MPa。当变异系数δ≤0.21时，强度标准值需≥" + Conversion.Val(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa，当变异系数δ＞0.21时，单块最小强度值需≥" + Conversion.Val(MItem[0]["G_MIN"]).ToString("0.0").Trim() + "MPa。";
-                        sItem["QDYQ"] = "抗压强度平均值需≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0").Trim() + "MPa，强度标准值需≥" + Conversion.Val(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa。";
+                        //sItem["QDYQ"] = "抗压强度平均值需≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0.0").Trim() + "MPa。当变异系数δ≤0.21时，强度标准值需≥" + Conversion.Val(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa，当变异系数δ＞0.21时，单块最小强度值需≥" + Conversion.Val(MItem[0]["G_MIN"]).ToString("0.0").Trim() + "MPa。";
+                        sItem["QDYQ"] = "抗压强度平均值需≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0.0").Trim() + "MPa，强度标准值需≥" + Conversion.Val(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa。";
                         //变异系数
                         if (mPjz != 0)
                             sItem["BYXS"] = Round(mS / mPjz, 2).ToString();
