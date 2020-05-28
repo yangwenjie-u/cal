@@ -1102,6 +1102,12 @@ namespace Calculates
                 {
                     jcxmCur = FuncCurrentJcxm(jcxm, "撕裂强度,撕裂力,钉杆撕裂强度,梯形撕裂强度,直角(梯形)撕裂强度");
 
+                    var HPJ = Math.Round(((GetSafeDecimal(sItem["V_SLQD1"]) + GetSafeDecimal(sItem["V_SLQD2 "])+ GetSafeDecimal(sItem["V_SLQD3 "])+ GetSafeDecimal(sItem["V_SLQD4 "])+ GetSafeDecimal(sItem["V_SLQD5 "])) / 5), 1);
+                    sItem["V_SLQD"] = HPJ.ToString();
+
+                    var ZPJ = Math.Round(((GetSafeDecimal(sItem["H_SLQD1"]) + GetSafeDecimal(sItem["H_SLQD2 "]) + GetSafeDecimal(sItem["H_SLQD3 "]) + GetSafeDecimal(sItem["H_SLQD4 "]) + GetSafeDecimal(sItem["H_SLQD5 "])) / 5), 1);
+                    sItem["H_SLQD"] = ZPJ.ToString();
+
                     if (Conversion.Val(sItem["V_SLQD"]) >= Conversion.Val(mItem["GV_SLQD"]) && Conversion.Val(sItem["H_SLQD"]) >= Conversion.Val(mItem["GH_SLQD"]))
                     {
                         mItem["HG_SLQD"] = "合格";
