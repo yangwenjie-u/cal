@@ -55,11 +55,13 @@ namespace Calculates
                 }
                 else
                 {
+                    mjcjg = "不下结论";
                     mJSFF = "";
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     jsbeizhu = "试件尺寸为空";
                     mFlag_Bhg = false;
                     mbhggs += 1;
+                    continue;
                 }
 
                 #region 细度 - WH
@@ -109,26 +111,45 @@ namespace Calculates
                 if (jcxm.Contains("、安定性、"))
                 {
                     jcxmCur = "安定性";
-                    MItem[0]["G_ADX"] = mrsDj["ADX"];
-                    var mzcj1 = Conversion.Val(sItem["ADXC1"]) - Conversion.Val(sItem["ADXA1"]);
-                    var mzcj2 = Conversion.Val(sItem["ADXC2"]) - Conversion.Val(sItem["ADXA2"]);
-                    sItem["ADX"] = Round((mzcj1 + mzcj2) / 2, 1).ToString("0.0");
-                    var isQ = IsQualified(MItem[0]["G_ADX"], sItem["ADX"], true);
-                    //MItem[0]["HG_ADX"] = isQ;
-                    if (isQ == "符合")
+                    if ( "试饼法" == sItem["ADXFF"])
                     {
-                        MItem[0]["HG_ADX"] = "合格";
-                        mFlag_Hg = true;
+                        if ("无裂缝，无弯曲" == sItem["SBFJG"])
+                        {
+                            MItem[0]["HG_ADX"] = "合格";
+                            mFlag_Hg = true;
+                        }
+                        else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            MItem[0]["HG_ADX"] = "不合格";
+                            mFlag_Bhg = true;
+                            mbhggs = mbhggs + 1;
+                            mAllHg = false;
+                        }
                     }
-                    else if (isQ == "不符合")
+                    else
                     {
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        MItem[0]["HG_ADX"] = "不合格";
-                        mFlag_Bhg = true;
-                        mbhggs = mbhggs + 1;
-                        mAllHg = false;
-
+                        MItem[0]["G_ADX"] = mrsDj["ADX"];
+                        var mzcj1 = Conversion.Val(sItem["ADXC1"]) - Conversion.Val(sItem["ADXA1"]);
+                        var mzcj2 = Conversion.Val(sItem["ADXC2"]) - Conversion.Val(sItem["ADXA2"]);
+                        sItem["ADX"] = Round((mzcj1 + mzcj2) / 2, 1).ToString("0.0");
+                        var isQ = IsQualified(MItem[0]["G_ADX"], sItem["ADX"], true);
+                        //MItem[0]["HG_ADX"] = isQ;
+                        if (isQ == "符合")
+                        {
+                            MItem[0]["HG_ADX"] = "合格";
+                            mFlag_Hg = true;
+                        }
+                        else if (isQ == "不符合")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            MItem[0]["HG_ADX"] = "不合格";
+                            mFlag_Bhg = true;
+                            mbhggs = mbhggs + 1;
+                            mAllHg = false;
+                        }
                     }
+                   
                 }
                 else
                 {

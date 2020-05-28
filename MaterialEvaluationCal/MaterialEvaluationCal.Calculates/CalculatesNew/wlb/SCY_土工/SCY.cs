@@ -128,7 +128,7 @@ namespace Calculates
                 //}
                 #endregion
 
-                itemHG = true;
+                itemHG = true; 
                 string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
                 #region 颗粒分析

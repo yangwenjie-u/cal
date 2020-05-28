@@ -390,11 +390,11 @@ namespace Calculates
                     //根据道路等级 获取对应表观相对密度标准值
                     if ("其它等级道路" == sItem["DLDJ"])
                     {
-                        sItem["G_BGMD"] = "≥2.50";
+                        sItem["G_BGMD"] = "≥2.45";
                     }
                     else if ("城市快速路、主干路" == sItem["DLDJ"])
                     {
-                        sItem["G_BGMD"] = "≥2.45";
+                        sItem["G_BGMD"] = "≥2.50";
                     }
                     sign = true;
                     sign = IsNumeric(sItem["SYGZL1"].Trim());

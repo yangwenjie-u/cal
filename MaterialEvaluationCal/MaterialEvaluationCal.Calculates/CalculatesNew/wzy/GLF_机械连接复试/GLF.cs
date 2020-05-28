@@ -18,6 +18,7 @@ namespace Calculates
             int mFsgs_klqd, mFsgs_scl, mFsgs_lw;
             int mLwzj, mLwjd;
             string LwBzyq = "", SclBzyq = "";
+            var mjcjg = "不合格";
             string mJSFF;
             bool mAllHg;
             mAllHg = true;
@@ -210,6 +211,8 @@ namespace Calculates
                 {
                     mbxbhgs += 1;
                     sitem["JCJG"] = "不下结论";
+                    mjcjg = "不下结论";
+                    mAllHg = false;
                     continue;
                 }
                 else
@@ -524,17 +527,23 @@ namespace Calculates
             }
             //主表总判断赋值
             string mjgsm = string.Empty;
-            if (mAllHg)
+            if (mAllHg && mjcjg != "----")
             {
-                MItem[0]["JCJG"] = "合格";
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复试均符合" + ggjb + "要求。";
+                mjcjg = "合格";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目复验均符合" + ggjb + "要求。";
             }
             else
             {
-                MItem[0]["JCJG"] = "不合格";
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复试不符合" + ggjb + "要求。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "复验不符合" + ggjb + "要求。";
             }
 
+            if (mjcjg == "不下结论")
+            {
+                MItem[0]["JCJG"] = mjcjg;
+                mjgsm = "";
+            }
+
+            MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = mjgsm;
             #endregion
 

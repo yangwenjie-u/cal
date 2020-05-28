@@ -43,6 +43,7 @@ namespace Calculates
             mGetBgbh = false;
             mAllHg = true;
             vi = 0;
+            
             mitem["JCJGMS"] = "";
             foreach (var sitem in SItem)
             {
@@ -153,10 +154,14 @@ namespace Calculates
                             {
                                 vi = vi + 1;
                                 sitem["DZHGPD"] = "符合要求";
+                                sitem["JCJG"] = "合格";
+                                //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                             }
                             else
                             {
                                 sitem["DZHGPD"] = "不合格";
+                                sitem["JCJG"] = "不合格";
+                                //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目压实度不符合要求	。";
                             }
                                
                         }
@@ -166,10 +171,15 @@ namespace Calculates
                             {
                                 vi = vi + 1;
                                 sitem["DZHGPD"] = "符合要求";
+                                sitem["JCJG"] = "合格";
+                                //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+
                             }
                             else
                             {
                                 sitem["DZHGPD"] = "不合格";
+                                sitem["JCJG"] = "不合格";
+                                //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目压实度不符合要求	。";
                             }
                                 
                         }
@@ -185,7 +195,7 @@ namespace Calculates
             int c_Ht = SItem.Count();
             mitem["HGDS"] = vi.ToString();
             mitem["JCDS"] = c_Ht.ToString();
-            mitem["HGL"] = Round((vi / c_Ht) * 100, 1).ToString();
+            mitem["HGL"] = Round(GetSafeDouble(mitem["HGDS"]) / GetSafeDouble(mitem["JCDS"]) * 100, 1).ToString();
             string mhgl = Round(GetSafeDouble(mitem["HGL"]), 1).ToString("0.0");
             if (vi == c_Ht)
                 mAllHg = true;
@@ -193,9 +203,16 @@ namespace Calculates
                 mAllHg = false;
             //主表总判断赋值
             if (mAllHg)
+            {
                 mitem["JCJG"] = "合格";
+                mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+            }
             else
+            {
                 mitem["JCJG"] = "不合格";
+                mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目压实度不符合要求	。";
+            }
+
             #endregion
             /************************ 代码结束 *********************/
         }

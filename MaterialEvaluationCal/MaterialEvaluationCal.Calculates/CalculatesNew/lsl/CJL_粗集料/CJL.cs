@@ -275,7 +275,7 @@ namespace Calculates
                     {
                         sfpd1 = GetSafeDouble(sItem["PJTGBFL106"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW106"])
+                    else if (null != mItem["BZFW106"] && 100 != GetSafeDouble(mItem["BZFW106"]))
                     {
                         sfpd1 = IsQualified(mItem["BZFW106"], sItem["PJTGBFL106"], false);
                     }
@@ -289,7 +289,7 @@ namespace Calculates
                     {
                         sfpd2 = GetSafeDouble(sItem["PJTGBFL75"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW75"])
+                    else if (null != mItem["BZFW75"] && 100 != GetSafeDouble(mItem["BZFW75"]))
                     {
                         sfpd2 = IsQualified(mItem["BZFW75"], sItem["PJTGBFL75"], false);
                     }
@@ -303,7 +303,7 @@ namespace Calculates
                     {
                         sfpd3 = GetSafeDouble(sItem["PJTGBFL63"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW63"])
+                    else if (null != mItem["BZFW63"] && 100 != GetSafeDouble(mItem["BZFW63"]))
                     {
                         sfpd3 = IsQualified(mItem["BZFW63"], sItem["PJTGBFL63"], false);
                     }
@@ -317,7 +317,7 @@ namespace Calculates
                     {
                         sfpd4 = GetSafeDouble(sItem["PJTGBFL53"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW53"])
+                    else if (null != mItem["BZFW53"] && 100 != GetSafeDouble(mItem["BZFW53"]))
                     {
                         sfpd4 = IsQualified(mItem["BZFW53"], sItem["PJTGBFL53"], false);
                     }
@@ -331,7 +331,7 @@ namespace Calculates
                     {
                         sfpd5 = GetSafeDouble(sItem["PJTGBFL375"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW375"])
+                    else if (null != mItem["BZFW375"] && 100 != GetSafeDouble(mItem["BZFW375"]))
                     {
                         sfpd5 = IsQualified(mItem["BZFW375"], sItem["PJTGBFL375"], false);
                     }
@@ -345,7 +345,7 @@ namespace Calculates
                     {
                         sfpd6 = GetSafeDouble(sItem["PJTGBFL315"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW315"])
+                    else if (null != mItem["BZFW315"] && 100 != GetSafeDouble(mItem["BZFW315"]))
                     {
                         sfpd6 = IsQualified(mItem["BZFW315"], sItem["PJTGBFL315"], false);
                     }
@@ -359,7 +359,7 @@ namespace Calculates
                     {
                         sfpd7 = GetSafeDouble(sItem["PJTGBFL265"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW265"])
+                    else if (null != mItem["BZFW265"] && 100 != GetSafeDouble(mItem["BZFW265"]))
                     {
                         sfpd7 = IsQualified(mItem["BZFW265"], sItem["PJTGBFL265"], false);
                     }
@@ -373,7 +373,7 @@ namespace Calculates
                     {
                         sfpd8 = GetSafeDouble(sItem["PJTGBFL19"]) == 100 ? "合格" : "不合格";
                     }
-                    else if(null != mItem["BZFW19"])
+                    else if(null != mItem["BZFW19"] && 100 != GetSafeDouble(mItem["BZFW19"]))
                     {
                         sfpd8 = IsQualified(mItem["BZFW19"], sItem["PJTGBFL19"], false);
                     }
@@ -387,7 +387,7 @@ namespace Calculates
                     {
                         sfpd9 = GetSafeDouble(sItem["PJTGBFL132"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW132"])
+                    else if (null != mItem["BZFW132"] && 100 != GetSafeDouble(mItem["BZFW132"]))
                     {
                         sfpd9 = IsQualified(mItem["BZFW132"], sItem["PJTGBFL132"], false);
                     }
@@ -401,7 +401,7 @@ namespace Calculates
                     {
                         sfpd10 = GetSafeDouble(sItem["PJTGBFL95"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW95"])
+                    else if (null != mItem["BZFW95"] && 100 != GetSafeDouble(mItem["BZFW95"]))
                     {
                         sfpd10 = IsQualified(mItem["BZFW95"], sItem["PJTGBFL95"], false);
                     }
@@ -415,7 +415,7 @@ namespace Calculates
                     {
                         sfpd11 = GetSafeDouble(sItem["PJTGBFL475"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW475"])
+                    else if (null != mItem["BZFW475"] && 100 != GetSafeDouble(mItem["BZFW475"]))
                     {
                         sfpd11 = IsQualified(mItem["BZFW475"], sItem["PJTGBFL475"], false);
                     }
@@ -429,7 +429,7 @@ namespace Calculates
                     {
                         sfpd12 = GetSafeDouble(sItem["PJTGBFL236"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW236"])
+                    else if (null != mItem["BZFW236"] && 100 != GetSafeDouble(mItem["BZFW236"]))
                     {
                         sfpd12 = IsQualified(mItem["BZFW236"], sItem["PJTGBFL236"], false);
                     }
@@ -443,7 +443,7 @@ namespace Calculates
                     {
                         sfpd13 = GetSafeDouble(sItem["PJTGBFL06"]) == 100 ? "合格" : "不合格";
                     }
-                    else if (null != mItem["BZFW06"])
+                    else if (null != mItem["BZFW06"] && 100 != GetSafeDouble(mItem["BZFW06"]))
                     {
                         sfpd13 = IsQualified(mItem["BZFW06"], sItem["PJTGBFL06"], false);
                     }
@@ -539,6 +539,10 @@ namespace Calculates
                         //平均吸水率
                         sItem["PJXSL"] = Round((GetSafeDouble(sItem["XSL1"]) + GetSafeDouble(sItem["XSL2"])) / 2, 2).ToString("0.00");
                     }
+                    else
+                    {
+                        throw new SystemException("密度及吸水率试验数据录入有误");
+                    }
                     //吸水率判定
                     sItem["XSL_GH"] = IsQualified(sItem["G_XSL"], sItem["PJXSL"], true);
                     if (sItem["XSL_GH"] == "不符合")
@@ -564,6 +568,7 @@ namespace Calculates
                     sItem["G_BGMD"] = "----";
                     sItem["BGXDMD"] = "----";
                     sItem["PJXSL"] = "----";
+                    sItem["XSL_GH"] = "----";
                 }
                 #endregion
 
@@ -682,12 +687,21 @@ namespace Calculates
                     {
                         throw new SystemException("针、片状颗粒含量试验数据录入有误");
                     }
-                    sItem["ZZKL_GH"] = IsQualified(sItem["G_ZZKL"], sItem["W_ZZKL"], true);
-                    if (sItem["ZZKL_GH"] == "不符合")
+                    if ("S14 3～5(mm)" == sItem["GGXH"])
                     {
-                        mAllHg = false;
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["G_ZZKL"] = "----";
+                        sItem["ZZKL_GH"] = "----";
                     }
+                    else
+                    {
+                        sItem["ZZKL_GH"] = IsQualified(sItem["G_ZZKL"], sItem["W_ZZKL"], true);
+                        if (sItem["ZZKL_GH"] == "不符合")
+                        {
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                    }
+
                 }
                 else
                 {
