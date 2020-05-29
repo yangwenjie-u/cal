@@ -680,6 +680,9 @@ namespace Calculates
                 if (jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = "维卡软化温度";
+                    var PJ = Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) / 2), 1);
+
+                    mitem["RHWD"] = PJ.ToString();
 
                     if (string.IsNullOrEmpty(mitem["RHWD"]))
                     {

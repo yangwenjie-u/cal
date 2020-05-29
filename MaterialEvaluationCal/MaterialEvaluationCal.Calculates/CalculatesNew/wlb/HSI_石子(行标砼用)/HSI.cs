@@ -49,11 +49,15 @@ namespace Calculates
             string[] mtmpArray;
             var jcxmBhg = "";
             var jcxmCur = "";
+            string strdj = "";
+            int dj = 0;
+            string simc = "";
 
             foreach (var sItem in S_HSIS)
             {
-                string a = "0.00";
-                bool b = IsNumeric("0.00");
+                //string a = "0.00";
+                //bool b = IsNumeric("0.00");
+                simc = sItem["SIMC"];
                 double[] narr = new double[14];
                 itemHG = true;
                 string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
@@ -1312,6 +1316,117 @@ namespace Calculates
                     }
                     #endregion
 
+                    #region 等级计算
+
+                    #region 针片状含量
+                    //针片状含量
+                    if (!string.IsNullOrEmpty(sItem["ZPZHLPD"]) && sItem["ZPZHLPD"] != "----" && sItem["ZPZHLPD"] != "不符合")
+                    {
+                        if (sItem["ZPZHLPD"].Contains("≥C"))
+                        {
+                            dj = Convert.ToInt32(sItem["ZPZHLPD"].Replace("≥C", ""));
+                            strdj = sItem["ZPZHLPD"];
+                        }
+                        else if (sItem["ZPZHLPD"].Contains("~"))
+                        {
+                            dj = Convert.ToInt32(sItem["ZPZHLPD"].Replace("C", "").Substring(sItem["ZPZHLPD"].Replace("C", "").IndexOf("~") + 1, sItem["ZPZHLPD"].Replace("C", "").Length - sItem["ZPZHLPD"].Replace("C", "").IndexOf("~") - 1));
+                            strdj = sItem["ZPZHLPD"];
+                        }
+                        else if (sItem["ZPZHLPD"].Contains("≤C"))
+                        {
+                            dj = Convert.ToInt32(sItem["ZPZHLPD"].Replace("≤C", ""));
+                            strdj = sItem["ZPZHLPD"];
+                        }
+                    }
+                    #endregion
+
+                    #region 含泥量
+                    //含泥量
+                    if (!string.IsNullOrEmpty(sItem["HNLPD"]) && sItem["HNLPD"] != "----" && sItem["HNLPD"] != "不符合")
+                    {
+                        int dj1 = 0;
+                        string strdj1 = "";
+                        if (sItem["HNLPD"].Contains("≥C"))
+                        {
+                            dj1 = Convert.ToInt32(sItem["HNLPD"].Replace("≥C", ""));
+                            strdj1 = sItem["HNLPD"];
+                        }
+                        else if (sItem["HNLPD"].Contains("~"))
+                        {
+                            dj1 = Convert.ToInt32(sItem["HNLPD"].Replace("C", "").Substring(sItem["HNLPD"].Replace("C", "").IndexOf("~") + 1, sItem["HNLPD"].Replace("C", "").Length - sItem["HNLPD"].Replace("C", "").IndexOf("~") - 1));
+                            strdj1 = sItem["HNLPD"];
+                        }
+                        else if (sItem["HNLPD"].Contains("≤C"))
+                        {
+                            dj1 = Convert.ToInt32(sItem["HNLPD"].Replace("≤C", ""));
+                            strdj1 = sItem["HNLPD"];
+                        }
+
+                        if (dj > 0 && dj > dj1)
+                        {
+                            dj = dj1;
+                            strdj = strdj1;
+                        }
+                    }
+                    #endregion
+
+                    #region 泥块含量
+                    //泥块含量
+                    if (!string.IsNullOrEmpty(sItem["NKHLPD"]) && sItem["NKHLPD"] != "----" && sItem["NKHLPD"] != "不符合")
+                    {
+                        int dj1 = 0;
+                        string strdj1 = "";
+                        if (sItem["NKHLPD"].Contains("≥C"))
+                        {
+                            dj1 = Convert.ToInt32(sItem["NKHLPD"].Replace("≥C", ""));
+                            strdj1 = sItem["NKHLPD"];
+                        }
+                        else if (sItem["NKHLPD"].Contains("~"))
+                        {
+                            dj1 = Convert.ToInt32(sItem["NKHLPD"].Replace("C", "").Substring(sItem["NKHLPD"].Replace("C", "").IndexOf("~") + 1, sItem["NKHLPD"].Replace("C", "").Length - sItem["NKHLPD"].Replace("C", "").IndexOf("~") - 1));
+                            strdj1 = sItem["NKHLPD"];
+                        }
+                        else if (sItem["NKHLPD"].Contains("≤C"))
+                        {
+                            dj1 = Convert.ToInt32(sItem["NKHLPD"].Replace("≤C", ""));
+                            strdj1 = sItem["NKHLPD"];
+                        }
+
+                        if (dj > 0 && dj > dj1)
+                        {
+                            dj = dj1;
+                            strdj = strdj1;
+                        }
+                    }
+                    #endregion
+
+                    #region 压碎性指标
+                    //压碎性指标
+                    if (!string.IsNullOrEmpty(sItem["YSZBPD"]) && sItem["YSZBPD"] != "----" && sItem["YSZBPD"] != "不符合")
+                    {
+                        int dj1 = 0;
+                        string strdj1 = "";
+                        if (sItem["YSZBPD"].Contains("~"))
+                        {
+                            dj1 = Convert.ToInt32(sItem["YSZBPD"].Replace("C", "").Substring(sItem["YSZBPD"].Replace("C", "").IndexOf("~") + 1, sItem["YSZBPD"].Replace("C", "").Length - sItem["YSZBPD"].Replace("C", "").IndexOf("~") - 1));
+                            strdj1 = sItem["YSZBPD"];
+                        }
+                        else if (sItem["YSZBPD"].Contains("≤C"))
+                        {
+                            dj1 = Convert.ToInt32(sItem["YSZBPD"].Replace("≤C", ""));
+                            strdj1 = sItem["YSZBPD"];
+                        }
+
+                        if (dj > 0 && dj > dj1)
+                        {
+                            dj = dj1;
+                            strdj = strdj1;
+                        }
+                    }
+                    #endregion
+
+                    #endregion
+
                     if (mbhgs > 0)
                     {
                         sItem["JCJG"] = "不合格";
@@ -1337,7 +1452,7 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合"+ strdj + "及抗冻、抗渗或其他特殊要求的"+ simc + "混凝土。";
             }
             else
             {

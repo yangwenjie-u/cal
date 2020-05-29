@@ -901,14 +901,13 @@ namespace Calculates
                             mdjmd1 = Round((Conversion.Val(sitem["DJMDG1"]) - Conversion.Val(sitem["DJMDG2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0) * 10;//标准文档要求精确到10kg/m3
                             mdjmd2 = Round((Conversion.Val(sitem["DJMDG1_2"]) - Conversion.Val(sitem["DJMDG2_2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0) * 10;
                             sitem["DJMD"] = (Round((mdjmd1 + mdjmd2) / 20, 0) * 10).ToString();
-                            sitem["DJMDPD"] = "";
+                            sitem["DJMDPD"] = "----";
                         }
                     }
                     else
                     {
                         sitem["DJMD"] = "----";
                         sitem["DJMDPD"] = "----";
-
                     }
                     #endregion
 
@@ -922,7 +921,7 @@ namespace Calculates
                             mjmmd1 = Round((Conversion.Val(sitem["JMMDG1"]) - Conversion.Val(sitem["JMMDG2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0) * 10;//标准文档要求精确到10kg/m3
                             mjmmd2 = Round((Conversion.Val(sitem["JMMDG1_2"]) - Conversion.Val(sitem["JMMDG2_2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0) * 10;
                             sitem["JMMD"] = (Round((mjmmd1 + mjmmd2) / 20, 0) * 10).ToString();
-                            sitem["JMMDPD"] = "";
+                            sitem["JMMDPD"] = "----";
                         }
                     }
                     else
@@ -934,15 +933,16 @@ namespace Calculates
 
                     #region 表观密度
                     if (jcxm.Contains("、表观密度、"))
-                    {
+                    {   //标准法
                         if ((Conversion.Val(sitem["BGMDG0"]) + Conversion.Val(sitem["BGMDG2"]) - Conversion.Val(sitem["BGMDG1"])) != 0 && (Conversion.Val(sitem["BGMDG0_2"]) + Conversion.Val(sitem["BGMDG2_2"]) - Conversion.Val(sitem["BGMDG1_2"])) != 0)
                         {
+                            sitem["BGMDJCFF"] = "标准法";
                             //修正系数直接录  表观密度 = （（试样的烘干质量/（试样的烘干质量g + 水及容量瓶总质量g - 试样、水及容量瓶总质量））-修正系数）*1000     精确至10kg/m³  m0
                             mbgmd1 = Round((Conversion.Val(sitem["BGMDG0"]) / (Conversion.Val(sitem["BGMDG0"]) + Conversion.Val(sitem["BGMDG2"]) - Conversion.Val(sitem["BGMDG1"])) - Conversion.Val(sitem["SWXZXS"])) * 100, 0) * 10;
                             mbgmd2 = Round(((Conversion.Val(sitem["BGMDG0_2"])) / (Conversion.Val(sitem["BGMDG0_2"]) + Conversion.Val(sitem["BGMDG2_2"]) - Conversion.Val(sitem["BGMDG1_2"])) - Conversion.Val(sitem["SWXZXS"])) * 100, 0) * 10;
                             md = Round((mbgmd1 + mbgmd2) / 20, 0) * 10;
                             sitem["BGMD"] = md.ToString("0");
-                            sitem["BGMDPD"] = "";
+                            sitem["BGMDPD"] = "----";
                             if (Math.Abs(mbgmd1 - mbgmd2) > 20)
                             {
                                 sitem["BGMDPD"] = "两次结果差大于20，须重新取样试验";
@@ -951,12 +951,13 @@ namespace Calculates
                         }
                         else
                         {
+                            //简易法
                             if ((Conversion.Val(sitem["BGMDV2_3"]) - Conversion.Val(sitem["BGMDV1_3"])) != 0 && Conversion.Val(sitem["BGMDV2_4"]) - Conversion.Val(sitem["BGMDV1_4"]) != 0)
                                 mbgmd1 = Round(((Conversion.Val(sitem["BGMDG0_3"])) / ((Conversion.Val(sitem["BGMDV2_3"])) - (Conversion.Val(sitem["BGMDV1_3"]))) - (Conversion.Val(sitem["SWXZXS"]))) * 100, 0) * 10;
                             mbgmd2 = Round(((Conversion.Val(sitem["BGMDG0_4"])) / ((Conversion.Val(sitem["BGMDV2_4"])) - (Conversion.Val(sitem["BGMDV1_4"]))) - (Conversion.Val(sitem["SWXZXS"]))) * 100, 0) * 10;
                             md = Round((mbgmd1 + mbgmd2) / 20, 0) * 10;
                             sitem["BGMD"] = md.ToString("0");
-                            sitem["BGMDPD"] = "";
+                            sitem["BGMDPD"] = "----";
                             if (Math.Abs((mbgmd1 - mbgmd2)) > 20)
                             {
                                 sitem["BGMDPD"] = "两次结果差大于20，须重新取样试验";
@@ -986,7 +987,8 @@ namespace Calculates
                             mkxl2 = (1 - GetSafeDouble(sitem["KXLP1_2"]) / GetSafeDouble(sitem["KXLP2_2"])) * 100;
                             sitem["KXL"] = Round((mkxl1 + mkxl2) / 2, 0).ToString();
                         }
-                        sitem["KXLPD"] = "";
+                        //sitem["KXLPD"] = "";
+                        sitem["KXLPD"] = "----";
                     }
                     else
                     {
@@ -1289,18 +1291,75 @@ namespace Calculates
                 }
                 #endregion
             }
+            string dj = "";
+            if (!string.IsNullOrEmpty(SItem[0]["NKHLPD"]) && SItem[0]["NKHLPD"] != "----" && !string.IsNullOrEmpty(SItem[0]["HNLPD"]) && SItem[0]["HNLPD"] != "----")
+            {
+                if (SItem[0]["NKHLPD"] == SItem[0]["HNLPD"])
+                {
+                    dj = SItem[0]["NKHLPD"];
+                }
+                else if (SItem[0]["NKHLPD"] .Contains("～") && !SItem[0]["HNLPD"].Contains("～"))
+                {
+                    if (Conversion.Val(SItem[0]["HNLPD"]) > 55)
+                    {
+                        //dj = SItem[0]["HNLPD"];
+                        dj = SItem[0]["NKHLPD"];
+                    }
+                    else
+                    {
+                        dj = SItem[0]["HNLPD"];
+                        //dj = SItem[0]["NKHLPD"];
+                    }
+                }
+                else if (SItem[0]["HNLPD"].Contains("～") && !SItem[0]["NKHLPD"].Contains("～"))
+                {
+                    if (Conversion.Val(SItem[0]["NKHLPD"]) > 55)
+                    {
+                        //dj = SItem[0]["NKHLPD"];
+                        dj = SItem[0]["HNLPD"];
+                    }
+                    else
+                    {
+                        //dj = SItem[0]["HNLPD"];
+                        dj = SItem[0]["NKHLPD"];
+                    }
+                }
+                else if (!SItem[0]["HNLPD"].Contains("～") && !SItem[0]["NKHLPD"].Contains("～"))
+                {
+                    if (Conversion.Val(SItem[0]["NKHLPD"]) > Conversion.Val(SItem[0]["HNLPD"]))
+                    {
+                        //dj = SItem[0]["NKHLPD"];
+                        dj = SItem[0]["HNLPD"];
+                    }
+                    else
+                    {
+                        //dj = SItem[0]["HNLPD"];
+                        dj = SItem[0]["NKHLPD"];
+                    }
+                }
+            }
+            else if (!string.IsNullOrEmpty(SItem[0]["HNLPD"]) && SItem[0]["HNLPD"] != "----" && (string.IsNullOrEmpty(SItem[0]["NKHLPD"]) || SItem[0]["NKHLPD"] == "----"))
+            {
+                dj = SItem[0]["HNLPD"];
+            }
+            else if (!string.IsNullOrEmpty(SItem[0]["NKHLPD"]) && SItem[0]["NKHLPD"] != "----" && (string.IsNullOrEmpty(SItem[0]["HNLPD"]) || SItem[0]["HNLPD"] == "----"))
+            {
+                dj = SItem[0]["NKHLPD"];
+            }
+
             //主表总判断赋值
             if (mAllHg)
             {
                 mitem["JCJG"] = "合格";
                 //mitem["JCJGMS"] = "该组试样所检项目符合上述标准要求。";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",符合≤25的混凝土用砂。";
+
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",符合"+ dj + "的混凝土用砂。";
             }
             else
             {
                 mitem["JCJG"] = "不合格";
                 //mitem["JCJGMS"] = "该组试样所检项目不符合上述标准要求。";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + "检测项目" + jcxmBhg.TrimEnd('、') + ",不符合≤25的混凝土用砂。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + "，检测项目" + jcxmBhg.TrimEnd('、') + "不符合" + dj + "的混凝土用砂。";
                 //依据+判定标准，+所属项目属于+#F:s_HSA.JPPD#  +#F:s_HSA.XDMSPD#，符合≤25（强度等级）的混凝土用砂
             }
             #endregion

@@ -302,10 +302,11 @@ namespace Calculates
                 }
                 else
                 {
+                    mjcjg = "不下结论";
                     sItem["SJCC"] = "0";
                     sItem["HSXS"] = "0";
                     jsbeizhu = "规格不祥。";
-                    sItem["JCJG"] = "不合格";
+                    sItem["JCJG"] = "不下结论";
                     mAllHg = false;
                     continue;
                 }
@@ -349,19 +350,19 @@ namespace Calculates
                 {
                     HSXS = 1.05;
                 }
-                var mttjhsxs = 1.0;
-                if (IsNumeric(sItem["TTJHSXS"]) && GetSafeDouble(sItem["TTJHSXS"]) != 0)
-                {
-                    mttjhsxs = GetSafeDouble(sItem["TTJHSXS"]);
-                }
-                else
-                {
-                    sItem["TTJHSXS"] = "----";
-                }
+                //var mttjhsxs = 1.0;
+                //if (IsNumeric(sItem["TTJHSXS"]) && GetSafeDouble(sItem["TTJHSXS"]) != 0)
+                //{
+                //    mttjhsxs = GetSafeDouble(sItem["TTJHSXS"]);
+                //}
+                //else
+                //{
+                //    sItem["TTJHSXS"] = "----";
+                //}
 
-                var KYQD1 = Math.Round(KYHZ1 * 1000 / SJCCMJ, 1);
-                var KYQD2 = Math.Round(KYHZ2 * 1000 / SJCCMJ, 1);
-                var KYQD3 = Math.Round(KYHZ3 * 1000 / SJCCMJ, 1);
+                var KYQD1 = Math.Round(KYHZ1 * 1000 / SJCCMJ * HSXS, 1);
+                var KYQD2 = Math.Round(KYHZ2 * 1000 / SJCCMJ * HSXS, 1);
+                var KYQD3 = Math.Round(KYHZ3 * 1000 / SJCCMJ * HSXS, 1);
 
                 List<double> KYQDS = new List<double>();
                 KYQDS.Add(KYQD1);
@@ -396,6 +397,7 @@ namespace Calculates
                     }
                     else
                     {
+                        mjcjg = "不下结论";
                         mSz = 0;
                         mQdyq = 0;
                         jsbeizhu = "设计等级为空或不存在。";
@@ -446,16 +448,17 @@ namespace Calculates
                     }
                     else if (BaiFenBi1 > 15 && BaiFenBi2 > 15)
                     {
+                        mjcjg = "不下结论";
                         KYPJ = "试验结果无效";
                         ddsjqd = "不作评定";
                         hzcase = 1;
-                        jcjg = "不合格";
+                        jcjg = "不下结论";
                         jsbeizhu = "最大最小强度值超出中间值的15%,试验结果不作评定依据";
                         mAllHg = false;
                     }
                     else
                     {
-                        KYPJ = ((KYQD1 + KYQD2 + KYQD3) / 3).ToString("0.0");
+                        KYPJ = Math.Round((KYQD1 + KYQD2 + KYQD3) / 3, 1).ToString("0.0");
                         hzcase = 4;
                         if (mSz > 0)
                         {
@@ -558,16 +561,17 @@ namespace Calculates
                     }
                     else if (BaiFenBi1 > 15 && BaiFenBi2 > 15)
                     {
+                        mjcjg = "不下结论";
                         KYPJ = "试验结果无效";
                         ddsjqd = "不作评定";
                         hzcase = 1;
-                        jcjg = "不合格";
+                        jcjg = "不下结论";
                         jsbeizhu = "最大最小强度值超出中间值的15%,试验结果不作评定依据";
                         mAllHg = false;
                     }
                     else
                     {
-                        KYPJ = ((KYQD1 + KYQD2 + KYQD3) / 3).ToString("0.0");
+                        KYPJ = Math.Round((KYQD1 + KYQD2 + KYQD3) / 3, 1).ToString("0.0");
                         hzcase = 4;
                         if (mSz > 0)
                         {
@@ -599,18 +603,37 @@ namespace Calculates
                     }
                 }
 
-                sItem["KYQD1"] = Round(KYQD1 * HSXS * mttjhsxs, 1).ToString("0.0");
-                sItem["KYQD2"] = Round(KYQD2 * HSXS * mttjhsxs, 1).ToString("0.0");
-                sItem["KYQD3"] = Round(KYQD3 * HSXS * mttjhsxs, 1).ToString("0.0");
-                sItem["KYPJ"] = (GetSafeDouble(KYPJ) * HSXS * mttjhsxs).ToString("0.0");
-                sItem["HSXS"] = HSXS.ToString();
-                //sItem["TTJHSXS"] = mttjhsxs.ToString();
-                sItem["DDSJQD"] = (GetSafeDouble(ddsjqd) * HSXS * mttjhsxs).ToString("0");
-                sItem["LQ"] = LQ.ToString();
-                sItem["JCJG"] = jcjg;
+                sItem["KYQD1"] = Round(KYQD1, 1).ToString("0.0");
+                sItem["KYQD2"] = Round(KYQD2, 1).ToString("0.0");
+                sItem["KYQD3"] = Round(KYQD3, 1).ToString("0.0");
+                //同条件换算 代表值除以 0.88
+                if (sItem["YHTJ"] == "同条件养护(600℃ · d)")
+                {
 
+                    sItem["KYPJ"] = Round(GetSafeDouble(KYPJ) / 0.88, 1).ToString("0.0");
+                    sItem["TTJHSXS"] = "0.88";
+
+                }
+                else
+                {
+                    sItem["KYPJ"] = KYPJ;
+                }
+
+                sItem["DDSJQD"] = Round(GetSafeDouble(sItem["KYPJ"]) / mSz * 100, 0).ToString("0");
+                sItem["HSXS"] = HSXS.ToString();
+                sItem["LQ"] = LQ.ToString();
+               
+                if (100 > GetSafeDouble(sItem["DDSJQD"]))
+                {
+                    jcjg = "不合格";
+                    mAllHg = false;
+                }
+
+                sItem["JCJG"] = jcjg;
                 if (KYPJ == "试验结果无效")
                 {
+                    mjcjg = "不下结论";
+                    sItem["JCJG"] = "不下结论";
                     jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
                 }
                 else
