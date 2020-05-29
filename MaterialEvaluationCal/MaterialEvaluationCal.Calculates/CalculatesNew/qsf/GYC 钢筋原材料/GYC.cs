@@ -678,10 +678,18 @@ namespace Calculates
                             if (MItem[0]["PDBZ"].Contains("1499.2-2018"))
                             {
                                 sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD), 1)).ToString("0.0");
+                                if (sItem["ZLPC"] == "-0")
+                                {
+                                    sItem["ZLPC"] = "0";
+                                }
                             }
                             else
                             {
                                 sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD))).ToString();
+                                if (sItem["ZLPC"] == "-0")
+                                {
+                                    sItem["ZLPC"] = "0";
+                                }
                             }
                             if (jcxm.Contains("、拉伸、") && Conversion.Val(sItem["KLHZ1"]) == 0)
                             {
