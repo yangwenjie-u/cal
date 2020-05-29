@@ -534,10 +534,6 @@ namespace Calculates
                 {
                     SLLZL = 0;
                     sZlpc = "0";
-                    mAllHg = false;
-                    sItem["JCJG"] = "不下结论";
-                    mJCJG = "不下结论";
-                    continue;
                 }
 
                 if (string.IsNullOrEmpty(sItem["LWZJ"]))
@@ -627,7 +623,6 @@ namespace Calculates
                 }
 
                 #region 重量偏差
-
                 if (jcxm.Contains("、重量偏差、"))
                 {
                     jcxmCur = "重量偏差";
@@ -659,7 +654,7 @@ namespace Calculates
                                 //sItem["SYR"] = "";
                             }
 
-                            if (Conversion.Val(sItem["ZLPC"]) >= Conversion.Val(sZlpc))
+                            if (Math.Abs(Conversion.Val(sItem["ZLPC"])) <= Math.Abs(Conversion.Val(sZlpc)))
                             {
                                 sItem["JCJG_ZLPC"] = "符合";
                                 mFlag_Hg = true;
@@ -686,7 +681,7 @@ namespace Calculates
                             if (jcxm.Contains("、拉伸、") && Conversion.Val(sItem["KLHZ1"]) == 0)
                             {
                             }
-                            if (Math.Abs(Conversion.Val(sItem["ZLPC"])) <= Conversion.Val(sZlpc))
+                            if (Math.Abs(Conversion.Val(sItem["ZLPC"])) <= Math.Abs(Conversion.Val(sZlpc)))
                             {
                                 sItem["JCJG_ZLPC"] = "符合";
                                 mFlag_Hg = true;
@@ -704,6 +699,8 @@ namespace Calculates
                 else
                 {
                     sItem["JCJG_ZLPC"] = "----";
+                    sItem["ZLPC"] = "----";
+                    sItem["G_ZLPC"] = "----";
                 }
                 #endregion
 
@@ -750,14 +747,13 @@ namespace Calculates
                     sItem["LW1"] = "----";
                     sItem["LW2"] = "----";
                     sItem["LW3"] = "----";
-                    sItem["G_LWWZ"] = "----";
                 }
 
                 //  做拉伸时默认要最最大力总伸长率 带E的钢筋不做屈服比
 
                 #region 抗震要求
                 int mkZHggs = 0;
-                if (jcxm.Contains("、抗震要求、") || jcxm.Contains("、最大力总伸长率、") || jcxm.Contains("、拉伸、"))
+                if (jcxm.Contains("、抗震要求、"))
                 {
                     sItem["G_ZSCL"] = "≥" + extraFieldsDj["ZSCL"];
 
@@ -766,14 +762,14 @@ namespace Calculates
                         sItem["G_KZYQ"] = "实测强屈比≥" + extraFieldsDj["QDQFB"] + "，实测标准屈服比≤" + extraFieldsDj["QFQFB"] + "，最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
                         if (string.IsNullOrEmpty(sItem["DQJL01"]))
                         {
-                            sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
+                            sItem["DQJL01"] = "100";
                         }
                     }
                     else
                     {
                         if (string.IsNullOrEmpty(sItem["DQJL01"]))
                         {
-                            sItem["DQJL01"] = "100";
+                            sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
                         }
                         sItem["G_KZYQ"] = "最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
                     }
@@ -812,19 +808,19 @@ namespace Calculates
                             {
                                 if ((Conversion.Val(sItem["QDQFB" + i]) < Conversion.Val(extraFieldsDj["QDQFB"])))
                                 {
-                                    jcxmBhg += jcxmBhg.Contains("强屈比") ? "" : "强屈比" + "、";
+                                    jcxmBhg += jcxmBhg.Contains("抗震等级") ? "" : "抗震等级" + "、";
                                     mkZHggs++;
                                 }
                                 if ((Conversion.Val(sItem["QFQFB" + i]) > Conversion.Val(extraFieldsDj["QFQFB"])))
                                 {
-                                    jcxmBhg += jcxmBhg.Contains("标准屈服比") ? "" : "标准屈服比" + "、";
+                                    jcxmBhg += jcxmBhg.Contains("抗震等级") ? "" : "抗震等级" + "、";
                                     mkZHggs++;
 
                                 }
 
                                 if ((Conversion.Val(sItem["ZSCL" + i]) < Conversion.Val(extraFieldsDj["ZSCL"])))
                                 {
-                                    jcxmBhg += jcxmBhg.Contains("最大力总伸长率") ? "" : "最大力总伸长率" + "、";
+                                    jcxmBhg += jcxmBhg.Contains("抗震等级") ? "" : "抗震等级" + "、";
                                     mkZHggs++;
                                 }
                             }
@@ -899,7 +895,7 @@ namespace Calculates
                 if (jcxm.Contains("、反向弯曲、"))
                 {
                     jcxmCur = "反向弯曲";
-                    sItem["G_LWWZ"] = "弯曲压头D=" + (mLWZJ + 1) + "a, 弯曲90度后，反向弯曲20度,弯曲部位表面无裂纹。";
+                    sItem["G_LWWZ"] = "弯曲压头D=" + (mLWZJ + 1) + "a,弯曲90度后，反向弯曲20度,弯曲部位表面无裂纹。";
                     if (sItem["FXWQ1"] == "1")
                     {
                         mFlag_Hg = true;
@@ -915,7 +911,6 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["G_LWWZ"] = "----";
                     sItem["FXWQ1"] = "----";
                 }
                 #endregion
@@ -1097,7 +1092,14 @@ namespace Calculates
             }
             if (MItem[0]["FJJJ1"] != "")
             {
-                jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。";
+                if (jcxmBhg.TrimEnd('、') == "抗震等级")
+                {
+                    jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
+                }
+                else
+                {
+                    jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求，另取双倍样复试。";
+                }
                 MItem[0]["FJJJ1"] = jsbeiZHu;
             }
 

@@ -27,7 +27,7 @@ namespace Calculates
 
             double mQfqd = 0, mKlqd = 0, mLw = 0;
             double sLlzl = 0, sZlpc = 0;
-            int mHggs_qfqd = 0, mHggs_klqd = 0, mHggs_scl = 0, mHggs_lw = 0, mlwzj = 0, mLwjd = 0, mxlgs = 0, mxwgs = 0, mffwqcs = 0, mwhich = 0;
+            double mHggs_qfqd = 0, mHggs_klqd = 0, mHggs_scl = 0, mHggs_lw = 0, mlwzj = 0, mLwjd = 0, mxlgs = 0, mxwgs = 0, mffwqcs = 0, mwhich = 0;
             string mJSFF = "", LwBzyq = "";
             int mbhggs = 0;
 
@@ -454,17 +454,17 @@ namespace Calculates
                     mKlqd = GetSafeDouble(extraFieldsDj["KLQDBZZ"]);
                     mScl = GetSafeDouble(extraFieldsDj["SCLBZZ"]);
                     mLw = GetSafeDouble(extraFieldsDj["LWBZZ"]);
-                    mHggs_qfqd = GetSafeInt(extraFieldsDj["ZHGGS_QFQD"]); //单组合格个数
-                    mHggs_klqd = GetSafeInt(extraFieldsDj["ZHGGS_KLQD"]);
-                    mHggs_scl = GetSafeInt(extraFieldsDj["ZHGGS_SCL"]);
-                    mHggs_lw = GetSafeInt(extraFieldsDj["ZHGGS_LW"]);
+                    mHggs_qfqd = GetSafeDouble(extraFieldsDj["ZHGGS_QFQD"]); //单组合格个数
+                    mHggs_klqd = GetSafeDouble(extraFieldsDj["ZHGGS_KLQD"]);
+                    mHggs_scl = GetSafeDouble(extraFieldsDj["ZHGGS_SCL"]);
+                    mHggs_lw = GetSafeDouble(extraFieldsDj["ZHGGS_LW"]);
 
-                    mlwzj = GetSafeInt(extraFieldsDj["LWZJ"]); //冷弯直径和角度
-                    mLwjd = GetSafeInt(extraFieldsDj["LWJD"]);
-                    mxlgs = GetSafeInt(extraFieldsDj["XLGS"]);
-                    mxwgs = GetSafeInt(extraFieldsDj["XWGS"]);
-                    mffwqcs = GetSafeInt(extraFieldsDj["FFWQCS"]);
-                    mwhich = GetSafeInt(extraFieldsDj["WHICH"]);
+                    mlwzj = GetSafeDouble(extraFieldsDj["LWZJ"]); //冷弯直径和角度
+                    mLwjd = GetSafeDouble(extraFieldsDj["LWJD"]);
+                    mxlgs = GetSafeDouble(extraFieldsDj["XLGS"]);
+                    mxwgs = GetSafeDouble(extraFieldsDj["XWGS"]);
+                    mffwqcs = GetSafeDouble(extraFieldsDj["FFWQCS"]);
+                    mwhich = GetSafeDouble(extraFieldsDj["WHICH"]);
                     mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["JSFF"];
 
                     if (sItem["SFTZ"] == "是")
@@ -475,9 +475,6 @@ namespace Calculates
                 else
                 {
                     mAllHg = false;
-                    sItem["JCJG"] = "不下结论";
-                    jsbeizhu = "依据不详";
-                    mJCJG = "不下结论";
                     continue;
                 }
 
@@ -641,9 +638,13 @@ namespace Calculates
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mxlgs);
                 }
                 else
-                { }
+                {
+                    sItem["LW1"] = "----";
+                    sItem["LW2"] = "----";
+                    sItem["LW3"] = "----";
+                }
                 #region 抗震要求
-                if (jcxm.Contains("、抗震要求、") || jcxm.Contains("、最大力总伸长率、") || jcxm.Contains("、拉伸、"))
+                if (jcxm.Contains("、抗震要求、"))
                 {
                     int mkzhggs = 0;
                     jcxmCur = "最大力总伸长率";
@@ -654,7 +655,7 @@ namespace Calculates
                         sItem["G_KZYQ"] = "实测强屈比≥" + extraFieldsDj["QDQFB"] + "，实测标准屈服比≤" + extraFieldsDj["QFQFB"] + "，最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
                         if (string.IsNullOrEmpty(sItem["DQJL01"]))
                         {
-                            sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
+                            sItem["DQJL01"] = "100";
                         }
                     }
                     else
@@ -662,7 +663,7 @@ namespace Calculates
                         sItem["G_KZYQ"] = "最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
                         if (string.IsNullOrEmpty(sItem["DQJL01"]))
                         {
-                            sItem["DQJL01"] = "100";
+                            sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
                         }
                     }
                     mHggs_scl = 0;
@@ -705,19 +706,18 @@ namespace Calculates
                             {
                                 if ((Conversion.Val(sItem["QDQFB" + i]) < Conversion.Val(extraFieldsDj["QDQFB"])))
                                 {
-                                    jcxmBhg += jcxmBhg.Contains("强屈比") ? "" : "强屈比" + "、";
+                                    jcxmBhg += jcxmBhg.Contains("抗震等级") ? "" : "抗震等级" + "、";
                                     mkzhggs++;
                                 }
                                 if ((Conversion.Val(sItem["QFQFB" + i]) > Conversion.Val(extraFieldsDj["QFQFB"])))
                                 {
-                                    jcxmBhg += jcxmBhg.Contains("标准屈服比") ? "" : "标准屈服比" + "、";
+                                    jcxmBhg += jcxmBhg.Contains("抗震等级") ? "" : "抗震等级" + "、";
                                     mkzhggs++;
-
                                 }
 
                                 if ((Conversion.Val(sItem["ZSCL" + i]) < Conversion.Val(extraFieldsDj["ZSCL"])))
                                 {
-                                    jcxmBhg += jcxmBhg.Contains("最大力总伸长率") ? "" : "最大力总伸长率" + "、";
+                                    jcxmBhg += jcxmBhg.Contains("抗震等级") ? "" : "抗震等级" + "、";
                                     mkzhggs++;
                                 }
                             }
@@ -811,7 +811,7 @@ namespace Calculates
                 if (jcxm.Contains("、反向弯曲、"))
                 {
                     jcxmCur = "反向弯曲";
-                    sItem["G_LWWZ"] = "弯心直径d=" + (mlwzj + 1).ToString() + "a弯曲90°后，反向弯曲20° 弯曲部位表面无裂纹。";
+                    sItem["G_LWWZ"] = "弯曲压头D=" + (mlwzj + 1) + "a,弯曲90度后，反向弯曲20度,弯曲部位表面无裂纹。";
                     if (sItem["FXWQ1"] == "1" && sItem["FXWQ2"] == "1")
                     {
                         sItem["JCJG_LW"] = "符合";
@@ -826,7 +826,6 @@ namespace Calculates
                 {
                     sItem["FXWQ1"] = "----";
                     sItem["FXWQ2"] = "----";
-                    sItem["G_LWWZ"] = "----";
                 }
                 #endregion
 

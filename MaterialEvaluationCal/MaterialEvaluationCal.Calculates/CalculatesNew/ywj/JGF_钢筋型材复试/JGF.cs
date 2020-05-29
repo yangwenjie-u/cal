@@ -426,7 +426,7 @@ namespace Calculates
                 var mallBhg_sc = 0;
                 for (int i = 1; i < mxlgs + 1; i++)
                 {
-                    if (GetSafeInt(sItem["SCL" + i]) - (int)mScl >= 0)
+                    if (GetSafeDouble(sItem["SCL" + i]) - mScl >= 0)
                         sItem["HG_SC"] = (Conversion.Val(sItem["HG_SC"]) + 1).ToString();
                     else
                         mallBhg_sc += 1;

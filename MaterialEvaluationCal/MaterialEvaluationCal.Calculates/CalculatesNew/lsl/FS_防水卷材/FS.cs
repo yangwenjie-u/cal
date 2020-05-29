@@ -255,62 +255,13 @@ namespace Calculates
                     mJSFF = "";
                     sItem["JCJG"] = "不下结论";
                     jsbeizhu = "找不到对应的等级";
-   mbhggs++;                    continue;
+                    mbhggs++; continue;
                 }
 
                 double md, md1, md2, sum;
                 bool sign = false, mark, flag = false;
 
                 flag = false;
-
-                if (jcxm.Contains("纵向拉伸强度"))
-                {
-                    jcxmCur = "纵向拉伸强度";
-                    flag = true;
-                    sign = true;
-                    for (int i = 1; i <= 6; i++)
-                    {
-                        sign = IsNumeric(sItem["V_KLHZ" + i]) && !string.IsNullOrEmpty(sItem["V_KLHZ" + i]) ? sign : false;
-                        sign = IsNumeric(sItem["V_KLKD" + i]) && !string.IsNullOrEmpty(sItem["V_KLKD" + i]) ? sign : false;
-                        sign = IsNumeric(sItem["V_KLHD" + i]) && !string.IsNullOrEmpty(sItem["V_KLHD" + i]) ? sign : false;
-                    }
-                    if (sign)
-                    {
-                        sum = 0;
-                        for (int i = 1; i <= 6; i++)
-                        {
-                            md1 = Conversion.Val(sItem["V_KLKD" + i].Trim());
-                            md2 = Conversion.Val(sItem["V_KLHD" + i].Trim());
-                            md = Conversion.Val(sItem["V_KLHZ" + i].Trim());
-                            md = md / (md1 * md2);
-                            md = Round(md, 1);
-                            sum = sum + md;
-                        }
-                        double pjmd = sum / 5;
-                        pjmd = Round(pjmd, 1);
-                        sItem["V_KLQD"] = pjmd.ToString();
-                        mItem["GV_KLQD"] = "≥" + mItem["GV_KLQD"];
-                        mItem["HG_KLQD"] = IsQualified(mItem["GV_KLQD"], sItem["V_KLQD"], false);
-                        mbhggs = mItem["HG_KLQD"] == "不合格" ? mbhggs + 1 : mbhggs;
-                        if (mItem["HG_KLQD"] == "合格")
-                        {
-                            mFlag_Hg = true;
-                        }
-                        else
-                        {
-                            mFlag_Bhg = true;
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        }
-                    }
-                }
-                else
-                {
-                    sItem["V_KLQD"] = "----";
-                    sItem["H_KLQD"] = "----";
-                    mItem["HG_KLQD"] = "----";
-                    mItem["GV_KLQD"] = "----";
-                    mItem["GH_KLQD"] = "----";
-                }
                 if (jcxm.Contains("拉力") || jcxm.Contains("、断裂拉伸强度、") || jcxm.Contains("拉伸性能") || jcxm.Contains("拉伸强度"))
                 {
                     jcxmCur = FuncCurrentJcxm(jcxm, "拉力,断裂拉伸强度,拉伸性能,拉伸强度");
@@ -558,11 +509,7 @@ namespace Calculates
                     sItem["V_KLQD"] = "----";
                     mItem["HG_KLQD"] = "----";
                     sItem["H_KLQD"] = "----";
-                    mItem["HG_KLQD"] = "----";
                 }
-
-
-
 
                 if (jcxm.Contains("延伸率") || jcxm.Contains("伸长率") || jcxm.Contains("拉断伸长率") || jcxm.Contains("断裂伸长率") || jcxm.Contains("拉伸性能"))
                 {
@@ -658,59 +605,6 @@ namespace Calculates
                     mItem["GH_SCL"] = "----";
                     sItem["H_SCL"] = "----";
                     mItem["HG_SCL"] = "----";
-
-
-
-
-                }
-
-                if (jcxm.Contains("纵向断裂伸长率"))
-                {
-                    sign = true;
-                    jcxmCur = "纵向断裂伸长率";
-
-                    for (int i = 1; i <= 6; i++)
-                    {
-                        sign = IsNumeric(sItem["V_SCL_L0" + i]) && !string.IsNullOrEmpty(sItem["V_SCL_L0" + i]) ? sign : false;
-                        sign = IsNumeric(sItem["V_SCL_LB" + i]) && !string.IsNullOrEmpty(sItem["V_SCL_LB" + i]) ? sign : false;
-                    }
-                    if (sign)
-                    {
-                        sum = 0;
-                        for (int i = 1; i <= 6; i++)
-                        {
-                            md1 = Conversion.Val(sItem["V_SCL_L0" + i].Trim());
-                            md2 = Conversion.Val(sItem["V_SCL_LB" + i].Trim());
-                            md = 100 * (md2 - md1) / md1;
-                            md = Round(md, 0);
-                            sum = sum + md;
-                        }
-                        double pjmd = sum / 5;
-                        pjmd = Round(pjmd, 0);
-                        sItem["V_SCL"] = pjmd.ToString();
-                        sItem["H_SCL"] = "";
-                        mItem["GV_SCL"] = "≥" + mItem["GV_SCL"];
-                        mItem["HG_SCL"] = IsQualified(mItem["GV_SCL"], sItem["V_SCL"], false);
-                        mbhggs = mItem["HG_SCL"] == "不合格" ? mbhggs + 1 : mbhggs;
-                        if (mItem["HG_SCL"] == "合格")
-                        {
-                            mFlag_Hg = true;
-                        }
-                        else
-                        {
-                            mFlag_Bhg = true;
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        }
-                    }
-                }
-                else
-                {
-                    sItem["V_SCL"] = "----";
-                    sItem["H_SCL"] = "----";
-                    mItem["HG_SCL"] = "----";
-                    mItem["GV_SCL"] = "----";
-                    mItem["GH_SCL"] = "----";
-                  
                 }
 
                 if (jcxm.Contains("、不透水性、"))

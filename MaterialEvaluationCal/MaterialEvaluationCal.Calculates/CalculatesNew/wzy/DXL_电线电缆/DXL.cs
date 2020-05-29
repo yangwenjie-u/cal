@@ -138,21 +138,32 @@ namespace Calculates
                         var mrsDj_Filter = mrsDj.Where(x => x["ZL"].Contains(sitem["S_ZL"].Trim()) && x["LX"].Contains(sitem["S_LX"].Trim()));
                         sd = "";
 
+
                         foreach (var item in mrsDj_Filter)
                         {
-                            //if (Conversion.Val(item["BCJMJ"]) == Conversion.Val(sitem["S_BCJMJ"]))//标称截面积(mm<sup>2</sup>)
-                            if (Conversion.Val(item["BCJMJ"]) == Conversion.Val(sitem["E_JMJSJ"]))//标称截面积(mm<sup>2</sup>)
+                            //电缆
+                            if (Conversion.Val(item["BCJMJ"]) == Conversion.Val(Y_DXL["E_JMJSJ"]))// 电缆截面积 标称截面积(mm<sup>2</sup>)
                             {
                                 sd = item["ZDDZ"].Trim();
                                 break;
                             }
+                            //电线 取从表的标称截面积
+                            
+                            if (Conversion.Val(item["BCJMJ"]) == Conversion.Val(sitem["S_BCJMJ"]))// 电线截面积  标称截面积(mm<sup>2</sup>)
+                            {
+                                sd = item["ZDDZ"].Trim();
+                                break;
+                            }
+
                         }
+
+
                         if (sd == "")
                             sm = "--";
                         else
                             sm = sd.Substring(sd.IndexOf(".") + 1);
 
-                        Y_DXL["E_SJDZ"] = sd == "" ? "----" : sd;  //设计20℃电阻值(Ω/km)
+                        Y_DXL["E_SJDZ"] = sd == "" ? "----" : "≤" + sd;  //设计20℃电阻值(Ω/km)
                         Y_DXL["E_SCDZ"] = sqz.ToString("F1");//实测20℃电阻值(Ω/km)
 
                         if (sm.Length == 1)
@@ -176,6 +187,26 @@ namespace Calculates
                             Y_DXL["E_SCDZ"] = sqz.ToString("F4");
                         }
 
+                        //主线  ，设计电阻 ，实测电阻
+                        //电线类型（主线/地线）
+                        if (string.IsNullOrEmpty(Y_DXL["E_DXZL"]))
+                        {
+                            Y_DXL["E_DXZL"] = "主线";
+                        }
+                        if (Y_DXL["E_DXZL"].Trim() == "主线")
+                        {
+                            //设计电阻(主线)
+                            sitem["E_SJDZ_Z"] = Y_DXL["E_SJDZ"];
+                            //实测电阻
+                            sitem["E_SCDZ" + (yIndex - 1).ToString()] = Y_DXL["E_SCDZ"];
+                        }
+                        if (Y_DXL["E_DXZL"].Trim() == "地线")
+                        {
+                            //设计电阻(地线)
+                            sitem["E_SJDZ_D"] = Y_DXL["E_SJDZ"];
+                            //实测电阻（地线）
+                            sitem["E_SCDZ_D"] = Y_DXL["E_SCDZ"];
+                        }
                         md = Conversion.Val(sd);
                         if (sm == "--")
                             Y_DXL["E_DZPD"] = "----";
@@ -246,7 +277,7 @@ namespace Calculates
                 if (jcxm.Contains("、阻燃试验、"))
                 {
                     jcxmCur = "阻燃试验";
-                    if (string.IsNullOrEmpty(sitem["ZJJSTHQD"])|| string.IsNullOrEmpty(sitem["XYJSZJ"]))
+                    if (string.IsNullOrEmpty(sitem["ZJJSTHQD"]) || string.IsNullOrEmpty(sitem["XYJSZJ"]))
                     {
                         throw new Exception("阻燃试验录入数据异常，请检测。");
 
@@ -278,7 +309,7 @@ namespace Calculates
                     MItem[0]["ZR_HG"] = "----";
                 }
                 MItem[0]["CF_SUBROWS"] = row.ToString();
-                #region 新增部分用于原始记录
+                //#region 新增部分用于原始记录
 
                 //strArray = new string[20];
                 //strArray[1] = "E_BEIZHU";
@@ -286,8 +317,8 @@ namespace Calculates
                 //strArray[3] = "E_DZPD";
                 //strArray[4] = "E_FDZ";
                 //strArray[5] = "E_GS";
-                //strArray[6] = "E_JMJSC";
-                //strArray[7] = "E_JMJSJ";
+                //strArray[6] = "E_JMJSC";  //实测截面积
+                //strArray[7] = "E_JMJSJ";  //
                 //strArray[8] = "E_MD";
                 //strArray[9] = "E_SCDZ";
                 //strArray[10] = "E_SJDZ";
@@ -319,8 +350,8 @@ namespace Calculates
                 //        }
                 //    }
                 //    sitem[strArray[xd]] = sitem[strArray[xd]].Length > 1 ? sitem[strArray[xd]].Substring(0, sitem[strArray[xd]].Length - 1) : "";
-                //} 
-                #endregion
+                //}
+                //#endregion
                 if (mbhggs > 0)
                 {
                     sitem["JCJG"] = "不合格";

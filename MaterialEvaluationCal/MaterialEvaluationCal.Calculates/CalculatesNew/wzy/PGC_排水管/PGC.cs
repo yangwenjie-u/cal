@@ -102,7 +102,7 @@ namespace Calculates
                 else
                 {
                     sitem["JCJG"] = "不下结论";
-                    mitem["JCJGMS"] = mitem["JCJGMS"] + "获取标准要求出错，找不到对应项";
+                    mitem["JCJGMS"] = "获取标准要求出错，找不到对应项";
                     continue;
                 }
                 //具体检测项目处理
@@ -421,15 +421,13 @@ namespace Calculates
                             md = md2 == 0 ? 0 : (100 * md1 / md2);
                             mitem["LCCJ"] = Round(md, 0).ToString("0");
                             mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
-
-
                         }
                         else
                         {
                             if (GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mrslccj_Sel["AQPHCS"]))
                             {
                                 mitem["LCCJ_HG"] = "合格";
-                                mitem["LCCJ"] = "IR值为：A(≤10%)";
+                                mitem["LCCJ"] = " IR值为：A(≤10%)";
                             }
                             if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mrslccj_Sel["BQPHCS1"]) && GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mrslccj_Sel["BQPHCS2"]))
                             {
@@ -526,7 +524,7 @@ namespace Calculates
                 if (jcxm.Contains("、软化温度、") || jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
-                    var PJ =Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])/2),1);
+                    var PJ = Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) / 2), 1);
 
                     mitem["RHWD"] = PJ.ToString();
                     mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);

@@ -130,25 +130,36 @@ namespace Calculates
                 if (jcxm.Contains("、密度、"))
                 {
                     jcxmCur = "密度";
-                    if (!IsNumeric(sItem["MDBJWJJ_1"]) || !IsNumeric(sItem["MDBJWJJ_2"]) || !IsNumeric(sItem["MDRLBZ_1"]) || !IsNumeric(sItem["MDRLBZ_2"]) || !IsNumeric(sItem["MDTJ_1"]) || !IsNumeric(sItem["MDTJ_2"]))
-                    {
-                        throw new Exception("请输入密度数据");
-                    }
-                    for (int i = 1; i < 3; i++)
-                    {
-                        sItem["MD_" + i] = Round((Conversion.Val(sItem["MDBJWJJ_" + i]) - Conversion.Val(sItem["MDRLBZ_" + i])) / Conversion.Val(sItem["MDTJ_" + i]) * 100, 3).ToString();
-                    }
 
-                    sItem["MD"] = Round((Conversion.Val(sItem["MD_1"]) + Conversion.Val(sItem["MD_2"])) / 2, 3).ToString();
+                    #region  //固体密度
+                    if (!string.IsNullOrEmpty(sItem["MDBJWJJ_1"]))
+                    {
+                        if (!IsNumeric(sItem["MDBJWJJ_1"]) || !IsNumeric(sItem["MDBJWJJ_2"]) || !IsNumeric(sItem["MDRLBZ_1"]) || !IsNumeric(sItem["MDRLBZ_2"]) || !IsNumeric(sItem["MDTJ_1"]) || !IsNumeric(sItem["MDTJ_2"]))
+                        {
+                            throw new Exception("请输入密度数据");
+                        }
+                        for (int i = 1; i < 3; i++)
+                        {
+                            sItem["MD_" + i] = Round((Conversion.Val(sItem["MDBJWJJ_" + i]) - Conversion.Val(sItem["MDRLBZ_" + i])) / Conversion.Val(sItem["MDTJ_" + i]) * 100, 3).ToString();
+                        }
 
+                        sItem["MD"] = Round((Conversion.Val(sItem["MD_1"]) + Conversion.Val(sItem["MD_2"])) / 2, 3).ToString();
+                    }
+                    #endregion
+                    #region  //液体
+                    else
+                    {
+                        sItem["MD"] = Round((Conversion.Val(sItem["MD2_1"]) + Conversion.Val(sItem["MD2_2"])) / 2, 3).ToString();
+                    }
+                    #endregion 
                     if (GetSafeDouble(sItem["MDKZZ"]) > 1.1)
                     {
-                        MItem[0]["G_MD"] = Round(Conversion.Val(sItem["MDKZZ"]) - 0.03, 3).ToString() + "~" + Round(Conversion.Val(sItem["MDKZZ"]) + 0.03, 3).ToString();
+                        MItem[0]["G_MD"] = Round(Conversion.Val(sItem["MDKZZ"]) - 0.03, 3).ToString() + "～" + Round(Conversion.Val(sItem["MDKZZ"]) + 0.03, 3).ToString();
 
                     }
                     else
                     {
-                        MItem[0]["G_MD"] = Round(Conversion.Val(sItem["MDKZZ"]) - 0.02, 3).ToString() + "~" + Round(Conversion.Val(sItem["MDKZZ"]) + 0.02, 3).ToString();
+                        MItem[0]["G_MD"] = Round(Conversion.Val(sItem["MDKZZ"]) - 0.02, 3).ToString() + "～" + Round(Conversion.Val(sItem["MDKZZ"]) + 0.02, 3).ToString();
                     }
                     if (sItem["MDKZZ"] == "----")
                     {
@@ -185,22 +196,22 @@ namespace Calculates
                     if (!IsNumeric(sItem["GTHLM2_1"]) || !IsNumeric(sItem["GTHLM2_1"]) || !IsNumeric(sItem["GTHLM0_1"]) || !IsNumeric(sItem["GTHLM0_2"]) || !IsNumeric(sItem["GTHLM1_1"]) || !IsNumeric(sItem["GTHLM1_2"])
                         || !IsNumeric(sItem["GTHLM0_1"]) || !IsNumeric(sItem["GTHLM0_2"]))
                     {
-                        throw new Exception("请输入密度数据");
+                        throw new Exception("请输入固体含量数据");
                     }
                     for (int i = 1; i < 3; i++)
                     {
-                        sItem["GTHL_" + i] = Round((Conversion.Val(sItem["GTHLM2_" + i]) - Conversion.Val(sItem["GTHLM0_" + i])) / Conversion.Val(sItem["GTHLM1_" + i]) - Conversion.Val(sItem["GTHLM0_" + i]) * 100, 2).ToString();
+                        sItem["GTHL_" + i] = Round((Conversion.Val(sItem["GTHLM2_" + i]) - Conversion.Val(sItem["GTHLM0_" + i])) / (Conversion.Val(sItem["GTHLM1_" + i]) - Conversion.Val(sItem["GTHLM0_" + i])) * 100, 2).ToString();
                     }
 
                     sItem["GTHL"] = Round((Conversion.Val(sItem["GTHL_1"]) + Conversion.Val(sItem["GTHL_2"])) / 2, 2).ToString();
 
                     if (GetSafeDouble(sItem["HGLKZZ"]) > 25)
                     {
-                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HGLKZZ"]) * 0.95, 2).ToString() + "~" + Round(Conversion.Val(sItem["HGLKZZ"]) * 1.05, 2).ToString();
+                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HGLKZZ"]) * 0.95, 2).ToString() + "～" + Round(Conversion.Val(sItem["HGLKZZ"]) * 1.05, 2).ToString();
                     }
                     else
                     {
-                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HGLKZZ"]) * 0.9, 2).ToString() + "~" + Round(Conversion.Val(sItem["HGLKZZ"]) * 1.1, 2).ToString();
+                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HGLKZZ"]) * 0.9, 2).ToString() + "～" + Round(Conversion.Val(sItem["HGLKZZ"]) * 1.1, 2).ToString();
                     }
                     if (sItem["HGLKZZ"] == "----")
                     {
@@ -250,11 +261,11 @@ namespace Calculates
 
                     if (GetSafeDouble(sItem["HSLKZZ"]) > 5)
                     {
-                        MItem[0]["G_HSL"] = Round(Conversion.Val(sItem["HSLKZZ"]) * 0.9, 2).ToString() + "~" + Round(Conversion.Val(sItem["HSLKZZ"]) * 1.1, 2).ToString();
+                        MItem[0]["G_HSL"] = Round(Conversion.Val(sItem["HSLKZZ"]) * 0.9, 2).ToString() + "～" + Round(Conversion.Val(sItem["HSLKZZ"]) * 1.1, 2).ToString();
                     }
                     else
                     {
-                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HSLKZZ"]) * 0.8, 2).ToString() + "~" + Round(Conversion.Val(sItem["HSLKZZ"]) * 1.1, 2).ToString();
+                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HSLKZZ"]) * 0.8, 2).ToString() + "～" + Round(Conversion.Val(sItem["HSLKZZ"]) * 1.1, 2).ToString();
                     }
                     if (sItem["HSLKZZ"] == "----")
                     {
@@ -304,7 +315,7 @@ namespace Calculates
                             //基准拌合物总质量
                             sItem["JPHWZL_" + i] = (Conversion.Val(sItem["PBSN" + i]) + Conversion.Val(sItem["PBCHL1" + i]) + Conversion.Val(sItem["PBCHL2" + i]) + Conversion.Val(sItem["PBS" + i]) + (Conversion.Val(sItem["PBSA" + i]) + Conversion.Val(sItem["PBSZ" + i]))).ToString();
                             //泌水基准拌合物用水量1
-                            sItem["MSBYS_" + i] = sItem["PBS" + i];
+                            sItem["MJBYS_" + i] = sItem["PBS" + i];
                             sItem["JSYZL_" + i] = (Conversion.Val(sItem["JTSYZL" + i]) - Conversion.Val(sItem["JTZL" + i])).ToString();
                             if (IsNumeric(sItem["JMSZL_" + i]))
                             {
@@ -434,7 +445,7 @@ namespace Calculates
                     {
                         if (IsNumeric(sItem["SPJMSL"]))
                         {
-                            sItem["MSLB"] = Round(Conversion.Val(sItem["SPJMSL"]) / Conversion.Val(sItem["SPJMSL"]) * 100, 0).ToString();
+                            sItem["MSLB"] = Round(Conversion.Val(sItem["SPJMSL"]) / Conversion.Val(sItem["JPJMSL"]) * 100, 0).ToString();
                         }
                         MItem[0]["HG_MSL"] = IsQualified(MItem[0]["G_MSL"], sItem["MSLB"]);
                     }
@@ -472,8 +483,8 @@ namespace Calculates
                         }
                         for (int i = 1; i < 4; i++)
                         {
-                            sItem["JJDYS_" + i] = Round(Conversion.Val(sItem["PBS" + i]) / Conversion.Val(sItem["SYBHL"]) * 1000, 2).ToString();
-                            sItem["JSDYS_" + i] = Round(Conversion.Val(sItem["SPBS" + i]) / Conversion.Val(sItem["SYBHL"]) * 1000, 2).ToString();
+                            //sItem["JJDYS_" + i] = Round(Conversion.Val(sItem["PBS" + i]) / Conversion.Val(sItem["SYBHL"]) * 1000, 2).ToString();
+                            //sItem["JSDYS_" + i] = Round(Conversion.Val(sItem["SPBS" + i]) / Conversion.Val(sItem["SYBHL"]) * 1000, 2).ToString();
                             sItem["JSL_" + i] = Round((Conversion.Val(sItem["JJDYS_" + i]) - Conversion.Val(sItem["JSDYS_" + i])) / Conversion.Val(sItem["JJDYS_" + i]) * 100, 1).ToString();
                             mTmpArray.Add(GetSafeDouble(sItem["JSL_" + i]));
                         }
@@ -553,9 +564,8 @@ namespace Calculates
                         md = Round(md1 - md2, 1);
                         sum += md;
                     }
-                    md = sum / 2;
+                    md = sum / 3;
                     sItem["PJHQL"] = Math.Round(md, 1).ToString();
-
 
                     MItem[0]["HG_HQL"] = IsQualified(MItem[0]["G_HQL"], sItem["PJHQL"]);
                     if (MItem[0]["HG_HQL"] == "合格")
@@ -703,16 +713,18 @@ namespace Calculates
                 if (jcxm.Contains("、经1h后坍落度变化量、"))
                 {
                     jcxmCur = "经1h后坍落度变化量";
+                    #region 基准
                     mTmpArray.Clear();
                     for (int i = 1; i < 4; i++)
                     {
-                        if (!IsNumeric(sItem["CJTLD_" + i]) || !IsNumeric(sItem["TLD1HH_" + i]))
+                        if (!IsNumeric(sItem["JJTLD_" + i]) || !IsNumeric(sItem["TLD1HH_" + i]))
                         {
-                            throw new Exception("请输入经1h后坍落度变化量参数");
+                            throw new Exception("请输入经基准1h后坍落度变化量参数");
                         }
-                        sItem["TLDBHL" + i] = Round((Conversion.Val(sItem["CJTLD_" + i]) - Conversion.Val(sItem["TLD1HH_" + i])) / 5, 0).ToString();
+                        sItem["TLDBHL" + i] = Round((Conversion.Val(sItem["JJTLD_" + i]) - Conversion.Val(sItem["TLD1HH_" + i])), 0).ToString();
                         mTmpArray.Add(GetSafeDouble(sItem["TLDBHL" + i]));
                     }
+
                     mTmpArray.Sort();
                     if (mTmpArray.Count == 3)
                     {
@@ -749,13 +761,70 @@ namespace Calculates
                         sItem["PJTLDBHL"] = "重做";
                     }
 
-                    if (sItem["PJTLDBHL"] == "重做")
+                    #endregion
+                    #region 受检
+                    mTmpArray.Clear();
+                    for (int i = 1; i < 4; i++)
+                    {
+                        if (!IsNumeric(sItem["JSTLD_" + i]) || !IsNumeric(sItem["TLD1HHSJ_" + i]))
+                        {
+                            throw new Exception("请输入经受检1h后坍落度变化量参数");
+                        }
+                        sItem["TLDBHLSJ_" + i] = Round((Conversion.Val(sItem["JSTLD_" + i]) - Conversion.Val(sItem["TLD1HHSJ_" + i])), 0).ToString();
+                        mTmpArray.Add(GetSafeDouble(sItem["TLDBHL" + i]));
+                    }
+
+                    mTmpArray.Sort();
+                    if (mTmpArray.Count == 3)
+                    {
+                        mMaxKyqd = mTmpArray[2];
+                        mMinKyqd = mTmpArray[0];
+                        mMidKyqd = mTmpArray[1];
+                        mAvgKyqd = mTmpArray.Average();
+
+                        //计算抗压平均、达到设计强度、及进行单组合格判定
+                        if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
+                        {
+                            MItem[0]["HG_TLD"] = "重做";
+                            sItem["PJTLDBHLSJ"] = "重做";
+                        }
+                        if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
+                        {
+                            //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
+                            sItem["PJTLDBHLSJ"] = Round(mMidKyqd, 1).ToString();
+                        }
+                        if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
+                        {
+                            // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
+                            sItem["PJTLDBHLSJ"] = Round(mMidKyqd, 1).ToString();
+                        }
+                        if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
+                        {
+                            //最大最小强度值均未超出中间值的15%,试验结果取平均值"
+                            sItem["PJTLDBHLSJ"] = Round(mAvgKyqd, 1).ToString();
+                        }
+                    }
+                    else
+                    {
+                        MItem[0]["HG_TLD"] = "重做";
+                        sItem["PJTLDBHLSJ"] = "重做";
+                    }
+
+                    #endregion
+
+
+                    if (sItem["PJTLDBHL"] == "重做" || sItem["PJTLDBHLSJ"] == "重做")
                     {
                         mbhggs = mbhggs + 1;
                     }
                     else
                     {
                         MItem[0]["HG_TLD"] = IsQualified(MItem[0]["G_TLD"], sItem["PJTLDBHL"]);
+                        if (MItem[0]["HG_TLD"] == "合格")
+                        {
+                            MItem[0]["HG_TLD"] = IsQualified(MItem[0]["G_TLD"], sItem["PJTLDBHLSJ"]);
+
+                        }
                     }
 
                     if (MItem[0]["HG_TLD"] == "合格")

@@ -424,7 +424,7 @@ namespace Calculates
                         sItem["JCJG_LW"] = "----";
                         sItem["LW1"] = "----";
                         sItem["LW2"] = "----";
-                        sItem["LW3"] = "----"; 
+                        sItem["LW3"] = "----";
                     }
                     if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合")
                     {
@@ -507,7 +507,7 @@ namespace Calculates
                     jsbeizhu = "依据不详";
                     mFlag_Bhg = true;
                     sItem["JCJG"] = "不下结论";
-                    mjcjg= "不下结论";
+                    mjcjg = "不下结论";
                     continue;
                 }
                 else
@@ -671,6 +671,7 @@ namespace Calculates
                         {
                             // 三个断于母材 抗拉强度>=标准值
                             sItem["JCJG_LS"] = "符合";
+                            mFlag_Hg = true;
 
                         }
                         else if (md == 5 && (kl1 >= mKlqd && kl2 >= mKlqd && kl3 >= mKlqd))
@@ -678,6 +679,7 @@ namespace Calculates
                             //2个断于母材延性，抗拉强度>=标准值1倍
                             //1给断于焊缝脆性
                             sItem["JCJG_LS"] = "符合";
+                            mFlag_Hg = true;
                         }
                         else
                         {
@@ -714,17 +716,20 @@ namespace Calculates
                         if (Gs <= 1)
                         {
                             sItem["JCJG_LW"] = "符合";
+                            mFlag_Hg = true;
 
                         }
                         else if (Gs == 2)
                         {
                             jcxmCur = CurrentJcxm(jcxm, "冷弯,弯曲");
                             sItem["JCJG_LW"] = "复试";
+                            mFlag_Bhg = true;
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
 
                         }
                         else
                         {
+                            mFlag_Bhg = true;
                             jcxmCur = CurrentJcxm(jcxm, "冷弯,弯曲");
                             sItem["JCJG_LW"] = "不符合";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
@@ -759,7 +764,7 @@ namespace Calculates
                 if (sItem["JCJG"] == "不合格")
                 {
                     mAllHg = false;
-                    if (string.Equals(MItem[0]["PDBZ"], "18-2012"))
+                    if (MItem[0]["PDBZ"].Contains("18-2012"))
                     {
                         if (sItem["JCJG_LS"] == "不符合" || sItem["JCJG_LW"] == "不符合")
                         {
@@ -795,7 +800,7 @@ namespace Calculates
             #region 添加最终报告
             jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
 
-            
+
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
@@ -821,13 +826,13 @@ namespace Calculates
 
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"]))
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
-                MItem[0]["FJJJ1"] = jsbeizhu;
-                if (mFlag_Hg && mFlag_Bhg)
-                {
+                //jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                //MItem[0]["FJJJ1"] = jsbeizhu;
+                //if (mFlag_Hg && mFlag_Bhg)
+                //{
                     jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
                     MItem[0]["FJJJ1"] = jsbeizhu;
-                }
+                //}
             }
 
             if (!string.IsNullOrEmpty(mwxzh))
