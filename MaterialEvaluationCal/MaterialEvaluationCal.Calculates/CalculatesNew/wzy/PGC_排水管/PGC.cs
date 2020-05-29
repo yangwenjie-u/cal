@@ -227,15 +227,15 @@ namespace Calculates
                     }
                     else if (gc > 40 && gc <= 600)
                     {
-                        sitem["ZJCLGS"]= "6";
+                        sitem["ZJCLGS"] = "6";
                     }
                     else if (gc > 600 && gc <= 1600)
                     {
-                        sitem["ZJCLGS"]= "8";
+                        sitem["ZJCLGS"] = "8";
                     }
                     else if (gc > 1600)
                     {
-                        sitem["ZJCLGS"]= "12";
+                        sitem["ZJCLGS"] = "12";
                     }
                     else
                     {
@@ -452,7 +452,8 @@ namespace Calculates
                             if (GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mrslccj_Sel["AQPHCS"]))
                             {
                                 mitem["LCCJ_HG"] = "合格";
-  mitem["LCCJ"] = "TIR值为：A(≤10%)";      }
+                                mitem["LCCJ"] = "TIR值为：A(≤10%)";
+                            }
                             if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mrslccj_Sel["BQPHCS1"]) && GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mrslccj_Sel["BQPHCS2"]))
                             {
                                 mitem["LCCJ_HG"] = "不判定";
@@ -548,22 +549,18 @@ namespace Calculates
                 if (jcxm.Contains("、软化温度、") || jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
-
-var PJ =Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])/2),1);
+                    decimal PJ = 0;
                     string fj = MItem[0]["SFFJ"].ToString();
-
                     if (fj == "0" || fj == null)
                     {
-                        var PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
-
-                        mitem["RHWD"] = PJ.ToString();
+                        PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
                     }
-                    if (fj == "1")
+                    else
                     {
-                        var PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) + GetSafeDecimal(sitem["RHWD3"]) + GetSafeDecimal(sitem["RHWD4"])) / 4), 1);
-
-                        mitem["RHWD"] = PJ.ToString();
+                        PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) + GetSafeDecimal(sitem["RHWD3"]) + GetSafeDecimal(sitem["RHWD4"])) / 4), 1);
                     }
+                    mitem["RHWD"] = Math.Round(PJ, 1).ToString();
+
                     mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
 
                     if (mitem["RHWD_HG"] == "合格")
@@ -603,24 +600,20 @@ var PJ =Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2
                     jcxmCur = CurrentJcxm(jcxm, "环刚,环刚度");
 
                     string fj = MItem[0]["SFFJ"].ToString();
-
+                    double Yi, S1, S2, S3, S4, S5, S6 = 0;
                     if (fj == "0" || fj == null)
                     {
-                        double Yi, S1, S2, S3 = 0;
                         Yi = GetSafeDouble(sitem["GCWJ"]) * 0.03 / 1000;
                         if ((GetSafeDouble(MItem[0]["HGD_LI1"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0))
                         {
                             S1 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI1"]) / ((GetSafeDouble(MItem[0]["HGD_LI1"]) / 1000) * Yi);
                             S2 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI2"]) / ((GetSafeDouble(MItem[0]["HGD_LI2"]) / 1000) * Yi);
                             S3 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI3"]) / ((GetSafeDouble(MItem[0]["HGD_LI3"]) / 1000) * Yi);
-
-
                             MItem[0]["HGD"] = ((S1 + S2 + S3) / 3).ToString("0.0");
                         }
                     }
-                    if (fj == "1")
+                    else 
                     {
-                        double Yi, S1, S2, S3, S4, S5, S6 = 0;
                         Yi = GetSafeDouble(sitem["GCWJ"]) * 0.03 / 1000;
                         if ((GetSafeDouble(MItem[0]["HGD_LI1"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0))
                         {
@@ -630,12 +623,8 @@ var PJ =Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2
                             S4 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI4"]) / ((GetSafeDouble(sitem["HGD_LI4"]) / 1000) * Yi);
                             S5 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI5"]) / ((GetSafeDouble(sitem["HGD_LI5"]) / 1000) * Yi);
                             S6 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI6"]) / ((GetSafeDouble(sitem["HGD_LI6"]) / 1000) * Yi);
-
-
-                            MItem[0]["HGD"] = ((S1 + S2 + S3 + S4 + S5 + S6) / 6).ToString("0.0");
+                            MItem[0]["HGD"] = Math.Round((S1 + S2 + S3 + S4 + S5 + S6) / 6, 1).ToString("0.0");
                         }
-
-
                     }
                     MItem[0]["HGD_HG"] = IsQualified(MItem[0]["G_HGD"], MItem[0]["HGD"]);
                     if (mitem["HGD_HG"] == "合格")
