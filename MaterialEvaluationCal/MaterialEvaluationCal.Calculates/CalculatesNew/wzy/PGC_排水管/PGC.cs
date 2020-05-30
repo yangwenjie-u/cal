@@ -20,7 +20,6 @@ namespace Calculates
             //var mrsYysycs = dataExtra["BZ_GCYYSYCS"];
             var mrsWgcc = dataExtra["BZ_GCWGCC"];
 
-
             var MItem = data["M_PGC"];
             var mitem = MItem[0];
             var SItem = data["S_PGC"];
@@ -242,8 +241,6 @@ namespace Calculates
                         sitem["ZJCLGS"] = "4";
                     }
                     int count = GetSafeDouble(sitem["ZJCLGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCLGS"]);
-
-
 
                     if (count < 4)
                     {

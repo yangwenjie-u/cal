@@ -17,7 +17,7 @@ namespace Calculates
             var mrscyfa = dataExtra["BZ_GCCYFA"];
             var mrslccj = dataExtra["BZ_GCLCCJ"];
             var mrsYysycs = dataExtra["BZ_GCYYSYCS"];
-            var mrsWgcc = dataExtra["BZ_GCWGCC"];//外观尺寸
+            var mrsWgcc = dataExtra["BZ_GCGCCC"];//外观尺寸
             var mrsBhgc = dataExtra["BZ_GCBHGC"];//壁厚公差
             var MItem = data["M_GC"];
             var mitem = MItem[0];
@@ -26,11 +26,12 @@ namespace Calculates
             bool mAllHg;
             bool mFlag_Hg, mFlag_Bhg;
             bool realBhg = false;//标识直接不合格 。外观颜色不合格就不需要复试，直接不合格
-            //当前项目的变量声明
+                                 //当前项目的变量声明
             int mbhggs = 0;
             int mbhgpds = 0;
             int mhgpds = 0;
             string mGxl, mSjdj;
+            var mjcjg = "----";
 
             foreach (var mrscyfa_item in mrscyfa)
             {
@@ -64,51 +65,71 @@ namespace Calculates
                     mSjdj = "";
                 mGxl = sitem["GXL"]; //环刚度(管系列)
                 if (string.IsNullOrEmpty(mGxl))
-                    mGxl = "";
-                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["HGDDH"].Contains(mGxl));
-                if (mrsDj_Filter != null && mrsDj_Filter.Count() > 0)
+                    mGxl = "----";
+                //IDictionary<string, string> mrsDj_Filter = new Dictionary<string, string>();
+
+
+                if (mSjdj.Contains("建筑排水用硬聚氯乙烯(PVC-U)中孔消音管材") || mSjdj.Contains("埋地排水用(PVC-U)双壁波纹管材")
+                    || mSjdj.Contains("埋地排水用钢带增强聚乙烯(PE)螺旋波纹管") || mSjdj.Contains("埋地用聚乙烯(PE)缠绕结构壁管材")
+                    || mSjdj.Contains("埋地用聚乙烯(PE)双壁波纹管材") || mSjdj.Contains("排水用芯层发泡硬聚氯乙烯(PVC-U)管材")
+                    || mSjdj.Contains("无规共聚聚丙烯(PP-R)塑铝稳态复合管"))
                 {
-                    mitem["G_WG"] = string.IsNullOrEmpty(mrsDj_Filter["WG"]) ? "" : mrsDj_Filter["WG"].Trim();
-                    mitem["G_BZ"] = string.IsNullOrEmpty(mrsDj_Filter["BZ"]) ? "" : mrsDj_Filter["BZ"].Trim();
-                    mitem["G_DLSCL"] = string.IsNullOrEmpty(mrsDj_Filter["DLSCL"]) ? "0" : mrsDj_Filter["DLSCL"].Trim();
-                    //mitem["G_PJWJ"] = string.IsNullOrEmpty(mrsDj_Filter["PJWJ"]) ? "0" : mrsDj_Filter["PJWJ"].Trim();
-                    //mitem["G_PJWJPC"] = string.IsNullOrEmpty(mrsDj_Filter["PJWJPC"]) ? "0" : mrsDj_Filter["PJWJPC"].Trim();
-                    mitem["G_BH"] = string.IsNullOrEmpty(mrsDj_Filter["LCBH"]) ? "0" : mrsDj_Filter["LCBH"].Trim();
-                    mitem["G_BHPC"] = string.IsNullOrEmpty(mrsDj_Filter["BHPC"]) ? "0" : mrsDj_Filter["BHPC"].Trim();
-                    mitem["G_BHPCL"] = string.IsNullOrEmpty(mrsDj_Filter["BHPCL"]) ? "0" : mrsDj_Filter["BHPCL"].Trim();
-                    mitem["G_JXLL1"] = string.IsNullOrEmpty(mrsDj_Filter["JXLL1"]) ? "0" : mrsDj_Filter["JXLL1"].Trim();
-                    mitem["G_JXLL2"] = string.IsNullOrEmpty(mrsDj_Filter["JXLL2"]) ? "0" : mrsDj_Filter["JXLL2"].Trim();
-                    mitem["G_NHQD"] = string.IsNullOrEmpty(mrsDj_Filter["NHQD"]) ? "" : mrsDj_Filter["NHQD"].Trim();
-                    mitem["G_JNYQD"] = string.IsNullOrEmpty(mrsDj_Filter["JNYQD"]) ? "" : mrsDj_Filter["JNYQD"].Trim();
-                    mitem["G_YLSY"] = string.IsNullOrEmpty(mrsDj_Filter["YLSY"]) ? "" : mrsDj_Filter["YLSY"].Trim();
-                    mitem["G_BPQD"] = string.IsNullOrEmpty(mrsDj_Filter["BPQD"]) ? "0" : mrsDj_Filter["BPQD"].Trim();
-                    mitem["G_NJYXZX"] = string.IsNullOrEmpty(mrsDj_Filter["NJYXZX"]) ? "0" : mrsDj_Filter["NJYXZX"].Trim();
-                    mitem["G_WJYXZX"] = string.IsNullOrEmpty(mrsDj_Filter["WJYXZX"]) ? "0" : mrsDj_Filter["WJYXZX"].Trim();
-                    mitem["G_LCZXHD"] = string.IsNullOrEmpty(mrsDj_Filter["LCZXHD"]) ? "0" : mrsDj_Filter["LCZXHD"].Trim();
-                    mitem["G_MD"] = string.IsNullOrEmpty(mrsDj_Filter["MD"]) ? "" : mrsDj_Filter["MD"].Trim();
-                    mitem["G_MFSY"] = string.IsNullOrEmpty(mrsDj_Filter["MFSY"]) ? "" : mrsDj_Filter["MFSY"].Trim();
-                    mitem["G_BTGX"] = string.IsNullOrEmpty(mrsDj_Filter["BTGX"]) ? "" : mrsDj_Filter["BTGX"].Trim();
-                    //以下赤峰开展项目
-                    mitem["G_BPSY"] = string.IsNullOrEmpty(mrsDj_Filter["BPSY"]) ? "" : mrsDj_Filter["BPSY"].Trim(); //扁平试验
-                    mitem["G_RHWD"] = string.IsNullOrEmpty(mrsDj_Filter["RHWD"]) ? "0" : mrsDj_Filter["RHWD"].Trim(); //维卡软化温度
-                    mitem["G_ZXHSL"] = string.IsNullOrEmpty(mrsDj_Filter["ZXHSL"]) ? "0" : mrsDj_Filter["ZXHSL"].Trim(); //纵向回缩率
-                    mitem["G_LCCJ"] = string.IsNullOrEmpty(mrsDj_Filter["LCCJ"]) ? "0" : mrsDj_Filter["LCCJ"].Trim(); //落锤冲击试验
-                    mitem["G_QFQD"] = string.IsNullOrEmpty(mrsDj_Filter["QFQD"]) ? "0" : mrsDj_Filter["QFQD"].Trim(); //拉伸屈服强度
-                    mitem["G_YYSY1"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
-                    mitem["G_YYSY2"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
-                    mitem["G_YYSY3"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
-                    mitem["G_YYSY4"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
-                    mitem["G_ZLSY"] = string.IsNullOrEmpty(mrsDj_Filter["ZLSY"]) ? "" : mrsDj_Filter["ZLSY"].Trim(); //坠落试验
-                    mitem["G_JWJZ"] = string.IsNullOrEmpty(mrsDj_Filter["JWJZ"]) ? "" : mrsDj_Filter["JWJZ"].Trim(); //甲烷浸渍
-                    mitem["G_HXSY"] = string.IsNullOrEmpty(mrsDj_Filter["HXSY"]) ? "" : mrsDj_Filter["HXSY"].Trim(); //烘箱试验
-                    mitem["G_HGD"] = string.IsNullOrEmpty(mrsDj_Filter["HGD"]) ? "" : mrsDj_Filter["HGD"].Trim(); //环刚度
-                    mitem["G_HRX"] = string.IsNullOrEmpty(mrsDj_Filter["HRX"]) ? "" : mrsDj_Filter["HRX"].Trim(); //环柔度
-                    mitem["G_JZLCJ"] = string.IsNullOrEmpty(mrsDj_Filter["JZLCJ"]) ? "" : mrsDj_Filter["JZLCJ"].Trim(); //简支梁冲击
                 }
                 else
                 {
-                    sitem["JCJG"] = "依据不详";
+                    mGxl = "----";
+                }
+                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["HGDDH"].Contains(mGxl));
+
+                if (mrsDj_Filter != null && mrsDj_Filter.Count() > 0)
+                {
+                    //mitem["G_WG"] = string.IsNullOrEmpty(mrsDj_Filter["WG"]) ? "" : mrsDj_Filter["WG"].Trim();
+                    //mitem["G_BZ"] = string.IsNullOrEmpty(mrsDj_Filter["BZ"]) ? "" : mrsDj_Filter["BZ"].Trim();
+                    //mitem["G_DLSCL"] = string.IsNullOrEmpty(mrsDj_Filter["DLSCL"]) ? "0" : mrsDj_Filter["DLSCL"].Trim();
+                    ////mitem["G_PJWJ"] = string.IsNullOrEmpty(mrsDj_Filter["PJWJ"]) ? "0" : mrsDj_Filter["PJWJ"].Trim();
+                    ////mitem["G_PJWJPC"] = string.IsNullOrEmpty(mrsDj_Filter["PJWJPC"]) ? "0" : mrsDj_Filter["PJWJPC"].Trim();
+                    //mitem["G_BH"] = string.IsNullOrEmpty(mrsDj_Filter["LCBH"]) ? "0" : mrsDj_Filter["LCBH"].Trim();
+                    //mitem["G_BHPC"] = string.IsNullOrEmpty(mrsDj_Filter["BHPC"]) ? "0" : mrsDj_Filter["BHPC"].Trim();
+                    //mitem["G_BHPCL"] = string.IsNullOrEmpty(mrsDj_Filter["BHPCL"]) ? "0" : mrsDj_Filter["BHPCL"].Trim();
+                    //mitem["G_JXLL1"] = string.IsNullOrEmpty(mrsDj_Filter["JXLL1"]) ? "0" : mrsDj_Filter["JXLL1"].Trim();
+                    //mitem["G_JXLL2"] = string.IsNullOrEmpty(mrsDj_Filter["JXLL2"]) ? "0" : mrsDj_Filter["JXLL2"].Trim();
+                    //mitem["G_NHQD"] = string.IsNullOrEmpty(mrsDj_Filter["NHQD"]) ? "" : mrsDj_Filter["NHQD"].Trim();
+                    //mitem["G_JNYQD"] = string.IsNullOrEmpty(mrsDj_Filter["JNYQD"]) ? "" : mrsDj_Filter["JNYQD"].Trim();
+                    //mitem["G_YLSY"] = string.IsNullOrEmpty(mrsDj_Filter["YLSY"]) ? "" : mrsDj_Filter["YLSY"].Trim();
+                    //mitem["G_BPQD"] = string.IsNullOrEmpty(mrsDj_Filter["BPQD"]) ? "0" : mrsDj_Filter["BPQD"].Trim();
+                    //mitem["G_NJYXZX"] = string.IsNullOrEmpty(mrsDj_Filter["NJYXZX"]) ? "0" : mrsDj_Filter["NJYXZX"].Trim();
+                    //mitem["G_WJYXZX"] = string.IsNullOrEmpty(mrsDj_Filter["WJYXZX"]) ? "0" : mrsDj_Filter["WJYXZX"].Trim();
+                    //mitem["G_LCZXHD"] = string.IsNullOrEmpty(mrsDj_Filter["LCZXHD"]) ? "0" : mrsDj_Filter["LCZXHD"].Trim();
+                    //mitem["G_MD"] = string.IsNullOrEmpty(mrsDj_Filter["MD"]) ? "" : mrsDj_Filter["MD"].Trim();
+                    //mitem["G_MFSY"] = string.IsNullOrEmpty(mrsDj_Filter["MFSY"]) ? "" : mrsDj_Filter["MFSY"].Trim();
+                    //mitem["G_BTGX"] = string.IsNullOrEmpty(mrsDj_Filter["BTGX"]) ? "" : mrsDj_Filter["BTGX"].Trim();
+                    ////以下赤峰开展项目
+                    //mitem["G_BPSY"] = string.IsNullOrEmpty(mrsDj_Filter["BPSY"]) ? "" : mrsDj_Filter["BPSY"].Trim(); //扁平试验
+                    //mitem["G_RHWD"] = string.IsNullOrEmpty(mrsDj_Filter["RHWD"]) ? "0" : mrsDj_Filter["RHWD"].Trim(); //维卡软化温度
+                    //mitem["G_ZXHSL"] = string.IsNullOrEmpty(mrsDj_Filter["ZXHSL"]) ? "0" : mrsDj_Filter["ZXHSL"].Trim(); //纵向回缩率
+                    //mitem["G_LCCJ"] = string.IsNullOrEmpty(mrsDj_Filter["LCCJ"]) ? "0" : mrsDj_Filter["LCCJ"].Trim(); //落锤冲击试验
+                    //mitem["G_QFQD"] = string.IsNullOrEmpty(mrsDj_Filter["QFQD"]) ? "0" : mrsDj_Filter["QFQD"].Trim(); //拉伸屈服强度
+                    //mitem["G_YYSY1"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
+                    //mitem["G_YYSY2"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
+                    //mitem["G_YYSY3"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
+                    //mitem["G_YYSY4"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
+                    //mitem["G_ZLSY"] = string.IsNullOrEmpty(mrsDj_Filter["ZLSY"]) ? "" : mrsDj_Filter["ZLSY"].Trim(); //坠落试验
+                    //mitem["G_JWJZ"] = string.IsNullOrEmpty(mrsDj_Filter["JWJZ"]) ? "" : mrsDj_Filter["JWJZ"].Trim(); //甲烷浸渍
+                    //mitem["G_HXSY"] = string.IsNullOrEmpty(mrsDj_Filter["HXSY"]) ? "" : mrsDj_Filter["HXSY"].Trim(); //烘箱试验
+                    //mitem["G_HGD"] = string.IsNullOrEmpty(mrsDj_Filter["HGD"]) ? "" : mrsDj_Filter["HGD"].Trim(); //环刚度
+                    //mitem["G_HRX"] = string.IsNullOrEmpty(mrsDj_Filter["HRX"]) ? "" : mrsDj_Filter["HRX"].Trim(); //环柔度
+                    //mitem["G_JZLCJ"] = string.IsNullOrEmpty(mrsDj_Filter["JZLCJ"]) ? "" : mrsDj_Filter["JZLCJ"].Trim(); //简支梁冲击
+                    //
+                    mitem["G_RHWD"] = string.IsNullOrEmpty(mrsDj_Filter["RHWD"]) ? "0" : mrsDj_Filter["RHWD"].Trim(); //维卡软化温度
+                    mitem["G_ZXHSL"] = string.IsNullOrEmpty(mrsDj_Filter["ZXHSL"]) ? "0" : mrsDj_Filter["ZXHSL"].Trim(); //纵向回缩率
+                    mitem["G_LCCJ"] = string.IsNullOrEmpty(mrsDj_Filter["LCCJ"]) ? "0" : mrsDj_Filter["LCCJ"].Trim(); //落锤冲击试验
+
+                }
+                else
+                {
+                    sitem["JCJG"] = "不下结论";
                     mitem["JCJGMS"] = "获取标准要求出错，找不到对应项";
+                    mjcjg = "不下结论";
                     continue;
                 }
                 mbhggs = 0;
@@ -220,52 +241,86 @@ namespace Calculates
                 if (jcxm.Contains("、规格尺寸、"))
                 {
                     jcxmCur = "规格尺寸";
-
                     //测试的数量4-12个
-                    //1 长度 2.平均外径 3.不圆度 4.壁厚公差
+                    double gc = GetSafeDouble(sitem["GCWJ"]);
+                    if (gc <= 40)
+                    {
+                        sitem["ZJCLGS"] = "4";
+                    }
+                    else if (gc > 40 && gc <= 600)
+                    {
+                        sitem["ZJCLGS"] = "6";
+                    }
+                    else if (gc > 600 && gc <= 1600)
+                    {
+                        sitem["ZJCLGS"] = "8";
+                    }
+                    else if (gc > 1600)
+                    {
+                        sitem["ZJCLGS"] = "12";
+                    }
+                    else
+                    {
+                        sitem["ZJCLGS"] = "4";
+                    }
+
                     int count = GetSafeInt(sitem["ZJCSGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCSGS"]);
 
-                    if (mSjdj== "给水低密度管材")
+                    if (mSjdj.Contains("给水低密度管材"))
                     {
                         count = 5;
                     }
-                    if (mSjdj == "给水用硬聚氯乙烯(PVC-U)管材")
+                    else if (mSjdj.Contains("给水用硬聚氯乙烯(PVC-U)管材"))
                     {
                         count = 8;
                     }
-
 
                     if (count < 4)
                     {
                         throw new Exception("要求直径测量数量不能小于4个");
                     }
-                    //长度
-                    MItem[0]["G_GCCD"] = "长度一般为6m 、9m、12m,也可由供需双方商定。";
-                    MItem[0]["HG_GCCD"] = "";
-                    MItem[0]["HG_GCCD"] = MItem[0]["HG_GCCD"];
-
                     #region
                     ////平均外径
-                    //var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["WJ"] == sitem["GCWJ"]);
-                    //if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
-                    //{
+
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCWJ"] == sitem["GCWJ"] && x["GXL"] == sitem["GXL"]);
+                    if (mrsWgcc_Filter == null && mrsDj_Filter.Count() == 0)
+                    {
+                        mjcjg = "不下结论";
+                        mitem["JCJGMS"] = "获取" + mSjdj + "外径出错，找不到对应项";
+                        continue;
+                    }
+                    MItem[0]["G_PJWJ"] = mrsWgcc_Filter["WJmin"] + "～" + mrsWgcc_Filter["WJMAX"];
+
+                    var mrsBhgc_Filter = mrsBhgc.Where(x => x["MC"].Contains(mSjdj) && x["PDBZ"] == sitem["PDBZ"]);
+                    if (mSjdj == "给水用低密度聚乙烯管材")
+                    {
+                        mrsBhgc_Filter = mrsBhgc.Where(x => x["MC"].Contains(mSjdj) && x["GCBH"] == sitem["GCBH"] && x["PDBZ"] == sitem["PDBZ"]);
+                    }
+                    if (mrsBhgc_Filter == null && mrsBhgc_Filter.Count() == 0)
+                    {
+                        mjcjg = "不下结论";
+                        mitem["JCJGMS"] = "获取" + mSjdj + "壁厚公差信息出错，找不到对应项";
+                        continue;
+                    }
+
+                    decimal jxpc = 0;
+                    foreach (var item in mrsBhgc_Filter)
+                    {
+                        if (IsQualified(item["GCBH"], sitem["GCBH"]) == "合格")
+                        {
+                            jxpc = GetSafeDecimal(item["JXPC"]);
+                            break;
+                        }
+                    }
+                    MItem[0]["G_GCBH"] = sitem["GCBH"].ToString() + "～" + (GetSafeDecimal(sitem["GCBH"]) + jxpc).ToString("0.0");
+
                     List<string> listWJ_G = new List<string>();
                     listWJ_G = MItem[0]["G_PJWJ"].Split('～').ToList();
-                    if (listWJ_G.Count != 2)
-                    {
-                        throw new Exception("请输入平均外径标准范围.");
-                    }
-                    //MItem[0]["G_PJWJ"] = listWJ_G[0];//平均外径最小
-                    //MItem[0]["G_PJWJ1"] = listWJ_G[1];//平均外径最大 
                     double sum = 0;
 
                     //壁厚
                     List<string> listBH_G = new List<string>();
                     listBH_G = MItem[0]["G_GCBH"].Split('～').ToList();
-                    if (listWJ_G.Count != 2)
-                    {
-                        throw new Exception("请输入平均壁厚标准范围.");
-                    }
 
                     for (int i = 1; i < 3; i++)
                     {
@@ -273,10 +328,7 @@ namespace Calculates
                         List<double> listWJ = new List<double>();
                         // 2.平均外径
                         count = count >= 12 ? 12 : count;
-                        if (mSjdj == "给水用硬聚氯乙烯(PVC - U)管材")
-                        {
-                            count = 8;
-                        }
+
                         for (int j = 1; j <= count; j++)
                         {
                             md1 = GetSafeDouble(sitem["WJ" + i + "_" + +j]);
@@ -354,14 +406,12 @@ namespace Calculates
                         sitem["PJBH"] = sitem["PJBH1"];
                     }
 
-
                     MItem[0]["PJWJ_HG"] = IsQualified(mitem["G_PJWJ"], MItem[0]["PJWJ1"]);
 
                     if (MItem[0]["PJWJ_HG"] == "合格")
                     {
                         MItem[0]["PJWJ_HG"] = IsQualified("≤" + mitem["G_PJWJ1"], MItem[0]["PJWJ2"]);
                     }
-
 
                     MItem[0]["HG_GCBH"] = IsQualified(MItem[0]["G_GCBH"], sitem["PJBH1"]);
                     if (MItem[0]["HG_GCBH"] == "合格")
@@ -784,10 +834,14 @@ namespace Calculates
 
             }
             //主表总判断赋值
-            if (mAllHg)
+            if (mAllHg && mjcjg != "----")
             {
                 mitem["JCJG"] = "合格";
                 mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
+            }
+            else if (mjcjg == "不下结论")
+            {
+                mitem["JCJG"] = "不下结论";
             }
             else
             {

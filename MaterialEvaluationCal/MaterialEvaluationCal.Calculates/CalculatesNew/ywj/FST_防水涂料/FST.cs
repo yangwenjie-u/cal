@@ -18,7 +18,7 @@ namespace Calculates
             bool mAllHg = true;
             int QDJSFF = 0;
             bool mFlag_Hg = false, mFlag_Bhg = false;
-
+            var mjcjg = "----";
             var data = retData;
             var mrsDj = dataExtra["BZ_FST_DJ"];
             var MItem = data["M_FST"];
@@ -113,7 +113,8 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sitem["JCJG"] = "依据不详";
+                    sitem["JCJG"] = "不下结论";
+                    mjcjg = "不下结论";
                     mitem["JCJGMS"] = "找不到对应的等级";
                 }
                 if (dBzh == "JC/T 3049-1998")
@@ -521,12 +522,12 @@ namespace Calculates
 
             //主表总判断赋值
             //综合判断
-            if (mbhggs == 0)
+            if (mAllHg && mjcjg != "----")
             {
                 MItem[0]["JCJG"] = "合格";
                 MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
-            if (mbhggs > 0)
+            else
             {
                 MItem[0]["JCJG"] = "不合格";
                 MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
