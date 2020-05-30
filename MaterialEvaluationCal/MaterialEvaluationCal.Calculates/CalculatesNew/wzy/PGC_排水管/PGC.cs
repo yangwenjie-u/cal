@@ -547,18 +547,28 @@ namespace Calculates
                 {
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
                     decimal PJ = 0;
-                    string fj = MItem[0]["SFFJ"].ToString();
-                    if (fj == "0" || fj == null)
+                    decimal PJ1 = 0;
+                    var fj = GetSafeDouble(MItem[0]["SFFJ"]);
+              
+                    if (fj == 0 )
                     {
                         PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
                     }
                     else
                     {
-                        PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) + GetSafeDecimal(sitem["RHWD3"]) + GetSafeDecimal(sitem["RHWD4"])) / 4), 1);
+                        PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
+
+                        PJ1 = Math.Round(((GetSafeDecimal(sitem["RHWD3"]) + GetSafeDecimal(sitem["RHWD4"])) / 2), 1);
                     }
                     mitem["RHWD"] = Math.Round(PJ, 1).ToString();
-
+                    mitem["RHWD_F"] = Math.Round(PJ1, 1).ToString();
                     mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
+                    if (mitem["RHWD_HG"] == "合格")
+                    {
+                        mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD_F"], false);
+
+                    }
+              
 
                     if (mitem["RHWD_HG"] == "合格")
                     {
@@ -592,38 +602,55 @@ namespace Calculates
                     mitem["G_RHWD"] = "0";
                 }
 
+
                 if (jcxm.Contains("、环刚、") || jcxm.Contains("、环刚度、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "环刚,环刚度");
 
-                    string fj = MItem[0]["SFFJ"].ToString();
+                    var fj = GetSafeDouble(MItem[0]["SFFJ"]);
+                 
                     double Yi, S1, S2, S3, S4, S5, S6 = 0;
-                    if (fj == "0" || fj == null)
+                    if (fj == 0 )
                     {
                         Yi = GetSafeDouble(sitem["GCWJ"]) * 0.03 / 1000;
-                        if ((GetSafeDouble(MItem[0]["HGD_LI1"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0))
+                        if ((GetSafeDouble(MItem[0]["HGD_LI1"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI3"]) * Yi != 0))
                         {
                             S1 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI1"]) / ((GetSafeDouble(MItem[0]["HGD_LI1"]) / 1000) * Yi);
                             S2 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI2"]) / ((GetSafeDouble(MItem[0]["HGD_LI2"]) / 1000) * Yi);
                             S3 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI3"]) / ((GetSafeDouble(MItem[0]["HGD_LI3"]) / 1000) * Yi);
                             MItem[0]["HGD"] = ((S1 + S2 + S3) / 3).ToString("0.0");
+                            MItem[0]["HGD_HG"] = IsQualified(MItem[0]["G_HGD"], MItem[0]["HGD"]);
                         }
                     }
-                    else 
+                    else
                     {
+
+
                         Yi = GetSafeDouble(sitem["GCWJ"]) * 0.03 / 1000;
-                        if ((GetSafeDouble(MItem[0]["HGD_LI1"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0))
+                        if ((GetSafeDouble(MItem[0]["HGD_LI1"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI3"]) * Yi != 0) && (GetSafeDouble(sitem["HGD_LI4"]) * Yi != 0) && (GetSafeDouble(sitem["HGD_LI5"]) * Yi != 0) && (GetSafeDouble(sitem["HGD_LI6"]) * Yi != 0))
                         {
                             S1 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI1"]) / ((GetSafeDouble(MItem[0]["HGD_LI1"]) / 1000) * Yi);
                             S2 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI2"]) / ((GetSafeDouble(MItem[0]["HGD_LI2"]) / 1000) * Yi);
                             S3 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI3"]) / ((GetSafeDouble(MItem[0]["HGD_LI3"]) / 1000) * Yi);
+                            MItem[0]["HGD"] = ((S1 + S2 + S3) / 3).ToString("0.0");
+
+
                             S4 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI4"]) / ((GetSafeDouble(sitem["HGD_LI4"]) / 1000) * Yi);
                             S5 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI5"]) / ((GetSafeDouble(sitem["HGD_LI5"]) / 1000) * Yi);
                             S6 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI6"]) / ((GetSafeDouble(sitem["HGD_LI6"]) / 1000) * Yi);
-                            MItem[0]["HGD"] = Math.Round((S1 + S2 + S3 + S4 + S5 + S6) / 6, 1).ToString("0.0");
+                            MItem[0]["HGD_F"] = Math.Round((S4 + S5 + S6) / 3, 1).ToString("0.0");
+
+                            if (MItem[0]["HGD_HG"] == "合格")
+                            {
+                               MItem[0]["HGD_HG"] = IsQualified(MItem[0]["G_HGD"], MItem[0]["HGD_F"]);
+
+                             }
+
                         }
                     }
-                    MItem[0]["HGD_HG"] = IsQualified(MItem[0]["G_HGD"], MItem[0]["HGD"]);
+                   
+                    
+
                     if (mitem["HGD_HG"] == "合格")
                     {
                         mFlag_Hg = true;
