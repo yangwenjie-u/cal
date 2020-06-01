@@ -18,7 +18,7 @@ namespace Calculates
             bool mAllHg = true;
             int QDJSFF = 0;
             bool mFlag_Hg = false, mFlag_Bhg = false;
-            var mjcjg = "----";
+            var mjcjg = "不合格";
             var data = retData;
             var mrsDj = dataExtra["BZ_FST_DJ"];
             var MItem = data["M_FST"];
@@ -47,7 +47,9 @@ namespace Calculates
                 if (dLx != "----")
                     mSjdj = mSjdj + dLx;
                 //从设计等级表中取得相应的计算数值、等级标准
-                var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj) && x["ZF"].Contains(dZf) && x["BZH"].Contains(dBzh));
+                //不做固体含量不需要ZF
+                //var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj) && x["ZF"].Contains(dZf) && x["BZH"].Contains(dBzh));
+                var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj) && x["BZH"].Contains(dBzh));
                 if (mrsDj_item != null && mrsDj_item.Count() > 0)
                 {
                     mJSFF = string.IsNullOrEmpty(mrsDj_item["JSFF"]) ? "" : mrsDj_item["JSFF"].Trim().ToLower();
@@ -239,6 +241,8 @@ namespace Calculates
                     {
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                     }
                     else
                     {
@@ -288,7 +292,10 @@ namespace Calculates
                     if (sitem["HG_SGSJ"] != "不合格")
                         mFlag_Hg = true;
                     else
+                    {
                         mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                 }
                 else
                 {
@@ -339,7 +346,10 @@ namespace Calculates
                     if (sitem["HG_GTHL"] != "不合格")
                         mFlag_Hg = true;
                     else
+                    {
                         mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                 }
                 else
                 {
@@ -356,7 +366,7 @@ namespace Calculates
                     List<double> lsScl = new List<double>();
                     for (xd = 1; xd <= 5; xd++)
                     {
-                        md = 100 * (GetSafeDouble(sitem["SCL_L0" + xd]) - GetSafeDouble(sitem["SCL_L1" + xd])) / GetSafeDouble(sitem["SCL_L1" + xd]);
+                        md = 100 * (GetSafeDouble(sitem["SCL_L1" + xd]) - GetSafeDouble(sitem["SCL_L0" + xd])) / GetSafeDouble(sitem["SCL_L0" + xd]);
                         lsScl.Add(md);
                         sum += md;
                     }
@@ -365,7 +375,7 @@ namespace Calculates
                     for (int i = 1; i <= 5; i++)
                     {
                         md1 = lsScl[i - 1];
-                        if (Math.Abs(md1 - pjmd) <= pjmd * 0.15)
+                        if (Math.Abs(md1 - pjmd) > pjmd * 0.15)
                             sum = sum + md1;
                         else
                             Gs++;
@@ -379,7 +389,10 @@ namespace Calculates
                         if (sitem["HG_SCL"] != "不合格")
                             mFlag_Hg = true;
                         else
+                        {
                             mFlag_Bhg = true;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
@@ -504,25 +517,20 @@ namespace Calculates
                 }
 
 
-                //if (mbhggs == 0)
-                //{
-                //    mitem["JCJGMS"] = "该组试件所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                //    sitem["JCJG"] = "合格";
-                //}
-                //if (mbhggs >= 1)
-                //{
-                //    mitem["JCJGMS"] = "该组试件不符合" + mitem["PDBZ"] + "标准要求。";
-                //    sitem["JCJG"] = "不合格";
-                //    if (mFlag_Bhg && mFlag_Hg)
-                //        mitem["JCJGMS"] = "该组试样所检项目符合" + mitem["PDBZ"] + "标准要求。";
-                //}
+                if (mbhggs == 0)
+                {
+                    sitem["JCJG"] = "合格";
+                }
+                if (mbhggs >= 1)
+                {
+                    sitem["JCJG"] = "不合格";
+                }
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
-
             }
 
             //主表总判断赋值
             //综合判断
-            if (mAllHg && mjcjg != "----")
+            if (mAllHg && mjcjg != "不下结论")
             {
                 MItem[0]["JCJG"] = "合格";
                 MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
@@ -531,8 +539,8 @@ namespace Calculates
             {
                 MItem[0]["JCJG"] = "不合格";
                 MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
-                //if (mFlag_Bhg && mFlag_Hg)
-                //    MItem[0]["JCJGMS"] = "依据标准" + MItem[0]["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合标准要求。";
+                if (mFlag_Bhg && mFlag_Hg)
+                    MItem[0]["JCJGMS"] = "依据标准" + MItem[0]["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合标准要求，需重新试验";
             }
             #endregion
         }

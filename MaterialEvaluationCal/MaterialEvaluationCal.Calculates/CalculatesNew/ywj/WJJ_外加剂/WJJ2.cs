@@ -1176,8 +1176,8 @@ namespace Calculates
                                 if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
                                     sItem["PJJQDDBZ" + mlq] = Round(mAvgKyqd, 0).ToString();
                                 #endregion
-
-                                #region 基准强度代表值
+                                
+                                #region 受检强度代表值
                                 mlongStr = sItem["SQDDBZ" + mlq + "1"] + "," + sItem["SQDDBZ" + mlq + "2"] + "," + sItem["SQDDBZ" + mlq + "3"];
                                 mtmpArray = mlongStr.Split(',');
                                 for (vp = 0; vp <= 2; vp++)
@@ -1200,7 +1200,7 @@ namespace Calculates
                                     sItem["PJQDDBZ" + mlq] = Round(mAvgKyqd, 0).ToString();
 
                                 #endregion
-                                sItem["PJQDB" + mlq] = Round(GetSafeDouble(sItem["PJJQDDBZ" + mlq]) / GetSafeDouble(sItem["PJQDDBZ" + mlq]) * 100, 0).ToString();
+                                sItem["PJQDB" + mlq] = Round(GetSafeDouble(sItem["PJQDDBZ" + mlq]) / GetSafeDouble(sItem["PJJQDDBZ" + mlq]) * 100, 0).ToString();
 
                             }
                         }
