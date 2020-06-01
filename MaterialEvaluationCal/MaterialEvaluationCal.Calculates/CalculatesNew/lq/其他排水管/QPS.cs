@@ -141,9 +141,33 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                 {
                     jcxmCur = "规格尺寸";
 
+                    double gc = GetSafeDouble(sitem["GCWJ"]);
+                    if (gc <= 40)
+                    {
+                        sitem["ZJCLGS"] = "4";
+                    }
+                    else if (gc > 40 && gc <= 600)
+                    {
+                        sitem["ZJCLGS"] = "6";
+                    }
+                    else if (gc > 600 && gc <= 1600)
+                    {
+                        sitem["ZJCLGS"] = "8";
+                    }
+                    else if (gc > 1600)
+                    {
+                        sitem["ZJCLGS"] = "12";
+                    }
+                    else
+                    {
+                        sitem["ZJCLGS"] = "4";
+                    }
+
+
+
                     //测试的数量4-12个
                     //1 长度 2.平均外径 3.不圆度 4.壁厚公差
-                    int count = Convert.ToInt32(sitem["ZJCLGS"]);
+                    int count = GetSafeInt(sitem["ZJCSGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCSGS"]);
 
                     if (count < 4)
                     {
@@ -161,6 +185,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                         List<double> listWJ = new List<double>();
                         // 2.平均外径
                         count = count >= 12 ? 12 : count;
+
                         for (int j = 1; j <= count; j++)
                         {
                             md1 = GetSafeDouble(sitem["WJ" + i + "_" + +j]);
@@ -181,7 +206,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                         }
                         else
                         {
-                            MItem[0]["PJWJ" + i] = (Round(GetDouble(pjVal.ToString()) * 5, 0) / 5).ToString("0.0");
+                            MItem[0]["PJWJ" + i] = (Round(GetDouble(pjVal.ToString()) * 5, 0) / 5).ToString();
                         }
                         #endregion
 
@@ -429,6 +454,22 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                 if (jcxm.Contains("、软化温度、") || jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
+                    decimal PJ = 0;
+                    decimal PJ1 = 0;
+                    var fj = GetSafeDouble(MItem[0]["SFFJ"]);
+
+                    if (fj == 0)
+                    {
+                        PJ = Math.Round(((GetSafeDecimal(MItem[0]["RHWD1"]) + GetSafeDecimal(MItem[0]["RHWD2"])) / 2), 1);
+                    }
+                    else
+                    {
+                        PJ = Math.Round(((GetSafeDecimal(MItem[0]["RHWD1"]) + GetSafeDecimal(MItem[0]["RHWD2"])) / 2), 1);
+
+                        PJ1 = Math.Round(((GetSafeDecimal(MItem[0]["RHWD3"]) + GetSafeDecimal(MItem[0]["RHWD4"])) / 2), 1);
+                    }
+                    MItem[0]["RHWD"] = Math.Round(PJ, 1).ToString();
+                    MItem[0]["RHWD_F"] = Math.Round(PJ1, 1).ToString();
                     mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
 
                     if (mitem["RHWD_HG"] == "合格")
