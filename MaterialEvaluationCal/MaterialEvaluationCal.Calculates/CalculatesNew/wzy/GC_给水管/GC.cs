@@ -462,6 +462,7 @@ namespace Calculates
                     sitem["BGSCJG2"] = "----";
                     sitem["BGDXPD2"] = "----";
                 }
+
                 if (jcxm.Contains("、液压试验、"))
                 {
                     jcxmCur = "液压试验";
