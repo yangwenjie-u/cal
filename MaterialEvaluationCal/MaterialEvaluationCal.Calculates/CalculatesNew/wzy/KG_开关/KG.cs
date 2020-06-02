@@ -27,7 +27,15 @@ namespace Calculates
                 //从设计等级表中取得相应的计算数值、等级标准
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u["GGXH"].Trim() == sItem["GGXH"]);
 
-                if (null != extraFieldsDj)
+                if (null == extraFieldsDj)
+                {
+                    mAllHg = false;
+                    sItem["JCJG"] = "不合格";
+                    jsbeizhu = "不下结论";
+                    mjcjg = "不下结论";
+                    continue;
+                }
+                else
                 {
                     MItem[0]["G_BZ"] = string.IsNullOrEmpty(extraFieldsDj["BZ"]) ? "" : extraFieldsDj["BZ"].Trim();
                     MItem[0]["G_DBH"] = string.IsNullOrEmpty(extraFieldsDj["DBH"]) ? "" : extraFieldsDj["DBH"].Trim();
@@ -56,14 +64,8 @@ namespace Calculates
                     MItem[0]["G_DZ"] = string.IsNullOrEmpty(extraFieldsDj["DZ"]) ? "" : extraFieldsDj["DZ"].Trim();
                     MItem[0]["G_JX"] = string.IsNullOrEmpty(extraFieldsDj["JX"]) ? "" : extraFieldsDj["JX"].Trim();
                 }
-                else
-                {
-                    mAllHg = false;
-                    mjcjg = "不合格";
-                    mbHggs += 1;
-                    jsbeizhu = jsbeizhu + "依据不详";
-                    continue;
-                }
+               
+             
                 #endregion
                 //开始计算
 
@@ -746,21 +748,19 @@ namespace Calculates
             }
 
             //添加最终报告
-            if (mAllHg && mjcjg != "----")
+            if (mAllHg)
             {
                 mjcjg = "合格";
                 jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                if (mbHggs == 0)
-                {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
-                }
-                else
-                {
                     jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
-                }
+                    if (mjcjg == "不下结论")
+                    {
+                    jsbeizhu = "找不到对应标准。";
+                     }
+
             }
 
             MItem[0]["JCJG"] = mjcjg;

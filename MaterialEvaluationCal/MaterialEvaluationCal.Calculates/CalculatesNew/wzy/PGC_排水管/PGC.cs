@@ -133,12 +133,12 @@ namespace Calculates
                     MItem[0]["G_WG"] = "管材内外表面应清洁、光滑, 不应有气泡、明显的划伤、凹陷、杂质、颜色不均等缺陷。 管材两端应切割平整, 并与管材轴线垂直。";
                     MItem[0]["G_BZ"] = "管材应为黑色或蓝色, 黑色管材上应共挤出 至少三条蓝色条, 色条应沿管材圆周方向均匀分布。蓝色管材仅用于暗敷。";
 
-                    if (mSjdj == " 建筑排水用硬聚氯乙烯(PVC-U)管材")
+                    if (mSjdj == "建筑排水用硬聚氯乙烯(PVC-U)管材")
                     {
                         MItem[0]["G_WG"] = "管材内外壁应光滑平整，不允许有气泡、裂口和明显划痕、凹陷、色差及分解变色。管材两端应切削整且与轴线垂直。螺棱应完整、光滑，无断棱、无变形等缺陷。螺棱旋转方向应为逆时针方向。";
                         MItem[0]["G_BZ"] = "通用型管材一般为白色，其他颜色由供需双方协商确定。";
                     }
-                    else if (mSjdj == " 建筑排水用硬聚氯乙烯(PVC-U)管材")
+                    else if (mSjdj == "建筑排水用硬聚氯乙烯(PVC-U)结构壁管材")
                     {
                         MItem[0]["G_WG"] = "管材内外表面应清洁、光滑, 无气泡、裂口和明显的划伤、凹陷、杂质、颜色不均及分解变色线。 管材应完整无缺损，浇口及溢边应修出平整。";
                         MItem[0]["G_BZ"] = "管件一般为白色或灰色，其他颜色可由供需双方协商确定。";
@@ -537,9 +537,9 @@ namespace Calculates
                 else
                 {
                     sitem["BGDW" + curJcxmCount] = "----";
-                    sitem["BGBZYQ" + curJcxmCount] = mitem["G_LCCJ"];
-                    sitem["BGSCJG" + curJcxmCount] = mitem["LCCJ"];
-                    sitem["BGDXPD" + curJcxmCount] = mitem["LCCJ_HG"];
+                    sitem["BGBZYQ" + curJcxmCount] = "----";
+                    sitem["BGSCJG" + curJcxmCount] = "----";
+                    sitem["BGDXPD" + curJcxmCount] = "----";
                     curJcxmCount = curJcxmCount + 1;
                 }
                 curJcxmCount = 5;
