@@ -22,11 +22,12 @@ namespace Calculates
             var SItem = data["S_MXE"];
             int mbhggs = 0;
             string mJSFF;
-            bool mAllHg = true;
+            bool mAllHg = false;
             bool mFlag_Hg = false, mFlag_Bhg = false;
             var mSjdj = "";
             var jcxmBhg = "";
             var jcxmCur = "";
+            var mJcjg = "不合格";
             mitem["JCJGMS"] = "";
 
             decimal pjmd, sum, md1, md2, md = 0;
@@ -44,36 +45,50 @@ namespace Calculates
                 sitem["MDBS"] = "马歇尔标准密度";
                 #region 等级表取值
                 //取等级表，WDDMS:稳定度MS,LZFL:流值FL,KXLVV:空隙率VV
-                if (string.IsNullOrEmpty(sitem["DLLX"]))
+                if (string.IsNullOrEmpty(sitem["DLLX"]))//道路类型
                 {
                     sitem["DLLX"] = "其他等级公路";
                 }
-                if (string.IsNullOrEmpty(sitem["JTLX"]))
+
+                if (string.IsNullOrEmpty(sitem["JTLX"]))//交通类型
+                {
+                    sitem["JTLX"] = "重载交通";
+                }
+                if (string.IsNullOrEmpty(sitem["QHFQ"]))//气候分区
+                {
+                    sitem["QHFQ"] = "2-1";
+                }
+                if (sitem["DLLX"] == "其他等级公路" || sitem["DLLX"] == "行人道路")
                 {
                     sitem["JTLX"] = "----";
-                }
-                if (string.IsNullOrEmpty(sitem["QHFQ"]))
-                {
                     sitem["QHFQ"] = "----";
                 }
-                if (string.IsNullOrEmpty(sitem["KXLSD"]))
+                if (string.IsNullOrEmpty(sitem["KXLSD"]))//空隙率深度(mm)
                 {
-                    sitem["KXLSD"] = "40";
+                    sitem["KXLSD"] = "≤90";
                 }
-                if (string.IsNullOrEmpty(sitem["SJKXL"]))
+                if (string.IsNullOrEmpty(sitem["SJKXL"]))//设计空隙率(%)
                 {
-                    sitem["SJKXL"] = "3";
+                    sitem["SJKXL"] = "4";
                 }
-
-                var mrsDj_item = mrsDj.FirstOrDefault(x => x["DLLX"] == (sitem["DLLX"]) && x["JTLX"] == (sitem["JTLX"])
-                                   && x["QHFQ"].Contains(sitem["QHFQ"]) && IsQualified(x["KXLSD"], sitem["KXLSD"]) == "合格");
+                IDictionary<string, string> mrsDj_item = new Dictionary<string, string>();
+                if (sitem["KXLSD"] == "≤90" || IsQualified("≤90", sitem["KXLSD"]) == "合格")
+                {
+                    mrsDj_item = mrsDj.FirstOrDefault(x => x["DLLX"] == (sitem["DLLX"]) && x["JTLX"] == (sitem["JTLX"])
+                                       && x["QHFQ"].Contains(sitem["QHFQ"]) && x["KXLSD"] == "≤90");
+                }
+                else
+                {
+                    mrsDj_item = mrsDj.FirstOrDefault(x => x["DLLX"] == (sitem["DLLX"]) && x["JTLX"] == (sitem["JTLX"])
+                                         && x["QHFQ"].Contains(sitem["QHFQ"]) && x["KXLSD"] == "＞90");
+                }
                 if (mrsDj_item != null && mrsDj_item.Count() != 0)
                 {
                     sitem["G_WDD"] = mrsDj_item["WDDMS"];
                     sitem["G_KSL"] = mrsDj_item["KXLVV"];
                     if (mrsDj_item["LZFL"].Replace("~", "～").IndexOf("～") == -1)
                     {
-                        sitem["JCJG"] = "不下判定";
+                        sitem["JCJG"] = "不下结论";
                         mitem["JCJGMS"] = "找不到对应的标准";
                         continue;
                     }
@@ -83,7 +98,8 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sitem["JCJG"] = "不下判定";
+                    sitem["JCJG"] = "不下结论";
+                    mJcjg = "不下结论";
                     mitem["JCJGMS"] = "找不到对应的标准";
                     continue;
                 }
@@ -107,7 +123,9 @@ namespace Calculates
                     else
                     {
                         mJSFF = "";
-                        sitem["JCJG"] = "不下判定";
+                        sitem["JCJG"] = "不下结论";
+                        mJcjg = "不下结论";
+
                         mitem["JCJGMS"] = "找不到对应的标准";
                         continue;
                     }
@@ -115,10 +133,25 @@ namespace Calculates
                 else
                 {
                     mJSFF = "";
-                    sitem["JCJG"] = "不下判定";
+                    sitem["JCJG"] = "不下结论";
+                    mJcjg = "不下结论";
+
                     mitem["JCJGMS"] = "找不到对应的等级";
                     continue;
                 }
+
+                //从设计等级表中取得相应的计算数值、等级标准
+                //var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj) && x["ZF"].Contains(dZf) && x["BZH"].Contains(dBzh));
+                //if (mrsDj_item != null && mrsDj_item.Count() > 0)
+                //{
+
+                //}
+                //else
+                //{
+                //    mJSFF = "";
+                //    sitem["JCJG"] = "依据不详";
+                //    mitem["JCJGMS"] = "找不到对应的等级";
+                //}
                 //25℃时水的密度
                 #endregion
 
@@ -402,7 +435,6 @@ namespace Calculates
                                 break;
                         }
 
-                        //（1-（2.344/2.463））
                         //空隙率  ==（1-(毛体积相对密度/混合料理论最大密度)）*100
                         kxl = Math.Round((1 - mtjxdmd / llmd) * 100, 1);
                         sitem["KSL" + i] = kxl.ToString();
@@ -413,7 +445,7 @@ namespace Calculates
                         sitem["KLJXL" + i] = jxl.ToString();
                         jxlList.Add(jxl);
 
-                        // 沥青饱和度 ==（间隙率-空隙率）/间隙率*100
+                        // 沥青饱和度 ==（间隙率-空隙率）/空隙率*100
                         bhd = Math.Round((jxl - kxl) / jxl * 100, 1);
                         sitem["KLBHD" + i] = bhd.ToString();
                         bhdList.Add(bhd);
@@ -431,13 +463,13 @@ namespace Calculates
                         //有效沥青含量
                         md2 = GetSafeDecimal(mitem["W_LQHL"]);
                         //md1 = Math.Round(((hcmtjxdmd - llmd) / (hcmtjxdmd * llmd)) * GetSafeDecimal(mitem["LQXDMD"], 2) * 100, 3);
-                        //2.344*4.7/1.02
+
                         // 有效沥青百分率==毛体积相对密度*有效沥青含量/25度沥青相对密度
                         lqtjbfl = Math.Round(mtjxdmd * md2 / GetSafeDecimal(mitem["LQXDMD"], 2), 1);
                         sitem["LQTJBFL" + i] = lqtjbfl.ToString();
                         lqtjbflList.Add(lqtjbfl);
                     }
-                    
+
 
                     Gs = 1;
                     sum = 0;
@@ -517,21 +549,21 @@ namespace Calculates
                         }
                     }
                     //马歇尔模数
-                    sitem["MXEMS"] = Math.Round(mxemsList.Average(), 3).ToString();
+                    sitem["MXEMS"] = Math.Round(mxemsList.Average(), 3).ToString("0.000");
                     //密度
-                    sitem["W_MXEMD"] = Math.Round(mdList.Average(), 3).ToString();
+                    sitem["W_MXEMD"] = Math.Round(mdList.Average(), 1).ToString("0.0");
                     //实测空隙率
-                    sitem["W_KSL"] = Math.Round(kxlList.Average(), 1).ToString();
+                    sitem["W_KSL"] = Math.Round(kxlList.Average(), 1).ToString("0.0");
                     //实测矿料间隙率(%)
-                    sitem["KLJXL"] = Math.Round(jxlList.Average(), 1).ToString();
+                    sitem["KLJXL"] = Math.Round(jxlList.Average(), 1).ToString("0.0");
                     //沥青饱和度(%)
-                    sitem["KLBHD"] = Math.Round(bhdList.Average(), 1).ToString();
+                    sitem["KLBHD"] = Math.Round(bhdList.Average(), 1).ToString("0.0");
                     //实测稳定度(KN)
-                    sitem["W_WDD"] = Math.Round(wddList.Average(), 2).ToString();
+                    sitem["W_WDD"] = Math.Round(wddList.Average(), 2).ToString("0.00");
                     //试件流值
-                    sitem["W_SJLZ"] = Math.Round(sjlzList.Average(), 1).ToString();
+                    sitem["W_SJLZ"] = Math.Round(sjlzList.Average(), 1).ToString("0.0");
                     //沥青体积百分率(%)
-                    sitem["LQTJBFL"] = Math.Round(lqtjbflList.Average(), 1).ToString();
+                    sitem["LQTJBFL"] = Math.Round(lqtjbflList.Average(), 1).ToString("0.0");
 
                     if (IsQualified(sitem["G_KSL"], sitem["W_KSL"], false) == "不合格" ||
                         IsQualified(sitem["G_KLJXL"], sitem["KLJXL"], false) == "不合格" ||
@@ -572,8 +604,16 @@ namespace Calculates
             }
             else
             {
-                mitem["JCJG"] = "不合格";
-                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                if (mJcjg == "不下结论")
+                {
+                    mitem["JCJG"] = "不下结论";
+                    MItem[0]["JCJGMS"] = "";
+                }
+                else
+                {
+                    mitem["JCJG"] = "不合格";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                }
             }
 
             #endregion

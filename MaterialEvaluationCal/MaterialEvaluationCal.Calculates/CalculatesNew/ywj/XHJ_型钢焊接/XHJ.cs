@@ -193,27 +193,25 @@ namespace Calculates
                     if (jcxm.Contains("、拉伸、"))
                     {
                         jcxmCur = "拉伸";
-
-                        if (Math.Abs(Double.Parse(sItem["MJ"]) - 0) > 0.00001)
+                        var mj = 0.0;
+                        for (int i = 1; i < 3; i++)
                         {
-                            for (int i = 1; i < 3; i++)
-                            {
-                                if (string.IsNullOrEmpty(sItem["KLHZ" + i]))
-                                {
-                                    sItem["KLHZ" + i] = "0";
-                                }
-                                sItem["KLQD" + i] = myint(1000 * Conversion.Val(sItem["KLHZ" + i]) / Conversion.Val(sItem["MJ"])).ToString();
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 1; i < 3; i++)
+                            if (Conversion.Val(sItem["HD1"]) * Conversion.Val(sItem["KD1"]) == 0)
                             {
                                 sItem["KLQD" + i] = "0";
+                                continue;
                             }
+                            mj = Conversion.Val(sItem["HD" + i]) * Conversion.Val(sItem["KD" + i]);
+
+                            if (string.IsNullOrEmpty(sItem["KLHZ" + i]))
+                            {
+                                sItem["KLHZ" + i] = "0";
+                            }
+                            sItem["KLQD" + i] = myint(1000 * Conversion.Val(sItem["KLHZ" + i]) / mj).ToString();
                         }
+
                         var mallBhg_kl = 0;
-                        for (int i = 1; i < 2; i++)
+                        for (int i = 1; i < 3; i++)
                         {
                             if (GetSafeDouble(sItem["KLQD" + i]) >= mKlqd)
                                 sItem["HG_KL"] = (Conversion.Val(sItem["HG_KL"]) + 1).ToString();
@@ -247,6 +245,28 @@ namespace Calculates
                         {
                             for (int i = 1; i < 5; i++)
                             {
+                                if (sItem["SYLX" + i] == "面弯" && string.IsNullOrEmpty(sItem["MWJG1"]))
+                                {
+                                    sItem["MWJG1"] = sItem["LW" + i];
+                                }
+                                else if (sItem["SYLX" + i] == "be")
+                                {
+                                    sItem["MWJG2"] = sItem["LW" + i];
+                                }
+                                if (sItem["SYLX" + i] == "背弯" && string.IsNullOrEmpty(sItem["BWJG1"]))
+                                {
+                                    sItem["BWJG1"] = sItem["LW" + i];
+                                }
+                                else if (sItem["SYLX" + i] == "背弯")
+                                {
+                                    sItem["BWJG2"] = sItem["LW" + i];
+                                }
+
+                                if (sItem["SYLX" + i] == "侧弯")
+                                {
+                                    sItem["CWJG" + i] = sItem["LW" + i];
+                                }
+
                                 //弯曲最大单值 
                                 if (GetSafeDecimal(sItem["WQZDDZ" + i]) > 3)
                                 {
@@ -277,10 +297,11 @@ namespace Calculates
                             }
                         }
 
+
+
                         if (Gs < 1)
                         {
                             sItem["JCJG_LW"] = "符合";
-
                         }
                         else
                         {

@@ -19,7 +19,7 @@ namespace Calculates
             var jcxmCur = "";
             var ggph = "";//钢筋牌号
             var mJCJG = "";
-
+           
             int mbhggs = 0;//不合格数量
             var extraDJ = dataExtra["BZ_GYC_DJ"];
             var extraZLPCB = dataExtra["BZ_ZLPCB"];
@@ -673,7 +673,7 @@ namespace Calculates
                             if (MItem[0]["PDBZ"].Contains("1499.2-2018"))
                             {
                                 sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD), 1)).ToString("0.0");
-                                if (sItem["ZLPC"] == "-0")
+                                if (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD), 1) == 0)
                                 {
                                     sItem["ZLPC"] = "0";
                                 }
@@ -681,7 +681,7 @@ namespace Calculates
                             else
                             {
                                 sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD))).ToString();
-                                if (sItem["ZLPC"] == "-0")
+                                if (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD)) == 0)
                                 {
                                     sItem["ZLPC"] = "0";
                                 }
@@ -734,6 +734,8 @@ namespace Calculates
                 }
 
                 //求伸长率
+                sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
+
                 calc_SCL(MItem[0], sItem, (int)mXLGS);
 
                 //求屈服强度及抗拉强度
@@ -768,17 +770,12 @@ namespace Calculates
                     if (sItem["GCLX_PH"].ToUpper().EndsWith("E"))
                     {
                         sItem["G_KZYQ"] = "实测强屈比≥" + extraFieldsDj["QDQFB"] + "，实测标准屈服比≤" + extraFieldsDj["QFQFB"] + "，最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
-                        if (string.IsNullOrEmpty(sItem["DQJL01"]))
-                        {
-                            sItem["DQJL01"] = "100";
-                        }
+                        sItem["DQJL01"] = "100";
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(sItem["DQJL01"]))
-                        {
-                            sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
-                        }
+
+                        sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
                         sItem["G_KZYQ"] = "最大力总伸长率≥" + extraFieldsDj["ZSCL"] + "%。";
                     }
                     mHggs_SCL = 0;

@@ -94,10 +94,10 @@ namespace Calculates
                     {
                         throw new Exception("请输入细度数据");
                     }
-                    sItem["XD_1"] = Round(Conversion.Val(sItem["XDM1_1"]) / Conversion.Val(sItem["XDM0_1"]) * 100, 2).ToString();
-                    sItem["XD_2"] = Round(Conversion.Val(sItem["XDM1_2"]) / Conversion.Val(sItem["XDM0_2"]) * 100, 2).ToString();
+                    sItem["XD_1"] = Round(Conversion.Val(sItem["XDM1_1"]) / Conversion.Val(sItem["XDM0_1"]) * 100, 2).ToString("0.00");
+                    sItem["XD_2"] = Round(Conversion.Val(sItem["XDM1_2"]) / Conversion.Val(sItem["XDM0_2"]) * 100, 2).ToString("0.00");
 
-                    sItem["XD"] = Round((Conversion.Val(sItem["XD_1"]) + Conversion.Val(sItem["XD_2"])) / 2, 2).ToString();
+                    sItem["XD"] = Round((Conversion.Val(sItem["XD_1"]) + Conversion.Val(sItem["XD_2"])) / 2, 2).ToString("0.00");
 
                     if (sItem["XDKZZ"] == "----")
                     {
@@ -340,17 +340,17 @@ namespace Calculates
                             if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                             {
                                 //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                sItem["JPJMSL"] = Round(mMidKyqd, 1).ToString();
+                                sItem["JPJMSL"] = Round(mMidKyqd, 1).ToString("0.0");
                             }
                             if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                             {
                                 // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                sItem["JPJMSL"] = Round(mMidKyqd, 1).ToString();
+                                sItem["JPJMSL"] = Round(mMidKyqd, 1).ToString("0.0");
                             }
                             if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                             {
                                 //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                                sItem["JPJMSL"] = Round(mAvgKyqd, 1).ToString();
+                                sItem["JPJMSL"] = Round(mAvgKyqd, 1).ToString("0.0");
                             }
                         }
                         else
@@ -403,17 +403,17 @@ namespace Calculates
                             if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                             {
                                 //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                sItem["SPJMSL"] = Round(mMidKyqd, 1).ToString();
+                                sItem["SPJMSL"] = Round(mMidKyqd, 1).ToString("0.0");
                             }
                             if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                             {
                                 // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                sItem["SPJMSL"] = Round(mMidKyqd, 1).ToString();
+                                sItem["SPJMSL"] = Round(mMidKyqd, 1).ToString("0.0");
                             }
                             if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                             {
                                 //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                                sItem["SPJMSL"] = Round(mAvgKyqd, 1).ToString();
+                                sItem["SPJMSL"] = Round(mAvgKyqd, 1).ToString("0.0");
                             }
                         }
                         else
@@ -506,17 +506,17 @@ namespace Calculates
                             if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                             {
                                 //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                sItem["PJJSL"] = Round(mMidKyqd, 1).ToString();
+                                sItem["PJJSL"] = Round(mMidKyqd, 1).ToString("0.0");
                             }
                             if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                             {
                                 // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                sItem["PJJSL"] = Round(mMidKyqd, 1).ToString();
+                                sItem["PJJSL"] = Round(mMidKyqd, 1).ToString("0.0");
                             }
                             if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                             {
                                 //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                                sItem["PJJSL"] = Round(mAvgKyqd, 1).ToString();
+                                sItem["PJJSL"] = Round(mAvgKyqd, 1).ToString("0.0");
                             }
                         }
                         else
@@ -615,17 +615,17 @@ namespace Calculates
                         if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["CJHQL"] = Round(mMidKyqd, 1).ToString();
+                            sItem["CJHQL"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                         {
                             // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["CJHQL"] = Round(mMidKyqd, 1).ToString();
+                            sItem["CJHQL"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["CJHQL"] = Round(mAvgKyqd, 1).ToString();
+                            sItem["CJHQL"] = Round(mAvgKyqd, 1).ToString("0.0");
                         }
                     }
                     else
@@ -660,17 +660,17 @@ namespace Calculates
                         if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["HQL1HH"] = Round(mMidKyqd, 1).ToString();
+                            sItem["HQL1HH"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                         {
                             // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["HQL1HH"] = Round(mMidKyqd, 1).ToString();
+                            sItem["HQL1HH"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["HQL1HH"] = Round(mAvgKyqd, 1).ToString();
+                            sItem["HQL1HH"] = Round(mAvgKyqd, 1).ToString("0.0");
                         }
                     }
                     else
@@ -687,7 +687,7 @@ namespace Calculates
                     {
                         if (IsNumeric(sItem["CJHQL"]))
                         {
-                            sItem["HQLBHL"] = (Round(Conversion.Val(sItem["CJHQL"]) - Conversion.Val(sItem["HQL1HH"]), 1)).ToString();
+                            sItem["HQLBHL"] = (Round(Conversion.Val(sItem["CJHQL"]) - Conversion.Val(sItem["HQL1HH"]), 1)).ToString("0.0");
                             MItem[0]["HG_HQLBHL"] = IsQualified(MItem[0]["G_HQLBHL"], sItem["HQLBHL"]);
                         }
                     }
@@ -742,17 +742,17 @@ namespace Calculates
                         if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHL"] = Round(mMidKyqd, 1).ToString();
+                            sItem["PJTLDBHL"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                         {
                             // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHL"] = Round(mMidKyqd, 1).ToString();
+                            sItem["PJTLDBHL"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["PJTLDBHL"] = Round(mAvgKyqd, 1).ToString();
+                            sItem["PJTLDBHL"] = Round(mAvgKyqd, 1).ToString("0.0");
                         }
                     }
                     else
@@ -791,17 +791,17 @@ namespace Calculates
                         if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHLSJ"] = Round(mMidKyqd, 1).ToString();
+                            sItem["PJTLDBHLSJ"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                         {
                             // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHLSJ"] = Round(mMidKyqd, 1).ToString();
+                            sItem["PJTLDBHLSJ"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["PJTLDBHLSJ"] = Round(mAvgKyqd, 1).ToString();
+                            sItem["PJTLDBHLSJ"] = Round(mAvgKyqd, 1).ToString("0.0");
                         }
                     }
                     else
@@ -875,17 +875,17 @@ namespace Calculates
                         if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["CNPJSJC"] = Round(mMidKyqd, 1).ToString();
+                            sItem["CNPJSJC"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                         {
                             // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["CNPJSJC"] = Round(mMidKyqd, 1).ToString();
+                            sItem["CNPJSJC"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["CNPJSJC"] = Round(mAvgKyqd, 1).ToString();
+                            sItem["CNPJSJC"] = Round(mAvgKyqd, 1).ToString("0.0");
                         }
                     }
                     else
@@ -951,17 +951,17 @@ namespace Calculates
                         if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["ZNPJSJC"] = Round(mMidKyqd, 1).ToString();
+                            sItem["ZNPJSJC"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                         {
                             // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["ZNPJSJC"] = Round(mMidKyqd, 1).ToString();
+                            sItem["ZNPJSJC"] = Round(mMidKyqd, 1).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["ZNPJSJC"] = Round(mAvgKyqd, 1).ToString();
+                            sItem["ZNPJSJC"] = Round(mAvgKyqd, 1).ToString("0.0");
                         }
                     }
                     else
@@ -1164,19 +1164,19 @@ namespace Calculates
                                 mMinKyqd = mkyqdArray[0];
                                 mMidKyqd = mkyqdArray[1];
                                 mAvgKyqd = mkyqdArray.Average();
-                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
+                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
                                     sItem["PJJQDDBZ" + mlq] = "重做";
                                 //"最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJJQDDBZ" + mlq] = Round(mMidKyqd, 0).ToString();
+                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 1))
+                                    sItem["PJJQDDBZ" + mlq] = Round(mMidKyqd, 1).ToString("0.0");
                                 //"最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJJQDDBZ" + mlq] = Round(mMidKyqd, 0).ToString();
+                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
+                                    sItem["PJJQDDBZ" + mlq] = Round(mMidKyqd, 1).ToString("0.0");
                                 //"最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJJQDDBZ" + mlq] = Round(mAvgKyqd, 0).ToString();
+                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 10))
+                                    sItem["PJJQDDBZ" + mlq] = Round(mAvgKyqd, 1).ToString("0.0");
                                 #endregion
-                                
+
                                 #region 受检强度代表值
                                 mlongStr = sItem["SQDDBZ" + mlq + "1"] + "," + sItem["SQDDBZ" + mlq + "2"] + "," + sItem["SQDDBZ" + mlq + "3"];
                                 mtmpArray = mlongStr.Split(',');
@@ -1187,20 +1187,20 @@ namespace Calculates
                                 mMinKyqd = mkyqdArray[0];
                                 mMidKyqd = mkyqdArray[1];
                                 mAvgKyqd = mkyqdArray.Average();
-                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
+                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
                                     sItem["PJQDDBZ" + mlq] = "重做";
                                 //"最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJQDDBZ" + mlq] = Round(mMidKyqd, 0).ToString();
+                                if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 1))
+                                    sItem["PJQDDBZ" + mlq] = Round(mMidKyqd, 1).ToString("0.0");
                                 //"最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJQDDBZ" + mlq] = Round(mMidKyqd, 0).ToString();
+                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
+                                    sItem["PJQDDBZ" + mlq] = Round(mMidKyqd, 1).ToString("0.0");
                                 //"最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 0) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 0))
-                                    sItem["PJQDDBZ" + mlq] = Round(mAvgKyqd, 0).ToString();
+                                if ((mMaxKyqd - mMidKyqd) <= Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) <= Round(mMidKyqd * 0.15, 1))
+                                    sItem["PJQDDBZ" + mlq] = Round(mAvgKyqd, 1).ToString("0.0");
 
                                 #endregion
-                                sItem["PJQDB" + mlq] = Round(GetSafeDouble(sItem["PJQDDBZ" + mlq]) / GetSafeDouble(sItem["PJJQDDBZ" + mlq]) * 100, 0).ToString();
+                                sItem["PJQDB" + mlq] = Round(GetSafeDouble(sItem["PJQDDBZ" + mlq]) / GetSafeDouble(sItem["PJJQDDBZ" + mlq]) * 100, 1).ToString("0.0");
 
                             }
                         }
@@ -1239,9 +1239,9 @@ namespace Calculates
                     {
                         sItem["SSLJ" + xd] = Round((Conversion.Val(sItem["SSLJL0_" + xd]) - Conversion.Val(sItem["SSLJLT_" + xd])) / (Conversion.Val(sItem["SSLJLB_" + xd])) * Math.Pow(10, 6), 1).ToString();
                         sItem["SSLS" + xd] = Round((Conversion.Val(sItem["SSLSL0_" + xd]) - Conversion.Val(sItem["SSLSLT_" + xd])) / (Conversion.Val(sItem["SSLSLB_" + xd])) * Math.Pow(10, 6), 1).ToString();
-                        sItem["SSLB" + xd] = Round(100 * Conversion.Val(sItem["SSLS" + xd]) / Conversion.Val(sItem["SSLJ" + xd]), 1).ToString();
+                        sItem["SSLB" + xd] = Round(100 * Conversion.Val(sItem["SSLS" + xd]) / Conversion.Val(sItem["SSLJ" + xd]), 1).ToString("0.0");
                     }
-                    sItem["SSLB"] = Round((Conversion.Val(sItem["SSLB1"]) + Conversion.Val(sItem["SSLB2"]) + Conversion.Val(sItem["SSLB3"])) / 3, 0).ToString();
+                    sItem["SSLB"] = Round((Conversion.Val(sItem["SSLB1"]) + Conversion.Val(sItem["SSLB2"]) + Conversion.Val(sItem["SSLB3"])) / 3, 0).ToString("0");
                     MItem[0]["G_SSLB"] = mrsDj["SSLB28D"];
 
                     MItem[0]["HG_SSLB"] = IsQualified(MItem[0]["G_SSLB"], sItem["SSLB"]);
@@ -1358,7 +1358,7 @@ namespace Calculates
                     {
                         sItem["LSNHL_" + xd] = Round((Conversion.Val(sItem["LSNHLM2_" + xd]) - Conversion.Val(sItem["LSNHLM1_" + xd])) / Conversion.Val(sItem["LSNHLM_" + xd]) * 0.6086 * 100, 2).ToString();
                     }
-                    sItem["LSNHL"] = Round((Conversion.Val(sItem["LSNHL_1"]) + Conversion.Val(sItem["LSNHL_2"])) / 2, 2).ToString();
+                    sItem["LSNHL"] = Round((Conversion.Val(sItem["LSNHL_1"]) + Conversion.Val(sItem["LSNHL_2"])) / 2, 2).ToString("0.00");
 
                     if (sItem["LSNHLKZZ"] == "----")
                     {
