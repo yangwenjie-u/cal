@@ -50,7 +50,8 @@ namespace Calculates
                 {
                     mAllHg = false;
                     sItem["JCJG"] = "不合格";
-                    jsbeizhu = "不合格";
+                    jsbeizhu = "不下结论";
+                    mjcjg = "不下结论";
                     continue;
                 }
                 else
@@ -878,23 +879,22 @@ namespace Calculates
                 {
                     sItem["JCJG"] = "不合格";
                 }
+             
             }
 
             //添加最终报告
-            if (mAllHg && mjcjg != "----")
+            if (mAllHg)
             {
                 mjcjg = "合格";
                 jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                if (mbHggs == 0)
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+
+                if (mjcjg == "不下结论")
                 {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
-                }
-                else
-                {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                    jsbeizhu = "找不到对应标准。";
                 }
             }
 

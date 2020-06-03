@@ -547,9 +547,9 @@ namespace Calculates
                 else
                 {
                     sitem["BGDW" + curJcxmCount] = "----";
-                    sitem["BGBZYQ" + curJcxmCount] = mitem["G_LCCJ"];
-                    sitem["BGSCJG" + curJcxmCount] = mitem["LCCJ"];
-                    sitem["BGDXPD" + curJcxmCount] = mitem["LCCJ_HG"];
+                    sitem["BGBZYQ" + curJcxmCount] = "----";
+                    sitem["BGSCJG" + curJcxmCount] = "----";
+                    sitem["BGDXPD" + curJcxmCount] = "----";
                     curJcxmCount = curJcxmCount + 1;
                 }
                 curJcxmCount = 5;
