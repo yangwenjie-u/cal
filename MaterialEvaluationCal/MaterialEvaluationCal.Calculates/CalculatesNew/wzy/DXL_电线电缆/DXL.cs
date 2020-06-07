@@ -84,6 +84,7 @@ namespace Calculates
 
                 if (jcxm.Contains("、直流电阻试验、") || jcxm.Contains("、导体试验、"))
                 {
+                    var bhgsl = 0;
                     jcxmCur = CurrentJcxm(jcxm, "直流电阻试验,导体试验");
                     //计算修正系数
                     if (MItem[0]["H_SFXZ"] == "是")
@@ -213,7 +214,7 @@ namespace Calculates
                         else
                         {
                             Y_DXL["E_DZPD"] = sqz <= md ? "合格" : "不合格";
-                            mbhggs = sqz <= md ? mbhggs : mbhggs + 1;
+                            bhgsl = sqz <= md ? bhgsl : bhgsl + 1;
                             if (Y_DXL["E_DZPD"] == "合格")
                             {
                                 mFlag_Hg = true;
@@ -230,10 +231,9 @@ namespace Calculates
                     }
                     else
                     {
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         MItem[0]["DTDZ_HG"] = "合格";
 
-                        if (mbhggs > 0)
+                        if (bhgsl > 0)
                         {
                             MItem[0]["DTDZ_HG"] = "不合格";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";

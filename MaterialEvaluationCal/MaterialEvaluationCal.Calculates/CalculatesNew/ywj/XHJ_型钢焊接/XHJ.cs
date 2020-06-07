@@ -249,7 +249,7 @@ namespace Calculates
                                 {
                                     sItem["MWJG1"] = sItem["LW" + i];
                                 }
-                                else if (sItem["SYLX" + i] == "be")
+                                else if (sItem["SYLX" + i] == "面弯")
                                 {
                                     sItem["MWJG2"] = sItem["LW" + i];
                                 }
@@ -280,7 +280,7 @@ namespace Calculates
                                 sum += GetSafeDecimal(sItem["WQZHZ" + i]);
                             }
                             sItem["SYZHZ"] = sum.ToString();
-                            if (sum > 24)
+                            if (sum > 24 || sum <= 0)
                             {
                                 Gs++;
                             }

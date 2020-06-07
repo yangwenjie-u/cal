@@ -172,6 +172,7 @@ namespace Calculates
                             //sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续2～3min，压力不降且不渗不漏";
                             sItem["YLSYYQ"] = "试验压力为工作压力的1.5倍，工作压力是" + sItem["GZYL"] + "MPa；持续2min，压力不降且不渗不漏";
                         }
+
                         if (GetSafeDouble(sItem["YLSYSM"]) >= GetSafeDouble(sItem["SJSYYL"]) && GetSafeDouble(sItem["YLSYSM"]) >= 0.6 && sItem["SLQK"] == "压力不降且不渗不漏")
                         {
                             MItem[0]["GH_YLSY"] = "合格";

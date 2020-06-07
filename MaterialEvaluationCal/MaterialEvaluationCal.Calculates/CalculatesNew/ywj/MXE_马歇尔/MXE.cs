@@ -22,7 +22,7 @@ namespace Calculates
             var SItem = data["S_MXE"];
             int mbhggs = 0;
             string mJSFF;
-            bool mAllHg = false;
+            bool mAllHg = true;
             bool mFlag_Hg = false, mFlag_Bhg = false;
             var mSjdj = "";
             var jcxmBhg = "";
