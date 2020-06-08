@@ -317,10 +317,13 @@ namespace Calculates
                                     break;
                                 }
 
-                                if (GetSafeDecimal(sitem["WJ" + i + "_" + j]) < wjMin && GetSafeDecimal(sitem["WJ" + i + "_" + j]) > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
+                                if (GetSafeDecimal(sitem["WJ" + i + "_" + j]) < wjMin || GetSafeDecimal(sitem["WJ" + i + "_" + j]) > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
                                 {
                                     bhg++;
+                                    //单组不合格
+                                    goto DZBHG_FLAG;
                                 }
+
                                 flag++;
                                 sum += GetSafeDecimal(sitem["WJ" + i + "_" + j]);
                             }
@@ -331,6 +334,8 @@ namespace Calculates
                             }
 
                             arrWJ.Add(Math.Round(sum / flag, 1));
+                        DZBHG_FLAG:
+                            continue;
                         }
                         if (bhg > 1)
                         {
@@ -380,6 +385,8 @@ namespace Calculates
                                 if (GetSafeDecimal(sitem["SCBH" + i + "_" + j]) < bhMin && GetSafeDecimal(sitem["SCBH" + i + "_" + j]) > bhMax) //该组不合格，则去掉该组，如果大于1，尺寸不合格
                                 {
                                     bhg++;
+                                    //单组不合格
+                                    goto DZBHG_FLAG;
                                 }
                                 if (bhg > 1)
                                 {
@@ -387,6 +394,8 @@ namespace Calculates
                                     //尺寸不合格
                                 }
                                 arrDZBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
+                            DZBHG_FLAG:
+                                continue;
                             }
                             if (bhg > 1)
                             {
@@ -702,6 +711,7 @@ namespace Calculates
                     if (fj == 0)
                     {
                         PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
+                        mitem["RHWD"] = Math.Round(PJ, 1).ToString();
                         mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
                     }
                     else
@@ -713,6 +723,7 @@ namespace Calculates
                         mitem["RHWD"] = Math.Round(PJ, 1).ToString();
                         mitem["RHWD_F"] = Math.Round(PJ1, 1).ToString();
                         mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
+
                         if (mitem["RHWD_HG"] == "合格")
                         {
                             mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD_F"], false);
@@ -1034,7 +1045,7 @@ namespace Calculates
                 }
                 mAllHg = (mAllHg && sitem["JCJG"].Trim() == "合格");
 
-                CCBHG_FLAG:
+            CCBHG_FLAG:
                 if (GGCCBHG)
                 {
                     mAllHg = false;

@@ -45,7 +45,7 @@ namespace Calculates
                 itemHG = true;
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
                 //从设计等级表中取得相应的计算数值、等级标准
-                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["GGXH"].Trim() == sItem["GGXH"]);
+                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["GGXH"].Trim() == sItem["GG"]);
                 if (null == extraFieldsDj)
                 {
                     mAllHg = false;
