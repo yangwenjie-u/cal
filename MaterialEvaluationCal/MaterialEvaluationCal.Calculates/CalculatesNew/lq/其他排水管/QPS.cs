@@ -645,17 +645,26 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
 
                     if (fj == 0)
                     {
-                        PJ = Math.Round(((GetSafeDecimal(MItem[0]["RHWD1"]) + GetSafeDecimal(MItem[0]["RHWD2"])) / 2), 1);
+                        PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
+                        mitem["RHWD"] = Math.Round(PJ, 1).ToString();
+                        mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
                     }
                     else
                     {
-                        PJ = Math.Round(((GetSafeDecimal(MItem[0]["RHWD1"]) + GetSafeDecimal(MItem[0]["RHWD2"])) / 2), 1);
+                        PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
 
-                        PJ1 = Math.Round(((GetSafeDecimal(MItem[0]["RHWD3"]) + GetSafeDecimal(MItem[0]["RHWD4"])) / 2), 1);
+                        PJ1 = Math.Round(((GetSafeDecimal(sitem["RHWD3"]) + GetSafeDecimal(sitem["RHWD4"])) / 2), 1);
+
+                        mitem["RHWD"] = Math.Round(PJ, 1).ToString();
+                        mitem["RHWD_F"] = Math.Round(PJ1, 1).ToString();
+                        mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
+
+                        if (mitem["RHWD_HG"] == "合格")
+                        {
+                            mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD_F"], false);
+
+                        }
                     }
-                    MItem[0]["RHWD"] = Math.Round(PJ, 1).ToString();
-                    MItem[0]["RHWD_F"] = Math.Round(PJ1, 1).ToString();
-                    mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
 
                     if (mitem["RHWD_HG"] == "合格")
                     {
