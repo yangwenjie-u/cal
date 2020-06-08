@@ -37,7 +37,7 @@ namespace Calculates
                 m["JCJGMS"] = jsbeizhu;
                 MItem.Add(m);
             }
-            var mAllHg = false;
+            var mAllHg = true;
             var jcxm = "";
 
             string mGjlb, mSjdj = "";
@@ -280,7 +280,7 @@ namespace Calculates
                                 sum += GetSafeDecimal(sItem["WQZHZ" + i]);
                             }
                             sItem["SYZHZ"] = sum.ToString();
-                            if (sum > 24 || sum <= 0)
+                            if (sum > 24 )
                             {
                                 Gs++;
                             }
@@ -296,8 +296,6 @@ namespace Calculates
                                 }
                             }
                         }
-
-
 
                         if (Gs < 1)
                         {

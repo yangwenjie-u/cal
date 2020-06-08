@@ -384,9 +384,12 @@ namespace Calculates
                                     break;
                                 }
 
-                                if (GetSafeDecimal(sitem["WJ" + i + "_" + j]) < wjMin && GetSafeDecimal(sitem["WJ" + i + "_" + j]) > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
+                                //该组外径合格，则去掉该组，如果大于1，尺寸不合格
+                                if (GetSafeDecimal(sitem["WJ" + i + "_" + j]) < wjMin || GetSafeDecimal(sitem["WJ" + i + "_" + j]) > wjMax)
                                 {
                                     bhg++;
+                                    //单组不合格
+                                    goto DZBHG_FLAG;
                                 }
                                 flag++;
                                 sum += GetSafeDouble(sitem["WJ" + i + "_" + j]);
@@ -398,7 +401,11 @@ namespace Calculates
                             }
 
                             arrWJ.Add((decimal)Math.Round(sum / flag, 1));
+                            DZBHG_FLAG:
+                            continue;
                         }
+
+
                         if (bhg > 1)
                         {
                             //不合格
@@ -476,7 +483,7 @@ namespace Calculates
                         {
                             throw new Exception("请输入壁厚信息！");
                         }
-                        
+
                         if (bh <= 10)
                         {
                             sitem["PJBH1"] = (Round((double)arrBH[0] / 5.0, 2) * 5).ToString("0.00");
@@ -653,6 +660,7 @@ namespace Calculates
                     {
                         if (mitem["YYSY_HG" + xd] == "不合格")
                         {
+                            mitem["YYSY" + xd] = mitem["YYSY" + xd + "_1"];
                             //mitem["YYSY" + xd] = "有破裂、有渗漏";
                             mbhggs = mbhggs + 1;
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
@@ -661,6 +669,8 @@ namespace Calculates
                         else
                         {
                             //mitem["YYSY" + xd] = "不破裂、不渗漏";
+                            mitem["YYSY" + xd] = mitem["YYSY" + xd + "_1"];
+
                             mFlag_Hg = true;
                         }
                     }
