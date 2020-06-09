@@ -334,7 +334,7 @@ namespace Calculates
                             }
 
                             arrWJ.Add(Math.Round(sum / flag, 1));
-                        DZBHG_FLAG:
+                            DZBHG_FLAG:
                             continue;
                         }
                         if (bhg > 1)
@@ -394,7 +394,7 @@ namespace Calculates
                                     //尺寸不合格
                                 }
                                 arrDZBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
-                            DZBHG_FLAG:
+                                DZBHG_FLAG:
                                 continue;
                             }
                             if (bhg > 1)
@@ -1045,7 +1045,7 @@ namespace Calculates
                 }
                 mAllHg = (mAllHg && sitem["JCJG"].Trim() == "合格");
 
-            CCBHG_FLAG:
+                CCBHG_FLAG:
                 if (GGCCBHG)
                 {
                     mAllHg = false;
@@ -1053,20 +1053,21 @@ namespace Calculates
                     jcxmBhg = "规格尺寸";
                 }
             }
+            var fjpd = MItem[0]["SFFJ"].ToUpper() == "TRUE" ? "复检" : "";
             //主表总判断赋值
             if (mAllHg)
             {
                 mitem["JCJG"] = "合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + fjpd + "均符合要求。";
             }
             else
             {
                 mitem["JCJG"] = "不合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目不符合要求，详情见下页";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + fjpd + "不符合要求，详情见下页";
 
                 if (realBhg)
                 {
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
                 }
                 else
                 {
