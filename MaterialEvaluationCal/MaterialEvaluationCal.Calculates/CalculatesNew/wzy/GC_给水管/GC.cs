@@ -164,6 +164,7 @@ namespace Calculates
                     sitem["JCJG"] = "不下结论";
                     mitem["JCJGMS"] = "获取标准要求出错，找不到对应项";
                     mjcjg = "不下结论";
+                    mAllHg = false;
                     continue;
                 }
                 mbhggs = 0;
@@ -1076,8 +1077,7 @@ namespace Calculates
                 }
             }
             //主表总判断赋值
-            if (mAllHg )
-            {
+               if (mAllHg )            {
                 mitem["JCJG"] = "合格";
                 mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
             }
