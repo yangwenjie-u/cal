@@ -69,26 +69,40 @@ namespace Calculates
                     mGxl = "----";
                 string gcwj = sitem["GCWJ"];
                 string gcbh = sitem["GCBH"];
+                String gxl = sitem["GXL"];
+
                 if (gcbh == "----")
                 {
                     gcbh = "";
                 }
-                if (gcwj.Contains("DN"))
+
+                if (sitem["CLDJ"] == "PP-R")
                 {
-                    gcwj += " " + gcbh + "mm";
+                    sitem["GGXH"] = gxl+" " + "dn" + gcwj + "x" + "en" + gcbh+"mm";
+
+
                 }
                 else
                 {
-                    gcwj = "DN " + gcwj + "x" + gcbh + "mm";
+
+
+                    if (gcwj.Contains("DN"))
+                    {
+                        gcwj += " " + gcbh + "mm";
+                    }
+                    else
+                    {
+                        gcwj = "DN " + gcwj + "x" + gcbh + "mm";
+                    }
+
+                    if (sitem["CLDJ"] != "----")
+                    {
+                        gcwj += sitem["CLDJ"];
+                    }
+
+
+                    sitem["GGXH"] = gcwj;
                 }
-
-                if (sitem["CLDJ"] != "----")
-                {
-                    gcwj += sitem["CLDJ"];
-                }
-
-
-                sitem["GGXH"] = gcwj;
                 if (mSjdj.Contains("建筑排水用硬聚氯乙烯(PVC-U)中孔消音管材") || mSjdj.Contains("埋地排水用(PVC-U)双壁波纹管材")
                     || mSjdj.Contains("埋地排水用钢带增强聚乙烯(PE)螺旋波纹管") || mSjdj.Contains("埋地用聚乙烯(PE)缠绕结构壁管材")
                     || mSjdj.Contains("埋地用聚乙烯(PE)双壁波纹管材") || mSjdj.Contains("排水用芯层发泡硬聚氯乙烯(PVC-U)管材")
@@ -306,6 +320,7 @@ namespace Calculates
                     if (mrsWgcc_Filter == null && mrsDj_Filter.Count() == 0)
                     {
                         mjcjg = "不下结论";
+                        mAllHg = false;
                         mitem["JCJGMS"] = "获取" + mSjdj + "外径出错，找不到对应项";
                         continue;
                     }
@@ -1061,7 +1076,7 @@ namespace Calculates
                 }
             }
             //主表总判断赋值
-            if (mAllHg && mjcjg != "----")
+            if (mAllHg )
             {
                 mitem["JCJG"] = "合格";
                 mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";

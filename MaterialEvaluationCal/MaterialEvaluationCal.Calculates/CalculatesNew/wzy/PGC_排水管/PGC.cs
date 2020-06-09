@@ -623,7 +623,7 @@ namespace Calculates
                     }
                     else
                     {
-                        if (mitem["G_LCCJ"].Contains("≤"))
+                        if (mitem["G_LCCJ"].Contains("≤"))                                                  
                         {
                             mitem["LCCJ"] = GetSafeDouble(mitem["LCCJCS"]) == 0 ? "0" : Round(100 * GetSafeDouble(mitem["LCCJBHGS"]) / GetSafeDouble(mitem["LCCJCS"]), 0).ToString("0");
                             mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
