@@ -100,8 +100,6 @@ namespace Calculates
                 return 0;
             };
 
-
-
             Func<IDictionary<string, string>, IDictionary<string, string>, double, double, double, double, int> all_zb_jl = delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, double mHggs_qfqd_f, double mHggs_klqd_f, double mHggs_scl_f, double mHggs_lw_f)
             {
                 if (null == sItem["HG_QF"])

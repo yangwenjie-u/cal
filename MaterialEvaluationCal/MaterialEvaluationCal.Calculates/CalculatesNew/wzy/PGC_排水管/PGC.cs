@@ -293,6 +293,8 @@ namespace Calculates
 
                         List<decimal> arrWJ = new List<decimal>();
                         List<decimal> arrBH = new List<decimal>();
+                        List<decimal> arrDZWJ = new List<decimal>();
+
                         //单组壁厚
                         List<decimal> arrDZBH = new List<decimal>();
                         decimal sum = 0;
@@ -305,7 +307,7 @@ namespace Calculates
                             bhg = 0;
                             sum = 0;
                             flag = 0;
-
+                            arrDZWJ.Clear();
                             if (string.IsNullOrEmpty(sitem["WJ" + i + "_1"]))
                             {
                                 break;
@@ -316,16 +318,14 @@ namespace Calculates
                                 {
                                     break;
                                 }
-
-                                if (GetSafeDecimal(sitem["WJ" + i + "_" + j]) < wjMin || GetSafeDecimal(sitem["WJ" + i + "_" + j]) > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
-                                {
-                                    bhg++;
-                                    //单组不合格
-                                    goto DZBHG_FLAG;
-                                }
-
-                                flag++;
-                                sum += GetSafeDecimal(sitem["WJ" + i + "_" + j]);
+                                arrDZWJ.Add(GetSafeDecimal(sitem["WJ" + i + "_" + j]));
+                            }
+                            var pjz = arrDZWJ.Average() ;
+                            if (pjz < wjMin || pjz > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
+                            {
+                                bhg++;
+                                //单组不合格
+                                goto DZBHG_FLAG;
                             }
 
                             if (bhg > 1)
@@ -333,7 +333,7 @@ namespace Calculates
                                 break;
                             }
 
-                            arrWJ.Add(Math.Round(sum / flag, 1));
+                            arrWJ.AddRange(arrDZWJ);
                             DZBHG_FLAG:
                             continue;
                         }

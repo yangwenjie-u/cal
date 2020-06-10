@@ -289,6 +289,7 @@ namespace Calculates
                     double sKlmj1 = 0, sKlmj2 = 0, sKlmj3 = 0, sKlmj4 = 0, sKlmj5 = 0, sKlmj6 = 0;
                     switch (klqdJsff)
                     {
+                        #region    case 1
                         case "1":
                             sKlmj1 = Conversion.Val(sItem["V_KLKD1"]) * Conversion.Val(sItem["V_KLHD1"]);
                             sKlmj2 = Conversion.Val(sItem["V_KLKD2"]) * Conversion.Val(sItem["V_KLHD2"]);
@@ -300,7 +301,6 @@ namespace Calculates
                             if (sKlmj3 == 0) sKlmj3 = Conversion.Val(sItem["V_KLKD3"]);
                             if (sKlmj4 == 0) sKlmj4 = Conversion.Val(sItem["V_KLKD4"]);
                             if (sKlmj5 == 0) sKlmj6 = Conversion.Val(sItem["V_KLKD5"]);
-
 
                             if (sKlmj1 != 0) sKlqd1 = Round(Conversion.Val(sItem["V_KLHZ1"]) / sKlmj1, 1);
                             if (sKlmj2 != 0) sKlqd2 = Round(Conversion.Val(sItem["V_KLHZ2"]) / sKlmj2, 1);
@@ -335,7 +335,10 @@ namespace Calculates
                             mtmpArray = mlongStr.Split(',');
                             mfuncVal = mtmpArray.ToList();
                             sItem["H_KLQD"] = Round(Conversion.Val(mtmpArray[2]), 1).ToString();
+
                             break;
+                        #endregion
+                        #region case 2
                         case "2":
                             sKlmj1 = Conversion.Val(sItem["V_KLKD1"]);
                             sKlmj2 = Conversion.Val(sItem["V_KLKD2"]);
@@ -356,7 +359,6 @@ namespace Calculates
                             mfuncVal = mtmpArray.ToList();
                             sItem["V_KLQD"] = Round(Conversion.Val(mtmpArray[2]), 1).ToString();
 
-
                             sKlmj1 = Conversion.Val(sItem["H_KLKD1"]);
                             sKlmj2 = Conversion.Val(sItem["H_KLKD2"]);
                             sKlmj3 = Conversion.Val(sItem["H_KLKD3"]);
@@ -376,6 +378,8 @@ namespace Calculates
                             mfuncVal = mtmpArray.ToList();
                             sItem["H_KLQD"] = Round(Conversion.Val(mtmpArray[2]), 1).ToString();
                             break;
+                        #endregion
+                        #region case 3
                         case "3":
                             sKlqd1 = Conversion.Val(sItem["V_KLHZ1"]);
                             sKlqd2 = Conversion.Val(sItem["V_KLHZ2"]);
@@ -391,6 +395,8 @@ namespace Calculates
                             sKlqd5 = Conversion.Val(sItem["H_KLHZ5"]);
                             sItem["H_KLQD"] = myint((sKlqd1 + sKlqd2 + sKlqd3 + sKlqd4 + sKlqd5) / 5).ToString();
                             break;
+                        #endregion
+                        #region case 4
                         case "4":
                             sKlqd1 = 2 * Conversion.Val(sItem["V_KLHZ1"]);
                             sKlqd2 = 2 * Conversion.Val(sItem["V_KLHZ2"]);
@@ -406,6 +412,8 @@ namespace Calculates
                             sKlqd5 = 2 * Conversion.Val(sItem["H_KLHZ5"]);
                             sItem["H_KLQD"] = myint((sKlqd1 + sKlqd2 + sKlqd3 + sKlqd4 + sKlqd5) / 5).ToString();
                             break;
+                        #endregion
+                        #region case 5
                         case "5":
                             sum = 0;
                             for (int i = 1; i <= 5; i++)
@@ -432,6 +440,8 @@ namespace Calculates
                             md = Round(md, 0);
                             sItem["H_KLQD"] = md.ToString();
                             break;
+                        #endregion
+                        #region   case 7
                         case "7":
                             sum = 0;
                             for (int i = 1; i <= 6; i++)
@@ -458,6 +468,7 @@ namespace Calculates
                             md = Round(md, 0);
                             sItem["H_KLQD"] = md.ToString();
                             break;
+                            #endregion
                     }
                     if (dBzh == "GB/T 23457-2017" && dXs != "PY")
                     {
