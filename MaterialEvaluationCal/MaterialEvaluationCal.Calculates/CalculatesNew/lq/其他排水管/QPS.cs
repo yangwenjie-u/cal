@@ -641,9 +641,9 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
                     decimal PJ = 0;
                     decimal PJ1 = 0;
-                    var fj = GetSafeDouble(MItem[0]["SFFJ"]);
+                    var fj = Convert.ToBoolean(MItem[0]["SFFJ"]);
 
-                    if (fj == 0)
+                    if (fj == false)
                     {
                         PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
                         mitem["RHWD"] = Math.Round(PJ, 1).ToString();
@@ -703,10 +703,10 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                     jcxmCur = CurrentJcxm(jcxm, "环刚,环刚度");
 
 
-                    var fj = GetSafeDouble(MItem[0]["SFFJ"]);
+                    var fj = Convert.ToBoolean(MItem[0]["SFFJ"]);
 
                     double Yi, S1, S2, S3, S4, S5, S6 = 0;
-                    if (fj == 0)
+                    if (fj == false)
                     {
                         Yi = GetSafeDouble(sitem["GCWJ"]) * 0.03 / 1000;
                         if ((GetSafeDouble(MItem[0]["HGD_LI1"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI2"]) * Yi != 0) && (GetSafeDouble(MItem[0]["HGD_LI3"]) * Yi != 0))

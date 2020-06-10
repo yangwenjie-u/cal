@@ -321,7 +321,7 @@ namespace Calculates
                                 {
                                     bhg++;
                                     //单组不合格
-                                    goto DZBHG_FLAG;
+                                   // goto DZBHG_FLAG;
                                 }
 
                                 flag++;
@@ -334,7 +334,7 @@ namespace Calculates
                             }
 
                             arrWJ.Add(Math.Round(sum / flag, 1));
-                            DZBHG_FLAG:
+                            //DZBHG_FLAG:
                             continue;
                         }
                         if (bhg > 1)
@@ -706,9 +706,9 @@ namespace Calculates
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
                     decimal PJ = 0;
                     decimal PJ1 = 0;
-                    var fj = GetSafeDouble(MItem[0]["SFFJ"]);
-
-                    if (fj == 0)
+                    var fj = Convert.ToBoolean(MItem[0]["SFFJ"]);
+              
+                    if (fj ==false)
                     {
                         PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
                         mitem["RHWD"] = Math.Round(PJ, 1).ToString();
@@ -768,7 +768,7 @@ namespace Calculates
                 {
                     jcxmCur = CurrentJcxm(jcxm, "环刚,环刚度");
 
-                    var fj = GetSafeDouble(MItem[0]["SFFJ"]);
+                    var fj = Convert.ToBoolean(MItem[0]["SFFJ"]);
 
                     double Yi, S1, S2, S3, S4, S5, S6 = 0;
 
@@ -781,7 +781,7 @@ namespace Calculates
                         MItem[0]["HGD"] = ((S1 + S2 + S3) / 3).ToString("0.0");
                         MItem[0]["HGD_HG"] = IsQualified(MItem[0]["G_HGD"], MItem[0]["HGD"]);
 
-                        if (fj != 0)
+                        if (fj != false)
                         {
                             S4 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI4"]) / ((GetSafeDouble(sitem["HGD_LI4"]) / 1000) * Yi);
                             S5 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI5"]) / ((GetSafeDouble(sitem["HGD_LI5"]) / 1000) * Yi);
