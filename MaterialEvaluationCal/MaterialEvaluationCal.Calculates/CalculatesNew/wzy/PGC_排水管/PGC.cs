@@ -353,18 +353,18 @@ namespace Calculates
                         }
                         if (zj <= 600)
                         {
-                            MItem[0]["PJWJ1"] = Round((double)arrWJ[0], 1).ToString("0.0");
-                            MItem[0]["PJWJ2"] = Round((double)arrWJ[arrWJ.Count - 1], 1).ToString("0.0");
+                            MItem[0]["PJWJ1"] =Math.Round(GetSafeDecimal(arrWJ[0].ToString()), 1).ToString("0.0");
+                            MItem[0]["PJWJ2"] = Math.Round(GetSafeDecimal(arrWJ[arrWJ.Count - 1].ToString()), 1).ToString("0.0");
                         }
                         else if (zj <= 1600)
                         {
-                            MItem[0]["PJWJ1"] = (Round((double)arrWJ[0] * 5, 0) / 5).ToString();
-                            MItem[0]["PJWJ2"] = (Round((double)arrWJ[arrWJ.Count - 1] * 5, 0) / 5).ToString();
+                            MItem[0]["PJWJ1"] = (Math.Round(GetSafeDecimal((arrWJ[0] * 5).ToString()), 0) / 5).ToString();
+                            MItem[0]["PJWJ2"] = (Math.Round(GetSafeDecimal((arrWJ[arrWJ.Count - 1] * 5).ToString()), 0) / 5).ToString();
                         }
                         else
                         {
-                            MItem[0]["PJWJ1"] = (Round((double)arrWJ[0] * 5, 0) / 5).ToString();
-                            MItem[0]["PJWJ2"] = (Round((double)arrWJ[arrWJ.Count - 1] * 5, 0) / 5).ToString();
+                            MItem[0]["PJWJ1"] = (Math.Round(GetSafeDecimal((arrWJ[0] * 5).ToString()), 0) / 5).ToString();
+                            MItem[0]["PJWJ2"] = (Math.Round(GetSafeDecimal((arrWJ[arrWJ.Count - 1] * 5).ToString()), 0) / 5).ToString();
                         }
 
                         //壁厚
@@ -419,21 +419,10 @@ namespace Calculates
                         {
                             throw new Exception("请输入壁厚信息！");
                         }
-                        if (bh <= 10)
-                        {
+                        
                             sitem["PJBH1"] = (Round((double)arrBH[0] / 5.0, 2) * 5).ToString("0.00");
                             sitem["PJBH2"] = (Round((double)arrBH[arrBH.Count - 1] / 5.0, 2) * 5).ToString("0.00");
-                        }
-                        else if (bh > 10 && bh <= 30)
-                        {
-                            sitem["PJBH1"] = Round((double)arrBH[0], 1).ToString("0.0");
-                            sitem["PJBH2"] = Round((double)arrBH[arrBH.Count - 1], 1).ToString("0.0");
-                        }
-                        else
-                        {
-                            sitem["PJBH1"] = Round((double)arrBH[0], 1).ToString("0.0");
-                            sitem["PJBH2"] = Round((double)arrBH[arrBH.Count - 1], 1).ToString("0.0");
-                        }
+                    
                     }
                     else
                     {
