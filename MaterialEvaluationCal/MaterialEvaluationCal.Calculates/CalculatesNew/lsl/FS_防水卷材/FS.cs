@@ -114,7 +114,6 @@ namespace Calculates
 
                         sItem["CPBJ"] = dXh + "-" + dZyycl + "-" + dGgxh + "×" + dHd + "mm";
 
-
                         break;
                     case "沥青复合胎柔性防水卷材":
                         sItem["CPBJ"] = dTjlx + " " + dXh + " " + dSbmcl + dHd + " " + dGgxh + " " + dBzh; break;
@@ -158,6 +157,8 @@ namespace Calculates
                         break;
                 }
 
+                sItem["CPBJ"] = System.Text.RegularExpressions.Regex.Replace(sItem["CPBJ"].Replace("----", ""), @"\b\s+\b", " ");
+
                 var mrsdj = mrsDj.FirstOrDefault(u => (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains(dHd) && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))
                                 || (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains(dHd + ".0") && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))
                                 || (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains("----") && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))
@@ -200,6 +201,10 @@ namespace Calculates
                     mItem["GV_KLQD4"] = mrsdj["V_KLQD4"] == null ? "" : mrsdj["V_KLQD4"].Trim();
                     mItem["GH_KLQD4"] = mrsdj["H_KLQD4"] == null ? "" : mrsdj["H_KLQD4"].Trim();
                     mItem["G_KLSYXX"] = mrsdj["KLSYXX"] == null ? "" : mrsdj["KLSYXX"].Trim();
+                    if (string.IsNullOrEmpty(mrsdj["KLSYXX"]))
+                    {
+                        sItem["KLSYXXSM"] = "----";
+                    }
                     mItem["GV_SCL"] = mrsdj["V_SCL"] == null ? "" : mrsdj["V_SCL"].Trim();
                     mItem["GH_SCL"] = mrsdj["H_SCL"] == null ? "" : mrsdj["H_SCL"].Trim();
                     mItem["GV_SCL2"] = mrsdj["V_SCL2"] == null ? "" : mrsdj["V_SCL2"].Trim();
@@ -536,6 +541,7 @@ namespace Calculates
                 else
                 {
                     mItem["GV_KLQD"] = "----";
+                    mItem["GH_KLQD"] = "----";
                     sItem["V_KLQD"] = "----";
                     mItem["HG_KLQD"] = "----";
                     sItem["H_KLQD"] = "----";

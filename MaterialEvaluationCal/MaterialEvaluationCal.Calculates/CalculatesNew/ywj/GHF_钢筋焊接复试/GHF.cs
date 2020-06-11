@@ -614,6 +614,7 @@ namespace Calculates
                             dkj = dkj == 4 ? 1 : dkj;
                             dkj = dkj == 5 ? 3 : dkj;
 
+                            // 1     "断于钢筋母材,延性断裂";
                             if (kl < GetSafeInt(mKlqd))
                             {
                                 mWxgs = mWxgs + 1;
