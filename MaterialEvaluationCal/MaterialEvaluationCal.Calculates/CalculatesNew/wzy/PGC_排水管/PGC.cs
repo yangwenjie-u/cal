@@ -417,8 +417,8 @@ namespace Calculates
                             throw new Exception("请输入壁厚信息！");
                         }
                         
-                            sitem["PJBH1"] = (Round((double)arrBH[0] / 5.0, 2) * 5).ToString("0.00");
-                            sitem["PJBH2"] = (Round((double)arrBH[arrBH.Count - 1] / 5.0, 2) * 5).ToString("0.00");
+                            sitem["PJBH1"] = arrBH[0].ToString();
+                            sitem["PJBH2"] = arrBH[arrBH.Count - 1].ToString();
                     
                     }
                     else
@@ -464,8 +464,8 @@ namespace Calculates
 
                         if (bh <= 10)
                         {
-                            sitem["PJBH1"] = (Round(listMin / 5, 2) * 5).ToString("0.00");
-                            sitem["PJBH2"] = (Round(listMax / 5, 2) * 5).ToString("0.00");
+                            sitem["PJBH1"] = listMin .ToString();
+                            sitem["PJBH2"] = listMax .ToString();
                         }
                         else if (bh > 10 && bh <= 30)
                         {
