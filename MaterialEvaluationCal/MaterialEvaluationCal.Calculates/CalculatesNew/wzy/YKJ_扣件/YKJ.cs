@@ -49,8 +49,35 @@ namespace Calculates
                     continue;
                 }
 
+
+
+
                 kjlb = "、" + sitem["KJLB"].Replace(',', '、') + "、";
                 jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+                if (sitem["ZJPH"] != "0")
+                {
+                    sitem["W_ZJKPH"] = "破坏";
+
+
+                }
+                else {
+
+                    sitem["W_ZJKPH"] = "未破坏";
+                }
+
+                if (sitem["XZPH"] != "0")
+                {
+                    sitem["W_XZKPH"] = "破坏";
+
+
+                }
+                else
+                {
+
+                    sitem["W_XZKPH"] = "未破坏";
+                }
+
+
                 if (kjlb.Contains("、直角扣件、"))
                 {
                     sitem["YPSL"] = sitem["YBDX"];
@@ -61,10 +88,13 @@ namespace Calculates
                     mitem["YBH"] = mrsDj_Filter2["YBH"];//一般项AC
                     mitem["YBB"] = mrsDj_Filter2["YBB"];//一般项RE
 
-                    mitem["HG_ZJKH"] = IsQualified("≤7.00", sitem["ZJPJKH7"]);
+                    var ZJPJKH7_pj = Math.Round(GetSafeDecimal(sitem["ZJPJKH7"].ToString()), 2).ToString("0.00");
+                    var ZJPJKH10_pj = Math.Round(GetSafeDecimal(sitem["ZJPJKH10"].ToString()), 2).ToString("0.00");
+
+                    mitem["HG_ZJKH"] = IsQualified("≤7.00", ZJPJKH7_pj);
                     if (mitem["HG_ZJKH"] == "合格")
                     {
-                        mitem["HG_ZJKH"] = IsQualified("≤0.50", sitem["ZJPJKH10"]);
+                        mitem["HG_ZJKH"] = IsQualified("≤0.50", ZJPJKH10_pj);
                     }
                     mitem["HG_ZJNZGD"] = IsQualified("≤70.0", sitem["W_ZJNZGD"]);
 
@@ -161,10 +191,13 @@ namespace Calculates
                     mitem["YBH"] = mrsDj_Filter2["YBH"];
                     mitem["YBB"] = mrsDj_Filter2["YBB"];
 
-                    mitem["HG_XZKH"] = IsQualified("≤7.00", sitem["XZPJKH7"]);
+                    var XZPJKH7_pj = Math.Round(GetSafeDecimal(sitem["XZPJKH7"].ToString()), 2).ToString("0.00");
+                    var XZPJKH10_pj = Math.Round(GetSafeDecimal(sitem["XZPJKH10"].ToString()), 2).ToString("0.00");
+
+                    mitem["HG_XZKH"] = IsQualified("≤7.00", XZPJKH7_pj);
                     if (mitem["HG_XZKH"] == "合格")
                     {
-                        mitem["HG_XZKH"] = IsQualified("≤0.50", sitem["XZPJKH10"]);
+                        mitem["HG_XZKH"] = IsQualified("≤0.50", XZPJKH10_pj);
                     }
                     #region  旋转主要项不合格数
                     int zjzyb = 0;
