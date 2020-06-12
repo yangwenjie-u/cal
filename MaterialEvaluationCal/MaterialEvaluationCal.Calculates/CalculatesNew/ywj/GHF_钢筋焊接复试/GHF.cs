@@ -637,11 +637,11 @@ namespace Calculates
 
                             if (x <= 2 && y >= 4 && x + y == 6)
                             {
-                                sItem["JCJG_LS"] = "符合";
+                                sItem["JCJG_LS"] = "不符合";
                             }
                             else
                             {
-                                sItem["JCJG_LS"] = "不符合";
+                                sItem["JCJG_LS"] = "符合";
 
                             }
                         }
