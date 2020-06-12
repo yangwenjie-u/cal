@@ -517,6 +517,27 @@ namespace Calculates
 
                 #endregion
 
+                #region
+                if (mxlgs == 2)
+                {
+                    sItem["QFHZ3"] = "----";
+                    sItem["QFHZ4"] = "----";
+                    sItem["QFQD3"] = "----";
+                    sItem["QFQD4"] = "----";
+                    sItem["KLHZ3"] = "----";
+                    sItem["KLHZ4"] = "----";
+                    sItem["KLQD3"] = "----";
+                    sItem["KLQD4"] = "----";
+                    sItem["LDWZ3"] = "----";
+                    sItem["LDWZ4"] = "----";
+                    sItem["SCZ3"] = "----";
+                    sItem["SCZ4"] = "----";
+                    sItem["SCL3"] = "----";
+                    sItem["SCL4"] = "----";
+                    sItem["LW3"] = "----";
+                    sItem["LW4"] = "----";
+                }
+                #endregion
                 if (sItem["JCJG_LS"] == "不符合")
                 {
                     if (double.Parse(sItem["HG_QF"]) < double.Parse(mHggs_qfqd))

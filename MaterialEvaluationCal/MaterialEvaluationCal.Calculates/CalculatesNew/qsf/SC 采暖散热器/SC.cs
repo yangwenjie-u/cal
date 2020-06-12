@@ -160,42 +160,40 @@ namespace Calculates
                 if (jcxm.Contains("、压力试验、") || jcxm.Contains("、液压试验、"))
                 {
                     jcxmBhg = "压力试验";
-                    if (sItem["SJSYYL"] != "")
+                    //if (sItem["SJSYYL"] != "")
+                    //{
+                    if ("铸铁供暖散热器" == sItem["CPMC"])
                     {
-                        if ("铸铁供暖散热器" == sItem["CPMC"])
-                        {
-                            sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续1min，并用0.5kg钢锤轻击，压力不降且不渗不漏";
-                            sItem["YLSYYQ"] = "试验压力为工作压力的1.5倍，工作压力是" + sItem["GZYL"] + "MPa；持续1min，并用0.5kg钢锤轻击，压力不降且不渗不漏";
-                        }
-                        else
-                        {
-                            //sItem["YLSYYQ"] = "试验压力为" + sItem["SJSYYL"] + "MPa；持续2～3min，压力不降且不渗不漏";
-                            sItem["YLSYYQ"] = "试验压力为工作压力的1.5倍，工作压力是" + sItem["GZYL"] + "MPa；持续2min，压力不降且不渗不漏";
-                        }
-
-                        if (GetSafeDouble(sItem["YLSYSM"]) >= GetSafeDouble(sItem["SJSYYL"]) && GetSafeDouble(sItem["YLSYSM"]) >= 0.6 && sItem["SLQK"] == "压力不降且不渗不漏")
-                        {
-                            MItem[0]["GH_YLSY"] = "合格";
-                        }
-                        else
-                        {
-                            MItem[0]["GH_YLSY"] = "不合格";
-                            //mbhggs++;
-                        }
+                        sItem["YLSYYQ"] = "试验压力为工作压力的1.5倍，工作压力是" + sItem["GZYL"] + "MPa；持续1min，并用0.5kg钢锤轻击，压力不降且不渗不漏";
                     }
                     else
                     {
-                        sItem["YLSYYQ"] = "试验压力为1.5倍工作压力，但不小于0.6MPa；持续2min，压力不降且不渗不漏";
-                        if (GetSafeDouble(sItem["YLSYSM"].Trim()) >= GetSafeDouble(sItem["GZYL"]) * 1.5 && GetSafeDouble(sItem["YLSYSM"]) >= 0.6 && sItem["SLQK"] == "压力不降且不渗不漏")
-                        {
-                            MItem[0]["GH_YLSY"] = "合格";
-                        }
-                        else
-                        {
-                            MItem[0]["GH_YLSY"] = "不合格";
-                            //mbhggs++;
-                        }
+                        sItem["YLSYYQ"] = "试验压力为工作压力的1.5倍，工作压力是" + sItem["GZYL"] + "MPa；持续2min，压力不降且不渗不漏";
                     }
+                    //  压力试验检测结果                                       //设计试验压力(MPa)
+                    if (GetSafeDouble(sItem["YLSYSM"]) >= GetSafeDouble(sItem["SJSYYL"]) && GetSafeDouble(sItem["YLSYSM"]) >= 0.6 && sItem["SLQK"] == "压力不降且不渗不漏")
+                    {
+                        MItem[0]["GH_YLSY"] = "合格";
+                    }
+                    else
+                    {
+                        MItem[0]["GH_YLSY"] = "不合格";
+                        //mbhggs++;
+                    }
+                    //}
+                    //else
+                    //{
+                    //    sItem["YLSYYQ"] = "试验压力为1.5倍工作压力，但不小于0.6MPa；持续2min，压力不降且不渗不漏";
+                    //    if (GetSafeDouble(sItem["YLSYSM"].Trim()) >= GetSafeDouble(sItem["GZYL"]) * 1.5 && GetSafeDouble(sItem["YLSYSM"]) >= 0.6 && sItem["SLQK"] == "压力不降且不渗不漏")
+                    //    {
+                    //        MItem[0]["GH_YLSY"] = "合格";
+                    //    }
+                    //    else
+                    //    {
+                    //        MItem[0]["GH_YLSY"] = "不合格";
+                    //        //mbhggs++;
+                    //    }
+                    //}
                 }
                 else
                 {
@@ -249,7 +247,7 @@ namespace Calculates
                     {
                         sItem["JCJG"] = "不合格";
                         mAllHg = false;
-                        jsbeizhu= "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                     }
                     else
                     {

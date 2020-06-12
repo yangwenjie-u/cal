@@ -149,7 +149,6 @@ namespace Calculates
                 }
                 else
                 {
-
                     sItem["JCJG_LW"] = "----";
                     sItem["LW1"] = "-1";
                     sItem["LW2"] = "-1";
@@ -465,7 +464,7 @@ namespace Calculates
                 var mallBhg_sc = 0;
                 for (int i = 1; i < mxlgs + 1; i++)
                 {
-                    if (GetSafeDouble(sItem["SCL" + i]) -mScl >= 0)
+                    if (GetSafeDouble(sItem["SCL" + i]) - mScl >= 0)
                         sItem["HG_SC"] = (Conversion.Val(sItem["HG_SC"]) + 1).ToString();
                     else
                         mallBhg_sc += 1;
@@ -564,6 +563,21 @@ namespace Calculates
                 all_zb_jl(MItem[0], sItem, double.Parse(mHggs_qfqd), double.Parse(mHggs_klqd), double.Parse(mHggs_scl), double.Parse(mHggs_lw));
 
                 #endregion
+
+                #region
+                if (mxlgs == 1)
+                {
+                    sItem["QFHZ2"] = "----";
+                    sItem["QFQD2"] = "----";
+                    sItem["KLHZ2"] = "----";
+                    sItem["KLQD2"] = "----";
+                    sItem["LDWZ2"] = "----";
+                    sItem["SCZ2"] = "----";
+                    sItem["SCL2"] = "----";
+                    sItem["LW2"] = "----";
+                }
+                #endregion
+
 
                 if (sItem["JCJG_LS"] == "不符合")
                 {

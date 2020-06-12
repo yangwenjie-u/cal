@@ -23,8 +23,9 @@ namespace Calculates
             var mitem = MItem[0];
             var SItem = data["S_GC"];
 
-            bool mAllHg;
+            bool mAllHg ;
             bool mFlag_Hg, mFlag_Bhg;
+            bool sffj = false;
             bool realBhg = false;//标识直接不合格 。外观颜色不合格就不需要复试，直接不合格
                                  //当前项目的变量声明
             int mbhggs = 0;
@@ -59,6 +60,9 @@ namespace Calculates
             {
                 mSjdj = sitem["SJDJ"]; //管材名称
 
+                //是否复检
+                sffj = Convert.ToBoolean(mitem["SFFJ"]);
+
                 jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 mtmpArray = sitem["JCXM"].Replace(",", "、").Split('、').ToList();
 
@@ -78,14 +82,10 @@ namespace Calculates
 
                 if (sitem["CLDJ"] == "PP-R")
                 {
-                    sitem["GGXH"] = gxl+" " + "dn" + gcwj + "x" + "en" + gcbh+"mm";
-
-
+                    sitem["GGXH"] = gxl + " " + "dn" + gcwj + "x" + "en" + gcbh + "mm";
                 }
                 else
                 {
-
-
                     if (gcwj.Contains("DN"))
                     {
                         gcwj += " " + gcbh + "mm";
@@ -153,11 +153,9 @@ namespace Calculates
                     //mitem["G_HGD"] = string.IsNullOrEmpty(mrsDj_Filter["HGD"]) ? "" : mrsDj_Filter["HGD"].Trim(); //环刚度
                     //mitem["G_HRX"] = string.IsNullOrEmpty(mrsDj_Filter["HRX"]) ? "" : mrsDj_Filter["HRX"].Trim(); //环柔度
                     //mitem["G_JZLCJ"] = string.IsNullOrEmpty(mrsDj_Filter["JZLCJ"]) ? "" : mrsDj_Filter["JZLCJ"].Trim(); //简支梁冲击
-                    //
                     mitem["G_RHWD"] = string.IsNullOrEmpty(mrsDj_Filter["RHWD"]) ? "0" : mrsDj_Filter["RHWD"].Trim(); //维卡软化温度
                     mitem["G_ZXHSL"] = string.IsNullOrEmpty(mrsDj_Filter["ZXHSL"]) ? "0" : mrsDj_Filter["ZXHSL"].Trim(); //纵向回缩率
                     mitem["G_LCCJ"] = string.IsNullOrEmpty(mrsDj_Filter["LCCJ"]) ? "0" : mrsDj_Filter["LCCJ"].Trim(); //落锤冲击试验
-
                 }
                 else
                 {
@@ -316,7 +314,6 @@ namespace Calculates
                     }
                     #region
                     ////平均外径
-
                     var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCWJ"] == sitem["GCWJ"] && x["GXL"] == sitem["GXL"]);
                     if (mrsWgcc_Filter == null && mrsDj_Filter.Count() == 0)
                     {
@@ -357,11 +354,6 @@ namespace Calculates
                     //壁厚
                     List<string> listBH_G = new List<string>();
                     listBH_G = MItem[0]["G_GCBH"].Split('～').ToList();
-
-                    //如果壁厚《=10，修约0.05
-                    //《=30，修约0.1
-                    //>30，修约0.1
-                    var bh = GetSafeDouble(sitem["GCBH"]);
 
                     //外径修约
                     //《=1600，修约0.2
@@ -934,7 +926,7 @@ namespace Calculates
                 if (jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = "维卡软化温度";
-                    if (string.IsNullOrEmpty(mitem["SFFJ"]) || mitem["SFFJ"] != "1")
+                    if (!sffj)
                     {
                         //初检
                         mitem["RHWD"] = Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) / 2), 1).ToString();
@@ -989,42 +981,43 @@ namespace Calculates
                 {
                     jcxmCur = "纵向回缩率";
 
-                    if ((Conversion.Val(MItem[0]["HSLL0_1"]) == 0 || Conversion.Val(MItem[0]["HSLL0_2"]) == 0 || Conversion.Val(MItem[0]["HSLL0_3"]) == 0))
+                    MItem[0]["HSLL0_1"] = "100";
+                    MItem[0]["HSLL0_2"] = "100";
+                    MItem[0]["HSLL0_3"] = "100";
+                    MItem[0]["HSLL0_4"] = "100";
+                    MItem[0]["HSLL0_5"] = "100";
+                    MItem[0]["HSLL0_6"] = "100";
+
+                    if (!sffj)
                     {
-                        MItem[0]["ZXHSL"] = "0.0";
+                        //初检  
+                        decimal sum = 0;
+                        for (int i = 1; i < 4; i++)
+                        {
+                            sum += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + i]) - Conversion.Val(MItem[0]["HSLLI_" + i])) / Conversion.Val(MItem[0]["HSLL0_" + i])).ToString("0.00")));
+                        }
+                        MItem[0]["ZXHSL"] = Math.Round(sum / 3, 1).ToString("0.0");
+                        mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL"], false);
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(mitem["SFFJ"]) || mitem["SFFJ"] != "1")
+                        decimal sum = 0, sum2 = 0;
+                        for (int i = 1; i < 4; i++)
                         {
-                            //初检  
-                            decimal sum = 0;
-                            for (int i = 1; i < 4; i++)
-                            {
-                                sum += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + i]) - Conversion.Val(MItem[0]["HSLLI_" + i])) / Conversion.Val(MItem[0]["HSLL0_" + i])).ToString("0.00")));
-                            }
-                            MItem[0]["ZXHSL"] = Math.Round(sum / 3, 1).ToString("0.0");
-                            mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL"], false);
+                            sum += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + i]) - Conversion.Val(MItem[0]["HSLLI_" + i])) / Conversion.Val(MItem[0]["HSLL0_" + i])).ToString("0.00")));
+                            sum2 += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + i + 3]) - Conversion.Val(MItem[0]["HSLLI_" + i + 3])) / Conversion.Val(MItem[0]["HSLL0_" + i + 3])).ToString("0.00")));
                         }
-                        else
+
+                        MItem[0]["ZXHSL"] = Math.Round(sum / 3, 1).ToString("0.0");
+                        MItem[0]["ZXHSL_F"] = Math.Round(sum2 / 3, 1).ToString("0.0");
+                        mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL"], false);
+
+                        if (MItem[0]["ZXHSL_HG"] == "合格")
                         {
-                            decimal sum = 0, sum2 = 0;
-                            for (int i = 1; i < 4; i++)
-                            {
-                                sum += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + i]) - Conversion.Val(MItem[0]["HSLLI_" + i])) / Conversion.Val(MItem[0]["HSLL0_" + i])).ToString("0.00")));
-                                sum2 += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + i + 3]) - Conversion.Val(MItem[0]["HSLLI_" + i + 3])) / Conversion.Val(MItem[0]["HSLL0_" + i + 3])).ToString("0.00")));
-                            }
-
-                            MItem[0]["ZXHSL"] = Math.Round(sum / 3, 1).ToString("0.0");
-                            MItem[0]["ZXHSL_F"] = Math.Round(sum2 / 3, 1).ToString("0.0");
-                            mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL"], false);
-
-                            if (MItem[0]["ZXHSL_HG"] == "合格")
-                            {
-                                mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL_F"], false);
-                            }
+                            mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL_F"], false);
                         }
                     }
+
                     if (MItem[0]["ZXHSL_HG"] == "合格")
                     {
                         mFlag_Hg = true;
@@ -1077,7 +1070,8 @@ namespace Calculates
                 }
             }
             //主表总判断赋值
-               if (mAllHg )            {
+            if (mAllHg)
+            {
                 mitem["JCJG"] = "合格";
                 mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
             }
