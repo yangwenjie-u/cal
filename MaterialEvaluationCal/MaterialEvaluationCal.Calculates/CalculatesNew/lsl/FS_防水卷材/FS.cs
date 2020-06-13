@@ -142,13 +142,13 @@ namespace Calculates
                     case "地下用合成高分子类防水卷材":
                         sItem["CPBJ"] = dXh; break;
                     case "预铺防水卷材":
-                        sItem["CPBJ"] = "Y " + dXs + " " + dSbmcl + dHd + " " + dBzh; break;
+                        sItem["CPBJ"] = dXs + " " + dSbmcl + dHd + " " + dBzh; break;
                     case "预铺防水卷材(2017)":
-                        sItem["CPBJ"] = "Y " + dXs + " " + dSbmcl + dHd + " " + dBzh; break;
+                        sItem["CPBJ"] = dXs + " " + dSbmcl + dHd + " " + dBzh; break;
                     case "湿铺防水卷材(2017)":
-                        sItem["CPBJ"] = "W " + dXs + " " + dSbmcl + dHd + " " + dBzh; break;
+                        sItem["CPBJ"] = dXs + " " + dSbmcl + dHd + " " + dBzh; break;
                     case "湿铺防水卷材":
-                        sItem["CPBJ"] = "W " + dXs + " " + dXh + " " + dSbmcl + dHd + " " + dBzh; break;
+                        sItem["CPBJ"] = dXs + " " + dXh + " " + dSbmcl + dHd + " " + dBzh; break;
                     case "三元丁橡胶防水卷材":
                         sItem["CPBJ"] = "三元丁卷材 " + dHd + " ";
                         if (dXh == "一等品") sItem["CPBJ"] = sItem["CPBJ"] + "B ";
@@ -488,14 +488,12 @@ namespace Calculates
                         if (sKlmj4 == 0) sKlmj4 = Conversion.Val(sItem["V_KLKD4"]);
                         if (sKlmj5 == 0) sKlmj6 = Conversion.Val(sItem["V_KLKD5"]);
 
-
                         if (sKlmj1 != 0) sKlqd1 = Round(Conversion.Val(sItem["V_KLHZ21"]) / sKlmj1, 1);
                         if (sKlmj2 != 0) sKlqd2 = Round(Conversion.Val(sItem["V_KLHZ22"]) / sKlmj2, 1);
                         if (sKlmj3 != 0) sKlqd3 = Round(Conversion.Val(sItem["V_KLHZ23"]) / sKlmj3, 1);
                         if (sKlmj4 != 0) sKlqd4 = Round(Conversion.Val(sItem["V_KLHZ24"]) / sKlmj4, 1);
                         if (sKlmj5 != 0) sKlqd5 = Round(Conversion.Val(sItem["V_KLHZ25"]) / sKlmj5, 1);
                         sItem["V_KLQD2"] = Round(Conversion.Val(sItem["V_KLQD2"]), 1).ToString();
-
 
                         sKlmj1 = Conversion.Val(sItem["H_KLKD1"]) * Conversion.Val(sItem["H_KLHD1"]);
                         sKlmj2 = Conversion.Val(sItem["H_KLKD2"]) * Conversion.Val(sItem["H_KLHD2"]);
@@ -1029,9 +1027,32 @@ namespace Calculates
                     mItem["G_SYX"] = "----";
                 }
 
-                if (jcxm.Contains("、撕裂强度、") || jcxm.Contains("、撕裂力、") || jcxm.Contains("、钉杆撕裂强度、") || jcxm.Contains("、梯形撕裂强度、") || jcxm.Contains("、直角(梯形)撕裂强度、"))
+                if (jcxm.Contains("、撕裂强度、") || jcxm.Contains("、撕裂力、") || jcxm.Contains("、钉杆撕裂强度、") || (jcxm.Contains("、梯形撕裂强度、") && (sItem["XH"] == "P" || sItem["XH"] == "L" || sItem["XH"] == "GL")) || jcxm.Contains("、直角(梯形)撕裂强度、"))
                 {
                     jcxmCur = FuncCurrentJcxm(jcxm, "撕裂强度,撕裂力,钉杆撕裂强度,梯形撕裂强度,直角(梯形)撕裂强度");
+
+                    var HPJ = Math.Round(((GetSafeDecimal(sItem["V_SLQD1"]) + GetSafeDecimal(sItem["V_SLQD2"]) + GetSafeDecimal(sItem["V_SLQD3"]) + GetSafeDecimal(sItem["V_SLQD4"]) + GetSafeDecimal(sItem["V_SLQD5"])) / 5), 1);
+                    sItem["V_SLQD"] = HPJ.ToString();
+
+                    var ZPJ = Math.Round(((GetSafeDecimal(sItem["H_SLQD1"]) + GetSafeDecimal(sItem["H_SLQD2"]) + GetSafeDecimal(sItem["H_SLQD3"]) + GetSafeDecimal(sItem["H_SLQD4"]) + GetSafeDecimal(sItem["H_SLQD5"])) / 5), 1);
+                    sItem["H_SLQD"] = ZPJ.ToString();
+
+                    if (Conversion.Val(sItem["V_SLQD"]) >= Conversion.Val(mItem["GV_SLQD"]) && Conversion.Val(sItem["H_SLQD"]) >= Conversion.Val(mItem["GH_SLQD"]))
+                    {
+                        mItem["HG_SLQD"] = "合格";
+                        mFlag_Hg = true;
+                    }
+                    else
+                    {
+                        mItem["HG_SLQD"] = "不合格";
+                        mbhggs = mbhggs + 1;
+                        mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                else if (jcxm.Contains("、直角撕裂强度、") && (sItem["XH"] == "H" || sItem["XH"] == "G"))
+                {
+                    jcxmCur = FuncCurrentJcxm(jcxm, "直角撕裂强度");
 
                     var HPJ = Math.Round(((GetSafeDecimal(sItem["V_SLQD1"]) + GetSafeDecimal(sItem["V_SLQD2"]) + GetSafeDecimal(sItem["V_SLQD3"]) + GetSafeDecimal(sItem["V_SLQD4"]) + GetSafeDecimal(sItem["V_SLQD5"])) / 5), 1);
                     sItem["V_SLQD"] = HPJ.ToString();
@@ -1061,37 +1082,6 @@ namespace Calculates
                     mItem["GH_SLQD"] = "0";
                 }
 
-                if (jcxm.Contains("、直角撕裂强度、"))
-                {
-                    jcxmCur = FuncCurrentJcxm(jcxm, "撕裂强度,撕裂力,钉杆撕裂强度,梯形撕裂强度,直角(梯形)撕裂强度");
-
-                    var HPJ = Math.Round(((GetSafeDecimal(sItem["V_SLQD1"]) + GetSafeDecimal(sItem["V_SLQD2"]) + GetSafeDecimal(sItem["V_SLQD3"]) + GetSafeDecimal(sItem["V_SLQD4"]) + GetSafeDecimal(sItem["V_SLQD5"])) / 5), 1);
-                    sItem["V_SLQD"] = HPJ.ToString();
-
-                    var ZPJ = Math.Round(((GetSafeDecimal(sItem["H_SLQD1"]) + GetSafeDecimal(sItem["H_SLQD2"]) + GetSafeDecimal(sItem["H_SLQD3"]) + GetSafeDecimal(sItem["H_SLQD4"]) + GetSafeDecimal(sItem["H_SLQD5"])) / 5), 1);
-                    sItem["H_SLQD"] = ZPJ.ToString();
-
-                    if (Conversion.Val(sItem["V_SLQD"]) >= Conversion.Val(mItem["GV_SLQD"]) && Conversion.Val(sItem["H_SLQD"]) >= Conversion.Val(mItem["GH_SLQD"]))
-                    {
-                        mItem["HG_SLQD"] = "合格";
-                        mFlag_Hg = true;
-                    }
-                    else
-                    {
-                        mItem["HG_SLQD"] = "不合格";
-                        mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                    }
-                }
-                else
-                {
-                    sItem["V_SLQD"] = "0";
-                    sItem["H_SLQD"] = "0";
-                    mItem["HG_SLQD"] = "----";
-                    mItem["GV_SLQD"] = "0";
-                    mItem["GH_SLQD"] = "0";
-                }
                 #region 
                 //if (jcxm.Contains("、可溶物含量、"))
                 //{

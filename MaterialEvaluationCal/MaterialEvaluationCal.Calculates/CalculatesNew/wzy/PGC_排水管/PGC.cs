@@ -353,7 +353,7 @@ namespace Calculates
                         }
                         if (zj <= 600)
                         {
-                            MItem[0]["PJWJ1"] =Math.Round(GetSafeDecimal(arrWJ[0].ToString()), 1).ToString("0.0");
+                            MItem[0]["PJWJ1"] = Math.Round(GetSafeDecimal(arrWJ[0].ToString()), 1).ToString("0.0");
                             MItem[0]["PJWJ2"] = Math.Round(GetSafeDecimal(arrWJ[arrWJ.Count - 1].ToString()), 1).ToString("0.0");
                         }
                         else if (zj <= 1600)
@@ -366,7 +366,7 @@ namespace Calculates
                             MItem[0]["PJWJ1"] = (Math.Round(GetSafeDecimal((arrWJ[0] * 5).ToString()), 0) / 5).ToString();
                             MItem[0]["PJWJ2"] = (Math.Round(GetSafeDecimal((arrWJ[arrWJ.Count - 1] * 5).ToString()), 0) / 5).ToString();
                         }
-
+                        MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
                         //壁厚
 
                         for (int i = 1; i < 9; i++)
@@ -419,10 +419,10 @@ namespace Calculates
                         {
                             throw new Exception("请输入壁厚信息！");
                         }
-                        
-                            sitem["PJBH1"] = arrBH[0].ToString();
-                            sitem["PJBH2"] = arrBH[arrBH.Count - 1].ToString();
-                    
+
+                        sitem["PJBH1"] = arrBH[0].ToString();
+                        sitem["PJBH2"] = arrBH[arrBH.Count - 1].ToString();
+                        sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
                     }
                     else
                     {
@@ -441,17 +441,18 @@ namespace Calculates
                             listWJ.Sort();
                             var pjVal = listWJ.Average();
 
+                        
                             if (zj <= 600)
                             {
-                                MItem[0]["PJWJ" + i] = Round(GetDouble(pjVal.ToString()), 1).ToString("0.0");
+                                MItem[0]["PJWJ" + i] =Math.Round(GetSafeDecimal(pjVal.ToString()), 1).ToString("0.0");
                             }
                             else if (zj <= 1600)
                             {
-                                MItem[0]["PJWJ" + i] = (Round(GetDouble(pjVal.ToString()) * 5, 0) / 5).ToString();
+                                MItem[0]["PJWJ" + i] = (Math.Round(GetSafeDecimal(pjVal.ToString()) * 5, 0) / 5).ToString();
                             }
                             else
                             {
-                                MItem[0]["PJWJ" + i] = (Round(GetDouble(pjVal.ToString()) * 5, 0) / 5).ToString();
+                                MItem[0]["PJWJ" + i] = (Math.Round(GetSafeDecimal(pjVal.ToString()) * 5, 0) / 5).ToString();
                             }
                             #endregion
 
@@ -465,27 +466,11 @@ namespace Calculates
                         var listMin = listBH[0];
                         var listMax = listBH[listBH.Count - 1];
 
-                        if (bh <= 10)
-                        {
-                            sitem["PJBH1"] = listMin .ToString();
-                            sitem["PJBH2"] = listMax .ToString();
-                        }
-                        else if (bh > 10 && bh <= 30)
-                        {
-                            sitem["PJBH1"] = Round(listMin, 1).ToString("0.0");
-                            sitem["PJBH2"] = Round(listMax, 1).ToString("0.0");
-                        }
-                        else
-                        {
-                            sitem["PJBH1"] = Round(listMin, 1).ToString("0.0");
-                            sitem["PJBH2"] = Round(listMax, 1).ToString("0.0");
-                        }
-
-                        if (GetSafeDouble(MItem[0]["PJWJ1"]) > GetSafeDouble(MItem[0]["PJWJ2"]))
+                        if (GetSafeDecimal(MItem[0]["PJWJ1"]) > GetSafeDecimal(MItem[0]["PJWJ2"]))
                         {
                             MItem[0]["PJWJ"] = MItem[0]["PJWJ2"] + "～" + MItem[0]["PJWJ1"];
                         }
-                        else if (GetSafeDouble(MItem[0]["PJWJ1"]) < GetSafeDouble(MItem[0]["PJWJ2"]))
+                        else if (GetSafeDecimal(MItem[0]["PJWJ1"]) < GetSafeDecimal(MItem[0]["PJWJ2"]))
                         {
                             MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
                         }
@@ -493,11 +478,11 @@ namespace Calculates
                         {
                             MItem[0]["PJWJ"] = MItem[0]["PJWJ1"];
                         }
-                        if (GetSafeDouble(sitem["PJBH1"]) > GetSafeDouble(sitem["PJBH2"]))
+                        if (GetSafeDecimal(sitem["PJBH1"]) > GetSafeDecimal(sitem["PJBH2"]))
                         {
                             sitem["PJBH"] = sitem["PJBH2"] + "～" + sitem["PJBH1"];
                         }
-                        else if (GetSafeDouble(sitem["PJBH1"]) < GetSafeDouble(sitem["PJBH2"]))
+                        else if (GetSafeDecimal(sitem["PJBH1"]) < GetSafeDecimal(sitem["PJBH2"]))
                         {
                             sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
                         }
