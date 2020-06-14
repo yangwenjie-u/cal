@@ -414,7 +414,7 @@ namespace Calculates
                             continue;
                         }
 
-                        if (wj_bhg<2)
+                        if (wj_bhg < 2)
                         {
                             arrWJ = arrWJHG;
                         }
@@ -514,7 +514,7 @@ namespace Calculates
                             {
                                 MItem[0]["HG_GCBH"] = IsQualified(MItem[0]["G_GCBH"], sitem["PJBH2"]);
                             }
-                        } 
+                        }
                         #endregion
                     }
                     else
@@ -785,119 +785,76 @@ namespace Calculates
                             mrslccj_Sel = mrslccj_item;
                         }
 
-                        if (mrslccj_Sel != null)
+                        if (mrslccj_Sel == mrslccj.First() || mrslccj_Sel == mrslccj.Last())
                         {
-                            md1 = Conversion.Val(mitem["LCCJBHGS"].Trim());
-                            md2 = Conversion.Val(mitem["LCCJCS"].Trim());
-                            md = (int)(100 * md1 / md2);
-                            mitem["LCCJ"] = Round(md, 0).ToString("0");
-
-                            if (IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false) == "符合")
-                            {
-                                MItem[0]["LCCJ_HG"] = "合格";
-                            }
-                            else
-                            {
-                                MItem[0]["LCCJ_HG"] = "不合格";
-                            }
+                            md1 = GetSafeDouble(mitem["LCCJBHGS"]);
+                            md2 = GetSafeDouble(mitem["LCCJCS"]); ;
+                            var md3 = md2 == 0 ? 0 : (100 * md1 / md2);
+                            mitem["LCCJ"] = Round(md3, 0).ToString("0");
+                            mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
                         }
                         else
                         {
-                            if (Conversion.Val(mitem["LCCJBHGS"]) <= Conversion.Val(mrslccj_Sel["AQPHCS"]))
+                            if (GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mrslccj_Sel["AQPHCS"]))
                             {
                                 mitem["LCCJ_HG"] = "合格";
                                 mitem["LCCJ"] = "TIR值为：A(≤10%)";
                             }
-                            if (Conversion.Val(mitem["LCCJBHGS"]) >= Conversion.Val(mrslccj_Sel["BQPHCS1"]) && Conversion.Val(mitem["LCCJBHGS"]) <= Conversion.Val(mrslccj_Sel["BQPHCS2"]))
+                            if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mrslccj_Sel["BQPHCS1"]) && GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mrslccj_Sel["BQPHCS2"]))
                             {
                                 mitem["LCCJ_HG"] = "不判定";
                                 mitem["LCCJ"] = "根据现有冲击试样数不能作出判定";
-
                             }
-                            if (Conversion.Val(mitem["LCCJBHGS"]) >= Conversion.Val(mrslccj_Sel["CQPHCS"]))
+                            if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mrslccj_Sel["CQPHCS"]))
                             {
                                 mitem["LCCJ_HG"] = "不合格";
                                 mitem["LCCJ"] = "TIR值为：C(＞10%)";
                             }
                         }
                     }
-                    else
+                    else if (mitem["G_LCCJ"].Contains("≤"))
                     {
-                        if (mitem["G_LCCJ"].Contains("≤"))
-                        {
-                            mitem["LCCJ"] = Round(100 * Conversion.Val(mitem["LCCJBHGS"]) / Conversion.Val(mitem["LCCJCS"]), 0).ToString("0");
-                            mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
-                            mbhggs = mitem["LCCJ_HG"] == "不合格" ? mbhggs + 1 : mbhggs;
-                            mitem["LCCJ"] = mitem["LCCJ"];
-                        }
-                        else
-                        {
-                            md1 = Conversion.Val(mitem["LCCJCS"].Trim());
-                            md2 = Conversion.Val(mitem["LCCJBHGS"].Trim());
-                            md1 = Round(md1, 0);
-                            md2 = Round(md2, 0);
-                            if (mitem["G_LCCJ"].Contains("12次冲击，12次不破裂"))
-                            {
-                                mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
-                                if (md2 == 0)
-                                {
-                                    mitem["LCCJ_HG"] = "合格";
-                                }
-                                else
-                                {
-                                    mitem["LCCJ_HG"] = "不合格";
-                                }
-                            }
-                            if (mitem["G_LCCJ"].Contains("10次冲击，9次不破裂"))
-                            {
-                                mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
-                                if (md2 <= 1)
-                                {
-                                    mitem["LCCJ_HG"] = "合格";
-                                }
-                                else
-                                {
-                                    mitem["LCCJ_HG"] = "不合格";
-                                }
-                            }
-                            if (mitem["G_LCCJ"].Contains("9/10"))
-                            {
-                                mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
-                                if (md2 <= 1)
-                                {
-                                    mitem["LCCJ_HG"] = "合格";
-                                }
-                                else
-                                {
-                                    mitem["LCCJ_HG"] = "不合格";
-                                }
-                            }
-                        }
-                    }
-
-                    if (mitem["LCCJ_HG"] == "合格")
-                    {
-                        mFlag_Hg = true;
+                        mitem["LCCJ"] = GetSafeDouble(mitem["LCCJCS"]) == 0 ? "0" : Round(100 * GetSafeDouble(mitem["LCCJBHGS"]) / GetSafeDouble(mitem["LCCJCS"]), 0).ToString("0");
+                        mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
+                        mitem["LCCJ"] = mitem["LCCJ"];
                     }
                     else
                     {
-                        mbhggs = mbhggs + 1;
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        mFlag_Hg = true;
-                    }
-                    for (xd = 0; xd < jcxmCount; xd++)
-                    {
-                        if (mtmpArray[xd].Contains("落锤冲击试验"))
+                        md1 = GetSafeDouble(mitem["LCCJCS"].Trim());
+                        md2 = GetSafeDouble(mitem["LCCJBHGS"].Trim());
+                        md1 = Round(md1, 0);
+                        md2 = Round(md2, 0);
+                        if (mitem["G_LCCJ"].Contains("12次冲击，12次不破裂"))
                         {
-                            sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd] + "(TIR)/%";
-                            break;
+                            mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
+                            if (md2 == 0)
+                                mitem["LCCJ_HG"] = "合格";
+                            else
+                            {
+                                mitem["LCCJ_HG"] = "不合格";
+                            }
+                        }
+                        if (mitem["G_LCCJ"].Contains("10次冲击，9次不破裂"))
+                        {
+                            mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
+                            if (md2 <= 1)
+                                mitem["LCCJ_HG"] = "合格";
+                            else
+                            {
+                                mitem["LCCJ_HG"] = "不合格";
+                            }
+                        }
+                        if (mitem["G_LCCJ"].Contains("9/10"))
+                        {
+                            mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
+                            if (md2 <= 1)
+                                mitem["LCCJ_HG"] = "合格";
+                            else
+                            {
+                                mitem["LCCJ_HG"] = "不合格";
+                            }
                         }
                     }
-                    sitem["BGDW" + curJcxmCount] = "----";
-                    sitem["BGBZYQ" + curJcxmCount] = mitem["G_LCCJ"];
-                    sitem["BGSCJG" + curJcxmCount] = mitem["LCCJ"];
-                    sitem["BGDXPD" + curJcxmCount] = mitem["LCCJ_HG"];
-                    curJcxmCount = curJcxmCount + 1;
                 }
                 else
                 {

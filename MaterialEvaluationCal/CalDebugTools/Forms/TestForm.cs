@@ -36,7 +36,7 @@ namespace CalDebugTools.Forms
                 {
                     //insert into  BZ_GCBHGC(MC, GCBH, JXPC, GCYL) values('给水用聚乙烯(PE)管材', '41.0～42.0', '4.3', '----')
 
-                    sql = $"insert into  BZ_GCBHGC (MC,GCBH, JXPC,GCYL) values('冷热水用耐热聚乙烯(PE-RT)管道系统','{val1}～{val2}','{val3}','----')";
+                    sql = $"insert into  BZ_GCBHGC (MC,GCBH, JXPC,GCYL) values('冷热水用交联聚乙烯(PE-X)管材','{val1.ToString("0.0")}～{val2.ToString("0.0")}','{val3.ToString("0.0")}','----')";
                     val1++;
                     val2 = val1 + 1;
                     val3 = Math.Round((val2 + 1) / 10, 1);

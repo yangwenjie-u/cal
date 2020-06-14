@@ -155,69 +155,41 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                 if (jcxm.Contains("、规格尺寸、"))
                 {
                     jcxmCur = "规格尺寸";
-
                     //测试的数量4-12个
-                    //1 长度 2.平均外径 3.不圆度 4.壁厚公差
-
-                    double gc = GetSafeDouble(sitem["GCCC"]);
+                    double gc = GetSafeDouble(sitem["GCWJ"]);
                     if (gc <= 40)
                     {
-                        sitem["ZJCLGS"] = "4";
+                        sitem["ZJCSGS"] = "4";
                     }
                     else if (gc > 40 && gc <= 600)
                     {
-                        sitem["ZJCLGS"] = "6";
+                        sitem["ZJCSGS"] = "6";
                     }
                     else if (gc > 600 && gc <= 1600)
                     {
-                        sitem["ZJCLGS"] = "8";
+                        sitem["ZJCSGS"] = "8";
                     }
                     else if (gc > 1600)
                     {
-                        sitem["ZJCLGS"] = "12";
+                        sitem["ZJCSGS"] = "12";
                     }
                     else
                     {
-                        sitem["ZJCLGS"] = "4";
+                        sitem["ZJCSGS"] = "4";
                     }
-                    int count = GetSafeDouble(sitem["ZJCLGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCLGS"]);
-
-                    if (count < 4)
-                    {
-                        throw new Exception("要求直径测量数量不能小于4个");
-                    }
-
+                    int count = GetSafeInt(sitem["ZJCSGS"]) == 0 ? 4 : GetSafeInt(sitem["ZJCSGS"]);
                     #region
                     //平均外径
-                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"] && x["HGDBH"] == sitem["GXL"]);
-                    if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
-                    {
-                        MItem[0]["G_PJWJ"] = mrsWgcc_Filter["WJMin"] + "～" + mrsWgcc_Filter["WJMax"];
-                        MItem[0]["G_GCBH"] = mrsWgcc_Filter["BHMIN"] + "～" + mrsWgcc_Filter["BHMAX"];
-                    }
-                    else
-                    {
-                        throw new Exception("获取规格尺寸信息失败");
-                    }
+
                     List<string> listWJ_G = new List<string>();
                     listWJ_G = MItem[0]["G_PJWJ"].Split('～').ToList();
-                    if (listWJ_G.Count != 2)
-                    {
-                        throw new Exception("请输入平均外径标准范围.");
-                    }
-
                     //壁厚
                     List<string> listBH_G = new List<string>();
                     listBH_G = MItem[0]["G_GCBH"].Split('～').ToList();
-                    if (listWJ_G.Count != 2)
+                    if (listWJ_G.Count != 2 || listBH_G.Count != 2)
                     {
-                        throw new Exception("请输入平均壁厚标准范围.");
+                        throw new Exception("请输入平均外径/壁厚标准范围.");
                     }
-                    //如果壁厚《=10，修约0.05
-                    //《=30，修约0.1
-                    //>30，修约0.1
-                    var bh = GetSafeDouble(sitem["GCBH"]);
-
                     //外径修约
                     //《=1600，修约0.2
                     //》1600，修约1
@@ -231,21 +203,19 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                         var bhMax = GetSafeDecimal(listBH_G[1]);
 
                         List<decimal> arrWJ = new List<decimal>();
+                        List<decimal> arrWJHG = new List<decimal>();
+                        List<decimal> arrWJBHG = new List<decimal>();
                         List<decimal> arrBH = new List<decimal>();
                         List<decimal> arrDZWJ = new List<decimal>();
 
                         //单组壁厚
                         List<decimal> arrDZBH = new List<decimal>();
-                        decimal sum = 0;
-                        double bhg = 0;
-                        decimal flag = 0;
+                        double wj_bhg = 0;
+                        double bh_bhg = 0;
 
                         //计算外径
                         for (int i = 1; i < 9; i++)
                         {
-                            bhg = 0;
-                            sum = 0;
-                            flag = 0;
                             arrDZWJ.Clear();
                             if (string.IsNullOrEmpty(sitem["WJ" + i + "_1"]))
                             {
@@ -262,25 +232,26 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                             var pjz = arrDZWJ.Average();
                             if (pjz < wjMin || pjz > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
                             {
-                                bhg++;
                                 //单组不合格
-                                goto DZBHG_FLAG;
+                                wj_bhg++;
+                                arrWJBHG.Add(pjz);
                             }
+                            else
+                            {
+                                arrWJHG.Add(pjz);
+                            }
+                            arrWJ.Add(pjz);
 
-                            if (bhg > 1)
+                            if (wj_bhg > 1)
                             {
                                 break;
                             }
-
-                            arrWJ.AddRange(arrDZWJ);
-                            DZBHG_FLAG:
                             continue;
                         }
-                        if (bhg > 1)
+
+                        if (wj_bhg < 2)
                         {
-                            //不合格
-                            GGCCBHG = true;
-                            goto CCBHG_FLAG;
+                            arrWJ = arrWJHG;
                         }
                         arrWJ.Sort();
                         if (arrWJ.Count < 1)
@@ -302,14 +273,12 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                             MItem[0]["PJWJ1"] = (Math.Round(GetSafeDecimal((arrWJ[0] * 5).ToString()), 0) / 5).ToString();
                             MItem[0]["PJWJ2"] = (Math.Round(GetSafeDecimal((arrWJ[arrWJ.Count - 1] * 5).ToString()), 0) / 5).ToString();
                         }
+                        MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
 
                         //壁厚
-
+                        bh_bhg = 0;
                         for (int i = 1; i < 9; i++)
                         {
-                            bhg = 0;
-                            sum = 0;
-                            flag = 0;
                             if (string.IsNullOrEmpty(sitem["SCBH" + i + "_1"]))
                             {
                                 break;
@@ -323,31 +292,19 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
 
                                 if (GetSafeDecimal(sitem["SCBH" + i + "_" + j]) < bhMin && GetSafeDecimal(sitem["SCBH" + i + "_" + j]) > bhMax) //该组不合格，则去掉该组，如果大于1，尺寸不合格
                                 {
-                                    bhg++;
+                                    bh_bhg++;
                                     //单组不合格
-                                    goto DZBHG_FLAG;
                                 }
-                                if (bhg > 1)
-                                {
-                                    break;
-                                    //尺寸不合格
-                                }
+
                                 arrDZBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
-                                DZBHG_FLAG:
                                 continue;
                             }
-                            if (bhg > 1)
+                            if (bh_bhg > 1)
                             {
                                 break;
                                 //尺寸不合格
                             }
                             arrBH.AddRange(arrDZBH);
-                        }
-                        if (bhg > 1)
-                        {
-                            //不合格
-                            GGCCBHG = true;
-                            goto CCBHG_FLAG;
                         }
 
                         arrBH.Sort();
@@ -356,91 +313,102 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                             throw new Exception("请输入壁厚信息！");
                         }
 
-                        sitem["PJBH1"] = (Round((double)arrBH[0] / 5.0, 2) * 5).ToString("0.00");
-                        sitem["PJBH2"] = (Round((double)arrBH[arrBH.Count - 1] / 5.0, 2) * 5).ToString("0.00");
+                        sitem["PJBH1"] = (arrBH[0]).ToString();
+                        sitem["PJBH2"] = (arrBH[arrBH.Count - 1]).ToString();
+                        sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
 
+                        #region 判定如果尺寸或者壁厚有两个不合格，则不合格
+                        if (wj_bhg > 1)
+                        {
+                            MItem[0]["PJWJ_HG"] = "不合格";
+                            //不合格
+                            GGCCBHG = true;
+                            goto CCBHG_FLAG;
+                        }
+                        else
+                        {
+                            MItem[0]["PJWJ_HG"] = IsQualified(mitem["G_PJWJ"], MItem[0]["PJWJ1"]);
+
+                            if (MItem[0]["PJWJ_HG"] == "合格")
+                            {
+                                MItem[0]["PJWJ_HG"] = IsQualified("≤" + mitem["G_PJWJ1"], MItem[0]["PJWJ2"]);
+                            }
+                        }
+
+                        if (bh_bhg > 1)
+                        {
+                            //不合格
+                            MItem[0]["HG_GCBH"] = "不合格";
+                            GGCCBHG = true;
+                            goto CCBHG_FLAG;
+                        }
+                        else
+                        {
+                            MItem[0]["HG_GCBH"] = IsQualified(MItem[0]["G_GCBH"], sitem["PJBH1"]);
+                            if (MItem[0]["HG_GCBH"] == "合格")
+                            {
+                                MItem[0]["HG_GCBH"] = IsQualified(MItem[0]["G_GCBH"], sitem["PJBH2"]);
+                            }
+                        }
+                        #endregion
                     }
                     else
                     {
-                        List<double> listBH = new List<double>();
-                        for (int i = 1; i < 3; i++)
-                        {
-                            #region 外径
-                            List<double> listWJ = new List<double>();
-                            // 2.平均外径
-                            count = count >= 12 ? 12 : count;
-                            for (int j = 1; j <= count; j++)
-                            {
-                                md1 = GetSafeDouble(sitem["WJ" + i + "_" + +j]);
-                                listWJ.Add(md1);
-                            }
-                            listWJ.Sort();
-                            var pjVal = listWJ.Average();
+                        #region 数据录入 暂时不加
+                        //List<decimal> listBH = new List<decimal>();
+                        //for (int i = 1; i < 3; i++)
+                        //{
+                        //    #region 外径
+                        //    List<decimal> listWJ = new List<decimal>();
+                        //    // 2.平均外径
+                        //    count = count >= 12 ? 12 : count;
 
-                            if (zj <= 600)
-                            {
-                                MItem[0]["PJWJ" + i] = Round(GetDouble(pjVal.ToString()), 1).ToString("0.0");
-                            }
-                            else if (zj <= 1600)
-                            {
-                                MItem[0]["PJWJ" + i] = (Round(GetDouble(pjVal.ToString()) * 5, 0) / 5).ToString();
-                            }
-                            else
-                            {
-                                MItem[0]["PJWJ" + i] = (Round(GetDouble(pjVal.ToString()) * 5, 0) / 5).ToString();
-                            }
-                            #endregion
+                        //    for (int j = 1; j <= count; j++)
+                        //    {
+                        //        listWJ.Add(GetSafeDecimal(sitem["WJ" + i + "_" + +j]));
+                        //    }
+                        //    listWJ.Sort();
+                        //    var pjVal = listWJ.Average();
 
-                            for (int j = 1; j <= count; j++)
-                            {
-                                md1 = GetSafeDouble(sitem["SCBH" + i + "_" + j]);
-                                listBH.Add(md1);
-                            }
-                        }
-                        listBH.Sort();
-                        var listMin = listBH[0];
-                        var listMax = listBH[listBH.Count - 1];
+                        //    if (zj <= 600)
+                        //    {
+                        //        MItem[0]["PJWJ" + i] = Math.Round(GetSafeDecimal(pjVal.ToString()), 1).ToString("0.0");
+                        //    }
+                        //    else if (zj <= 1600)
+                        //    {
+                        //        MItem[0]["PJWJ" + i] = (Math.Round(GetSafeDecimal(pjVal.ToString()) * 5, 0) / 5).ToString();
+                        //    }
+                        //    else
+                        //    {
+                        //        MItem[0]["PJWJ" + i] = (Math.Round(GetSafeDecimal(pjVal.ToString()) * 5, 0) / 5).ToString();
+                        //    }
+                        //    #endregion
 
-                        if (bh <= 10)
-                        {
-                            sitem["PJBH1"] = (Round(listMin / 5, 2) * 5).ToString("0.00");
-                            sitem["PJBH2"] = (Round(listMax / 5, 2) * 5).ToString("0.00");
-                        }
-                        else if (bh > 10 && bh <= 30)
-                        {
-                            sitem["PJBH1"] = Round(listMin, 1).ToString("0.0");
-                            sitem["PJBH2"] = Round(listMax, 1).ToString("0.0");
-                        }
-                        else
-                        {
-                            sitem["PJBH1"] = Round(listMin, 1).ToString("0.0");
-                            sitem["PJBH2"] = Round(listMax, 1).ToString("0.0");
-                        }
+                        //    for (int j = 1; j <= count; j++)
+                        //    {
+                        //        listBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
+                        //    }
+                        //}
 
-                        if (GetSafeDouble(MItem[0]["PJWJ1"]) > GetSafeDouble(MItem[0]["PJWJ2"]))
-                        {
-                            MItem[0]["PJWJ"] = MItem[0]["PJWJ2"] + "～" + MItem[0]["PJWJ1"];
-                        }
-                        else if (GetSafeDouble(MItem[0]["PJWJ1"]) < GetSafeDouble(MItem[0]["PJWJ2"]))
-                        {
-                            MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
-                        }
-                        else
-                        {
-                            MItem[0]["PJWJ"] = MItem[0]["PJWJ1"];
-                        }
-                        if (GetSafeDouble(sitem["PJBH1"]) > GetSafeDouble(sitem["PJBH2"]))
-                        {
-                            sitem["PJBH"] = sitem["PJBH2"] + "～" + sitem["PJBH1"];
-                        }
-                        else if (GetSafeDouble(sitem["PJBH1"]) < GetSafeDouble(sitem["PJBH2"]))
-                        {
-                            sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
-                        }
-                        else
-                        {
-                            sitem["PJBH"] = sitem["PJBH1"];
-                        }
+                        //if (GetSafeDecimal(MItem[0]["PJWJ1"]) > GetSafeDecimal(MItem[0]["PJWJ2"]))
+                        //{
+                        //    MItem[0]["PJWJ"] = MItem[0]["PJWJ2"] + "～" + MItem[0]["PJWJ1"];
+                        //}
+                        //else if (GetSafeDecimal(MItem[0]["PJWJ1"]) < GetSafeDecimal(MItem[0]["PJWJ2"]))
+                        //{
+                        //    MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
+                        //}
+                        //else
+                        //{
+                        //    MItem[0]["PJWJ"] = MItem[0]["PJWJ1"];
+                        //}
+
+                        //listBH.Sort();
+                        //var listMin = listBH[0];
+                        //var listMax = listBH[listBH.Count - 1];
+
+                        //sitem["PJBH"] = listMin.ToString() + "～" + listMax.ToString(); 
+                        #endregion
                     }
 
                     MItem[0]["PJWJ_HG"] = IsQualified(mitem["G_PJWJ"], MItem[0]["PJWJ1"]);
@@ -465,12 +433,12 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                         realBhg = true;
                         if (MItem[0]["HG_GCBH"] != "合格")
                         {
-                            jcxmBhg += jcxmBhg.Contains("壁厚") ? "" : "壁厚" + "、";
+                            jcxmBhg += jcxmBhg.Contains("规格尺寸") ? "" : "壁厚" + "、";
                             mbhggs = mbhggs + 1;
                         }
                         if (MItem[0]["PJWJ_HG"] != "合格")
                         {
-                            jcxmBhg += jcxmBhg.Contains("尺寸") ? "" : "颜色" + "、";
+                            jcxmBhg += jcxmBhg.Contains("规格尺寸") ? "" : "外径" + "、";
                             mbhggs = mbhggs + 1;
                         }
                         mFlag_Bhg = true;
@@ -515,22 +483,18 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                     yysyArray = sitem["YYSYCS"].Replace(',', '、').Split('、');
                     Gs = yysyArray.Length;
 
-
                     for (xd = 1; xd <= Gs; xd++)
                     {
                         if (mitem["YYSY_HG" + xd] == "不合格")
                         {
                             mitem["YYSY" + xd] = mitem["YYSY" + xd + "_1"];
-                            //mitem["YYSY" + xd] = "有破裂、有渗漏";
                             mbhggs = mbhggs + 1;
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mFlag_Bhg = true;
                         }
                         else
                         {
-                            //mitem["YYSY" + xd] = "不破裂、不渗漏";
                             mitem["YYSY" + xd] = mitem["YYSY" + xd + "_1"];
-
                             mFlag_Hg = true;
                         }
                     }
@@ -548,63 +512,14 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                                 yysyCs = yysyArray[md - 1];
                                 string syyl = "";
 
-                                foreach (var mrsYysycs_item in mrsYysycs)
-                                {
-                                    if (mrsYysycs_item["MC"].Contains(sitem["SJDJ"].Trim()) && mrsYysycs_item["SYCS"].Contains(yysyCs))
-                                    {
-                                        if (Conversion.Val(sitem["GCWJ"]) < 40)
-                                        {
-                                            if ((mrsYysycs_item["ZJFW"] == "＜40" || mrsYysycs_item["ZJFW"] == "----" || mrsYysycs_item["ZJFW"].Trim() == "") &&
-                                              (mrsYysycs_item["GXL"] == sitem["GXL"] || mrsYysycs_item["GXL"] == "----" || mrsYysycs_item["GXL"].Trim() == "") &&
-                                              (mrsYysycs_item["SYCS"] == yysyCs || mrsYysycs_item["SYCS"] == "----" || mrsYysycs_item["SYCS"].Trim() == "") &&
-                                              (mrsYysycs_item["CLDJ"] == sitem["CLDJ"].Trim() || mrsYysycs_item["CLDJ"] == "----" || mrsYysycs_item["CLDJ"].Trim() == ""))
-                                            {
-                                                syyl = mrsYysycs_item["SYSL"];
-                                                break;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if ((mrsYysycs_item["ZJFW"] == "≥40" || mrsYysycs_item["ZJFW"] == "----" || mrsYysycs_item["ZJFW"].Trim() == "") &&
-                                              (mrsYysycs_item["GXL"] == sitem["GXL"] || mrsYysycs_item["GXL"] == "----" || mrsYysycs_item["GXL"].Trim() == "") &&
-                                              (mrsYysycs_item["SYCS"] == yysyCs || mrsYysycs_item["SYCS"] == "----" || mrsYysycs_item["SYCS"].Trim() == "") &&
-                                              (mrsYysycs_item["CLDJ"] == sitem["CLDJ"].Trim() || mrsYysycs_item["CLDJ"] == "----" || mrsYysycs_item["CLDJ"].Trim() == ""))
-                                            {
-                                                syyl = mrsYysycs_item["SYSL"];
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
                                 if (yysyCs.Contains("，"))
                                     yysyCs = yysyCs.Replace("，", " " + syyl + " ");
                                 else
                                     yysyCs = yysyCs.Replace(" ", " " + syyl + " ");
                                 sitem["BGJCXM" + (curJcxmCount + md - 1)] = "液压试验";//检测项目  
-                                var bh = Conversion.Val(sitem["GCBH"]);
-                                var ztsj = "";
-                                if (bh < 3)
-                                {
-                                    ztsj = "1h±5min;";
-                                }
-                                else if (bh >= 3 && bh < 8)
-                                {
-                                    ztsj = "3h±15min;";
-                                }
-                                else if (bh >= 8 && bh < 16)
-                                {
-                                    ztsj = "6h±30min;";
-                                }
-                                else if (bh >= 16 && bh < 32)
-                                {
-                                    ztsj = "10h±1h;";
-                                }
-                                else
-                                {
-                                    ztsj = "16h±1h;";
-                                }
-                                sitem["YYSYZT"] = "试验制备条件：状态调节时间：" + ztsj + "；试验环境：" + sitem["YYSYHJ"] + "；密封接头类型：" + sitem["YYSYJTLX"];
-                                //sitem["BGJCXM" + (curJcxmCount + md - 1)] = mtmpArray[xd] + yysyCs;
+
+
+                                sitem["YYSYZT"] = "试验制备条件：状态调节时间：" + sitem["YYSYHJ"] + "；试验环境：" + sitem["YYSYHJ"] + "；密封接头类型：" + sitem["YYSYJTLX"];
 
                                 if (!string.IsNullOrEmpty(yysyCs))
                                 {
@@ -641,8 +556,73 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
 
                     //mitem["G_LCCJ"] = "";
                     //mitem["LCCJ"] = "TIR值为：A(≤10%)";
-             
+                    if (string.IsNullOrEmpty(mitem["LCCJBHGS"]) || string.IsNullOrEmpty(mitem["LCCJCS"]))
+                    {
+                        throw new Exception("请输入落锤冲击试验统计信息。");
+                    }
+                    if (mitem["G_LCCJ"].Contains("≤10"))
+                    {
 
+                        if (GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mitem["AQPHCS"]))
+                        {
+                            mitem["LCCJ_HG"] = "合格";
+                            mitem["LCCJ"] = "TIR值为：A(≤10%)";
+                        }
+                        if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mitem["BQPHCS1"]) && GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mitem["BQPHCS2"]))
+                        {
+                            mitem["LCCJ_HG"] = "不判定";
+                            mitem["LCCJ"] = "根据现有冲击试样数不能作出判定";
+                        }
+                        if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mitem["CQPHCS"]))
+                        {
+                            mitem["LCCJ_HG"] = "不合格";
+                            mitem["LCCJ"] = "TIR值为：C(＞10%)";
+                        }
+                    }
+                    else if (mitem["G_LCCJ"].Contains("≤"))
+                    {
+                        mitem["LCCJ"] = GetSafeDouble(mitem["LCCJCS"]) == 0 ? "0" : Round(100 * GetSafeDouble(mitem["LCCJBHGS"]) / GetSafeDouble(mitem["LCCJCS"]), 0).ToString("0");
+                        mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
+                        mitem["LCCJ"] = mitem["LCCJ"];
+                    }
+                    else
+                    {
+                        md1 = GetSafeDouble(mitem["LCCJCS"].Trim());
+                        md2 = GetSafeDouble(mitem["LCCJBHGS"].Trim());
+                        md1 = Round(md1, 0);
+                        md2 = Round(md2, 0);
+                        if (mitem["G_LCCJ"].Contains("12次冲击，12次不破裂"))
+                        {
+                            mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
+                            if (md2 == 0)
+                                mitem["LCCJ_HG"] = "合格";
+                            else
+                            {
+                                mitem["LCCJ_HG"] = "不合格";
+                            }
+                        }
+                        if (mitem["G_LCCJ"].Contains("10次冲击，9次不破裂"))
+                        {
+                            mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
+                            if (md2 <= 1)
+                                mitem["LCCJ_HG"] = "合格";
+                            else
+                            {
+                                mitem["LCCJ_HG"] = "不合格";
+                            }
+                        }
+                        if (mitem["G_LCCJ"].Contains("9/10"))
+                        {
+                            mitem["LCCJ"] = md1 + "次冲击，" + (md1 - md2) + "次不破裂";
+                            if (md2 <= 1)
+                                mitem["LCCJ_HG"] = "合格";
+                            else
+                            {
+                                mitem["LCCJ_HG"] = "不合格";
+                            }
+                        }
+                    }
+                    
                     if (mitem["LCCJ_HG"] == "合格")
                     {
                         mFlag_Hg = true;
@@ -677,6 +657,11 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                 if (jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = "维卡软化温度";
+
+                    if (!mitem["G_RHWD"].Contains("≥"))
+                    {
+                        mitem["G_RHWD"] = "≥" + mitem["G_RHWD"];
+                    }
                     if (!sffj)
                     {
                         //初检
@@ -687,9 +672,7 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                     {
                         mitem["RHWD"] = Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) / 2), 1).ToString();
                         mitem["RHWD_F"] = Math.Round((GetSafeDecimal(sitem["RHWD3"]) + GetSafeDecimal(sitem["RHWD4"]) / 2), 1).ToString();
-
                         mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
-
                         if (mitem["RHWD_HG"] == "合格")
                         {
                             mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD_F"], false);
@@ -737,6 +720,11 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                     MItem[0]["HSLL0_4"] = "100";
                     MItem[0]["HSLL0_5"] = "100";
                     MItem[0]["HSLL0_6"] = "100";
+
+                    if (!mitem["G_ZXHSL"].Contains("≤"))
+                    {
+                        mitem["G_ZXHSL"] = "≤" + mitem["G_ZXHSL"];
+                    }
 
                     if (!sffj)
                     {
