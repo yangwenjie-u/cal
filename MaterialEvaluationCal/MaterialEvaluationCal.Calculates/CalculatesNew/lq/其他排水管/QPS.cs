@@ -291,21 +291,18 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                         var bhMax = GetSafeDecimal(listBH_G[1]);
 
                         List<decimal> arrWJ = new List<decimal>();
+                        List<decimal> arrWJHG = new List<decimal>();
+                        List<decimal> arrWJBHG = new List<decimal>();
                         List<decimal> arrBH = new List<decimal>();
                         List<decimal> arrDZWJ = new List<decimal>();
-
                         //单组壁厚
                         List<decimal> arrDZBH = new List<decimal>();
-                        decimal sum = 0;
-                        double bhg = 0;
-                        decimal flag = 0;
+                        double wj_bhg = 0;
+                        double bh_bhg = 0;
 
                         //计算外径
                         for (int i = 1; i < 9; i++)
                         {
-                            bhg = 0;
-                            sum = 0;
-                            flag = 0;
                             arrDZWJ.Clear();
                             if (string.IsNullOrEmpty(sitem["WJ" + i + "_1"]))
                             {
@@ -322,27 +319,34 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                             var pjz = arrDZWJ.Average();
                             if (pjz < wjMin || pjz > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
                             {
-                                bhg++;
                                 //单组不合格
-                                goto DZBHG_FLAG;
+                                wj_bhg++;
+                                arrWJBHG.Add(pjz);
                             }
+                            else
+                            {
+                                arrWJHG.Add(pjz);
+                            }
+                            arrWJ.Add(pjz);
 
-                            if (bhg > 1)
+                            if (wj_bhg > 1)
                             {
                                 break;
                             }
-
-                            arrWJ.AddRange(arrDZWJ);
-                        DZBHG_FLAG:
                             continue;
                         }
-                        if (bhg > 1)
+                        if (wj_bhg > 1)
                         {
                             //不合格
                             GGCCBHG = true;
                             goto CCBHG_FLAG;
                         }
+                        if (wj_bhg < 2)
+                        {
+                            arrWJ = arrWJHG;
+                        }
                         arrWJ.Sort();
+
                         if (arrWJ.Count < 1)
                         {
                             throw new Exception("请输入外径信息！");
@@ -362,14 +366,13 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                             MItem[0]["PJWJ1"] = (Math.Round(GetSafeDecimal((arrWJ[0] * 5).ToString()), 0) / 5).ToString();
                             MItem[0]["PJWJ2"] = (Math.Round(GetSafeDecimal((arrWJ[arrWJ.Count - 1] * 5).ToString()), 0) / 5).ToString();
                         }
+                        MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
 
                         //壁厚
 
+                        bh_bhg = 0;
                         for (int i = 1; i < 9; i++)
                         {
-                            bhg = 0;
-                            sum = 0;
-                            flag = 0;
                             if (string.IsNullOrEmpty(sitem["SCBH" + i + "_1"]))
                             {
                                 break;
@@ -383,33 +386,20 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
 
                                 if (GetSafeDecimal(sitem["SCBH" + i + "_" + j]) < bhMin && GetSafeDecimal(sitem["SCBH" + i + "_" + j]) > bhMax) //该组不合格，则去掉该组，如果大于1，尺寸不合格
                                 {
-                                    bhg++;
+                                    bh_bhg++;
                                     //单组不合格
-                                    goto DZBHG_FLAG;
                                 }
-                                if (bhg > 1)
-                                {
-                                    break;
-                                    //尺寸不合格
-                                }
+
                                 arrDZBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
-                            DZBHG_FLAG:
                                 continue;
                             }
-                            if (bhg > 1)
+                            if (bh_bhg > 1)
                             {
                                 break;
                                 //尺寸不合格
                             }
                             arrBH.AddRange(arrDZBH);
                         }
-                        if (bhg > 1)
-                        {
-                            //不合格
-                            GGCCBHG = true;
-                            goto CCBHG_FLAG;
-                        }
-
                         arrBH.Sort();
                         if (arrBH.Count < 1)
                         {
@@ -418,6 +408,42 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
 
                         sitem["PJBH1"] = arrBH[0].ToString();
                         sitem["PJBH2"] = arrBH[arrBH.Count - 1].ToString();
+                        sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
+
+                        #region 判定如果尺寸或者壁厚有两个不合格，则不合格
+                        if (wj_bhg > 1)
+                        {
+                            MItem[0]["PJWJ_HG"] = "不合格";
+                            //不合格
+                            GGCCBHG = true;
+                            goto CCBHG_FLAG;
+                        }
+                        else
+                        {
+                            MItem[0]["PJWJ_HG"] = IsQualified(mitem["G_PJWJ"], MItem[0]["PJWJ1"]);
+
+                            if (MItem[0]["PJWJ_HG"] == "合格")
+                            {
+                                MItem[0]["PJWJ_HG"] = IsQualified("≤" + mitem["G_PJWJ1"], MItem[0]["PJWJ2"]);
+                            }
+                        }
+
+                        if (bh_bhg > 1)
+                        {
+                            //不合格
+                            MItem[0]["HG_GCBH"] = "不合格";
+                            GGCCBHG = true;
+                            goto CCBHG_FLAG;
+                        }
+                        else
+                        {
+                            MItem[0]["HG_GCBH"] = IsQualified(MItem[0]["G_GCBH"], sitem["PJBH1"]);
+                            if (MItem[0]["HG_GCBH"] == "合格")
+                            {
+                                MItem[0]["HG_GCBH"] = IsQualified(MItem[0]["G_GCBH"], sitem["PJBH2"]);
+                            }
+                        }
+                        #endregion
 
                     }
                     else
