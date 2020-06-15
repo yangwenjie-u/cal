@@ -333,7 +333,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                             }
 
                             arrWJ.AddRange(arrDZWJ);
-                        DZBHG_FLAG:
+                            DZBHG_FLAG:
                             continue;
                         }
                         if (bhg > 1)
@@ -393,7 +393,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                                     //尺寸不合格
                                 }
                                 arrDZBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
-                            DZBHG_FLAG:
+                                DZBHG_FLAG:
                                 continue;
                             }
                             if (bhg > 1)
@@ -964,7 +964,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                     zxhsl2 = Math.Abs(Double.Parse((100 * (GetSafeDouble(MItem[0]["HSLL0_2"]) - GetSafeDouble(MItem[0]["HSLLI_2"])) / GetSafeDouble(MItem[0]["HSLL0_2"])).ToString("0.00")));
                     zxhsl3 = Math.Abs(Double.Parse((100 * (GetSafeDouble(MItem[0]["HSLL0_3"]) - GetSafeDouble(MItem[0]["HSLLI_3"])) / GetSafeDouble(MItem[0]["HSLL0_3"])).ToString("0.00")));
 
-                    MItem[0]["ZXHSL"] = ((zxhsl1 + zxhsl2 + zxhsl3) / 3).ToString("0.0") + "%";
+                    MItem[0]["ZXHSL"] = ((zxhsl1 + zxhsl2 + zxhsl3) / 3).ToString("0.0");
                     mitem["ZXHSL_HG"] = IsQualified(mitem["G_ZXHSL"], mitem["ZXHSL"], false);
 
                     if (mSjdj == "排水用芯层发泡硬聚氯乙烯(PVC-U)管材")
@@ -1033,7 +1033,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                 }
                 mAllHg = (mAllHg && sitem["JCJG"].Trim() == "合格");
 
-            CCBHG_FLAG:
+                CCBHG_FLAG:
                 if (GGCCBHG)
                 {
                     mAllHg = false;

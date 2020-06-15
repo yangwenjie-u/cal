@@ -596,12 +596,12 @@ namespace Calculates
                         realBhg = true;
                         if (MItem[0]["HG_GCBH"] != "合格")
                         {
-                            jcxmBhg += jcxmBhg.Contains("规格尺寸") ? "" : "壁厚" + "、";
+                            jcxmBhg += jcxmBhg.Contains("壁厚") ? "" : "壁厚" + "、";
                             mbhggs = mbhggs + 1;
                         }
                         if (MItem[0]["PJWJ_HG"] != "合格")
                         {
-                            jcxmBhg += jcxmBhg.Contains("规格尺寸") ? "" : "外径" + "、";
+                            jcxmBhg += jcxmBhg.Contains("平均外径") ? "" : "平均外径" + "、";
                             mbhggs = mbhggs + 1;
                         }
                         mFlag_Bhg = true;
