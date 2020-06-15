@@ -1158,31 +1158,22 @@ namespace Calculates
                 sitem["JCJG"] = jcjg;
                 row++;
             }
-            //批量计算
-            //if (MItem[0]["SFPL"] == "True")
-            //    MItem[0]["WHICH"] = "bght1_88、bght1_1、bght1_2";
-            //else
-            //    MItem[0]["WHICH"] = "bght1_88、bght1";
-            //if (GetSafeInt(MItem[0]["FJCOUNT"]) > 0)
-            //{
-            //    for (int i = 1; i <= GetSafeInt(MItem[0]["FJCOUNT"]); i++)
-            //    {
-            //        bgfjs = (10 + i - 1).ToString();
-            //        MItem[0]["WHICH"] = MItem[0]["WHICH"] + "、bght1_" + bgfjs;
-            //    }
-            //}
-            zr_Pj = Round((z_htqdz / z_ht), 1);  //求r_Pj
-            zn_Pj = Round((z_htzhz / z_ht), 1);  //求n_Pj
-            if (z_ht > 1)    //求s_N
-                z_n = Round(Math.Sqrt((Math.Abs(z_n2 - z_ht * (z_htqdz / z_ht) * (z_htqdz / z_ht)) / (z_ht - 1))), 2);
-            else
-                z_n = 0;
-            mQdtdz = Round((zr_Pj - 1.645 * z_n), 1);    //求mQdtdz
-            MItem[0]["PL_B_DG"] = "";
-            if (zr_Pj < 25 && z_n > 4.5 && MItem[0]["SFPL"] == "1")
+            if (mAllHg)
             {
-                MItem[0]["PL_B_DG"] = "平均值小于25MPa，标准差大于4.5MPa，需按单个构件检测";
-                //MItem[0]["WHICH"] = "bght1_88、bght1";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度全部大于等于设计强度。";
+            }
+            else
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "，该次检测混凝土强度部分小于设计强度。";
+            }
+
+            if ( MItem[0]["SFPL"] == "1")
+            {
+                //批量计算
+                //if (MItem[0]["SFPL"] == "True")
+                //    MItem[0]["WHICH"] = "bght1_88、bght1_1、bght1_2";
+                //else
+                //    MItem[0]["WHICH"] = "bght1_88、bght1";
                 //if (GetSafeInt(MItem[0]["FJCOUNT"]) > 0)
                 //{
                 //    for (int i = 1; i <= GetSafeInt(MItem[0]["FJCOUNT"]); i++)
@@ -1191,97 +1182,118 @@ namespace Calculates
                 //        MItem[0]["WHICH"] = MItem[0]["WHICH"] + "、bght1_" + bgfjs;
                 //    }
                 //}
-            }
-            MItem[0]["pjhtz"] = zn_Pj.ToString();  //平均回弹值
-            MItem[0]["ZXHTZ"] = zn_Min.ToString();  //最小回弹值
-            MItem[0]["PJQDZ"] = zr_Pj.ToString();  //平均强度值 ****
-            MItem[0]["ZXQDZ"] = zr_Min.ToString();  //最小强度值 ****
-            MItem[0]["CQS"] = z_ht.ToString();  //测区数
-            MItem[0]["QDJFC"] = z_n.ToString();  //强度均方差 ****
-            MItem[0]["QDTDZ"] = mQdtdz.ToString();   //强度推断值 ****
-            if (zmXycount > 0)
-            {
-                MItem[0]["PJQDZ"] = "0";
-                MItem[0]["ZXQDZ"] = "5";
-                MItem[0]["QDTDZ"] = "5";
-                MItem[0]["QDJFC"] = "0";
-            }
-            if (zmDycount > 0)
-            {
-                MItem[0]["PJQDZ"] = "0";
-                MItem[0]["QDTDZ"] = "65";
-                MItem[0]["QDJFC"] = "0";
-            }
-            if (mSz != 0)
-                MItem[0]["DDSJQD"] = Round(GetSafeDouble(MItem[0]["QDTDZ"]) / mSz * 100, 1).ToString(); //达到设计强度%
-                                                                                                        //批量结束
-            string tmpstr = "";
-            if (!string.IsNullOrEmpty(MItem[0]["BEIZHU"]))
-            {
-                if (MItem[0]["BEIZHU"].StartsWith("A"))
+                zr_Pj = Round((z_htqdz / z_ht), 1);  //求r_Pj
+                zn_Pj = Round((z_htzhz / z_ht), 1);  //求n_Pj
+                if (z_ht > 1)    //求s_N
+                    z_n = Round(Math.Sqrt((Math.Abs(z_n2 - z_ht * (z_htqdz / z_ht) * (z_htqdz / z_ht)) / (z_ht - 1))), 2);
+                else
+                    z_n = 0;
+                mQdtdz = Round((zr_Pj - 1.645 * z_n), 1);    //求mQdtdz
+                MItem[0]["PL_B_DG"] = "";
+                if (zr_Pj < 25 && z_n > 4.5 && MItem[0]["SFPL"] == "1")
                 {
+                    MItem[0]["PL_B_DG"] = "平均值小于25MPa，标准差大于4.5MPa，需按单个构件检测";
+                    //MItem[0]["WHICH"] = "bght1_88、bght1";
+                    //if (GetSafeInt(MItem[0]["FJCOUNT"]) > 0)
+                    //{
+                    //    for (int i = 1; i <= GetSafeInt(MItem[0]["FJCOUNT"]); i++)
+                    //    {
+                    //        bgfjs = (10 + i - 1).ToString();
+                    //        MItem[0]["WHICH"] = MItem[0]["WHICH"] + "、bght1_" + bgfjs;
+                    //    }
+                    //}
+                }
+                MItem[0]["pjhtz"] = zn_Pj.ToString();  //平均回弹值
+                MItem[0]["ZXHTZ"] = zn_Min.ToString();  //最小回弹值
+                MItem[0]["PJQDZ"] = zr_Pj.ToString();  //平均强度值 ****
+                MItem[0]["ZXQDZ"] = zr_Min.ToString();  //最小强度值 ****
+                MItem[0]["CQS"] = z_ht.ToString();  //测区数
+                MItem[0]["QDJFC"] = z_n.ToString();  //强度均方差 ****
+                MItem[0]["QDTDZ"] = mQdtdz.ToString();   //强度推断值 ****
+                if (zmXycount > 0)
+                {
+                    MItem[0]["PJQDZ"] = "0";
+                    MItem[0]["ZXQDZ"] = "5";
+                    MItem[0]["QDTDZ"] = "5";
                     MItem[0]["QDJFC"] = "0";
-                    tmpstr = "A：表示有测区强度超过60.0MPa";
-                    MItem[0]["QDTDZ"] = MItem[0]["ZXQDZ"];
                 }
-                if (MItem[0]["BEIZHU"].StartsWith("B"))
+                if (zmDycount > 0)
                 {
-                    if (string.IsNullOrEmpty(tmpstr))
-                        tmpstr = "B：表示有测区强度小于10.0MPa";
-                    else
-                        tmpstr = tmpstr.Trim() + "，" + "B：表示有测区强度小于10.0MPa";
+                    MItem[0]["PJQDZ"] = "0";
+                    MItem[0]["QDTDZ"] = "65";
+                    MItem[0]["QDJFC"] = "0";
                 }
-                if (MItem[0]["BEIZHU"].StartsWith("C"))
+                if (mSz != 0)
+                    MItem[0]["DDSJQD"] = Round(GetSafeDouble(MItem[0]["QDTDZ"]) / mSz * 100, 1).ToString(); //达到设计强度%
+                                                                                                            //批量结束
+                string tmpstr = "";
+                if (!string.IsNullOrEmpty(MItem[0]["BEIZHU"]))
                 {
-                    if (string.IsNullOrEmpty(tmpstr))
-                        tmpstr = "C：表示是泵送混凝土，碳化深度大于2.0mm";
-                    else
-                        tmpstr = tmpstr.Trim() + "，" + "C：表示是泵送混凝土，碳化深度大于2.0mm";
-                }
-                if (MItem[0]["BEIZHU"].StartsWith("D"))
-                {
-                    if (string.IsNullOrEmpty(tmpstr))
-                        tmpstr = "D：表示有平均回弹值小于20";
-                    else
-                        tmpstr = tmpstr.Trim() + "，" + "D：表示有平均回弹值小于20";
-                }
+                    if (MItem[0]["BEIZHU"].StartsWith("A"))
+                    {
+                        MItem[0]["QDJFC"] = "0";
+                        tmpstr = "A：表示有测区强度超过60.0MPa";
+                        MItem[0]["QDTDZ"] = MItem[0]["ZXQDZ"];
+                    }
+                    if (MItem[0]["BEIZHU"].StartsWith("B"))
+                    {
+                        if (string.IsNullOrEmpty(tmpstr))
+                            tmpstr = "B：表示有测区强度小于10.0MPa";
+                        else
+                            tmpstr = tmpstr.Trim() + "，" + "B：表示有测区强度小于10.0MPa";
+                    }
+                    if (MItem[0]["BEIZHU"].StartsWith("C"))
+                    {
+                        if (string.IsNullOrEmpty(tmpstr))
+                            tmpstr = "C：表示是泵送混凝土，碳化深度大于2.0mm";
+                        else
+                            tmpstr = tmpstr.Trim() + "，" + "C：表示是泵送混凝土，碳化深度大于2.0mm";
+                    }
+                    if (MItem[0]["BEIZHU"].StartsWith("D"))
+                    {
+                        if (string.IsNullOrEmpty(tmpstr))
+                            tmpstr = "D：表示有平均回弹值小于20";
+                        else
+                            tmpstr = tmpstr.Trim() + "，" + "D：表示有平均回弹值小于20";
+                    }
 
-                if (MItem[0]["BEIZHU"].Trim().Length > 0)
-                    MItem[0]["BEIZHU"] = "说明代号：" + tmpstr.Trim() + "。";
+                    if (MItem[0]["BEIZHU"].Trim().Length > 0)
+                        MItem[0]["BEIZHU"] = "说明代号：" + tmpstr.Trim() + "。";
 
-                //if (MItem[0]["WHICH"] == "1")
-                //{
-                if (Conversion.Val(MItem[0]["DDSJQD"]) < 100)
-                    mAllHg = false;
-                else
-                    mAllHg = true;
-                MItem[0]["JCJGMS"] = "该批构件混凝土强度" + MItem[0]["QDTDZ"] + "MPa，" + "占设计强度" + MItem[0]["DDSJQD"] + "%。";
-                //}
-                //else
-                //{
-                if (Conversion.Val(MItem[0]["DDSJQD"]) > 100)
-                {
-                    MItem[0]["JCJGMS"] = "该次检测混凝土强度全部大于等于设计强度。";
-                    mAllHg = true;
+                    //if (MItem[0]["WHICH"] == "1")
+                    //{
+                    if (Conversion.Val(MItem[0]["DDSJQD"]) < 100)
+                        mAllHg = false;
+                    else
+                        mAllHg = true;
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该批构件混凝土强度" + MItem[0]["QDTDZ"] + "MPa，" + "占设计强度" + MItem[0]["DDSJQD"] + "%。";
+                    //}
+                    //else
+                    //{
+                    if (Conversion.Val(MItem[0]["DDSJQD"]) > 100)
+                    {
+                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度全部大于等于设计强度。";
+                        mAllHg = true;
+                    }
+                    else
+                    {
+                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度部分小于设计强度。";
+                        mAllHg = false;
+                    }
+                    //}
                 }
                 else
                 {
-                    MItem[0]["JCJGMS"] = "该次检测混凝土强度部分小于设计强度。";
-                    mAllHg = false;
-                }
-                //}
-            }
-            else
-            {
-                if (Conversion.Val(MItem[0]["DDSJQD"]) > 100)
-                {
-                    MItem[0]["JCJGMS"] = "该次检测混凝土强度全部大于等于设计强度。";
-                    mAllHg = true;
-                }
-                else
-                {
-                    MItem[0]["JCJGMS"] = "该次检测混凝土强度部分小于设计强度。";
-                    mAllHg = false;
+                    if (Conversion.Val(MItem[0]["DDSJQD"]) > 100)
+                    {
+                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度全部大于等于设计强度。";
+                        mAllHg = true;
+                    }
+                    else
+                    {
+                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该次检测混凝土强度部分小于设计强度。";
+                        mAllHg = false;
+                    }
                 }
             }
 

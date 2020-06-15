@@ -19,6 +19,7 @@ namespace Calculates
             var jsbeizhu = "";
             var SItem = data["S_TS"];
             var MItem = data["M_TS"];
+            var ET_JXH = data["ET_JXH"];
             int mbHggs = 0;
             if (!data.ContainsKey("M_TS"))
             {
@@ -41,9 +42,13 @@ namespace Calculates
 
                 if (jcxm.Contains("、界限含水率、") || jcxm.Contains("、液限、") || jcxm.Contains("、塑限、"))
                 {
+                    if (ET_JXH[0]["SXZB"].Contains("补做"))
+                    {
+                        sItem["SXZB"] = ET_JXH[0]["SXZB"];
+                    }
                     if (sItem["SXZB"] =="补做")
                     {
-                        throw new SystemException("两个含水率的差值≥2%，应补做试验。");
+                        throw new SystemException("依据标准，圆锥下沉深度为2mm处相应的两个含水率的差值≥2%，应补做试验。");
                     }
                     sItem["GH_JXHSL"] = "符合";
                     string yx = IsQualified(sItem["SJ_YX"], sItem["YX"], true);

@@ -111,45 +111,46 @@ namespace Calculates
                 if (jcxm.Contains("、安定性、"))
                 {
                     jcxmCur = "安定性";
-                    if ( "试饼法" == sItem["ADXFF"])
+                    //没有试饼法
+                    //if ("试饼法" == sItem["ADXFF"])
+                    //{
+                    //    if ("无裂缝，无弯曲" == sItem["SBFJG"])
+                    //    {
+                    //        MItem[0]["HG_ADX"] = "合格";
+                    //        mFlag_Hg = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    //        MItem[0]["HG_ADX"] = "不合格";
+                    //        mFlag_Bhg = true;
+                    //        mbhggs = mbhggs + 1;
+                    //        mAllHg = false;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    MItem[0]["G_ADX"] = mrsDj["ADX"];
+                    var mzcj1 = Conversion.Val(sItem["ADXC1"]) - Conversion.Val(sItem["ADXA1"]);
+                    var mzcj2 = Conversion.Val(sItem["ADXC2"]) - Conversion.Val(sItem["ADXA2"]);
+                    sItem["ADX"] = Round((mzcj1 + mzcj2) / 2, 1).ToString("0.0");
+                    var isQ = IsQualified(MItem[0]["G_ADX"], sItem["ADX"], true);
+                    //MItem[0]["HG_ADX"] = isQ;
+                    if (isQ == "符合")
                     {
-                        if ("无裂缝，无弯曲" == sItem["SBFJG"])
-                        {
-                            MItem[0]["HG_ADX"] = "合格";
-                            mFlag_Hg = true;
-                        }
-                        else
-                        {
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                            MItem[0]["HG_ADX"] = "不合格";
-                            mFlag_Bhg = true;
-                            mbhggs = mbhggs + 1;
-                            mAllHg = false;
-                        }
+                        MItem[0]["HG_ADX"] = "合格";
+                        mFlag_Hg = true;
                     }
-                    else
+                    else if (isQ == "不符合")
                     {
-                        MItem[0]["G_ADX"] = mrsDj["ADX"];
-                        var mzcj1 = Conversion.Val(sItem["ADXC1"]) - Conversion.Val(sItem["ADXA1"]);
-                        var mzcj2 = Conversion.Val(sItem["ADXC2"]) - Conversion.Val(sItem["ADXA2"]);
-                        sItem["ADX"] = Round((mzcj1 + mzcj2) / 2, 1).ToString("0.0");
-                        var isQ = IsQualified(MItem[0]["G_ADX"], sItem["ADX"], true);
-                        //MItem[0]["HG_ADX"] = isQ;
-                        if (isQ == "符合")
-                        {
-                            MItem[0]["HG_ADX"] = "合格";
-                            mFlag_Hg = true;
-                        }
-                        else if (isQ == "不符合")
-                        {
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                            MItem[0]["HG_ADX"] = "不合格";
-                            mFlag_Bhg = true;
-                            mbhggs = mbhggs + 1;
-                            mAllHg = false;
-                        }
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        MItem[0]["HG_ADX"] = "不合格";
+                        mFlag_Bhg = true;
+                        mbhggs = mbhggs + 1;
+                        mAllHg = false;
                     }
-                   
+                    //}
+
                 }
                 else
                 {
@@ -199,27 +200,112 @@ namespace Calculates
                 #region 活性指数 - WH
                 if (jcxm.Contains("、活性指数、"))
                 {
+
+                    int tcsyzGs = 0;
+                    int tcdbzGs = 0;
+                    double sykyqdSum = 0;
+                    double dbkyqdSum = 0;
+                    string syPjkyqd = "";
+                    string dbPjkyqd = "";
+                    double tchsykyqdSum = 0;
+                    double tchdbkyqdSum = 0;
                     jcxmCur = "活性指数";
                     MItem[0]["G_HXZS"] = mrsDj["HXZS"];
-                    //文档中取一组6个数据作为对照组 ，一组6个作为试验组，取28天抗压强度做平均值
-                    sItem["HXZS"] = Round(100 * Conversion.Val(sItem["HXZSR"]) / Conversion.Val(sItem["HXZSR0"]), 0).ToString("0");
-                    var isQ = IsQualified(MItem[0]["G_HXZS"], sItem["HXZS"], true);
-                    if ("符合" == isQ)
+                    //文档中取一组6个数据作为对照组 ，一组6个作为试验组，取28天抗压强度做平均值   面积为1600平方毫米
+                    if (IsNumeric(sItem["SYZKYHZ1"].Trim()))
                     {
-                        MItem[0]["HG_HXZS"] = "合格";
-                        mFlag_Hg = true;
+                        //试验组28天抗压荷载1 有值  非直接录结果
+                        for (int i = 1; i < 7; i++)
+                        {
+                            sItem["SYZKYQD" + i] = Round(GetSafeDouble(sItem["SYZKYHZ" + i].Trim()) * 1000 / 1600, 1).ToString("0.0");
+                            sItem["DBZKYQD" + i] = Round(GetSafeDouble(sItem["DBZKYHZ" + i].Trim()) * 1000 / 1600, 1).ToString("0.0");
+                            //试验组kyqd总和
+                            sykyqdSum = sykyqdSum + GetSafeDouble(sItem["SYZKYHZ" + i].Trim()) * 1000 / 1600;
+                            dbkyqdSum = dbkyqdSum + GetSafeDouble(sItem["DBZKYHZ" + i].Trim()) * 1000 / 1600;
+                        }
+                        //试验组平均抗压强度
+                        syPjkyqd = Round(sykyqdSum / 6, 1).ToString("0.0");
+                        //对比组平均抗压强度
+                        dbPjkyqd = Round(dbkyqdSum / 6, 1).ToString("0.0");
+
+                        //剔除超过平均值10%的数据
+                        for (int i = 1; i < 7; i++)
+                        {
+                            if ((GetSafeDouble(sItem["SYZKYHZ" + i].Trim()) * 1000 / 1600 - GetSafeDouble(syPjkyqd)) / GetSafeDouble(syPjkyqd) * 100 > 10)
+                            {
+                                tcsyzGs++;
+                            }
+                            else
+                            {
+                                tchsykyqdSum = tchsykyqdSum + GetSafeDouble(sItem["SYZKYHZ" + i].Trim()) * 1000 / 1600;
+                            }
+
+                            if ((GetSafeDouble(sItem["DBZKYHZ" + i].Trim()) * 1000 / 1600 - GetSafeDouble(dbPjkyqd)) / GetSafeDouble(dbPjkyqd) * 100 > 10)
+                            {
+                                tcdbzGs++;
+                            }
+                            else
+                            {
+                                tchdbkyqdSum = tchdbkyqdSum + GetSafeDouble(sItem["DBZKYHZ" + i].Trim()) * 1000 / 1600;
+                            }
+
+                        }
+                        if (tcsyzGs > 1 && tcdbzGs > 1)
+                        {
+                            //sItem["HXZSR"] = "作废";
+                            //sItem["HXZSR0"] = "作废";
+                            dbPjkyqd = "作废";
+                            syPjkyqd = "作废";
+                        }
+                        else if (tcsyzGs > 1 && tcdbzGs <= 1)
+                        {
+                            //sItem["HXZSR"] = "作废";
+                            syPjkyqd = "作废";
+                        }
+                        else if (tcsyzGs <= 1 && tcdbzGs > 1)
+                        {
+                            //对比组
+                            //sItem["HXZSR0"] = "作废";
+                            dbPjkyqd = "作废";
+                        }
+                        else if (tcsyzGs == 1 && tcdbzGs < 1)
+                        {
+                            syPjkyqd = Round(tchsykyqdSum / 5, 1).ToString("0.0");
+                        }
+                        else if (tcsyzGs < 1 && tcdbzGs == 1)
+                        {
+                            dbPjkyqd = Round(tchdbkyqdSum / 5, 1).ToString("0.0");
+                        }
+                        else if (tcsyzGs == 1 && tcdbzGs == 1)
+                        {
+                            syPjkyqd = Round(tchsykyqdSum / 5, 1).ToString("0.0");
+                            dbPjkyqd = Round(tchdbkyqdSum / 5, 1).ToString("0.0");
+                        }
+
+                        sItem["HXZSR"] = syPjkyqd;
+                        sItem["HXZSR0"] = dbPjkyqd;
                     }
-                    else if (isQ == "不符合")
+                    if ("作废" != sItem["HXZSR"] && "作废" != sItem["HXZSR0"])
                     {
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        MItem[0]["HG_HXZS"] = "不合格";
-                        mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true;
-                        mAllHg = false;
-                    }
-                    else
-                    {
-                        MItem[0]["HG_HXZS"] = "----";
+                        sItem["HXZS"] = Round(100 * Conversion.Val(sItem["HXZSR"]) / Conversion.Val(sItem["HXZSR0"]), 0).ToString("0");
+                        var isQ = IsQualified(MItem[0]["G_HXZS"], sItem["HXZS"], true);
+                        if ("符合" == isQ)
+                        {
+                            MItem[0]["HG_HXZS"] = "合格";
+                            mFlag_Hg = true;
+                        }
+                        else if (isQ == "不符合")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            MItem[0]["HG_HXZS"] = "不合格";
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                            mAllHg = false;
+                        }
+                        else
+                        {
+                            MItem[0]["HG_HXZS"] = "----";
+                        }
                     }
                 }
                 else

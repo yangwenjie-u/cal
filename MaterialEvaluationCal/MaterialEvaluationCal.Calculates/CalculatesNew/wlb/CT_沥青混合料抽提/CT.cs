@@ -46,6 +46,7 @@ namespace Calculates
             var jcxmCur = "";
             string gjkTgl = "";
             bool gjkBool = false;
+            double pjsySum = 0;
             foreach (var sItem in SItem)
             {
                 var jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
@@ -226,23 +227,59 @@ namespace Calculates
                     sItem["SFZL2"] = sItem["KLBFZZL2"];
 
                     #region  平均筛余量
-                    sItem["PJSYL53"] = Round((GetDouble(sItem["SYL53_1"].Trim()) + GetDouble(sItem["SYL53_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL375"] = Round((GetDouble(sItem["SYL375_1"].Trim()) + GetDouble(sItem["SYL375_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL315"] = Round((GetDouble(sItem["SYL315_1"].Trim()) + GetDouble(sItem["SYL315_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL265"] = Round((GetDouble(sItem["SYL265_1"].Trim()) + GetDouble(sItem["SYL265_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL19"] = Round((GetDouble(sItem["SYL19_1"].Trim()) + GetDouble(sItem["SYL19_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL16"] = Round((GetDouble(sItem["SYL16_1"].Trim()) + GetDouble(sItem["SYL16_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL132"] = Round((GetDouble(sItem["SYL132_1"].Trim()) + GetDouble(sItem["SYL132_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL95"] = Round((GetDouble(sItem["SYL95_1"].Trim()) + GetDouble(sItem["SYL95_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL475"] = Round((GetDouble(sItem["SYL475_1"].Trim()) + GetDouble(sItem["SYL475_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL236"] = Round((GetDouble(sItem["SYL236_1"].Trim()) + GetDouble(sItem["SYL236_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL118"] = Round((GetDouble(sItem["SYL118_1"].Trim()) + GetDouble(sItem["SYL118_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL06"] = Round((GetDouble(sItem["SYL06_1"].Trim()) + GetDouble(sItem["SYL06_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL03"] = Round((GetDouble(sItem["SYL03_1"].Trim()) + GetDouble(sItem["SYL03_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL015"] = Round((GetDouble(sItem["SYL015_1"].Trim()) + GetDouble(sItem["SYL015_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYL0075"] = Round((GetDouble(sItem["SYL0075_1"].Trim()) + GetDouble(sItem["SYL0075_2"].Trim())) / 2, 1).ToString("0.0");
-                    sItem["PJSYLSD"] = Round((GetDouble(sItem["SD1"].Trim()) + GetDouble(sItem["SD2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL53"] = Round((GetSafeDouble(sItem["SYL53_1"].Trim()) + GetSafeDouble(sItem["SYL53_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL375"] = Round((GetSafeDouble(sItem["SYL375_1"].Trim()) + GetSafeDouble(sItem["SYL375_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL315"] = Round((GetSafeDouble(sItem["SYL315_1"].Trim()) + GetSafeDouble(sItem["SYL315_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL265"] = Round((GetSafeDouble(sItem["SYL265_1"].Trim()) + GetSafeDouble(sItem["SYL265_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL19"] = Round((GetSafeDouble(sItem["SYL19_1"].Trim()) + GetSafeDouble(sItem["SYL19_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL16"] = Round((GetSafeDouble(sItem["SYL16_1"].Trim()) + GetSafeDouble(sItem["SYL16_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL132"] = Round((GetSafeDouble(sItem["SYL132_1"].Trim()) + GetSafeDouble(sItem["SYL132_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL95"] = Round((GetSafeDouble(sItem["SYL95_1"].Trim()) + GetSafeDouble(sItem["SYL95_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL475"] = Round((GetSafeDouble(sItem["SYL475_1"].Trim()) + GetSafeDouble(sItem["SYL475_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL236"] = Round((GetSafeDouble(sItem["SYL236_1"].Trim()) + GetSafeDouble(sItem["SYL236_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL118"] = Round((GetSafeDouble(sItem["SYL118_1"].Trim()) + GetSafeDouble(sItem["SYL118_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL06"] = Round((GetSafeDouble(sItem["SYL06_1"].Trim()) + GetSafeDouble(sItem["SYL06_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL03"] = Round((GetSafeDouble(sItem["SYL03_1"].Trim()) + GetSafeDouble(sItem["SYL03_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL015"] = Round((GetSafeDouble(sItem["SYL015_1"].Trim()) + GetSafeDouble(sItem["SYL015_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYL0075"] = Round((GetSafeDouble(sItem["SYL0075_1"].Trim()) + GetSafeDouble(sItem["SYL0075_2"].Trim())) / 2, 1).ToString("0.0");
+                    sItem["PJSYLSD"] = Round((GetSafeDouble(sItem["SD1"].Trim()) + GetSafeDouble(sItem["SD2"].Trim())) / 2, 1).ToString("0.0");
                     #endregion
+
+                    //平均筛余总量
+                    pjsySum = Round(GetSafeDouble(sItem["PJSYL53"]) + GetSafeDouble(sItem["PJSYL375"]) + GetSafeDouble(sItem["PJSYL315"]) + GetSafeDouble(sItem["PJSYL265"])
+                        + GetSafeDouble(sItem["PJSYL19"]) + GetSafeDouble(sItem["PJSYL16"]) + GetSafeDouble(sItem["PJSYL132"]) + GetSafeDouble(sItem["PJSYL95"])
+                        + GetSafeDouble(sItem["PJSYL475"]) + GetSafeDouble(sItem["PJSYL236"]) + GetSafeDouble(sItem["PJSYL118"]) + GetSafeDouble(sItem["PJSYL06"])
+                        + GetSafeDouble(sItem["PJSYL03"]) + GetSafeDouble(sItem["PJSYL015"]) + GetSafeDouble(sItem["PJSYL0075"]) + GetSafeDouble(sItem["PJSYLSD"]), 1);
+
+
+                    #region 平均分计筛余 新
+                    sItem["PJFJSY53"] = Round(GetSafeDouble(sItem["PJSYL53"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY375"] = Round(GetSafeDouble(sItem["PJSYL375"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY315"] = Round(GetSafeDouble(sItem["PJSYL315"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY265"] = Round(GetSafeDouble(sItem["PJSYL265"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY19"] = Round(GetSafeDouble(sItem["PJSYL19"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY16"] = Round(GetSafeDouble(sItem["PJSYL16"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY132"] = Round(GetSafeDouble(sItem["PJSYL132"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY95"] = Round(GetSafeDouble(sItem["PJSYL95"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY475"] = Round(GetSafeDouble(sItem["PJSYL475"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY236"] = Round(GetSafeDouble(sItem["PJSYL236"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY118"] = Round(GetSafeDouble(sItem["PJSYL118"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY06"] = Round(GetSafeDouble(sItem["PJSYL06"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY03"] = Round(GetSafeDouble(sItem["PJSYL03"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY015"] = Round(GetSafeDouble(sItem["PJSYL015"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSY0075"] = Round(GetSafeDouble(sItem["PJSYL0075"]) / pjsySum * 100, 1).ToString("0.0");
+                    sItem["PJFJSYSD"] = Round(GetSafeDouble(sItem["PJSYLSD"]) / pjsySum * 100, 1).ToString("0.0");
+                    #endregion
+
+                    //筛余量统计
+                    for (int i = 1; i < 3; i++)
+                    {
+                        sItem["SYLTJ" + i] = Round(GetSafeDouble(sItem["SYL53_" + i].Trim()) + GetSafeDouble(sItem["SYL375_" + i].Trim()) + GetSafeDouble(sItem["SYL315_" + i].Trim()) + GetSafeDouble(sItem["SYL265_" + i].Trim())
+                                            + GetSafeDouble(sItem["SYL19_" + i].Trim()) + GetSafeDouble(sItem["SYL16_" + i].Trim()) + GetSafeDouble(sItem["SYL132_" + i].Trim()) + GetSafeDouble(sItem["SYL95_" + i].Trim())
+                                            + GetSafeDouble(sItem["SYL475_" + i].Trim()) + GetSafeDouble(sItem["SYL236_" + i].Trim()) + GetSafeDouble(sItem["SYL118_" + i].Trim())
+                                            + GetSafeDouble(sItem["SYL06_" + i].Trim()) + GetSafeDouble(sItem["SYL03_" + i].Trim()) + GetSafeDouble(sItem["SYL015_" + i].Trim()) + GetSafeDouble(sItem["SYL0075_" + i].Trim())
+                                            + GetSafeDouble(sItem["SD" + i].Trim()), 1).ToString("0.0");
+                    }
 
                     #region 分计筛余
                     for (int i = 1; i < 3; i++)
@@ -267,25 +304,23 @@ namespace Calculates
                     }
                     #endregion
 
-                    #region 平均分计筛余
-                    sItem["PJFJSY53"] = Round((GetSafeDouble(sItem["FJSY53_1"]) + GetSafeDouble(sItem["FJSY53_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY375"] = Round((GetSafeDouble(sItem["FJSY375_1"]) + GetSafeDouble(sItem["FJSY375_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY315"] = Round((GetSafeDouble(sItem["FJSY315_1"]) + GetSafeDouble(sItem["FJSY315_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY265"] = Round((GetSafeDouble(sItem["FJSY265_1"]) + GetSafeDouble(sItem["FJSY265_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY19"] = Round((GetSafeDouble(sItem["FJSY19_1"]) + GetSafeDouble(sItem["FJSY19_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY16"] = Round((GetSafeDouble(sItem["FJSY16_1"]) + GetSafeDouble(sItem["FJSY16_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY132"] = Round((GetSafeDouble(sItem["FJSY132_1"]) + GetSafeDouble(sItem["FJSY132_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY95"] = Round((GetSafeDouble(sItem["FJSY95_1"]) + GetSafeDouble(sItem["FJSY95_2"])) / 2, 1).ToString("0.0");
-                    //sItem["PJFJSY475"] = Round((Convert.ToDecimal(sItem["FJSY475_1"]) + Convert.ToDecimal(sItem["FJSY475_2"])) / 2, 1).ToString("0.0");4
-
-                    sItem["PJFJSY475"] = Math.Round((Convert.ToDecimal(sItem["FJSY475_1"]) + Convert.ToDecimal(sItem["FJSY475_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY236"] = Round((GetSafeDouble(sItem["FJSY236_1"]) + GetSafeDouble(sItem["FJSY236_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY118"] = Round((GetSafeDouble(sItem["FJSY118_1"]) + GetSafeDouble(sItem["FJSY118_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY06"] = Round((GetSafeDouble(sItem["FJSY06_1"]) + GetSafeDouble(sItem["FJSY06_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY03"] = Round((GetSafeDouble(sItem["FJSY03_1"]) + GetSafeDouble(sItem["FJSY03_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY015"] = Round((GetSafeDouble(sItem["FJSY015_1"]) + GetSafeDouble(sItem["FJSY015_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSY0075"] = Round((GetSafeDouble(sItem["FJSY0075_1"]) + GetSafeDouble(sItem["FJSY0075_2"])) / 2, 1).ToString("0.0");
-                    sItem["PJFJSYSD"] = Round((GetSafeDouble(sItem["FJSYSD_1"]) + GetSafeDouble(sItem["FJSYSD_2"])) / 2, 1).ToString("0.0");
+                    #region 平均分计筛余 旧 数据失真
+                    //sItem["PJFJSY53"] = Round((GetSafeDouble(sItem["FJSY53_1"]) + GetSafeDouble(sItem["FJSY53_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY375"] = Round((GetSafeDouble(sItem["FJSY375_1"]) + GetSafeDouble(sItem["FJSY375_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY315"] = Round((GetSafeDouble(sItem["FJSY315_1"]) + GetSafeDouble(sItem["FJSY315_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY265"] = Round((GetSafeDouble(sItem["FJSY265_1"]) + GetSafeDouble(sItem["FJSY265_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY19"] = Round((GetSafeDouble(sItem["FJSY19_1"]) + GetSafeDouble(sItem["FJSY19_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY16"] = Round((GetSafeDouble(sItem["FJSY16_1"]) + GetSafeDouble(sItem["FJSY16_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY132"] = Round((GetSafeDouble(sItem["FJSY132_1"]) + GetSafeDouble(sItem["FJSY132_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY95"] = Round((GetSafeDouble(sItem["FJSY95_1"]) + GetSafeDouble(sItem["FJSY95_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY475"] = Math.Round((Convert.ToDecimal(sItem["FJSY475_1"]) + Convert.ToDecimal(sItem["FJSY475_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY236"] = Round((GetSafeDouble(sItem["FJSY236_1"]) + GetSafeDouble(sItem["FJSY236_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY118"] = Round((GetSafeDouble(sItem["FJSY118_1"]) + GetSafeDouble(sItem["FJSY118_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY06"] = Round((GetSafeDouble(sItem["FJSY06_1"]) + GetSafeDouble(sItem["FJSY06_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY03"] = Round((GetSafeDouble(sItem["FJSY03_1"]) + GetSafeDouble(sItem["FJSY03_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY015"] = Round((GetSafeDouble(sItem["FJSY015_1"]) + GetSafeDouble(sItem["FJSY015_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSY0075"] = Round((GetSafeDouble(sItem["FJSY0075_1"]) + GetSafeDouble(sItem["FJSY0075_2"])) / 2, 1).ToString("0.0");
+                    //sItem["PJFJSYSD"] = Round((GetSafeDouble(sItem["FJSYSD_1"]) + GetSafeDouble(sItem["FJSYSD_2"])) / 2, 1).ToString("0.0");
                     #endregion
 
                     #region 累计筛余
@@ -338,7 +373,7 @@ namespace Calculates
                             //取关键孔判定标准值
                             gjkTgl = mrsDj_Filter["GJSKTGL"];
                             //取标准值
-                            mrsDj_Filter = mrsDj.FirstOrDefault(x => x["KLJPLX"].Contains(sItem["KLJPLX"]) && x["HHLMC"] != sItem["KLJPLX"]);
+                            mrsDj_Filter = mrsDj.FirstOrDefault(x => sItem["KLJPLX"].Contains(x["KLJPLX"]) && x["HHLMC"] != sItem["KLJPLX"]);
                         }
                         else
                         {

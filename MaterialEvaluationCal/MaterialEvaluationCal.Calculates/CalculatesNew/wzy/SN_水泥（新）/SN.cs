@@ -21,7 +21,8 @@ namespace Calculates
             double mMaxKyqd, mMinKyqd, mavgkyqd;
             double mKYPJ3z, mKZPJ3z;
             double mXdbz, mXdbz2, mXdbz3, mCdbz1, mCdbz2, mCnsj, mZnsj, mKy_3, mKy_7, mKy_28 = 0, mKz_3, mKz_7, mKz_28;
-            string mSjdjbh, mSjdj = "", mSnzl;
+            string mSjdjbh  = "", mSnzl;
+            string mSjdj = "";
             int vp;
             string mjlgs;
             string mMaxBgbh;
@@ -72,6 +73,7 @@ namespace Calculates
             mitem["SYZT"] = "0";
             mjcxm = "、";
             bool bgmbFlag = false;
+            string jlmsDj = "";
             foreach (var sitem in SItem)
             {
                 /*水灰比计算 用水量 / 水泥量  取两位小数*/
@@ -80,6 +82,7 @@ namespace Calculates
                     mitem["SHB"] = Round(GetSafeDouble(mitem["LDDYSL"].Trim()) / GetSafeDouble(sitem["SLLSHB"]), 2).ToString("0.00");
                 }
 
+                
                 mSjdj = sitem["SJDJ"];            //设计等级名称
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (string.IsNullOrEmpty(mSjdj))
@@ -101,6 +104,7 @@ namespace Calculates
                     sitem["G_KYBZ28"] = Conversion.Val(mrsDj_Filter["KY_28"]).ToString();
                     sitem["G_KZBZ3"] = Conversion.Val(mrsDj_Filter["KZ_3"]).ToString();
                     sitem["G_KZBZ28"] = Conversion.Val(mrsDj_Filter["KZ_28"]).ToString();
+                    jlmsDj = mrsDj_Filter["JLXSDJ"];
                 }
                 else
                 {
@@ -281,10 +285,15 @@ namespace Calculates
                             else
                             {
                                 if (Conversion.Val(sitem["KYPJ3"]) == -1)
+                                {
                                     sitem["KY3_HG"] = "作废";
+                                }
                                 else
+                                {
                                     sitem["KY3_HG"] = "不合格";
+                                }
                                 ky3_hg = false;
+                                
                             }
                             //if (!("、" + sitem["JCXM"] + "、").Contains("、强度（3天）、"))
                             if (!jcxm.Contains("、强度（3天）、"))
@@ -364,7 +373,7 @@ namespace Calculates
                         }
                         #endregion
 
-                       
+
                     }
                     #endregion
 
@@ -599,7 +608,7 @@ namespace Calculates
                                 }
                                 else
                                 {
-                                    if (IsQualified(mitem["G_XD"], mitem["XD"]) == "符合")
+                                    if (IsQualified(mitem["G_XD"], mitem["XD"],true) == "符合")
                                     {
                                         mitem["XD_HG"] = "合格";
                                         xd_hg = true;
@@ -713,7 +722,7 @@ namespace Calculates
                                     }
                                     else
                                     {
-                                        if (IsQualified(mitem["G_XD"], mitem["XD"]) == "符合")
+                                        if (IsQualified(mitem["G_XD"], mitem["XD"], true) == "符合")
                                         {
                                             mitem["XD_HG"] = "合格";
                                             xd_hg = true;
@@ -789,7 +798,7 @@ namespace Calculates
                         {
                             //mitem["XDSK"] = "80";
                             mitem["G_XD2"] = mrsDj_Filter["XDBZ2"];
-                            if (IsQualified(mitem["G_XD2"], mitem["XDSY"],true) == "符合")
+                            if (IsQualified(mitem["G_XD2"], mitem["XDSY"], true) == "符合")
                             {
                                 mitem["XD_HG"] = "合格";
                                 xd_hg = true;
@@ -1182,29 +1191,59 @@ namespace Calculates
                 else
                 {
                     if (mAllHg)
-                        mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合标准要求。";
+                    {
+                        if ( "不合格" == SItem[0]["KY3_HG"])
+                        {
+                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目3天强度不符合强度等级" + jlmsDj + "技术要求，28天强度符合强度等级" + jlmsDj + "标准要求";
+                        }
+                        else if ("作废" == SItem[0]["KY3_HG"])
+                        {
+                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目3天强度作废，28天强度符合强度等级" + jlmsDj + "标准要求";
+                        }
+                        else
+                        {
+                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合强度等级" + jlmsDj + "标准要求。";
+                        }
+                        
+                    }
                     else
                     {
-                        mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样所检项目" + bhgJcxm + "不符合标准要求。";
+                        if ("不合格" == SItem[0]["KY3_HG"])
+                        {
+                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目3天强度不符合强度等级" + jlmsDj + "技术要求，28天强度不符合强度等级" + jlmsDj + "标准要求";
+                        }
+                        else if ("作废" == SItem[0]["KY3_HG"])
+                        {
+                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目3天强度作废，28天强度不符合强度等级" + jlmsDj + "标准要求";
+                        }
+                        else
+                        {
+                            mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目3天强度符合强度等级" + jlmsDj + "技术要求，28天强度不符合强度等级" + jlmsDj + "标准要求";
+                        }
+                        //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样所检项目" + bhgJcxm + "不符合标准要求。";
                         //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样不符合标准要求。";
                         if (mFlag_Bhg && mFlag_Hg)
                         {
                             //mitem["JCJGMS"] = "该组试样所检项目" + bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
                             //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样所检项目" + bhgJcxm + "不符合标准要求。";
                         }
-
                     }
                 }
             }
             else
             {
                 if (mAllHg)
-                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，28天强度检测前，该组试样所检项目符合标准要求。";
+                {
+                    //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，28天强度检测前，该组试样所检项目符合标准要求。";
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合强度等级"+ jlmsDj + "3天标准要求。";
+
+                }
                 else
                 {
-                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，28天强度检测前，所检项目"+bhgJcxm+"不符合要求。";
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + bhgJcxm + "不符合强度等级" + jlmsDj + "3天标准要求。"; 
+                    //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，28天强度检测前，所检项目" + bhgJcxm + "不符合要求。";
                     //if (mFlag_Bhg && mFlag_Hg)
-                       // mitem["JCJGMS"] = "28天强度检测前，该组试样所检项目" + bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
+                    // mitem["JCJGMS"] = "28天强度检测前，该组试样所检项目" + bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
                 }
             }
             #endregion

@@ -326,10 +326,10 @@ namespace Calculates
                 else
                 {
                     LQ = (SYRQ - ZZRQ).Days;
-                    if (LQ != 28 && YHTJ.Equals("标准"))
-                    {
-                        LQ = 28;
-                    }
+                    //if (LQ != 28 && YHTJ.Equals("标准"))
+                    //{
+                       // LQ = 28;
+                    //}
                 }
 
                 var KYHZ1 = GetSafeDouble(sItem["KYHZ1"]);
@@ -383,10 +383,10 @@ namespace Calculates
                 var mQdyq = 0.0;
                 if (!String.IsNullOrEmpty(SJDJ))
                 {
-                    if (SJDJ.ToUpper()[0] != 'C')
-                    {
-                        SJDJ = "C" + SJDJ;
-                    }
+                    //if (SJDJ.ToUpper()[0] != 'C')
+                    //{
+                    //    SJDJ = "C" + SJDJ;
+                    //}
                     var DJ = extraDJ.FirstOrDefault(x => x["MC"].Trim().Equals(SJDJ, StringComparison.OrdinalIgnoreCase));
                     if (DJ != null)
                     {
@@ -655,6 +655,13 @@ namespace Calculates
 
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jgsm;
+            if ("----" ==  S_HNTS[0]["SJDJ"])
+            {
+               S_HNTS[0]["JCJG"] = "不下结论";
+                MItem[0]["JCJGMS"] = "----";
+                MItem[0]["JCJG"] = "不下结论";
+            }
+            //MItem[0]["JCJGMS"] = "----";
 
             #endregion
             /************************ 代码结束 *********************/

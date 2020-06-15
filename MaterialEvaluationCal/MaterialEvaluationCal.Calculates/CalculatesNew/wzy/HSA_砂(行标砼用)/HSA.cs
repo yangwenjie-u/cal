@@ -898,7 +898,7 @@ namespace Calculates
                         //紧密密度|| 堆积密度 = （容量桶和试样总质量m2(kg)-容量桶的质量m1(kg) ）/容量桶体积L  * 1000 精确到10kg/m³
                         if (Conversion.Val(sitem["DJMDV"]) != 0)
                         {
-                            mdjmd1 = Round((Conversion.Val(sitem["DJMDG1"]) - Conversion.Val(sitem["DJMDG2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0) * 10;//标准文档要求精确到10kg/m3
+                            mdjmd1 = Round((Conversion.Val(sitem["DJMDG1"]) - Conversion.Val(sitem["DJMDG2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0) * 10;//标准文档要求精确到10kg/m³
                             mdjmd2 = Round((Conversion.Val(sitem["DJMDG1_2"]) - Conversion.Val(sitem["DJMDG2_2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0) * 10;
                             sitem["DJMD"] = (Round((mdjmd1 + mdjmd2) / 20, 0) * 10).ToString();
                             sitem["DJMDPD"] = "----";
@@ -918,7 +918,7 @@ namespace Calculates
                         double mjmmd2 = 0;
                         if ((Conversion.Val(sitem["JMMDV"]) != 0))
                         {
-                            mjmmd1 = Round((Conversion.Val(sitem["JMMDG1"]) - Conversion.Val(sitem["JMMDG2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0) * 10;//标准文档要求精确到10kg/m3
+                            mjmmd1 = Round((Conversion.Val(sitem["JMMDG1"]) - Conversion.Val(sitem["JMMDG2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0) * 10;//标准文档要求精确到10kg/m³
                             mjmmd2 = Round((Conversion.Val(sitem["JMMDG1_2"]) - Conversion.Val(sitem["JMMDG2_2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0) * 10;
                             sitem["JMMD"] = (Round((mjmmd1 + mjmmd2) / 20, 0) * 10).ToString();
                             sitem["JMMDPD"] = "----";
@@ -1139,8 +1139,8 @@ namespace Calculates
                             }
                             if (Math.Abs((mbkhl1 - mbkhl2)) > 0.5)
                             {
-                                sitem["BKHKPD"] = "两次结果差大于0.5%，须重新试验";
-                                sitem["BKHKPD"] = "重新试验";
+                                sitem["BKHLPD"] = "两次结果差大于0.5%，须重新试验";
+                                sitem["BKHLPD"] = "重新试验";
 
                             }
                         }
@@ -1291,8 +1291,12 @@ namespace Calculates
                 }
                 #endregion
             }
+
+            
             string dj = "";
-            if (!string.IsNullOrEmpty(SItem[0]["NKHLPD"]) && SItem[0]["NKHLPD"] != "----" && !string.IsNullOrEmpty(SItem[0]["HNLPD"]) && SItem[0]["HNLPD"] != "----")
+
+            if (!string.IsNullOrEmpty(SItem[0]["NKHLPD"]) && SItem[0]["NKHLPD"] != "----" && SItem[0]["NKHLPD"] != "不符合"
+                && !string.IsNullOrEmpty(SItem[0]["HNLPD"]) && SItem[0]["HNLPD"] != "----" && SItem[0]["HNLPD"] != "不符合")
             {
                 if (SItem[0]["NKHLPD"] == SItem[0]["HNLPD"])
                 {
@@ -1338,13 +1342,14 @@ namespace Calculates
                     }
                 }
             }
-            else if (!string.IsNullOrEmpty(SItem[0]["HNLPD"]) && SItem[0]["HNLPD"] != "----" && (string.IsNullOrEmpty(SItem[0]["NKHLPD"]) || SItem[0]["NKHLPD"] == "----"))
+            else if (!string.IsNullOrEmpty(SItem[0]["HNLPD"]) && SItem[0]["HNLPD"] != "----" && SItem[0]["HNLPD"] != "不符合"
+                && (string.IsNullOrEmpty(SItem[0]["NKHLPD"]) || SItem[0]["NKHLPD"] == "----" || SItem[0]["NKHLPD"] == "不符合"))
             {
                 dj = SItem[0]["HNLPD"];
             }
-            else if (!string.IsNullOrEmpty(SItem[0]["NKHLPD"]) && SItem[0]["NKHLPD"] != "----" && (string.IsNullOrEmpty(SItem[0]["HNLPD"]) || SItem[0]["HNLPD"] == "----"))
+            else if (string.IsNullOrEmpty(SItem[0]["NKHLPD"]) || SItem[0]["NKHLPD"] == "----" && (string.IsNullOrEmpty(SItem[0]["HNLPD"]) || SItem[0]["HNLPD"] == "----" || SItem[0]["HNLPD"] == "不符合"))
             {
-                dj = SItem[0]["NKHLPD"];
+                dj = "不符合级配";
             }
 
             //主表总判断赋值
@@ -1359,7 +1364,7 @@ namespace Calculates
             {
                 mitem["JCJG"] = "不合格";
                 //mitem["JCJGMS"] = "该组试样所检项目不符合上述标准要求。";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + "，检测项目" + jcxmBhg.TrimEnd('、') + "不符合" + dj + "的混凝土用砂。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 //依据+判定标准，+所属项目属于+#F:s_HSA.JPPD#  +#F:s_HSA.XDMSPD#，符合≤25（强度等级）的混凝土用砂
             }
             #endregion

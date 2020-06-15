@@ -10,7 +10,8 @@ namespace Calculates
     {
         public void Calc()
         {
-
+            /************************ 代码开始 *********************/
+            #region 
             bool mAllHg = true, sign = true, mSFwc = true;
             var data = retData;
             var mjcjg = "不合格";
@@ -40,68 +41,16 @@ namespace Calculates
             double zjSum = 0;
             double gdSum = 0;
             int count = 0;
-            bool gjkBool = false;
-            string gjkTgl = "";
+
+            double yxxdmd = 0;
+            jsbeizhu = "";
             foreach (var sItem in SItem)
             {
-                jsbeizhu = "";
-                #region 吸水率   表干法
-                sign = true;
-                for (int i = 1; i < 7; i++)
-                {
-                    sign = IsNumeric(sItem["GZSJKZZL" + i].Trim());
-                    sign = IsNumeric(sItem["SJSZZL" + i].Trim());
-                    sign = IsNumeric(sItem["SJBGZL" + i].Trim());
-                }
-                if (sign)
-                {
-                    //吸水率 = （试件的表干质量 - 干燥试件的空中质量）/ （试件的表干质量 - 试件的水中质量）  * 100  取一位小数
-                    for (int i = 1; i < 7; i++)
-                    {
-                        sItem["SJXSL" + i] = Round((GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["GZSJKZZL" + i].Trim()))
-                            / (GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["SJSZZL" + i].Trim())) * 100, 1).ToString("0.0");
-                    }
-                }
-                else
-                {
-                    throw new SystemException("密度测定（干燥）试件的空中质量、试件的水中质量或试件的表干质量试验数据录入有误。");
-                }
-                #endregion
 
-                #region 马歇尔试件直径 高度代表值计算
-                sign = true;
-                for (int i = 1; i < 7; i++)
-                {
-                    sign = IsNumeric(sItem["SJZJ1_" + i].Trim());
-                    sign = IsNumeric(sItem["SJZJ2_" + i].Trim());
-                    sign = IsNumeric(sItem["SJGD1_" + i].Trim());
-                    sign = IsNumeric(sItem["SJGD2_" + i].Trim());
-                    sign = IsNumeric(sItem["SJGD3_" + i].Trim());
-                    sign = IsNumeric(sItem["SJGD4_" + i].Trim());
-                }
-                if (sign)
-                {
-                    //平均值
-                    for (int i = 1; i < 7; i++)
-                    {
-                        sItem["SJZJPJ" + i] = Round((GetSafeDouble(sItem["SJZJ1_" + i].Trim()) + GetSafeDouble(sItem["SJZJ2_" + i].Trim())) / 2, 1).ToString("0.0");
-                        sItem["SJGDPJ" + i] = Round((GetSafeDouble(sItem["SJGD1_" + i].Trim()) + GetSafeDouble(sItem["SJGD2_" + i].Trim())
-                            + GetSafeDouble(sItem["SJGD3_" + i].Trim()) + GetSafeDouble(sItem["SJGD4_" + i].Trim())) / 4, 1).ToString("0.0");
-                        zjSum = zjSum + GetSafeDouble(sItem["SJZJPJ" + i]);
-                        gdSum = gdSum + GetSafeDouble(sItem["SJGDPJ" + i]);
-                        count++;
-                    }
-                    //代表值
-                    sItem["SJZJDBZ"] = Round(zjSum / count, 1).ToString("0.0");
-                    sItem["SJGDDBZ"] = Round(gdSum / count, 1).ToString("0.0");
-                }
-                else
-                {
-                    throw new SystemException("马歇尔试件直径与高度试验数据录入有误");
-                }
-                #endregion
 
                 #region  生成曲线数据 及相关计算
+                bool gjkBool = false;
+                string gjkTgl = "";
                 double hcjp_53 = 0;
                 double hcjp_375 = 0;
                 double hcjp_315 = 0;
@@ -125,45 +74,68 @@ namespace Calculates
                     //矿料比例值
                     if (!string.IsNullOrEmpty(sItem["BL_" + i].Trim()))
                     {
-                        hcjp_53 = hcjp_53 + GetSafeDouble(sItem["TGBF53_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_375 = hcjp_375 + GetSafeDouble(sItem["TGBF375_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_315 = hcjp_315 + GetSafeDouble(sItem["TGBF315_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_265 = hcjp_265 + GetSafeDouble(sItem["TGBF265_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_19 = hcjp_19 + GetSafeDouble(sItem["TGBF19_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_16 = hcjp_16 + GetSafeDouble(sItem["TGBF16_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_132 = hcjp_132 + GetSafeDouble(sItem["TGBF132_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_95 = hcjp_95 + GetSafeDouble(sItem["TGBF95_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_475 = hcjp_475 + GetSafeDouble(sItem["TGBF475_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_236 = hcjp_236 + GetSafeDouble(sItem["TGBF236_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_118 = hcjp_118 + GetSafeDouble(sItem["TGBF118_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_06 = hcjp_06 + GetSafeDouble(sItem["TGBF06_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_03 = hcjp_03 + GetSafeDouble(sItem["TGBF03_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_015 = hcjp_015 + GetSafeDouble(sItem["TGBF015_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_0075 = hcjp_0075 + GetSafeDouble(sItem["TGBF0075_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        hcjp_SD = hcjp_SD + GetSafeDouble(sItem["TGBFSD_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
-                        blzh = blzh + GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_53 = hcjp_53 + GetSafeDouble(sItem["TGBF53_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_375 = hcjp_375 + GetSafeDouble(sItem["TGBF375_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_315 = hcjp_315 + GetSafeDouble(sItem["TGBF315_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_265 = hcjp_265 + GetSafeDouble(sItem["TGBF265_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_19 = hcjp_19 + GetSafeDouble(sItem["TGBF19_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_16 = hcjp_16 + GetSafeDouble(sItem["TGBF16_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_132 = hcjp_132 + GetSafeDouble(sItem["TGBF132_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_95 = hcjp_95 + GetSafeDouble(sItem["TGBF95_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_475 = hcjp_475 + GetSafeDouble(sItem["TGBF475_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_236 = hcjp_236 + GetSafeDouble(sItem["TGBF236_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_118 = hcjp_118 + GetSafeDouble(sItem["TGBF118_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_06 = hcjp_06 + GetSafeDouble(sItem["TGBF06_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_03 = hcjp_03 + GetSafeDouble(sItem["TGBF03_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_015 = hcjp_015 + GetSafeDouble(sItem["TGBF015_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_0075 = hcjp_0075 + GetSafeDouble(sItem["TGBF0075_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //hcjp_SD = hcjp_SD + GetSafeDouble(sItem["TGBFSD_" + i].Trim()) * GetSafeDouble(sItem["BL_" + i].Trim());
+                        //blzh = blzh + GetSafeDouble(sItem["BL_" + i].Trim());
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(sItem["SFBGBH" + i]))
+                        {
+                            sItem["TGBF53_" + i] = "----";
+                            sItem["TGBF375_" + i] = "----";
+                            sItem["TGBF315_" + i] = "----";
+                            sItem["TGBF265_" + i] = "----";
+                            sItem["TGBF19_" + i] = "----";
+                            sItem["TGBF16_" + i] = "----";
+                            sItem["TGBF132_" + i] = "----";
+                            sItem["TGBF95_" + i] = "----";
+                            sItem["TGBF475_" + i] = "----";
+                            sItem["TGBF236_" + i] = "----";
+                            sItem["TGBF118_" + i] = "----";
+                            sItem["TGBF06_" + i] = "----";
+                            sItem["TGBF03_" + i] = "----";
+                            sItem["TGBF015_" + i] = "----";
+                            sItem["TGBF0075_" + i] = "----";
+                            sItem["TGBFSD_" + i] = "----";
+                        }
                     }
                 }
-                if (blzh < 1)
-                {
-                    throw new SystemException("矿料级配组成比例总和小于100%");
-                }
-                sItem["HCJP_53"] = Round(hcjp_53, 1).ToString("0.0");
-                sItem["HCJP_375"] = Round(hcjp_375, 1).ToString("0.0");
-                sItem["HCJP_315"] = Round(hcjp_315, 1).ToString("0.0");
-                sItem["HCJP_265"] = Round(hcjp_265, 1).ToString("0.0");
-                sItem["HCJP_19"] = Round(hcjp_19, 1).ToString("0.0");
-                sItem["HCJP_16"] = Round(hcjp_16, 1).ToString("0.0");
-                sItem["HCJP_132"] = Round(hcjp_132, 1).ToString("0.0");
-                sItem["HCJP_95"] = Round(hcjp_95, 1).ToString("0.0");
-                sItem["HCJP_475"] = Round(hcjp_475, 1).ToString("0.0");
-                sItem["HCJP_236"] = Round(hcjp_236, 1).ToString("0.0");
-                sItem["HCJP_118"] = Round(hcjp_118, 1).ToString("0.0");
-                sItem["HCJP_06"] = Round(hcjp_06, 1).ToString("0.0");
-                sItem["HCJP_03"] = Round(hcjp_03, 1).ToString("0.0");
-                sItem["HCJP_015"] = Round(hcjp_015, 1).ToString("0.0");
-                sItem["HCJP_0075"] = Round(hcjp_0075, 1).ToString("0.0");
-                sItem["HCJP_SD"] = Round(hcjp_SD, 1).ToString("0.0");
+                //if (blzh < 1)
+                //{
+                //    throw new SystemException("矿料级配组成比例总和小于100%");
+                //}
+                //sItem["HCJPBLZH"] = blzh.ToString("0.00");
+                //sItem["HCJP_53"] = Round(hcjp_53, 1).ToString("0.0");
+                //sItem["HCJP_375"] = Round(hcjp_375, 1).ToString("0.0");
+                //sItem["HCJP_315"] = Round(hcjp_315, 1).ToString("0.0");
+                //sItem["HCJP_265"] = Round(hcjp_265, 1).ToString("0.0");
+                //sItem["HCJP_19"] = Round(hcjp_19, 1).ToString("0.0");
+                //sItem["HCJP_16"] = Round(hcjp_16, 1).ToString("0.0");
+                //sItem["HCJP_132"] = Round(hcjp_132, 1).ToString("0.0");
+                //sItem["HCJP_95"] = Round(hcjp_95, 1).ToString("0.0");
+                //sItem["HCJP_475"] = Round(hcjp_475, 1).ToString("0.0");
+                //sItem["HCJP_236"] = Round(hcjp_236, 1).ToString("0.0");
+                //sItem["HCJP_118"] = Round(hcjp_118, 1).ToString("0.0");
+                //sItem["HCJP_06"] = Round(hcjp_06, 1).ToString("0.0");
+                //sItem["HCJP_03"] = Round(hcjp_03, 1).ToString("0.0");
+                //sItem["HCJP_015"] = Round(hcjp_015, 1).ToString("0.0");
+                //sItem["HCJP_0075"] = Round(hcjp_0075, 1).ToString("0.0");
+                //sItem["HCJP_SD"] = Round(hcjp_SD, 1).ToString("0.0");
                 #endregion
 
                 #region 获取标准值
@@ -178,11 +150,21 @@ namespace Calculates
                         //取关键孔判定标准值
                         gjkTgl = mrsDj_Filter["GJSKTGL"];
                         //取标准值
-                        mrsDj_Filter = mrsDj.FirstOrDefault(x => x["KLJPLX"].Contains(sItem["KLJPLX"]) && x["HHLMC"] != sItem["KLJPLX"]);
+                        mrsDj_Filter = mrsDj.FirstOrDefault(x => sItem["KLJPLX"].Contains(x["KLJPLX"]) && x["HHLMC"] != sItem["KLJPLX"]);
                     }
+                    else
+                    {
+                        //不判定关键孔
+                        mrsDj_Filter = mrsDj.FirstOrDefault(x => x["KLJPLX"] == sItem["KLJPLX"]);
+                    }
+                }
+                else
+                {
+                    mrsDj_Filter = mrsDj.FirstOrDefault(x => x["KLJPLX"] == sItem["KLJPLX"]);
                 }
                 if (null == mrsDj_Filter)
                 {
+                    mjcjg = "不下结论";
                     sItem["JCJG"] = "不下结论";
                     mAllHg = false;
                     sItem["JPDXPD"] = "标准范围值获取失败，请联系开发人员";
@@ -403,7 +385,7 @@ namespace Calculates
                     sfpd14 = "----";
                 }
 
-                if (100 == GetSafeDouble(sItem["BZFW0075"]))
+                if (100 == GetSafeDouble(sItem["BZFW_0075"]))
                 {
                     sfpd15 = GetSafeDouble(sItem["HCJP_0075"]) == 100 ? "合格" : "不合格";
                 }
@@ -460,180 +442,360 @@ namespace Calculates
                 #endregion
                 #endregion
 
-                #region 马歇尔试验
-                double mtjxdmd = 0;
-                for (int i = 1; i < 8; i++)
+                if (IsNumeric(sItem["LQXDMD"].Trim()))
                 {
-                    if (!string.IsNullOrEmpty(sItem["BL_" + i].Trim()))
+                    //计算各材料质量百分比
+                    for (int i = 1; i < 8; i++)
                     {
-                        mtjxdmd = mtjxdmd + GetSafeDouble(sItem["BL_" + i].Trim()) * GetSafeDouble(sItem["KLXDMD" + i].Trim());
+                        if (IsNumeric(sItem["BL_" + i].Trim()))
+                        {
+                            sItem["ZLBFB" + i] = Round(GetSafeDouble(sItem["BL_" + i].Trim()) * 100, 0).ToString("0");
+                        }
                     }
+
+                    #region 吸水率   表干法
+                    sign = true;
+                    for (int i = 1; i < 7; i++)
+                    {
+                        sign = IsNumeric(sItem["GZSJKZZL" + i].Trim());
+                        sign = IsNumeric(sItem["SJSZZL" + i].Trim());
+                        sign = IsNumeric(sItem["SJBGZL" + i].Trim());
+                    }
+                    if (sign)
+                    {
+                        //吸水率 = （试件的表干质量 - 干燥试件的空中质量）/ （试件的表干质量 - 试件的水中质量）  * 100  取一位小数
+                        for (int i = 1; i < 7; i++)
+                        {
+                            sItem["SJXSL" + i] = Round((GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["GZSJKZZL" + i].Trim()))
+                                / (GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["SJSZZL" + i].Trim())) * 100, 1).ToString("0.0");
+                        }
+                    }
+                    else
+                    {
+                        throw new SystemException("密度测定（干燥）试件的空中质量、试件的水中质量或试件的表干质量试验数据录入有误。");
+                    }
+                    #endregion
+
+                    #region 马歇尔试件直径 高度代表值计算  用于判断试件尺寸符不符合标准要求
+                    sign = true;
+                    for (int i = 1; i < 7; i++)
+                    {
+                        sign = IsNumeric(sItem["SJZJ1_" + i].Trim());
+                        sign = IsNumeric(sItem["SJZJ2_" + i].Trim());
+                        sign = IsNumeric(sItem["SJGD1_" + i].Trim());
+                        sign = IsNumeric(sItem["SJGD2_" + i].Trim());
+                        sign = IsNumeric(sItem["SJGD3_" + i].Trim());
+                        sign = IsNumeric(sItem["SJGD4_" + i].Trim());
+                    }
+                    if (!sign)
+                    {
+                        throw new SystemException("马歇尔试件直径与高度试验数据录入有误");
+                    }
+                    //平均值
+                    for (int i = 1; i < 7; i++)
+                    {
+                        sItem["SJZJPJ" + i] = Round((GetSafeDouble(sItem["SJZJ1_" + i].Trim()) + GetSafeDouble(sItem["SJZJ2_" + i].Trim())) / 2, 1).ToString("0.0");
+                        sItem["SJGDPJ" + i] = Round((GetSafeDouble(sItem["SJGD1_" + i].Trim()) + GetSafeDouble(sItem["SJGD2_" + i].Trim())
+                            + GetSafeDouble(sItem["SJGD3_" + i].Trim()) + GetSafeDouble(sItem["SJGD4_" + i].Trim())) / 4, 1).ToString("0.0");
+                        zjSum = zjSum + GetSafeDouble(sItem["SJZJPJ" + i]);
+                        gdSum = gdSum + GetSafeDouble(sItem["SJGDPJ" + i]);
+                        count++;
+                    }
+                    //代表值
+                    sItem["SJZJDBZ"] = Round(zjSum / count, 1).ToString("0.0");
+                    sItem["SJGDDBZ"] = Round(gdSum / count, 1).ToString("0.0");
+                    /**
+                     * 判断试件尺寸符不符合标准要求  标准试件直径应为101.6±0.2mm  高 63.5±1.3mm  两侧高度差大于2mm 试件作废
+                     */
+                    if ("标准马歇尔试件" == sItem["SJLX"])
+                    {
+                        if (Math.Abs(GetSafeDouble(sItem["SJZJDBZ"]) - 101.6) >= 0.2)
+                        {
+                            throw new SystemException("标准马歇尔试件直径不符合101.6±0.2mm要求，试件作废。");
+                        }
+                        if (Math.Abs(GetSafeDouble(sItem["SJGDDBZ"]) - 63.5) >= 1.3)
+                        {
+                            throw new SystemException("标准马歇尔试件高度不符合63.5±1.3mm要求，试件作废。");
+                        }
+                    }
+                    else
+                    {
+                        //大型马歇尔试件  直径应为152.4±0.2mm  高 95.3±2.5mm  两侧高度差大于2mm 试件作废
+                        if (Math.Abs(GetSafeDouble(sItem["SJZJDBZ"]) - 152.4) >= 0.2)
+                        {
+                            throw new SystemException("大型马歇尔试件直径不符合152.4±0.2mm要求，试件作废。");
+                        }
+                        if (Math.Abs(GetSafeDouble(sItem["SJGDDBZ"]) - 95.3) >= 2.5)
+                        {
+                            throw new SystemException("大型马歇尔试件高度不符合63.5±1.3mm要求，试件作废。");
+                        }
+
+                    }
+
+
+                    #endregion
+
+                    #region 马歇尔试验
+                    double mtjxdmd = 0;
+                    for (int i = 1; i < 8; i++)
+                    {
+                        if (!string.IsNullOrEmpty(sItem["BL_" + i].Trim()))
+                        {
+                            mtjxdmd = mtjxdmd + GetSafeDouble(sItem["BL_" + i].Trim()) * GetSafeDouble(sItem["KLXDMD" + i].Trim());
+                        }
+                    }
+                    //矿料的合成毛体积相对密度
+                    sItem["KLHCMTJXDMD"] = Round(mtjxdmd, 3).ToString("0.000");
+                    /**
+                     * 矿料的有效的相对密度
+                     * (100 - 沥青用量）/（100/相对密度 - 沥青用量/沥青的相对密度） 
+                     */
+                    //yxxdmd = Round((100 - GetSafeDouble(sItem["LQHL"].Trim())) / (100 / GetSafeDouble(sItem["KLHCMTJXDMD"]) - GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3);
+                    /**
+                     * 理论密度   100/（（100-沥青用量）/矿料的有效的相对密度  + 沥青用量/沥青相对密度）
+                     */
+                    //sItem["LLMD"] = Round(100 / ((100 - GetSafeDouble(sItem["LQHL"].Trim())) / yxxdmd + GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3).ToString("0.000");
+                    int sjCount = 0;
+                    double xdmdSum = 0;
+                    double kxlSum = 0;
+                    double tjbflSum = 0;
+                    double kljxlSum = 0;
+                    double lqbhdSum = 0;
+                    for (int i = 1; i < 7; i++)
+                    {
+                        /**
+                          * 试件毛体积相对密度 试件密度  =  干燥试件空中质量/（试件表干质量-试件的水中质量）
+                          */
+                        sItem["SJMD" + i] = Round(GetSafeDouble(sItem["GZSJKZZL" + i].Trim()) / (GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["SJSZZL" + i].Trim())), 3).ToString("0.000");
+                        xdmdSum = xdmdSum + GetSafeDouble(sItem["SJMD" + i]);
+                        sjCount++;
+                    }
+                    //实测最大毛体积相对密度
+                    sItem["SJMD"] = Round(xdmdSum / sjCount, 3).ToString("0.000");
+                    //有效相对密度  (100 - 沥青用量）/（100/实测最大相对密度 - 沥青用量/沥青的相对密度） 
+                    //yxxdmd = Round((100 - GetSafeDouble(sItem["LQHL"].Trim())) / (100 / GetSafeDouble(sItem["SJMD"]) - GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3);
+                    yxxdmd = Round((100 - GetSafeDouble(sItem["LQHL"].Trim())) / (100 / GetSafeDouble(sItem["SJMD"]) - GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3);
+                    //理论密度   100 /（（100 - 沥青用量）/ 矿料的有效的相对密度 + 沥青用量 / 沥青相对密度）
+                    //sItem["LLMD"] = Round(100 / ((100 - GetSafeDouble(sItem["LQHL"].Trim())) / yxxdmd + GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3).ToString("0.000");
+                    sItem["LLMD"] = Round((100 - GetSafeDouble(sItem["LQHL"].Trim())) / (100 / GetSafeDouble(sItem["SJMD"]) - GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3).ToString("0.000");
+                    sjCount = 0;
+                    for (int i = 1; i < 7; i++)
+                    {
+                        if (IsNumeric(sItem["GZSJKZZL" + i].Trim()))
+                        {
+                            /**
+                             *  空隙率 VV = （1-试件毛体积相对密度/理论最大相对密度） *100
+                             */
+                            sItem["KXL" + i] = Round((1 - GetSafeDouble(sItem["SJMD" + i]) / GetSafeDouble(sItem["LLMD"])) * 100, 1).ToString("0.0");
+                            kxlSum = kxlSum + GetSafeDouble(sItem["KXL" + i]);
+                            /**
+                             * 矿料间隙率 VMA =（ 1-（相对密度/合成毛体积相对密度）*（（100 - 沥青含量） /100）） *100
+                             */
+                            sItem["KLJXL" + i] = Round((1 - GetSafeDouble(sItem["SJMD" + i]) / GetSafeDouble(sItem["KLHCMTJXDMD"]) * ((100 - GetSafeDouble(sItem["LQHL"].Trim())) / 100)) * 100, 1).ToString("0.0");
+                            kljxlSum = kljxlSum + GetSafeDouble(sItem["KLJXL" + i]);
+                            /**
+                             * 沥青饱和度 VFA = （矿料间隙率-空隙率）/矿料间隙率  * 100
+                             */
+                            sItem["LQBHD" + i] = Round((GetSafeDouble(sItem["KLJXL" + i]) - GetSafeDouble(sItem["KXL" + i])) / GetSafeDouble(sItem["KLJXL" + i]) * 100, 1).ToString("0.0");
+                            lqbhdSum = lqbhdSum + GetSafeDouble(sItem["LQBHD" + i]);
+                            /** 
+                             * 体积百分率  = 试件毛体积相对密度 * 沥青含量 / 沥青相对密度
+                             */
+                            sItem["LQTJBFL" + i] = Round(GetSafeDouble(sItem["SJMD" + i]) * GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim()), 1).ToString("0.0");
+
+                            tjbflSum = tjbflSum + GetSafeDouble(sItem["LQTJBFL" + i]);
+                            sjCount++;
+                        }
+                    }
+                    //代表值
+
+                    sItem["KXL"] = Round(kxlSum / sjCount, 1).ToString("0.0");
+                    sItem["LQTJBFL"] = Round(tjbflSum / sjCount, 1).ToString("0.0");
+                    sItem["KLJXL"] = Round(kljxlSum / sjCount, 1).ToString("0.0");
+                    sItem["LQBHD"] = Round(lqbhdSum / sjCount, 1).ToString("0.0");
+
+                    //稳定度  流值 平均 马歇尔模数
+                    double wddSum = 0;
+                    double lzSum = 0;
+                    double mxemsSum = 0;
+                    for (int i = 1; i < 7; i++)
+                    {
+                        if (IsNumeric(sItem["WDD" + i].Trim()) && IsNumeric(sItem["LZ" + i].Trim()))
+                        {
+                            wddSum = wddSum + GetSafeDouble(sItem["WDD" + i].Trim());
+                            lzSum = lzSum + GetSafeDouble(sItem["LZ" + i].Trim());
+                            sItem["MXEMS" + i] = Round(GetSafeDouble(sItem["WDD" + i].Trim()) / GetSafeDouble(sItem["LZ" + i].Trim()), 2).ToString("0.00");
+                            mxemsSum = mxemsSum + GetSafeDouble(sItem["MXEMS" + i]);
+                        }
+                        else
+                        {
+                            throw new SystemException("马歇尔验证试验稳定度或流值试验数据录入有误");
+                        }
+                    }
+                    sItem["WDD"] = Round(wddSum / 6, 2).ToString("0.00");
+                    sItem["LZ"] = Round(lzSum / 6, 1).ToString("0.0");
+                    sItem["MXEMSDBZ"] = Round(mxemsSum / 6, 2).ToString("0.00");
+                    #endregion
                 }
-                //矿料的合成毛体积相对密度
-                sItem["KLHCMTJXDMD"] = Round(mtjxdmd, 3).ToString("0.000");
-                //矿料的有效的相对密度
-
-                
-                #endregion
-
 
                 #region  原代码
-                if (!string.IsNullOrEmpty(sItem["JLMC8"]) && sItem["JLMC8"] != "----" && sItem["JLMC8"] != "")
-                {
-                    //mItem["WHICH"] = "bgspa、bgspa_4、bgspa_2、bgspa_3";
-                    stemp = "";
-                    for (int i = 1; i <= 8; i++)
-                    {
-                        sItem["JLMC" + i] = sItem["JLMC" + i].Trim();
-                        if (!string.IsNullOrEmpty(sItem["JLMC" + i]) && sItem["JLMC" + i] != "----" && sItem["JLMC" + i] != "")
-                        {
-                            if (string.IsNullOrEmpty(sItem["JLGG" + i]))
-                            {
-                                sItem["JLGG" + i] = "----";
-                            }
-                            stemp = stemp + sItem["JLMC" + i] + "(" + sItem["JLBH" + i] + "):";
-                            stemp = stemp + sItem["JLGG" + i] + " ";
-                            stemp = stemp + sItem["JLCD" + i] + ";\r\n";
-                        }
-                    }
-                    stemp = stemp.Substring(0, stemp.Length - 2) + "。";
-                    sItem["ZBH"] = stemp;
-                    sign = EItem.Count > 11 ? true : false;
-                    if (EItem.Count > 0)
-                    {
-                        double sum = 0;
-                        for (int i = 1; i <= 8; i++)
-                        {
-                            if (IsNumeric(sItem["MTJMD" + i]) && !string.IsNullOrEmpty(sItem["MTJMD" + i]) &&
-                                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
-                                IsNumeric(sItem["klpb" + i]) && !string.IsNullOrEmpty(sItem["klpb" + i]))
-                            {
-                                md1 = GetSafeDouble(sItem["MTJMD" + i]);
-                                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
-                                md2 = GetSafeDouble(sItem["KLPB" + i]);
-                                md = md2 / md1;
-                                sum = sum + md;
-                                //sItem["KLPB" + i] = EItem[0]["klpb" + i].Trim();
-                            }
-                            else
-                            {
-                                sItem["KLPB" + i] = "";
-                            }
-                        }
-                        md = 100 / sum;
-                        md = Round(md, 3);
-                        sItem["HC_MTJMD"] = md.ToString();
-                        sum = 0;
-                        for (int i = 1; i <= 8; i++)
-                        {
-                            if (IsNumeric(sItem["BGMD" + i]) && !string.IsNullOrEmpty(sItem["BGMD" + i]) &&
-                                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
-                                IsNumeric(sItem["KLPB" + i]) && !string.IsNullOrEmpty(sItem["KLPB" + i]))
-                            {
-                                md1 = GetSafeDouble(sItem["BGMD" + i]);
-                                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
-                                md2 = GetSafeDouble(sItem["KLPB" + i]);
-                                md = md2 / md1;
-                                sum = sum + md;
-                            }
-                        }
-                        md = 100 / sum;
-                        md = Round(md, 3);
-                        sItem["HC_BGMD"] = md.ToString();
-                    }
-                    else
-                    {
-                        sItem["HC_MTJMD"] = "----";
-                        sItem["HC_BGMD"] = "----";
-                        mSFwc = false;
-                    }
-                }
-                else
-                {
-                    //mItem["WHICH"] = "bgspa、bgspa_1、bgspa_2、bgspa_3";
-                    stemp = "";
-                    for (int i = 1; i <= 7; i++)
-                    {
-                        sItem["JLMC" + i] = sItem["JLMC" + i].Trim();
-                        if (!string.IsNullOrEmpty(sItem["JLMC" + i]) && sItem["JLMC" + i] != "----" && sItem["JLMC" + i] != "")
-                        {
-                            stemp = stemp + sItem["JLMC" + i] + "(" + sItem["JLBH" + i] + "):";
-                            stemp = stemp + sItem["JLGG" + i] + " ";
-                            stemp = stemp + sItem["JLCD" + i] + ";\r\n";
-                        }
-                    }
-                    stemp = stemp.Substring(0, stemp.Length - 2) + "。";
-                    sItem["ZBH"] = stemp;
-                    //关于合成的
-                    int gs = EItem.Count;
-                    sign = gs > 11 ? true : false;
-                    if (gs > 0)
-                    {
-                        double sum = 0;
-                        for (int i = 1; i <= 7; i++)
-                        {
-                            if (IsNumeric(sItem["MTJMD" + i]) && !string.IsNullOrEmpty(sItem["MTJMD" + i]) &&
-                                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
-                                IsNumeric(sItem["KLPB" + i]) && !string.IsNullOrEmpty(sItem["KLPB" + i]))
-                            {
-                                md1 = GetSafeDouble(sItem["MTJMD" + i]);
-                                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
-                                md2 = GetSafeDouble(sItem["KLPB" + i]);
-                                md = md2 / md1;
-                                sum = sum + md;
-                                //sItem["KLPB" + i] = EItem[0]["klpb" + i].Trim();
-                            }
-                            else
-                            {
-                                sItem["KLPB" + i] = "";
-                            }
-                        }
-                        md = 100 / sum;
-                        md = Round(md, 3);
-                        sItem["HC_MTJMD"] = Round(md, 3).ToString();
-                        sum = 0;
-                        for (int i = 1; i <= 7; i++)
-                        {
-                            if (IsNumeric(sItem["BGMD" + i]) && !string.IsNullOrEmpty(sItem["BGMD" + i]) &&
-                                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
-                                IsNumeric(sItem["klpb" + i]) && !string.IsNullOrEmpty(sItem["klpb" + i]))
-                            {
-                                md1 = GetSafeDouble(sItem["BGMD" + i]);
-                                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
-                                md2 = GetSafeDouble(sItem["klpb" + i]);
-                                md = md2 / md1;
-                                sum = sum + md;
-                            }
-                        }
-                        md = 100 / sum;
-                        md = Round(md, 3);
-                        sItem["HC_BGMD"] = Round(md, 3).ToString();
-                    }
-                    else
-                    {
-                        sItem["HC_MTJMD"] = "----";
-                        sItem["HC_BGMD"] = "----";
-                        mSFwc = false;
-                    }
-                }
+                //if (!string.IsNullOrEmpty(sItem["JLMC8"]) && sItem["JLMC8"] != "----" && sItem["JLMC8"] != "")
+                //{
+                //    //mItem["WHICH"] = "bgspa、bgspa_4、bgspa_2、bgspa_3";
+                //    stemp = "";
+                //    for (int i = 1; i <= 8; i++)
+                //    {
+                //        sItem["JLMC" + i] = sItem["JLMC" + i].Trim();
+                //        if (!string.IsNullOrEmpty(sItem["JLMC" + i]) && sItem["JLMC" + i] != "----" && sItem["JLMC" + i] != "")
+                //        {
+                //            if (string.IsNullOrEmpty(sItem["JLGG" + i]))
+                //            {
+                //                sItem["JLGG" + i] = "----";
+                //            }
+                //            stemp = stemp + sItem["JLMC" + i] + "(" + sItem["JLBH" + i] + "):";
+                //            stemp = stemp + sItem["JLGG" + i] + " ";
+                //            stemp = stemp + sItem["JLCD" + i] + ";\r\n";
+                //        }
+                //    }
+                //    stemp = stemp.Substring(0, stemp.Length - 2) + "。";
+                //    sItem["ZBH"] = stemp;
+                //    sign = EItem.Count > 11 ? true : false;
+                //    if (EItem.Count > 0)
+                //    {
+                //        double sum = 0;
+                //        for (int i = 1; i <= 8; i++)
+                //        {
+                //            if (IsNumeric(sItem["MTJMD" + i]) && !string.IsNullOrEmpty(sItem["MTJMD" + i]) &&
+                //                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                //                IsNumeric(sItem["klpb" + i]) && !string.IsNullOrEmpty(sItem["klpb" + i]))
+                //            {
+                //                md1 = GetSafeDouble(sItem["MTJMD" + i]);
+                //                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                //                md2 = GetSafeDouble(sItem["KLPB" + i]);
+                //                md = md2 / md1;
+                //                sum = sum + md;
+                //                //sItem["KLPB" + i] = EItem[0]["klpb" + i].Trim();
+                //            }
+                //            else
+                //            {
+                //                sItem["KLPB" + i] = "";
+                //            }
+                //        }
+                //        md = 100 / sum;
+                //        md = Round(md, 3);
+                //        sItem["HC_MTJMD"] = md.ToString();
+                //        sum = 0;
+                //        for (int i = 1; i <= 8; i++)
+                //        {
+                //            if (IsNumeric(sItem["BGMD" + i]) && !string.IsNullOrEmpty(sItem["BGMD" + i]) &&
+                //                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                //                IsNumeric(sItem["KLPB" + i]) && !string.IsNullOrEmpty(sItem["KLPB" + i]))
+                //            {
+                //                md1 = GetSafeDouble(sItem["BGMD" + i]);
+                //                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                //                md2 = GetSafeDouble(sItem["KLPB" + i]);
+                //                md = md2 / md1;
+                //                sum = sum + md;
+                //            }
+                //        }
+                //        md = 100 / sum;
+                //        md = Round(md, 3);
+                //        sItem["HC_BGMD"] = md.ToString();
+                //    }
+                //    else
+                //    {
+                //        sItem["HC_MTJMD"] = "----";
+                //        sItem["HC_BGMD"] = "----";
+                //        mSFwc = false;
+                //    }
+                //}
+                //else
+                //{
+                //    //mItem["WHICH"] = "bgspa、bgspa_1、bgspa_2、bgspa_3";
+                //    stemp = "";
+                //    for (int i = 1; i <= 7; i++)
+                //    {
+                //        sItem["JLMC" + i] = sItem["JLMC" + i].Trim();
+                //        if (!string.IsNullOrEmpty(sItem["JLMC" + i]) && sItem["JLMC" + i] != "----" && sItem["JLMC" + i] != "")
+                //        {
+                //            stemp = stemp + sItem["JLMC" + i] + "(" + sItem["JLBH" + i] + "):";
+                //            stemp = stemp + sItem["JLGG" + i] + " ";
+                //            stemp = stemp + sItem["JLCD" + i] + ";\r\n";
+                //        }
+                //    }
+                //    stemp = stemp.Substring(0, stemp.Length - 2) + "。";
+                //    sItem["ZBH"] = stemp;
+                //    //关于合成的
+                //    int gs = EItem.Count;
+                //    sign = gs > 11 ? true : false;
+                //    if (gs > 0)
+                //    {
+                //        double sum = 0;
+                //        for (int i = 1; i <= 7; i++)
+                //        {
+                //            if (IsNumeric(sItem["MTJMD" + i]) && !string.IsNullOrEmpty(sItem["MTJMD" + i]) &&
+                //                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                //                IsNumeric(sItem["KLPB" + i]) && !string.IsNullOrEmpty(sItem["KLPB" + i]))
+                //            {
+                //                md1 = GetSafeDouble(sItem["MTJMD" + i]);
+                //                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                //                md2 = GetSafeDouble(sItem["KLPB" + i]);
+                //                md = md2 / md1;
+                //                sum = sum + md;
+                //                //sItem["KLPB" + i] = EItem[0]["klpb" + i].Trim();
+                //            }
+                //            else
+                //            {
+                //                sItem["KLPB" + i] = "";
+                //            }
+                //        }
+                //        md = 100 / sum;
+                //        md = Round(md, 3);
+                //        sItem["HC_MTJMD"] = Round(md, 3).ToString();
+                //        sum = 0;
+                //        for (int i = 1; i <= 7; i++)
+                //        {
+                //            if (IsNumeric(sItem["BGMD" + i]) && !string.IsNullOrEmpty(sItem["BGMD" + i]) &&
+                //                //IsNumeric(EItem[0]["klpb" + i]) && !string.IsNullOrEmpty(EItem[0]["klpb" + i]))
+                //                IsNumeric(sItem["klpb" + i]) && !string.IsNullOrEmpty(sItem["klpb" + i]))
+                //            {
+                //                md1 = GetSafeDouble(sItem["BGMD" + i]);
+                //                //md2 = GetSafeDouble(EItem[0]["klpb" + i]);
+                //                md2 = GetSafeDouble(sItem["klpb" + i]);
+                //                md = md2 / md1;
+                //                sum = sum + md;
+                //            }
+                //        }
+                //        md = 100 / sum;
+                //        md = Round(md, 3);
+                //        sItem["HC_BGMD"] = Round(md, 3).ToString();
+                //    }
+                //    else
+                //    {
+                //        sItem["HC_MTJMD"] = "----";
+                //        sItem["HC_BGMD"] = "----";
+                //        mSFwc = false;
+                //    }
+                //}
 
-                //关于沥青含量
+                ////关于沥青含量
 
-                if (mAllHg)
-                {
-                    sItem["JCJG"] = "合格";
-                    mItem["JCJG"] = "合格";
-                }
-                else
-                {
-                    sItem["JCJG"] = "不合格";
-                    mItem["JCJG"] = "不合格";
-                }
+                //if (mAllHg)
+                //{
+                //    sItem["JCJG"] = "合格";
+                //    mItem["JCJG"] = "合格";
+                //}
+                //else
+                //{
+                //    sItem["JCJG"] = "不合格";
+                //    mItem["JCJG"] = "不合格";
+                //}
                 #endregion
             }
             #region 添加最终报告
             if (mAllHg)
             {
+
                 mjcjg = "合格";
             }
             if (!data.ContainsKey("M_SPA"))
@@ -644,7 +806,9 @@ namespace Calculates
             mItem["JCJG"] = mjcjg;
             mItem["JCJGMS"] = jsbeizhu;
             #endregion
+            #endregion
             /************************ 代码结束 *********************/
         }
     }
 }
+ 

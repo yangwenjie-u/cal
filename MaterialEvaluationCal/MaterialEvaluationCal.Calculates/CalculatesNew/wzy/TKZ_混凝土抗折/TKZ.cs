@@ -34,18 +34,33 @@ namespace Calculates
             #endregion
 
             #region  集合取值
+            var mjcjg = "不合格";
+            var jsbeizhu = "";
             var data = retData;
             var mrsDj = dataExtra["BZ_TKZ_DJ"];
             var mrsGg = dataExtra["BZ_TKZCC"];
+            //var MItem = data["M_TKZ"];
+            if (!data.ContainsKey("M_TKZ"))
+            {
+                data["M_TKZ"] = new List<IDictionary<string, string>>();
+            }
             var MItem = data["M_TKZ"];
+            if (MItem == null)
+            {
+                IDictionary<string, string> m = new Dictionary<string, string>();
+                m["JCJG"] = mjcjg;
+                m["JCJGMS"] = jsbeizhu;
+                MItem.Add(m);
+            }
             var mitem = MItem[0];
             var SItem = data["S_TKZ"];
+
             #endregion
 
             #region  计算开始
             mGetBgbh = false;
             mAllHg = true;
-            mitem["JCJGMS"] = "";
+            // mitem["JCJGMS"] = "";
             foreach (var sitem in SItem)
             {
                 mSjdj = sitem["SJDJ"];
@@ -57,14 +72,14 @@ namespace Calculates
                     sitem["SJKD"] = mrsGg_Filter["SJKD"];
                     sitem["SJGD"] = mrsGg_Filter["SJGD"];
                     sitem["SJCD"] = mrsGg_Filter["SJCD"];
-                    sitem["HSXS"] =GetSafeDouble(mrsGg_Filter["HSXS"]).ToString("0.00");
+                    sitem["HSXS"] = GetSafeDouble(mrsGg_Filter["HSXS"]).ToString("0.00");
                 }
                 else
                 {
                     sitem["SJCC"] = "0";
                     sitem["HSXS"] = "0";
-                    mitem["JCJGMS"] = mitem["JCJGMS"] + "规格不祥。";
-                    mitem["JCJG"] = "不下结论";
+                    jsbeizhu = jsbeizhu + "规格不祥。";
+                    mjcjg = "不下结论";
                     continue;
                 }
                 mHsxs = GetSafeDouble(sitem["HSXS"]);
@@ -84,8 +99,8 @@ namespace Calculates
                     mSz = 0;
                     mJSFF = "";
                     sitem["JCJG"] = "依据不详";
-                    mitem["JCJGMS"] = mitem["JCJGMS"] + "设计等级为空或不存在";
-                    mitem["JCJG"] = "不下结论";
+                    jsbeizhu = jsbeizhu + "设计等级为空或不存在";
+                    mjcjg = "不下结论";
                     continue;
                 }
                 sitem["LQ"] = (GetSafeDateTime(mitem["SYRQ"]) - GetSafeDateTime(sitem["ZZRQ"])).Days.ToString();
@@ -93,7 +108,8 @@ namespace Calculates
                 sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                 sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                 sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
-                if (sitem["DYZJW1"] == "1" || sitem["DYZJW2"] == "1" || sitem["DYZJW3"] == "1")
+                //if (sitem["DYZJW1"] == "1" || sitem["DYZJW2"] == "1" || sitem["DYZJW3"] == "1")
+                if (sitem["DYZJW1"] == "是" || sitem["DYZJW2"] == "是" || sitem["DYZJW3"] == "是")
                     mJSFF = "special";
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (string.IsNullOrEmpty(mJSFF))
@@ -114,10 +130,10 @@ namespace Calculates
                             if (mMaxkzqd - mMidkzqd > Round(mMidkzqd * 0.15, 1) && mMidkzqd - mMinkzqd > Round(mMidkzqd * 0.15, 1))
                             {
                                 sitem["KZPJ"] = "无效";
-                                sitem["DDSJQD"] = "不下结论";
+                                sitem["DDSJQD"] = "----";
                                 sitem["HZCASE"] = "1";
                                 sitem["JCJG"] = "不下结论";
-                                mitem["JCJG"] = "不下结论";
+                                mjcjg = "不下结论";
                             }
                             if ((mMaxkzqd - mMidkzqd) > Round(mMidkzqd * 0.15, 1) && (mMidkzqd - mMinkzqd) <= Round(mMidkzqd * 0.15, 1))
                             {
@@ -173,7 +189,8 @@ namespace Calculates
                 {
                     if (jcxm.Contains("、抗折强度、"))
                     {
-                        if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "0" && sitem["DYZJW3"] == "0")
+                        //if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "0" && sitem["DYZJW3"] == "0")
+                        if (sitem["DYZJW1"] == "是" && sitem["DYZJW2"] == "否" && sitem["DYZJW3"] == "否")
                         {
                             sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
@@ -193,10 +210,11 @@ namespace Calculates
                             {
                                 sitem["KZPJ"] = "无效";
                                 sitem["JCJG"] = "不下结论";
-                                mitem["JCJG"] = "不下结论";
+                                mjcjg = "不下结论";
                             }
                         }
-                        if (sitem["DYZJW2"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW3"] == "0")
+                        //if (sitem["DYZJW2"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW3"] == "0")
+                        if (sitem["DYZJW2"] == "是" && sitem["DYZJW1"] == "否" && sitem["DYZJW3"] == "否")
                         {
                             sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
@@ -216,10 +234,11 @@ namespace Calculates
                             {
                                 sitem["KZPJ"] = "无效";
                                 sitem["JCJG"] = "不下结论";
-                                mitem["JCJG"] = "不下结论";
+                                mjcjg = "不下结论";
                             }
                         }
-                        if (sitem["DYZJW3"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW2"] == "0")
+                        //if (sitem["DYZJW3"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW2"] == "0")
+                        if (sitem["DYZJW3"] == "是" && sitem["DYZJW1"] == "否" && sitem["DYZJW2"] == "否")
                         {
                             sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
@@ -239,26 +258,29 @@ namespace Calculates
                             {
                                 sitem["KZPJ"] = "无效";
                                 sitem["JCJG"] = "不下结论";
-                                mitem["JCJG"] = "不下结论";
+                                mjcjg = "不下结论";
                             }
                         }
-                        if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "1")
+                        //if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "1")
+                        if (sitem["DYZJW1"] == "是" && sitem["DYZJW2"] == "是")
                         {
                             sitem["KZPJ"] = "无效";
                             sitem["JCJG"] = "不下结论";
-                            mitem["JCJG"] = "不下结论";
+                            mjcjg = "不下结论";
                         }
-                        if (sitem["DYZJW1"] == "1" && sitem["DYZJW3"] == "1")
+                        //if (sitem["DYZJW1"] == "1" && sitem["DYZJW3"] == "1")
+                        if (sitem["DYZJW1"] == "是" && sitem["DYZJW3"] == "是")
                         {
                             sitem["KZPJ"] = "无效";
                             sitem["JCJG"] = "不下结论";
-                            mitem["JCJG"] = "不下结论";
+                            mjcjg = "不下结论";
                         }
-                        if (sitem["DYZJW3"] == "1" && sitem["DYZJW2"] == "1")
+                        //if (sitem["DYZJW3"] == "1" && sitem["DYZJW2"] == "1")
+                        if (sitem["DYZJW3"] == "是" && sitem["DYZJW2"] == "是")
                         {
                             sitem["KZPJ"] = "无效";
                             sitem["JCJG"] = "不下结论";
-                            mitem["JCJG"] = "不下结论";
+                            mjcjg = "不下结论";
                         }
                     }
                     else
@@ -268,16 +290,20 @@ namespace Calculates
                     }
                 }
                 if (sitem["KZPJ"] == "无效")
-                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
                 else
-                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sitem["KZPJ"] + "MPa，" + "占设计强度" + sitem["DDSJQD"] + "%。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sitem["KZPJ"] + "MPa，" + "占设计强度" + sitem["DDSJQD"] + "%。";
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
             }
             //主表总判断赋值
             if (mAllHg)
-                mitem["JCJG"] = "合格";
-            else
-                mitem["JCJG"] = "不合格";
+            {
+                mjcjg = "合格";
+            }
+
+
+            MItem[0]["JCJG"] = mjcjg;
+            MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion;
             /************************ 代码结束 *********************/
         }
