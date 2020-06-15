@@ -181,6 +181,7 @@
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
     <Compile Include="CalculatesNew\ywj\MXE_马歇尔\MXE.cs" />
     <Compile Include="CalculatesNew\ywj\NZ_腻子\NZ.cs" />
+    <Compile Include="CalculatesNew\ywj\XHF_型钢焊接复试\XHF.cs" />
     <Compile Include="CalculatesNew\ywj\XHJ_型钢焊接\XHJ.cs" />
     <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\ywj\TGB_土工合成材料\TGB.cs" />
