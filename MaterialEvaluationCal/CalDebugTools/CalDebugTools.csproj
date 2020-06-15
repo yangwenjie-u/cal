@@ -168,6 +168,7 @@
     <Compile Include="Model\ProjectInfos.cs" />
     <Compile Include="Model\Token.cs" />
     <Compile Include="Model\TokenEntity.cs" />
+    <Compile Include="NCL.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectManage.cs">
       <SubType>Form</SubType>
