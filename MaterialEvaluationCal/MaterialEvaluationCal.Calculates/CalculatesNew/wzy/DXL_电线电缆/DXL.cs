@@ -194,12 +194,19 @@ namespace Calculates
                         {
                             Y_DXL["E_DXZL"] = "主线";
                         }
-                        if (Y_DXL["E_DXZL"].Trim() == "主线")
+                        if (Y_DXL["E_DXZL"].Trim() == "相线")
                         {
-                            //设计电阻(主线)
+                            //设计电阻(相线)
                             sitem["E_SJDZ_Z"] = Y_DXL["E_SJDZ"];
                             //实测电阻
                             sitem["E_SCDZ" + (yIndex - 1).ToString()] = Y_DXL["E_SCDZ"];
+                        }
+                        if (Y_DXL["E_DXZL"].Trim() == "零线")
+                        {
+                            //设计电阻(零线)
+                            sitem["E_SJDZ_L"] = Y_DXL["E_SJDZ"];
+                            //实测电阻（零线）
+                            sitem["E_SCDZ_L"] = Y_DXL["E_SCDZ"];
                         }
                         if (Y_DXL["E_DXZL"].Trim() == "地线")
                         {
@@ -221,6 +228,7 @@ namespace Calculates
                             }
                             else
                             {
+                                mbhggs++;
                                 mFlag_Bhg = true;
                             }
                         }

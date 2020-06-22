@@ -14,10 +14,10 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
             #region 计算开始
             var data = retData;
 
-            var MItem = data["M_GSG"];
+            var MItem = data["M_QGS"];
             var mitem = MItem[0];
-            var SItem = data["S_GSG"];
-
+            var SItem = data["S_QGS"];
+            var mrslccj = dataExtra["BZ_GCLCCJ"];
             bool mAllHg;
             bool mFlag_Hg, mFlag_Bhg;
             bool sffj = false;
@@ -181,11 +181,15 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                     #region
                     //平均外径
 
+                    if (string.IsNullOrEmpty(MItem[0]["G_PJWJ"]) || string.IsNullOrEmpty(MItem[0]["G_GCBH"]))
+                    {
+                        throw new Exception("请输入平均外径/壁厚标准范围.");
+                    }
                     List<string> listWJ_G = new List<string>();
-                    listWJ_G = MItem[0]["G_PJWJ"].Split('～').ToList();
+                    listWJ_G = MItem[0]["G_PJWJ"].Replace('~', '～').Split('～').ToList();
                     //壁厚
                     List<string> listBH_G = new List<string>();
-                    listBH_G = MItem[0]["G_GCBH"].Split('～').ToList();
+                    listBH_G = MItem[0]["G_GCBH"].Replace('~', '～').Split('～').ToList();
                     if (listWJ_G.Count != 2 || listBH_G.Count != 2)
                     {
                         throw new Exception("请输入平均外径/壁厚标准范围.");
@@ -482,7 +486,11 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                     string yysyCs;
                     yysyArray = sitem["YYSYCS"].Replace(',', '、').Split('、');
                     Gs = yysyArray.Length;
-
+                    if (Gs == 1)
+                    {
+                        mitem["YYSY2_1"] = "----";
+                        mitem["YYSY_HG2"] = "----";
+                    }
                     for (xd = 1; xd <= Gs; xd++)
                     {
                         if (mitem["YYSY_HG" + xd] == "不合格")
@@ -511,6 +519,14 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                             {
                                 yysyCs = yysyArray[md - 1];
                                 string syyl = "";
+
+                                var cs = yysyCs.Replace("，", "").Split('℃');
+                                if (cs.Length == 2)
+                                {
+                                    sitem["YYSYWD" + md] = cs[0].Trim() + "℃";
+                                    sitem["YYSYSJ" + md] = cs[1].Trim();
+                                }
+                                sitem["YYSYHYL" + md] = System.Text.RegularExpressions.Regex.Replace(syyl, @"[^0-9]+", "") + "MPa";
 
                                 if (yysyCs.Contains("，"))
                                     yysyCs = yysyCs.Replace("，", " " + syyl + " ");
@@ -554,29 +570,46 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                 {
                     jcxmCur = "落锤冲击试验";
 
-                    //mitem["G_LCCJ"] = "";
-                    //mitem["LCCJ"] = "TIR值为：A(≤10%)";
                     if (string.IsNullOrEmpty(mitem["LCCJBHGS"]) || string.IsNullOrEmpty(mitem["LCCJCS"]))
                     {
                         throw new Exception("请输入落锤冲击试验统计信息。");
                     }
+
                     if (mitem["G_LCCJ"].Contains("≤10"))
                     {
+                        IDictionary<string, string> mrslccj_Sel = new Dictionary<string, string>();
+                        foreach (var mrslccj_item in mrslccj)
+                        {
+                            if (GetSafeDouble(mrslccj_item["LCCJCS"]) == GetSafeDouble(mitem["LCCJCS"]))
+                                break;
+                            mrslccj_Sel = mrslccj_item;
+                        }
 
-                        if (GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mitem["AQPHCS"]))
+                        if (mrslccj_Sel == mrslccj.First() || mrslccj_Sel == mrslccj.Last())
                         {
-                            mitem["LCCJ_HG"] = "合格";
-                            mitem["LCCJ"] = "TIR值为：A(≤10%)";
+                            md1 = GetSafeDouble(mitem["LCCJBHGS"]);
+                            md2 = GetSafeDouble(mitem["LCCJCS"]); ;
+                            var md3 = md2 == 0 ? 0 : (100 * md1 / md2);
+                            mitem["LCCJ"] = Round(md3, 0).ToString("0");
+                            mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
                         }
-                        if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mitem["BQPHCS1"]) && GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mitem["BQPHCS2"]))
+                        else
                         {
-                            mitem["LCCJ_HG"] = "不判定";
-                            mitem["LCCJ"] = "根据现有冲击试样数不能作出判定";
-                        }
-                        if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mitem["CQPHCS"]))
-                        {
-                            mitem["LCCJ_HG"] = "不合格";
-                            mitem["LCCJ"] = "TIR值为：C(＞10%)";
+                            if (GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mrslccj_Sel["AQPHCS"]))
+                            {
+                                mitem["LCCJ_HG"] = "合格";
+                                mitem["LCCJ"] = "TIR值为：A(≤10%)";
+                            }
+                            if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mrslccj_Sel["BQPHCS1"]) && GetSafeDouble(mitem["LCCJBHGS"]) <= GetSafeDouble(mrslccj_Sel["BQPHCS2"]))
+                            {
+                                mitem["LCCJ_HG"] = "不判定";
+                                mitem["LCCJ"] = "根据现有冲击试样数不能作出判定";
+                            }
+                            if (GetSafeDouble(mitem["LCCJBHGS"]) >= GetSafeDouble(mrslccj_Sel["CQPHCS"]))
+                            {
+                                mitem["LCCJ_HG"] = "不合格";
+                                mitem["LCCJ"] = "TIR值为：C(＞10%)";
+                            }
                         }
                     }
                     else if (mitem["G_LCCJ"].Contains("≤"))
@@ -622,30 +655,6 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                             }
                         }
                     }
-                    
-                    if (mitem["LCCJ_HG"] == "合格")
-                    {
-                        mFlag_Hg = true;
-                    }
-                    else
-                    {
-                        mbhggs = mbhggs + 1;
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        mFlag_Hg = true;
-                    }
-                    for (xd = 0; xd < jcxmCount; xd++)
-                    {
-                        if (mtmpArray[xd].Contains("落锤冲击试验"))
-                        {
-                            sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd] + "(TIR)/%";
-                            break;
-                        }
-                    }
-                    sitem["BGDW" + curJcxmCount] = "----";
-                    sitem["BGBZYQ" + curJcxmCount] = mitem["G_LCCJ"];
-                    sitem["BGSCJG" + curJcxmCount] = mitem["LCCJ"];
-                    sitem["BGDXPD" + curJcxmCount] = mitem["LCCJ_HG"];
-                    curJcxmCount = curJcxmCount + 1;
                 }
                 else
                 {

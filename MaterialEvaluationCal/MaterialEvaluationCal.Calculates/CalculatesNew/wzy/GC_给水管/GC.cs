@@ -148,11 +148,11 @@ namespace Calculates
                     mitem["G_YYSY3"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
                     mitem["G_YYSY4"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
                     mitem["G_ZLSY"] = string.IsNullOrEmpty(mrsDj_Filter["ZLSY"]) ? "" : mrsDj_Filter["ZLSY"].Trim(); //坠落试验
-                    //mitem["G_JWJZ"] = string.IsNullOrEmpty(mrsDj_Filter["JWJZ"]) ? "" : mrsDj_Filter["JWJZ"].Trim(); //甲烷浸渍
-                    //mitem["G_HXSY"] = string.IsNullOrEmpty(mrsDj_Filter["HXSY"]) ? "" : mrsDj_Filter["HXSY"].Trim(); //烘箱试验
-                    //mitem["G_HGD"] = string.IsNullOrEmpty(mrsDj_Filter["HGD"]) ? "" : mrsDj_Filter["HGD"].Trim(); //环刚度
-                    //mitem["G_HRX"] = string.IsNullOrEmpty(mrsDj_Filter["HRX"]) ? "" : mrsDj_Filter["HRX"].Trim(); //环柔度
-                    //mitem["G_JZLCJ"] = string.IsNullOrEmpty(mrsDj_Filter["JZLCJ"]) ? "" : mrsDj_Filter["JZLCJ"].Trim(); //简支梁冲击
+                                                                                                                     //mitem["G_JWJZ"] = string.IsNullOrEmpty(mrsDj_Filter["JWJZ"]) ? "" : mrsDj_Filter["JWJZ"].Trim(); //甲烷浸渍
+                                                                                                                     //mitem["G_HXSY"] = string.IsNullOrEmpty(mrsDj_Filter["HXSY"]) ? "" : mrsDj_Filter["HXSY"].Trim(); //烘箱试验
+                                                                                                                     //mitem["G_HGD"] = string.IsNullOrEmpty(mrsDj_Filter["HGD"]) ? "" : mrsDj_Filter["HGD"].Trim(); //环刚度
+                                                                                                                     //mitem["G_HRX"] = string.IsNullOrEmpty(mrsDj_Filter["HRX"]) ? "" : mrsDj_Filter["HRX"].Trim(); //环柔度
+                                                                                                                     //mitem["G_JZLCJ"] = string.IsNullOrEmpty(mrsDj_Filter["JZLCJ"]) ? "" : mrsDj_Filter["JZLCJ"].Trim(); //简支梁冲击
                     mitem["G_RHWD"] = string.IsNullOrEmpty(mrsDj_Filter["RHWD"]) ? "0" : mrsDj_Filter["RHWD"].Trim(); //维卡软化温度
                     mitem["G_ZXHSL"] = string.IsNullOrEmpty(mrsDj_Filter["ZXHSL"]) ? "0" : mrsDj_Filter["ZXHSL"].Trim(); //纵向回缩率
                     mitem["G_LCCJ"] = string.IsNullOrEmpty(mrsDj_Filter["LCCJ"]) ? "0" : mrsDj_Filter["LCCJ"].Trim(); //落锤冲击试验
@@ -478,8 +478,8 @@ namespace Calculates
                             throw new Exception("请输入壁厚信息！");
                         }
 
-                        sitem["PJBH1"] = (arrBH[0]).ToString();
-                        sitem["PJBH2"] = (arrBH[arrBH.Count - 1]).ToString();
+                        sitem["PJBH1"] = (arrBH[0]).ToString("0.0");
+                        sitem["PJBH2"] = (arrBH[arrBH.Count - 1]).ToString("0.0");
                         sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
 
                         #region 判定如果尺寸或者壁厚有两个不合格，则不合格
@@ -571,7 +571,7 @@ namespace Calculates
                         var listMin = listBH[0];
                         var listMax = listBH[listBH.Count - 1];
 
-                        sitem["PJBH"] = listMin.ToString() + "～" + listMax.ToString();
+                        sitem["PJBH"] = listMin.ToString("0.0") + "～" + listMax.ToString("0.0");
                     }
 
                     MItem[0]["PJWJ_HG"] = IsQualified(mitem["G_PJWJ"], MItem[0]["PJWJ1"]);
@@ -646,7 +646,11 @@ namespace Calculates
                     yysyArray = sitem["YYSYCS"].Replace(',', '、').Split('、');
                     Gs = yysyArray.Length;
 
-
+                    if (Gs == 1)
+                    {
+                        mitem["YYSY2_1"] = "----";
+                        mitem["YYSY_HG2"] = "----";
+                    }
                     for (xd = 1; xd <= Gs; xd++)
                     {
                         if (mitem["YYSY_HG" + xd] == "不合格")
@@ -707,6 +711,14 @@ namespace Calculates
                                         }
                                     }
                                 }
+                                var cs = yysyCs.Replace("，", "").Split('℃');
+                                if (cs.Length == 2)
+                                {
+                                    sitem["YYSYWD" + md] = cs[0].Trim() + "℃";
+                                    sitem["YYSYSJ" + md] = cs[1].Trim();
+                                }
+                                sitem["YYSYHYL" + md] = System.Text.RegularExpressions.Regex.Replace(syyl, @"[^0-9]+", "") + "MPa";
+
                                 if (yysyCs.Contains("，"))
                                     yysyCs = yysyCs.Replace("，", " " + syyl + " ");
                                 else

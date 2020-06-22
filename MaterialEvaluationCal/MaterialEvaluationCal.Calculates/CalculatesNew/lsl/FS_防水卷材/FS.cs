@@ -97,22 +97,16 @@ namespace Calculates
                         sItem["CPBJ"] = dXs + " " + dXh + "" + dTjlx + "" + dSbmcl + " " + dHd + " " + dBzh;
                         break;
                     case "高分子防水卷材":
-
-                        if (dZyycl == "----" || dZyycl == "")
-                        {
-                            sItem["CPBJ"] = dXh + "-" + dGgxh + "×" + dHd + "mm";
-                        }
-
-                        if (dGgxh == "----" || dGgxh == "")
-                        {
-                            sItem["CPBJ"] = dXh + "-" + dZyycl + dHd + "mm";
-                        }
-                        if (dZyycl == "----" && dGgxh == "----")
-                        {
-                            sItem["CPBJ"] = dXh + "  " + dHd + "mm"; break;
-                        }
-
                         sItem["CPBJ"] = dXh + "-" + dZyycl + "-" + dGgxh + "×" + dHd + "mm";
+
+                        if (dZyycl == "----")
+                        {
+                            sItem["CPBJ"] = sItem["CPBJ"].Replace("-----", "");
+                        }
+                        if (dGgxh == "----")
+                        {
+                            sItem["CPBJ"] = sItem["CPBJ"].Replace("-----", "");
+                        }
 
                         break;
                     case "沥青复合胎柔性防水卷材":

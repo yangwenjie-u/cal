@@ -364,7 +364,7 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["CD"] = myint(Double.Parse(sItem["XGM"]) * Conversion.Val(sItem["MJ"])).ToString();
+                    sItem["CD"] = myint(Double.Parse(sItem["XGM"]) * Conversion.Val(sItem["ZJ"])).ToString();
                 }
 
                 if (Math.Abs(Double.Parse(sItem["XGM"]) - 100) < 0.00001)

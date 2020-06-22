@@ -717,11 +717,11 @@ namespace Calculates
                     mTmpArray.Clear();
                     for (int i = 1; i < 4; i++)
                     {
-                        if (!IsNumeric(sItem["JJTLD_" + i]) || !IsNumeric(sItem["TLD1HH_" + i]))
+                        if (!IsNumeric(sItem["TLD1HC_" + i]) || !IsNumeric(sItem["TLD1HH_" + i]))
                         {
                             throw new Exception("请输入经基准1h后坍落度变化量参数");
                         }
-                        sItem["TLDBHL" + i] = Round((Conversion.Val(sItem["JJTLD_" + i]) - Conversion.Val(sItem["TLD1HH_" + i])), 0).ToString();
+                        sItem["TLDBHL" + i] = Round((Conversion.Val(sItem["TLD1HC_" + i]) - Conversion.Val(sItem["TLD1HH_" + i])), 0).ToString();
                         mTmpArray.Add(GetSafeDouble(sItem["TLDBHL" + i]));
                     }
 
@@ -766,11 +766,11 @@ namespace Calculates
                     mTmpArray.Clear();
                     for (int i = 1; i < 4; i++)
                     {
-                        if (!IsNumeric(sItem["JSTLD_" + i]) || !IsNumeric(sItem["TLD1HHSJ_" + i]))
+                        if (!IsNumeric(sItem["TLD1HCSJ_" + i]) || !IsNumeric(sItem["TLD1HHSJ_" + i]))
                         {
                             throw new Exception("请输入经受检1h后坍落度变化量参数");
                         }
-                        sItem["TLDBHLSJ_" + i] = Round((Conversion.Val(sItem["JSTLD_" + i]) - Conversion.Val(sItem["TLD1HHSJ_" + i])), 0).ToString();
+                        sItem["TLDBHLSJ_" + i] = Round((Conversion.Val(sItem["TLD1HCSJ_" + i]) - Conversion.Val(sItem["TLD1HHSJ_" + i])), 0).ToString();
                         mTmpArray.Add(GetSafeDouble(sItem["TLDBHL" + i]));
                     }
 

@@ -80,9 +80,8 @@ namespace Calculates
 
                 if (kjlb.Contains("、直角扣件、"))
                 {
-                    sitem["YPSL"] = sitem["YBDX"];
-
-                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["YBDX"].Contains(sitem["YPSL"].Trim()) && x["DJYB"].Contains(mitem["DJYB"]));
+                    //sitem["YPSL"] = sitem["YBDX"];
+                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["YBDX"].Contains(sitem["YBDX"].Trim()) && x["DJYB"].Contains(mitem["DJYB"]));
                     mitem["ZYH"] = mrsDj_Filter2["ZYH"];//主要项AC
                     mitem["ZYB"] = mrsDj_Filter2["ZYB"];//主要项RE
                     mitem["YBH"] = mrsDj_Filter2["YBH"];//一般项AC
