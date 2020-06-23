@@ -956,7 +956,7 @@ namespace Calculates
                         for (int i = 1; i < 4; i++)
                         {
                             sum += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + i]) - Conversion.Val(MItem[0]["HSLLI_" + i])) / Conversion.Val(MItem[0]["HSLL0_" + i])).ToString("0.00")));
-                            sum2 += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + i + 3]) - Conversion.Val(MItem[0]["HSLLI_" + i + 3])) / Conversion.Val(MItem[0]["HSLL0_" + i + 3])).ToString("0.00")));
+                            sum2 += Math.Abs(GetSafeDecimal((100 * (Conversion.Val(MItem[0]["HSLL0_" + (i + 3)]) - Conversion.Val(MItem[0]["HSLLI_" + (i + 3)])) / Conversion.Val(MItem[0]["HSLL0_" + (i + 3)])).ToString("0.00")));
                         }
 
                         MItem[0]["ZXHSL"] = Math.Round(sum / 3, 1).ToString("0.0");
@@ -1020,11 +1020,12 @@ namespace Calculates
                     jcxmBhg = "规格尺寸";
                 }
             }
+            var fjpd = sffj ? "复检" : "";
             //主表总判断赋值
             if (mAllHg)
             {
                 mitem["JCJG"] = "合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + fjpd + "均符合要求。";
             }
             else if (mjcjg == "不下结论")
             {
@@ -1033,21 +1034,27 @@ namespace Calculates
             else
             {
                 mitem["JCJG"] = "不合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目不符合要求，详情见下页";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + fjpd + "不符合要求，详情见下页";
                 if (realBhg)
                 {
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
                 }
                 else
                 {
                     if (mbhggs == 1)
                     {
-                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不合格，需复检，详情见下页。";
-
+                        if (sffj)
+                        {
+                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
+                        }
+                        else
+                        {
+                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需复检，详情见下页。";
+                        }
                     }
                     else
                     {
-                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
+                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
                     }
                 }
 

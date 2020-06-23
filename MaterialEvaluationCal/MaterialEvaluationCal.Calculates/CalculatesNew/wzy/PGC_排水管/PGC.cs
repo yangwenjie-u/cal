@@ -394,7 +394,7 @@ namespace Calculates
                                     bh_bhg++;
                                     //单组不合格
                                 }
-                       
+
                                 arrDZBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
                                 continue;
                             }
@@ -778,7 +778,7 @@ namespace Calculates
                         MItem[0]["HGD"] = ((S1 + S2 + S3) / 3).ToString("0.0");
                         MItem[0]["HGD_HG"] = IsQualified(MItem[0]["G_HGD"], MItem[0]["HGD"]);
 
-                        if (!sffj)
+                        if (sffj)
                         {
                             S4 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI4"]) / ((GetSafeDouble(sitem["HGD_LI4"]) / 1000) * Yi);
                             S5 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(sitem["HGD_FI5"]) / ((GetSafeDouble(sitem["HGD_LI5"]) / 1000) * Yi);
@@ -1072,8 +1072,14 @@ namespace Calculates
                     //{
                     if (mbhggs == 1)
                     {
-                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不合格，需复检，详情见下页。";
-
+                        if (sffj)
+                        {
+                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
+                        }
+                        else
+                        {
+                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需复检，详情见下页。";
+                        }
                     }
                     else
                     {

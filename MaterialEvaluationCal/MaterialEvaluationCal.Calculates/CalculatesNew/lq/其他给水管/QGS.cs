@@ -817,10 +817,12 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
                 }
             }
             //主表总判断赋值
+            var fjpd = sffj ? "复检" : "";
+            //主表总判断赋值
             if (mAllHg)
             {
                 mitem["JCJG"] = "合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + fjpd + "均符合要求。";
             }
             else if (mjcjg == "不下结论")
             {
@@ -829,23 +831,30 @@ namespace Calculates.CalculatesNew.lq.QPS_其它给水管
             else
             {
                 mitem["JCJG"] = "不合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目不符合要求，详情见下页";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + fjpd + "不符合要求，详情见下页";
                 if (realBhg)
                 {
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
                 }
                 else
                 {
                     if (mbhggs == 1)
                     {
-                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不合格，需复检，详情见下页。";
-
+                        if (sffj)
+                        {
+                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
+                        }
+                        else
+                        {
+                            mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需复检，详情见下页。";
+                        }
                     }
                     else
                     {
-                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，详情见下页。";
+                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
                     }
                 }
+
             }
             #endregion
         }
