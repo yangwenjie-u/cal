@@ -264,7 +264,8 @@ namespace Calculates
                             MItem[0]["LHGDS"] = (GetSafeDouble(MItem[0]["LHGDS"]) + mhgds).ToString();
                             MItem[0]["LCCDS"] = (GetSafeDouble(MItem[0]["LCCDS"]) + mcc1_5ds).ToString();
                             MItem[0]["ZCGJL"] = (GetSafeDouble(MItem[0]["ZCGJL"]) + 1).ToString();
-                            MItem[0]["ZJGSL"] = (GetSafeDouble(MItem[0]["ZJGSL"]) + GetSafeDouble(sitem["ZJGS"])).ToString();
+                           // MItem[0]["ZJGSL"] = (GetSafeDouble(MItem[0]["ZJGSL"]) + GetSafeDouble(sitem["ZJGS"])).ToString();
+                            MItem[0]["ZJGSL"] = (GetSafeDouble(MItem[0]["ZJGSL"]) + Conversion.Val(sitem["ZJGS"])).ToString();
                         }
                         if (sitem["BHCLB"].Contains("剪力墙板"))
                         {
@@ -274,11 +275,14 @@ namespace Calculates
                         }
                         if (sitem["BHCLB"].Contains("板"))
                         {
+                            //板的钢筋根数固定测试6根
                             MItem[0]["BJCDS"] = (GetSafeDouble(MItem[0]["BJCDS"]) + GetSafeDouble(sitem["smds"])).ToString();
                             MItem[0]["BHGDS"] = (GetSafeDouble(MItem[0]["BHGDS"]) + mhgds).ToString();
                             MItem[0]["BCCDS"] = (GetSafeDouble(MItem[0]["BCCDS"]) + mcc1_5ds).ToString();
                             MItem[0]["ZCGJB"] = (GetSafeDouble(MItem[0]["ZCGJB"]) + 1).ToString();
-                            MItem[0]["ZJGSB"] = (GetSafeDouble(MItem[0]["ZJGSB"]) + GetSafeDouble(sitem["zjgs"])).ToString();
+                            //MItem[0]["ZJGSB"] = (GetSafeDouble(MItem[0]["ZJGSB"]) + GetSafeDouble(sitem["zjgs"])).ToString();
+                            MItem[0]["ZJGSB"] = (GetSafeDouble(MItem[0]["ZJGSB"]) + Conversion.Val(sitem["ZJGS"])).ToString();
+                            MItem[0]["ZJGSB"] = "6";
                         }
                     }
                     bgzs = bgzs + 1;
@@ -604,6 +608,7 @@ namespace Calculates
 
                 }
 
+                //该代码不完善
                 if (jcxm.Contains("、钢筋间距、"))
                 {
                     //从设计等级表中取得相应的计算数值、等级标准

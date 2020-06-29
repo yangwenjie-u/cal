@@ -44,7 +44,7 @@ namespace Calculates
             bool sign, flag = true;
             string mlongStr = "";
             double mMaxKyqd, mMinKyqd, mAvgKyqd, mMidKyqd = 0;
-            double mMaxQsl, mMinQsl, mAvgQsl, mMidQsl = 0;
+            double mMaxQsl, mMinQsl,mMidQsl = 0;
             int mbHggs = 0;//检测项目合格数量
             var jcxmBhg = "";
             var jcxmCur = "";

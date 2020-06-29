@@ -12,13 +12,10 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region 
-            bool mAllHg = true, sign = true, mSFwc = true;
+            bool mAllHg = true, sign = true;
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "";
-            var jgsm = "";
-            var jcjg = "";
-            double md, md1, md2;
             var SItem = data["S_SPA"];
             var MItem = data["M_SPA"];
             var EItem = data["E_JLPB"];
@@ -37,7 +34,6 @@ namespace Calculates
                 MItem.Add(m);
             }
             var mItem = MItem[0];
-            string stemp, dzbh;
             double zjSum = 0;
             double gdSum = 0;
             int count = 0;
@@ -51,23 +47,23 @@ namespace Calculates
                 #region  生成曲线数据 及相关计算
                 bool gjkBool = false;
                 string gjkTgl = "";
-                double hcjp_53 = 0;
-                double hcjp_375 = 0;
-                double hcjp_315 = 0;
-                double hcjp_265 = 0;
-                double hcjp_19 = 0;
-                double hcjp_16 = 0;
-                double hcjp_132 = 0;
-                double hcjp_95 = 0;
-                double hcjp_475 = 0;
-                double hcjp_236 = 0;
-                double hcjp_118 = 0;
-                double hcjp_06 = 0;
-                double hcjp_03 = 0;
-                double hcjp_015 = 0;
-                double hcjp_0075 = 0;
-                double hcjp_SD = 0;
-                double blzh = 0;
+                //double hcjp_53 = 0;
+                //double hcjp_375 = 0;
+                //double hcjp_315 = 0;
+                //double hcjp_265 = 0;
+                //double hcjp_19 = 0;
+                //double hcjp_16 = 0;
+                //double hcjp_132 = 0;
+                //double hcjp_95 = 0;
+                //double hcjp_475 = 0;
+                //double hcjp_236 = 0;
+                //double hcjp_118 = 0;
+                //double hcjp_06 = 0;
+                //double hcjp_03 = 0;
+                //double hcjp_015 = 0;
+                //double hcjp_0075 = 0;
+                //double hcjp_SD = 0;
+                //double blzh = 0;
                 #region 合成级配百分率
                 for (int i = 1; i < 8; i++)
                 {

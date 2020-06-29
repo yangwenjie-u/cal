@@ -13,23 +13,18 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region  参数定义
-            string mcalBh, mlongStr;
+            string  mlongStr;
             double[] mkzqdArray = new double[3];
             double[] mkzhzArray = new double[3];
             string[] mtmpArray;
-            double mSjcc, mMj, mSjcc1;
-            double mMaxKyqd, mMinKyqd, mMidKyqd, mAvgKyqd;
-            double mMaxKyhz, mMinKyhz, mMidKyhz, mAvgKyhz;
-            string mSjdjbh, mSjdj;
-            double mSz, mQdyq, mHsxs;
+            string mSjdj;
+            double mSz, mHsxs;
             int vp;
-            string mMaxBgbh;
+
             string mJSFF;
             bool mAllHg;
-            bool mGetBgbh;
-            bool mSFwc;
-            mSFwc = true;
-            mGetBgbh = false;
+
+
             mAllHg = true;
             #endregion
 
@@ -54,13 +49,10 @@ namespace Calculates
             }
             var mitem = MItem[0];
             var SItem = data["S_TKZ"];
-
+            mAllHg = true;
             #endregion
 
             #region  计算开始
-            mGetBgbh = false;
-            mAllHg = true;
-            // mitem["JCJGMS"] = "";
             foreach (var sitem in SItem)
             {
                 mSjdj = sitem["SJDJ"];
@@ -189,8 +181,8 @@ namespace Calculates
                 {
                     if (jcxm.Contains("、抗折强度、"))
                     {
-                        //if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "0" && sitem["DYZJW3"] == "0")
-                        if (sitem["DYZJW1"] == "是" && sitem["DYZJW2"] == "否" && sitem["DYZJW3"] == "否")
+                        if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "0" && sitem["DYZJW3"] == "0")
+                        //if (sitem["DYZJW1"] == "是" && sitem["DYZJW2"] == "否" && sitem["DYZJW3"] == "否")
                         {
                             sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
@@ -213,8 +205,8 @@ namespace Calculates
                                 mjcjg = "不下结论";
                             }
                         }
-                        //if (sitem["DYZJW2"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW3"] == "0")
-                        if (sitem["DYZJW2"] == "是" && sitem["DYZJW1"] == "否" && sitem["DYZJW3"] == "否")
+                        if (sitem["DYZJW2"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW3"] == "0")
+                        //if (sitem["DYZJW2"] == "是" && sitem["DYZJW1"] == "否" && sitem["DYZJW3"] == "否")
                         {
                             sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             sitem["KZQD3"] = Round(1000 * Conversion.Val(sitem["KZHZ3"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
@@ -237,8 +229,8 @@ namespace Calculates
                                 mjcjg = "不下结论";
                             }
                         }
-                        //if (sitem["DYZJW3"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW2"] == "0")
-                        if (sitem["DYZJW3"] == "是" && sitem["DYZJW1"] == "否" && sitem["DYZJW2"] == "否")
+                        if (sitem["DYZJW3"] == "1" && sitem["DYZJW1"] == "0" && sitem["DYZJW2"] == "0")
+                        //if (sitem["DYZJW3"] == "是" && sitem["DYZJW1"] == "否" && sitem["DYZJW2"] == "否")
                         {
                             sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                             sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
@@ -261,22 +253,22 @@ namespace Calculates
                                 mjcjg = "不下结论";
                             }
                         }
-                        //if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "1")
-                        if (sitem["DYZJW1"] == "是" && sitem["DYZJW2"] == "是")
+                        if (sitem["DYZJW1"] == "1" && sitem["DYZJW2"] == "1")
+                        //if (sitem["DYZJW1"] == "是" && sitem["DYZJW2"] == "是")
                         {
                             sitem["KZPJ"] = "无效";
                             sitem["JCJG"] = "不下结论";
                             mjcjg = "不下结论";
                         }
-                        //if (sitem["DYZJW1"] == "1" && sitem["DYZJW3"] == "1")
-                        if (sitem["DYZJW1"] == "是" && sitem["DYZJW3"] == "是")
+                        if (sitem["DYZJW1"] == "1" && sitem["DYZJW3"] == "1")
+                        //if (sitem["DYZJW1"] == "是" && sitem["DYZJW3"] == "是")
                         {
                             sitem["KZPJ"] = "无效";
                             sitem["JCJG"] = "不下结论";
                             mjcjg = "不下结论";
                         }
-                        //if (sitem["DYZJW3"] == "1" && sitem["DYZJW2"] == "1")
-                        if (sitem["DYZJW3"] == "是" && sitem["DYZJW2"] == "是")
+                        if (sitem["DYZJW3"] == "1" && sitem["DYZJW2"] == "1")
+                        //if (sitem["DYZJW3"] == "是" && sitem["DYZJW2"] == "是")
                         {
                             sitem["KZPJ"] = "无效";
                             sitem["JCJG"] = "不下结论";

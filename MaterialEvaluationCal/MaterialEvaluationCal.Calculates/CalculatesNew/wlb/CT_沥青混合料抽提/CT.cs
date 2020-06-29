@@ -13,15 +13,7 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region
-            string mSjdj = "";
-            string errorMsg = "";
-            string mJSFF = "";
-            bool mSFwc;
-            bool mGetBgbh = false,
-            mAllHg = true,
-            mFlag_Hg = false, mItemHg = true,
-            mFlag_Bhg = false;
-            int mbhggs = 0;
+            bool mAllHg = true;
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "";

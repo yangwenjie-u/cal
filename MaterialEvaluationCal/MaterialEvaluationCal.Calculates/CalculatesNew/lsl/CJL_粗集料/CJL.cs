@@ -13,20 +13,10 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region
-            string mSjdj = "";
-            string errorMsg = "";
-            string mJSFF = "";
-            bool mSFwc;
-            bool mGetBgbh = false,
-            mAllHg = true,
-            mFlag_Hg = false, mItemHg = true,
-            mFlag_Bhg = false;
-            int mbhggs = 0;
+            bool mAllHg = true;
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "";
-            var jgsm = "";
-            var jcjg = "";
             var SItem = data["S_CJL"];
             var ET_HNL = data["ET_HNL"][0];
             var EJL_ZPZ = data["EJL_ZPZ"][0];
@@ -53,9 +43,8 @@ namespace Calculates
 
             foreach (var sItem in SItem)
             {
-                bool sign, flag;
+                bool sign;
                 double md1, md2, md, sum;
-                string sql;
                 string sfpd1, sfpd2, sfpd3, sfpd4, sfpd5, sfpd6, sfpd7, sfpd8, sfpd9, sfpd10, sfpd11, sfpd12, sfpd13;
                 var jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
 
@@ -64,7 +53,7 @@ namespace Calculates
                 {
                     jcxmCur = "筛分";
                     sign = true;
-                    
+
                     sum = 0;
                     for (int i = 1; i < 3; i++)
                     {
@@ -200,23 +189,23 @@ namespace Calculates
                     #region 通过百分率
                     for (int i = 1; i < 3; i++)
                     {
-                        sItem["TGBFL106_" + i] = Round(100 -GetSafeDouble(sItem["LJSY106_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL75_" + i] =  Round(100 -GetSafeDouble(sItem["LJSY75_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL63_" + i] =  Round(100 -GetSafeDouble(sItem["LJSY63_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL53_" + i] =  Round(100 -GetSafeDouble(sItem["LJSY53_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL375_" + i] = Round(100 -GetSafeDouble(sItem["LJSY375_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL315_" + i] = Round(100 -GetSafeDouble(sItem["LJSY315_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL265_" + i] = Round(100 -GetSafeDouble(sItem["LJSY265_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL19_" + i] =  Round(100 -GetSafeDouble(sItem["LJSY19_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL16_" + i] =  Round(100 -GetSafeDouble(sItem["LJSY16_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL132_" + i] = Round(100 -GetSafeDouble(sItem["LJSY132_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL95_" + i] =  Round(100 -GetSafeDouble(sItem["LJSY95_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL475_" + i] = Round(100 -GetSafeDouble(sItem["LJSY475_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL236_" + i] = Round(100 -GetSafeDouble(sItem["LJSY236_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL118_" + i] = Round(100 -GetSafeDouble(sItem["LJSY118_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL06_" + i] =  Round(100 -GetSafeDouble(sItem["LJSY06_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL03_" + i] =  Round(100 -GetSafeDouble(sItem["LJSY03_" + i]), 1).ToString("0.0");
-                        sItem["TGBFL015_" + i] = Round(100 -GetSafeDouble(sItem["LJSY015_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL106_" + i] = Round(100 - GetSafeDouble(sItem["LJSY106_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL75_" + i] = Round(100 - GetSafeDouble(sItem["LJSY75_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL63_" + i] = Round(100 - GetSafeDouble(sItem["LJSY63_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL53_" + i] = Round(100 - GetSafeDouble(sItem["LJSY53_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL375_" + i] = Round(100 - GetSafeDouble(sItem["LJSY375_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL315_" + i] = Round(100 - GetSafeDouble(sItem["LJSY315_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL265_" + i] = Round(100 - GetSafeDouble(sItem["LJSY265_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL19_" + i] = Round(100 - GetSafeDouble(sItem["LJSY19_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL16_" + i] = Round(100 - GetSafeDouble(sItem["LJSY16_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL132_" + i] = Round(100 - GetSafeDouble(sItem["LJSY132_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL95_" + i] = Round(100 - GetSafeDouble(sItem["LJSY95_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL475_" + i] = Round(100 - GetSafeDouble(sItem["LJSY475_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL236_" + i] = Round(100 - GetSafeDouble(sItem["LJSY236_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL118_" + i] = Round(100 - GetSafeDouble(sItem["LJSY118_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL06_" + i] = Round(100 - GetSafeDouble(sItem["LJSY06_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL03_" + i] = Round(100 - GetSafeDouble(sItem["LJSY03_" + i]), 1).ToString("0.0");
+                        sItem["TGBFL015_" + i] = Round(100 - GetSafeDouble(sItem["LJSY015_" + i]), 1).ToString("0.0");
                         sItem["TGBFL0075_" + i] = Round(100 - GetSafeDouble(sItem["LJSY0075_" + i]), 1).ToString("0.0");
                     }
                     #endregion
@@ -281,7 +270,7 @@ namespace Calculates
                     }
                     else
                     {
-                        mItem["BZFW106"] = "----"; 
+                        mItem["BZFW106"] = "----";
                         sfpd1 = "----";
                     }
 
@@ -373,7 +362,7 @@ namespace Calculates
                     {
                         sfpd8 = GetSafeDouble(sItem["PJTGBFL19"]) == 100 ? "合格" : "不合格";
                     }
-                    else if(null != mItem["BZFW19"] && 100 != GetSafeDouble(mItem["BZFW19"]))
+                    else if (null != mItem["BZFW19"] && 100 != GetSafeDouble(mItem["BZFW19"]))
                     {
                         sfpd8 = IsQualified(mItem["BZFW19"], sItem["PJTGBFL19"], false);
                     }

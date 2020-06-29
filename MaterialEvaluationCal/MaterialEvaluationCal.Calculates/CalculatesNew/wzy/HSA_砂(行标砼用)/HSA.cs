@@ -14,28 +14,14 @@ namespace Calculates
             /************************ 代码开始 *********************/
             #region  参数定义
             double[] hnl = new double[2];
-            string mcalBh, mlongStr;
             double[] mkyqdArray = new double[3];
             double[] mkyhzArray = new double[3];
             double[] ljsy = new double[7];
-            string[] mtmpArray;
+            //string[] mtmpArray;
             double[] XDMS1 = new double[2];
             string[] jpq = new string[3];
-            double mSjcc, mMj, mSjcc1;
-            string mgccc;
-            double mMaxKyhz, mMinKyhz, mMidKyhz, mAvgKyhz;
-            string mSjdjbh, mSjdj;
-            double mSz, mQdyq, mHsxs;
-            int vp;
-            string mjlgs;
-            string mMaxBgbh, mkljpq;
-            string mJSFF;
             bool mAllHg;
-            bool mGetBgbh;
-            double ZONG, ZONG0, ZONG1, ZONG2;
             double cczl;
-            bool mSFwc;
-            mSFwc = true;
             #endregion
 
             #region 自定义函数
@@ -240,8 +226,8 @@ namespace Calculates
             {
                 double mbhgs = 0;
                 //计算龄期
-                double md1, md2, md, pjmd, sum;
-                int xd, Gs;
+                double md;
+                //int xd, Gs;
                 string which = string.Empty;
                 if (mitem["JCYJ"].Contains("2006"))
                     which = "1";
@@ -516,7 +502,7 @@ namespace Calculates
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
                     mbhgs = 0;
-                    double[] narr;
+                   // double[] narr;
                     #region 含泥量
                     if (jcxm.Contains("、含泥量、"))
                     {

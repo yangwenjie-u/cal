@@ -1167,7 +1167,7 @@ namespace Calculates
                 MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "，该次检测混凝土强度部分小于设计强度。";
             }
 
-            if ( MItem[0]["SFPL"] == "1")
+            if ( MItem[0]["SFPL"]  ==  "True")
             {
                 //批量计算
                 //if (MItem[0]["SFPL"] == "True")

@@ -139,7 +139,6 @@ namespace Calculates
                 if (!jcxm.Contains("强度（28天）"))
                 {
 
-
                     #region 抗压快速法
                     if (jcxm.Contains("抗压快速法"))
                     {
@@ -1172,6 +1171,7 @@ namespace Calculates
             else
                 mitem["JCJG"] = "不合格";
             mitem["JCJGMS"] = "";
+            //无效，暂时留着
             int mLQ = (GetSafeDateTime(mitem["SYRQ"]) - GetSafeDateTime(mitem["SYRQQ"])).Days;
             if (mitem["SYZT"] == "1" && bgmbFlag)
             {
