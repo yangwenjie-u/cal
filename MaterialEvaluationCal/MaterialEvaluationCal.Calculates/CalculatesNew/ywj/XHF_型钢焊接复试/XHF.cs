@@ -135,7 +135,7 @@ namespace Calculates
                 {
                     LwBzyq = "试验弯曲至30度后焊接部位无裂纹。";
                 }
-                sItem["G_KLQD"] = mKlqd.ToString();
+                sItem["G_KLQD"] ="≥"+ mKlqd.ToString();
                 //sItem["G_LWWZ"] = LwBzyq.ToString(); //
 
                 //求抗拉强度

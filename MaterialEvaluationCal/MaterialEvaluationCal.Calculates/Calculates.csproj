@@ -181,6 +181,7 @@
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
     <Compile Include="CalculatesNew\ywj\MXE_马歇尔\MXE.cs" />
     <Compile Include="CalculatesNew\ywj\NZ_腻子\NZ.cs" />
+    <Compile Include="CalculatesNew\ywj\SNK_灌浆料试块\SNK.cs" />
     <Compile Include="CalculatesNew\ywj\XHF_型钢焊接复试\XHF.cs" />
     <Compile Include="CalculatesNew\ywj\XHJ_型钢焊接\XHJ.cs" />
     <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
@@ -233,16 +234,26 @@
     <Compile Include="CalculatesNew\lsl\XJL_细集料\XJL.cs" />
     <Compile Include="CalculatesNew\wzy\YKJ_扣件\YKJ.cs" />
     <Compile Include="CalculatesNew\ywj\WJJ_外加剂\WJJ2.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="obj\Debug\Calculates.csproj.CopyComplete" />
+    <None Include="obj\Debug\Calculates.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\Calculates.csprojAssemblyReference.cache" />
+    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="CalculatesNew\ltk\配比通知单\re.txt" />
     <Content Include="CalculatesNew\ltk\配比通知单\tpt.txt" />
+    <Content Include="obj\Debug\Calculates.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\Calculates.dll" />
+    <Content Include="obj\Debug\Calculates.pdb" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="obj\Debug\TempPE\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

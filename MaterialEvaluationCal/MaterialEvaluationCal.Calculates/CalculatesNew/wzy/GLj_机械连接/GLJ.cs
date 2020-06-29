@@ -599,7 +599,7 @@ namespace Calculates
             }
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"].Trim()))
             {
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggjb + "要求，另取双倍样复试。";
+                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggjb + "要求，调整工艺参数后重新送检。";
                 MItem[0]["FJJJ1"] = mjgsm;
                 if (mFlag_Bhg && mFlag_Hg)
                 {
