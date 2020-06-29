@@ -75,101 +75,45 @@ namespace Calculates
                     sitem["KYQD4"] = KYQD4.ToString();
                     sitem["KYQD5"] = KYQD5.ToString();
                     sitem["KYQD6"] = KYQD6.ToString();
-                    //1
-                    KYPJ = (KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD5 + KYQD6) / 6;
+                    
+                    KYPJ = Math.Round((KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD5 + KYQD6) / 6,2);
+                    decimal sum = KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD5 + KYQD6;
 
                     KYPJMIN = KYPJ * (GetSafeDecimal("0.9"));
                     KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
 
-                    if (KYQD1 < KYPJMIN || KYQD1 > KYPJMAX)
-                    {
-                        bhg = bhg + 1;
-                        KYPJ = (KYQD2 + KYQD3 + KYQD4 + KYQD5 + KYQD6) / 5;
-                        KYPJMIN = KYPJ * (GetSafeDecimal("0.9"));
-                        KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
+                    List<decimal> kypjcont = new List<decimal>();
+                    kypjcont.Add(KYQD1);
+                    kypjcont.Add(KYQD2);
+                    kypjcont.Add(KYQD3);
+                    kypjcont.Add(KYQD4);
+                    kypjcont.Add(KYQD5);
+                    kypjcont.Add(KYQD6);
 
-                    }
+                    for (int i = 0; i< kypjcont.Count; i++)
+                    {
+                        if (KYPJ > KYPJMAX || KYPJ < KYPJMIN)
+                        {
+                            bhg = bhg + 1;
+                            if (bhg < 2)
+                            {
+                                KYPJ = Math.Round((sum - kypjcont[i]) / 5,2);
+                            }
+                            else
+                            {
+                                mitem["JCJG"] = "作废";
+                                mitem["JCJGMS"] = "作废，不下结论";
+                            }
+                        }
 
-                    if (KYQD2 < KYPJMIN || KYQD2 > KYPJMAX)
-                    {
-                        bhg = bhg + 1;
-                        if (bhg > 1)
-                        {
-                            mAllHg = false;
-                            continue;
-                        }
-                        else
-                        {
-                            KYPJ = (KYQD1 + KYQD3 + KYQD4 + KYQD5 + KYQD6) / 5;
-                            KYPJMIN = (decimal)0.9 * KYPJ  ;
-                            KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
-                        }
-                    }
-                    if (KYQD3 < KYPJMIN || KYQD3 > KYPJMAX)
-                    {
-                        bhg = bhg + 1;
-                        if (bhg > 1)
-                        {
-                            mAllHg = false;
-                            continue;
-                        }
-                        else
-                        {
-                            KYPJ = (KYQD1 + KYQD2 + KYQD4 + KYQD5 + KYQD6) / 5;
-                            KYPJMIN = KYPJ * (GetSafeDecimal("0.9"));
-                            KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
-                        }
-                    }
-                    if (KYQD4 < KYPJMIN || KYQD4 > KYPJMAX)
-                    {
-                        bhg = bhg + 1;
-                        if (bhg > 1)
-                        {
-                            mAllHg = false;
-                            continue;
-                        }
-                        else
-                        {
-                            KYPJ = (KYQD1 + KYQD2 + KYQD3 + KYQD5 + KYQD6) / 5;
-                            KYPJMIN = KYPJ * (GetSafeDecimal("0.9"));
-                            KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
-                        }
-                    }
-                    if (KYQD5 < KYPJMIN || KYQD5 > KYPJMAX)
-                    {
-                        bhg = bhg + 1;
-                        if (bhg > 1)
-                        {
-                            mAllHg = false;
-                            continue;
-                        }
-                        else
-                        {
-                            KYPJ = (KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD6) / 5;
-                            KYPJMIN = KYPJ * (GetSafeDecimal("0.9"));
-                            KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
-                        }
-                    }
-                    if (KYQD6 < KYPJMIN || KYQD6 > KYPJMAX)
-                    {
-                        bhg = bhg + 1;
-                        if (bhg > 1)
-                        {
-                            mAllHg = false;
-                            continue;
-                        }
-                        else
-                        {
-                            KYPJ = (KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD5) / 5;
-                            KYPJMIN = KYPJ * (GetSafeDecimal("0.9"));
-                            KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
-                        }
+                    
                     }
 
                     sitem["KYPJ"] = KYPJ.ToString("0.00");
                     mitem["G_JG"] = IsQualified(mitem["G_HGQD"], sitem["KYPJ"], false);
                     if (mitem["G_JG"] == "合格")
                     {
+                        mAllHg = true;
                         sitem["JCJG"] = "合格";
                     }
                     else
@@ -179,13 +123,6 @@ namespace Calculates
 
                 }
 
-            }
-
-
-            if (bhg > 1)
-            {
-                mitem["JCJG"] = "作废";
-                mitem["JCJGMS"] = "作废，不下结论";
             }
 
             if (mAllHg == true)

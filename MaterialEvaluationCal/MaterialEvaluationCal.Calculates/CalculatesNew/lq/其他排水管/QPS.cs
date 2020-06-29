@@ -582,11 +582,11 @@ if (GetSafeDouble(MItem[0]["PJWJ1"]) > GetSafeDouble(MItem[0]["PJWJ2"]))
                 if (jcxm.Contains("、软化温度、") || jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
-   decimal PJ = 0;
+                    decimal PJ = 0;
                     decimal PJ1 = 0;
                     if (!sffj)
                     {                                          
-  PJ = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1);
+                        PJ = Math.Round(((GetSafeDecimal(mitem["RHWD1"]) + GetSafeDecimal(mitem["RHWD2"])) / 2), 1);
                         mitem["RHWD"] = Math.Round(PJ, 1).ToString();
                         mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
                     }
@@ -818,7 +818,8 @@ if (GetSafeDouble(MItem[0]["PJWJ1"]) > GetSafeDouble(MItem[0]["PJWJ2"]))
                 if (jcxm.Contains("、纵向回缩率、"))
                 {
                     jcxmCur = "纵向回缩率";
-                      MItem[0]["HSLL0_1"] = "100";
+                    double zxhsl1, zxhsl2, zxhsl3 = 0.0;
+                    MItem[0]["HSLL0_1"] = "100";
                     MItem[0]["HSLL0_2"] = "100";
                     MItem[0]["HSLL0_3"] = "100";
 

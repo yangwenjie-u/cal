@@ -254,7 +254,7 @@ namespace Calculates
                     sum = listQd[1] + listQd[2] + listQd[3] + listQd[4];
                     var pjmd = sum / 4;
                     sitem["JNJQD"] = pjmd.ToString("0.00");
-                    if (Math.Abs(listQd[0] - pjmd) <= pjmd * 0.2 || Math.Abs(listQd[0] - pjmd) <= pjmd * 0.2)
+                    if (Math.Abs(listQd[0] - pjmd) <= pjmd * 0.2 && Math.Abs(listQd[5] - pjmd) <= pjmd * 0.2)
                     {
                         sitem["HG_JNJQD"] = IsQualified(mitem["G_JNJQD"], sitem["JNJQD"], false);
                         mbhggs = sitem["HG_JNJQD"] == "不合格" ? mbhggs + 1 : mbhggs;
