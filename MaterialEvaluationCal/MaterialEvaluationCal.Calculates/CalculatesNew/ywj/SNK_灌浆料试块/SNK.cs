@@ -23,7 +23,7 @@ namespace Calculates
 
             var jcxm = "";
 
-            int bhg = 0;
+            int hgCount = 0;
             decimal KYQD1 = 0;
             decimal KYQD2 = 0;
             decimal KYQD3 = 0;
@@ -90,41 +90,40 @@ namespace Calculates
                     kypjcont.Add(KYQD5);
                     kypjcont.Add(KYQD6);
 
-                    for (int i = 0; i< kypjcont.Count; i++)
+                    for (int i = 0; i < kypjcont.Count; i++)
                     {
-                        if (KYPJ > KYPJMAX || KYPJ < KYPJMIN)
+                        if (kypjcont[i] <= KYPJMAX && kypjcont[i] >= KYPJMIN)
                         {
-                            bhg = bhg + 1;
-                            if (bhg < 2)
-                            {
-                                KYPJ = Math.Round((sum - kypjcont[i]) / 5,2);
-                            }
-                            else
-                            {
-                                mitem["JCJG"] = "作废";
-                                mitem["JCJGMS"] = "作废，不下结论";
-                            }
-                        }
+                            hgCount = hgCount + 1;
 
-                    
+                            sum += kypjcont[i];
+                        }
                     }
 
-                    sitem["KYPJ"] = KYPJ.ToString("0.00");
-                    mitem["G_JG"] = IsQualified(mitem["G_HGQD"], sitem["KYPJ"], false);
-                    if (mitem["G_JG"] == "合格")
+                    if (hgCount == 5 || hgCount == 6)
                     {
-                        mAllHg = true;
-                        sitem["JCJG"] = "合格";
+                        sitem["KYPJ"] = Math.Round(sum / hgCount, 2).ToString("0.00");
+                        mitem["G_JG"] = IsQualified(mitem["G_HGQD"], sitem["KYPJ"], false);
+                        if (mitem["G_JG"] == "合格")
+                        {
+                            mAllHg = true;
+                            sitem["JCJG"] = "合格";
+                        }
+                        else
+                        {
+                            mAllHg = false;
+                            sitem["JCJG"] = "不合格";
+                        }
                     }
                     else
                     {
-                        sitem["JCJG"] = "不合格";
+                        //作废
+                        sitem["KYPJ"] = "作废";
                     }
-
+               
                 }
 
             }
-
             if (mAllHg == true)
             {
                 mitem["JCJG"] = "合格";
