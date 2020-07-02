@@ -276,9 +276,9 @@ namespace Calculates
                         sItem["SPJMSL"] = "";
                         if (sItem["PBSN1"] != "" && sItem["PBSN1"] != "----")
                         {
-                            sItem["JPHWZL_1"] = Round(GetSafeDouble(sItem["PBSN1"]) + GetSafeDouble(sItem["PBS1"]) + GetSafeDouble(sItem["PBSA1"]) + GetSafeDouble(sItem["PBSZ1"]), 1).ToString();
-                            sItem["JPHWZL_2"] = Round(GetSafeDouble(sItem["PBSN2"]) + GetSafeDouble(sItem["PBS2"]) + GetSafeDouble(sItem["PBSA2"]) + GetSafeDouble(sItem["PBSZ2"]), 1).ToString();
-                            sItem["JPHWZL_3"] = Round(GetSafeDouble(sItem["PBSN3"]) + GetSafeDouble(sItem["PBS3"]) + GetSafeDouble(sItem["PBSA3"]) + GetSafeDouble(sItem["PBSZ3"]), 1).ToString();
+                            sItem["JPHWZL_1"] = Round(GetSafeDouble(sItem["PBSN1"]) + GetSafeDouble(sItem["PBS1"]) + GetSafeDouble(sItem["PBSA1"]) + GetSafeDouble(sItem["PBSZ1"]) + GetSafeDouble(sItem["CHLZL11"]) + GetSafeDouble(sItem["CHLZL21"]), 1).ToString();
+                            sItem["JPHWZL_2"] = Round(GetSafeDouble(sItem["PBSN2"]) + GetSafeDouble(sItem["PBS2"]) + GetSafeDouble(sItem["PBSA2"]) + GetSafeDouble(sItem["PBSZ2"]) + GetSafeDouble(sItem["CHLZL12"]) + GetSafeDouble(sItem["CHLZL22"]), 1).ToString();
+                            sItem["JPHWZL_3"] = Round(GetSafeDouble(sItem["PBSN3"]) + GetSafeDouble(sItem["PBS3"]) + GetSafeDouble(sItem["PBSA3"]) + GetSafeDouble(sItem["PBSZ3"]) + GetSafeDouble(sItem["CHLZL13"]) + GetSafeDouble(sItem["CHLZL23"]), 1).ToString();
 
                             sItem["MJBYS_1"] = (sItem["PBS1"]);
                             sItem["MJBYS_2"] = (sItem["PBS2"]);
@@ -322,9 +322,9 @@ namespace Calculates
 
                         if (sItem["SPBSN1"] != "" && sItem["SPBSN1"] != "----")
                         {
-                            sItem["SPHWZL_1"] = Round(GetSafeDouble(sItem["SPBSN1"]) + GetSafeDouble(sItem["SPBS1"]) + GetSafeDouble(sItem["SPBSA1"]) + GetSafeDouble(sItem["SPBSZ1"]) + GetSafeDouble(sItem["SPBWJJ11"]) + GetSafeDouble(sItem["SPBWJJ21"]), 1).ToString();
-                            sItem["SPHWZL_2"] = Round(GetSafeDouble(sItem["SPBSN2"]) + GetSafeDouble(sItem["SPBS2"]) + GetSafeDouble(sItem["SPBSA2"]) + GetSafeDouble(sItem["SPBSZ2"]) + GetSafeDouble(sItem["SPBWJJ12"]) + GetSafeDouble(sItem["SPBWJJ22"]), 1).ToString();
-                            sItem["SPHWZL_3"] = Round(GetSafeDouble(sItem["SPBSN3"]) + GetSafeDouble(sItem["SPBS3"]) + GetSafeDouble(sItem["SPBSA3"]) + GetSafeDouble(sItem["SPBSZ3"]) + GetSafeDouble(sItem["SPBWJJ13"]) + GetSafeDouble(sItem["SPBWJJ23"]), 1).ToString();
+                            sItem["SPHWZL_1"] = Round(GetSafeDouble(sItem["SPBSN1"]) + GetSafeDouble(sItem["SPBS1"]) + GetSafeDouble(sItem["SPBSA1"]) + GetSafeDouble(sItem["SPBSZ1"]) + GetSafeDouble(sItem["SPBWJJ11"]) + GetSafeDouble(sItem["SPBWJJ21"]) + GetSafeDouble(sItem["SPBCHLZL11"]) + GetSafeDouble(sItem["SPBCHLZL21"]), 1).ToString();
+                            sItem["SPHWZL_2"] = Round(GetSafeDouble(sItem["SPBSN2"]) + GetSafeDouble(sItem["SPBS2"]) + GetSafeDouble(sItem["SPBSA2"]) + GetSafeDouble(sItem["SPBSZ2"]) + GetSafeDouble(sItem["SPBWJJ12"]) + GetSafeDouble(sItem["SPBWJJ22"]) + GetSafeDouble(sItem["SPBCHLZL12"]) + GetSafeDouble(sItem["SPBCHLZL22"]), 1).ToString();
+                            sItem["SPHWZL_3"] = Round(GetSafeDouble(sItem["SPBSN3"]) + GetSafeDouble(sItem["SPBS3"]) + GetSafeDouble(sItem["SPBSA3"]) + GetSafeDouble(sItem["SPBSZ3"]) + GetSafeDouble(sItem["SPBWJJ13"]) + GetSafeDouble(sItem["SPBWJJ23"]) + GetSafeDouble(sItem["SPBCHLZL13"]) + GetSafeDouble(sItem["SPBCHLZL23"]), 1).ToString();
                             sItem["MSBYS_1"] = sItem["SPBS1"];
                             sItem["MSBYS_2"] = sItem["SPBS2"];
                             sItem["MSBYS_3"] = sItem["SPBS3"];

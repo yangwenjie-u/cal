@@ -623,14 +623,21 @@ namespace Calculates
                     }
                     else if (CPMC == "绝热用岩棉、矿渣棉及其制品(GB/T 11835-2016)" && zpxs != "棉")
                     {
-                        mitem["G_MDDZ"] = "±15";
-                        mitem["G_MDBC"] = "±15";
+                        mitem["G_MDDZ"] = "±10";
+                        mitem["G_MDBC"] = "±10";
                         mark = true;
                         //单值的
-                        md = Conversion.Val(mitem["W_PJMD"].Trim());
-                        md1 = md - md * 15 / 100;
+                        List<double> mkyqdArray = new List<double>();
+                        for (int i = 1; i <= 4; i++)
+                        {
+                            mkyqdArray.Add(GetSafeDouble(mitem["W_MD" + i]));
+                        }
+                        mkyqdArray.Sort();
+
+                        md = Conversion.Val(mkyqdArray.Average());
+                        md1 = md - md * 10 / 100;
                         md1 = Round(md1, 0);
-                        md2 = md + md * 15 / 100;
+                        md2 = md + md * 10 / 100;
                         md2 = Round(md2, 0);
                         bl = md1.ToString() + "～" + md2.ToString();
                         for (xd = 1; xd <= 4; xd++)
@@ -641,16 +648,16 @@ namespace Calculates
                                 break;
                             }
                         }
-                        md = Conversion.Val(sitem["BCMD"].Trim());
-                        md1 = md - md * 15 / 100;
-                        md1 = Round(md1, 0);
-                        md2 = md + md * 15 / 100;
-                        md2 = Round(md2, 0);
-                        bl = md1.ToString() + "～" + md2.ToString();
-                        if (IsQualified(bl, mitem["W_PJMD"], false) == "不合格")
-                            mark = false;
+                        //md = Conversion.Val(sitem["BCMD"].Trim());
+                        //md1 = md - md * 10 / 100;
+                        //md1 = Round(md1, 0);
+                        //md2 = md + md * 10 / 100;
+                        //md2 = Round(md2, 0);
+                        //bl = md1.ToString() + "～" + md2.ToString();
+                        //if (IsQualified(bl, mitem["W_PJMD"], false) == "不合格")
+                        //    mark = false;
                         mitem["GH_MD"] = mark ? "合格" : "不合格";
-                        mitem["G_MD"] = "平均值与标称值允许偏差±15%" + "单值与平均值允许偏差±15%";
+                        mitem["G_MD"] = "单值允许偏差±10%";
                     }
                     else if (CPMC == "矿物棉喷涂绝热层GB/T26746-2011")
                     {

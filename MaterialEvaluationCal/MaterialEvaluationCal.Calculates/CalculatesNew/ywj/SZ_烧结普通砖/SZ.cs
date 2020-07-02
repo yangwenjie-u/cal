@@ -526,92 +526,92 @@ namespace Calculates
                         sItem["MJ8"] = mMj8.ToString();
                         sItem["MJ9"] = mMj9.ToString();
                         sItem["MJ10"] = mMj10.ToString();
-                        if (sItem["ZLB"].Contains("混凝土多孔砖"))
-                        {
+                        //if (sItem["ZLB"].Contains("混凝土多孔砖"))
+                        //{
                             if (mMj1 != 0)
-                                sItem["KYQD1"] = Round(1000 * (Conversion.Val(sItem["KYHZ1"])) / mMj1, 1).ToString();
+                                sItem["KYQD1"] = Round(1000 * (Conversion.Val(sItem["KYHZ1"])) / mMj1, 1).ToString("0.0");
                             else
                                 sItem["KYQD1"] = "0";
                             if (mMj2 != 0)
-                                sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 1).ToString();
+                                sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 1).ToString("0.0");
                             else
                                 sItem["KYQD2"] = "0";
                             if (mMj3 != 0)
-                                sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 1).ToString();
+                                sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 1).ToString("0.0");
                             else
                                 sItem["KYQD3"] = "0";
                             if (mMj4 != 0)
-                                sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 1).ToString();
+                                sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 1).ToString("0.0");
                             else
                                 sItem["KYQD4"] = "0";
                             if (mMj5 != 0)
-                                sItem["KYQD5"] = Round(1000 * (Conversion.Val(sItem["KYHZ5"])) / mMj5, 1).ToString();
+                                sItem["KYQD5"] = Round(1000 * (Conversion.Val(sItem["KYHZ5"])) / mMj5, 1).ToString("0.0");
                             else
                                 sItem["KYQD5"] = "0";
                             if (mMj6 != 0)
-                                sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 1).ToString();
+                                sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 1).ToString("0.0");
                             else
                                 sItem["KYQD6"] = "0";
                             if (mMj7 != 0)
-                                sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 1).ToString();
+                                sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 1).ToString("0.0");
                             else
                                 sItem["KYQD7"] = "0";
                             if (mMj8 != 0)
-                                sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 1).ToString();
+                                sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 1).ToString("0.0");
                             else
                                 sItem["KYQD8"] = "0";
                             if (mMj9 != 0)
-                                sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 1).ToString();
+                                sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 1).ToString("0.0");
                             else
                                 sItem["KYQD9"] = "0";
                             if (mMj10 != 0)
-                                sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 1).ToString();
+                                sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 1).ToString("0.0");
                             else
                                 sItem["KYQD10"] = "0";
-                        }
-                        else
-                        {
-                            if (mMj1 != 0)
-                                sItem["KYQD1"] = Round(1000 * Conversion.Val(sItem["KYHZ1"]) / mMj1, 2).ToString();
-                            else
-                                sItem["KYQD1"] = "0";
-                            if (mMj2 != 0)
-                                sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 2).ToString();
-                            else
-                                sItem["KYQD2"] = "0";
-                            if (mMj3 != 0)
-                                sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 2).ToString();
-                            else
-                                sItem["KYQD3"] = "0";
-                            if (mMj4 != 0)
-                                sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 2).ToString();
-                            else
-                                sItem["KYQD4"] = "0";
-                            if (mMj5 != 0)
-                                sItem["KYQD5"] = Round(1000 * Conversion.Val(sItem["KYHZ5"]) / mMj5, 2).ToString();
-                            else
-                                sItem["KYQD5"] = "0";
-                            if (mMj6 != 0)
-                                sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 2).ToString();
-                            else
-                                sItem["KYQD6"] = "0";
-                            if (mMj7 != 0)
-                                sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 2).ToString();
-                            else
-                                sItem["KYQD7"] = "0";
-                            if (mMj8 != 0)
-                                sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 2).ToString();
-                            else
-                                sItem["KYQD8"] = "0";
-                            if (mMj9 != 0)
-                                sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 2).ToString();
-                            else
-                                sItem["KYQD9"] = "0";
-                            if (mMj10 != 0)
-                                sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 2).ToString();
-                            else
-                                sItem["KYQD10"] = "0";
-                        }
+                        //}
+                        //else
+                        //{
+                        //    if (mMj1 != 0)
+                        //        sItem["KYQD1"] = Round(1000 * Conversion.Val(sItem["KYHZ1"]) / mMj1, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD1"] = "0";
+                        //    if (mMj2 != 0)
+                        //        sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD2"] = "0";
+                        //    if (mMj3 != 0)
+                        //        sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD3"] = "0";
+                        //    if (mMj4 != 0)
+                        //        sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD4"] = "0";
+                        //    if (mMj5 != 0)
+                        //        sItem["KYQD5"] = Round(1000 * Conversion.Val(sItem["KYHZ5"]) / mMj5, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD5"] = "0";
+                        //    if (mMj6 != 0)
+                        //        sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD6"] = "0";
+                        //    if (mMj7 != 0)
+                        //        sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD7"] = "0";
+                        //    if (mMj8 != 0)
+                        //        sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD8"] = "0";
+                        //    if (mMj9 != 0)
+                        //        sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD9"] = "0";
+                        //    if (mMj10 != 0)
+                        //        sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 2).ToString("0.00");
+                        //    else
+                        //        sItem["KYQD10"] = "0";
+                        //}
                         //抗压平均值
                         mPjz = Round((Conversion.Val(sItem["KYQD1"]) + Conversion.Val(sItem["KYQD2"]) + Conversion.Val(sItem["KYQD3"]) + Conversion.Val(sItem["KYQD4"]) + Conversion.Val(sItem["KYQD5"]) +
                            Conversion.Val(sItem["KYQD6"]) + Conversion.Val(sItem["KYQD7"]) + Conversion.Val(sItem["KYQD8"]) + Conversion.Val(sItem["KYQD9"]) + Conversion.Val(sItem["KYQD10"])) / 10, 2);
@@ -627,8 +627,8 @@ namespace Calculates
                             (Conversion.Val(sItem["KYQD9"]) - mPjz) * (Conversion.Val(sItem["KYQD9"]) - mPjz) +
                             (Conversion.Val(sItem["KYQD10"]) - mPjz) * (Conversion.Val(sItem["KYQD10"]) - mPjz)) / 9);
                         mS = Round(mS, 2);
-                        sItem["BZC"] = Round(mS, 2).ToString();
-                        sItem["KYPJ"] = Round(mPjz, 2).ToString();
+                        sItem["BZC"] = Round(mS, 1).ToString("0.0");
+                        sItem["KYPJ"] = Round(mPjz, 1).ToString("0.0");
 
 
                         MItem[0]["G_PJZ"] = mYqpjz.ToString();
@@ -638,7 +638,7 @@ namespace Calculates
                         sItem["QDYQ"] = "抗压强度平均值需≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0.0").Trim() + "MPa，强度标准值需≥" + Conversion.Val(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa。";
                         //变异系数
                         if (mPjz != 0)
-                            sItem["BYXS"] = Round(mS / mPjz, 2).ToString();
+                            sItem["BYXS"] = Round(mS / mPjz, 2).ToString("0.00");
                         //标准值计算、判定，平均值判定，单组合格判定
                         mlongStr = sItem["KYQD1"] + "," +
                                 sItem["KYQD2"] + "," +
@@ -659,9 +659,9 @@ namespace Calculates
                             mMinKyqd = Round(mkyhzArray[0], 1);
                         else
                             mMinKyqd = Round(mkyhzArray[0], 1);
-                        sItem["QDMIN"] = Round(mMinKyqd, 1).ToString();
+                        sItem["QDMIN"] = Round(mMinKyqd, 1).ToString("0.0");
                         mBzz = Round(mPjz - 1.83 * mS, 1);
-                        sItem["BZZ"] = Round(mBzz, 1).ToString();
+                        sItem["BZZ"] = Round(mBzz, 1).ToString("0.0");
                         if (which == "1" || which == "11")
                         {
                             if (Conversion.Val(sItem["KYPJ"]) >= mYqpjz && mMinKyqd >= mDy21)
@@ -727,7 +727,7 @@ namespace Calculates
                                     mFlag_Bhg = true;
                                 }
                                 //报表TAG单元
-                                sItem["TAG1"] = Round(mPjz, 1).ToString();
+                                sItem["TAG1"] = Round(mPjz, 1).ToString("0.0");
                                 sItem["TAG2"] = "强度\r\n标准值";
                                 if (sItem["BZZ_HG"] == "1")
                                 {
@@ -739,10 +739,10 @@ namespace Calculates
                                     sItem["TAG3"] = "不合格";
                                     mFlag_Bhg = true;
                                 }
-                                sItem["TAG4"] = "标准值\r\n" + "s\r\n" + Round(mBzz, 1).ToString();
+                                sItem["TAG4"] = "标准值\r\n" + "s\r\n" + Round(mBzz, 1).ToString("0.0");
                                 //报表TAG单元
-                                sItem["TAG_1"] = Round(mBzz, 1).ToString();
-                                sItem["TAG_2"] = Round(mMinKyqd, 1).ToString();
+                                sItem["TAG_1"] = Round(mBzz, 1).ToString("0.0");
+                                sItem["TAG_2"] = Round(mMinKyqd, 1).ToString("0.0");
 
 
                                 //实际达到设计等级判定
@@ -762,7 +762,7 @@ namespace Calculates
                             else
                             {
                                 //一般合格判定
-                                sItem["KYPJ"] = Round(mPjz, 1).ToString();
+                                sItem["KYPJ"] = Round(mPjz, 1).ToString("0.0");
                                 if (mMinKyqd < mDy21)
                                     sItem["MIN_HG"] = "0";
                                 else
@@ -793,7 +793,7 @@ namespace Calculates
                                 if (sItem["MIN_HG"] == "0")
                                     sItem["TAG1"] = "单块最小值不符合设计要求";
                                 else
-                                    sItem["TAG1"] = Round(mPjz, 1).ToString();
+                                    sItem["TAG1"] = Round(mPjz, 1).ToString("0.0");
                                 sItem["TAG2"] = "单块最小值";
                                 if (sItem["MIN_HG"] == "1")
                                 {
@@ -807,8 +807,8 @@ namespace Calculates
                                 }
                                 sItem["TAG4"] = "";
                                 //报表TAG单元
-                                sItem["TAG_1"] = Round(mBzz, 1).ToString();
-                                sItem["TAG_2"] = Round(mMinKyqd, 1).ToString();
+                                sItem["TAG_1"] = Round(mBzz, 1).ToString("0.0");
+                                sItem["TAG_2"] = Round(mMinKyqd, 1).ToString("0.0");
                                 //实际达到设计等级判定
                                 var mrsDj_where = extraDJ.Where(x => x["ZLB"].Contains(sItem["ZLB"].Trim()));
                                 mSjddj = "";
@@ -919,11 +919,11 @@ namespace Calculates
                         //冻融
                         if (Conversion.Val(sItem["DRG0_1"]) != 0)
                         {
-                            sItem["DRGM1"] = Round((Conversion.Val(sItem["DRG0_1"]) - Conversion.Val(sItem["DRG1_1"])) / Conversion.Val(sItem["DRG0_1"]) * 100, 1).ToString();
-                            sItem["DRGM2"] = Round((Conversion.Val(sItem["DRG0_2"]) - Conversion.Val(sItem["DRG1_2"])) / Conversion.Val(sItem["DRG0_2"]) * 100, 1).ToString();
-                            sItem["DRGM3"] = Round((Conversion.Val(sItem["DRG0_3"]) - Conversion.Val(sItem["DRG1_3"])) / Conversion.Val(sItem["DRG0_3"]) * 100, 1).ToString();
-                            sItem["DRGM4"] = Round((Conversion.Val(sItem["DRG0_4"]) - Conversion.Val(sItem["DRG1_4"])) / Conversion.Val(sItem["DRG0_4"]) * 100, 1).ToString();
-                            sItem["DRGM5"] = Round((Conversion.Val(sItem["DRG0_5"]) - Conversion.Val(sItem["DRG1_5"])) / Conversion.Val(sItem["DRG0_5"]) * 100, 1).ToString();
+                            sItem["DRGM1"] = Round((Conversion.Val(sItem["DRG0_1"]) - Conversion.Val(sItem["DRG1_1"])) / Conversion.Val(sItem["DRG0_1"]) * 100, 1).ToString("0.0");
+                            sItem["DRGM2"] = Round((Conversion.Val(sItem["DRG0_2"]) - Conversion.Val(sItem["DRG1_2"])) / Conversion.Val(sItem["DRG0_2"]) * 100, 1).ToString("0.0");
+                            sItem["DRGM3"] = Round((Conversion.Val(sItem["DRG0_3"]) - Conversion.Val(sItem["DRG1_3"])) / Conversion.Val(sItem["DRG0_3"]) * 100, 1).ToString("0.0");
+                            sItem["DRGM4"] = Round((Conversion.Val(sItem["DRG0_4"]) - Conversion.Val(sItem["DRG1_4"])) / Conversion.Val(sItem["DRG0_4"]) * 100, 1).ToString("0.0");
+                            sItem["DRGM5"] = Round((Conversion.Val(sItem["DRG0_5"]) - Conversion.Val(sItem["DRG1_5"])) / Conversion.Val(sItem["DRG0_5"]) * 100, 1).ToString("0.0");
                             if ((Conversion.Val(sItem["DRGM1"])) <= 2 && (Conversion.Val(sItem["DRGM2"])) <= 2 && (Conversion.Val(sItem["DRGM3"])) <= 2 && (Conversion.Val(sItem["DRGM4"])) <= 2 && (Conversion.Val(sItem["DRGM5"])) <= 2)
                             {
                                 if (sItem["DRWG1"].Trim() == "1" || sItem["DRWG2"].Trim() == "1" || sItem["DRWG3"].Trim() == "1" || sItem["DRWG4"].Trim() == "1" || sItem["DRWG5"].Trim() == "1")

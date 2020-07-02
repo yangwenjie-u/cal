@@ -206,7 +206,7 @@ namespace Calculates
                         sItem["GMDPD"] = "不合格";
                     }
 
-                    sItem["MDDJFW"] = "密度等级范围≤" + GetSafeDouble(sItem["MDDJFW"]).ToString("0") + "kg/m&scsup3&scend。";
+                    sItem["MDDJFW"] = "密度等级范围≤" + GetSafeDouble(sItem["MDDJFW"]).ToString("0") + "kg/m&scsup3&scend";
 
 
                 }
@@ -239,7 +239,7 @@ namespace Calculates
 
                         }
                     }
-                    sItem["HXSW2"] = Math.Round((GetSafeDouble(sItem["HXSW2_1"]) + GetSafeDouble(sItem["HXSW2_2"]) + GetSafeDouble(sItem["HXSW2_3"])) / 3, 1).ToString("0.00");
+                    sItem["HXSW2"] = Math.Round((GetSafeDouble(sItem["HXSW2_1"]) + GetSafeDouble(sItem["HXSW2_2"]) + GetSafeDouble(sItem["HXSW2_3"])) / 3, 1).ToString("0.0");
 
                     if (IsQualified(sItem["XSLYQ"], sItem["HXSW2"]).Equals("合格"))
                     {

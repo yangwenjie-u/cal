@@ -36,7 +36,8 @@ namespace Calculates
                 string g_cd = ""; //密目网长度要求，不小于2M
                 string kyhkkj = ""; //开眼环扣孔径
                 //从设计等级表中取得相应的计算数值、等级标准
-                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["YBDX"] == sitem["YBDX"].Trim() && x["MC"] == sitem["WLX"].Trim());
+                //var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["YBDX"] == sitem["YBDX"].Trim() && x["MC"] == sitem["WLX"].Trim());
+                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["MC"] == sitem["WLX"].Trim());
                 if (mrsDj_Filter != null && mrsDj_Filter.Count() > 0)
                 {
                     sitem["NCJYQ"] = mrsDj_Filter["NCJXN"];
@@ -94,7 +95,7 @@ namespace Calculates
                 if (jcxm.Contains("、耐冲击性能、"))
                 {
                     jcxmCur = "耐冲击性能";
-                    if (sitem["NCJSM"].Trim() == "未破裂、孔洞满足要求")
+                    if (sitem["NCJSM"].Trim() == "未破裂，孔洞满足要求" || sitem["NCJSM"].Trim() == "未断裂，测试重物未接触地面")
                     {
                         MItem[0]["HG_NCJXN"] = "合格";
                     }

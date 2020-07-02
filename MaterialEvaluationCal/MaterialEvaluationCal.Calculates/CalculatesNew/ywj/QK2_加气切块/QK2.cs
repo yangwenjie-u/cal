@@ -353,7 +353,7 @@ namespace Calculates
                         break;
                     }
                 }
-                sItem["QDYQ"] = "平均值≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0.0") + "MPa " + "单组最小值≥" + Conversion.Val(MItem[0]["G_MIN"]).ToString("0.0") + "MPa ";
+                sItem["QDYQ"] = "平均值≥" + Conversion.Val(MItem[0]["G_PJZ"]).ToString("0.0") + "MPa " + "，单组最小值≥" + Conversion.Val(MItem[0]["G_MIN"]).ToString("0.0") + "MPa ";
 
                 //'含水率
                 sItem["HSLYQ"] = "8～12";
@@ -370,15 +370,15 @@ namespace Calculates
                     if (jcxm.Contains("、干密度、"))
                     {
                         jcxmCur = "干密度";
-                        sItem["GMD1_1"] = Round((double.Parse(sItem["HGHZL1_1"]) / double.Parse(sItem["CD1_1"]) / double.Parse(sItem["KD1_1"]) / double.Parse(sItem["GD1_1"])) * Math.Pow(10, 6), 2).ToString();
-                        sItem["GMD1_2"] = Round((double.Parse(sItem["HGHZL1_2"]) / double.Parse(sItem["CD1_2"]) / double.Parse(sItem["KD1_2"]) / double.Parse(sItem["GD1_2"])) * Math.Pow(10, 6), 2).ToString();
-                        sItem["GMD1_3"] = Round((double.Parse(sItem["HGHZL1_3"]) / double.Parse(sItem["CD1_3"]) / double.Parse(sItem["KD1_3"]) / double.Parse(sItem["GD1_3"])) * Math.Pow(10, 6), 2).ToString();
-                        sItem["GMD2_1"] = Round((double.Parse(sItem["HGHZL2_1"]) / double.Parse(sItem["CD2_1"]) / double.Parse(sItem["KD2_1"]) / double.Parse(sItem["GD2_1"])) * Math.Pow(10, 6), 2).ToString();
-                        sItem["GMD2_2"] = Round((double.Parse(sItem["HGHZL2_2"]) / double.Parse(sItem["CD2_2"]) / double.Parse(sItem["KD2_2"]) / double.Parse(sItem["GD2_2"])) * Math.Pow(10, 6), 2).ToString();
-                        sItem["GMD2_3"] = Round((double.Parse(sItem["HGHZL2_3"]) / double.Parse(sItem["CD2_3"]) / double.Parse(sItem["KD2_3"]) / double.Parse(sItem["GD2_3"])) * Math.Pow(10, 6), 2).ToString();
-                        sItem["GMD3_1"] = Round((double.Parse(sItem["HGHZL3_1"]) / double.Parse(sItem["CD3_1"]) / double.Parse(sItem["KD3_1"]) / double.Parse(sItem["GD3_1"])) * Math.Pow(10, 6), 2).ToString();
-                        sItem["GMD3_2"] = Round((double.Parse(sItem["HGHZL3_2"]) / double.Parse(sItem["CD3_2"]) / double.Parse(sItem["KD3_1"]) / double.Parse(sItem["GD3_2"])) * Math.Pow(10, 6), 2).ToString();
-                        sItem["GMD3_3"] = Round((double.Parse(sItem["HGHZL3_3"]) / double.Parse(sItem["CD3_3"]) / double.Parse(sItem["KD3_1"]) / double.Parse(sItem["GD3_3"])) * Math.Pow(10, 6), 2).ToString();
+                        sItem["GMD1_1"] = Round((double.Parse(sItem["HGHZL1_1"]) / double.Parse(sItem["CD1_1"]) / double.Parse(sItem["KD1_1"]) / double.Parse(sItem["GD1_1"])) * Math.Pow(10, 6), 2).ToString("0.00");
+                        sItem["GMD1_2"] = Round((double.Parse(sItem["HGHZL1_2"]) / double.Parse(sItem["CD1_2"]) / double.Parse(sItem["KD1_2"]) / double.Parse(sItem["GD1_2"])) * Math.Pow(10, 6), 2).ToString("0.00");
+                        sItem["GMD1_3"] = Round((double.Parse(sItem["HGHZL1_3"]) / double.Parse(sItem["CD1_3"]) / double.Parse(sItem["KD1_3"]) / double.Parse(sItem["GD1_3"])) * Math.Pow(10, 6), 2).ToString("0.00");
+                        sItem["GMD2_1"] = Round((double.Parse(sItem["HGHZL2_1"]) / double.Parse(sItem["CD2_1"]) / double.Parse(sItem["KD2_1"]) / double.Parse(sItem["GD2_1"])) * Math.Pow(10, 6), 2).ToString("0.00");
+                        sItem["GMD2_2"] = Round((double.Parse(sItem["HGHZL2_2"]) / double.Parse(sItem["CD2_2"]) / double.Parse(sItem["KD2_2"]) / double.Parse(sItem["GD2_2"])) * Math.Pow(10, 6), 2).ToString("0.00");
+                        sItem["GMD2_3"] = Round((double.Parse(sItem["HGHZL2_3"]) / double.Parse(sItem["CD2_3"]) / double.Parse(sItem["KD2_3"]) / double.Parse(sItem["GD2_3"])) * Math.Pow(10, 6), 2).ToString("0.00");
+                        sItem["GMD3_1"] = Round((double.Parse(sItem["HGHZL3_1"]) / double.Parse(sItem["CD3_1"]) / double.Parse(sItem["KD3_1"]) / double.Parse(sItem["GD3_1"])) * Math.Pow(10, 6), 2).ToString("0.00");
+                        sItem["GMD3_2"] = Round((double.Parse(sItem["HGHZL3_2"]) / double.Parse(sItem["CD3_2"]) / double.Parse(sItem["KD3_1"]) / double.Parse(sItem["GD3_2"])) * Math.Pow(10, 6), 2).ToString("0.00");
+                        sItem["GMD3_3"] = Round((double.Parse(sItem["HGHZL3_3"]) / double.Parse(sItem["CD3_3"]) / double.Parse(sItem["KD3_1"]) / double.Parse(sItem["GD3_3"])) * Math.Pow(10, 6), 2).ToString("0.00");
                         sItem["GMD1"] = Round((double.Parse(sItem["GMD1_1"]) + double.Parse(sItem["GMD1_2"]) + double.Parse(sItem["GMD1_3"])) / 3, 0).ToString("0");
                         sItem["GMD2"] = Round((double.Parse(sItem["GMD2_1"]) + double.Parse(sItem["GMD2_2"]) + double.Parse(sItem["GMD2_3"])) / 3, 0).ToString("0");
                         sItem["GMD3"] = Round((double.Parse(sItem["GMD3_1"]) + double.Parse(sItem["GMD3_2"]) + double.Parse(sItem["GMD3_3"])) / 3, 0).ToString("0");
@@ -432,7 +432,7 @@ namespace Calculates
                     if (jcxm.Contains("、抗压强度、"))
                     {
                         jcxmCur = "抗压强度";
-                        sItem["QDYQ"] = "平均值≥" + Conversion.Val(extraQK2QDJB_item["PJBXY"]).ToString("0.0").Trim() + "MPa单组最小值≥" + Conversion.Val(extraQK2QDJB_item["DKBXY"]).ToString("0.0").Trim() + "MPa";
+                        sItem["QDYQ"] = "平均值≥" + Conversion.Val(extraQK2QDJB_item["PJBXY"]).ToString("0.0").Trim() + "MPa，单组最小值≥" + Conversion.Val(extraQK2QDJB_item["DKBXY"]).ToString("0.0").Trim() + "MPa";
                         if (Conversion.Val(sItem["HGQZL1_1"]) > 0)
                         {
                             sItem["HSL1_1"] = Round((Conversion.Val(sItem["HGQZL1_1"]) - Conversion.Val(sItem["HHGHZL1_1"])) / (Conversion.Val(sItem["HHGHZL1_1"])) * 100, 2).ToString("0.00");
@@ -455,20 +455,20 @@ namespace Calculates
                             sItem["HSLPJ"] = Round((Conversion.Val(sItem["HSL1"]) + Conversion.Val(sItem["HSL2"]) + Conversion.Val(sItem["HSL3"])) / 3, 1).ToString("0.0");
                         if ((Conversion.Val(sItem["KYHZ1_1"])) == 0)
                             mSFwc = false;
-                        sItem["KYQD1_1"] = Round(1000 * (Conversion.Val(sItem["KYHZ1_1"])) / (Conversion.Val(sItem["QCD1_1"])) / (Conversion.Val(sItem["QKD1_1"])), 1).ToString();
-                        sItem["KYQD1_2"] = Round(1000 * (Conversion.Val(sItem["KYHZ1_2"])) / (Conversion.Val(sItem["QCD1_2"])) / (Conversion.Val(sItem["QKD1_2"])), 1).ToString();
-                        sItem["KYQD1_3"] = Round(1000 * (Conversion.Val(sItem["KYHZ1_3"])) / (Conversion.Val(sItem["QCD1_3"])) / (Conversion.Val(sItem["QKD1_3"])), 1).ToString();
-                        sItem["KYQD2_1"] = Round(1000 * (Conversion.Val(sItem["KYHZ2_1"])) / (Conversion.Val(sItem["QCD2_1"])) / (Conversion.Val(sItem["QKD2_1"])), 1).ToString();
-                        sItem["KYQD2_2"] = Round(1000 * (Conversion.Val(sItem["KYHZ2_2"])) / (Conversion.Val(sItem["QCD2_2"])) / (Conversion.Val(sItem["QKD2_2"])), 1).ToString();
-                        sItem["KYQD2_3"] = Round(1000 * (Conversion.Val(sItem["KYHZ2_3"])) / (Conversion.Val(sItem["QCD2_3"])) / (Conversion.Val(sItem["QKD2_3"])), 1).ToString();
-                        sItem["KYQD3_1"] = Round(1000 * (Conversion.Val(sItem["KYHZ3_1"])) / (Conversion.Val(sItem["QCD3_1"])) / (Conversion.Val(sItem["QKD3_1"])), 1).ToString();
-                        sItem["KYQD3_2"] = Round(1000 * (Conversion.Val(sItem["KYHZ3_2"])) / (Conversion.Val(sItem["QCD3_2"])) / (Conversion.Val(sItem["QKD3_2"])), 1).ToString();
-                        sItem["KYQD3_3"] = Round(1000 * (Conversion.Val(sItem["KYHZ3_3"])) / (Conversion.Val(sItem["QCD3_3"])) / (Conversion.Val(sItem["QKD3_3"])), 1).ToString();
+                        sItem["KYQD1_1"] = Round(1000 * (Conversion.Val(sItem["KYHZ1_1"])) / (Conversion.Val(sItem["QCD1_1"])) / (Conversion.Val(sItem["QKD1_1"])), 1).ToString("0.0");
+                        sItem["KYQD1_2"] = Round(1000 * (Conversion.Val(sItem["KYHZ1_2"])) / (Conversion.Val(sItem["QCD1_2"])) / (Conversion.Val(sItem["QKD1_2"])), 1).ToString("0.0");
+                        sItem["KYQD1_3"] = Round(1000 * (Conversion.Val(sItem["KYHZ1_3"])) / (Conversion.Val(sItem["QCD1_3"])) / (Conversion.Val(sItem["QKD1_3"])), 1).ToString("0.0");
+                        sItem["KYQD2_1"] = Round(1000 * (Conversion.Val(sItem["KYHZ2_1"])) / (Conversion.Val(sItem["QCD2_1"])) / (Conversion.Val(sItem["QKD2_1"])), 1).ToString("0.0");
+                        sItem["KYQD2_2"] = Round(1000 * (Conversion.Val(sItem["KYHZ2_2"])) / (Conversion.Val(sItem["QCD2_2"])) / (Conversion.Val(sItem["QKD2_2"])), 1).ToString("0.0");
+                        sItem["KYQD2_3"] = Round(1000 * (Conversion.Val(sItem["KYHZ2_3"])) / (Conversion.Val(sItem["QCD2_3"])) / (Conversion.Val(sItem["QKD2_3"])), 1).ToString("0.0");
+                        sItem["KYQD3_1"] = Round(1000 * (Conversion.Val(sItem["KYHZ3_1"])) / (Conversion.Val(sItem["QCD3_1"])) / (Conversion.Val(sItem["QKD3_1"])), 1).ToString("0.0");
+                        sItem["KYQD3_2"] = Round(1000 * (Conversion.Val(sItem["KYHZ3_2"])) / (Conversion.Val(sItem["QCD3_2"])) / (Conversion.Val(sItem["QKD3_2"])), 1).ToString("0.0");
+                        sItem["KYQD3_3"] = Round(1000 * (Conversion.Val(sItem["KYHZ3_3"])) / (Conversion.Val(sItem["QCD3_3"])) / (Conversion.Val(sItem["QKD3_3"])), 1).ToString("0.0");
                         //计算平均值
-                        sItem["KYPJ1"] = Round((Conversion.Val(sItem["KYQD1_1"]) + Conversion.Val(sItem["KYQD1_2"]) + Conversion.Val(sItem["KYQD1_3"])) / 3, 1).ToString();
-                        sItem["KYPJ2"] = Round((Conversion.Val(sItem["KYQD2_1"]) + Conversion.Val(sItem["KYQD2_2"]) + Conversion.Val(sItem["KYQD2_3"])) / 3, 1).ToString();
-                        sItem["KYPJ3"] = Round((Conversion.Val(sItem["KYQD3_1"]) + Conversion.Val(sItem["KYQD3_2"]) + Conversion.Val(sItem["KYQD3_3"])) / 3, 1).ToString();
-                        sItem["KYPJ"] = Round(((Conversion.Val(sItem["KYPJ1"])) + (Conversion.Val(sItem["KYPJ2"])) + (Conversion.Val(sItem["KYPJ3"]))) / 3, 1).ToString();
+                        sItem["KYPJ1"] = Round((Conversion.Val(sItem["KYQD1_1"]) + Conversion.Val(sItem["KYQD1_2"]) + Conversion.Val(sItem["KYQD1_3"])) / 3, 1).ToString("0.0");
+                        sItem["KYPJ2"] = Round((Conversion.Val(sItem["KYQD2_1"]) + Conversion.Val(sItem["KYQD2_2"]) + Conversion.Val(sItem["KYQD2_3"])) / 3, 1).ToString("0.0");
+                        sItem["KYPJ3"] = Round((Conversion.Val(sItem["KYQD3_1"]) + Conversion.Val(sItem["KYQD3_2"]) + Conversion.Val(sItem["KYQD3_3"])) / 3, 1).ToString("0.0");
+                        sItem["KYPJ"] = Round(((Conversion.Val(sItem["KYPJ1"])) + (Conversion.Val(sItem["KYPJ2"])) + (Conversion.Val(sItem["KYPJ3"]))) / 3, 1).ToString("0.0");
                         //计算最大、最小值
                         sItem["DKZX"] = sItem["KYPJ1"];
                         if (Conversion.Val(sItem["DKZX"]) > Conversion.Val(sItem["KYPJ2"]))
@@ -622,7 +622,7 @@ namespace Calculates
                         if (Conversion.Val(sItem["DRXS"]) == 0)
                         { }
                         if (IsQualified(sItem["DRXSYQ"], sItem["DRXS"]) == "符合")
-                        { 
+                        {
                             sItem["DRXSPD"] = "合格";
                         }
                         else
@@ -630,7 +630,7 @@ namespace Calculates
                             sItem["DRXSPD"] = "不合格";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
-                            
+
                     }
                     else
                         sItem["DRXSPD"] = "----";
@@ -647,7 +647,7 @@ namespace Calculates
                         if (Conversion.Val(sItem["HSL1"]) > 0)
                             sItem["HSLPJ"] = Round((Conversion.Val(sItem["HSL1"]) + Conversion.Val(sItem["HSL2"]) + Conversion.Val(sItem["HSL3"])) / 3, 1).ToString("0.0");
 
-                        sItem["HSLPD"] = IsQualified(sItem["HSLYQ"], sItem["HSLPJ"],false);
+                        sItem["HSLPD"] = IsQualified(sItem["HSLYQ"], sItem["HSLPJ"], false);
                         if (sItem["HSLPD"] == "不合格")
                         {
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
@@ -670,13 +670,22 @@ namespace Calculates
                     else
                         sItem["JCJG"] = "合格";
                     mAllHg = (mAllHg && sItem["JCJG"] == "合格");
-                    if (mAllHg)
-                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
-                    else
-                        MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+
                 }
                 #endregion
             }
+
+            if (mAllHg && mjcjg != "----")
+            {
+                MItem[0]["JCJG"] = "合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+            }
+            else
+            {
+                MItem[0]["JCJG"] = "不合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+            }
+
             #endregion
             /************************ 代码结束 *********************/
 
