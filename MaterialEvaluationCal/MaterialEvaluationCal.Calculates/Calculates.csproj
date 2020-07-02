@@ -178,6 +178,7 @@
     <Compile Include="CalculatesNew\wzy\ZJZ_基桩静载%28试桩%29\ZJZ.cs" />
     <Compile Include="CalculatesNew\ywj\BN_保温系统用胶粘剂\BN.cs" />
     <Compile Include="CalculatesNew\ywj\FST_防水涂料\FST.cs" />
+    <Compile Include="CalculatesNew\ywj\GJN_灌浆料\GJN.cs" />
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
     <Compile Include="CalculatesNew\ywj\MXE_马歇尔\MXE.cs" />
     <Compile Include="CalculatesNew\ywj\NZ_腻子\NZ.cs" />
@@ -234,7 +235,6 @@
     <Compile Include="CalculatesNew\lsl\XJL_细集料\XJL.cs" />
     <Compile Include="CalculatesNew\wzy\YKJ_扣件\YKJ.cs" />
     <Compile Include="CalculatesNew\ywj\WJJ_外加剂\WJJ2.cs" />
-    <Compile Include="obj\Debug\.NETFramework,Version=v4.6.1.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

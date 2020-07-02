@@ -134,6 +134,12 @@ namespace Calculates
                 mitem["JCJG"] = "不合格";
                 mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目抗压强度不符合要求";
             }
+            if (hgCount < 5)
+            {
+                mitem["JCJG"] = "作废";
+                mitem["JCJGMS"] = "作废";
+            }
+
             #endregion
         }
     }
