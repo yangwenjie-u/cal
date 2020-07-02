@@ -45,12 +45,12 @@ namespace Calculates
                     bool ret_sjtabcalc = true;
                     int mbhggs = 0;
                     pjmd = 0.6;
-                    pjmd = sitem["SJDJ"].Contains("P4") ? 0.4 : pjmd;
-                    pjmd = sitem["SJDJ"].Contains("P6") ? 0.6 : pjmd;
-                    pjmd = sitem["SJDJ"].Contains("P8") ? 0.8 : pjmd;
-                    pjmd = sitem["SJDJ"].Contains("P10") ? 1.0 : pjmd;
-                    pjmd = sitem["SJDJ"].Contains("P12") ? 1.2 : pjmd;
-                    pjmd = sitem["SJDJ"].Contains("P14") ? 1.4 : pjmd;
+                    pjmd = sitem["QDDJ"].Contains("P4") ? 0.4 : pjmd;
+                    pjmd = sitem["QDDJ"].Contains("P6") ? 0.6 : pjmd;
+                    pjmd = sitem["QDDJ"].Contains("P8") ? 0.8 : pjmd;
+                    pjmd = sitem["QDDJ"].Contains("P10") ? 1.0 : pjmd;
+                    pjmd = sitem["QDDJ"].Contains("P12") ? 1.2 : pjmd;
+                    pjmd = sitem["QDDJ"].Contains("P14") ? 1.4 : pjmd;
                     Gs = 0;
                     for (xd = 1; xd <= 6; xd++)
                     {
@@ -116,7 +116,7 @@ namespace Calculates
                 if (string.IsNullOrEmpty(mSjdj))
                     mSjdj = "";
                 //从设计等级表中取得相应的计算数值、等级标准
-                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["MC"].Contains(mSjdj.Trim()));
+                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["MC"] == mSjdj.Trim());
                 if (mrsDj_Filter != null && mrsDj_Filter.Count > 0)
                 {
                     mSz = mrsDj_Filter["SZ"];

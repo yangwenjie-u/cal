@@ -51,6 +51,19 @@ namespace Calculates.HPB_混凝土配合比
             {
                 mItemHg = true;
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+                #region 用料计算
+                if (IsNumeric(MItem[0]["RZ"]) && IsNumeric(MItem[0]["YSL"]) && IsNumeric(MItem[0]["SHB"]) && IsNumeric(MItem[0]["SL"]))
+                {
+                    //水
+                    MItem[0]["T_CLS"] = MItem[0]["YSL"];
+                    //灰
+                    MItem[0]["T_CLSN"] = Round(GetSafeDouble(MItem[0]["YSL"]) / GetSafeDouble(MItem[0]["SHB"]), 0).ToString("0");
+                    //砂
+                    MItem[0]["T_CLSA"] = Round((GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_CLSN"])) * GetSafeDouble(MItem[0]["SL"]) / 100, 0).ToString("0");
+                    //石子
+                    MItem[0]["T_CLSI"] = Round(GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_CLSN"]) - GetSafeDouble(MItem[0]["T_CLSA"]), 0).ToString("0");
+                }
+                #endregion
 
                 #region 用料配合比计算
                 if (IsNumeric(MItem[0]["T_CLSN"]))
@@ -148,7 +161,7 @@ namespace Calculates.HPB_混凝土配合比
                     MItem[0]["SYRQQ1"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(7).ToShortDateString();
                     MItem[0]["SYRQQ2"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
                 }
-       
+
 
                 var dateTime = new DateTime();
                 if (jcxm.Contains("、7天强度、") || jcxm.Contains("、配合比、"))
@@ -179,7 +192,7 @@ namespace Calculates.HPB_混凝土配合比
                     }
                 }
 
-                if (jcxm.Contains("、28天强度、")  || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、配合比、"))
                 {
                     if (0 == Conversion.Val(sItem["KYPJ1"]))
                     {
@@ -202,7 +215,7 @@ namespace Calculates.HPB_混凝土配合比
                     MItem[0]["SYRQQ2"] = "";
                 }
 
-                if (jcxm.Contains("、28天强度、")  || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、28天强度、") || jcxm.Contains("、配合比、"))
                 {
                     if (-0 <= Conversion.Val(sItem["KYPJ_7"]) && (null == sItem["KYPJ"] || Conversion.Val(sItem["KYPJ"]) <= 0))
                     {
@@ -249,7 +262,7 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["HQL2"] = "----";
                 }
 
-                if (jcxm.Contains("、表观密度、")  || jcxm.Contains("、配合比、"))
+                if (jcxm.Contains("、表观密度、") || jcxm.Contains("、配合比、"))
                 {
                 }
                 else

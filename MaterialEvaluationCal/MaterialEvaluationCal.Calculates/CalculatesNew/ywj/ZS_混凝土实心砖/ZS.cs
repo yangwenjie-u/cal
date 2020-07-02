@@ -370,8 +370,8 @@ namespace Calculates
                             }
 
                             listKYQD.Sort();
-                            sItem["KYPJ"] = Round(listKYQD.Average(), 1).ToString();
-                            sItem["DKZX"] = Round(listKYQD.Min(), 1).ToString();
+                            sItem["KYPJ"] = Round(listKYQD.Average(), 1).ToString("0.0");
+                            sItem["DKZX"] = Round(listKYQD.Min(), 1).ToString("0.0");
 
                             if (IsQualified(MItem[0]["G_PJZ"], sItem["KYPJ"], false) == "合格" && IsQualified(MItem[0]["G_MIN"], sItem["DKZX"], false) == "合格")
                             {
@@ -445,7 +445,7 @@ namespace Calculates
                     {
                         sItem["GMDPJ"] = "----";
                         sItem["GMDPD"] = "----";
-                        sItem["G_GMD"] = "----";
+                        MItem[0]["G_GMD"] = "----";
                         for (xd = 1; xd < 4; xd++)
                         {
                             sItem["GMD" + xd] = "----";
