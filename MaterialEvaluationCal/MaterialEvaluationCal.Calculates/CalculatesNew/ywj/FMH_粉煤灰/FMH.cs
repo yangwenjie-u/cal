@@ -167,8 +167,10 @@ namespace Calculates
                     MItem[0]["G_XSLB"] = mrsDj["XSLB"];
                     /*
                      * 需水量比% = 试验胶砂流动度达到对比胶砂流动度（L0）的+-2mm时的加水量（g）/ 125（对比胶砂加水量[g]）* 100 
+                     * 实际检测机构要求  145 -155的计算公式   需水量比% = 试验胶砂流动度达到对比胶砂流动度（L0）的+-2mm时的加水量（g）/ （对比胶砂加水量[g]）* 100 
                      */
-                    sItem["XSLB"] = Round(Conversion.Val(sItem["SYXSLL1"]) / 125 * 100, 0).ToString("0");
+                    //sItem["XSLB"] = Round(Conversion.Val(sItem["SYXSLL1"]) / 125 * 100, 0).ToString("0");
+                    sItem["XSLB"] = Round(Conversion.Val(sItem["SYXSLL1"]) / Conversion.Val(sItem["DBXSL"]) * 100, 0).ToString("0");
                     var isQ = IsQualified(MItem[0]["G_XSLB"], sItem["XSLB"], true);
 
                     if ("符合" == isQ)

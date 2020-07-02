@@ -616,6 +616,7 @@ namespace Calculates
                 }
                 else
                 {
+                    sItem["TTJHSXS"] = "----";
                     sItem["KYPJ"] = KYPJ;
                 }
 
