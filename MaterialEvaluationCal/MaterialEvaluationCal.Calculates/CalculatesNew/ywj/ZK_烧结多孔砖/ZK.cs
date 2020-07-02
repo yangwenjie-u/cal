@@ -316,7 +316,7 @@ namespace Calculates
                 }
 
                 var mrsgmdjb = extraGMDJB.FirstOrDefault(u => u["MC"] == sItem["GMDDJ"].Trim());
-                if (mrskfhDj != null)
+                if (mrsgmdjb != null)
                 {
                     MItem[0]["G_GMD"] = mrsgmdjb["GMD"];
                 }
@@ -346,11 +346,11 @@ namespace Calculates
                         sItem["GMDKD3"] = Round((Conversion.Val(sItem["GMDKD3_1"]) + Conversion.Val(sItem["GMDKD3_2"])) / 2, 0).ToString();
                         sItem["GMDGD3"] = Round((Conversion.Val(sItem["GMDGD3_1"]) + Conversion.Val(sItem["GMDGD3_2"])) / 2, 0).ToString();
                         double mtj3 = (Conversion.Val(sItem["GMDCD3"]) / 1000 * Conversion.Val(sItem["GMDKD3"]) / 1000 * Conversion.Val(sItem["GMDGD3"]) / 1000);
-                        sItem["GMD1"] = Round((Conversion.Val(sItem["HGHZL1"]) / (mtj1)), 1).ToString();
-                        sItem["GMD2"] = Round((Conversion.Val(sItem["HGHZL2"]) / (mtj2)), 1).ToString();
-                        sItem["GMD3"] = Round((Conversion.Val(sItem["HGHZL3"]) / (mtj3)), 1).ToString();
+                        sItem["GMD1"] = Round((Conversion.Val(sItem["HGHZL1"]) / (mtj1)), 1).ToString("0.0");
+                        sItem["GMD2"] = Round((Conversion.Val(sItem["HGHZL2"]) / (mtj2)), 1).ToString("0.0");
+                        sItem["GMD3"] = Round((Conversion.Val(sItem["HGHZL3"]) / (mtj3)), 1).ToString("0.0");
                         sItem["GMDPJ"] = Round((Conversion.Val(sItem["GMD1"]) + Conversion.Val(sItem["GMD2"]) + Conversion.Val(sItem["GMD3"])) / 3, 0).ToString();
-                        if (IsQualified(MItem[9]["G_GMD"], sItem["GMDPJ"]) == "符合")
+                        if (IsQualified(MItem[0]["G_GMD"], sItem["GMDPJ"]) == "符合")
                         {
                             sItem["GMDPD"] = "合格";
                             mFlag_Hg = true;
@@ -518,7 +518,14 @@ namespace Calculates
                         }
                     }
                     else
+                    {
                         sItem["DRPD"] = "----";
+                        for (int i = 1; i < 6; i++)
+                        {
+                            sItem["DRWG" + i] = "----";
+                        }
+                    }
+
                     if (sItem["QDPD"] == "合格")
                     {
                         if (jcxm.Contains("、吸水率和饱和系数、") || jcxm.Contains("、抗风化性能、"))

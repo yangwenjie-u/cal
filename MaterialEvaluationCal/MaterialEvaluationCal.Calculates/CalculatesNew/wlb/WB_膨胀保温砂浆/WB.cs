@@ -362,11 +362,11 @@ namespace Calculates
                         List<double> lArray = new List<double>();
                         for (int i = 1; i < 7; i++)
                         {
-                            sItem["BGMD" + i] = Round((GetSafeDouble(sItem["BGMDCZL" + i]) / (GetSafeDouble(sItem["BGMDCD" + i]) / 1000) * GetSafeDouble(sItem["BGMDCK" + i]) / 1000 * GetSafeDouble(sItem["BGMDCH" + i]) / 1000), 0).ToString();
+                            sItem["BGMD" + i] = Round((GetSafeDouble(sItem["BGMDCZL" + i]) / ((GetSafeDouble(sItem["BGMDCD" + i]) / 1000) * GetSafeDouble(sItem["BGMDCK" + i]) / 1000 * GetSafeDouble(sItem["BGMDCH" + i]) / 1000)), 0).ToString();
                             lArray.Add(GetSafeDouble(sItem["BGMD" + i]));
                         }
                         lArray.Sort();
-                        sItem["BGMD"] = lArray.Average().ToString();
+                        sItem["BGMD"] = Round(lArray.Average(),0).ToString();
 
                         if (IsQualified(sItem["G_GMD"], sItem["BGMD"], false) == "合格")
                         {
@@ -392,13 +392,13 @@ namespace Calculates
                     {
                         jcxmCur = "抗压强度";
                         List<double> lArray = new List<double>();
-                        for (int i = 1; i < 3; i++)
+                        for (int i = 1; i <= 3; i++)
                         {
                             sItem["KYQD" + i] = Round(GetSafeDouble(sItem["KYQDHZ" + i]) / (GetSafeDouble(sItem["KYQDC" + i]) * GetSafeDouble(sItem["KYQDK" + i])), 2).ToString();
                             lArray.Add(GetSafeDouble(sItem["KYQD" + i]));
                         }
                         lArray.Sort();
-                        sItem["KYQD"] = lArray.Average().ToString();
+                        sItem["KYQD"] = Round(lArray.Average(),2).ToString();
 
                         if (IsQualified(sItem["G_KYQD"], sItem["KYQD"], false) == "合格")
                         {

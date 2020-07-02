@@ -494,7 +494,14 @@ namespace Calculates
                 if (jcxm.Contains("、密度、"))
                 {
                     jcxmCur = "密度";
-                    sitem["MDPC"] = Round((GetSafeDouble(sitem["BGMD"]) - GetSafeDouble(sitem["BCMD"])) / GetSafeDouble(sitem["BCMD"]), 0).ToString();
+                    if (IsNumeric(sitem["BCMD"]))
+                    {
+                        sitem["MDPC"] = Round((GetSafeDouble(sitem["BGMD"]) - GetSafeDouble(sitem["BCMD"])) / GetSafeDouble(sitem["BCMD"]), 0).ToString();
+                    }
+                    else
+                    {
+                        sitem["MDPC"] = "0";
+                    }
                     MItem[0]["G_MD"] = "标称密度±10 % ";
                     if (IsQualified(MItem[0]["G_BGMD"], sitem["MDPC"], true) == "符合")
                     {

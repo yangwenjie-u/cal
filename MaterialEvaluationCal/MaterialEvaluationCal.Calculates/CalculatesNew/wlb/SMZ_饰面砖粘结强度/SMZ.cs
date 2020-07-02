@@ -85,52 +85,139 @@ namespace Calculates
                     if (jcxm.Contains("、粘结强度、"))
                     {
                         jcxmCur = "粘结强度";
-                        double mMj1, mMj2, mMj3, mPjz = 0;
-                        mMj1 = Math.Round(Conversion.Val(sItem["CD1"]) * Conversion.Val(sItem["KD1"]), 1);
-                        mMj2 = Math.Round(Conversion.Val(sItem["CD2"]) * Conversion.Val(sItem["KD2"]), 1);
-                        mMj3 = Math.Round(Conversion.Val(sItem["CD3"]) * Conversion.Val(sItem["KD3"]), 1);
-                        sItem["MJ1"] = Math.Round(mMj1, 1).ToString("0.0");
-                        sItem["MJ2"] = Math.Round(mMj2, 1).ToString("0.0");
-                        sItem["MJ3"] = Math.Round(mMj3, 1).ToString("0.0");
-                        if (mMj1 != 0)
+                        double mMj1, mMj2, mMj3, mMj4, mMj5, mMj6, mPjz = 0;
+                        if (MItem[0]["SFFJ"] == "复检")   //复检
                         {
-                            sItem["KYQD1"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ1"]) / mMj1, 1).ToString();
-                        }
-                        else
-                        {
-                            sItem["KYQD1"] = "0";
-                        }
-                        if (mMj2 != 0)
-                        {
-                            sItem["KYQD2"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj1, 1).ToString();
-                        }
-                        else
-                        {
-                            sItem["KYQD2"] = "0";
-                        }
-                        if (mMj3 != 0)
-                        {
-                            sItem["KYQD3"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj1, 1).ToString();
-                        }
-                        else
-                        {
-                            sItem["KYQD3"] = "0";
-                        }
-                        //计算平均值
-                        mPjz = (Conversion.Val(sItem["KYQD1"]) + Conversion.Val(sItem["KYQD2"]) + Conversion.Val(sItem["KYQD3"])) / 3;
-                        sItem["KYPJ"] = Math.Round(mPjz, 1).ToString();
-                        mPjz = Math.Round(mPjz, 1);
-                        //计算最大、最小值
-                        mlongStr = sItem["KYQD1"].ToString() + "," + sItem["KYQD2"].ToString() + "," + sItem["KYQD3"].ToString();
-                        mtmpArray = mlongStr.Split(',').ToList();
-                        for (int vp = 0; vp < 3; vp++)
-                        {
-                            mkyhzArray.Add(double.Parse(mtmpArray[vp]));
-                        }
-                        mkyhzArray.Sort();
-                        mMaxKyqd = mkyhzArray[2];
-                        mMinKyqd = Math.Round(mkyhzArray[0], 1);
+                            #region 复检
+                            mMj1 = Math.Round(Conversion.Val(sItem["CD1"]) * Conversion.Val(sItem["KD1"]), 1);
+                            mMj2 = Math.Round(Conversion.Val(sItem["CD2"]) * Conversion.Val(sItem["KD2"]), 1);
+                            mMj3 = Math.Round(Conversion.Val(sItem["CD3"]) * Conversion.Val(sItem["KD3"]), 1);
+                            mMj3 = Math.Round(Conversion.Val(sItem["CD3"]) * Conversion.Val(sItem["KD3"]), 1);
+                            mMj4 = Math.Round(Conversion.Val(sItem["CD4"]) * Conversion.Val(sItem["KD4"]), 1);
+                            mMj5 = Math.Round(Conversion.Val(sItem["CD5"]) * Conversion.Val(sItem["KD5"]), 1);
+                            mMj6 = Math.Round(Conversion.Val(sItem["CD6"]) * Conversion.Val(sItem["KD6"]), 1);
 
+                            sItem["MJ1"] = Math.Round(mMj1, 1).ToString("0.0");
+                            sItem["MJ2"] = Math.Round(mMj2, 1).ToString("0.0");
+                            sItem["MJ3"] = Math.Round(mMj3, 1).ToString("0.0");
+                            sItem["MJ4"] = Math.Round(mMj4, 1).ToString("0.0");
+                            sItem["MJ5"] = Math.Round(mMj5, 1).ToString("0.0");
+                            sItem["MJ6"] = Math.Round(mMj6, 1).ToString("0.0");
+
+                            if (mMj1 != 0)
+                            {
+                                sItem["KYQD1"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ1"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD1"] = "0";
+                            }
+                            if (mMj2 != 0)
+                            {
+                                sItem["KYQD2"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD2"] = "0";
+                            }
+                            if (mMj3 != 0)
+                            {
+                                sItem["KYQD3"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD3"] = "0";
+                            }
+                            if (mMj4 != 0)
+                            {
+                                sItem["KYQD4"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD4"] = "0";
+                            }
+                            if (mMj5 != 0)
+                            {
+                                sItem["KYQD5"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ5"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD5"] = "0";
+                            }
+                            if (mMj6 != 0)
+                            {
+                                sItem["KYQD6"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD6"] = "0";
+                            }
+
+                            //计算平均值
+                            mPjz = (Conversion.Val(sItem["KYQD1"]) + Conversion.Val(sItem["KYQD2"]) + Conversion.Val(sItem["KYQD3"]) + Conversion.Val(sItem["KYQD4"]) + Conversion.Val(sItem["KYQD5"]) + Conversion.Val(sItem["KYQD6"])) / 6;
+                            sItem["KYPJ"] = Math.Round(mPjz, 1).ToString();
+                            mPjz = Math.Round(mPjz, 1);
+                            //计算最大、最小值
+                            mlongStr = sItem["KYQD1"].ToString() + "," + sItem["KYQD2"].ToString() + "," + sItem["KYQD3"].ToString() + "," + sItem["KYQD4"].ToString() + "," + sItem["KYQD5"].ToString() + "," + sItem["KYQD6"].ToString();
+                            mtmpArray = mlongStr.Split(',').ToList();
+                            for (int vp = 0; vp < 6; vp++)
+                            {
+                                mkyhzArray.Add(double.Parse(mtmpArray[vp]));
+                            }
+                            mkyhzArray.Sort();
+                            mMaxKyqd = mkyhzArray[5];
+                            mMinKyqd = Math.Round(mkyhzArray[0], 1);
+                            #endregion
+                        }
+                        else
+                        {
+                            #region 初检
+                            mMj1 = Math.Round(Conversion.Val(sItem["CD1"]) * Conversion.Val(sItem["KD1"]), 1);
+                            mMj2 = Math.Round(Conversion.Val(sItem["CD2"]) * Conversion.Val(sItem["KD2"]), 1);
+                            mMj3 = Math.Round(Conversion.Val(sItem["CD3"]) * Conversion.Val(sItem["KD3"]), 1);
+                            sItem["MJ1"] = Math.Round(mMj1, 1).ToString("0.0");
+                            sItem["MJ2"] = Math.Round(mMj2, 1).ToString("0.0");
+                            sItem["MJ3"] = Math.Round(mMj3, 1).ToString("0.0");
+                            if (mMj1 != 0)
+                            {
+                                sItem["KYQD1"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ1"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD1"] = "0";
+                            }
+                            if (mMj2 != 0)
+                            {
+                                sItem["KYQD2"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD2"] = "0";
+                            }
+                            if (mMj3 != 0)
+                            {
+                                sItem["KYQD3"] = Math.Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj1, 1).ToString();
+                            }
+                            else
+                            {
+                                sItem["KYQD3"] = "0";
+                            }
+                            //计算平均值
+                            mPjz = (Conversion.Val(sItem["KYQD1"]) + Conversion.Val(sItem["KYQD2"]) + Conversion.Val(sItem["KYQD3"])) / 3;
+                            sItem["KYPJ"] = Math.Round(mPjz, 1).ToString();
+                            mPjz = Math.Round(mPjz, 1);
+                            //计算最大、最小值
+                            mlongStr = sItem["KYQD1"].ToString() + "," + sItem["KYQD2"].ToString() + "," + sItem["KYQD3"].ToString();
+                            mtmpArray = mlongStr.Split(',').ToList();
+                            for (int vp = 0; vp < 3; vp++)
+                            {
+                                mkyhzArray.Add(double.Parse(mtmpArray[vp]));
+                            }
+                            mkyhzArray.Sort();
+                            mMaxKyqd = mkyhzArray[2];
+                            mMinKyqd = Math.Round(mkyhzArray[0], 1);
+                            #endregion
+                        }
                         //单组合格判定
                         if (mPjz < mPjbxy)
                         {
@@ -190,11 +277,25 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+                if (MItem[0]["SFFJ"] == "复检")   //复检
+                {
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，经复检所检项目均符合要求。";
+                }
+                else
+                {
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+                }
             }
             else
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
+                if (MItem[0]["SFFJ"] == "复检")   //复检
+                {
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，经复检所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，该批产品不合格。";
+                }
+                else
+                {
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
+                }
             }
 
             //if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"].Trim()))

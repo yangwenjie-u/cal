@@ -55,14 +55,21 @@ namespace Calculates
                     double md1 = 0, md2 = 0, md = 0, xd1 = 0, xd2 = 0, xd = 0, ba = 0, kz = 0, b1 = 0;
 
                     jcxmCur = "活性指数";
-                    md1 = GetSafeDouble(sItem["S_JZQD7"]);
-                    md2 = GetSafeDouble(sItem["S_SJQD7"]);
-                    md = md1 != 0 ? Math.Round(md2 * 100 / md1, 1) : 0;
+                    if (!string.IsNullOrEmpty(sItem["S_JZQD7"]))  //计算
+                    {
+                        md1 = GetSafeDouble(sItem["S_JZQD7"]);
+                        md2 = GetSafeDouble(sItem["S_SJQD7"]);
+                        md = md1 != 0 ? Math.Round(md2 * 100 / md1, 1) : 0;
 
-                    xd1 = GetSafeDouble(sItem["S_JZQD28"]);
-                    xd2 = GetSafeDouble(sItem["S_SJQD28"]);
-                    xd = xd1 != 0 ? Math.Round(xd2 * 100 / xd1) : 0;
-
+                        xd1 = GetSafeDouble(sItem["S_JZQD28"]);
+                        xd2 = GetSafeDouble(sItem["S_SJQD28"]);
+                        xd = xd1 != 0 ? Math.Round(xd2 * 100 / xd1) : 0;
+                    }
+                    else   //直接输入结果
+                    {
+                        md = GetSafeDouble(sItem["W_HXZS7"]);
+                        xd = GetSafeDouble(sItem["W_HXZS28"]);
+                    }
                     b1 = GetSafeDouble(sItem["G_HXZS7"]);
                     kz = GetSafeDouble(sItem["G_HXZS28"]);
                     if (md >= b1 && xd >= kz)
@@ -96,16 +103,22 @@ namespace Calculates
                     double md1 = 0, md2 = 0, md = 0, xd1 = 0, xd2 = 0, xd = 0, ba = 0, kz = 0, b1 = 0;
 
                     jcxmCur = "流动度比";
-                    md1 = GetSafeDouble(sItem["S_JZLD1"]);
-                    md2 = GetSafeDouble(sItem["S_SJLD1"]);
-                    md = md1 != 0 ? Math.Round(md2 * 100 / md1, 1) : 0;
+                    if (!string.IsNullOrEmpty(sItem["S_JZLD1"]))    //计算
+                    {
+                        md1 = GetSafeDouble(sItem["S_JZLD1"]);
+                        md2 = GetSafeDouble(sItem["S_SJLD1"]);
+                        md = md1 != 0 ? Math.Round(md2 * 100 / md1, 1) : 0;
 
-                    xd1 = GetSafeDouble(sItem["S_JZLD2"]);
-                    xd2 = GetSafeDouble(sItem["S_SJLD2"]);
-                    xd = xd1 != 0 ? Math.Round(xd2 * 100 / xd1) : 0;
+                        xd1 = GetSafeDouble(sItem["S_JZLD2"]);
+                        xd2 = GetSafeDouble(sItem["S_SJLD2"]);
+                        xd = xd1 != 0 ? Math.Round(xd2 * 100 / xd1) : 0;
 
-                    md = Math.Round((md + xd) / 2, 0);
-
+                        md = Math.Round((md + xd) / 2, 0);
+                    }
+                    else   //直接输入结果
+                    {
+                        md = GetSafeDouble(sItem["W_LDDB"]);
+                    }
                     b1 = GetSafeDouble(sItem["G_LDDB"]);
                     if (md >= b1)
                     {
@@ -135,17 +148,24 @@ namespace Calculates
 
                     double md1 = 0, md2 = 0, md = 0, xd1 = 0, xd2 = 0, b1 = 0, xd = 0;
                     jcxmCur = "含水量";
-                    md1 = GetSafeDouble(sItem["S_HGQ1"]) - GetSafeDouble(sItem["S_GGZL1"]);
-                    md2 = GetSafeDouble(sItem["S_HGH1"]) - GetSafeDouble(sItem["S_GGZL1"]);
-                    md = md1 - md2;
-                    md = md1 != 0 ? Math.Round(md * 100 / md1, 2) : 0;
+                    if (!string.IsNullOrEmpty(sItem["S_HGQ1"]))  //计算
+                    {
+                        md1 = GetSafeDouble(sItem["S_HGQ1"]) - GetSafeDouble(sItem["S_GGZL1"]);
+                        md2 = GetSafeDouble(sItem["S_HGH1"]) - GetSafeDouble(sItem["S_GGZL1"]);
+                        md = md1 - md2;
+                        md = md1 != 0 ? Math.Round(md * 100 / md1, 2) : 0;
 
-                    xd1 = GetSafeDouble(sItem["S_HGQ2"]) - GetSafeDouble(sItem["S_GGZL2"]);
-                    xd2 = GetSafeDouble(sItem["S_HGH2"]) - GetSafeDouble(sItem["S_GGZL2"]);
-                    xd = xd1 - xd2;
-                    xd = xd1 != 0 ? Math.Round(xd * 100 / xd1, 2) : 0;
+                        xd1 = GetSafeDouble(sItem["S_HGQ2"]) - GetSafeDouble(sItem["S_GGZL2"]);
+                        xd2 = GetSafeDouble(sItem["S_HGH2"]) - GetSafeDouble(sItem["S_GGZL2"]);
+                        xd = xd1 - xd2;
+                        xd = xd1 != 0 ? Math.Round(xd * 100 / xd1, 2) : 0;
 
-                    md = Math.Round((md + xd) / 2, 1);
+                        md = Math.Round((md + xd) / 2, 1);
+                    }
+                    else  //直接输入结果
+                    {
+                        md = GetSafeDouble(sItem["W_HSL"]);
+                    }
                     b1 = GetSafeDouble(sItem["G_HSL"]);
                     if (md <= b1)
                     {
@@ -157,9 +177,8 @@ namespace Calculates
                         sItem["HSL_GH"] = "不合格";
                         mAllHg = false;
                     }
-                    sItem["G_HSL"] = "≥" + sItem["G_HSL"];
+                    sItem["G_HSL"] = "≤" + sItem["G_HSL"];
                     sItem["W_HSL"] = md.ToString("0.0");
-
                 }
                 else
                 {
@@ -190,6 +209,54 @@ namespace Calculates
                     sItem["SSL_GH"] = "----";
                     sItem["G_SSL"] = "----";
                     sItem["W_SSL"] = "----";
+                }
+                #endregion
+
+                #region 比表面积
+                if (jcxm.Contains("、比表面积、"))
+                {
+                    jcxmCur = "比表面积";
+                    if (Conversion.Val(sItem["W_BBMJ"]) >= Conversion.Val(sItem["G_BBMJ"]))
+                    {
+                        sItem["BBMJ_GH"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["BBMJ_GH"] = "不合格";
+                        mAllHg = false;
+                    }
+                    sItem["G_BBMJ"] = "≥" + sItem["G_BBMJ"];
+                }
+                else
+                {
+                    sItem["BBMJ_GH"] = "----";
+                    sItem["G_BBMJ"] = "----";
+                    sItem["W_BBMJ"] = "----";
+                }
+                #endregion
+
+                #region 密度
+                if (jcxm.Contains("、密度、"))
+                {
+                    jcxmCur = "密度";
+                    if (Conversion.Val(sItem["W_MD"]) >= Conversion.Val(sItem["G_MD"]))
+                    {
+                        sItem["MD_GH"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["MD_GH"] = "不合格";
+                        mAllHg = false;
+                    }
+                    sItem["G_MD"] = "≥" + sItem["G_MD"];
+                }
+                else
+                {
+                    sItem["MD_GH"] = "----";
+                    sItem["G_MD"] = "----";
+                    sItem["W_MD"] = "----";
                 }
                 #endregion
 
