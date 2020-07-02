@@ -191,7 +191,10 @@ namespace Calculates
                         if (sitem["HG_NJQD"] != "不合格")
                             mFlag_Hg = true;
                         else
+                        {
                             mFlag_Bhg = true;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
@@ -312,6 +315,8 @@ namespace Calculates
                     {
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                     }
                     else
                     {
@@ -417,6 +422,8 @@ namespace Calculates
                     {
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                     }
                     else
                         mFlag_Hg = true;
@@ -434,6 +441,8 @@ namespace Calculates
                     {
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                     }
                     else
                         mFlag_Hg = true;
@@ -452,6 +461,8 @@ namespace Calculates
                     {
                         mbhggs = mbhggs + 1;
                         mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                     }
                     else
                         mFlag_Hg = true;
@@ -500,6 +511,8 @@ namespace Calculates
                         {
                             mbhggs = mbhggs + 1;
                             mFlag_Bhg = true;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+
                         }
                     }
                     else
@@ -540,7 +553,7 @@ namespace Calculates
                 MItem[0]["JCJG"] = "不合格";
                 MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 if (mFlag_Bhg && mFlag_Hg)
-                    MItem[0]["JCJGMS"] = "依据标准" + MItem[0]["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合标准要求，需重新试验";
+                    MItem[0]["JCJGMS"] = "依据标准" + MItem[0]["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合标准要求，需复检。";
             }
             #endregion
         }

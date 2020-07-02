@@ -135,197 +135,180 @@ namespace Calculates
                 {
                     LwBzyq = "试验弯曲至30度后焊接部位无裂纹。";
                 }
-                sItem["G_KLQD"] = mKlqd.ToString();
+                sItem["G_KLQD"] = "≥" + mKlqd.ToString();
                 //sItem["G_LWWZ"] = LwBzyq.ToString(); //
 
                 //求抗拉强度
+
                 if (0 == Conversion.Val(sItem["ZJ"]))
                 {
+                    sItem["GG"] = "宽:" + sItem["KD1"] + "\n厚:" + sItem["HD1"];
                     sItem["MJ"] = (Conversion.Val(sItem["HD1"]) * Conversion.Val(sItem["KD1"])).ToString();
-                    //sItem["GG"] = "宽:" + sItem["KD1"] + "\n厚:" + sItem["HD1"];
                 }
                 else
                 {
                     md = Conversion.Val(sItem["ZJ"].Trim()) / 2;
                     md = Math.Round(3.14159 * Math.Pow(md, 2), 3);
                     sItem["MJ"] = md.ToString("0.000");
-                    //sItem["GG"] = "Φ:" + sItem["ZJ"].Trim();
+                    sItem["GG"] = "Φ:" + sItem["ZJ"].Trim();
                 }
                 decimal kl1, kl2 = 0;
-                string kj1, kj2 = "";
+                kl1 = GetSafeDecimal(sItem["KLQD1"]);
+                kl2 = GetSafeDecimal(sItem["KLQD2"]);
+
+                if (jcxm.Contains("、拉伸、"))
                 {
-                    kl1 = GetSafeDecimal(sItem["KLQD1"]);
-                    kl2 = GetSafeDecimal(sItem["KLQD2"]);
-                    //kj1 = sItem["DKJ1"];
-                    //kj2 = sItem["DKJ2"];
-
-                    //switch (kj1.ToString())
-                    //{
-                    //    case "1":
-                    //        sItem["DLTZ1"] = "断于焊缝之外，延性断裂";
-                    //        break;
-                    //    case "2":
-                    //        sItem["DLTZ1"] = "断于焊缝，延性断裂";
-                    //        break;
-                    //    case "3":
-                    //        sItem["DLTZ1"] = "断于焊缝之外，脆性断裂";
-                    //        break;
-                    //    case "4":
-                    //        sItem["DLTZ1"] = "断于焊缝，脆性断裂";
-                    //        break;
-                    //    case "5":
-                    //        sItem["DLTZ1"] = "既断于热影响区又脆断";
-                    //        break;
-                    //    case "6":
-                    //        sItem["DLTZ1"] = "断于热影响区，延性断裂";
-                    //        break;
-                    //    case "7":
-                    //        sItem["DLTZ1"] = "断于钢筋母材，延性断裂";
-                    //        break;
-                    //    case "8":
-                    //        sItem["DLTZ1"] = "断于钢筋母材，脆性断裂";
-                    //        break;
-                    //    case "9":
-                    //        sItem["DLTZ1"] = "断于焊缝，脆性断裂(焊口开裂)";
-                    //        break;
-                    //}
-
-                    if (jcxm.Contains("、拉伸、"))
+                    jcxmCur = "抗拉强度";
+                    var mj = 0.0;
+                    for (int i = 1; i < 3; i++)
                     {
-                        jcxmCur = "拉伸";
-                        var mj = 0.0;
-                        for (int i = 1; i < 3; i++)
-                        {
-                            if (Conversion.Val(sItem["HD1"]) * Conversion.Val(sItem["KD1"]) == 0)
-                            {
-                                sItem["KLQD" + i] = "0";
-                                continue;
-                            }
-                            mj = Conversion.Val(sItem["HD" + i]) * Conversion.Val(sItem["KD" + i]);
 
-                            if (string.IsNullOrEmpty(sItem["KLHZ" + i]))
-                            {
-                                sItem["KLHZ" + i] = "0";
-                            }
-                            sItem["KLQD" + i] = myint(1000 * Conversion.Val(sItem["KLHZ" + i]) / mj).ToString();
-                        }
-
-                        var mallBhg_kl = 0;
-                        for (int i = 1; i < 3; i++)
+                        if (Conversion.Val(sItem["ZJ" + i]) != 0)
                         {
-                            if (GetSafeDouble(sItem["KLQD" + i]) >= mKlqd)
-                                sItem["HG_KL"] = (Conversion.Val(sItem["HG_KL"]) + 1).ToString();
-                            else
-                                mallBhg_kl += 1;
-                        }
+                            md = Conversion.Val(sItem["ZJ" + i].Trim()) / 2;
+                            mj = Math.Round(3.14159 * Math.Pow(md, 2), 3);
+                            sItem["GG" + i] = "Φ:" + sItem["ZJ" + i].Trim();
 
-                        if (mallBhg_kl == 0)
-                        {
-                            sItem["JCJG_LS"] = "符合";
                         }
                         else
                         {
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sItem["GG" + i] = "宽:" + sItem["KD" + i] + "\n厚:" + sItem["HD" + i];
+
+                            mj = Conversion.Val(sItem["HD" + i]) * Conversion.Val(sItem["KD" + i]);
+                        }
+
+                        if (string.IsNullOrEmpty(sItem["KLHZ" + i]))
+                        {
+                            sItem["KLHZ" + i] = "0";
+                        }
+                        sItem["KLQD" + i] = myint(1000 * Conversion.Val(sItem["KLHZ" + i]) / mj).ToString();
+                    }
+
+                    var mallBhg_kl = 0;
+                    for (int i = 1; i < 3; i++)
+                    {
+                        if (GetSafeDouble(sItem["KLQD" + i]) >= mKlqd)
+                            sItem["HG_KL"] = (Conversion.Val(sItem["HG_KL"]) + 1).ToString();
+                        else
+                            mallBhg_kl += 1;
+                    }
+
+                    if (mallBhg_kl == 0)
+                    {
+                        sItem["JCJG_LS"] = "符合";
+                    }
+                    else
+                    {
+                        sItem["JCJG_LS"] = "不符合";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                else
+                {
+                    sItem["JCJG_LS"] = "----";
+                    sItem["DKJ1"] = "----";
+                    sItem["DKJ2"] = "----";
+                }
+
+                if (jcxm.Contains("、弯曲、"))
+                {
+                    jcxmCur = "弯曲";
+                    int Gs = 0;
+                    decimal sum = 0;
+
+                    sItem["MWJG1"] = "";
+                    sItem["MWJG2"] = "";
+                    sItem["BWJG1"] = "";
+                    sItem["BWJG2"] = "";
+                    sItem["CWJG1"] = "";
+                    sItem["CWJG2"] = "";
+                    sItem["CWJG3"] = "";
+                    sItem["CWJG4"] = "";
+
+                    if (sItem["GJLB"] == "对接接头")
+                    {
+                        for (int i = 1; i < 5; i++)
+                        {
+                            if (sItem["SYLX" + i] == "面弯" && string.IsNullOrEmpty(sItem["MWJG1"]))
+                            {
+                                sItem["MWJG1"] = sItem["LW" + i];
+                            }
+                            else if (sItem["SYLX" + i] == "面弯")
+                            {
+                                sItem["MWJG2"] = sItem["LW" + i];
+                            }
+                            if (sItem["SYLX" + i] == "背弯" && string.IsNullOrEmpty(sItem["BWJG1"]))
+                            {
+                                sItem["BWJG1"] = sItem["LW" + i];
+                            }
+                            else if (sItem["SYLX" + i] == "背弯")
+                            {
+                                sItem["BWJG2"] = sItem["LW" + i];
+                            }
+
+                            if (sItem["SYLX" + i] == "侧弯")
+                            {
+                                sItem["CWJG" + i] = sItem["LW" + i];
+                            }
+
+                            //弯曲最大单值 
+                            if (GetSafeDecimal(sItem["WQZDDZ" + i]) > 3)
+                            {
+                                Gs = Gs + 1;
+                            }
+                            //总和值
+                            if (GetSafeDecimal(sItem["WQZHZ" + i]) > 7)
+                            {
+                                Gs = Gs + 1;
+                            }
+                            sum += GetSafeDecimal(sItem["WQZHZ" + i]);
+                        }
+                        sItem["SYZHZ"] = sum.ToString();
+                        if (sum > 24)
+                        {
+                            Gs++;
                         }
                     }
                     else
                     {
-                        sItem["JCJG_LS"] = "----";
-                        sItem["DKJ1"] = "----";
-                        sItem["DKJ2"] = "----";
-                    }
-
-                    if (jcxm.Contains("、弯曲、"))
-                    {
-                        jcxmCur = "弯曲";
-                        int Gs = 0;
-                        decimal sum = 0;
-
-                        if (sItem["GJLB"] == "对接接头")
+                        //栓钉焊接头
+                        for (int i = 1; i < 5; i++)
                         {
-                            for (int i = 1; i < 5; i++)
-                            {
-                                if (sItem["SYLX" + i] == "面弯" && string.IsNullOrEmpty(sItem["MWJG1"]))
-                                {
-                                    sItem["MWJG1"] = sItem["LW" + i];
-                                }
-                                else if (sItem["SYLX" + i] == "面弯")
-                                {
-                                    sItem["MWJG2"] = sItem["LW" + i];
-                                }
-                                if (sItem["SYLX" + i] == "背弯" && string.IsNullOrEmpty(sItem["BWJG1"]))
-                                {
-                                    sItem["BWJG1"] = sItem["LW" + i];
-                                }
-                                else if (sItem["SYLX" + i] == "背弯")
-                                {
-                                    sItem["BWJG2"] = sItem["LW" + i];
-                                }
-
-                                if (sItem["SYLX" + i] == "侧弯")
-                                {
-                                    sItem["CWJG" + i] = sItem["LW" + i];
-                                }
-
-                                //弯曲最大单值 
-                                if (GetSafeDecimal(sItem["WQZDDZ" + i]) > 3)
-                                {
-                                    Gs = Gs + 1;
-                                }
-                                //总和值
-                                if (GetSafeDecimal(sItem["WQZHZ" + i]) > 7)
-                                {
-                                    Gs = Gs + 1;
-                                }
-                                sum += GetSafeDecimal(sItem["WQZHZ" + i]);
-                            }
-                            sItem["SYZHZ"] = sum.ToString();
-                            if (sum > 24 )
+                            if (sItem["LW" + i] != "无裂纹")
                             {
                                 Gs++;
                             }
                         }
-                        else
-                        {
-                            //栓钉焊接头
-                            for (int i = 1; i < 5; i++)
-                            {
-                                if (sItem["LW" + i] != "无裂纹")
-                                {
-                                    Gs++;
-                                }
-                            }
-                        }
+                    }
 
-                        if (Gs < 1)
-                        {
-                            sItem["JCJG_LW"] = "符合";
-                        }
-                        else
-                        {
-                            sItem["JCJG_LW"] = "不符合";
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        }
+                    if (Gs < 1)
+                    {
+                        sItem["JCJG_LW"] = "符合";
                     }
                     else
                     {
-                        sItem["JCJG_LW"] = "----";
-                        sItem["LW1"] = "----";
-                        sItem["LW2"] = "----";
-                        sItem["LW3"] = "----";
-                        sItem["LW4"] = "----";
+                        sItem["JCJG_LW"] = "不符合";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
+                }
+                else
+                {
+                    sItem["JCJG_LW"] = "----";
+                    sItem["LW1"] = "----";
+                    sItem["LW2"] = "----";
+                    sItem["LW3"] = "----";
+                    sItem["LW4"] = "----";
+                }
 
-                    if ((sItem["JCJG_LS"] == "符合" || sItem["JCJG_LS"] == "----") && (sItem["JCJG_LW"] == "符合" || sItem["JCJG_LW"] == "----"))
-                    {
-                        sItem["JCJG"] = "合格";
-                        mFlag_Hg = true;
-                    }
-                    else
-                    {
-                        sItem["JCJG"] = "不合格";
-                        mFlag_Bhg = true;
-                    }
+                if ((sItem["JCJG_LS"] == "符合" || sItem["JCJG_LS"] == "----") && (sItem["JCJG_LW"] == "符合" || sItem["JCJG_LW"] == "----"))
+                {
+                    sItem["JCJG"] = "合格";
+                    mFlag_Hg = true;
+                }
+                else
+                {
+                    sItem["JCJG"] = "不合格";
+                    mFlag_Bhg = true;
                 }
                 mjcjg = sItem["JCJG"];
 
@@ -340,7 +323,7 @@ namespace Calculates
             }
             else
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。";
             }
 
             if (mjcjg == "不下结论")

@@ -638,6 +638,7 @@ namespace Calculates
                     sitem["BGSCJG2"] = "----";
                     sitem["BGDXPD2"] = "----";
                 }
+                curJcxmCount = 4;
                 if (jcxm.Contains("、液压试验、"))
                 {
                     jcxmCur = "液压试验";
@@ -717,8 +718,7 @@ namespace Calculates
                                     sitem["YYSYWD" + md] = cs[0].Trim() + "℃";
                                     sitem["YYSYSJ" + md] = cs[1].Trim();
                                 }
-                                sitem["YYSYHYL" + md] = System.Text.RegularExpressions.Regex.Replace(syyl, @"[^0-9]+", "") + "MPa";
-
+                                sitem["YYSYHYL" + md] = System.Text.RegularExpressions.Regex.Replace(syyl, @"[^\d^\.]+", "") + "MPa";
                                 if (yysyCs.Contains("，"))
                                     yysyCs = yysyCs.Replace("，", " " + syyl + " ");
                                 else
@@ -746,7 +746,8 @@ namespace Calculates
                                 {
                                     ztsj = "16h±1h;";
                                 }
-                                sitem["YYSYZT"] = "试验制备条件：状态调节时间：" + ztsj + "；试验环境：" + sitem["YYSYHJ"] + "；密封接头类型：" + sitem["YYSYJTLX"];
+                                sitem["YYTJSJ"] = ztsj;
+                                sitem["YYSYZT"] = "试验制备条件：" + (string.IsNullOrEmpty(sitem["YYZBTJ"].ToString()) == true ? "/" : sitem["YYSYHJ"]) + "；状态调节时间：" + sitem["YYTJSJ"] + "；试验环境：" + sitem["YYSYHJ"] + "；密封接头类型：" + sitem["YYSYJTLX"];
                                 //sitem["BGJCXM" + (curJcxmCount + md - 1)] = mtmpArray[xd] + yysyCs;
 
                                 if (!string.IsNullOrEmpty(yysyCs))
