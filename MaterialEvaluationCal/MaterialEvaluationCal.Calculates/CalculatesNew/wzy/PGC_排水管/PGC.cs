@@ -323,7 +323,7 @@ namespace Calculates
                                 }
                                 arrDZWJ.Add(GetSafeDecimal(sitem["WJ" + i + "_" + j]));
                             }
-                            var pjz = Math.Round(arrDZWJ.Average(),1);
+                            var pjz = Math.Round(arrDZWJ.Average(), 1);
                             if (pjz < wjMin || pjz > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
                             {
                                 //单组不合格
@@ -683,7 +683,12 @@ namespace Calculates
                     {
                         if (mtmpArray[xd].Contains("落锤冲击") || mtmpArray[xd].Contains("冲击性能") || mtmpArray[xd].Contains("落锤冲击试验"))
                         {
-                            sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd] + "(TIR)/%";
+                            if (mitem["G_LCCJ"].Contains("≤"))
+                                sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd] + "(TIR)/%";
+                            else
+                            {
+                                sitem["BGJCXM" + curJcxmCount] = mtmpArray[xd];
+                            }
                             break;
                         }
                     }
@@ -1042,7 +1047,7 @@ namespace Calculates
                 }
                 mAllHg = (mAllHg && sitem["JCJG"].Trim() == "合格");
 
-                CCBHG_FLAG:
+            CCBHG_FLAG:
                 if (GGCCBHG)
                 {
                     mAllHg = false;
