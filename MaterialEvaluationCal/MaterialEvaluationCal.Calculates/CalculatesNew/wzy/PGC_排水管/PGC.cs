@@ -323,7 +323,7 @@ namespace Calculates
                                 }
                                 arrDZWJ.Add(GetSafeDecimal(sitem["WJ" + i + "_" + j]));
                             }
-                            var pjz = arrDZWJ.Average();
+                            var pjz = Math.Round(arrDZWJ.Average(),1);
                             if (pjz < wjMin || pjz > wjMax) //该组外径合格，则去掉该组，如果大于1，尺寸不合格
                             {
                                 //单组不合格
