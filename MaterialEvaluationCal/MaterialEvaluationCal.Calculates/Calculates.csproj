@@ -74,7 +74,6 @@
     <Compile Include="CalculatesNew\ltk\YKJ_扣件\YKJ.cs" />
     <Compile Include="CalculatesNew\ltk\YKJ_扣件\YKJBAK.cs" />
     <Compile Include="CalculatesNew\ltk\矿物外加剂MA\MA.cs" />
-    <Compile Include="CalculatesNew\ltk\矿物外加剂\MA.cs" />
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
     <Compile Include="CalculatesNew\qsf\test.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
