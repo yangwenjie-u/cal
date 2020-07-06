@@ -72,13 +72,12 @@ namespace Calculates
                     continue;
                 }
 
-                
              
                 jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (jcxm.Contains("、流动度、"))
                 {
                     jcxmCur = "流动度";
-                    
+
 
                     decimal scldds = GetSafeDecimal(sitem["JZLDD_S"]);
                     decimal scldde = GetSafeDecimal(sitem["JZLDD_E"]);
@@ -86,7 +85,7 @@ namespace Calculates
                     sitem["DXPD_30"] = IsQualified(sitem["G_LDD2"], sitem["JZLDD_E"]);
                     if (sitem["DXPD"] == "不合格")
                     {
-                        dzpd = false;                       
+                        dzpd = false;
                     }
                     if (sitem["DXPD_30"] == "不合格")
                     {
@@ -99,10 +98,19 @@ namespace Calculates
                         mAllHg = false;
                     }
                 }
+                else
+                {
+                    sitem["G_LDD1"] = "----";
+                    sitem["G_LDD2"] = "----";
+                    sitem["JZLDD_S"] = "----";
+                    sitem["JZLDD_E"] = "----";
+
+
+                }
                 if (jcxm.Contains("、氯离子含量、"))
                 {
                     jcxmCur = "氯离子含量";
-                                   
+
                     sitem["LLZDXPD"] = IsQualified(sitem["G_LLZHL"], sitem["LLZHL"]);
                     if (sitem["LLZDXPD"] == "不合格")
                     {
@@ -111,15 +119,20 @@ namespace Calculates
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                     }
-                    
+
 
 
 
                 }
+                else
+                {
+                    sitem["G_LLZHL"] = "----";
+                    sitem["LLZHL"] = "----";
+                }
                 if (jcxm.Contains("、泌水率、"))
                 {
                     jcxmCur = "泌水率";
-                 
+
 
                     decimal msl = GetSafeDecimal(sitem["LJMSL"]) / GetSafeDecimal(sitem["WLBMJ"]);
                     decimal syzl = GetSafeDecimal(sitem["SYJSYZZL"]) - GetSafeDecimal(sitem["SYTZL"]);
@@ -133,16 +146,16 @@ namespace Calculates
                     decimal syzl3 = GetSafeDecimal(sitem["SYJSYZZL3"]) - GetSafeDecimal(sitem["SYTZL3"]);
                     decimal msll3 = msl / (GetSafeDecimal(sitem["BHWYSZL3"]) / GetSafeDecimal(sitem["HNTBHWZL3"]) * syzl) * 100;
 
-                    decimal mslpj = Math.Round((msll + msl2 + msl3) / 3,2);
+                    decimal mslpj = Math.Round((msll + msl2 + msl3) / 3, 2);
                     List<decimal> list = new List<decimal>();
                     list.Add(msll);
                     list.Add(msl2);
                     list.Add(msl3);
-                   
+
 
                     list.Sort();
 
-                    if (list[1] - list[0] >= list[1] * GetSafeDecimal("0.15")||list[2]-list[1]>= list[1] * GetSafeDecimal("0.15"))
+                    if (list[1] - list[0] >= list[1] * GetSafeDecimal("0.15") || list[2] - list[1] >= list[1] * GetSafeDecimal("0.15"))
                     {
                         sitem["SCMSL"] = list[1].ToString("0.00");
                         if (sitem["SCMSL"] == "0")
@@ -171,16 +184,23 @@ namespace Calculates
 
 
 
-                    }
+                }
+                else
+                {
+                    sitem["SCMSL"] = "----";
+                    sitem["MSLDXPD"] = "----";
+                }
+
+
                 if (jcxm.Contains("、竖向膨胀率、"))
                 {
                     jcxmCur = "竖向膨胀率";
-                   
+
 
                     pzl1 = (GetSafeDecimal(sitem["CSGD"]) - GetSafeDecimal(sitem["SGGD_3h"])) / 100 * 100;
                     pzl2 = (GetSafeDecimal(sitem["CSGD2"]) - GetSafeDecimal(sitem["SGGD2_3h"])) / 100 * 100;
                     pzl3 = (GetSafeDecimal(sitem["CSGD3"]) - GetSafeDecimal(sitem["SGGD3_3h"])) / 100 * 100;
-                    decimal pz= (pzl1 + pzl2 + pzl3) / 3;
+                    decimal pz = (pzl1 + pzl2 + pzl3) / 3;
                     sitem["SXPZL"] = pz.ToString("0.00");
 
                     pzl1_1 = (GetSafeDecimal(sitem["CSGD"]) - GetSafeDecimal(sitem["SGGD1_24h"])) / 100 * 100;
@@ -190,9 +210,9 @@ namespace Calculates
                     sitem["SXPZL_24h"] = pz_1.ToString("0.00");
 
                     sitem["PZLCZ"] = (pz_1 - pz).ToString("0.00");
-                   
-                     sitem["PZLDXPD"]= IsQualified(sitem["G_SXPZL"], sitem["SXPZL"]);
-                     sitem["PZLDXPD1"] = IsQualified(sitem["G_PZLCZ"], sitem["PZLCZ"]);
+
+                    sitem["PZLDXPD"] = IsQualified(sitem["G_SXPZL"], sitem["SXPZL"]);
+                    sitem["PZLDXPD1"] = IsQualified(sitem["G_PZLCZ"], sitem["PZLCZ"]);
                     if (sitem["PZLDXPD"] == "不合格")
                     {
                         dzpd = false;
@@ -210,21 +230,28 @@ namespace Calculates
                     }
 
                 }
+                else
+                {
+                    sitem["SXPZL"] = "----";
+                    sitem["PZLCZ"] = "----";
+                    sitem["PZLDXPD"] = "----";
+                    sitem["PZLDXPD1"] = "----";
 
 
+                }
 
                 if (jcxm.Contains("、抗压强度、"))
                 {
                     jcxmCur = "抗压强度";
-                  
+
                     sitem["KYQD1"] = Math.Round((GetSafeDecimal(sitem["KYHZ1"]) / 1600) * 1000, 1).ToString();
                     sitem["KYQD2"] = Math.Round((GetSafeDecimal(sitem["KYHZ2"]) / 1600) * 1000, 1).ToString();
                     sitem["KYQD3"] = Math.Round((GetSafeDecimal(sitem["KYHZ3"]) / 1600) * 1000, 1).ToString();
                     sitem["KYQD4"] = Math.Round((GetSafeDecimal(sitem["KYHZ4"]) / 1600) * 1000, 1).ToString();
                     sitem["KYQD5"] = Math.Round((GetSafeDecimal(sitem["KYHZ5"]) / 1600) * 1000, 1).ToString();
-                    sitem["KYQD6"] = Math.Round((GetSafeDecimal(sitem["KYHZ6"]) / 1600) * 1000, 1).ToString();                   
-                    KYPJ_1 = Math.Round((GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"])) / 6,2);
-                    decimal sum = GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD1"]);
+                    sitem["KYQD6"] = Math.Round((GetSafeDecimal(sitem["KYHZ6"]) / 1600) * 1000, 1).ToString();
+                    KYPJ_1 = Math.Round((GetSafeDecimal(sitem["KYQD1"]) + GetSafeDecimal(sitem["KYQD2"]) + GetSafeDecimal(sitem["KYQD3"]) + GetSafeDecimal(sitem["KYQD4"]) + GetSafeDecimal(sitem["KYQD5"]) + GetSafeDecimal(sitem["KYQD6"])) / 6, 2);
+
                     KYPJMIN_1 = KYPJ_1 * (GetSafeDecimal("0.9"));
                     KYPJMAX_1 = KYPJ_1 * (GetSafeDecimal("1.1"));
 
@@ -252,11 +279,12 @@ namespace Calculates
                         mitem["G_JG"] = IsQualified(mitem["G_HGQD"], sitem["KYPJ"]);
                         if (mitem["G_JG"] == "不合格")
                         {
-                            dzpd = false;                          
-                        }                       
+                            dzpd = false;
+                        }
                     }
                     else
                     {
+                        mAllHg = false;
                         //作废
                         sitem["KYPJ"] = "作废";
                         mitem["G_JG"] = "不合格";
@@ -269,7 +297,7 @@ namespace Calculates
                     sitem["KYQD6_3"] = Math.Round((GetSafeDecimal(sitem["KYHZ3d6"]) / 1600) * 1000, 1).ToString();
 
                     KYPJ_3 = Math.Round((GetSafeDecimal(sitem["KYQD1_3"]) + GetSafeDecimal(sitem["KYQD2_3"]) + GetSafeDecimal(sitem["KYQD3_3"]) + GetSafeDecimal(sitem["KYQD4_3"]) + GetSafeDecimal(sitem["KYQD5_3"]) + GetSafeDecimal(sitem["KYQD6_3"])) / 6, 2);
-                    decimal sum_3 = GetSafeDecimal(sitem["KYQD1_3"]) + GetSafeDecimal(sitem["KYQD2_3"]) + GetSafeDecimal(sitem["KYQD3_3"]) + GetSafeDecimal(sitem["KYQD4_3"]) + GetSafeDecimal(sitem["KYQD5_3"]) + GetSafeDecimal(sitem["KYQD6_3"]);
+
 
                     KYPJMIN_3 = KYPJ_3 * (GetSafeDecimal("0.9"));
                     KYPJMAX_3 = KYPJ_3 * (GetSafeDecimal("1.1"));
@@ -298,12 +326,13 @@ namespace Calculates
                         mitem["G_JG_3"] = IsQualified(mitem["G_HGQD"], sitem["KYPJ_3"]);
                         if (mitem["G_JG_3"] == "不合格")
                         {
-                            dzpd = false;                            
+                            dzpd = false;
                         }
-                   
+
                     }
                     else
                     {
+                        mAllHg = false;
                         //单组作废
                         sitem["KYPJ3"] = "作废";
                         mitem["G_JG_3"] = "不合格";
@@ -317,7 +346,7 @@ namespace Calculates
                     sitem["KYQD6_28"] = Math.Round((GetSafeDecimal(sitem["KYHZ28d1"]) / 1600) * 1000, 1).ToString();
 
                     KYPJ_28 = Math.Round((GetSafeDecimal(sitem["KYQD1_28"]) + GetSafeDecimal(sitem["KYQD2_28"]) + GetSafeDecimal(sitem["KYQD3_28"]) + GetSafeDecimal(sitem["KYQD4_28"]) + GetSafeDecimal(sitem["KYQD5_28"]) + GetSafeDecimal(sitem["KYQD6_28"])) / 6, 2);
-                    decimal sum_28 = GetSafeDecimal(sitem["KYQD1_28"]) + GetSafeDecimal(sitem["KYQD2_28"]) + GetSafeDecimal(sitem["KYQD3_28"]) + GetSafeDecimal(sitem["KYQD4_28"]) + GetSafeDecimal(sitem["KYQD5_28"]) + GetSafeDecimal(sitem["KYQD6_28"]);
+
 
                     KYPJMIN_28 = KYPJ_28 * (GetSafeDecimal("0.9"));
                     KYPJMAX_28 = KYPJ_28 * (GetSafeDecimal("1.1"));
@@ -347,14 +376,24 @@ namespace Calculates
                         if (mitem["G_JG_28"] == "不合格")
                         {
                             dzpd = false;
-                        }                      
+                        }
                     }
                     else
                     {
+                        mAllHg = false;
                         //作废
                         sitem["KYPJ28"] = "作废";
                         mitem["G_JG_28"] = "不合格";
                     }
+                }
+                else
+                {
+                    sitem["KYPJ"] = "----";
+                    mitem["G_JG"] = "----";
+                    sitem["KYPJ_3"] = "----";
+                    mitem["G_JG_3"] = "----";
+                    sitem["KYPJ_28"] = "----";
+                    mitem["G_JG_28"] = "----";
                 }
 
             }
