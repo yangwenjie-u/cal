@@ -77,7 +77,7 @@ namespace Calculates
                     sitem["KYQD6"] = KYQD6.ToString();
                     
                     KYPJ = Math.Round((KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD5 + KYQD6) / 6,2);
-                    decimal sum = KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD5 + KYQD6;
+                    decimal sum = 0;
 
                     KYPJMIN = KYPJ * (GetSafeDecimal("0.9"));
                     KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
