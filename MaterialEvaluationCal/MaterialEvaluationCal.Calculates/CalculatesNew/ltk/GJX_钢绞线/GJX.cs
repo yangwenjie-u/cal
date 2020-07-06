@@ -77,6 +77,10 @@ namespace Calculates
                     }
                     sItem["GH_YSL"] = "≥" + sItem["GH_YSL"];//GH_YSL:要求规范非比例延伸力
                     sItem["G_YSL"] = sign ? "符合" : "不符合";//G_YSL:判定规范非比例延伸力
+                    if (!sign)
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                     Bhgs = sign ? Bhgs : Bhgs + 1;
                 }
                 else
@@ -105,6 +109,10 @@ namespace Calculates
                     }
                     sItem["GH_TXML"] = "195±10";
                     sItem["G_TXML"] = sign ? "符合" : "不符合";
+                    if (!sign)
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                     Bhgs = sign ? Bhgs : Bhgs + 1;
                 }
                 else
@@ -133,6 +141,10 @@ namespace Calculates
                     }
                     sItem["GH_ZDL"] = "≥" + sItem["G_ZDL"];
                     sItem["G_ZDL"] = sign ? "符合" : "不符合";
+                    if (!sign)
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                     Bhgs = sign ? Bhgs : Bhgs + 1;
                 }
                 else
@@ -162,6 +174,10 @@ namespace Calculates
                       }
                       sItem["GH_JMJ"] = "≥" + sItem["G_JMJ"];
                       sItem["G_JMJ"] = sign ? "符合" : "不符合";
+                if (!sign)
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                       Bhgs = sign ? Bhgs : Bhgs + 1;
                   }
                   else
@@ -198,6 +214,10 @@ namespace Calculates
                     
                     sItem["GH_ZJ"] = sItem["ZJ"];
                     sItem["ZJ_GH"] = sign ? "符合" : "不符合";
+                    if (!sign)
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                     Bhgs = sign ? Bhgs : Bhgs + 1;
 
 
@@ -233,6 +253,10 @@ namespace Calculates
                     }
                     sItem["GH_SCL"] = "≥" + sItem["G_SCL"];
                     sItem["G_SCL"] = sign ? "符合" : "不符合";
+                    if (!sign)
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                     Bhgs = sign ? Bhgs : Bhgs + 1;
 
 
