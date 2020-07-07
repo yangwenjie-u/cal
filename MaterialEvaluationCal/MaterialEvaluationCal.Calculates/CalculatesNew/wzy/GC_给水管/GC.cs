@@ -313,7 +313,7 @@ namespace Calculates
                     }
                     #region
                     //平均外径
-                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCWJ"] == sitem["GCWJ"] && x["GXL"] == sitem["GXL"]);
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCWJ"] == sitem["GCWJ"] && x["GXL"] == sitem["GXL"]&& x["PDBZ"] == sitem["DYBZ"]);
                     if (mrsWgcc_Filter == null && mrsDj_Filter.Count() == 0)
                     {
                         mjcjg = "不下结论";
@@ -338,7 +338,7 @@ namespace Calculates
                     decimal jxpc = 0;
                     foreach (var item in mrsBhgc_Filter)
                     {
-                        if (IsQualified(item["GCBH"], sitem["GCBH"]) == "合格")
+                        if (IsQualified("≥"+item["GCBH"], sitem["GCBH"]) == "合格")
                         {
                             jxpc = GetSafeDecimal(item["JXPC"]);
                             break;
