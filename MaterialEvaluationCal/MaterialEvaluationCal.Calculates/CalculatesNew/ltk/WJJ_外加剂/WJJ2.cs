@@ -387,7 +387,7 @@ namespace Calculates
                         mTmpArray.Clear();
                         for (int i = 1; i < 4; i++)
                         {//
-                            sItem["SPHWZL_" + i] = (Conversion.Val(sItem["SPBSN" + i]) + Conversion.Val(sItem["SPBCHL1" + i]) + Conversion.Val(sItem["SPBCHL2" + i]) + Conversion.Val(sItem["SPBSA" + i]) + Conversion.Val(sItem["SPBSZ" + i]) + Conversion.Val(sItem["SPBWJJ1" + i]) + Conversion.Val(sItem["SPBWJJ2" + i])+ Conversion.Val(sItem["MSBYS_" + i])).ToString();
+                            sItem["SPHWZL_" + i] = (Conversion.Val(sItem["SPBSN" + i]) + Conversion.Val(sItem["SPBCHL1" + i]) + Conversion.Val(sItem["SPBCHL2" + i]) + Conversion.Val(sItem["SPBS" + i]) + Conversion.Val(sItem["SPBSA" + i]) + Conversion.Val(sItem["SPBSZ" + i]) + Conversion.Val(sItem["SPBWJJ1" + i]) + Conversion.Val(sItem["SPBWJJ2" + i])).ToString();
                             sItem["MSBYS_" + i] = sItem["SPBS" + i];
                             sItem["SSYZL_" + i] = (Conversion.Val(sItem["STSYZL" + i]) - Conversion.Val(sItem["STZL" + i])).ToString();
                             if (IsNumeric(sItem["SMSZL_" + i]))
