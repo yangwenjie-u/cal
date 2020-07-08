@@ -163,7 +163,7 @@
     <Compile Include="CalculatesNew\wlb\FQ_酚醛泡沫\FQ.cs" />
     <Compile Include="CalculatesNew\wlb\FP_风机盘管\FP.cs" />
     <Compile Include="CalculatesNew\wlb\CZJ_非结构承载用石材胶粘剂\CZJ.cs" />
-    <Compile Include="CalculatesNew\wlb\GGH-焊接钢管%28结构用%29\GGH.cs" />
+    <Compile Include="CalculatesNew\ltk\GGH-焊接钢管%28结构用%29\GGH.cs" />
     <Compile Include="CalculatesNew\ltk\GXF_钢管%28结构用%29复试\GXF.cs" />
     <Compile Include="CalculatesNew\wzy\HT1_混凝土回弹\HT1.cs" />
     <Compile Include="CalculatesNew\wzy\JPH_集料配合比\JPH.cs" />
