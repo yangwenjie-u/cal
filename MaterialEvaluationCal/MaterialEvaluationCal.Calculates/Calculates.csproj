@@ -55,7 +55,7 @@
     <Compile Include="Base\SQLHelper.cs" />
     <Compile Include="CalculatesNew\lq\其他排水管\QPS.cs" />
     <Compile Include="CalculatesNew\lq\其他给水管\QGS.cs" />
-    <Compile Include="CalculatesNew\lsl\FS_防水卷材\FS.cs" />
+    <Compile Include="CalculatesNew\ltk\FS_防水卷材\FS.cs" />
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
     <Compile Include="CalculatesNew\ltk\GHF_钢筋焊接复试\GHF.cs" />
@@ -188,7 +188,7 @@
     <Compile Include="CalculatesNew\wzy\ZGY_基桩高应变\ZGY.cs" />
     <Compile Include="CalculatesNew\wzy\ZJZ_基桩静载%28试桩%29\ZJZ.cs" />
     <Compile Include="CalculatesNew\ywj\BN_保温系统用胶粘剂\BN.cs" />
-    <Compile Include="CalculatesNew\ywj\FST_防水涂料\FST.cs" />
+    <Compile Include="CalculatesNew\ltk\FST_防水涂料\FST.cs" />
     <Compile Include="CalculatesNew\ywj\GJN_灌浆料\GJN.cs" />
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
     <Compile Include="CalculatesNew\ywj\MXE_马歇尔\MXE.cs" />
@@ -235,7 +235,7 @@
     <Compile Include="CalculatesNew\wzy\SPB_砂浆配合比\SPB.cs" />
     <Compile Include="CalculatesNew\lsl\TS_土塑性指数\TS.cs" />
     <Compile Include="CalculatesNew\lsl\XJL_细集料\XJL.cs" />
-    <Compile Include="CalculatesNew\ywj\WJJ_外加剂\WJJ2.cs" />
+    <Compile Include="CalculatesNew\ltk\WJJ_外加剂\WJJ2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
