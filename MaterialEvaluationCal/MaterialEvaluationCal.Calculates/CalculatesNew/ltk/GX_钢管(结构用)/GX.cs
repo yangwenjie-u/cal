@@ -286,11 +286,11 @@ namespace Calculates
                             {
                                 mbHggs++;
                             }
-                            //}
-                            #endregion
+                            
+                            
 
                         }
-
+                       
                         // 抗拉强度
                         md1 = GetSafeDouble(sItem["KLHZ"]);
                         md2 = sum;
@@ -398,6 +398,7 @@ namespace Calculates
                 {
                     sign = false;
                 }
+                #endregion
 
                 if (!sign)
                 {

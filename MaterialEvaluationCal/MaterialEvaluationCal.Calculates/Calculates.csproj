@@ -74,7 +74,6 @@
     <Compile Include="CalculatesNew\ltk\YKJ_扣件\YKJ.cs" />
     <Compile Include="CalculatesNew\ltk\YKJ_扣件\YKJBAK.cs" />
     <Compile Include="CalculatesNew\ltk\矿物外加剂MA\MA.cs" />
-    <Compile Include="CalculatesNew\ltk\矿物外加剂\MA.cs" />
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
     <Compile Include="CalculatesNew\qsf\test.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
@@ -115,7 +114,6 @@
     <Compile Include="CalculatesNew\wzy\TL_涂料物理力学\TL.cs" />
     <Compile Include="CalculatesNew\wzy\TP_混凝土普通砖\TP.cs" />
     <Compile Include="CalculatesNew\wzy\XGL_砂%28国标砌筑用%29\XGL.cs" />
-    <Compile Include="CalculatesNew\wzy\YKJ_扣件\YKJBAK.cs" />
     <Compile Include="CalculatesNew\wzy\ZDC_基桩低应变动测\ZDC.cs" />
     <Compile Include="CalculatesNew\wzy\CGL-石子%28国标%29\CGL.cs" />
     <Compile Include="CalculatesNew\wzy\BB_聚苯板\BB.cs" />
@@ -132,7 +130,6 @@
     <Compile Include="CalculatesNew\lsl\SS_砂砾\SS.cs" />
     <Compile Include="CalculatesNew\lsl\SWJ_石灰水泥剂量\SWJ.cs" />
     <Compile Include="CalculatesNew\lsl\WCX_无侧限抗压\WCX.cs" />
-    <Compile Include="CalculatesNew\qsf\GYC 钢筋原材料\GYC.cs" />
     <Compile Include="CalculatesNew\wlb\AM_安全帽\AM.cs" />
     <Compile Include="CalculatesNew\wlb\HSI_石子%28行标砼用%29\HSI.cs" />
     <Compile Include="CalculatesNew\wlb\GUT_钢结构探伤（超声波）\GUT.cs" />
@@ -148,9 +145,8 @@
     <Compile Include="CalculatesNew\wzy\DXL_电线电缆\DXL.cs" />
     <Compile Include="CalculatesNew\wzy\FSJ_砂浆混凝土防水剂\FSJ.cs" />
     <Compile Include="CalculatesNew\wzy\FSX_放射性核素限量\FSX.cs" />
-    <Compile Include="CalculatesNew\wzy\GG_钢管%28脚手架用%29\GG.cs" />
+    <Compile Include="CalculatesNew\ltk\GG_钢管%28脚手架用%29\GG.cs" />
     <Compile Include="CalculatesNew\wzy\GHT_高强度混凝土回弹\GHT.cs" />
-    <Compile Include="CalculatesNew\wzy\GLJ_机械连接\GLJ.cs" />
     <Compile Include="CalculatesNew\wzy\HJ_室内环境\HJ.cs" />
     <Compile Include="CalculatesNew\wzy\JMC_门窗传热系数\JMC.cs" />
     <Compile Include="CalculatesNew\wzy\JBW_保温系统用玻纤网\JBW.cs" />
@@ -167,11 +163,10 @@
     <Compile Include="CalculatesNew\wlb\FQ_酚醛泡沫\FQ.cs" />
     <Compile Include="CalculatesNew\wlb\FP_风机盘管\FP.cs" />
     <Compile Include="CalculatesNew\wlb\CZJ_非结构承载用石材胶粘剂\CZJ.cs" />
-    <Compile Include="CalculatesNew\wlb\GGH-焊接钢管%28结构用%29\GGH.cs" />
-    <Compile Include="CalculatesNew\wlb\GXF_钢管%28结构用%29复试\GXF.cs" />
+    <Compile Include="CalculatesNew\ltk\GGH-焊接钢管%28结构用%29\GGH.cs" />
+    <Compile Include="CalculatesNew\ltk\GXF_钢管%28结构用%29复试\GXF.cs" />
     <Compile Include="CalculatesNew\wzy\HT1_混凝土回弹\HT1.cs" />
     <Compile Include="CalculatesNew\wzy\JPH_集料配合比\JPH.cs" />
-    <Compile Include="CalculatesNew\qsf\LKH 抗滑移系数\LKH.cs" />
     <Compile Include="CalculatesNew\qsf\QNX 蒸压加气混凝土用砂浆2017\QNX.cs" />
     <Compile Include="CalculatesNew\qsf\RF 燃烧性能分级\RF.cs" />
     <Compile Include="CalculatesNew\qsf\SC 采暖散热器\SC.cs" />
@@ -182,7 +177,7 @@
     <Compile Include="CalculatesNew\wlb\XJ_现场胶粘剂拉伸\XJ.cs" />
     <Compile Include="CalculatesNew\wlb\JL-加固正拉粘结强度\JL.cs" />
     <Compile Include="CalculatesNew\wlb\ZZQ_复合地基增强体\ZZQ.cs" />
-    <Compile Include="CalculatesNew\wlb\GX_钢管%28结构用%29\GX.cs" />
+    <Compile Include="CalculatesNew\ltk\GX_钢管%28结构用%29\GX.cs" />
     <Compile Include="CalculatesNew\lsl\SPA_沥青混泥土配合比\SPA.cs" />
     <Compile Include="CalculatesNew\wlb\WB_膨胀保温砂浆\WB.cs" />
     <Compile Include="CalculatesNew\wlb\TB_轻质条板\TB.cs" />
@@ -199,8 +194,6 @@
     <Compile Include="CalculatesNew\ywj\MXE_马歇尔\MXE.cs" />
     <Compile Include="CalculatesNew\ywj\NZ_腻子\NZ.cs" />
     <Compile Include="CalculatesNew\ywj\SNK_灌浆料试块\SNK.cs" />
-    <Compile Include="CalculatesNew\ywj\XHF_型钢焊接复试\XHF.cs" />
-    <Compile Include="CalculatesNew\ywj\XHJ_型钢焊接\XHJ.cs" />
     <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\ywj\TGB_土工合成材料\TGB.cs" />
     <Compile Include="CalculatesNew\ywj\FM_阀门\FM.cs" />
@@ -220,15 +213,10 @@
     <Compile Include="CalculatesNew\ywj\ZF_粉煤灰砖\ZF.cs" />
     <Compile Include="CalculatesNew\ywj\Class.cs" />
     <Compile Include="CalculatesNew\ywj\FMH_粉煤灰\FMH.cs" />
-    <Compile Include="CalculatesNew\ywj\GHF_钢筋焊接复试\GHF.cs" />
-    <Compile Include="CalculatesNew\ywj\GHJ_钢筋焊接\GHJ.cs" />
     <Compile Include="CalculatesNew\ywj\HD_混凝土抗冻\HD.cs" />
     <Compile Include="CalculatesNew\ywj\HPB_混凝土配合比\HPB.cs" />
-    <Compile Include="CalculatesNew\ywj\JGF_钢筋型材复试\JGF.cs" />
-    <Compile Include="CalculatesNew\ywj\JGG_钢筋型材\JGG.cs" />
     <Compile Include="CalculatesNew\ywj\MMJ_保温系统用砂浆\MMJ.cs" />
     <Compile Include="CalculatesNew\ywj\JXB_金属面夹芯板\JXB.cs" />
-    <Compile Include="CalculatesNew\ywj\LNJ_高强度螺栓连接副\LNJ.cs" />
     <Compile Include="CalculatesNew\ywj\PZJ_混凝土膨胀剂\PZJ.cs" />
     <Compile Include="CalculatesNew\ywj\QK2_加气切块\QK2.cs" />
     <Compile Include="CalculatesNew\ywj\QK3_轻集料空心砌块\QK3.cs" />
@@ -238,18 +226,15 @@
     <Compile Include="CalculatesNew\ywj\ZS_混凝土实心砖\ZS.cs" />
     <Compile Include="Calculates\Common\BaseData.cs" />
     <Compile Include="Calculates\Common\BaseMethods.cs" />
-    <Compile Include="CalculatesNew\qsf\GYF 钢筋原材料复试\GYF.cs" />
     <Compile Include="Calculates\DemoCode.cs" />
     <Compile Include="CalculatesNew\wlb\XC_现场气密性\XC.cs" />
     <Compile Include="CalculatesNew\wlb\WZ_节能取芯\WZ.cs" />
-    <Compile Include="CalculatesNew\wzy\GLF_机械连接复试\GLF.cs" />
     <Compile Include="CalculatesNew\wzy\HSZ_蒸压灰砂砖\HSZ.cs" />
     <Compile Include="CalculatesNew\lsl\KF_矿粉\KF.cs" />
     <Compile Include="CalculatesNew\wzy\KS_混凝土抗渗\KS.cs" />
     <Compile Include="CalculatesNew\wzy\SPB_砂浆配合比\SPB.cs" />
     <Compile Include="CalculatesNew\lsl\TS_土塑性指数\TS.cs" />
     <Compile Include="CalculatesNew\lsl\XJL_细集料\XJL.cs" />
-    <Compile Include="CalculatesNew\wzy\YKJ_扣件\YKJ.cs" />
     <Compile Include="CalculatesNew\ywj\WJJ_外加剂\WJJ2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
