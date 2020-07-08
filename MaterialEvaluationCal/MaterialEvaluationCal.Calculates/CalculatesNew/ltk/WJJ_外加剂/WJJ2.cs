@@ -793,7 +793,7 @@ namespace Calculates
                             throw new Exception("请输入经受检1h后坍落度变化量参数");
                         }
                         sItem["TLDBHLSJ_" + i] = Round((Conversion.Val(sItem["TLD1HCSJ_" + i]) - Conversion.Val(sItem["TLD1HHSJ_" + i])), 0).ToString();
-                        mTmpArray.Add(GetSafeDouble(sItem["TLDBHL" + i]));
+                        mTmpArray.Add(GetSafeDouble(sItem["TLDBHLSJ_" + i]));
                     }
 
                     mTmpArray.Sort();
