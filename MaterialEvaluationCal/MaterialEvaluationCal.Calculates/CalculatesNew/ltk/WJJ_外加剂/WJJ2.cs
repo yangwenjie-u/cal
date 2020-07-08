@@ -56,7 +56,7 @@ namespace Calculates
                     mSjdj = "";
                 }
 
-                #region
+                #region 等级表处理
                 var mrsDj = extraDJ.FirstOrDefault(u => u["MC"] == mSjdj);
 
                 if (null == mrsDj)
@@ -87,6 +87,8 @@ namespace Calculates
 
                 mJSFF = string.IsNullOrEmpty(mrsDj["JSFF"]) ? "" : mrsDj["JSFF"].ToLower();
                 #endregion
+
+                #region 等级表处理
                 if (jcxm.Contains("、细度、"))
                 {
                     jcxmCur = "细度";
@@ -126,7 +128,9 @@ namespace Calculates
                     MItem[0]["HG_XD"] = "----";
                     MItem[0]["G_XD"] = "----";
                 }
+                #endregion
 
+                #region 密度
                 if (jcxm.Contains("、密度、"))
                 {
                     jcxmCur = "密度";
@@ -189,7 +193,9 @@ namespace Calculates
                     MItem[0]["HG_MD"] = "----";
                     MItem[0]["G_MD"] = "----";
                 }
+                #endregion
 
+                #region 固体含量
                 if (jcxm.Contains("、固体含量、"))
                 {
                     jcxmCur = "固体含量";
@@ -240,7 +246,10 @@ namespace Calculates
                     sItem["GTHL"] = "----";
                     MItem[0]["G_GTHL"] = "----";
                 }
+                #endregion
 
+
+                #region 含水率
                 if (jcxm.Contains("、含水率、"))
                 {
                     jcxmCur = "含水率";
@@ -295,7 +304,9 @@ namespace Calculates
                     MItem[0]["G_HSL"] = "----";
                     MItem[0]["HG_HSL"] = "----";
                 }
+                #endregion
 
+                #region 泌水率
                 if (jcxm.Contains("、泌水率、"))
                 {
                     jcxmCur = "泌水率";
@@ -376,7 +387,7 @@ namespace Calculates
                         mTmpArray.Clear();
                         for (int i = 1; i < 4; i++)
                         {//
-                            sItem["SPHWZL_" + i] = (Conversion.Val(sItem["SPBSN" + i]) + Conversion.Val(sItem["SPBCHL1" + i]) + Conversion.Val(sItem["SPBCHL2" + i]) + Conversion.Val(sItem["SPBSA" + i]) + Conversion.Val(sItem["SPBSZ" + i]) + Conversion.Val(sItem["SPBWJJ1" + i]) + Conversion.Val(sItem["SPBWJJ2" + i])).ToString();
+                            sItem["SPHWZL_" + i] = (Conversion.Val(sItem["SPBSN" + i]) + Conversion.Val(sItem["SPBCHL1" + i]) + Conversion.Val(sItem["SPBCHL2" + i]) + Conversion.Val(sItem["SPBSA" + i]) + Conversion.Val(sItem["SPBSZ" + i]) + Conversion.Val(sItem["SPBWJJ1" + i]) + Conversion.Val(sItem["SPBWJJ2" + i])+ Conversion.Val(sItem["MSBYS_" + i])).ToString();
                             sItem["MSBYS_" + i] = sItem["SPBS" + i];
                             sItem["SSYZL_" + i] = (Conversion.Val(sItem["STSYZL" + i]) - Conversion.Val(sItem["STZL" + i])).ToString();
                             if (IsNumeric(sItem["SMSZL_" + i]))
@@ -467,7 +478,9 @@ namespace Calculates
                     sItem["MSLB"] = "-----";
                     MItem[0]["HG_MSL"] = "----";
                 }
+                #endregion
 
+                #region 减水率
                 if (jcxm.Contains("、减水率、"))
                 {
                     jcxmCur = "减水率";
@@ -552,7 +565,9 @@ namespace Calculates
                     sItem["PJJSL"] = "----";
                     MItem[0]["HG_JSL"] = "----";
                 }
+                #endregion
 
+                #region 含气量
                 if (jcxm.Contains("、含气量、"))
                 {
                     jcxmCur = "含气量";
@@ -586,6 +601,10 @@ namespace Calculates
                     sItem["PJHQL"] = "----";
                     MItem[0]["HG_HQL"] = "----";
                 }
+
+                #endregion
+
+                #region 经1h后含气量变化量
                 if (jcxm.ToLower().Contains("、经1h后含气量变化量、"))
                 {
                     jcxmCur = "经1h后含气量变化量";
@@ -709,7 +728,10 @@ namespace Calculates
                     sItem["HQLBHL"] = "----";
                     MItem[0]["HG_HQLBHL"] = "----";
                 }
+                #endregion
 
+
+                #region 经1h后坍落度变化量
                 if (jcxm.Contains("、经1h后坍落度变化量、"))
                 {
                     jcxmCur = "经1h后坍落度变化量";
@@ -844,7 +866,9 @@ namespace Calculates
                     sItem["PJTLDBHL"] = "----";
                     MItem[0]["HG_TLD"] = "----";
                 }
+                #endregion
 
+                #region 初凝时间差
                 if (jcxm.Contains("、初凝时间差、"))
                 {
                     jcxmCur = "初凝时间差";
@@ -920,7 +944,9 @@ namespace Calculates
                     sItem["CNPJSJC"] = "----";
                     MItem[0]["HG_CNSJC"] = "----";
                 }
+                #endregion
 
+                #region 终凝时间差
                 if (jcxm.Contains("、终凝时间差、"))
                 {
                     jcxmCur = "终凝时间差";
@@ -996,7 +1022,9 @@ namespace Calculates
                     sItem["ZNPJSJC"] = "----";
                     MItem[0]["HG_ZNSJC"] = "----";
                 }
+                #endregion
 
+                #region 相对耐久性
                 if (jcxm.Contains("、相对耐久性、"))
                 {
                     jcxmCur = "相对耐久性";
@@ -1027,6 +1055,7 @@ namespace Calculates
                     sItem["XPJDTXML"] = "----";
                     MItem[0]["HG_XDNJX"] = "----";
                 }
+                #endregion
 
                 double[] Arrmd = new double[4];
                 for (int qdi = 1; qdi <= 4; qdi++)
@@ -1231,7 +1260,8 @@ namespace Calculates
                         MItem[0]["HG_KYQD" + mlq] = "----";
                     }
                 }
-
+                
+                #region 收缩率比
                 if (jcxm.Contains("、收缩率比、"))
                 {
                     jcxmCur = "收缩率比";
@@ -1262,7 +1292,9 @@ namespace Calculates
                     MItem[0]["HG_SSLB"] = "----";
                     MItem[0]["G_SSLB"] = "----";
                 }
+                #endregion
 
+                #region PH值
                 if (jcxm.Contains("、PH值、"))
                 {
                     jcxmCur = "PH值";
@@ -1293,7 +1325,8 @@ namespace Calculates
                     MItem[0]["HG_PH"] = "----";
                     MItem[0]["G_PH"] = "----";
                 }
-
+                #endregion
+                #region 氯离子含量
                 if (jcxm.Contains("、氯离子含量、"))
                 {
                     jcxmCur = "氯离子含量";
@@ -1320,7 +1353,9 @@ namespace Calculates
                     sItem["LLZHL"] = "----";
                     MItem[0]["HG_LLZHL"] = "----";
                 }
+                #endregion
 
+                #region 总碱量
                 if (jcxm.Contains("、总碱量、"))
                 {
                     jcxmCur = "总碱量";
@@ -1350,7 +1385,9 @@ namespace Calculates
                     MItem[0]["HG_ZJL"] = "----";
                     MItem[0]["G_ZJL"] = "----";
                 }
+                #endregion
 
+                #region 硫酸钠含量
                 if (jcxm.Contains("、硫酸钠含量、"))
                 {
                     jcxmCur = "硫酸钠含量";
@@ -1387,7 +1424,7 @@ namespace Calculates
                     sItem["LSNHL"] = "----";
                     MItem[0]["HG_LSNHL"] = "----";
                 }
-
+                #endregion
                 if (mbhggs == 0)
                 {
                     sItem["JCJG"] = "合格";
