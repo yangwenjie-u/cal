@@ -88,7 +88,7 @@ namespace Calculates
                 mJSFF = string.IsNullOrEmpty(mrsDj["JSFF"]) ? "" : mrsDj["JSFF"].ToLower();
                 #endregion
 
-                #region 等级表处理
+                #region 细度
                 if (jcxm.Contains("、细度、"))
                 {
                     jcxmCur = "细度";
@@ -1056,6 +1056,7 @@ namespace Calculates
                     MItem[0]["HG_XDNJX"] = "----";
                 }
                 #endregion
+
 
                 double[] Arrmd = new double[4];
                 for (int qdi = 1; qdi <= 4; qdi++)

@@ -11,6 +11,7 @@ namespace Calculates
     {
         public void Calc()
         {
+            #region 
             /************************ 代码开始 *********************/
 
             #region 参数定义
@@ -357,6 +358,7 @@ namespace Calculates
             #endregion
 
             /************************ 代码结束 *********************/
+            #endregion
         }
     }
 }

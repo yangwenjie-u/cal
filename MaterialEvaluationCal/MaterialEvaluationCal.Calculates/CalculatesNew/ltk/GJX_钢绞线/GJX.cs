@@ -135,8 +135,8 @@ namespace Calculates
 
                     for (xd = 1; xd < Max_zs + 1; xd++)
                     {
-                        md = GetSafeDouble(sItem["ZDL" + xd].Trim());//TXML:最大力1-6
-                        sItem["W_ZDL" + xd] = sItem["ZDL" + xd].Trim();//W_TXML最大力1-6
+                        md = GetSafeDouble(sItem["ZDL" + xd].Trim());//ZDL:最大力1-6
+                        sItem["W_ZDL" + xd] = sItem["ZDL" + xd].Trim();//ZDL最大力1-6
                         sign = md >= GetSafeDouble(sItem["G_ZDL"]) ? sign : false;
                     }
                     sItem["GH_ZDL"] = "≥" + sItem["G_ZDL"];
