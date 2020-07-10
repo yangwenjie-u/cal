@@ -12,8 +12,7 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region
-            #region
-            //获取帮助表数据
+          
             var extraDJ = dataExtra["BZ_GX_DJ"];
 
             //var jcxmItems = retData.Select(u => u.Key).ToArray();
@@ -72,7 +71,7 @@ namespace Calculates
                         SFlg = false;
                         break;
                 }
-
+                #region 等级表处理
                 foreach (var extraFieldsDj in extraDJ)
                 {
                     if (sItem["GGPH"].Trim() == extraFieldsDj["GGPH"].Trim() && sItem["YPMC"].Trim() == extraFieldsDj["GGLB"].Trim())
@@ -128,6 +127,7 @@ namespace Calculates
                         break;
                     }
                 }
+                #endregion
 
                 #region 压扁    
                 if (jcxm.Contains("、压扁、"))
@@ -425,7 +425,7 @@ namespace Calculates
                     sItem["QFQD"] = "----";
                     sItem["QFQD2"] = "----";
                 }
-                #endregion
+              
                 if (itemHG)
                 {
                     sItem["JCJG"] = "合格";
