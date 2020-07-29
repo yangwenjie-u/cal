@@ -28,14 +28,18 @@ namespace CalDebugTools
         public static ProjectInfos _projectInfo = null;
         FieldManage _manage = new FieldManage();
         public static string _strCode = "";
+        /// <summary>
+        /// 企业编号
+        /// </summary>
+        public static string _qybh = "";
+
         public FormMain()
         {
             InitializeComponent();
             _projectInfo = new ProjectInfos();
-
             Init();
             CalInit();
-
+            _qybh = ConfigurationHelper.GetConfig("Qybh");
         }
 
         public void Init()
@@ -200,15 +204,16 @@ namespace CalDebugTools
             SaveXMinfos();
             //var df = IsQualified("±150", "1424");
             //测试乌海
-            if (this.ck_other.Checked)
-            {
-                if (!string.IsNullOrEmpty(txt_wtdbh.Text.Trim()))
-                {
-                    Debug("", txt_wtdbh.Text.Trim());
-                }
-            }
-            else
-                Debug();
+            Debug("", txt_wtdbh.Text.Trim());
+            //if (this.ck_other.Checked)
+            //{
+            //    if (!string.IsNullOrEmpty(txt_wtdbh.Text.Trim()))
+            //    {
+            //        Debug("", txt_wtdbh.Text.Trim());
+            //    }
+            //}
+            //else
+            //    Debug();
         }
 
         private void Debug(string jydbh = "", string quertBH = "")
@@ -1206,6 +1211,24 @@ namespace CalDebugTools
             TestForm manage = new TestForm(this);
             this.Hide();
             manage.Show();
+        }
+
+        private void listDataSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var sourceName = ((System.Windows.Forms.ListBox)sender).SelectedItem.ToString();
+            if (!string.IsNullOrEmpty(sourceName))
+            {
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                if (sourceName == "乌海")
+                    dic.Add("Qybh", "JCQ005322,JCQ005324,JCQ005325");
+                else if (sourceName == "通辽")
+                    dic.Add("Qybh", "JCQ006880");
+                if (dic.Count > 0)
+                    ConfigurationHelper.SaveConfig(dic);
+
+                _qybh = ConfigurationHelper.GetConfig("Qybh");
+            }            //_qybh = ConfigurationHelper.GetConfig("Qybh");
+
         }
     }
 }

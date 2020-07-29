@@ -108,7 +108,6 @@
             this.rd_o.TabIndex = 7;
             this.rd_o.Text = "计算";
             this.rd_o.UseVisualStyleBackColor = true;
-            this.rd_o.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
             // label5
             // 
@@ -204,7 +203,6 @@
             this.Name = "FormFields";
             this.Text = "字段管理";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormFields_FormClosed);
-            this.Load += new System.EventHandler(this.FormFields_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

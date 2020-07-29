@@ -1,4 +1,5 @@
-﻿using CalDebugTools.Common.DBUtility;
+﻿using CalDebugTools.BLL;
+using CalDebugTools.Common.DBUtility;
 using CalDebugTools.Model;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,10 @@ namespace CalDebugTools
     {
         private Common.DBUtility.SqlBase _sqlBase = null;
         List<ProjectInfo> _listProInfo = new List<ProjectInfo>();
+
+        /// <summary>
+        /// 企业编号
+        /// </summary>
         public ProjectInfos()
         {
             if (_sqlBase == null)
@@ -27,10 +32,7 @@ namespace CalDebugTools
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionStringDebugTool"].ToString()))
             {
                 SqlDataAdapter sda = new SqlDataAdapter("select * from ProjectInfo", conn);
-
-
                 sda.Fill(Ds, "ProjectInfo");
-
             }
 
             return Ds;
@@ -186,7 +188,7 @@ namespace CalDebugTools
             //通过
             sFields = string.IsNullOrEmpty(sFields) ? "s.* ,sBY.jcxmdh as jcxm" : "s." + sFields.Replace(",", ",s.") + ",sBY.jcxmdh  as jcxm";
             //sFields = string.IsNullOrEmpty(sFields) ? "* ,jcxm" : (sFields + ",jcxm");
-            sqlStr = $"select {sFields} from S_{BH} as s  left join  S_BY as sBY on s.RECID=sBY.RECID where s.BYZBRECID=(select RECID from M_BY where WTDBH = '{wtdbh}')";
+            sqlStr = $"select {sFields} from S_{BH} as s  left join  S_BY as sBY on s.RECID=sBY.RECID where s.BYZBRECID=(select RECID from M_BY where WTDBH = '{wtdbh}' AND YTDWBH in('{FormMain._qybh.Replace(",", "','")}') )";
             try
             {
                 string m_json = "";
@@ -200,7 +202,7 @@ namespace CalDebugTools
                     mFields += ",JCYJ,PDBZ";
                 }
                 mFields = mFields.Replace("JCJGMS,", "");
-                m_json = JsonHelper.GetMdataJson($"select {mFields} from  M_{BH} join M_BY on M_{BH}.RECID=M_BY.RECID  where WTDBH = '{wtdbh}' ", $"M_{BH}", connType);
+                m_json = JsonHelper.GetMdataJson($"select {mFields} from  M_{BH} join M_BY on M_{BH}.RECID=M_BY.RECID  where WTDBH = '{wtdbh}'AND YTDWBH in('{FormMain._qybh.Replace(",", "','")}') ", $"M_{BH}", connType);
 
                 //获取数据表
                 //if (!string.IsNullOrEmpty(ytable))
@@ -231,7 +233,7 @@ namespace CalDebugTools
             string ParData = "";
             var _sqlBase2 = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringWH);
 
-            string sqlStr = $"select wtdbh from s_by join m_by on m_by.recid = s_by.byzbrecid  where ypbh = '{ypbh}'";
+            string sqlStr = $"select wtdbh from s_by join m_by on m_by.recid = s_by.byzbrecid  where ypbh = '{ypbh}' AND YTDWBH in('{FormMain._qybh.Replace(",", "','")}') ";
             try
             {
                 DataSet ds = _sqlBase2.ExecuteDataset(sqlStr);
@@ -364,7 +366,7 @@ namespace CalDebugTools
             string sfield = lisFields[1];
 
             sfield = string.IsNullOrEmpty(sfield) ? "*" : sfield;
-            string extra_sql = string.Format($"select {sfield} from S_{BH} where  BYZBRECID=(select RECID from M_BY where WTDBH = '{wtdbh}')");
+            string extra_sql = string.Format($"select {sfield} from S_{BH} where  BYZBRECID=(select RECID from M_BY where WTDBH = '{wtdbh}'  AND YTDWBH in('{FormMain._qybh.Replace(",", "','")}'))");
             DataSet extra_dt = baseChifeng.ExecuteDataset(extra_sql);
             return extra_dt;
         }
