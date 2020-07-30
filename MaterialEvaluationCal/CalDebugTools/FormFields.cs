@@ -21,16 +21,6 @@ namespace CalDebugTools
             _formMain = main;
         }
 
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void FormFields_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btn_add_Click(object sender, EventArgs e)
         {
             string xmbh = txt_xmbh.Text.Trim();
