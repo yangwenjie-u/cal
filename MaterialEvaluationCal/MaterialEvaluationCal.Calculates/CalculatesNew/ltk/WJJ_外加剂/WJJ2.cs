@@ -144,7 +144,7 @@ namespace Calculates
                         }
                         for (int i = 1; i < 3; i++)
                         {
-                            sItem["MD_" + i] = Round((Conversion.Val(sItem["MDBJWJJ_" + i]) - Conversion.Val(sItem["MDRLBZ_" + i])) / Conversion.Val(sItem["MDTJ_" + i]) * 100, 3).ToString();
+                            sItem["MD_" + i] = Round((Conversion.Val(sItem["MDBJWJJ_" + i]) - Conversion.Val(sItem["MDRLBZ_" + i])) / Conversion.Val(sItem["MDTJ_" + i]) , 3).ToString();
                         }
 
                         sItem["MD"] = Round((Conversion.Val(sItem["MD_1"]) + Conversion.Val(sItem["MD_2"])) / 2, 3).ToString();
@@ -265,16 +265,20 @@ namespace Calculates
                     {
                         sItem["HSL_" + i] = Round((Conversion.Val(sItem["GTHLM1_" + i]) - Conversion.Val(sItem["GTHLM2_" + i])) / (Conversion.Val(sItem["GTHLM1_" + i]) - Conversion.Val(sItem["GTHLM0_" + i])) * 100, 2).ToString();
                     }
+                   
+                    sItem["HSL"] = Round((Conversion.Val(sItem["HSL_1"]) + Conversion.Val(sItem["HSL_2"])) / 2, 2).ToString();
+                    var cjhsl =GetSafeDouble( GetNum(sItem["HSLKZZ"]));
 
-                    sItem["HSL"] = Round((Conversion.Val(sItem["HSLL_1"]) + Conversion.Val(sItem["HSL_2"])) / 2, 2).ToString();
-
-                    if (GetSafeDouble(sItem["HSLKZZ"]) > 5)
+                    if (cjhsl > 5)
                     {
-                        MItem[0]["G_HSL"] = Round(Conversion.Val(sItem["HSLKZZ"]) * 0.9, 2).ToString() + "～" + Round(Conversion.Val(sItem["HSLKZZ"]) * 1.1, 2).ToString();
+                        MItem[0]["G_HSL"] = Round(Conversion.Val(cjhsl) * 0.9, 2).ToString() + "～" + Round(Conversion.Val(cjhsl) * 1.1, 2).ToString();
+
+                        // MItem[0]["G_HSL"] = Round(Conversion.Val(sItem["HSLKZZ"]) * 0.9, 2).ToString() + "～" + Round(Conversion.Val(sItem["HSLKZZ"]) * 1.1, 2).ToString();
                     }
                     else
                     {
-                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HSLKZZ"]) * 0.8, 2).ToString() + "～" + Round(Conversion.Val(sItem["HSLKZZ"]) * 1.1, 2).ToString();
+                        MItem[0]["G_HSL"] = Round(Conversion.Val(cjhsl) * 0.8, 2).ToString() + "～" + Round(Conversion.Val(cjhsl) * 1.2, 2).ToString();
+                        /* MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HSLKZZ"]) * 0.8, 2).ToString() + "～" + Round(Conversion.Val(sItem["HSLKZZ"]) * 1.1, 2).ToString();*/
                     }
                     if (sItem["HSLKZZ"] == "----")
                     {
@@ -764,17 +768,18 @@ namespace Calculates
                         if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHL"] = Round(mMidKyqd, 1).ToString("0.0");
+                            sItem["PJTLDBHL"] = (Round(mMidKyqd / 5, 0) * 5).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                         {
                             // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHL"] = Round(mMidKyqd, 1).ToString("0.0");
+                            sItem["PJTLDBHL"] = (Round(mMidKyqd / 5, 0) * 5).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["PJTLDBHL"] = Round(mAvgKyqd, 1).ToString("0.0");
+                            sItem["PJTLDBHL"] = (Round(mAvgKyqd / 5, 0) * 5).ToString("0.0");
+                            
                         }
                     }
                     else
@@ -813,17 +818,18 @@ namespace Calculates
                         if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHLSJ"] = Round(mMidKyqd, 1).ToString("0.0");
+                            sItem["PJTLDBHLSJ"] = (Round(mMidKyqd / 5, 0) * 5).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                         {
                             // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHLSJ"] = Round(mMidKyqd, 1).ToString("0.0");
+                            sItem["PJTLDBHLSJ"] = (Round(mMidKyqd / 5, 0) * 5).ToString("0.0");
                         }
                         if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["PJTLDBHLSJ"] = Round(mAvgKyqd, 1).ToString("0.0");
+                            sItem["PJTLDBHLSJ"] = (Round(mAvgKyqd / 5, 0) * 5).ToString("0.0");
+                         
                         }
                     }
                     else
@@ -1398,13 +1404,13 @@ namespace Calculates
                     }
                     sItem["LSNHL"] = Round((Conversion.Val(sItem["LSNHL_1"]) + Conversion.Val(sItem["LSNHL_2"])) / 2, 2).ToString("0.00");
 
-                    if (sItem["LSNHLKZZ"] == "----")
+                    if (sItem["LSNKZZ"] == "----")
                     {
                         MItem[0]["HG_LSNHL"] = "----";
                     }
                     else
                     {
-                        MItem[0]["HG_LSNHL"] = IsQualified(sItem["LSNHLKZZ"], sItem["LSNHL"]);
+                        MItem[0]["HG_LSNHL"] = IsQualified(sItem["LSNKZZ"], sItem["LSNHL"]);
                     }
 
                     if (MItem[0]["HG_LSNHL"] == "合格")

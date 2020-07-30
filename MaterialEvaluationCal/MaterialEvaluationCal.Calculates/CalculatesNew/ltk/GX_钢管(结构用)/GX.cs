@@ -21,6 +21,8 @@ namespace Calculates
             var mjcjg = "不合格";
             var jsbeizhu = "合格";
             var jcjg = "";
+            var jcxmCur = "";
+            var jcxmBhg = "";
             var S_GXS = data["S_GX"];
             if (!data.ContainsKey("M_GX"))
             {
@@ -47,7 +49,8 @@ namespace Calculates
             {
                 itemHG = true;
                 string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-                //string jcxm = '、' + sItem["JCXM"].Trim() + "、";
+           
+                //外径、壁厚
                 if (string.IsNullOrEmpty(sItem["GGWJ"]) || !IsNumeric(sItem["GGWJ"]))
                 {
                     sItem["GGWJ"] = "48.3";
@@ -56,6 +59,7 @@ namespace Calculates
                 {
                     sItem["GGBH"] = "3.5";
                 }
+                #region 根据样品名称，要求根数是否为2根
                 switch (sItem["YPMC"])
                 {
                     case "低合金高强度结构钢钢管":
@@ -71,6 +75,7 @@ namespace Calculates
                         SFlg = false;
                         break;
                 }
+                #endregion
                 #region 等级表处理
                 foreach (var extraFieldsDj in extraDJ)
                 {
@@ -132,6 +137,7 @@ namespace Calculates
                 #region 压扁    
                 if (jcxm.Contains("、压扁、"))
                 {
+                    jcxmCur = "压扁";
                     if (sItem["YB1"].Trim() != "0" && sItem["YB2"].Trim() != "0")
                     {
                         sItem["HG_YB"] = "合格";
@@ -140,6 +146,7 @@ namespace Calculates
                     else
                     {
                         sItem["HG_YB"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                         itemHG = false;
                     }
@@ -156,11 +163,13 @@ namespace Calculates
                 #region  弯曲
                 if (jcxm.Contains("、弯曲、"))
                 {
+                    jcxmCur = "弯曲";
                     if (SFlg)
                     {
                         sItem["HG_LW"] = sItem["LW"].Trim() != "0" && sItem["LW2"].Trim() != "0" ? "合格" : "不合格";
                         if (sItem["HG_LW"] == "不合格")
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mAllHg = false;
                             itemHG = false;
                         }
@@ -174,6 +183,7 @@ namespace Calculates
                         sItem["HG_LW"] = sItem["LW"].Trim() != "0" ? "合格" : "不合格";
                         if (sItem["HG_LW"] == "不合格")
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mAllHg = false;
                             itemHG = false;
                         }
@@ -195,6 +205,7 @@ namespace Calculates
                 #region  拉伸
                 if (jcxm.Contains("、拉伸、"))
                 {
+                    jcxmCur = "拉伸";
                     sign = true;
                     flag = true;
                     flag = IsNumeric(sItem["QFHZ"]) ? flag : false;
@@ -262,6 +273,7 @@ namespace Calculates
                             sItem["HG_QFQD"] = IsQualified(sItem["G_QFQD"], sItem["QFQD"], false) == "合格" && IsQualified(sItem["G_QFQD"], sItem["QFQD2"], false) == "合格" ? "合格" : "不合格";
                             if (sItem["HG_QFQD"] == "不合格")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 mAllHg = false;
                                 itemHG = false;
                             }
@@ -279,6 +291,7 @@ namespace Calculates
                             sItem["HG_QFQD"] = IsQualified(sItem["G_QFQD"], sItem["QFQD"], false);
                             if (sItem["HG_QFQD"] == "不合格")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                 mAllHg = false;
                                 itemHG = false;
                             }
@@ -307,6 +320,7 @@ namespace Calculates
                             sItem["HG_KLQD"] = IsQualified(sItem["G_KLQD"], sItem["KLQD"], false) == "合格" && IsQualified(sItem["G_KLQD"], sItem["KLQD2"], false) == "合格" ? "合格" : "不合格";
                             if (sItem["HG_KLQD"] == "不合格")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur+"抗拉强度" + "、";
                                 mAllHg = false;
                                 itemHG = false;
                             }
@@ -320,6 +334,7 @@ namespace Calculates
                             sItem["HG_KLQD"] = IsQualified(sItem["G_KLQD"], sItem["KLQD"], false);
                             if (sItem["HG_KLQD"] == "不合格")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "抗拉强度" + "、";
                                 mAllHg = false;
                                 itemHG = false;
                             }
@@ -367,6 +382,7 @@ namespace Calculates
                             sItem["HG_SCL"] = IsQualified(sItem["G_SCL"], sItem["SCL"], false) == "合格" && IsQualified(sItem["G_SCL"], sItem["SCL2"], false) == "合格" ? "合格" : "不合格";
                             if (sItem["HG_SCL"] == "不合格")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "伸长率" + "、";
                                 mAllHg = false;
                                 itemHG = false;
                             }
@@ -380,6 +396,7 @@ namespace Calculates
                             sItem["HG_SCL"] = IsQualified(sItem["G_SCL"], sItem["SCL"], false);
                             if (sItem["HG_SCL"] == "不合格")
                             {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "伸长率" + "、";
                                 mAllHg = false;
                                 itemHG = false;
                             }
@@ -450,7 +467,7 @@ namespace Calculates
                 }
                 else
                 {
-                    jsbeizhu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                 }
             }
 
