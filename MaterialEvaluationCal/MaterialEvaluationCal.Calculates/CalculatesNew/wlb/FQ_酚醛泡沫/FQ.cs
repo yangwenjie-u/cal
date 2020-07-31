@@ -79,7 +79,7 @@ namespace Calculates
                     if (sign)
                     {
                         sItem["G_MD"] = "允许偏差为标称值的±10%以内";
-                        sItem["GH_MD"] = 10 >= double.Parse(sItem["W_MDPC"]) ? "合格" : "不合格";
+                        sItem["GH_MD"] = 10 >= Math.Abs(double.Parse(sItem["W_MDPC"])) ? "合格" : "不合格";
                         if ("不合格" == sItem["GH_MD"])
                         {
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";

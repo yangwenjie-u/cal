@@ -39,6 +39,7 @@ namespace Calculates
 
             string mJSFF = "";
             double mSz = 0;
+            double yqgmdx = 0, yqgmdd = 0;
 
             var jcxm = "";
             double mMaxKyqd, mMinKyqd, mMidKyqd, mAvgKyqd = 0;
@@ -69,10 +70,12 @@ namespace Calculates
                     if (MItem[0]["PDBZ"].ToString().ToUpper().Contains("2011"))
                     {
                         sItem["XSLYQ"] = "≤18";
+                        sItem["HSLYQ"] = "≤18";
                     }
                     else
                     {
                         sItem["XSLYQ"] = extraFieldsDj["XSL"];
+                        sItem["HSLYQ"] = extraFieldsDj["XSL"];
                     }
                 }
                 else
@@ -87,6 +90,8 @@ namespace Calculates
                 if (null != extraFieldsGMDJB)
                 {
                     MItem[0]["G_GMD"] = extraFieldsGMDJB["GMD2"];
+                    yqgmdx = GetSafeDouble(extraFieldsGMDJB["GMD1"]);
+                    yqgmdd = GetSafeDouble(extraFieldsGMDJB["GMD2"]);
                 }
 
                 sItem["KDYQ"] = "质量损失率≤5% \r\n 强度损失率≤25%";
@@ -185,7 +190,8 @@ namespace Calculates
 
                     sItem["DKZX"] = mMinKyqd.ToString();
 
-                    if (GetSafeDouble(sItem["KYPJ"]) >= GetSafeDouble(extraFieldsDj["PJBXY"]) && GetSafeDouble(sItem["DKZX"]) >= GetSafeDouble(extraFieldsDj["DKBXY"]) && GetSafeDouble(sItem["GMDPJ"]) <= GetSafeDouble(extraFieldsDj["MDDJFW"]))
+                    //if (GetSafeDouble(sItem["KYPJ"]) >= GetSafeDouble(extraFieldsDj["PJBXY"]) && GetSafeDouble(sItem["DKZX"]) >= GetSafeDouble(extraFieldsDj["DKBXY"]) && GetSafeDouble(sItem["GMDPJ"]) <= GetSafeDouble(extraFieldsDj["MDDJFW"]))
+                    if (GetSafeDouble(sItem["KYPJ"]) >= GetSafeDouble(extraFieldsDj["PJBXY"]) && GetSafeDouble(sItem["DKZX"]) >= GetSafeDouble(extraFieldsDj["DKBXY"]))
                     {
                         sItem["QDPD"] = "合格";   //强度判定（是否合格）
                     }
@@ -195,20 +201,28 @@ namespace Calculates
                         sItem["QDPD"] = "不合格";
                     }
 
-                    if (GetSafeDouble(sItem["GMDPJ"]) <= GetSafeDouble(extraFieldsDj["MDDJFW"]))
+
+                    if (yqgmdx != 0 && yqgmdd != 0)
                     {
-                        sItem["GMDPD"] = "合格";  //干密度判定（是否合格）
+                        if (GetSafeDouble(sItem["GMDPJ"]) <= yqgmdd && GetSafeDouble(sItem["GMDPJ"]) >= yqgmdx)
+                        {
+                            sItem["GMDPD"] = "合格";  //干密度判定（是否合格）
+                        }
+                        else
+                        {
+                            jcxmCur = "干密度";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sItem["GMDPD"] = "不合格";
+                        }
+
+                        //sItem["MDDJFW"] = "密度等级范围≤" + GetSafeDouble(sItem["MDDJFW"]).ToString("0") + "kg/m&scsup3&scend";
+                        sItem["MDDJFW"] = "≥" + yqgmdx.ToString() + "且" + "≤" + yqgmdd.ToString();
                     }
                     else
                     {
-                        jcxmCur = "干密度";
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        sItem["GMDPD"] = "不合格";
+                        sItem["MDDJFW"] = "----";
+                        sItem["GMDPD"] = "----";
                     }
-
-                    sItem["MDDJFW"] = "密度等级范围≤" + GetSafeDouble(sItem["MDDJFW"]).ToString("0") + "kg/m&scsup3&scend";
-
-
                 }
                 else
                 {
@@ -216,9 +230,9 @@ namespace Calculates
                     sItem["KYPJ"] = "0";
                 }
 
-                if (jcxm.Contains("、含水率、"))
+                if (jcxm.Contains("、吸水率、"))
                 {
-                    jcxmCur = "含水率";
+                    jcxmCur = "吸水率";
                     if (MItem[0]["PDBZ"].ToString().ToUpper().Contains("2011"))
                     {
                         sItem["XSLYQ"] = "≤18";
@@ -259,6 +273,52 @@ namespace Calculates
                     sItem["HXSW2_3"] = "----";
                     sItem["XSLYQ"] = "----";
                     sItem["HXSW2"] = "----";
+
+                }
+
+                if (jcxm.Contains("、含水率、"))
+                {
+                    jcxmCur = "含水率";
+                    if (MItem[0]["PDBZ"].ToString().ToUpper().Contains("2011"))
+                    {
+                        sItem["HSLYQ"] = "≤18";
+                    }
+                    else
+                    {
+                        sItem["HSLYQ"] = extraFieldsDj["XSL"];
+                    }
+                    for (int i = 1; i < 4; i++)
+                    {
+                        if (GetSafeDouble(sItem["HSM_" + i]) == 0)
+                        {
+                            sItem["HSW2_" + i] = "0";
+                        }
+                        else
+                        {
+                            sItem["HSW2_" + i] = Math.Round((GetSafeDouble(sItem["HSM2_" + i]) - GetSafeDouble(sItem["HSM_" + i])) / GetSafeDouble(sItem["HSM_" + i]) * 100, 2).ToString("0.00"); ;
+
+                        }
+                    }
+                    sItem["HSW2"] = Math.Round((GetSafeDouble(sItem["HSW2_1"]) + GetSafeDouble(sItem["HSW2_2"]) + GetSafeDouble(sItem["HSW2_3"])) / 3, 1).ToString("0.0");
+
+                    if (IsQualified(sItem["HSLYQ"], sItem["HSW2"]).Equals("合格"))
+                    {
+                        sItem["HSLPD"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HSLPD"] = "不合格";
+                    }
+                }
+                else
+                {
+                    sItem["HSLPD"] = "----";
+                    sItem["HSW2_1"] = "----";
+                    sItem["HSW2_2"] = "----";
+                    sItem["HSW2_3"] = "----";
+                    sItem["HSLYQ"] = "----";
+                    sItem["HSW2"] = "----";
 
                 }
 
@@ -378,7 +438,7 @@ namespace Calculates
                 {
                     jcxmCur = CurrentJcxm(jcxm, "外观质量,尺寸偏差");
                     if (Conversion.Val(sItem["WCBHGS"]) < 7)
-                    { 
+                    {
                         sItem["WCPD"] = "合格";
                     }
                     else
@@ -386,7 +446,7 @@ namespace Calculates
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["WCPD"] = "不合格";
                     }
-                        
+
                 }
                 else
                     sItem["WCPD"] = "----";

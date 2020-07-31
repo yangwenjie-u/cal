@@ -6,6 +6,8 @@ namespace Calculates
     {
         public void Calc()
         {
+            /************************ 代码开始 *********************/
+            #region 
             bool mAllHg = true;
             var data = retData;
             var mjcjg = "不合格";
@@ -25,7 +27,8 @@ namespace Calculates
             }
 
             var mItem = MItem[0];
-
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sItem in SItem)
             {
                 double md1, md2, md3, xd1, xd2, xd3, md, pjmd, sum;
@@ -35,7 +38,8 @@ namespace Calculates
 
                 if (jcxm.Contains("、中空玻璃露点、"))
                 {
-                    if (mItem["JCYJ"].Contains("11944-2012"))
+                    jcxmCur = "中空玻璃露点";
+                    if (mItem["JCYJ"].Contains("11944"))
                     {
                         mark = false;
                         for (int i = 1; i <= 15; i++)
@@ -52,6 +56,11 @@ namespace Calculates
                         }
                         mItem["G_BLLD"] = "中空玻璃的露点应＜－40℃";
                         mItem["GH_BLLD"] = mark ? "合格" : "不合格";
+                        if (mItem["GH_BLLD"] == "不合格")
+                        {
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                     else
                     {
@@ -85,6 +94,11 @@ namespace Calculates
                                 mItem["GH_BLLD"] = mark ? "合格" : "不合格";
                             }
                         }
+                        if (mItem["GH_BLLD"] == "不合格")
+                        {
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -106,6 +120,7 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、可见光透射比、"))
                 {
+                    jcxmCur = "可见光透射比";
                     if (IsNumeric(sItem["SJTSB"]))
                     {
                         mItem["G_TSB"] = "≤" + sItem["SJTSB"].Trim();
@@ -117,7 +132,7 @@ namespace Calculates
                     int i;
                     for (i = 1; i <= 3; i++)
                     {
-                        if (!IsNumeric(sItem["TSB"+i]))
+                        if (!IsNumeric(sItem["TSB" + i]))
                         {
                             sign = false;
                         }
@@ -144,7 +159,8 @@ namespace Calculates
                         {
                             sign = false;
                         }
-                    }else if (i == 2)
+                    }
+                    else if (i == 2)
                     {
                         sign = true;
                         md1 = GetSafeDouble(sItem["TSB1"]);
@@ -185,7 +201,12 @@ namespace Calculates
                     {
                         sign = false;
                     }
-                    mItem["GH_TSB"] = IsQualified(mItem["G_TSB"],sItem["W_TSB"],true);
+                    mItem["GH_TSB"] = IsQualified(mItem["G_TSB"], sItem["W_TSB"], false);
+                    if (mItem["GH_TSB"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
                 }
                 else
                 {
@@ -193,7 +214,7 @@ namespace Calculates
                 }
                 if (!sign)
                 {
-                    for (int i = 1;i <= 3; i ++)
+                    for (int i = 1; i <= 3; i++)
                     {
                         sItem["TSB" + i] = "----";
                         sItem["FSB" + i] = "----";
@@ -212,42 +233,50 @@ namespace Calculates
                     jsbeizhu = jsbeizhu + "该组样品所检中空玻璃露点";
                     if (mItem["GH_TSB"] == "不合格" || mItem["GH_BLLD"] == "不合格")
                     {
-                        jsbeizhu = jsbeizhu + "不符合GB/T 11944一2012《中空玻璃》标准要求";
+                        //jsbeizhu = jsbeizhu + "不符合GB/T 11944一2012《中空玻璃》标准要求";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
                         mAllHg = false;
                     }
                     else
                     {
-                        jsbeizhu = jsbeizhu + "符合GB/T 11944一2012《中空玻璃》标准要求";
+                        jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                     }
                 }
 
-                if (jcxm.Contains("中空玻璃露点"))
-                {
-                    if (jsbeizhu.Length > 0) jsbeizhu = jsbeizhu+ ",";
-                    jsbeizhu = jsbeizhu + "可见光透射比";
-                    if (mItem["GH_TSB"] == "不合格")
-                    {
-                        jsbeizhu = jsbeizhu + "不符合设计要求";
-                        mAllHg = false;
-                    }else if (mItem["GH_TSB"] == "合格")
-                    {
-                        jsbeizhu = jsbeizhu + "符合设计要求";
-                    }
-                    else
-                    {
-                        jsbeizhu = jsbeizhu + "检测结果如上";
-                    }
-                }
+                //if (jcxm.Contains("中空玻璃露点"))
+                //{
+                //    if (jsbeizhu.Length > 0) jsbeizhu = jsbeizhu + ",";
+                //    jsbeizhu = jsbeizhu + "可见光透射比";
+                //    if (mItem["GH_TSB"] == "不合格")
+                //    {
+                //        jsbeizhu = jsbeizhu + "不符合设计要求";
+                //        mAllHg = false;
+                //    }
+                //    else if (mItem["GH_TSB"] == "合格")
+                //    {
+                //        jsbeizhu = jsbeizhu + "符合设计要求";
+                //    }
+                //    else
+                //    {
+                //        jsbeizhu = jsbeizhu + "检测结果如上";
+                //    }
+                //}
             }
 
             #region 添加最终报告
-            if (mAllHg)
+            if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+            }
+            else
+            {
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGSM"] = jsbeizhu;
+            #endregion
             #endregion
             /************************ 代码结束 *********************/
         }

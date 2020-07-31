@@ -539,10 +539,12 @@ namespace Calculates
 
                     //从设计等级表中取得相应的计算数值、等级标准
                     var extraFieldsZBYQs = extraZBYQ.Where(u => u["MC"].Trim() == "坚固性");
+                    sItem["G_JGX"] = "----";
                     foreach (var extraFieldsZBYQ in extraFieldsZBYQs)
                     {
                         if (IsQualified(extraFieldsZBYQ["YQ"], sItem["JGX"], true) == "符合")
                         {
+                            sItem["G_JGX"] = extraFieldsZBYQ["YQ"];
                             sItem["JGXPD"] = "符合" + extraFieldsZBYQ["DJ"].Trim();
                         }
                         else
@@ -879,10 +881,12 @@ namespace Calculates
                             mhnl2 = Round((Conversion.Val(sItem["HNLG1_2"]) - Conversion.Val(sItem["HNLG2_2"])) / Conversion.Val(sItem["HNLG1_2"]) * 100, 1);
                             sItem["HNL"] = Round((mhnl1 + mhnl2) / 2, 1).ToString("0.0");
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("含泥量"));
+                            sItem["G_HNL"] = "----";
                             foreach (var item in mrsZbyq_where)
                             {
                                 if (IsQualified(item["YQ"], sItem["HNL"], true) == "符合")
                                 {
+                                    sItem["G_HNL"] = item["YQ"];
                                     sItem["HNLPD"] = item["DJ"];
                                     break;
                                 }
@@ -922,10 +926,12 @@ namespace Calculates
                             mnkhl2 = Round((Conversion.Val(sItem["NKHLG1_2"]) - Conversion.Val(sItem["NKHLG2_2"])) / Conversion.Val(sItem["NKHLG1_2"]) * 100, 1);
                             sItem["NKHL"] = Round((mnkhl1 + mnkhl2) / 2, 1).ToString();
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("泥块含量"));
+                            sItem["G_NKHL"] = "----";
                             foreach (var item in mrsZbyq_where)
                             {
                                 if (IsQualified(item["YQ"], sItem["NKHL"]) == "合格")
                                 {
+                                    sItem["G_NKHL"] = item["YQ"];
                                     sItem["NKHLPD"] = item["DJ"].Trim();
                                     break;
                                 }
@@ -1081,10 +1087,12 @@ namespace Calculates
                             myszb3 = Round((Conversion.Val(sItem["YSZBG1_3"]) - Conversion.Val(sItem["YSZBG2_3"])) / Conversion.Val(sItem["YSZBG1_3"]) * 100, 1);
                             sItem["YSZB"] = Round((myszb1 + myszb2 + myszb3) / 3, 1).ToString();
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("压碎性指标") && x["SPZ"].Equals(sItem["SIPZ"].Trim()));
+                            sItem["G_YSZB"] = "----";
                             foreach (var item in mrsZbyq_where)
                             {
                                 if (IsQualified(item["YQ"], sItem["YSZB"], true) == "符合")
                                 {
+                                    sItem["G_YSZB"] = item["YQ"];
                                     sItem["YSZBPD"] = item["DJ"].Trim();
                                     break;
                                 }
@@ -1156,10 +1164,12 @@ namespace Calculates
                         if (Conversion.Val(sItem["ZPZHLG1"]) != 0)
                             sItem["ZPZHL"] = Round(Conversion.Val(sItem["ZPZHLG2"]) / Conversion.Val(sItem["ZPZHLG1"]) * 100, 0).ToString();
                         var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("针片状含量"));
+                        sItem["G_ZPZHL"] = "----";
                         foreach (var item in mrsZbyq_where)
                         {
                             if (IsQualified(item["YQ"], sItem["ZPZHL"], true) == "符合")
                             {
+                                sItem["G_ZPZHL"] = item["YQ"];
                                 sItem["ZPZHLPD"] = item["DJ"].Trim();
                                 break;
                             }

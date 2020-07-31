@@ -59,8 +59,12 @@
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
     <Compile Include="CalculatesNew\ltk\矿物外加剂\MA.cs" />
+    <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
+    <Compile Include="CalculatesNew\qsf\JLH楼板厚度\JLH.cs" />
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
     <Compile Include="CalculatesNew\qsf\test.cs" />
+    <Compile Include="CalculatesNew\qsf\THG砼合格证明书\THG.cs" />
+    <Compile Include="CalculatesNew\qsf\TKP商砼开盘配合比\TKP.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
     <Compile Include="CalculatesNew\wlb\CT_沥青混合料抽提\CT.cs" />
@@ -184,7 +188,6 @@
     <Compile Include="CalculatesNew\ywj\SNK_灌浆料试块\SNK.cs" />
     <Compile Include="CalculatesNew\ywj\XHF_型钢焊接复试\XHF.cs" />
     <Compile Include="CalculatesNew\ywj\XHJ_型钢焊接\XHJ.cs" />
-    <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\ywj\TGB_土工合成材料\TGB.cs" />
     <Compile Include="CalculatesNew\ywj\FM_阀门\FM.cs" />
     <Compile Include="CalculatesNew\ywj\HB_空心隔墙板\HB.cs" />

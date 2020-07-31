@@ -1635,6 +1635,11 @@ namespace Calculates
                             sItem["YSQD"] = Round(mAvgKyqd, 0).ToString("0");
                         }
                     }
+
+                    if (sItem["YPMC"].Contains("真金板"))
+                    {
+                        mItem["G_YSQD"] = "≥120";
+                    }
                     string rz1 = calc_PB(mItem["G_YSQD"], sItem["YSQD"], true);
                     if (rz1 == "符合")
                     {
@@ -1686,11 +1691,11 @@ namespace Calculates
                     string mnlfy = "";
                     if ("----" != sItem["RSNLFY1"])
                         mnlfy = mnlfy + sItem["RSNLFY1"].Trim();
-                    if ("----" != sItem["RSNLFY2"] && sItem["RSNLFY2"] != sItem["RSNLFY1"])
+                    if ("----" != sItem["RSNLFY2"] && sItem["RSNLFY2"] == sItem["RSNLFY1"])
                         mnlfy = mnlfy + sItem["RSNLFY2"].Trim();
-                    if ("----" != sItem["RSNLFY3"] && sItem["RSNLFY2"] != sItem["RSNLFY1"])
+                    if ("----" != sItem["RSNLFY3"] && sItem["RSNLFY3"] == sItem["RSNLFY1"])
                         mnlfy = mnlfy + sItem["RSNLFY3"].Trim();
-                    if ("----" != sItem["RSNLFY4"] && sItem["RSNLFY2"] != sItem["RSNLFY1"])
+                    if ("----" != sItem["RSNLFY4"] && sItem["RSNLFY4"] == sItem["RSNLFY1"])
                         mnlfy = mnlfy + sItem["RSNLFY4"].Trim();
 
                     string mntfy = "";
@@ -1708,44 +1713,55 @@ namespace Calculates
                     var mrsyzskb = YZSKB.FirstOrDefault(u => u["HWC"] == mntfy.Trim() && u["QJC"] == mnlfy.Trim());
                     if (mrsyzskb == null)
                     {
-                        continue;
-                    }
-                    double mkz = GetSafeDouble(mrsyzskb["K"]);
-                    if (sItem["RSNTFY1"] == "0")
-                    {
-                        mkz = -mkz;
-                    }
-                    sItem["RSYZSKZ"] = Round(mkz, 2).ToString();
-                    double moi = Round(GetSafeDouble(sItem["RSNTYND5"]) + mkz * GetSafeDouble(sItem["RSYZSD"]), 2);
-                    sItem["RSYZS"] = Round((moi * 10) / 10, 1).ToString();
-                    double mnlzhynd = GetSafeDouble(sItem["RSNLYND" + mnlfy.Trim().Length]);
-                    double mbzc = ((mnlzhynd - moi) * (mnlzhynd - moi) + (GetSafeDouble(sItem["RSNTYND1"]) - moi) * (GetSafeDouble(sItem["RSNTYND1"]) - moi) +
-                         (GetSafeDouble(sItem["RSNTYND2"]) - moi) * (GetSafeDouble(sItem["RSNTYND2"]) - moi)
-                          + (GetSafeDouble(sItem["RSNTYND3"]) - moi) * (GetSafeDouble(sItem["RSNTYND3"]) - moi)
-                           + (GetSafeDouble(sItem["RSNTYND4"]) - moi) * (GetSafeDouble(sItem["RSNTYND4"]) - moi)
-                            + (GetSafeDouble(sItem["RSNTYND5"]) - moi) * (GetSafeDouble(sItem["RSNTYND5"]) - moi)) / 5;
-                    sItem["RSBZPC"] = Round(mbzc, 3).ToString();
-                    sItem["RSYSM"] = "";
-                    if (0.2 == GetSafeDouble(sItem["RSYZSD"]) && 0.2 > 3 / 2 * GetSafeDouble(sItem["RSBZPC"]) ||
-                        (2 / 3 * GetSafeDouble(sItem["RSBZPC"]) < GetSafeDouble(sItem["RSYZSD"]) &&
-                        GetSafeDouble(sItem["RSYZSD"]) < 3 / 2 * GetSafeDouble(sItem["RSBZPC"])))
-                    {
-                        sItem["RSYSM"] = "有效";
-                        string rsyzs = calc_PB(mItem["G_RSYZS"], sItem["RSYZS"], true);
-                        if (rsyzs == "符合")
-                        {
-                            mItem["HG_RSYZS"] = "合格";
-                        }
-                        else
-                        {
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                            mItem["HG_RSYZS"] = "不合格";
-                            mbhggs++;
-                        }
+                        mItem["HG_RSYZS"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["RSYZS"] = "----";
+                        mbhggs++;
+                        //continue;
                     }
                     else
                     {
-                        sItem["RSYSM"] = "无效";
+                        double mkz = GetSafeDouble(mrsyzskb["K"]);
+                        if (sItem["RSNTFY1"] == "1")
+                        {
+                            mkz = -mkz;
+                        }
+                        sItem["RSYZSKZ"] = Round(mkz, 2).ToString();
+                        double moi = Round(GetSafeDouble(sItem["RSNTYND5"]) + mkz * GetSafeDouble(sItem["RSYZSD"]), 2);
+                        sItem["RSYZS"] = Round((moi * 10) / 10, 1).ToString();
+                        double mnlzhynd = GetSafeDouble(sItem["RSNLYND" + mnlfy.Trim().Length]);
+                        double mbzc = ((mnlzhynd - moi) * (mnlzhynd - moi) + (GetSafeDouble(sItem["RSNTYND1"]) - moi) * (GetSafeDouble(sItem["RSNTYND1"]) - moi) +
+                             (GetSafeDouble(sItem["RSNTYND2"]) - moi) * (GetSafeDouble(sItem["RSNTYND2"]) - moi)
+                              + (GetSafeDouble(sItem["RSNTYND3"]) - moi) * (GetSafeDouble(sItem["RSNTYND3"]) - moi)
+                               + (GetSafeDouble(sItem["RSNTYND4"]) - moi) * (GetSafeDouble(sItem["RSNTYND4"]) - moi)
+                                + (GetSafeDouble(sItem["RSNTYND5"]) - moi) * (GetSafeDouble(sItem["RSNTYND5"]) - moi)) / 5;
+                        sItem["RSBZPC"] = Round(mbzc, 3).ToString();
+                        sItem["RSYSM"] = "";
+                        if (0.2 == GetSafeDouble(sItem["RSYZSD"]) && 0.2 > 3 / 2 * GetSafeDouble(sItem["RSBZPC"]) ||
+                            (2 / 3 * GetSafeDouble(sItem["RSBZPC"]) < GetSafeDouble(sItem["RSYZSD"]) &&
+                            GetSafeDouble(sItem["RSYZSD"]) < 3 / 2 * GetSafeDouble(sItem["RSBZPC"])))
+                        {
+                            sItem["RSYSM"] = "有效";
+                            string rsyzs = calc_PB(mItem["G_RSYZS"], sItem["RSYZS"], true);
+                            if (rsyzs == "符合")
+                            {
+                                mItem["HG_RSYZS"] = "合格";
+                            }
+                            else
+                            {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mItem["HG_RSYZS"] = "不合格";
+                                mbhggs++;
+                            }
+                        }
+                        else
+                        {
+                            sItem["RSYSM"] = "无效";
+                            sItem["RSYZS"] = "----";
+                            mItem["HG_RSYZS"] = "不合格";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            mbhggs++;
+                        }
                     }
                 }
                 else
