@@ -17,6 +17,7 @@ namespace CalDebugTools.DAL
         private Common.DBUtility.SqlBase _sqlDebugTool = null;
         public FieldManage()
         {
+      
             if (_sqlBase == null)
             {
                 _sqlBase = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringMain);
@@ -162,7 +163,7 @@ namespace CalDebugTools.DAL
             string result = "";
 
             string strJcxm = "";
-            var jcxmData = _sqlBase.ExecuteDataset($"select jcxm from s_{xmbh}  where BYZBRECID in(select RECID from M_BY where WTDBH = '{wtdbh}' )");
+            var jcxmData = _sqlBase.ExecuteDataset($"select jcxm from s_{xmbh}  where BYZBRECID in(select RECID from M_BY where WTDBH = '{wtdbh}' AND YTDWBH in('{FormMain._qybh.Replace(",", "','")}') )");
 
             if (jcxmData != null)
             {
@@ -208,7 +209,7 @@ namespace CalDebugTools.DAL
             List<string> lisResult = new List<string>();
             string result = "";
             string strJcxm = "";
-            var jcxmData = _sqlBase.ExecuteDataset($"select jcxm from s_{xmbh}  where BYZBRECID in(select RECID from M_BY where WTDBH = '{wtdbh}' )");
+            var jcxmData = _sqlBase.ExecuteDataset($"select jcxm from s_{xmbh}  where BYZBRECID in(select RECID from M_BY where WTDBH = '{wtdbh}' AND YTDWBH in('{FormMain._qybh.Replace(",", "','")}'))");
 
             if (jcxmData != null)
             {

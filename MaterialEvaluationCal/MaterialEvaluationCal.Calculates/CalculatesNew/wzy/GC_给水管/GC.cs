@@ -148,11 +148,11 @@ namespace Calculates
                     mitem["G_YYSY3"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
                     mitem["G_YYSY4"] = string.IsNullOrEmpty(mrsDj_Filter["YYSY"]) ? "" : mrsDj_Filter["YYSY"].Trim(); //静液压试验
                     mitem["G_ZLSY"] = string.IsNullOrEmpty(mrsDj_Filter["ZLSY"]) ? "" : mrsDj_Filter["ZLSY"].Trim(); //坠落试验
-                                                                                                                     //mitem["G_JWJZ"] = string.IsNullOrEmpty(mrsDj_Filter["JWJZ"]) ? "" : mrsDj_Filter["JWJZ"].Trim(); //甲烷浸渍
-                                                                                                                     //mitem["G_HXSY"] = string.IsNullOrEmpty(mrsDj_Filter["HXSY"]) ? "" : mrsDj_Filter["HXSY"].Trim(); //烘箱试验
-                                                                                                                     //mitem["G_HGD"] = string.IsNullOrEmpty(mrsDj_Filter["HGD"]) ? "" : mrsDj_Filter["HGD"].Trim(); //环刚度
-                                                                                                                     //mitem["G_HRX"] = string.IsNullOrEmpty(mrsDj_Filter["HRX"]) ? "" : mrsDj_Filter["HRX"].Trim(); //环柔度
-                                                                                                                     //mitem["G_JZLCJ"] = string.IsNullOrEmpty(mrsDj_Filter["JZLCJ"]) ? "" : mrsDj_Filter["JZLCJ"].Trim(); //简支梁冲击
+                    //mitem["G_JWJZ"] = string.IsNullOrEmpty(mrsDj_Filter["JWJZ"]) ? "" : mrsDj_Filter["JWJZ"].Trim(); //甲烷浸渍
+                    //mitem["G_HXSY"] = string.IsNullOrEmpty(mrsDj_Filter["HXSY"]) ? "" : mrsDj_Filter["HXSY"].Trim(); //烘箱试验
+                    //mitem["G_HGD"] = string.IsNullOrEmpty(mrsDj_Filter["HGD"]) ? "" : mrsDj_Filter["HGD"].Trim(); //环刚度
+                    //mitem["G_HRX"] = string.IsNullOrEmpty(mrsDj_Filter["HRX"]) ? "" : mrsDj_Filter["HRX"].Trim(); //环柔度
+                    //mitem["G_JZLCJ"] = string.IsNullOrEmpty(mrsDj_Filter["JZLCJ"]) ? "" : mrsDj_Filter["JZLCJ"].Trim(); //简支梁冲击
                     mitem["G_RHWD"] = string.IsNullOrEmpty(mrsDj_Filter["RHWD"]) ? "0" : mrsDj_Filter["RHWD"].Trim(); //维卡软化温度
                     mitem["G_ZXHSL"] = string.IsNullOrEmpty(mrsDj_Filter["ZXHSL"]) ? "0" : mrsDj_Filter["ZXHSL"].Trim(); //纵向回缩率
                     mitem["G_LCCJ"] = string.IsNullOrEmpty(mrsDj_Filter["LCCJ"]) ? "0" : mrsDj_Filter["LCCJ"].Trim(); //落锤冲击试验
@@ -313,7 +313,7 @@ namespace Calculates
                     }
                     #region
                     //平均外径
-                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCWJ"] == sitem["GCWJ"] && x["GXL"] == sitem["GXL"]);
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCWJ"] == sitem["GCWJ"] && x["GXL"] == sitem["GXL"]&& x["PDBZ"] == sitem["DYBZ"]);
                     if (mrsWgcc_Filter == null && mrsDj_Filter.Count() == 0)
                     {
                         mjcjg = "不下结论";
@@ -321,7 +321,7 @@ namespace Calculates
                         mitem["JCJGMS"] = "获取" + mSjdj + "外径出错，找不到对应项";
                         continue;
                     }
-                    MItem[0]["G_PJWJ"] = mrsWgcc_Filter["WJmin"] + "～" + mrsWgcc_Filter["WJMAX"];
+                    MItem[0]["G_PJWJ"] = GetSafeDouble(mrsWgcc_Filter["WJmin"]).ToString("0.0") + "～" + GetSafeDouble(mrsWgcc_Filter["WJMAX"]).ToString("0.0");
 
                     var mrsBhgc_Filter = mrsBhgc.Where(x => x["MC"].Contains(mSjdj) && x["PDBZ"] == sitem["DYBZ"]);
                     if (mSjdj == "给水用低密度聚乙烯管材")
@@ -338,13 +338,13 @@ namespace Calculates
                     decimal jxpc = 0;
                     foreach (var item in mrsBhgc_Filter)
                     {
-                        if (IsQualified(item["GCBH"], sitem["GCBH"]) == "合格")
+                        if (IsQualified("≥"+item["GCBH"], sitem["GCBH"]) == "合格")
                         {
                             jxpc = GetSafeDecimal(item["JXPC"]);
                             break;
                         }
                     }
-                    MItem[0]["G_GCBH"] = sitem["GCBH"].ToString() + "～" + (GetSafeDecimal(sitem["GCBH"]) + jxpc).ToString("0.0");
+                    MItem[0]["G_GCBH"] = GetSafeDecimal(sitem["GCBH"]).ToString("0.0") + "～" + (GetSafeDecimal(sitem["GCBH"]) + jxpc).ToString("0.0");
 
                     List<string> listWJ_G = new List<string>();
                     listWJ_G = MItem[0]["G_PJWJ"].Split('～').ToList();
@@ -438,7 +438,11 @@ namespace Calculates
                             MItem[0]["PJWJ1"] = (Math.Round(GetSafeDecimal((arrWJ[0] * 5).ToString()), 0) / 5).ToString();
                             MItem[0]["PJWJ2"] = (Math.Round(GetSafeDecimal((arrWJ[arrWJ.Count - 1] * 5).ToString()), 0) / 5).ToString();
                         }
-                        MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
+
+                        if (GetSafeDecimal(MItem[0]["PJWJ1"]) == GetSafeDecimal(MItem[0]["PJWJ2"]))
+                            MItem[0]["PJWJ"] = MItem[0]["PJWJ1"];
+                        else
+                            MItem[0]["PJWJ"] = MItem[0]["PJWJ1"] + "～" + MItem[0]["PJWJ2"];
 
                         //壁厚
                         bh_bhg = 0;
@@ -638,6 +642,7 @@ namespace Calculates
                     sitem["BGSCJG2"] = "----";
                     sitem["BGDXPD2"] = "----";
                 }
+                curJcxmCount = 4;
                 if (jcxm.Contains("、液压试验、"))
                 {
                     jcxmCur = "液压试验";
@@ -717,8 +722,7 @@ namespace Calculates
                                     sitem["YYSYWD" + md] = cs[0].Trim() + "℃";
                                     sitem["YYSYSJ" + md] = cs[1].Trim();
                                 }
-                                sitem["YYSYHYL" + md] = System.Text.RegularExpressions.Regex.Replace(syyl, @"[^0-9]+", "") + "MPa";
-
+                                sitem["YYSYHYL" + md] = System.Text.RegularExpressions.Regex.Replace(syyl, @"[^\d^\.]+", "") + "MPa";
                                 if (yysyCs.Contains("，"))
                                     yysyCs = yysyCs.Replace("，", " " + syyl + " ");
                                 else
@@ -746,7 +750,8 @@ namespace Calculates
                                 {
                                     ztsj = "16h±1h;";
                                 }
-                                sitem["YYSYZT"] = "试验制备条件：状态调节时间：" + ztsj + "；试验环境：" + sitem["YYSYHJ"] + "；密封接头类型：" + sitem["YYSYJTLX"];
+                                sitem["YYTJSJ"] = ztsj;
+                                sitem["YYSYZT"] = "试验制备条件：" + (string.IsNullOrEmpty(sitem["YYZBTJ"].ToString()) == true ? "/" : sitem["YYSYHJ"]) + "；状态调节时间：" + sitem["YYTJSJ"] + "；试验环境：" + sitem["YYSYHJ"] + "；密封接头类型：" + sitem["YYSYJTLX"];
                                 //sitem["BGJCXM" + (curJcxmCount + md - 1)] = mtmpArray[xd] + yysyCs;
 
                                 if (!string.IsNullOrEmpty(yysyCs))
@@ -1012,7 +1017,7 @@ namespace Calculates
                 }
                 mAllHg = (mAllHg && sitem["JCJG"].Trim() == "合格");
 
-                CCBHG_FLAG:
+            CCBHG_FLAG:
                 if (GGCCBHG)
                 {
                     mAllHg = false;

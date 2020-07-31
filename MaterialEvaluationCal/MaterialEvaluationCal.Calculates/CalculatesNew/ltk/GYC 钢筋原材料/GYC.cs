@@ -172,7 +172,7 @@ namespace Calculates
             Func<IDictionary<string, string>, int, string> calc_kl =
                 delegate (IDictionary<string, string> sItem, int count)
                 {
-                    //求屈服强度及抗拉强度
+                    //求抗拉强度
                     double mMidVal = 0;
                     string mMj = "", mkl = "";
                     if (string.IsNullOrEmpty(sItem["ZJ"]))
@@ -299,7 +299,7 @@ namespace Calculates
                     }
                     return "";
                 };
-
+            //单项检测项目不合格
             Func<IDictionary<string, string>, IDictionary<string, string>, string, double, int, int> find_singlezb_bhg =
                 delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, string zbName, double mbzValue, int count)
                 {
@@ -470,44 +470,44 @@ namespace Calculates
                 double mLWZJ = 0, mLwjd = 0;
                 string mJSFF = "", sZlpc = "", LwBzyq = "";
                 double md = 0, md1 = 0, md2 = 0;
-                mGJLB = string.IsNullOrEmpty(sItem["GJLB"]) ? "----" : sItem["GJLB"];
+                mGJLB = string.IsNullOrEmpty(sItem["GJLB"]) ? "----" : sItem["GJLB"];//钢材类别
 
-
-                //'从设计等级表中取得相应的计算数值、等级标准
+                #region BZ_GYC_DJ处理
+                //'从设计等级表中取得相应的计算数值、等级标准                   钢材牌号
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["GJLB"] == mGJLB && GetSafeDouble(u["ZJFW1"]) < GetSafeDouble(sItem["ZJ"]) && GetSafeDouble(u["ZJFW2"]) > GetSafeDouble(sItem["ZJ"]));
                 if (null != extraFieldsDj)
                 {
                     sItem["SJDJ"] = extraFieldsDj["MC"];
-                    mQfqd = GetSafeDouble(Conversion.Val(extraFieldsDj["QFQDBZZ"]).ToString());
-                    mKlqd = GetSafeDouble(Conversion.Val(extraFieldsDj["KLQDBZZ"]).ToString());
-                    mScl = GetSafeDouble(Conversion.Val(extraFieldsDj["SCLBZZ"]).ToString());
-                    mLw = GetSafeDouble(Conversion.Val(extraFieldsDj["LWBZZ"]).ToString());
+                    mQfqd = GetSafeDouble(Conversion.Val(extraFieldsDj["QFQDBZZ"]).ToString());//屈服点标准值
+                    mKlqd = GetSafeDouble(Conversion.Val(extraFieldsDj["KLQDBZZ"]).ToString());//抗拉强度标准值
+                    mScl = GetSafeDouble(Conversion.Val(extraFieldsDj["SCLBZZ"]).ToString());//伸长率标准值
+                    mLw = GetSafeDouble(Conversion.Val(extraFieldsDj["LWBZZ"]).ToString());//冷弯值标准值
 
-                    mHggs_QFQD = GetSafeDouble(extraFieldsDj["ZHGGS_QFQD"]);
-                    mHggs_KLQD = GetSafeDouble(extraFieldsDj["ZHGGS_KLQD"]);
-                    mHggs_SCL = GetSafeDouble(extraFieldsDj["ZHGGS_SCL"]);
-                    mHggs_LW = GetSafeDouble(extraFieldsDj["ZHGGS_LW"]);
+                    mHggs_QFQD = GetSafeDouble(extraFieldsDj["ZHGGS_QFQD"]);//'单组合格个数
+                    mHggs_KLQD = GetSafeDouble(extraFieldsDj["ZHGGS_KLQD"]);//单组抗拉强度几个合格
+                    mHggs_SCL = GetSafeDouble(extraFieldsDj["ZHGGS_SCL"]);//单组屈服点几个合格
+                    mHggs_LW = GetSafeDouble(extraFieldsDj["ZHGGS_LW"]);//单组冷弯几个合格
 
-                    mFsgs_QFQD = GetSafeDouble(extraFieldsDj["ZFSGS_QFQD"]); // '单组复试不合格个数
-                    mFsgs_KLQD = GetSafeDouble(extraFieldsDj["ZFSGS_KLQD"]);
-                    mFsgs_SCL = GetSafeDouble(extraFieldsDj["ZFSGS_SCL"]);
-                    mFsgs_LW = GetSafeDouble(extraFieldsDj["ZFSGS_LW"]);
+                    mFsgs_QFQD = GetSafeDouble(extraFieldsDj["ZFSGS_QFQD"]); // 单组屈服点几个不合格复试
+                    mFsgs_KLQD = GetSafeDouble(extraFieldsDj["ZFSGS_KLQD"]); //单组抗拉强度几个不合格复试
+                    mFsgs_SCL = GetSafeDouble(extraFieldsDj["ZFSGS_SCL"]);//单组伸长率几个不合格复试
+                    mFsgs_LW = GetSafeDouble(extraFieldsDj["ZFSGS_LW"]);//单组冷弯几个不合格复试
 
-                    mLWZJ = GetSafeDouble(extraFieldsDj["LWZJ"]); // '冷弯直径和角度
-                    mLwjd = GetSafeDouble(extraFieldsDj["LWJD"]);
-                    MFFWQCS = GetSafeDouble(extraFieldsDj["FFWQCS"]);
+                    mLWZJ = GetSafeDouble(extraFieldsDj["LWZJ"]); // 冷弯直径
+                    mLwjd = GetSafeDouble(extraFieldsDj["LWJD"]);//冷弯角度
+                    MFFWQCS = GetSafeDouble(extraFieldsDj["FFWQCS"]);//反复弯曲次数
 
-                    mXLGS = GetSafeDouble(extraFieldsDj["XLGS"]);
-                    mXWGS = GetSafeDouble(extraFieldsDj["XWGS"]);
+                    mXLGS = GetSafeDouble(extraFieldsDj["XLGS"]);//拉根数
+                    mXWGS = GetSafeDouble(extraFieldsDj["XWGS"]);//弯根数
                     MItem[0]["G_WGZZ"] = extraFieldsDj["WGZZ"];//微观组织
                     MItem[0]["G_HGJX"] = extraFieldsDj["HGJX"];//宏观金相
                     MItem[0]["G_JMWSYD"] = extraFieldsDj["JMWSYD"];//截面维氏硬度
 
-                    if (sItem["SFTZ"] == "是")
+                    if (sItem["SFTZ"] == "是")//是否机械调直
                     {
-                        mScl = GetSafeDouble(extraFieldsDj["TZHSCLBZZ"]);
+                        mScl = GetSafeDouble(extraFieldsDj["TZHSCLBZZ"]);//调直后伸长率标准值
                     }
-                    mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["JSFF"].ToLower();
+                    mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["JSFF"].ToLower();//计算方法
                 }
                 else
                 {
@@ -517,15 +517,19 @@ namespace Calculates
                     mJCJG = "不下结论";
                     continue;
                 }
-
+                #endregion
+                
+                #region BZ_ZLPCB
                 var extraFieldsZLPCB = extraZLPCB.FirstOrDefault(u => u["MC"] == sItem["GJLB"] && GetSafeDouble(u["ZJ"]) == GetSafeDouble(sItem["ZJ"]));
                 if (extraFieldsZLPCB != null)
                 {
+                    //理论重量
                     SLLZL = GetSafeDouble(extraFieldsZLPCB["LLZL"]);
                     sZlpc = extraFieldsZLPCB["ZLPC"];
                     sItem["G_ZLPC"] = "±" + sZlpc.ToString();
                     if (sItem["SFTZ"] == "是")
                     {
+                        //                                     调直后重量偏差
                         sItem["G_ZLPC"] = "≥-" + extraFieldsZLPCB["TZHZLPC"];
                         sZlpc = "-" + extraFieldsZLPCB["TZHZLPC"];
                     }
@@ -535,24 +539,48 @@ namespace Calculates
                     SLLZL = 0;
                     sZlpc = "0";
                 }
+                #endregion
 
+                #region 字段处理
+                if (Conversion.Val(sItem["DBSL"]) <= 60)
+                {
+                    mXLGS = 2;
+                    sItem["SCZJ3"] = "----";
+                    sItem["QFHZ3"] = "----";
+                    sItem["KLHZ3"] = "----";
+                    sItem["DLWZ3"] = "----";
+                    sItem["SCZ3"] = "----";
+                    sItem["ZSCL3"] = "----";
+                    sItem["QFQD3"] = "----";
+                    sItem["KLQD3"] = "----";
+                    sItem["SCL3"] = "----";
+                    sItem["QDQFB3"] = "----";
+                    sItem["QFQFB3"] = "----";
+                    sItem["DHJL3"] = "----";
+                }
+                else
+                {
+                    mXLGS = 3;
+                }
+                //弯心直径
                 if (string.IsNullOrEmpty(sItem["LWZJ"]))
                 {
                     sItem["LWZJ"] = mLWZJ.ToString();
                 }
-
+                //弯曲角度
                 if (string.IsNullOrEmpty(sItem["LWJD"]))
                 {
                     sItem["LWJD"] = mLwjd.ToString();
                 }
-
+                //反向弯曲直径
                 if (string.IsNullOrEmpty(sItem["FXWQZJ"]))
                 {
                     //sItem["FXWQZJ"] = MFFWQCS.ToString();
                 }
-
+                //                                                                                                               直径                      是否机械调直
                 if ((MItem[0]["PDBZ"].Contains("1499.2-2018") || MItem[0]["PDBZ"].Contains("1499.1-2017")) && GetSafeDouble(sItem["ZJ"]) <= 12 && sItem["SFTZ"] == "否")
                 {
+                    //要求重量偏差
                     sItem["G_ZLPC"] = "±6";
                     sZlpc = "6";
                 }
@@ -612,7 +640,8 @@ namespace Calculates
                 }
 
                 sItem["G_LWWZ"] = LwBzyq;
-                sItem["G_ZSCL"] = "----";
+                sItem["G_ZSCL"] = "----";//要求最大拉力总伸长率
+ 
                 //'求伸长率
                 sItem["XGM"] = extraFieldsDj["XGM"];
                 sItem["CD"] = (Math.Round((GetSafeDouble(sItem["XGM"]) * GetSafeDouble(sItem["ZJ"])) / 5 + 0.001, 0) * 5).ToString();
@@ -621,13 +650,15 @@ namespace Calculates
                 {
                     sItem["CD"] = "100";
                 }
+                #endregion
 
                 #region 重量偏差
                 if (jcxm.Contains("、重量偏差、"))
                 {
                     jcxmCur = "重量偏差";
                     double zCD = 0;
-                    if (Conversion.Val(sItem["Z_ZZL"]) < 0.1)
+                   
+                    if (Conversion.Val(sItem["Z_ZZL"]) < 0.1) //总重量(G)
                     {
                         sItem["JCJG_ZLPC"] = "不符合";
                         mFlag_Bhg = true;
@@ -638,10 +669,10 @@ namespace Calculates
                     {
                         if (sItem["SFTZ"] == "是")
                         {
-                            MItem[0]["ZLPCXS"] = "重量偏差";
+                            MItem[0]["ZLPCXS"] = "重量偏差";//重量偏差显示
                             for (int i = 1; i < 6; i++)
                             {
-                                zCD += Conversion.Val(sItem["Z_CD" + i]);
+                                zCD += Conversion.Val(sItem["Z_CD" + i]);//重量偏差长度(MM)1-6
                             }
                             //zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]);
 
@@ -712,35 +743,22 @@ namespace Calculates
                 }
                 #endregion
 
-                if (Conversion.Val(sItem["DBSL"]) <= 60)
-                {
-                    mXLGS = 2;
-                    sItem["SCZJ3"] = "----";
-                    sItem["QFHZ3"] = "----";
-                    sItem["KLHZ3"] = "----";
-                    sItem["DLWZ3"] = "----";
-                    sItem["SCZ3"] = "----";
-                    sItem["ZSCL3"] = "----";
-                    sItem["QFQD3"] = "----";
-                    sItem["KLQD3"] = "----";
-                    sItem["SCL3"] = "----";
-                    sItem["QDQFB3"] = "----";
-                    sItem["QFQFB3"] = "----";
-                    sItem["DHJL3"] = "----";
-                }
-                else
-                {
-                    mXLGS = 3;
-                }
+
 
                 //求伸长率
-                sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
-
                 calc_SCL(MItem[0], sItem, (int)mXLGS);
 
-                //求屈服强度及抗拉强度
+                //求屈服强度
                 calc_qf(sItem, (int)mXLGS);
-
+                if (ggph.Contains("E"))
+                {
+                    mHggs_SCL = 0;
+                    sItem["G_SCL"] = "----";
+                    sItem["SCL1"] = "----";
+                    sItem["SCL2"] = "----";
+                    sItem["SCL3"] = "----";
+                }
+                //求抗拉强度
                 calc_kl(sItem, (int)mXLGS);
 
                 //求单组屈服强度,抗拉强度,伸长率,冷弯 合格个数,并且返回值为不同组不合格数的累加值
@@ -760,7 +778,9 @@ namespace Calculates
                 }
 
                 //  做拉伸时默认要最最大力总伸长率 带E的钢筋不做屈服比
-
+                
+                //断前距L0(MM)1
+                sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
                 #region 抗震要求
                 int mkZHggs = 0;
                 if (jcxm.Contains("、抗震要求、"))
@@ -796,7 +816,7 @@ namespace Calculates
                             md = md / md1;
                             md = md + GetSafeDouble(sItem["KLQD" + i]) / 200000;
                             md = md * 100;
-                            md = Math.Round(md, 1);
+                            md = Math.Round(md*2, 0)/2;
                             sItem["ZSCL" + i] = md.ToString("0.0");
 
                             if (MItem[0]["PDBZ"].Contains("1499.1"))
@@ -919,6 +939,7 @@ namespace Calculates
                     sItem["FXWQ1"] = "----";
                 }
                 #endregion
+                
                 //宏观金相,截面维氏硬度,微观组织 是2018新增
                 #region 宏观金相
                 if (jcxm.Contains("、宏观金相、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))

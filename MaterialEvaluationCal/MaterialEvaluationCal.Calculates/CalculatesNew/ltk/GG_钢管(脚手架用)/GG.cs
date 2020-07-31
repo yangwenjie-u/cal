@@ -11,6 +11,7 @@ namespace Calculates
     {
         public void Calc()
         {
+            #region 
             /************************ 代码开始 *********************/
 
             #region 参数定义
@@ -58,6 +59,7 @@ namespace Calculates
             zj2 = 0;
             foreach (var sitem in SItem)
             {
+                #region 等级表处理
                 var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["MC"].Contains(sitem["GGXH"]) && x["ZJM"].Contains(sitem["SJDJ"]));
                 if (mrsDj_Filter != null && mrsDj_Filter.Count > 0)
                 {
@@ -81,6 +83,8 @@ namespace Calculates
                     MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"] + "试件尺寸为空";
                     break;
                 }
+                #endregion
+                
                 if (string.IsNullOrEmpty(mJSFF))
                 {
                     sitem["G_LW"] = "弯心d为6D弯曲角度90°受弯部位表面不得产生裂纹";
@@ -88,6 +92,7 @@ namespace Calculates
                         sitem["G_YB"] = "当试样压值两平板距离为2/3D时，试样不允许出现裂纹或裂缝";
                     else
                         sitem["G_YB"] = "压扁试验后不得出现裂纹、分层";
+                    #region 外径
                     if (sitem["JCXM"].Contains("外径"))
                     {
                         double mwj1 = (Conversion.Val(sitem["GGWJ1_1"]) + Conversion.Val(sitem["GGWJ1_2"])) / 2;
@@ -114,6 +119,9 @@ namespace Calculates
                     }
                     else
                         sitem["WJPD"] = "----";
+                    #endregion
+
+                    #region 壁厚
                     if (sitem["JCXM"].Contains("壁厚"))
                     {
                         double mbh1 = (Conversion.Val(sitem["GGBH1_1"]) + Conversion.Val(sitem["GGBH1_2"]) + Conversion.Val(sitem["GGBH1_3"]) + Conversion.Val(sitem["GGBH1_4"])) / 4;
@@ -141,6 +149,9 @@ namespace Calculates
                     }
                     else
                         sitem["BHPD"] = "----";
+                    #endregion
+
+                    #region 锈蚀深度
                     if (sitem["JCXM"].Contains("锈蚀深度"))
                     {
                         if (sitem["YPXJ"] == "新")
@@ -173,6 +184,9 @@ namespace Calculates
                         else
                             sitem["WGPD"] = "合格";
                     }
+                    #endregion
+
+                    #region 拉伸
                     if (sitem["JCXM"].Contains("拉伸") && sitem["WGPD"] != "不合格")
                     {
                         double mMj1 = Round(3.14159 * (Conversion.Val(sitem["GGWJ1"]) / 2) * (Conversion.Val(sitem["GGWJ1"]) / 2) - 3.14159 * (Conversion.Val(sitem["GGWJ1"]) / 2 - Conversion.Val(sitem["GGBH1"])) * (Conversion.Val(sitem["GGWJ1"]) / 2 - Conversion.Val(sitem["GGBH1"])), 2);
@@ -245,6 +259,9 @@ namespace Calculates
                         sitem["HG_KLQD"] = "----";
                         sitem["HG_SCL"] = "----";
                     }
+                    #endregion
+
+                    #region 弯曲
                     if (sitem["JCXM"].Contains("弯曲"))
                     {
                         int mlwgs = 0;
@@ -271,6 +288,9 @@ namespace Calculates
                         sitem["LW2"] = "-1";
                         sitem["HG_LW"] = "----";
                     }
+                    #endregion
+
+                    #region 压扁
                     if (sitem["JCXM"].Contains("压扁"))
                     {
                         int mybgs = 0;
@@ -295,6 +315,7 @@ namespace Calculates
                         sitem["YB2"] = "-1";
                         sitem["HG_YB"] = "----";
                     }
+                    #endregion
 
                     //单组判定
                     MItem[0]["JCJGMS"] = "";
@@ -357,6 +378,7 @@ namespace Calculates
             #endregion
 
             /************************ 代码结束 *********************/
+            #endregion
         }
     }
 }

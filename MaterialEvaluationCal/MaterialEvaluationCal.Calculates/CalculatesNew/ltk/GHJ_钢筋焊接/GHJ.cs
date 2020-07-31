@@ -59,7 +59,7 @@ namespace Calculates
                         //    for (int i = 0; i < count; i++)
                         //    {
                         //        //If isZdVisible("s" & gCurSylb, "qfhz" & i) Then '判断该指标是否存在
-                        //        if (Double.Parse(sItem["QFQD" + i + 1]) - mbzValue > -0.00001)
+                        //        if (GetSafeDouble(sItem["QFQD" + i + 1]) - mbzValue > -0.00001)
                         //        {
                         //            mcnt = mcnt + 1;
                         //        }
@@ -75,7 +75,7 @@ namespace Calculates
                             for (int i = 1; i < count + 1; i++)
                             {
                                 //If isZdVisible("s" & gCurSylb, "qfhz" & i) Then '判断该指标是否存在
-                                if (Double.Parse(sItem["KLQD" + i]) - mbzValue > -0.00001)
+                                if (GetSafeDouble(sItem["KLQD" + i]) - mbzValue > -0.00001)
                                 {
                                     mcnt = mcnt + 1;
                                 }
@@ -91,7 +91,7 @@ namespace Calculates
                         //    for (int i = 0; i < count; i++)
                         //    {
                         //        //If isZdVisible("s" & gCurSylb, "qfhz" & i) Then '判断该指标是否存在
-                        //        if (Double.Parse(sItem["SCL" + i+1]) - mbzValue > -0.00001)
+                        //        if (GetSafeDouble(sItem["SCL" + i+1]) - mbzValue > -0.00001)
                         //        {
                         //            mcnt = mcnt + 1;
                         //        }
@@ -107,7 +107,7 @@ namespace Calculates
                             for (int i = 1; i < count + 1; i++)
                             {
                                 //If isZdVisible("s" & gCurSylb, "qfhz" & i) Then '判断该指标是否存在
-                                if (Double.Parse(sItem["LW" + i]) - mbzValue > -0.00001)
+                                if (GetSafeDouble(sItem["LW" + i]) - mbzValue > -0.00001)
                                 {
                                     mcnt = mcnt + 1;
                                 }
@@ -115,7 +115,7 @@ namespace Calculates
                                 {
                                     if (i > 1)
                                     {
-                                        if (Double.Parse(sItem["LW1"]) - i * mbzValue < -0.00001)// 判断是否把冷弯值全部输在第一个值上
+                                        if (GetSafeDouble(sItem["LW1"]) - i * mbzValue < -0.00001)// 判断是否把冷弯值全部输在第一个值上
                                         {
                                             this_bhg = this_bhg + 1;
                                         }
@@ -159,20 +159,20 @@ namespace Calculates
                           dkj = 1;
                       }
                       else
-                          dkj = Double.Parse(sItem["DKJ" + i]);
+                          dkj = GetSafeDouble(sItem["DKJ" + i]);
 
                       if (i == 1)
                       {
-                          if (Double.Parse(sItem["KLQD" + i]) >= 1.1 * Double.Parse(sItem["G_KLQD"]))
+                          if (GetSafeDouble(sItem["KLQD" + i]) >= 1.1 * GetSafeDouble(sItem["G_KLQD"]))
                           {
                               dkj = 1;
                               sItem["SFCG" + i] = "≥1.1倍";
                           }
-                          else if (Double.Parse(sItem["KLQD" + i]) >= Double.Parse(sItem["G_KLQD"]) && Double.Parse(sItem["KLQD" + i]) < 1.1 * Double.Parse(sItem["G_KLQD"]))
+                          else if (GetSafeDouble(sItem["KLQD" + i]) >= GetSafeDouble(sItem["G_KLQD"]) && GetSafeDouble(sItem["KLQD" + i]) < 1.1 * GetSafeDouble(sItem["G_KLQD"]))
                           {
                               sItem["SFCG" + i] = "1.1倍>实测强度≥标准强度";
                           }
-                          else if (Double.Parse(sItem["KLQD" + i]) < Double.Parse(sItem["G_KLQD"]))
+                          else if (GetSafeDouble(sItem["KLQD" + i]) < GetSafeDouble(sItem["G_KLQD"]))
                           {
                               sItem["SFCG" + i] = "没达到标准强度";
                           }
@@ -247,11 +247,11 @@ namespace Calculates
 
                 if (sItem["SJDJ"].Contains("冷轧带肋"))
                 {
-                    mMj = Double.Parse(mMj.ToString("0.0"));
+                    mMj = GetSafeDouble(mMj.ToString("0.0"));
                 }
                 else
                 {
-                    mMj = Double.Parse(mMj.ToString("G4"));
+                    mMj = GetSafeDouble(mMj.ToString("G4"));
                 }
 
                 if (sItem["SJDJ"].Contains("冷轧扭"))
@@ -386,6 +386,7 @@ namespace Calculates
                         sItem["HG_LW"] = "0";
                     }
                     var jcxm2 = "、" + sItem["JCXM"] + "、";
+                    jcxm2 = "、" + sItem["JCXM"].Replace(',', '、') + "、";
 
                     if (jcxm2.Contains("、拉伸、"))
                     {
@@ -466,7 +467,7 @@ namespace Calculates
 
                  };
             #endregion
-
+            #region 变量处理
             int mallbhg_kl = 0;
             int mallbhg_sc = 0;
             int mallbhg_lw = 0;
@@ -484,6 +485,7 @@ namespace Calculates
             String SclBzyq = "";
             int kl1, kl2, kl3 = 0;
             int kj1, kj2, kj3 = 0;
+            #endregion
 
             foreach (var sItem in sItems)
             {
@@ -491,7 +493,7 @@ namespace Calculates
                 ggph = sItem["GCLX_PH"];
 
                 sItem["FJ"] = false.ToString();
-                mZh = Double.Parse(sItem["ZH_G"]);
+                mZh = GetSafeDouble(sItem["ZH_G"]);//配置字段
                 //mZh = 0;
                 mGjlb = sItem["GJLB"];
 
@@ -513,21 +515,21 @@ namespace Calculates
                 else
                 {
                     sItem["SJDJ"] = mrsDj["MC"];
-                    mKlqd = Double.Parse(mrsDj["KLQDBZZ"]);//单组标准值
-                    mScl = Double.Parse(mrsDj["SCLBZZ"]);
-                    mLw = Double.Parse(mrsDj["LWBZZ"]);
-                    mLwjd = Double.Parse(mrsDj["LWJD"]);//冷弯角度和冷弯直径
-                    mLwzj = Double.Parse(mrsDj["LWZJ"]);
-                    mHggs_klqd = Double.Parse(mrsDj["ZHGGS_KLQD"]);//单组合格个数
-                    mHggs_scl = Double.Parse(mrsDj["ZHGGS_SCL"]);
-                    mHggs_lw = Double.Parse(mrsDj["ZHGGS_LW"]);
-                    mFsgs_klqd = Double.Parse(mrsDj["ZFSGS_KLQD"]);
-                    mFsgs_scl = Double.Parse(mrsDj["ZFSGS_SCL"]);
-                    mFsgs_lw = Double.Parse(mrsDj["ZFSGS_LW"]);
-                    mLwzj = Double.Parse(mrsDj["LWZJ"]);//冷弯直径和角度
-                    mLwjd = Double.Parse(mrsDj["LWJD"]);
-                    mXlgs = Double.Parse(mrsDj["XLGS"]);
-                    mXwgs = Double.Parse(mrsDj["XWGS"]);
+                    mKlqd = GetSafeDouble(mrsDj["KLQDBZZ"]);//单组标准值
+                    mScl = GetSafeDouble(mrsDj["SCLBZZ"]);
+                    mLw = GetSafeDouble(mrsDj["LWBZZ"]);//要求冷弯值
+                    mLwjd = GetSafeDouble(mrsDj["LWJD"]);//冷弯角度和冷弯直径
+                    mLwzj = GetSafeDouble(mrsDj["LWZJ"]);
+                    mHggs_klqd = GetSafeDouble(mrsDj["ZHGGS_KLQD"]);//单组合格个数
+                    mHggs_scl = GetSafeDouble(mrsDj["ZHGGS_SCL"]);
+                    mHggs_lw = GetSafeDouble(mrsDj["ZHGGS_LW"]);
+                    mFsgs_klqd = GetSafeDouble(mrsDj["ZFSGS_KLQD"]);
+                    mFsgs_scl = GetSafeDouble(mrsDj["ZFSGS_SCL"]);
+                    mFsgs_lw = GetSafeDouble(mrsDj["ZFSGS_LW"]);
+                    mLwzj = GetSafeDouble(mrsDj["LWZJ"]);//冷弯直径和角度
+                    mLwjd = GetSafeDouble(mrsDj["LWJD"]);
+                    mXlgs = GetSafeDouble(mrsDj["XLGS"]);
+                    mXwgs = GetSafeDouble(mrsDj["XWGS"]);
 
                     mJSFF = string.IsNullOrEmpty(mrsDj["JSFF"]) ? "" : mrsDj["JSFF"].Trim().ToLower();
                 }
@@ -544,6 +546,8 @@ namespace Calculates
                     SclBzyq = "至少" + mHggs_scl.ToString() + "个试件断于焊缝外，并应呈延性断裂。当发生脆断，抗拉强度≥1.10倍规定抗拉强度时，焊缝脆断按断于焊缝外并呈延性断裂处理。";
                 }
                 LwBzyq = "弯心直径=" + mLwzj + "d弯曲" + mLwjd + "度，有两个或三个试件外侧裂纹宽度＜0.5mm";
+                sItem["WXZJ"] = mLwzj + "d";
+                sItem["WQJD"] = mLwjd + "°";
 
                 sItem["G_KLQD"] = mKlqd.ToString();
                 sItem["G_DLWZ"] = SclBzyq.ToString();
@@ -552,9 +556,10 @@ namespace Calculates
                 //求抗拉强度
                 int count = (int)(mXlgs);
                 calc_kl(sItem, count);
-
+                //冷弯
                 mallbhg_lw = mallbhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, (int)(mXwgs));
-
+               
+                #region 判断标准包含18-2012
                 if (!MItem[0]["PDBZ"].Contains("18-2012"))
                 {
                     mallbhg_kl = mallbhg_kl + find_singlezb_bhg(MItem[0], sItem, "kl", mKlqd, count);
@@ -567,12 +572,12 @@ namespace Calculates
                 }
                 else
                 {
-                    kl1 = (int)Double.Parse(sItem["KLQD1"]);
-                    kl2 = (int)Double.Parse(sItem["KLQD2"]);
-                    kl3 = (int)Double.Parse(sItem["KLQD3"]);
-                    kj1 = (int)Double.Parse(sItem["DKJ1"]);
-                    kj2 = (int)Double.Parse(sItem["DKJ2"]);
-                    kj3 = (int)Double.Parse(sItem["DKJ3"]);
+                    kl1 = (int)GetSafeDouble(sItem["KLQD1"]);
+                    kl2 = (int)GetSafeDouble(sItem["KLQD2"]);
+                    kl3 = (int)GetSafeDouble(sItem["KLQD3"]);
+                    kj1 = (int)GetSafeDouble(sItem["DKJ1"]);
+                    kj2 = (int)GetSafeDouble(sItem["DKJ2"]);
+                    kj3 = (int)GetSafeDouble(sItem["DKJ3"]);
 
                     // 旧值   valueFixed--断于焊缝之外，延性断裂,1,1 | 断于焊缝，延性断裂,2,0 | 断于焊缝之外，脆性断裂,3,0 | 断于焊缝，脆性断裂,4,0 | 既断于热影响区又脆断,5,0 | 断于热影响区，延性断裂,6,0 | 断于焊缝，脆性断裂(焊口开裂),7,0
                     //1为断于钢筋母材,延性断裂；2为断于母材,脆性断裂；3为断于焊缝,脆性断裂；4为断于热影响区,延性断裂；5为断于热影响区,脆性断裂
@@ -645,7 +650,9 @@ namespace Calculates
                     kj3 = kj3 == 5 ? 3 : kj3;
 
                     #endregion
+                    #endregion
 
+                    #region 拉伸
                     if (jcxm.Contains("、拉伸、") || jcxm.Contains("、抗拉强度、"))
                     {
                         //合格 
@@ -702,14 +709,16 @@ namespace Calculates
                     {
                         sItem["HG_LW"] = "0";
                     }
-
+                    #endregion
+                    #region 弯曲
                     if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                     {
                         int Gs = 0;
                         for (int i = 1; i < 4; i++)
                         {
-                            if (GetSafeInt(sItem["LW" + i]) >= 0.5)
+                            if (GetSafeInt(sItem["LW" + i]) == 0)
                             {
+                               
                                 Gs = Gs + 1;
                             }
                         }
@@ -743,7 +752,8 @@ namespace Calculates
                         sItem["LW3"] = "----";
                         sItem["HG_LW"] = "0";
                     }
-
+                    #endregion
+                   
                     if ((sItem["JCJG_LS"] == "符合" || sItem["JCJG_LS"] == "----") && (sItem["JCJG_LW"] == "符合" || sItem["JCJG_LW"] == "----"))
                     {
                         sItem["JCJG"] = "合格";

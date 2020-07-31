@@ -44,7 +44,7 @@ namespace Calculates
                 m["JCJGMS"] = jsbeizhu;
                 MItem.Add(m);
             }
-
+            #region 函数方法
             //保留有效数字
             Func<double, int, string> mYxsz = delegate (double t_numeric, int rndto)
             {
@@ -432,7 +432,7 @@ namespace Calculates
                     }
                     return "";
                 };
-
+            #endregion
             foreach (var sItem in SItem)
             {
                 #region 数据准备工作
@@ -621,6 +621,16 @@ namespace Calculates
 
                 //求伸长率
                 calc_SCL(MItem[0], sItem, (int)mxlgs);
+                if (ggph.Contains("E"))
+                {
+                  
+                    sItem["G_SCL"] = "----";
+                    sItem["SCL1"] = "----";
+                    sItem["SCL2"] = "----";
+                    sItem["SCL3"] = "----";
+                    sItem["SCL4"] = "----";
+
+                }
 
                 //求屈服强度及抗拉强度
                 calc_qf(sItem, (int)mxlgs);

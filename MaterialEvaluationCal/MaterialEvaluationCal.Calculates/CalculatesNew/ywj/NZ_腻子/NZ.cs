@@ -28,6 +28,10 @@ namespace Calculates
             mSjdj = "";
             var jcxmBhg = "";
             var jcxmCur = "";
+            bool sffj = false;
+
+
+
 
             foreach (var sitem in SItem)
             {
@@ -119,26 +123,39 @@ namespace Calculates
                 mFlag_Bhg = false;
                 mbhggs = 0;
 
-                if (jcxm.Contains("、容器中状态、"))
+                if (sitem["ZJQDSFFJ"] == "是" || sitem["GZSJSFFJ"] == "是" || sitem["CQKGLXSFFJ"] == "是"
+                    || sitem["XSLSFFJ"] == "是" || sitem["DMXSFFJ"] == "是" || sitem["NZMRRXSFFJ"] == "是"
+                    || sitem["DTKKLXSFFJ"] == "是" || sitem["RQZZTSFFJ"] == "是" || sitem["DWCCWDXSFFJ"] == "是"
+                    || sitem["SGXSFFJ"] == "是" || sitem["NJXSFFJ"] == "是" || sitem["NSXSFFJ"] == "是")
                 {
-                    jcxmCur = "容器中状态";
+                    sffj = false;
 
-                    if ("符合" != sitem["HG_RQZZT"] && "合格" != sitem["HG_RQZZT"])
+
+                }
+
+
+
+
+                    if (jcxm.Contains("、容器中状态、"))
                     {
-                        mbhggs = mbhggs + 1;
-                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        jcxmCur = "容器中状态";
+
+                        if ("符合" != sitem["HG_RQZZT"] && "合格" != sitem["HG_RQZZT"])
+                        {
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                        else
+                        {
+                            mFlag_Hg = true;
+                        }
                     }
                     else
                     {
-                        mFlag_Hg = true;
+                        sitem["RQZZT"] = "----";
+                        sitem["HG_RQZZT"] = "----";
+                        mitem["G_RQZZT"] = "----";
                     }
-                }
-                else
-                {
-                    sitem["RQZZT"] = "----";
-                    sitem["HG_RQZZT"] = "----";
-                    mitem["G_RQZZT"] = "----";
-                }
 
                 if (jcxm.Contains("、施工性、"))
                 {
@@ -264,7 +281,7 @@ namespace Calculates
                         }
                         else
                         {
-                            mFlag_Bhg = true; 
+                            mFlag_Bhg = true;
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                     }
@@ -392,7 +409,7 @@ namespace Calculates
 
                 //室内 柔韧性  只有R型做
                 //外墙 腻子膜柔韧性 T型　不做
-                if ((jcxm.Contains("、腻子膜柔韧性、") || jcxm.Contains("、柔韧性、")) && ((dCpmc == "建筑外墙用腻子" && dLx == "R型")|| (dCpmc == "外企" && dLx != "T型")))
+                if ((jcxm.Contains("、腻子膜柔韧性、") || jcxm.Contains("、柔韧性、")) && ((dCpmc == "建筑外墙用腻子" && dLx == "R型") || (dCpmc == "外企" && dLx != "T型")))
 
                 //if ((jcxm.Contains("、腻子膜柔韧性、")|| jcxm.Contains("、柔韧性、") && dLx == "R型") && (jcxm.Contains("、柔韧性、") && dCpmc== "建筑室内用腻子"))
                 {
@@ -557,13 +574,29 @@ namespace Calculates
             //主表总判断赋值
             if (mAllHg)
             {
-                mitem["JCJG"] = "合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
+                if (sffj)
+                {
+                    mitem["JCJG"] = "合格";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
+                }
+                else
+                {
+                    mitem["JCJG"] = "合格";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，经复检,所检项目均符合要求。";
+                }
             }
             else
             {
-                mitem["JCJG"] = "不合格";
-                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                if (sffj)
+                {
+                    mitem["JCJG"] = "不合格";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定,所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                }
+                else
+                {
+                    mitem["JCJG"] = "不合格";
+                    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，经复检,所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                }
             }
             #endregion
         }

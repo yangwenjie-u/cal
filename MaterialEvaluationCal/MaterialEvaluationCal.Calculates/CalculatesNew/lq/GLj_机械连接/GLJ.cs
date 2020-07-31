@@ -178,6 +178,7 @@ namespace Calculates
             var SItem = data["S_GLJ"];
             var ggph = "";//钢筋牌号
             var ggjb = "";//钢筋接头级别
+            var yslx = "";
             #endregion
 
             //循环从表
@@ -185,7 +186,7 @@ namespace Calculates
             {
                 jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 ggph = sitem["GCLX_PH"];
-
+                yslx = sitem["YSLX"]; //验收类型
                 mCnt_FjHg = 0; //记录复检合格的组数
                 mCnt_FjHg1 = 0;
                 MItem[0]["FJJJ1"] = "";
@@ -599,7 +600,16 @@ namespace Calculates
             }
             if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"].Trim()))
             {
-                mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggjb + "要求，调整工艺参数后重新送检。";
+
+                if (yslx == "工艺检验")
+                {
+                    mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggjb + "要求，调整工艺参数后重新送检。";
+                }
+                else
+                {
+                    mjgsm = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggjb + "要求，另取双倍样复试。";
+
+                }
                 MItem[0]["FJJJ1"] = mjgsm;
                 if (mFlag_Bhg && mFlag_Hg)
                 {

@@ -77,7 +77,7 @@ namespace Calculates
                     sitem["KYQD6"] = KYQD6.ToString();
                     
                     KYPJ = Math.Round((KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD5 + KYQD6) / 6,2);
-                    decimal sum = KYQD1 + KYQD2 + KYQD3 + KYQD4 + KYQD5 + KYQD6;
+                    decimal sum = 0;
 
                     KYPJMIN = KYPJ * (GetSafeDecimal("0.9"));
                     KYPJMAX = KYPJ * (GetSafeDecimal("1.1"));
@@ -134,6 +134,12 @@ namespace Calculates
                 mitem["JCJG"] = "不合格";
                 mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目抗压强度不符合要求";
             }
+            if (hgCount < 5)
+            {
+                mitem["JCJG"] = "作废";
+                mitem["JCJGMS"] = "作废";
+            }
+
             #endregion
         }
     }
