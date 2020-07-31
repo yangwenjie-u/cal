@@ -623,7 +623,7 @@ namespace Calculates
                 calc_SCL(MItem[0], sItem, (int)mxlgs);
                 if (ggph.Contains("E"))
                 {
-                  
+
                     sItem["G_SCL"] = "----";
                     sItem["SCL1"] = "----";
                     sItem["SCL2"] = "----";
@@ -654,7 +654,7 @@ namespace Calculates
                     sItem["LW3"] = "----";
                 }
                 #region 抗震要求
-                if (jcxm.Contains("、抗震要求、"))
+                if (ggph.Contains("E"))
                 {
                     int mkzhggs = 0;
                     jcxmCur = "最大力总伸长率";
@@ -757,7 +757,7 @@ namespace Calculates
                         }
                     }
 
-                    if (mkzhggs == mxlgs)
+                    if (mkzhggs == 0)
                     {
                         sItem["JCJG_KZ"] = "符合";
 
