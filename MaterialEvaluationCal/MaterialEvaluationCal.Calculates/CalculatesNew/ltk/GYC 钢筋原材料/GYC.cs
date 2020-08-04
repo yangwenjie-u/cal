@@ -750,6 +750,14 @@ namespace Calculates
 
                 //求屈服强度
                 calc_qf(sItem, (int)mXLGS);
+                if (ggph.Contains("E"))
+                {
+                    mHggs_SCL = 0;
+                    sItem["G_SCL"] = "----";
+                    sItem["SCL1"] = "----";
+                    sItem["SCL2"] = "----";
+                    sItem["SCL3"] = "----";
+                }
                 //求抗拉强度
                 calc_kl(sItem, (int)mXLGS);
 
@@ -808,7 +816,7 @@ namespace Calculates
                             md = md / md1;
                             md = md + GetSafeDouble(sItem["KLQD" + i]) / 200000;
                             md = md * 100;
-                            md = Math.Round(md, 1);
+                            md = Math.Round(md*2, 0)/2;
                             sItem["ZSCL" + i] = md.ToString("0.0");
 
                             if (MItem[0]["PDBZ"].Contains("1499.1"))

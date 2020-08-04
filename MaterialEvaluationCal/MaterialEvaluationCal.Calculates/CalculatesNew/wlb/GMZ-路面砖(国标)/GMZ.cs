@@ -487,6 +487,13 @@ namespace Calculates
                             sItem["DHKYHZ3"] = Round(GetSafeDouble(sItem["DHKYHZ3"]), 1).ToString("0.0");
                             sItem["DHKYHZ4"] = Round(GetSafeDouble(sItem["DHKYHZ4"]), 1).ToString("0.0");
                             sItem["DHKYHZ5"] = Round(GetSafeDouble(sItem["DHKYHZ5"]), 1).ToString("0.0");
+
+                            sItem["DQKYHZ1"] = Round(GetSafeDouble(sItem["DQKYHZ1"]), 1).ToString("0.0");
+                            sItem["DQKYHZ2"] = Round(GetSafeDouble(sItem["DQKYHZ2"]), 1).ToString("0.0");
+                            sItem["DQKYHZ3"] = Round(GetSafeDouble(sItem["DQKYHZ3"]), 1).ToString("0.0");
+                            sItem["DQKYHZ4"] = Round(GetSafeDouble(sItem["DQKYHZ4"]), 1).ToString("0.0");
+                            sItem["DQKYHZ5"] = Round(GetSafeDouble(sItem["DQKYHZ5"]), 1).ToString("0.0");
+
                             if (mMj1 != 0 && mMj2 != 0 && mMj3 != 0 && mMj4 != 0 && mMj5 != 0)
                             {
                                 sItem["DHKYQD1"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ1"]) / (mMj1), 1).ToString("0.0");
@@ -494,6 +501,13 @@ namespace Calculates
                                 sItem["DHKYQD3"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ3"]) / (mMj3), 1).ToString("0.0");
                                 sItem["DHKYQD4"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ4"]) / (mMj4), 1).ToString("0.0");
                                 sItem["DHKYQD5"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ5"]) / (mMj5), 1).ToString("0.0");
+
+                                sItem["DQKYQD1"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ1"]) / (mMj1), 1).ToString("0.0");
+                                sItem["DQKYQD2"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ2"]) / (mMj2), 1).ToString("0.0");
+                                sItem["DQKYQD3"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ3"]) / (mMj3), 1).ToString("0.0");
+                                sItem["DQKYQD4"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ4"]) / (mMj4), 1).ToString("0.0");
+                                sItem["DQKYQD5"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ5"]) / (mMj5), 1).ToString("0.0");
+
                             }
                             else
                             {
@@ -502,10 +516,16 @@ namespace Calculates
                                 sItem["DHKYQD3"] = "0";
                                 sItem["DHKYQD4"] = "0";
                                 sItem["DHKYQD5"] = "0";
+
+                                sItem["DQKYQD1"] = "0";
+                                sItem["DQKYQD2"] = "0";
+                                sItem["DQKYQD3"] = "0";
+                                sItem["DQKYQD4"] = "0";
+                                sItem["DQKYQD5"] = "0";
                             }
                             //冻前抗压平均值 
                             double mDqky = 0;
-                            mDqky = (GetSafeDouble(sItem["DQKYHZ1"]) + GetSafeDouble(sItem["DQKYHZ2"]) + GetSafeDouble(sItem["DQKYHZ3"]) + GetSafeDouble(sItem["DQKYHZ4"]) + GetSafeDouble(sItem["DQKYHZ5"])) / 5;
+                            mDqky = (GetSafeDouble(sItem["DQKYQD1"]) + GetSafeDouble(sItem["DQKYQD2"]) + GetSafeDouble(sItem["DQKYQD3"]) + GetSafeDouble(sItem["DQKYQD4"]) + GetSafeDouble(sItem["DQKYQD5"])) / 5;
 
                             //冻后抗压平均值
                             mPjz = (GetSafeDouble(sItem["DHKYQD1"]) + GetSafeDouble(sItem["DHKYQD2"]) + GetSafeDouble(sItem["DHKYQD3"]) + GetSafeDouble(sItem["DHKYQD4"]) + GetSafeDouble(sItem["DHKYQD5"])) / 5;
@@ -528,7 +548,7 @@ namespace Calculates
                             }
 
 
-                            if (IsQualified(sItem["QDSSLYQ"], sItem["QDSSL"]) == "符合")
+                            if (IsQualified(sItem["QDSSLYQ"], sItem["QDSSL"], false) == "合格")
                             {
                                 sItem["QDSSLPD"] = "合格";
                                 mFlag_Hg = true;
@@ -589,7 +609,7 @@ namespace Calculates
                             mMinKyqd = Round(mkyhzArray[0], 2);
                             sItem["KZQDMIN"] = mMinKyqd.ToString("0.00");
                             //if (GetSafeDouble(sItem["KZPJ"]) >= GetSafeDouble(extraDJ_item["KZPJZ"]) && GetSafeDouble(sItem["KZQDMIN"]) >= GetSafeDouble(extraDJ_item["KZMIN"]))
-                            if (IsQualified(MItem[0]["G_KZPJZ"],sItem["KZPJ"],false) == "合格" && IsQualified(MItem[0]["G_KZMIN"], sItem["KZQDMIN"]) == "合格")
+                            if (IsQualified(MItem[0]["G_KZPJZ"], sItem["KZPJ"], false) == "合格" && IsQualified(MItem[0]["G_KZMIN"], sItem["KZQDMIN"]) == "合格")
                             {
                                 sItem["JCJG"] = "合格";
                                 sItem["KZPD"] = "合格";
@@ -635,6 +655,13 @@ namespace Calculates
                             sItem["DHKYHZ3"] = Round(GetSafeDouble(sItem["DHKYHZ3"]), 1).ToString("0.0");
                             sItem["DHKYHZ4"] = Round(GetSafeDouble(sItem["DHKYHZ4"]), 1).ToString("0.0");
                             sItem["DHKYHZ5"] = Round(GetSafeDouble(sItem["DHKYHZ5"]), 1).ToString("0.0");
+
+                            sItem["DQKYHZ1"] = Round(GetSafeDouble(sItem["DQKYHZ1"]), 1).ToString("0.0");
+                            sItem["DQKYHZ2"] = Round(GetSafeDouble(sItem["DQKYHZ2"]), 1).ToString("0.0");
+                            sItem["DQKYHZ3"] = Round(GetSafeDouble(sItem["DQKYHZ3"]), 1).ToString("0.0");
+                            sItem["DQKYHZ4"] = Round(GetSafeDouble(sItem["DQKYHZ4"]), 1).ToString("0.0");
+                            sItem["DQKYHZ5"] = Round(GetSafeDouble(sItem["DQKYHZ5"]), 1).ToString("0.0");
+
                             if (mMj1 != 0 && mMj2 != 0 && mMj3 != 0 && mMj4 != 0 && mMj5 != 0)
                             {
                                 sItem["DHKYQD1"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ1"]) / (mMj1), 1).ToString("0.0");
@@ -642,6 +669,12 @@ namespace Calculates
                                 sItem["DHKYQD3"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ3"]) / (mMj3), 1).ToString("0.0");
                                 sItem["DHKYQD4"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ4"]) / (mMj4), 1).ToString("0.0");
                                 sItem["DHKYQD5"] = Round(1000 * GetSafeDouble(sItem["DHKYHZ5"]) / (mMj5), 1).ToString("0.0");
+
+                                sItem["DQKYQD1"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ1"]) / (mMj1), 1).ToString("0.0");
+                                sItem["DQKYQD2"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ2"]) / (mMj2), 1).ToString("0.0");
+                                sItem["DQKYQD3"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ3"]) / (mMj3), 1).ToString("0.0");
+                                sItem["DQKYQD4"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ4"]) / (mMj4), 1).ToString("0.0");
+                                sItem["DQKYQD5"] = Round(1000 * GetSafeDouble(sItem["DQKYHZ5"]) / (mMj5), 1).ToString("0.0");
                             }
                             else
                             {
@@ -650,10 +683,16 @@ namespace Calculates
                                 sItem["DHKYQD3"] = "0";
                                 sItem["DHKYQD4"] = "0";
                                 sItem["DHKYQD5"] = "0";
+
+                                sItem["DQKYQD1"] = "0";
+                                sItem["DQKYQD2"] = "0";
+                                sItem["DQKYQD3"] = "0";
+                                sItem["DQKYQD4"] = "0";
+                                sItem["DQKYQD5"] = "0";
                             }
                             //冻前抗压平均值 
                             double mDqky = 0;
-                            mDqky = (GetSafeDouble(sItem["DQKYHZ1"]) + GetSafeDouble(sItem["DQKYHZ2"]) + GetSafeDouble(sItem["DQKYHZ3"]) + GetSafeDouble(sItem["DQKYHZ4"]) + GetSafeDouble(sItem["DQKYHZ5"])) / 5;
+                            mDqky = (GetSafeDouble(sItem["DQKYQD1"]) + GetSafeDouble(sItem["DQKYQD2"]) + GetSafeDouble(sItem["DQKYQD3"]) + GetSafeDouble(sItem["DQKYQD4"]) + GetSafeDouble(sItem["DQKYQD5"])) / 5;
 
                             //冻后抗压平均值
                             mPjz = (GetSafeDouble(sItem["DHKYQD1"]) + GetSafeDouble(sItem["DHKYQD2"]) + GetSafeDouble(sItem["DHKYQD3"]) + GetSafeDouble(sItem["DHKYQD4"]) + GetSafeDouble(sItem["DHKYQD5"])) / 5;
@@ -676,7 +715,7 @@ namespace Calculates
                                 sItem["QDSSL"] = "0";
                             }
 
-                            if (IsQualified(sItem["QDSSLYQ"], sItem["QDSSL"]) == "符合")
+                            if (IsQualified(sItem["QDSSLYQ"], sItem["QDSSL"], false) == "合格")
                             {
                                 sItem["QDSSLPD"] = "合格";
                                 mFlag_Hg = true;
@@ -694,7 +733,7 @@ namespace Calculates
                             sItem["QDSSLYQ"] = "----";
                             sItem["QDSSLPD"] = "----";
                         }
-                            
+
                         #endregion
                         #region 抗冻性-old
                         //if (jcxm.Contains("、抗冻性、"))

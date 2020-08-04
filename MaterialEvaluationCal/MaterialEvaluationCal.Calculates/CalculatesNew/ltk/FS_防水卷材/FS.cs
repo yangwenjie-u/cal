@@ -74,7 +74,8 @@ namespace Calculates
                 string dBzh = string.IsNullOrEmpty(sItem["BZH"]) ? "" : sItem["BZH"].Trim();
 
                 switch (dCpmc)
-                {
+                {    
+                    #region CPMC-CPBJ产品标记
                     case "弹性体改性沥青防水卷材":
                         sItem["CPBJ"] = "SBS " + dXh + " " + dTjlx + " " + dSbmcl + dHd + " " + dBzh;
                         break;
@@ -152,7 +153,7 @@ namespace Calculates
                 }
 
                 sItem["CPBJ"] = System.Text.RegularExpressions.Regex.Replace(sItem["CPBJ"].Replace("----", ""), @"\b\s+\b", " ");
-
+                #endregion
                 var mrsdj = mrsDj.FirstOrDefault(u => (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains(dHd) && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))
                                 || (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains(dHd + ".0") && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))
                                 || (u["MC"].Contains(dCpmc) && u["JCBZ"].Contains(dBzh) && u["XS"].Contains(dXs) && u["HD"].Contains("----") && u["XH"].Contains(dXh) && u["TJLX"].Contains(dTjlx) && u["SBMCL"].Contains(dSbmcl))

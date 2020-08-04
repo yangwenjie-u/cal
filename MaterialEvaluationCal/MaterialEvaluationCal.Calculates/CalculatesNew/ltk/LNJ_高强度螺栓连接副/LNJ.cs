@@ -70,7 +70,7 @@ namespace Calculates
                     sItem["JCJG"] = "不合格";
                     continue;
                 }
-
+                #region 紧固轴力
                 if (jcxm.Contains("、紧固轴力、"))
                 {
                     jcxmCur = "紧固轴力";
@@ -133,12 +133,14 @@ namespace Calculates
                     sItem["KLHZYQ"] = "----";
                     sItem["NJXSPD"] = "----";
                 }
+                #endregion
 
+                #region 扭矩系数
                 sign = true;
                 if (jcxm.Contains("、扭矩系数、"))
                 {
                     jcxmCur = "扭矩系数";
-                    sItem["NJXSYQ"] = "扭矩系数平均值为" + mrsDj["KPJ"].Trim() + ",标准偏差应" + mrsDj["KBZC"];
+                    sItem["NJXSYQ"] = "扭矩系数平均值为" + mrsDj["KPJ"].Trim() + ",标准偏差应" +mrsDj["KBZC"];
 
                     nArr.Clear();
                     sum = 0;
@@ -165,9 +167,9 @@ namespace Calculates
                         sum += Math.Pow(md, 2);
                     }
 
-                    md1 = Math.Round(Math.Sqrt(sum / 7), 4);
+                    md1 = Math.Round(Math.Sqrt(sum / 7), 3);
 
-                    sItem["KBZC"] = md1.ToString("0.0000");
+                    sItem["KBZC"] = md1.ToString("0.000");
 
                     if ("符合" == IsQualified(mrsDj["KPJ"], sItem["KPJ"], true) && "符合" == IsQualified(mrsDj["KBZC"], sItem["KBZC"], true))
                     {
@@ -195,7 +197,9 @@ namespace Calculates
                         sItem["NJXSPD"] = "----";
                     }
                 }
+                #endregion
 
+                #region 螺母洛氏硬度
                 if (jcxm.Contains("、螺母洛氏硬度、"))
                 {
                     jcxmCur = "螺母洛氏硬度";
@@ -225,6 +229,9 @@ namespace Calculates
                     sItem["LMYDPD"] = "----";
                 }
 
+                #endregion
+
+                #region 垫圈洛氏硬度
                 if (jcxm.Contains("、垫圈洛氏硬度、"))
                 {
                     jcxmCur = "垫圈洛氏硬度";
@@ -250,7 +257,9 @@ namespace Calculates
                 {
                     sItem["DQYDPD"] = "----";
                 }
+                #endregion
 
+                #region 螺母保证载荷
                 if (jcxm.Contains("、螺母保证载荷、"))
                 {
                     jcxmCur = "螺母保证载荷";
@@ -267,6 +276,9 @@ namespace Calculates
                 {
                     sItem["LMBZHZPD"] = "----";
                 }
+                #endregion
+
+                #region 螺栓楔负载
                 if (jcxm.Contains("、螺栓楔负载、"))
                 {
                     jcxmCur = "螺栓楔负载";
@@ -283,6 +295,7 @@ namespace Calculates
                 {
                     sItem["LSQFZPD"] = "----";
                 }
+                #endregion
 
                 if (sItem["LSQFZPD"] == "不合格" || sItem["LMBZHZPD"] == "不合格" || sItem["DQYDPD"] == "不合格" || sItem["LMYDPD"] == "不合格" || sItem["NJXSPD"] == "不合格" || sItem["KLHZPD"] == "不合格")
                 {

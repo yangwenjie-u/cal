@@ -99,7 +99,7 @@ namespace Calculates.HPB_混凝土配合比
                     //外加剂1
                     if (IsNumeric(MItem[0]["T_CLWJJ1"]))
                     {
-                        MItem[0]["T_PBWJJ1"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBWJJ1"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -108,7 +108,7 @@ namespace Calculates.HPB_混凝土配合比
                     //外加剂2
                     if (IsNumeric(MItem[0]["T_CLWJJ2"]))
                     {
-                        MItem[0]["T_PBWJJ2"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBWJJ2"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -118,7 +118,7 @@ namespace Calculates.HPB_混凝土配合比
                     //外加剂3
                     if (IsNumeric(MItem[0]["T_CLWJJ3"]))
                     {
-                        MItem[0]["T_PBWJJ3"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ3"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBWJJ3"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ3"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -128,7 +128,7 @@ namespace Calculates.HPB_混凝土配合比
                     //掺合料1
                     if (IsNumeric(MItem[0]["T_CLCHL1"]))
                     {
-                        MItem[0]["T_PBCHL1"] = Round(GetSafeDouble(MItem[0]["T_CLCHL1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBCHL1"] = Round(GetSafeDouble(MItem[0]["T_CLCHL1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -137,7 +137,7 @@ namespace Calculates.HPB_混凝土配合比
                     //掺合料2
                     if (IsNumeric(MItem[0]["T_CLCHL2"]))
                     {
-                        MItem[0]["T_PBCHL2"] = Round(GetSafeDouble(MItem[0]["T_CLCHL2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBCHL2"] = Round(GetSafeDouble(MItem[0]["T_CLCHL2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -146,7 +146,7 @@ namespace Calculates.HPB_混凝土配合比
                     //掺合料3
                     if (IsNumeric(MItem[0]["T_CLCHL3"]))
                     {
-                        MItem[0]["T_PBCHL3"] = Round(GetSafeDouble(MItem[0]["T_CLCHL3"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBCHL3"] = Round(GetSafeDouble(MItem[0]["T_CLCHL3"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -232,8 +232,15 @@ namespace Calculates.HPB_混凝土配合比
 
                 if (jcxm.Contains("、抗渗、") || jcxm.Contains("、配合比、"))
                 {
+                    if (string.IsNullOrEmpty(sItem["KYPJ"]) && sItem["KYPJ"] != "----" && Conversion.Val(sItem["KSQD1"]) != 0)
+                    {
+                        sItem["DDKSDJ"] = "P" + (Conversion.Val(sItem["KSQD1"]) * 10 - 2).ToString();
+                    }
+                    else
+                    {
+                        sItem["DDKSDJ"] = "----";
+                    }
 
-                    sItem["DDKSDJ"] = "P" + (Conversion.Val(sItem["KSQD1"]) * 10 - 2).ToString();
                 }
                 else
                 {
@@ -242,13 +249,31 @@ namespace Calculates.HPB_混凝土配合比
 
                 if (jcxm.Contains("、泌水率、") || jcxm.Contains("、配合比、"))
                 {
-                    sItem["MSL"] = (Math.Round((100 * Conversion.Val(sItem["MSL1"]) / Conversion.Val(sItem["MSL2"])) / 10, 0) * 10).ToString(); ;
+                    //加压
+                    sItem["MSL"] = (Math.Round((100 * Conversion.Val(sItem["MSL1"]) / Conversion.Val(sItem["MSL2"])) / 10, 0) * 10).ToString();
+
+                    //常压
+                    List<double> larray = new List<double>();
+                    for (int i = 1; i <= 3; i++)
+                    {
+                        sItem["CYMSL" + i] = Math.Round(Conversion.Val(sItem["MSLMSZL"+i])/(Conversion.Val(sItem["MSLBHYSL"+i])/Conversion.Val(sItem["MSLBHWZZL"+i]))*(Conversion.Val(sItem["MSLTSYZZL"+i])-Conversion.Val(sItem["MSLTZL"+i]))*100 ,0).ToString();
+                        larray.Add(Conversion.Val(sItem["CYMSL" + i]));
+                    }
+                    if ((larray.Max()-larray.Average())>larray.Average()*0.15 || larray.Average()-larray.Min() > larray.Average() * 0.15)
+                    {
+                        sItem["CYMSL"] = "重新试验";
+                    }
+                    else
+                    {
+                        sItem["CYMSL"] = larray.Average().ToString();
+                    }
                 }
                 else
                 {
                     sItem["MSL"] = "----";
                     sItem["MSL1"] = "----";
                     sItem["MSL2"] = "----";
+                    sItem["CYMSL"] = "----";
                 }
 
                 if (jcxm.Contains("、含气量、") || jcxm.Contains("、配合比、"))
@@ -275,7 +300,8 @@ namespace Calculates.HPB_混凝土配合比
 
                 if (jcxm.Contains("、凝结时间、") || jcxm.Contains("、配合比、"))
                 {
-                    sItem["CNSJ"] = (Math.Round((Conversion.Val(sItem["T1CN"]) + Conversion.Val(sItem["T2CN"]) + Conversion.Val(sItem["T3CN"]) / 3 / 5), 0) * 5).ToString("0"); ;
+                    sItem["CNSJ"] = (Math.Round((Conversion.Val(sItem["T1CN"]) + Conversion.Val(sItem["T2CN"]) + Conversion.Val(sItem["T3CN"])) / 3 / 5, 0) * 5).ToString("0");
+                    sItem["ZNSJ"] = (Math.Round((Conversion.Val(sItem["T1ZN"]) + Conversion.Val(sItem["T2ZN"]) + Conversion.Val(sItem["T3ZN"])) / 3 / 5, 0) * 5).ToString("0");
                 }
                 else
                 {
