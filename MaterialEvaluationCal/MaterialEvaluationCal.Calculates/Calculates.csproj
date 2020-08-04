@@ -191,6 +191,7 @@
     <Compile Include="CalculatesNew\ywj\FST_防水涂料\FST.cs" />
     <Compile Include="CalculatesNew\ywj\GJN_灌浆料\GJN.cs" />
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
+    <Compile Include="CalculatesNew\ywj\JZL_建筑密封材料\JZL.cs" />
     <Compile Include="CalculatesNew\ywj\MXE_马歇尔\MXE.cs" />
     <Compile Include="CalculatesNew\ywj\NZ_腻子\NZ.cs" />
     <Compile Include="CalculatesNew\ywj\SNK_灌浆料试块\SNK.cs" />

@@ -86,13 +86,13 @@ namespace Calculates
                 }
                 else
                 {
-                    if (gcwj.Contains("DN"))
+                    if (gcwj.Contains("dn"))
                     {
                         gcwj += " " + gcbh + "mm";
                     }
                     else
                     {
-                        gcwj = "DN " + gcwj + "x" + gcbh + "mm";
+                        gcwj = "dn " + gcwj + "x" + gcbh + "mm";
                     }
 
                     if (sitem["CLDJ"] != "----")
@@ -273,6 +273,8 @@ namespace Calculates
                 if (jcxm.Contains("、规格尺寸、"))
                 {
                     jcxmCur = "规格尺寸";
+                    double wj_bhg = 0;
+                    double bh_bhg = 0;
                     //测试的数量4-12个
                     double gc = GetSafeDouble(sitem["GCWJ"]);
                     if (gc <= 40)
@@ -313,7 +315,7 @@ namespace Calculates
                     }
                     #region
                     //平均外径
-                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCWJ"] == sitem["GCWJ"] && x["GXL"] == sitem["GXL"]&& x["PDBZ"] == sitem["DYBZ"]);
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCWJ"] == sitem["GCWJ"] && x["GXL"] == sitem["GXL"] && x["PDBZ"] == sitem["DYBZ"]);
                     if (mrsWgcc_Filter == null && mrsDj_Filter.Count() == 0)
                     {
                         mjcjg = "不下结论";
@@ -338,7 +340,7 @@ namespace Calculates
                     decimal jxpc = 0;
                     foreach (var item in mrsBhgc_Filter)
                     {
-                        if (IsQualified("≥"+item["GCBH"], sitem["GCBH"]) == "合格")
+                        if (IsQualified(item["GCBH"].IndexOf('～') == -1 ? "≥" + item["GCBH"] : item["GCBH"], sitem["GCBH"]) == "合格")
                         {
                             jxpc = GetSafeDecimal(item["JXPC"]);
                             break;
@@ -375,8 +377,7 @@ namespace Calculates
 
                         //单组壁厚
                         List<decimal> arrDZBH = new List<decimal>();
-                        double wj_bhg = 0;
-                        double bh_bhg = 0;
+
 
                         //计算外径
                         for (int i = 1; i < 9; i++)
@@ -448,6 +449,7 @@ namespace Calculates
                         bh_bhg = 0;
                         for (int i = 1; i < 9; i++)
                         {
+                            arrDZBH.Clear();
                             if (string.IsNullOrEmpty(sitem["SCBH" + i + "_1"]))
                             {
                                 break;
@@ -459,10 +461,11 @@ namespace Calculates
                                     break;
                                 }
 
-                                if (GetSafeDecimal(sitem["SCBH" + i + "_" + j]) < bhMin && GetSafeDecimal(sitem["SCBH" + i + "_" + j]) > bhMax) //该组不合格，则去掉该组，如果大于1，尺寸不合格
+                                if (GetSafeDecimal(sitem["SCBH" + i + "_" + j]) < bhMin || GetSafeDecimal(sitem["SCBH" + i + "_" + j]) > bhMax) //该组不合格，则去掉该组，如果大于1，尺寸不合格
                                 {
                                     bh_bhg++;
                                     //单组不合格
+                                    continue;
                                 }
 
                                 arrDZBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
@@ -492,7 +495,7 @@ namespace Calculates
                             MItem[0]["PJWJ_HG"] = "不合格";
                             //不合格
                             GGCCBHG = true;
-                            goto CCBHG_FLAG;
+                            //goto CCBHG_FLAG;
                         }
                         else
                         {
@@ -509,7 +512,7 @@ namespace Calculates
                             //不合格
                             MItem[0]["HG_GCBH"] = "不合格";
                             GGCCBHG = true;
-                            goto CCBHG_FLAG;
+                            //goto CCBHG_FLAG;
                         }
                         else
                         {
@@ -632,6 +635,14 @@ namespace Calculates
                             break;
                         }
                     }
+
+                    //if (wj_bhg > 1 || bh_bhg > 1)
+                    //{
+                    //    GGCCBHG = true;
+                    //    goto CCBHG_FLAG;
+                    //}
+                    wj_bhg = 0;
+                    bh_bhg = 0;
                 }
                 else
                 {
@@ -826,6 +837,8 @@ namespace Calculates
                             {
                                 mitem["LCCJ_HG"] = "不合格";
                                 mitem["LCCJ"] = "TIR值为：C(＞10%)";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mFlag_Bhg = true;
                             }
                         }
                     }
@@ -833,7 +846,18 @@ namespace Calculates
                     {
                         mitem["LCCJ"] = GetSafeDouble(mitem["LCCJCS"]) == 0 ? "0" : Round(100 * GetSafeDouble(mitem["LCCJBHGS"]) / GetSafeDouble(mitem["LCCJCS"]), 0).ToString("0");
                         mitem["LCCJ_HG"] = IsQualified(mitem["G_LCCJ"], mitem["LCCJ"], false);
-                        mitem["LCCJ"] = mitem["LCCJ"];
+                        if (mitem["LCCJ_HG"] == "不合格")
+                        {
+                            mitem["LCCJ"] = "C(真实冲击率>5%)";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            mFlag_Bhg = true;
+                        }
+                        else
+                        {
+                            mitem["LCCJ"] = "TIR值为：A(≤5%)";
+                        }
+
+
                     }
                     else
                     {
@@ -849,6 +873,8 @@ namespace Calculates
                             else
                             {
                                 mitem["LCCJ_HG"] = "不合格";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mFlag_Bhg = true;
                             }
                         }
                         if (mitem["G_LCCJ"].Contains("10次冲击，9次不破裂"))
@@ -859,6 +885,8 @@ namespace Calculates
                             else
                             {
                                 mitem["LCCJ_HG"] = "不合格";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mFlag_Bhg = true;
                             }
                         }
                         if (mitem["G_LCCJ"].Contains("9/10"))
@@ -869,6 +897,8 @@ namespace Calculates
                             else
                             {
                                 mitem["LCCJ_HG"] = "不合格";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mFlag_Bhg = true;
                             }
                         }
                     }
@@ -886,13 +916,13 @@ namespace Calculates
                     if (!sffj)
                     {
                         //初检
-                        mitem["RHWD"] = Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) / 2), 1).ToString();
+                        mitem["RHWD"] = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1).ToString();
                         mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
                     }
                     else
                     {
-                        mitem["RHWD"] = Math.Round((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"]) / 2), 1).ToString();
-                        mitem["RHWD_F"] = Math.Round((GetSafeDecimal(sitem["RHWD3"]) + GetSafeDecimal(sitem["RHWD4"]) / 2), 1).ToString();
+                        mitem["RHWD"] = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1).ToString();
+                        mitem["RHWD_F"] = Math.Round(((GetSafeDecimal(sitem["RHWD3"]) + GetSafeDecimal(sitem["RHWD4"])) / 2), 1).ToString();
 
                         mitem["RHWD_HG"] = IsQualified(mitem["G_RHWD"], mitem["RHWD"], false);
 
@@ -1017,20 +1047,20 @@ namespace Calculates
                 }
                 mAllHg = (mAllHg && sitem["JCJG"].Trim() == "合格");
 
-            CCBHG_FLAG:
-                if (GGCCBHG)
-                {
-                    mAllHg = false;
-                    realBhg = true;
-                    jcxmBhg = "规格尺寸";
-                }
+                //CCBHG_FLAG:
+                //    if (GGCCBHG)
+                //    {
+                //        mAllHg = false;
+                //        realBhg = true;
+                //        jcxmBhg = "规格尺寸";
+                //    }
             }
-            var fjpd = sffj ? "复检" : "";
+            var fjpd = sffj ? "经复检" : "";
             //主表总判断赋值
             if (mAllHg)
             {
                 mitem["JCJG"] = "合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + fjpd + "均符合要求。";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，" + fjpd + "所检项目均符合要求。";
             }
             else if (mjcjg == "不下结论")
             {
@@ -1039,7 +1069,7 @@ namespace Calculates
             else
             {
                 mitem["JCJG"] = "不合格";
-                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + fjpd + "不符合要求，详情见下页";
+                mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，" + fjpd + "所检项目不符合要求，详情见下页";
                 if (realBhg)
                 {
                     mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";

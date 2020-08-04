@@ -14,6 +14,7 @@ namespace Calculates
             /************************ 代码开始 *********************/
             #region  计算开始
             var data = retData;
+            var mrsdj1 = dataExtra["BZ_DXLDJ"];
             var mrsDj = dataExtra["BZ_DXL_DJ"];
             var mrsWd = dataExtra["BZ_DXLWD"];
             var MItem = data["M_DXL"];
@@ -82,10 +83,10 @@ namespace Calculates
                 //        Y_DXL["E_JMJSC"] = "----";
                 //}
 
-                if (jcxm.Contains("、直流电阻试验、") || jcxm.Contains("、导体试验、"))
+                if (jcxm.Contains("、直流电阻试验、") || jcxm.Contains("、导体试验、") || jcxm.Contains("、导体电阻、"))
                 {
                     var bhgsl = 0;
-                    jcxmCur = CurrentJcxm(jcxm, "直流电阻试验,导体试验");
+                    jcxmCur = CurrentJcxm(jcxm, "直流电阻试验,导体试验,导体电阻");
                     //计算修正系数
                     if (MItem[0]["H_SFXZ"] == "是")
                     {
@@ -257,6 +258,58 @@ namespace Calculates
                         Y_DXL["E_SCDZ"] = "----";
                     }
                 }
+                if (jcxm.Contains("、电压试验、"))
+                    {
+                    jcxmCur = CurrentJcxm(jcxm, "电压试验");
+                    string gg = sitem["GGXH"];
+                    var mrsDj_Filter = mrsdj1.FirstOrDefault(x => x["ggxh"].Contains(gg));
+                    if (mrsDj_Filter != null && mrsDj_Filter.Count() > 0)
+                    {
+                        MItem[0]["G_DYSY"] = string.IsNullOrEmpty(mrsDj_Filter["NY"]) ? "0" : mrsDj_Filter["NY"].Trim();
+                    }
+                    if (sitem["DYSY"] == "不击穿")
+                    {
+                        sitem["DYSY_HG"] = "合格";
+                    }
+                    else
+                    {
+                        sitem["DYSY_HG"] = "不合格";
+
+                    }
+                    //sitem["DYSY_HG"] = IsQualified(MItem[0]["G_DYSY"], sitem["DYSY"], false);
+
+
+                }
+                else
+                {
+                    MItem[0]["SCDYZ"] = "----";
+                    MItem[0]["SCDYZ_HG"] = "----";
+                 
+                }
+                if (jcxm.Contains("、绝缘电阻、"))
+                {
+                    jcxmCur = CurrentJcxm(jcxm, "绝缘电阻");
+                    string gg = sitem["GGXH"];
+                    var mrsDj_Filter = mrsdj1.FirstOrDefault(x => x["ggxh"].Contains(gg));
+                    if (mrsDj_Filter != null && mrsDj_Filter.Count() > 0)
+                    {
+                        MItem[0]["G_JYDZ"] = string.IsNullOrEmpty(mrsDj_Filter["JYDZ"]) ? "0" : mrsDj_Filter["JYDZ"].Trim();
+                    }
+
+
+                    sitem["JYDZ_HG"] = IsQualified("≥"+MItem[0]["G_JYDZ"], sitem["SCJYDZ"], false);
+
+
+
+
+                }
+                else
+                {
+                    MItem[0]["SCDYZ"] = "----";
+                    MItem[0]["SCDYZ_HG"] = "----";
+
+                }
+
 
                 if (jcxm.Contains("、标志、"))
                 {

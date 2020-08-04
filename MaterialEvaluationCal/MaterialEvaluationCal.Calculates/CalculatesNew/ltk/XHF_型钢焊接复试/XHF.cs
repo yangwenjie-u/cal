@@ -141,7 +141,7 @@ namespace Calculates
                 //求抗拉强度
                 if (0 == Conversion.Val(sItem["ZJ"]))
                 {
-                    sItem["MJ"] = (Conversion.Val(sItem["HD1"]) * Conversion.Val(sItem["KD1"])).ToString();
+                    sItem["MJ"] = (Conversion.Val(sItem["HD1"]) * Conversion.Val(sItem["KD1"])).ToString("0.000");
                     //sItem["GG"] = "宽:" + sItem["KD1"] + "\n厚:" + sItem["HD1"];
                 }
                 else
@@ -190,11 +190,13 @@ namespace Calculates
                     //        break;
                     //}
 
+                    
+
                     if (jcxm.Contains("、拉伸、"))
                     {
                         jcxmCur = "拉伸";
                         var mj = 0.0;
-                        for (int i = 1; i < 3; i++)
+                        for (int i = 1; i < 5; i++)
                         {
                             if (Conversion.Val(sItem["HD1"]) * Conversion.Val(sItem["KD1"]) == 0)
                             {
@@ -211,7 +213,7 @@ namespace Calculates
                         }
 
                         var mallBhg_kl = 0;
-                        for (int i = 1; i < 3; i++)
+                        for (int i = 1; i < 5; i++)
                         {
                             if (GetSafeDouble(sItem["KLQD" + i]) >= mKlqd)
                                 sItem["HG_KL"] = (Conversion.Val(sItem["HG_KL"]) + 1).ToString();
@@ -225,6 +227,7 @@ namespace Calculates
                         }
                         else
                         {
+                            sItem["JCJG_LS"] = "不符合";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                     }
@@ -234,6 +237,11 @@ namespace Calculates
                         sItem["DKJ1"] = "----";
                         sItem["DKJ2"] = "----";
                     }
+                    if (sItem["WQJD"] == "")
+                    {
+                        sItem["WQJD"] = "----";
+                    }
+
 
                     if (jcxm.Contains("、弯曲、"))
                     {
@@ -309,6 +317,7 @@ namespace Calculates
                     }
                     else
                     {
+                      
                         sItem["JCJG_LW"] = "----";
                         sItem["LW1"] = "----";
                         sItem["LW2"] = "----";
