@@ -51,6 +51,7 @@ namespace Calculates
             bool mSFwc = true;
             var jcxmBhg = "";
             var jcxmCur = "";
+            string drzlsslyq = "", drkyqdsslyq = "";
             List<double> narr = new List<double>();
             Func<IDictionary<string, string>, IDictionary<string, string>, bool> sjtabcalc =
             delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem)
@@ -342,6 +343,12 @@ namespace Calculates
                     mSz = 0;
                     continue;
                 }
+                else
+                {
+                    drzlsslyq = mrsDj["DRZLSSL"];
+                    drkyqdsslyq = mrsDj["DRKYQDSSL"];
+                    sItem["DRXSYQ"] = mrsDj["G_DRXS"];
+                }
 
                 mJSFF = string.IsNullOrEmpty(mrsDj["JSFF"]) ? "" : mrsDj["JSFF"].ToLower();
 
@@ -621,7 +628,7 @@ namespace Calculates
                         jcxmCur = "导热系数";
                         if (Conversion.Val(sItem["DRXS"]) == 0)
                         { }
-                        if (IsQualified(sItem["DRXSYQ"], sItem["DRXS"]) == "符合")
+                        if (IsQualified(sItem["DRXSYQ"], sItem["DRXS"],false) == "合格")
                         {
                             sItem["DRXSPD"] = "合格";
                         }
@@ -658,10 +665,69 @@ namespace Calculates
                         sItem["HSLPD"] = "----";
                     }
 
-                    if (sItem["GMDPD"].Trim() == "不合格" || sItem["HSLPD"] == "不合格" || sItem["QDPD"].Trim() == "不合格" || sItem["WCPD"].Trim() == "不合格" || sItem["DRXSPD"] == "不合格" || sItem["LLSSLPD"] == "不合格" || sItem["DHQDPD"] == "不合格")
+
+                    #region 抗冻性
+                    if (jcxm.Contains("、抗冻性、"))
+                    {
+                        jcxmCur = "抗冻性";
+                        #region 质量损失率
+                        if (!string.IsNullOrEmpty(sItem["DRDQGZ1"]))
+                        {
+                            List<double> larray = new List<double>();
+                            for (int i = 1; i < 6; i++)
+                            {
+                                sItem["DRZLSSL" + i] = Math.Round((Conversion.Val(sItem["DRDQGZ" + i]) - Conversion.Val(sItem["DRDHGZ" + i])) / Conversion.Val(sItem["DRDQGZ" + i]) * 100, 1).ToString();
+                                larray.Add(Conversion.Val(sItem["DRZLSSL" + i]));
+                            }
+                            sItem["DRZLSSL"] = Math.Round(larray.Average(), 1).ToString();
+                        }
+                        #endregion
+
+                        #region 抗压强度损失率
+
+                        if (!string.IsNullOrEmpty(sItem["DRSYZCD1"]))
+                        {
+                            List<double> syarray = new List<double>();
+                            List<double> dbarray = new List<double>();
+                            for (int i = 1; i < 6; i++)
+                            {
+                                sItem["DRSYZKYQD" + i] = Math.Round(Conversion.Val(sItem["DRSYZHZ" + i]) * 1000 / (Conversion.Val(sItem["DRSYZCD" + i]) * Conversion.Val(sItem["DRSYZKD" + i])), 1).ToString();
+                                sItem["DRDBZKYQD" + i] = Math.Round(Conversion.Val(sItem["DRDBZHZ" + i]) * 1000 / (Conversion.Val(sItem["DRDBZCD" + i]) * Conversion.Val(sItem["DRDBZKD" + i])), 1).ToString();
+                                syarray.Add(Conversion.Val(sItem["DRSYZKYQD" + i]));
+                                dbarray.Add(Conversion.Val(sItem["DRDBZKYQD" + i]));
+                            }
+                            sItem["DRSYZKYQD"] = Math.Round(Conversion.Val(syarray.Average()), 1).ToString();
+                            sItem["DRDBZKYQD"] = Math.Round(Conversion.Val(dbarray.Average()), 1).ToString();
+                            sItem["DRQDSSL"] = Math.Round((Conversion.Val(sItem["DRDBZKYQD"]) - Conversion.Val(sItem["DRSYZKYQD"])) / Conversion.Val(sItem["DRDBZKYQD"]) * 100, 0).ToString();
+                        }
+                        if (IsQualified(drzlsslyq, sItem["DRZLSSL"], false) == "合格" && IsQualified(drkyqdsslyq, sItem["DRQDSSL"], false) == "合格")
+                        {
+                            sItem["DRPD"] = "合格";
+                            mFlag_Hg = true;
+                        }
+                        else
+                        {
+                            sItem["DRPD"] = "不合格";
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                        sItem["DRYQ"] = "质量损失" + drzlsslyq + ",强度损失" + drkyqdsslyq;
+                        #endregion
+                    }
+                    else
+                    {
+                        sItem["DRPD"] = "----";
+                        sItem["DRYQ"] = "----";
+                        sItem["DRQDSSL"] = "----";
+                    }
+                    #endregion
+
+                    if (sItem["GMDPD"].Trim() == "不合格" || sItem["HSLPD"] == "不合格" || sItem["QDPD"].Trim() == "不合格" || sItem["WCPD"].Trim() == "不合格" || sItem["DRXSPD"] == "不合格" || sItem["LLSSLPD"] == "不合格" || sItem["DHQDPD"] == "不合格" || sItem["DRPD"] == "不合格")
                     {
                         sItem["JCJG"] = "不合格";
-                        if (sItem["GMDPD"].Trim() == "合格" || sItem["QDPD"].Trim() == "合格" || sItem["WCPD"].Trim() == "合格" || sItem["DRXSPD"] == "合格" || sItem["LLSSLPD"] == "合格" || sItem["DHQDPD"] == "合格")
+                        if (sItem["GMDPD"].Trim() == "合格" || sItem["QDPD"].Trim() == "合格" || sItem["WCPD"].Trim() == "合格" || sItem["DRXSPD"] == "合格" || sItem["LLSSLPD"] == "合格" || sItem["DHQDPD"] == "合格"|| sItem["DRPD"] == "合格")
                         {
                             mFlag_Hg = true;
                             mFlag_Bhg = true;

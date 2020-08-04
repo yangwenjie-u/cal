@@ -932,7 +932,11 @@ namespace Calculates
             int row = 1;
             foreach (var sitem in SItem)
             {
-
+                if (">60MPa" == sitem["QDTDZ"])
+                {
+                    continue;
+                }
+                sitem["BEIZHU"] = "";
                 //计算开始
                 if (string.IsNullOrEmpty(sitem["BSFS"]))
                     sitem["BSFS"] = "0";
@@ -1167,7 +1171,7 @@ namespace Calculates
                 MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "，该次检测混凝土强度部分小于设计强度。";
             }
 
-            if ( MItem[0]["SFPL"]  ==  "True")
+            if (MItem[0]["SFPL"] == "True")
             {
                 //批量计算
                 //if (MItem[0]["SFPL"] == "True")

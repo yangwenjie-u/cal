@@ -335,32 +335,40 @@ namespace Calculates
                         }
                     }
                 }
-
+                sItem["G_LWZJ"] = mlwzj + "a";
                 sItem["G_QFQD"] = Conversion.Val(mQfqd).ToString();
                 sItem["G_KLQD"] = mKlqd.ToString();
                 sItem["G_KLQD1"] = Conversion.Val(mklqd1).ToString();
                 sItem["G_SCL"] = mScl.ToString();
+                //冷弯性能标准要求
                 sItem["G_LWWZ"] = LwBzyq;
 
-                if (0 == Conversion.Val(sItem["ZJ"]))
+                if (!IsNumeric( sItem["ZJ"]))
                 {
                     sItem["MJ"] = (Conversion.Val(sItem["HD"]) * Conversion.Val(sItem["KD"])).ToString();
                     sItem["GG"] = "宽:" + sItem["KD"] + "\n厚:" + sItem["HD"];
                 }
                 else
-                {
+                
+                    if( 0 == Conversion.Val(sItem["ZJ"]))
+                    {
+                        sItem["MJ"] = (Conversion.Val(sItem["HD"]) * Conversion.Val(sItem["KD"])).ToString();
+                        sItem["GG"] = "宽:" + sItem["KD"] + "\n厚:" + sItem["HD"];
+                    }
+                else { 
                     md = Conversion.Val(sItem["ZJ"].Trim()) / 2;
                     md = Math.Round(3.14159 * Math.Pow(md, 2), 3);
                     sItem["MJ"] = md.ToString("0.000");
                     sItem["GG"] = "Φ:" + sItem["ZJ"].Trim();
                 }
 
+
                 //求伸长率
                 sItem["XGM"] = extraFieldsDj["XGM"];
 
                 if (Conversion.Val(sItem["ZJ"]) == 0)
                 {
-                    sItem["CD"] = myint(5.65 * Math.Sqrt(Conversion.Val(sItem["MJ"]))).ToString();
+                    sItem["CD"] = myint(5.65 * Math.Sqrt(Conversion.Val(sItem["MJ"]))).ToString();//原始标距
                 }
                 else
                 {

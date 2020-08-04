@@ -13,28 +13,21 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region
-            bool mAllHg = true, mItemHg = true, mFlag_Bhg = true;
-            //int mbhggs = 0;
+            bool mAllHg = true;
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "";
-            //var jgsm = "";
-            //var jcjg = "";
-            //string mJSFF;
             var SItem = data["S_WCX"];
             var MItem = data["M_WCX"];
-            //var EItem = data["E_WCX"];
             var mItem = MItem[0];
             double sum = 0;
 
             foreach (var sItem in SItem)
             {
-
                 bool jcjgHg = true;
-                double md1, md2, md3, pjmd,  md, sStzl, sSmd, sSzl1, sSzl2, sGtzl1, sGtzl2, sHsl1, sHsl2,pcxs,fHsl;
+                double md1, md2,pjmd,pcxs,fHsl;
                 int hggs = 0;
                 int count = 0;
-
                 #region
                 //for (int i = 1; i <= 1; i++)
                 //{
@@ -74,7 +67,6 @@ namespace Calculates
                 //    }
                 //}
                 #endregion
-
                 //计算 
                 sum = 0;
                 double sysl = GetSafeDouble(sItem["SYSL"]);
@@ -120,23 +112,8 @@ namespace Calculates
                         count++;
                     }
                 }
-                if (sysl == 6 && count > 1)
-                {
-                    sItem["PJKYQD"] = "重做";
-                }
-                else
-                {
-                    sItem["PJKYQD"] = Round(sum / fHsl, 1).ToString("0.0");
-                }
-                if (sysl == 9 && count > 2)
-                {
-                    sItem["PJKYQD"] = "重做";
-                }
-                else
-                {
-                    sItem["PJKYQD"] = Round(sum / fHsl, 1).ToString("0.0");
-                }
-                if (sysl == 13 && count > 3)
+
+                if ((sysl == 6 && count > 1) ||(sysl == 9 && count > 2) || (sysl == 13 && count > 3))
                 {
                     sItem["PJKYQD"] = "重做";
                 }

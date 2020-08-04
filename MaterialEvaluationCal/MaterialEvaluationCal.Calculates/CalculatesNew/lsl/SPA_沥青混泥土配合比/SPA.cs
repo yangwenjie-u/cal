@@ -404,7 +404,7 @@ namespace Calculates
                     {
                         if (sfpd9 == "合格")
                         {
-                            if ("合格" != IsQualified(gjkTgl, sItem["TGBFL475"], false))
+                            if ("合格" != IsQualified(gjkTgl, sItem["HCJP_475"], false))
                             {
                                 sfpd9 = "不合格";
                             }
@@ -415,7 +415,7 @@ namespace Calculates
                     {
                         if (sfpd10 == "合格")
                         {
-                            if ("合格" != IsQualified(gjkTgl, sItem["TGBFL236"], false))
+                            if ("合格" != IsQualified(gjkTgl, sItem["HCJP_236"], false))
                             {
                                 sfpd10 = "不合格";
                             }
@@ -451,55 +451,45 @@ namespace Calculates
 
                     #region 吸水率   表干法
                     sign = true;
+
+
+                    //吸水率 = （试件的表干质量 - 干燥试件的空中质量）/ （试件的表干质量 - 试件的水中质量）  * 100  取一位小数
+                    int sjCount = 0;
                     for (int i = 1; i < 7; i++)
                     {
-                        sign = IsNumeric(sItem["GZSJKZZL" + i].Trim());
-                        sign = IsNumeric(sItem["SJSZZL" + i].Trim());
-                        sign = IsNumeric(sItem["SJBGZL" + i].Trim());
-                    }
-                    if (sign)
-                    {
-                        //吸水率 = （试件的表干质量 - 干燥试件的空中质量）/ （试件的表干质量 - 试件的水中质量）  * 100  取一位小数
-                        for (int i = 1; i < 7; i++)
+                        if (IsNumeric(sItem["GZSJKZZL" + i]))
                         {
                             sItem["SJXSL" + i] = Round((GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["GZSJKZZL" + i].Trim()))
-                                / (GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["SJSZZL" + i].Trim())) * 100, 1).ToString("0.0");
+                            / (GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["SJSZZL" + i].Trim())) * 100, 1).ToString("0.0");
+                            sjCount++;
                         }
-                    }
-                    else
-                    {
-                        throw new SystemException("密度测定（干燥）试件的空中质量、试件的水中质量或试件的表干质量试验数据录入有误。");
                     }
                     #endregion
 
                     #region 马歇尔试件直径 高度代表值计算  用于判断试件尺寸符不符合标准要求
+                    sjCount = 0;
                     sign = true;
-                    for (int i = 1; i < 7; i++)
-                    {
-                        sign = IsNumeric(sItem["SJZJ1_" + i].Trim());
-                        sign = IsNumeric(sItem["SJZJ2_" + i].Trim());
-                        sign = IsNumeric(sItem["SJGD1_" + i].Trim());
-                        sign = IsNumeric(sItem["SJGD2_" + i].Trim());
-                        sign = IsNumeric(sItem["SJGD3_" + i].Trim());
-                        sign = IsNumeric(sItem["SJGD4_" + i].Trim());
-                    }
-                    if (!sign)
-                    {
-                        throw new SystemException("马歇尔试件直径与高度试验数据录入有误");
-                    }
+                    //if (!sign)
+                    //{
+                    //    throw new SystemException("马歇尔试件直径与高度试验数据录入有误");
+                    //}
                     //平均值
                     for (int i = 1; i < 7; i++)
                     {
-                        sItem["SJZJPJ" + i] = Round((GetSafeDouble(sItem["SJZJ1_" + i].Trim()) + GetSafeDouble(sItem["SJZJ2_" + i].Trim())) / 2, 1).ToString("0.0");
-                        sItem["SJGDPJ" + i] = Round((GetSafeDouble(sItem["SJGD1_" + i].Trim()) + GetSafeDouble(sItem["SJGD2_" + i].Trim())
-                            + GetSafeDouble(sItem["SJGD3_" + i].Trim()) + GetSafeDouble(sItem["SJGD4_" + i].Trim())) / 4, 1).ToString("0.0");
-                        zjSum = zjSum + GetSafeDouble(sItem["SJZJPJ" + i]);
-                        gdSum = gdSum + GetSafeDouble(sItem["SJGDPJ" + i]);
-                        count++;
+                        if (IsNumeric(sItem["SJZJ1_" + i]))
+                        {
+                            sItem["SJZJPJ" + i] = Round((GetSafeDouble(sItem["SJZJ1_" + i].Trim()) + GetSafeDouble(sItem["SJZJ2_" + i].Trim())) / 2, 1).ToString("0.0");
+                            sItem["SJGDPJ" + i] = Round((GetSafeDouble(sItem["SJGD1_" + i].Trim()) + GetSafeDouble(sItem["SJGD2_" + i].Trim())
+                                + GetSafeDouble(sItem["SJGD3_" + i].Trim()) + GetSafeDouble(sItem["SJGD4_" + i].Trim())) / 4, 1).ToString("0.0");
+                            zjSum = zjSum + GetSafeDouble(sItem["SJZJPJ" + i]);
+                            gdSum = gdSum + GetSafeDouble(sItem["SJGDPJ" + i]);
+                            count++;
+                            sjCount++;
+                        }
                     }
                     //代表值
-                    sItem["SJZJDBZ"] = Round(zjSum / count, 1).ToString("0.0");
-                    sItem["SJGDDBZ"] = Round(gdSum / count, 1).ToString("0.0");
+                    sItem["SJZJDBZ"] = Round(zjSum / sjCount, 1).ToString("0.0");
+                    sItem["SJGDDBZ"] = Round(gdSum / sjCount, 1).ToString("0.0");
                     /**
                      * 判断试件尺寸符不符合标准要求  标准试件直径应为101.6±0.2mm  高 63.5±1.3mm  两侧高度差大于2mm 试件作废
                      */
@@ -535,7 +525,7 @@ namespace Calculates
                     double mtjxdmd = 0;
                     for (int i = 1; i < 8; i++)
                     {
-                        if (!string.IsNullOrEmpty(sItem["BL_" + i].Trim()))
+                        if (!string.IsNullOrEmpty(sItem["BL_" + i]))
                         {
                             mtjxdmd = mtjxdmd + GetSafeDouble(sItem["BL_" + i].Trim()) * GetSafeDouble(sItem["KLXDMD" + i].Trim());
                         }
@@ -551,20 +541,24 @@ namespace Calculates
                      * 理论密度   100/（（100-沥青用量）/矿料的有效的相对密度  + 沥青用量/沥青相对密度）
                      */
                     //sItem["LLMD"] = Round(100 / ((100 - GetSafeDouble(sItem["LQHL"].Trim())) / yxxdmd + GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3).ToString("0.000");
-                    int sjCount = 0;
+                    sjCount = 0;
                     double xdmdSum = 0;
                     double kxlSum = 0;
                     double tjbflSum = 0;
                     double kljxlSum = 0;
                     double lqbhdSum = 0;
+
                     for (int i = 1; i < 7; i++)
                     {
-                        /**
-                          * 试件毛体积相对密度 试件密度  =  干燥试件空中质量/（试件表干质量-试件的水中质量）
-                          */
-                        sItem["SJMD" + i] = Round(GetSafeDouble(sItem["GZSJKZZL" + i].Trim()) / (GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["SJSZZL" + i].Trim())), 3).ToString("0.000");
-                        xdmdSum = xdmdSum + GetSafeDouble(sItem["SJMD" + i]);
-                        sjCount++;
+                        if (IsNumeric(sItem["GZSJKZZL" + i]))
+                        {
+                            /**
+                              * 试件毛体积相对密度 试件密度  =  干燥试件空中质量/（试件表干质量-试件的水中质量）
+                              */
+                            sItem["SJMD" + i] = Round(GetSafeDouble(sItem["GZSJKZZL" + i].Trim()) / (GetSafeDouble(sItem["SJBGZL" + i].Trim()) - GetSafeDouble(sItem["SJSZZL" + i].Trim())), 3).ToString("0.000");
+                            xdmdSum = xdmdSum + GetSafeDouble(sItem["SJMD" + i]);
+                            sjCount++;
+                        }
                     }
                     //实测最大毛体积相对密度
                     sItem["SJMD"] = Round(xdmdSum / sjCount, 3).ToString("0.000");
@@ -577,7 +571,7 @@ namespace Calculates
                     sjCount = 0;
                     for (int i = 1; i < 7; i++)
                     {
-                        if (IsNumeric(sItem["GZSJKZZL" + i].Trim()))
+                        if (IsNumeric(sItem["GZSJKZZL" + i]))
                         {
                             /**
                              *  空隙率 VV = （1-试件毛体积相对密度/理论最大相对密度） *100
@@ -614,23 +608,21 @@ namespace Calculates
                     double wddSum = 0;
                     double lzSum = 0;
                     double mxemsSum = 0;
+                    sjCount = 0;
                     for (int i = 1; i < 7; i++)
                     {
-                        if (IsNumeric(sItem["WDD" + i].Trim()) && IsNumeric(sItem["LZ" + i].Trim()))
+                        if (IsNumeric(sItem["WDD" + i]) && IsNumeric(sItem["LZ" + i]))
                         {
                             wddSum = wddSum + GetSafeDouble(sItem["WDD" + i].Trim());
                             lzSum = lzSum + GetSafeDouble(sItem["LZ" + i].Trim());
                             sItem["MXEMS" + i] = Round(GetSafeDouble(sItem["WDD" + i].Trim()) / GetSafeDouble(sItem["LZ" + i].Trim()), 2).ToString("0.00");
                             mxemsSum = mxemsSum + GetSafeDouble(sItem["MXEMS" + i]);
-                        }
-                        else
-                        {
-                            throw new SystemException("马歇尔验证试验稳定度或流值试验数据录入有误");
+                            sjCount++;
                         }
                     }
-                    sItem["WDD"] = Round(wddSum / 6, 2).ToString("0.00");
-                    sItem["LZ"] = Round(lzSum / 6, 1).ToString("0.0");
-                    sItem["MXEMSDBZ"] = Round(mxemsSum / 6, 2).ToString("0.00");
+                    sItem["WDD"] = Round(wddSum / sjCount, 2).ToString("0.00");
+                    sItem["LZ"] = Round(lzSum / sjCount, 1).ToString("0.0");
+                    sItem["MXEMSDBZ"] = Round(mxemsSum / sjCount, 2).ToString("0.00");
                     #endregion
                 }
 
@@ -807,4 +799,3 @@ namespace Calculates
         }
     }
 }
- 

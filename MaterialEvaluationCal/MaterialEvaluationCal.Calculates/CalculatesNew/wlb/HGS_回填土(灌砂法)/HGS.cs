@@ -305,9 +305,37 @@ namespace Calculates
                 mAllHg = false;
             //主表总判断赋值
             if (mAllHg)
+            {
                 mitem["JCJG"] = "合格";
+                if ("回填土" == mitem["SFHTT"])
+                {
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合回填土设计要求。";
+                }
+                else if ("地基换填" == mitem["SFHTT"])
+                {
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合地基换填设计要求。";
+                }
+                else
+                {
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
+                }
+            }
             else
+            {
                 mitem["JCJG"] = "不合格";
+                if ("回填土" == mitem["SFHTT"])
+                {
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目不符合回填土设计要求。";
+                }
+                else if ("地基换填" == mitem["SFHTT"])
+                {
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目不符合地基换填设计要求。";
+                }
+                else
+                {
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目压实度不符合要求	。";
+                }
+            }
             #endregion
             /************************ 代码结束 *********************/
         }

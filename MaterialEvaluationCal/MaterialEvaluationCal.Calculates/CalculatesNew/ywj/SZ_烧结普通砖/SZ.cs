@@ -456,6 +456,7 @@ namespace Calculates
                 if (mrsKfhdj == null)
                 {
                     sItem["DRYQ"] = "每块砖样不允许出现裂纹、分层、掉皮、缺棱、掉角等冻坏现象；质量损失不得大于2%。";
+                    sItem["XDRYQ"] = "每块砖样不允许出现裂纹、分层、掉皮、缺棱、掉角等冻坏现象；质量损失不得大于2%。";
                 }
                 else
                 {
@@ -466,6 +467,7 @@ namespace Calculates
                     sItem["FSYQ"] = mrsKfhdj["FSYQ"];
                     sItem["SHBLYQ"] = mrsKfhdj["DHBLYQ"];
                     sItem["DRYQ"] = mrsKfhdj["DRYQ"];
+                    sItem["XDRYQ"] = mrsKfhdj["DRYQ"];
                 }
                 sItem["LQ"] = (GetSafeDateTime(MItem[0]["SYRQ"]) - GetSafeDateTime(sItem["ZZRQ"])).Days.ToString();
 
@@ -528,46 +530,46 @@ namespace Calculates
                         sItem["MJ10"] = mMj10.ToString();
                         //if (sItem["ZLB"].Contains("混凝土多孔砖"))
                         //{
-                            if (mMj1 != 0)
-                                sItem["KYQD1"] = Round(1000 * (Conversion.Val(sItem["KYHZ1"])) / mMj1, 1).ToString("0.0");
-                            else
-                                sItem["KYQD1"] = "0";
-                            if (mMj2 != 0)
-                                sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 1).ToString("0.0");
-                            else
-                                sItem["KYQD2"] = "0";
-                            if (mMj3 != 0)
-                                sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 1).ToString("0.0");
-                            else
-                                sItem["KYQD3"] = "0";
-                            if (mMj4 != 0)
-                                sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 1).ToString("0.0");
-                            else
-                                sItem["KYQD4"] = "0";
-                            if (mMj5 != 0)
-                                sItem["KYQD5"] = Round(1000 * (Conversion.Val(sItem["KYHZ5"])) / mMj5, 1).ToString("0.0");
-                            else
-                                sItem["KYQD5"] = "0";
-                            if (mMj6 != 0)
-                                sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 1).ToString("0.0");
-                            else
-                                sItem["KYQD6"] = "0";
-                            if (mMj7 != 0)
-                                sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 1).ToString("0.0");
-                            else
-                                sItem["KYQD7"] = "0";
-                            if (mMj8 != 0)
-                                sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 1).ToString("0.0");
-                            else
-                                sItem["KYQD8"] = "0";
-                            if (mMj9 != 0)
-                                sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 1).ToString("0.0");
-                            else
-                                sItem["KYQD9"] = "0";
-                            if (mMj10 != 0)
-                                sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 1).ToString("0.0");
-                            else
-                                sItem["KYQD10"] = "0";
+                        if (mMj1 != 0)
+                            sItem["KYQD1"] = Round(1000 * (Conversion.Val(sItem["KYHZ1"])) / mMj1, 1).ToString("0.0");
+                        else
+                            sItem["KYQD1"] = "0";
+                        if (mMj2 != 0)
+                            sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 1).ToString("0.0");
+                        else
+                            sItem["KYQD2"] = "0";
+                        if (mMj3 != 0)
+                            sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 1).ToString("0.0");
+                        else
+                            sItem["KYQD3"] = "0";
+                        if (mMj4 != 0)
+                            sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 1).ToString("0.0");
+                        else
+                            sItem["KYQD4"] = "0";
+                        if (mMj5 != 0)
+                            sItem["KYQD5"] = Round(1000 * (Conversion.Val(sItem["KYHZ5"])) / mMj5, 1).ToString("0.0");
+                        else
+                            sItem["KYQD5"] = "0";
+                        if (mMj6 != 0)
+                            sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 1).ToString("0.0");
+                        else
+                            sItem["KYQD6"] = "0";
+                        if (mMj7 != 0)
+                            sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 1).ToString("0.0");
+                        else
+                            sItem["KYQD7"] = "0";
+                        if (mMj8 != 0)
+                            sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 1).ToString("0.0");
+                        else
+                            sItem["KYQD8"] = "0";
+                        if (mMj9 != 0)
+                            sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 1).ToString("0.0");
+                        else
+                            sItem["KYQD9"] = "0";
+                        if (mMj10 != 0)
+                            sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 1).ToString("0.0");
+                        else
+                            sItem["KYQD10"] = "0";
                         //}
                         //else
                         //{
@@ -1175,6 +1177,7 @@ namespace Calculates
                     else
                     {
                         sItem["FSPD"] = "----";
+                        sItem["FSYQ"] = "----";
                         for (int i = 1; i < 6; i++)
                         {
                             sItem["FSCD" + i] = "----";
@@ -1313,10 +1316,74 @@ namespace Calculates
                         }
                     }
                     else
+                    {
+                        sItem["SHBLYQ"] = "----";
                         sItem["SHBLPD"] = "----";
+                    }
                     #endregion
 
-                    if (sItem["QDPD"] == "不合格" || sItem["WGPD"] == "不合格" || sItem["CCPD"] == "不合格" || sItem["DRPD"] == "不合格" || sItem["BHXSPD"] == "不合格" || sItem["FSPD"] == "不合格" || sItem["SHBLPD"] == "不合格")
+                    #region 冻融
+                    if (jcxm.Contains("、冻融、") && Conversion.Val(sItem["XDRG0_1"]) != 0)
+                    {
+                        sItem["XDRGM1"] = Round((Conversion.Val(sItem["XDRG0_1"]) - Conversion.Val(sItem["XDRG1_1"])) / Conversion.Val(sItem["XDRG0_1"]) * 100, 1).ToString("0.0");
+                        sItem["XDRGM2"] = Round((Conversion.Val(sItem["XDRG0_2"]) - Conversion.Val(sItem["XDRG1_2"])) / Conversion.Val(sItem["XDRG0_2"]) * 100, 1).ToString("0.0");
+                        sItem["XDRGM3"] = Round((Conversion.Val(sItem["XDRG0_3"]) - Conversion.Val(sItem["XDRG1_3"])) / Conversion.Val(sItem["XDRG0_3"]) * 100, 1).ToString("0.0");
+                        sItem["XDRGM4"] = Round((Conversion.Val(sItem["XDRG0_4"]) - Conversion.Val(sItem["XDRG1_4"])) / Conversion.Val(sItem["XDRG0_4"]) * 100, 1).ToString("0.0");
+                        sItem["XDRGM5"] = Round((Conversion.Val(sItem["XDRG0_5"]) - Conversion.Val(sItem["XDRG1_5"])) / Conversion.Val(sItem["XDRG0_5"]) * 100, 1).ToString("0.0");
+                        if ((Conversion.Val(sItem["XDRGM1"])) <= 2 && (Conversion.Val(sItem["XDRGM2"])) <= 2 && (Conversion.Val(sItem["XDRGM3"])) <= 2 && (Conversion.Val(sItem["XDRGM4"])) <= 2 && (Conversion.Val(sItem["XDRGM5"])) <= 2)
+                        {
+                            if (sItem["XDRWG1"].Trim() == "1" || sItem["XDRWG2"].Trim() == "1" || sItem["XDRWG3"].Trim() == "1" || sItem["XDRWG4"].Trim() == "1" || sItem["XDRWG5"].Trim() == "1")
+                            {
+                                sItem["XDRPD"] = "不合格";
+                                if (string.IsNullOrEmpty(bhgJcxm))
+                                {
+                                    bhgJcxm = bhgJcxm + "冻融";
+                                }
+                                else
+                                {
+                                    bhgJcxm = bhgJcxm + "、冻融";
+                                }
+                                mFlag_Bhg = true;
+                            }
+                            else
+                            {
+                                sItem["XDRPD"] = "合格";
+                                mFlag_Hg = true;
+                            }
+                        }
+                        else
+                        {
+                            sItem["XDRPD"] = "不合格";
+                            if (string.IsNullOrEmpty(bhgJcxm))
+                            {
+                                bhgJcxm = bhgJcxm + "冻融";
+                            }
+                            else
+                            {
+                                bhgJcxm = bhgJcxm + "、冻融";
+                            }
+                            mFlag_Bhg = true;
+                        }
+                    }
+                    else
+                    {
+                        sItem["XDRPD"] = "----";
+                        sItem["XDRGM1"] = "----";
+                        sItem["XDRGM2"] = "----";
+                        sItem["XDRGM3"] = "----";
+                        sItem["XDRGM4"] = "----";
+                        sItem["XDRGM5"] = "----";
+                        sItem["XDRYQ"] = "----";
+                        sItem["XDRWG1"] = "----";
+                        sItem["XDRWG2"] = "----";
+                        sItem["XDRWG3"] = "----";
+                        sItem["XDRWG4"] = "----";
+                        sItem["XDRWG5"] = "----";
+
+                    }
+                    #endregion
+
+                    if (sItem["QDPD"] == "不合格" || sItem["WGPD"] == "不合格" || sItem["CCPD"] == "不合格" || sItem["DRPD"] == "不合格" || sItem["BHXSPD"] == "不合格" || sItem["FSPD"] == "不合格" || sItem["SHBLPD"] == "不合格" || sItem["XDRPD"] == "不合格")
                     {
                         sItem["JCJG"] = "不合格";
                         mFlag_Bhg = true;

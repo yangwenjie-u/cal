@@ -66,7 +66,7 @@ namespace Calculates
                     //水
                     if (IsNumeric(MItem[0]["T_CLS"]))
                     {
-                        MItem[0]["T_PBS"] = Round(GetSafeDouble(MItem[0]["T_CLS"])/GetSafeDouble(MItem[0]["T_CLSN"]),2).ToString("0.00");
+                        MItem[0]["T_PBS"] = Round(GetSafeDouble(MItem[0]["T_CLS"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
                     }
                     else
                     {
@@ -189,13 +189,48 @@ namespace Calculates
                     sitem["QDSSL"] = "----";
                     sitem["ZLSSL"] = "----";
                 }
-                if (sitem["JCXM"].Contains("拉伸粘结强度") || jcxm.Contains("、配合比、"))
+                if (sitem["JCXM"].Contains("拉伸粘结强度"))
                 {
+                    List<double> larray = new List<double>();
+                    for (int i = 1; i < 11; i++)
+                    {
+                        sitem["LSQDQD" + i] = Math.Round(Conversion.Val(sitem["LSQDHZ" + i]) / (Conversion.Val(sitem["LSQDCD" + i]) * Conversion.Val(sitem["LSQDKD" + i])), 3).ToString();
+                        larray.Add(GetSafeDouble(sitem["LSQDQD" + i]));
+                    }
 
+                    int n = 0;
+                    double avg = 0;
+                    avg = larray.Average();
+                    //foreach (var l in larray)
+                    //{
+                    //    if (Math.Abs((l-avg)/avg*100) > 20)
+                    //    {
+                    //        larray.Remove(l);
+                    //        n++;
+                    //    }
+                    //}
+
+                    for (int i = 0; i < larray.Count; i++)
+                    {
+                        if (Math.Abs((larray[i] - avg) / avg * 100) > 20)
+                        {
+                            larray.Remove(larray[i]);
+                            n++;
+
+                        }
+                    }
+                    if (n > 4)
+                    {
+                        sitem["LSQDQD"] = "结果无效";
+                    }
+                    else
+                    {
+                        sitem["LSQDQD"] = Math.Round(larray.Average(), 2).ToString("0.00");
+                    }
                 }
                 else
                 {
-                    sitem["NJQD"] = "----";
+                    sitem["LSQDQD"] = "----";
                 }
                 if (sitem["JCXM"].Contains("凝结时间") || jcxm.Contains("、配合比、"))
                 {
@@ -207,6 +242,7 @@ namespace Calculates
                     sitem["T1ZN"] = "0";
                     sitem["T2ZN"] = "0";
                 }
+
             }
 
             //主表总判断赋值

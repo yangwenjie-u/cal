@@ -114,7 +114,7 @@ namespace Calculates
                 if (jcxm.Contains("、耐贯穿性能、"))
                 {
                     jcxmCur = "耐贯穿性能";
-                    if (sitem["NGCSM"].Trim() == "未贯穿")
+                    if (sitem["NGCSM"].Trim().Contains("未贯穿"))
                     {
                         MItem[0]["HG_NGCXN"] = "合格";
                     }
@@ -257,6 +257,13 @@ namespace Calculates
                 else
                 {
                     mitem["HG_YBYQ"] = "----";
+                    sitem["YBYQ1"] = "----";
+                    sitem["YBYQ2"] = "----";
+                    sitem["YBYQ3"] = "----";
+                    sitem["YBYQ4"] = "----";
+                    sitem["CD"] = "----";
+                    sitem["MMWKD"] = "----";
+                    sitem["KYHKKJ"] = "----";
                 }
                 #endregion
 
