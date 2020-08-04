@@ -54,6 +54,18 @@ namespace Calculates
                     jcxmCur = "筛分";
                     sign = true;
 
+                    //筛余量总和1
+                    sItem["SYLZH1"] = Math.Round(GetSafeDouble(sItem["SYL106_1"].Trim()) + GetSafeDouble(sItem["SYL75_1"].Trim()) + GetSafeDouble(sItem["SYL63_1"].Trim()) + GetSafeDouble(sItem["SYL53_1"].Trim())
+                         + GetSafeDouble(sItem["SYL375_1"].Trim()) + GetSafeDouble(sItem["SYL315_1"].Trim()) + GetSafeDouble(sItem["SYL265_1"].Trim()) + GetSafeDouble(sItem["SYL19_1"].Trim()) + GetSafeDouble(sItem["SYL16_1"].Trim())
+                         + GetSafeDouble(sItem["SYL132_1"].Trim()) + GetSafeDouble(sItem["SYL95_1"].Trim()) + GetSafeDouble(sItem["SYL475_1"].Trim()) + GetSafeDouble(sItem["SYL236_1"].Trim()) + GetSafeDouble(sItem["SYL118_1"].Trim())
+                         + GetSafeDouble(sItem["SYL06_1"].Trim()) + GetSafeDouble(sItem["SYL03_1"].Trim()) + GetSafeDouble(sItem["SYL015_1"].Trim()) + GetSafeDouble(sItem["SYL0075_1"].Trim()) + GetSafeDouble(sItem["SYLSD1"].Trim()), 1).ToString("0.0");
+
+                    //筛余量总和2
+                    sItem["SYLZH2"] = Math.Round(GetSafeDouble(sItem["SYL106_2"].Trim()) + GetSafeDouble(sItem["SYL75_2"].Trim()) + GetSafeDouble(sItem["SYL63_2"].Trim()) + GetSafeDouble(sItem["SYL53_2"].Trim())
+                         + GetSafeDouble(sItem["SYL375_2"].Trim()) + GetSafeDouble(sItem["SYL315_2"].Trim()) + GetSafeDouble(sItem["SYL265_2"].Trim()) + GetSafeDouble(sItem["SYL19_2"].Trim()) + GetSafeDouble(sItem["SYL16_2"].Trim())
+                         + GetSafeDouble(sItem["SYL132_2"].Trim()) + GetSafeDouble(sItem["SYL95_2"].Trim()) + GetSafeDouble(sItem["SYL475_2"].Trim()) + GetSafeDouble(sItem["SYL236_2"].Trim()) + GetSafeDouble(sItem["SYL118_2"].Trim())
+                         + GetSafeDouble(sItem["SYL06_2"].Trim()) + GetSafeDouble(sItem["SYL03_2"].Trim()) + GetSafeDouble(sItem["SYL015_2"].Trim()) + GetSafeDouble(sItem["SYL0075_2"].Trim()) + GetSafeDouble(sItem["SYLSD2"].Trim()), 1).ToString("0.0");
+
                     sum = 0;
                     for (int i = 1; i < 3; i++)
                     {
@@ -87,7 +99,7 @@ namespace Calculates
                     #region 损耗判定
                     for (int i = 1; i < 3; i++)
                     {
-                        //损耗质量
+                        //损耗质量   干燥试样总量 - 水洗后0.075筛下量(g)1
                         sItem["SYSH" + i] = (GetSafeDouble(sItem["GZSYZL" + i]) - (GetSafeDouble(sItem["SXHSXL" + i]) + GetSafeDouble(sItem["SXHSSZL" + i]))).ToString();
                         //损耗率
                         sItem["SYSHL" + i] = Round(GetSafeDouble(sItem["SYSH" + i]) / GetSafeDouble(sItem["GZSYZL" + i].Trim()) * 100, 1).ToString("0.00");

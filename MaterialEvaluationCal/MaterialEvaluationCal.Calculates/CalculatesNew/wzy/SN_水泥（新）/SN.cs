@@ -765,8 +765,8 @@ namespace Calculates
                         /*
                          * 水泥试样筛余百分数 % = 水泥筛余物的质量（g）/水泥试样的质量（g）* 100
                          */
-                        mitem["XDSY1"] = Round(Conversion.Val(mitem["XDSHZL1"]) / Conversion.Val(mitem["XDSYZL1"]) * 100, 2).ToString("0.00");
-                        mitem["XDSY2"] = Round(Conversion.Val(mitem["XDSHZL2"]) / Conversion.Val(mitem["XDSYZL2"]) * 100, 2).ToString("0.00");
+                        mitem["XDSY1"] = Round(Conversion.Val(mitem["XDSHZL1"]) / Conversion.Val(mitem["XDSYZL1"]) * 100, 1).ToString("0.0");
+                        mitem["XDSY2"] = Round(Conversion.Val(mitem["XDSHZL2"]) / Conversion.Val(mitem["XDSYZL2"]) * 100, 1).ToString("0.0");
                         if (Conversion.Val(mitem["XDSY1"]) <= 5 && Conversion.Val(mitem["XDSY2"]) <= 5)
                         {
                             if (Math.Abs(Conversion.Val(mitem["XDSY1"]) - Conversion.Val(mitem["XDSY1"])) <= 0.5)

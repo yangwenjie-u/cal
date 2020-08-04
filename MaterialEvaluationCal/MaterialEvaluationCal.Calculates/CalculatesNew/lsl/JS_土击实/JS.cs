@@ -225,7 +225,7 @@ namespace Calculates
                     {
                         //湿土质量
                         sStzl = GetSafeDouble(sItem["MTJST" + i].Trim()) - GetSafeDouble(mItem["MTZL"].Trim());
-                        sItem["STZL1_" + i] = sStzl.ToString();
+                        sItem["STZL1_" + i] = sStzl.ToString("0");
                         if (GetSafeDouble(mItem["MTTJ"].Trim()) == 0)
                         {
                             sSmd = 0;
@@ -269,7 +269,7 @@ namespace Calculates
                         if (sHsl1 == 0 || sHsl2 == 0)
                             sItem["PJHSL" + i] = Round((sHsl1 + sHsl2), 1).ToString("0.0");
                         else
-                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString("0.00");
+                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString("0.0");
                         sItem["GMD" + i] = Round(sSmd / (1 + 0.01 * GetSafeDouble(sItem["PJHSL" + i])), 2).ToString("0.00");
                         x[i] = GetSafeDouble(sItem["PJHSL" + i]);
                         y[i] = GetSafeDouble(sItem["GMD" + i]);
@@ -319,7 +319,7 @@ namespace Calculates
                     {
                         sStzl = GetSafeDouble(sItem["S_MTJST" + i].Trim()) - GetSafeDouble(mItem["MTZL"].Trim());
                         //湿土质量
-                        sItem["STZL2_" + i] = sStzl.ToString();
+                        sItem["STZL2_" + i] = sStzl.ToString("0");
                         if (GetSafeDouble(mItem["MTTJ"].Trim()) == 0)
                         {
                             sSmd = 0;

@@ -7,14 +7,14 @@ using Microsoft.VisualBasic;
 
 namespace Calculates
 {
-    public class HT1 : BaseMethods
+    public class JHT : BaseMethods
     {
         public void Calc()
         {
             /************************ 代码开始 *********************/
             #region  定义变量
             var data = retData;
-            var extraDJ = dataExtra["BZ_HT1_DJ"];
+            var extraDJ = dataExtra["BZ_JHT_DJ"];
             var mrsEditH = dataExtra["BZ_EDITH"];
             var mrsEditS = dataExtra["BZ_EDITS"];
             var mrsHtHsb = dataExtra["BZ_HTHSB"];
@@ -902,10 +902,85 @@ namespace Calculates
             #endregion
 
             #region  计算开始
-            var MItem = data["M_HT1"];
-            var SItem = data["S_HT1"];
-            var mrssjTable = data["Y_HT1"];
-            var mrsXtab = data["X_HT1"];
+            var MItem = data["M_JHT"];
+            var SItem = data["S_JHT"];
+            var mrssjTable = data["Y_JHT"];
+            var mrsXtab = data["X_JHT"];
+            //对应等级构件总数
+            int gs_10 = 0;
+            int gs_15 = 0;
+            int gs_20 = 0;
+            int gs_25 = 0;
+            int gs_30 = 0;
+            int gs_35 = 0;
+            int gs_40 = 0;
+            int gs_45 = 0;
+            int gs_50 = 0;
+            int gs_55 = 0;
+            int gs_60 = 0;
+            //设计强度≥100% 构件数
+            int gs100_10 = 0;
+            int gs100_15 = 0;
+            int gs100_20 = 0;
+            int gs100_25 = 0;
+            int gs100_30 = 0;
+            int gs100_35 = 0;
+            int gs100_40 = 0;
+            int gs100_45 = 0;
+            int gs100_50 = 0;
+            int gs100_55 = 0;
+            int gs100_60 = 0;
+            //设计强度<90% 构件数
+            int gs90_10 = 0;
+            int gs90_15 = 0;
+            int gs90_20 = 0;
+            int gs90_25 = 0;
+            int gs90_30 = 0;
+            int gs90_35 = 0;
+            int gs90_40 = 0;
+            int gs90_45 = 0;
+            int gs90_50 = 0;
+            int gs90_55 = 0;
+            int gs90_60 = 0;
+            //设计强度≥90   <100% 构件数
+            int gs91_10 = 0;
+            int gs91_15 = 0;
+            int gs91_20 = 0;
+            int gs91_25 = 0;
+            int gs91_30 = 0;
+            int gs91_35 = 0;
+            int gs91_40 = 0;
+            int gs91_45 = 0;
+            int gs91_50 = 0;
+            int gs91_55 = 0;
+            int gs91_60 = 0;
+            //最小强度值容器
+            List<string> zxqdList1 = new List<string>();
+            List<string> zxqdList2 = new List<string>();
+            List<string> zxqdList3 = new List<string>();
+            List<string> zxqdList4 = new List<string>();
+            List<string> zxqdList5 = new List<string>();
+            List<string> zxqdList6 = new List<string>();
+            List<string> zxqdList7 = new List<string>();
+            List<string> zxqdList8 = new List<string>();
+            List<string> zxqdList9 = new List<string>();
+            List<string> zxqdList10 = new List<string>();
+            List<string> zxqdList11 = new List<string>();
+            //最大碳化深度
+            List<string> zdthsdList1 = new List<string>();
+            List<string> zdthsdList2 = new List<string>();
+            List<string> zdthsdList3 = new List<string>();
+            List<string> zdthsdList4 = new List<string>();
+            List<string> zdthsdList5 = new List<string>();
+            List<string> zdthsdList6 = new List<string>();
+            List<string> zdthsdList7 = new List<string>();
+            List<string> zdthsdList8 = new List<string>();
+            List<string> zdthsdList9 = new List<string>();
+            List<string> zdthsdList10 = new List<string>();
+            List<string> zdthsdList11 = new List<string>();
+            //平均碳化深度
+            List<double> pjthsdList = new List<double>();
+
             if (MItem == null || MItem.Count == 0)
             {
                 IDictionary<string, string> m = new Dictionary<string, string>();
@@ -932,10 +1007,7 @@ namespace Calculates
             int row = 1;
             foreach (var sitem in SItem)
             {
-                if (">60MPa" == sitem["QDTDZ"])
-                {
-                    continue;
-                }
+                pjthsdList = new List<double>();
                 sitem["BEIZHU"] = "";
                 //计算开始
                 if (string.IsNullOrEmpty(sitem["BSFS"]))
@@ -953,8 +1025,8 @@ namespace Calculates
                     mrsXtab2 = mrsXtab.Where(mrsXtab_Filter => mrsXtab_Filter["SYSJBRECID"].Equals(sitem["RECID"])).ToList();
                 var mrsDj_Filter = extraDJ.FirstOrDefault(x => x["MC"].Contains(mSjdj));
 
-                if (string.IsNullOrEmpty(MItem[0]["SJTABS"]))  //数据录入使用模板
-                    MItem[0]["SJTABS"] = "sjht1";
+                //if (string.IsNullOrEmpty(MItem[0]["SJTABS"]))  //数据录入使用模板
+                //    MItem[0]["SJTABS"] = "sjht1";
                 if (string.IsNullOrEmpty(MItem[0]["SFQXXZ"]))
                     MItem[0]["SFQXXZ"] = "0";  //是否取芯修正(输入0或1)
                 if (MItem[0]["SFQXXZ"] == "1")
@@ -1064,6 +1136,47 @@ namespace Calculates
                 n_Min = 9999;
                 foreach (var mrssjTable_Filter in mrssjTable2)
                 {
+                    pjthsdList.Add(GetSafeDouble(mrssjTable_Filter["THSD"]));
+                    #region  各等级最大碳化深度
+                    switch (sitem["SJDJ"])
+                    {
+                        case "C10":
+                            zdthsdList1.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C15":
+                            zdthsdList2.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C20":
+                            zdthsdList3.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C25":
+                            zdthsdList4.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C30":
+                            zdthsdList5.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C35":
+                            zdthsdList6.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C40":
+                            zdthsdList7.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C45":
+                            zdthsdList8.Add(mrssjTable_Filter["THSD"]);
+                            break;
+
+                        case "C50":
+                            zdthsdList9.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C55":
+                            zdthsdList10.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                        case "C60":
+                            zdthsdList11.Add(mrssjTable_Filter["THSD"]);
+                            break;
+                    }
+                    #endregion
+
                     if (mJsff == "" || mJsff == "new")
                     {
                         //计算回弹最后值HTZHZ
@@ -1074,10 +1187,7 @@ namespace Calculates
                             mHtqdz = calc_htqdz(MItem[0], sitem, mrssjTable_Filter);
                         s_Htqdz = s_Htqdz + mHtqdz;
                     }
-                    //赋值数据表的报告编号
                     mrssjTable_Filter["GJH"] = row.ToString();
-                    //Sjitem["WTBH"] = MItem[0]["WTBH"];
-                    //Sjitem["BGBH"] = MItem[0]["WTBH"];
                     s_Htzhz = s_Htzhz + mHtzhz;
                     if (n_Min > mHtzhz)
                         n_Min = mHtzhz; //求n_Min
@@ -1161,6 +1271,192 @@ namespace Calculates
                     sitem["BEIZHU"] = "----";
                 sitem["JCJG"] = jcjg;
                 row++;
+
+                sitem["PJTHSD"] = pjthsdList.Average().ToString("0.0");
+                #region 统计结果
+                switch (sitem["SJDJ"])
+                {
+                    case "C10":
+                        zxqdList1.Add(sitem["QDTDZ"]);
+                        gs_10++;//对应设计等级构件总数统计
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_10++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_10++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_10++;//强度 <90% 构件数
+                        }
+
+                        break;
+                    case "C15":
+                        zxqdList2.Add(sitem["QDTDZ"]);
+                        gs_15++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_15++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_15++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_15++;//强度 <90% 构件数
+                        }
+                        break;
+                    case "C20":
+                        zxqdList3.Add(sitem["QDTDZ"]);
+                        gs_20++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_20++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_20++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_20++;//强度 <90% 构件数
+                        }
+                        break;
+                    case "C25":
+                        zxqdList4.Add(sitem["QDTDZ"]);
+                        gs_25++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_25++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_25++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_25++;//强度 <90% 构件数
+                        }
+                        break;
+                    case "C30":
+                        zxqdList5.Add(sitem["QDTDZ"]);
+                        gs_30++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_30++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_30++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_30++;//强度 <90% 构件数
+                        }
+                        break;
+                    case "C35":
+                        zxqdList6.Add(sitem["QDTDZ"]);
+                        gs_35++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_35++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_35++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_35++;//强度 <90% 构件数
+                        }
+                        break;
+                    case "C40":
+                        zxqdList7.Add(sitem["QDTDZ"]);
+                        gs_40++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_40++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_40++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_40++;//强度 <90% 构件数
+                        }
+                        break;
+                    case "C45":
+                        zxqdList8.Add(sitem["QDTDZ"]);
+                        gs_45++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_45++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_45++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_45++;//强度 <90% 构件数
+                        }
+                        break;
+
+                    case "C50":
+                        zxqdList9.Add(sitem["QDTDZ"]);
+                        gs_50++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_50++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_50++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_50++;//强度 <90% 构件数
+                        }
+                        break;
+                    case "C55":
+                        zxqdList10.Add(sitem["QDTDZ"]);
+                        gs_55++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_55++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_55++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_55++;//强度 <90% 构件数
+                        }
+                        break;
+                    case "C60":
+                        zxqdList11.Add(sitem["QDTDZ"]);
+                        gs_60++;
+                        if (GetSafeDecimal(sitem["DDSJQD"]) >= 100)
+                        {
+                            gs100_60++;//强度≥100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) >= 90 && GetSafeDecimal(sitem["DDSJQD"]) < 100)
+                        {
+                            gs91_60++;//强度≥90   <100% 构件数
+                        }
+                        else if (GetSafeDecimal(sitem["DDSJQD"]) < 90)
+                        {
+                            gs90_60++;//强度 <90% 构件数
+                        }
+                        break;
+                }
+                #endregion
+
             }
             if (mAllHg)
             {
@@ -1300,6 +1596,185 @@ namespace Calculates
                     }
                 }
             }
+
+            #region 报告显示综合赋值
+            int count = 1;
+            if (gs_10 != 0)
+            {
+                zdthsdList1.Sort();
+                zxqdList1.Sort();//最小强度值
+                MItem[0]["BGSJDJ" + count] = "C10";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_10.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_10.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_10 / gs_10 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_10.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_10 / gs_10 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_10.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_10 / gs_10 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList1[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList1[zdthsdList1.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_15 != 0)
+            {
+                zdthsdList2.Sort();
+                zxqdList2.Sort();
+                MItem[0]["BGSJDJ" + count] = "C15";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_15.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_15.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_15 / gs_15 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_15.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_15 / gs_15 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_15.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_15 / gs_15 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList2[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList2[zdthsdList2.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_20 != 0)
+            {
+                zdthsdList3.Sort();
+                zxqdList3.Sort();
+                MItem[0]["BGSJDJ" + count] = "C20";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_20.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_20.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_20 / gs_20 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_20.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_20 / gs_20 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_20.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_20 / gs_20 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList3[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList3[zdthsdList3.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_25 != 0)
+            {
+                zdthsdList4.Sort();
+                zxqdList4.Sort();
+                MItem[0]["BGSJDJ" + count] = "C25";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_25.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_25.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_25 / gs_25 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_25.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_25 / gs_25 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_25.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_25 / gs_25 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList4[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList4[zdthsdList4.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_30 != 0)
+            {
+                zdthsdList5.Sort();
+                zxqdList5.Sort();
+                MItem[0]["BGSJDJ" + count] = "C30";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_30.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_30.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_30 / gs_30 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_30.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_30 / gs_30 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_30.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_30 / gs_30 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList5[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList5[zdthsdList5.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_35 != 0)
+            {
+                zdthsdList6.Sort();
+                zxqdList6.Sort();
+                MItem[0]["BGSJDJ" + count] = "C35";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_35.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_35.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_35 / gs_35 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_35.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_35 / gs_35 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_35.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_35 / gs_35 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList6[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList6[zdthsdList6.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_40 != 0)
+            {
+                zdthsdList7.Sort();
+                zxqdList7.Sort();
+                MItem[0]["BGSJDJ" + count] = "C40";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_40.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_40.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_40 / gs_40 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_40.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_40 / gs_40 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_40.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_40 / gs_40 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList7[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList7[zdthsdList7.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_45 != 0)
+            {
+                zdthsdList8.Sort();
+                zxqdList8.Sort();
+                MItem[0]["BGSJDJ" + count] = "C45";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_45.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_45.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_45 / gs_45 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_45.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_45 / gs_45 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_45.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_45 / gs_45 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList8[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList8[zdthsdList8.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_50 != 0)
+            {
+                zdthsdList9.Sort();
+                zxqdList9.Sort();
+                MItem[0]["BGSJDJ" + count] = "C50";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_50.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_50.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_50 / gs_50 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_50.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_50 / gs_50 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_50.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_50 / gs_50 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList9[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList9[zdthsdList9.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_55 != 0)
+            {
+                zdthsdList10.Sort();
+                zxqdList10.Sort();
+                MItem[0]["BGSJDJ" + count] = "C55";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_55.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_55.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_55 / gs_55 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_55.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_55 / gs_55 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_55.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_55 / gs_55 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList10[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList10[zdthsdList10.Count() - 1];//最大碳化深度
+                count++;
+            }
+            if (gs_60 != 0)
+            {
+                zdthsdList11.Sort();
+                zxqdList11.Sort();
+                MItem[0]["BGSJDJ" + count] = "C60";//强度等级
+                MItem[0]["GDJGJGS" + count] = gs_60.ToString();//该强度等级抽检构件个数
+                MItem[0]["GS100_" + count] = gs100_60.ToString();//≥100%设计强度个数
+                MItem[0]["BFL100_" + count] = Round(gs100_60 / gs_60 * 100, 1).ToString("0.0");//≥100%设计强度百分率
+                MItem[0]["GS91_" + count] = gs91_60.ToString();//90~100%设计强度个数
+                MItem[0]["BFL91_" + count] = Round(gs91_60 / gs_60 * 100, 1).ToString("0.0");//90~100%设计强度百分率
+                MItem[0]["GS90_" + count] = gs90_60.ToString();//<90%设计强度个数
+                MItem[0]["BFL90_" + count] = Round(gs90_60 / gs_60 * 100, 1).ToString("0.0");//<90%设计强度百分率
+                MItem[0]["BGZXHTQD" + count] = zxqdList11[0];//该设计等级最小回弹强度值  
+                MItem[0]["ZDTHSD" + count] = zdthsdList11[zdthsdList11.Count() - 1];//最大碳化深度
+            }
+            #endregion
 
             //主表总判断赋值
             if (mAllHg)

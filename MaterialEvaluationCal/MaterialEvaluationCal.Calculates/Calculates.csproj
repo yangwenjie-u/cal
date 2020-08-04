@@ -78,6 +78,8 @@
     <Compile Include="CalculatesNew\qsf\test.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
+    <Compile Include="CalculatesNew\wlb\JG_结构实体检测\JG.cs" />
+    <Compile Include="CalculatesNew\wlb\CBR_现场CBR值\CBR.cs" />
     <Compile Include="CalculatesNew\wlb\CT_沥青混合料抽提\CT.cs" />
     <Compile Include="CalculatesNew\wlb\TMS_回填土%28灌砂法%29管道\TMS.cs" />
     <Compile Include="CalculatesNew\wlb\SCY_土工\SCY.cs" />
@@ -97,7 +99,10 @@
     <Compile Include="CalculatesNew\wzy\GJJ_硅酮建筑密封胶\GJJ.cs" />
     <Compile Include="CalculatesNew\wzy\HSA_砂%28行标砼用%29\HSA.cs" />
     <Compile Include="CalculatesNew\wzy\HTZ_混凝土回弹-取芯法\HTZ.cs" />
+    <Compile Include="CalculatesNew\wzy\JCH_钢筋保护层厚度\JCH.cs" />
     <Compile Include="CalculatesNew\wzy\JGW_绝热用玻璃棉及其制品\JGW.cs" />
+    <Compile Include="CalculatesNew\wzy\JHT_结构实体混凝土回弹\JHT.cs" />
+    <Compile Include="CalculatesNew\wzy\JQX_混凝土取芯\JQX.cs" />
     <Compile Include="CalculatesNew\wzy\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\wzy\JZ_岩棉、矿渣棉及用品\JZ.cs" />
     <Compile Include="CalculatesNew\wzy\PGC_排水管\PGC.cs" />

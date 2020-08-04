@@ -208,6 +208,65 @@ namespace Calculates
                 }
                 #endregion
 
+                #region  加热安定性
+                if (jcxm.Contains("加热安定性"))
+                {
+                    jcxmCur = "加热后安定性";
+                    sItem["G_ADX"] = "无明显变化";
+                    if ("无明显变化" == sItem["W_ADX"])
+                    {
+                        sItem["ADX_GH"] = "合格";
+                    }
+                    else
+                    {
+                        jcjgHg = false;
+                        mAllHg = false;
+                        sItem["ADX_GH"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                else
+                {
+                    sItem["W_ADX"] = "----";
+                    sItem["ADX_GH"] = "----";
+                    sItem["G_ADX"] = "----";
+                }
+                #endregion
+
+                #region
+                if (jcxm.Contains("亲水系数"))
+                {
+                    sItem["G_QSXS"] = "＜1";
+                    //水中沉淀物体积 / 煤油中沉淀物体积
+                    jcxmCur = "亲水系数";
+                    if (IsNumeric(sItem["SZCDWTJ1"]) && IsNumeric(sItem["SZCDWTJ2"]) && IsNumeric(sItem["MYZCDWTJ1"]) && IsNumeric(sItem["MYZCDWTJ2"]))
+                    {
+                        for (int i = 1; i < 3; i++)
+                        {
+                            sItem["QSXS" + i] = Round(GetSafeDouble(sItem["SZCDWTJ" + i].Trim()) / GetSafeDouble(sItem["MYZCDWTJ" + i].Trim()), 1).ToString("0.0");
+                        }
+                        //平均亲水系数
+                        sItem["QSXSPJ"] = Round((GetSafeDouble(sItem["QSXS1"]) + GetSafeDouble(sItem["QSXS2"])) / 2, 1).ToString("0.0");
+                    }
+                    else
+                    {
+                        throw new SystemException("亲水系数试验数据录入有误");
+                    }
+                    sItem["QSXS_GH"] = IsQualified(sItem["G_QSXS"], sItem["QSXSPJ"]);
+                    if ("合格" != sItem["QSXS_GH"])
+                    {
+                        jcjgHg = false;
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+
+                }
+                else
+                {
+                    sItem["QSXSPJ"] = "----";
+                }
+                #endregion
+
                 if (jcjgHg)
                 {
                     sItem["JCJG"] = "合格";
