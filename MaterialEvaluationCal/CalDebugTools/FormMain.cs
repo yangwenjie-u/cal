@@ -51,14 +51,10 @@ namespace CalDebugTools
                 txt_s.Text = ConfigurationHelper.GetConfig("tableS");
                 txt_helper.Text = ConfigurationHelper.GetConfig("tableBZ");
                 txt_helper.Text = ConfigurationHelper.GetConfig("tableSJ");
-                txt_jydbh.Text = ConfigurationHelper.GetConfig("jydbhFrom");
-                txt_yjdbh_to.Text = ConfigurationHelper.GetConfig("jydbhTo");
                 txtdatafiled.Text = ConfigurationHelper.GetConfig("datafiled");
                 txt_y.Text = ConfigurationHelper.GetConfig("tableY");
                 txt_wtdbh.Text = ConfigurationHelper.GetConfig("wtdbh");
                 var checkVal = ConfigurationHelper.GetConfig("checkWH");
-
-                ck_other.Checked = checkVal == "1" ? true : false;
             }
             catch
             {
@@ -76,11 +72,8 @@ namespace CalDebugTools
             dic.Add("tableS", txt_s.Text);
             dic.Add("tableBZ", txt_helper.Text);
             dic.Add("tableSJ", txt_helper.Text);
-            dic.Add("jydbhFrom", txt_jydbh.Text);
-            dic.Add("jydbhTo", txt_yjdbh_to.Text);
             dic.Add("datafiled", txtdatafiled.Text);
             dic.Add("tableY", txt_y.Text);
-            dic.Add("checkWH", ck_other.Checked ? "1" : "0");
             dic.Add("wtdbh", txt_wtdbh.Text);
             ConfigurationHelper.SaveConfig(dic);
 
@@ -110,34 +103,6 @@ namespace CalDebugTools
             manage.Show();
         }
 
-        public List<string> GetJYDBHs()
-        {
-            List<string> listJYDBH = new List<string>();
-
-            string txtJYDBH = txt_jydbh.Text.Trim();
-            if (string.IsNullOrEmpty(txtJYDBH))
-            {
-                MessageBox.Show("jydbh err ");
-                return null;
-            }
-            string xmbh = this.txt_jcxmbh.Text.Trim();
-            string txtJYDBHto = txt_yjdbh_to.Text.Trim();
-
-            DataSet ch_mdata = _projectInfo.GetChiFengDate(xmbh, txtJYDBH, txtJYDBHto);
-
-            foreach (DataRow mDr in ch_mdata.Tables[0].Rows)
-            {
-                listJYDBH.Add(mDr["JYDBH"].ToString());
-            }
-            if (listJYDBH.Count == 0)
-            {
-                MessageBox.Show($"找不到试验项目{xmbh}数据，请确定 JYDBH对应的BGBH不为空 ", "调试", MessageBoxButtons.OK);
-                return null;
-            }
-
-            return listJYDBH;
-        }
-
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -158,14 +123,8 @@ namespace CalDebugTools
             // zdzd表中获取需要获取的参数  
 
             string strParams = "";
-            if (dataType == "CF")//取赤峰的数据
-            {
-                strParams = _projectInfo.GetPar(xmbh, zdzdParms, txt_y.Text, txtdatafiled.Text, connType, queryNumber);
-            }
-            else if (dataType == "WH")
-            {
-                strParams = _projectInfo.GetPar2(xmbh, zdzdParms, txt_y.Text, txtdatafiled.Text, connType, queryNumber);
-            }
+            strParams = _projectInfo.GetPar2(xmbh, zdzdParms, txt_y.Text, txtdatafiled.Text, connType, queryNumber);
+
             if (string.IsNullOrWhiteSpace(strParams.Trim()))
             {
                 MessageBox.Show("参数数据不能为空！", "调试", MessageBoxButtons.OK);
@@ -242,34 +201,12 @@ namespace CalDebugTools
                 quertBH = whWtdbh;
                 //参数
 
-                strIOParams = GetParams(zdzdIOParms, whWtdbh, ESqlConnType.ConnectionStringWH, "WH");
-                strIParams = GetParams(zdzdIParms, whWtdbh, ESqlConnType.ConnectionStringWH, "WH");
+                strIOParams = GetParams(zdzdIOParms, whWtdbh, ESqlConnType.ConnectionStringJCJT, "WH");
+                strIParams = GetParams(zdzdIParms, whWtdbh, ESqlConnType.ConnectionStringJCJT, "WH");
             }
             else
-            {
-                //获取JYDBH
-
-                if (string.IsNullOrEmpty(jydbh))
-                    listJYDBH = GetJYDBHs();
-                else
-                    listJYDBH.Add(jydbh);
-
-
-                if (listJYDBH == null || listJYDBH.Count == 0)
-                {
-                    MessageBox.Show("获取JYDBH失败！", "调试", MessageBoxButtons.OK);
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(this.ritCode.Text.Trim()))
-                {
-                    MessageBox.Show("计算方法代码不能为空！", "调试", MessageBoxButtons.OK);
-                    return;
-                }
-                quertBH = listJYDBH[0];
-                //参数
-                strIOParams = GetParams(zdzdIOParms, quertBH, ESqlConnType.ConnectionStringDebugTool);
-                strIParams = GetParams(zdzdIParms, quertBH, ESqlConnType.ConnectionStringDebugTool);
-
+            { 
+              
             }
 
             //代码
@@ -308,10 +245,7 @@ namespace CalDebugTools
             {
                 ch_sdata = _projectInfo.GetParmsWH(jcxmBH, zdzdIOParms, quertBH);
             }
-            else
-            {
-                ch_sdata = _projectInfo.GetParmsCF(jcxmBH, zdzdIOParms, quertBH);
-            }
+
             //给字段列赋值
             int flag = 0;
             foreach (DataColumn mDc in ch_sdata.Tables[0].Columns)
@@ -392,7 +326,7 @@ namespace CalDebugTools
                     {
                         continue;
                     }
-                    extraDJjson = JsonHelper.GetDataJson($"select * from {extras[1]} ", extras[1], ESqlConnType.ConnectionStringWH);
+                    extraDJjson = JsonHelper.GetDataJson($"select * from {extras[1]} ", extras[1], ESqlConnType.ConnectionStringJCJT);
                     extraJsonData = JsonHelper.GetDictionary(extraDJjson);
                     listExtraData.Add(extras[1], extraJsonData[extras[1]]);
                 }
@@ -910,25 +844,7 @@ namespace CalDebugTools
             }
         }
 
-        private void ck_other_CheckedChanged(object sender, EventArgs e)
-        {
-            if (this.ck_other.Checked)
-            {
-                this.txt_wtdbh.Visible = true;
-                //Debug("","");
-            }
-            else
-            {
-                this.txt_wtdbh.Visible = false;
-            }
-        }
-
-        private void pan_table_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        /// <summary>
+          /// <summary>
         /// 配置字段
         /// </summary>
         /// <param name="sender"></param>
@@ -1223,6 +1139,8 @@ namespace CalDebugTools
                     dic.Add("Qybh", "JCQ005322,JCQ005324,JCQ005325");
                 else if (sourceName == "通辽")
                     dic.Add("Qybh", "JCQ006880");
+                else if (sourceName == "台州")
+                    dic.Add("Qybh", "JCQ006689"); 
                 if (dic.Count > 0)
                     ConfigurationHelper.SaveConfig(dic);
 

@@ -72,7 +72,7 @@ namespace CalDebugTools.Common.DBUtility
             StringBuilder sb = new StringBuilder();
             sb.Append("{\"calcData\":{\"" + work + "\":");
             string sql = string.Format(@"select * from " + tablename);
-            SqlBase sqlbase = new SqlBase(ESqlConnType.ConnectionStringWH);
+            SqlBase sqlbase = new SqlBase(ESqlConnType.ConnectionStringJCJT);
             DataSet ds = sqlbase.ExecuteDataset(sql);
             ds.Tables[0].TableName = tablename;
             string json = JsonHelper.SerializeObject(ds);
@@ -188,7 +188,7 @@ namespace CalDebugTools.Common.DBUtility
             StringBuilder sb2 = new StringBuilder();
             sb.Append("{\"calcData\":[{");
             //string sql = string.Format(@"select top 1 * from " + tableName);
-            SqlBase sqlbase = new SqlBase(ESqlConnType.ConnectionStringWH);
+            SqlBase sqlbase = new SqlBase(ESqlConnType.ConnectionStringJCJT);
             DataSet ds = sqlbase.ExecuteDataset(sql);
             DataTable dt = ds.Tables[0];
             string[] jcxm_list = dt.Rows[0]["jcxm"].ToString().Split('、');

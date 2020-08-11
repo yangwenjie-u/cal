@@ -30,10 +30,9 @@ namespace CalDebugTools.Forms
             if (_sqlBase == null)
                 _sqlBase = new SqlBase();
             if (_sqlDebugTool == null)
-                _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
+                _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);            
             if (_sqlJGJG == null)
                 _sqlJGJG = new SqlBase(ESqlConnType.ConnectionStringJCJG);
-
         }
 
         private void button1_Click(object sender, EventArgs e)

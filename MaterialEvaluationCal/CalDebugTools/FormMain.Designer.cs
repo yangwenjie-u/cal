@@ -30,16 +30,14 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.pan_table = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.listDataSource = new System.Windows.Forms.ListBox();
             this.txt_wtdbh = new System.Windows.Forms.TextBox();
-            this.ck_other = new System.Windows.Forms.CheckBox();
             this.txtdatafiled = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txt_y = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.txt_yjdbh_to = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txt_jydbh = new System.Windows.Forms.TextBox();
-            this.jyd编号 = new System.Windows.Forms.Label();
             this.btn_Run = new System.Windows.Forms.Button();
             this.btn_Complie = new System.Windows.Forms.Button();
             this.btn_Debug = new System.Windows.Forms.Button();
@@ -77,9 +75,6 @@
             this.数据库配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_fieldSet = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_dataFieldSync = new System.Windows.Forms.ToolStripMenuItem();
-            this.listDataSource = new System.Windows.Forms.ListBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.pan_table.SuspendLayout();
             this.tacDebug.SuspendLayout();
             this.tapCode.SuspendLayout();
@@ -110,10 +105,6 @@
             this.pan_table.Controls.Add(this.label7);
             this.pan_table.Controls.Add(this.txt_y);
             this.pan_table.Controls.Add(this.label6);
-            this.pan_table.Controls.Add(this.txt_yjdbh_to);
-            this.pan_table.Controls.Add(this.label5);
-            this.pan_table.Controls.Add(this.txt_jydbh);
-            this.pan_table.Controls.Add(this.jyd编号);
             this.pan_table.Controls.Add(this.btn_Run);
             this.pan_table.Controls.Add(this.btn_Complie);
             this.pan_table.Controls.Add(this.btn_Debug);
@@ -125,35 +116,52 @@
             this.pan_table.Controls.Add(this.label2);
             this.pan_table.Controls.Add(this.txt_jcxmbh);
             this.pan_table.Controls.Add(this.label1);
-            this.pan_table.Controls.Add(this.ck_other);
             this.pan_table.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pan_table.Location = new System.Drawing.Point(0, 48);
+            this.pan_table.Location = new System.Drawing.Point(0, 28);
             this.pan_table.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pan_table.Name = "pan_table";
             this.pan_table.Size = new System.Drawing.Size(1277, 129);
             this.pan_table.TabIndex = 1;
-            this.pan_table.Paint += new System.Windows.Forms.PaintEventHandler(this.pan_table_Paint);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(516, 27);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(52, 15);
+            this.label9.TabIndex = 28;
+            this.label9.Text = "单组号";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(311, 28);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(52, 15);
+            this.label8.TabIndex = 27;
+            this.label8.Text = "数据源";
+            // 
+            // listDataSource
+            // 
+            this.listDataSource.FormattingEnabled = true;
+            this.listDataSource.ItemHeight = 15;
+            this.listDataSource.Items.AddRange(new object[] {
+            "台州",
+            "通辽",
+            "乌海"});
+            this.listDataSource.Location = new System.Drawing.Point(369, 21);
+            this.listDataSource.Name = "listDataSource";
+            this.listDataSource.Size = new System.Drawing.Size(96, 34);
+            this.listDataSource.TabIndex = 26;
+            this.listDataSource.SelectedIndexChanged += new System.EventHandler(this.listDataSource_SelectedIndexChanged);
             // 
             // txt_wtdbh
             // 
-            this.txt_wtdbh.Location = new System.Drawing.Point(1075, 19);
+            this.txt_wtdbh.Location = new System.Drawing.Point(582, 21);
             this.txt_wtdbh.Margin = new System.Windows.Forms.Padding(4);
             this.txt_wtdbh.Name = "txt_wtdbh";
             this.txt_wtdbh.Size = new System.Drawing.Size(132, 25);
             this.txt_wtdbh.TabIndex = 25;
-            // 
-            // ck_other
-            // 
-            this.ck_other.AutoSize = true;
-            this.ck_other.Location = new System.Drawing.Point(720, 27);
-            this.ck_other.Margin = new System.Windows.Forms.Padding(4);
-            this.ck_other.Name = "ck_other";
-            this.ck_other.Size = new System.Drawing.Size(89, 19);
-            this.ck_other.TabIndex = 24;
-            this.ck_other.Text = "乌海数据";
-            this.ck_other.UseVisualStyleBackColor = true;
-            this.ck_other.Visible = false;
-            this.ck_other.CheckedChanged += new System.EventHandler(this.ck_other_CheckedChanged);
             // 
             // txtdatafiled
             // 
@@ -192,40 +200,6 @@
             this.label6.Size = new System.Drawing.Size(52, 15);
             this.label6.TabIndex = 21;
             this.label6.Text = "数据表";
-            // 
-            // txt_yjdbh_to
-            // 
-            this.txt_yjdbh_to.Location = new System.Drawing.Point(591, 18);
-            this.txt_yjdbh_to.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txt_yjdbh_to.Name = "txt_yjdbh_to";
-            this.txt_yjdbh_to.Size = new System.Drawing.Size(100, 25);
-            this.txt_yjdbh_to.TabIndex = 20;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(527, 28);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(23, 15);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "to";
-            // 
-            // txt_jydbh
-            // 
-            this.txt_jydbh.Location = new System.Drawing.Point(384, 21);
-            this.txt_jydbh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txt_jydbh.Name = "txt_jydbh";
-            this.txt_jydbh.Size = new System.Drawing.Size(100, 25);
-            this.txt_jydbh.TabIndex = 18;
-            // 
-            // jyd编号
-            // 
-            this.jyd编号.AutoSize = true;
-            this.jyd编号.Location = new System.Drawing.Point(284, 25);
-            this.jyd编号.Name = "jyd编号";
-            this.jyd编号.Size = new System.Drawing.Size(77, 15);
-            this.jyd编号.TabIndex = 17;
-            this.jyd编号.Text = "赤峰JYDBH";
             // 
             // btn_Run
             // 
@@ -330,11 +304,11 @@
             this.tacDebug.Controls.Add(this.tapCompare);
             this.tacDebug.Controls.Add(this.tab_batch);
             this.tacDebug.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tacDebug.Location = new System.Drawing.Point(0, 209);
+            this.tacDebug.Location = new System.Drawing.Point(0, 157);
             this.tacDebug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tacDebug.Name = "tacDebug";
             this.tacDebug.SelectedIndex = 0;
-            this.tacDebug.Size = new System.Drawing.Size(1596, 576);
+            this.tacDebug.Size = new System.Drawing.Size(1277, 471);
             this.tacDebug.TabIndex = 3;
             // 
             // tapCode
@@ -344,7 +318,7 @@
             this.tapCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tapCode.Name = "tapCode";
             this.tapCode.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tapCode.Size = new System.Drawing.Size(1588, 547);
+            this.tapCode.Size = new System.Drawing.Size(1269, 442);
             this.tapCode.TabIndex = 0;
             this.tapCode.Text = "代码";
             this.tapCode.UseVisualStyleBackColor = true;
@@ -355,7 +329,7 @@
             this.ritCode.Location = new System.Drawing.Point(3, 2);
             this.ritCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ritCode.Name = "ritCode";
-            this.ritCode.Size = new System.Drawing.Size(1582, 543);
+            this.ritCode.Size = new System.Drawing.Size(1263, 438);
             this.ritCode.TabIndex = 1;
             this.ritCode.Text = "";
             this.ritCode.TextChanged += new System.EventHandler(this.ritCode_TextChanged);
@@ -367,7 +341,7 @@
             this.tab_debug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tab_debug.Name = "tab_debug";
             this.tab_debug.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tab_debug.Size = new System.Drawing.Size(1269, 440);
+            this.tab_debug.Size = new System.Drawing.Size(1269, 442);
             this.tab_debug.TabIndex = 1;
             this.tab_debug.Text = "调试输出";
             this.tab_debug.UseVisualStyleBackColor = true;
@@ -379,7 +353,7 @@
             this.ritResult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ritResult.Multiline = true;
             this.ritResult.Name = "ritResult";
-            this.ritResult.Size = new System.Drawing.Size(1263, 436);
+            this.ritResult.Size = new System.Drawing.Size(1263, 438);
             this.ritResult.TabIndex = 0;
             // 
             // tapCompare
@@ -389,7 +363,7 @@
             this.tapCompare.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tapCompare.Name = "tapCompare";
             this.tapCompare.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tapCompare.Size = new System.Drawing.Size(1269, 440);
+            this.tapCompare.Size = new System.Drawing.Size(1269, 442);
             this.tapCompare.TabIndex = 2;
             this.tapCompare.Text = "数据比较";
             this.tapCompare.UseVisualStyleBackColor = true;
@@ -406,7 +380,7 @@
             this.dataGridViewResult.ReadOnly = true;
             this.dataGridViewResult.RowHeadersWidth = 51;
             this.dataGridViewResult.RowTemplate.Height = 27;
-            this.dataGridViewResult.Size = new System.Drawing.Size(1263, 436);
+            this.dataGridViewResult.Size = new System.Drawing.Size(1263, 438);
             this.dataGridViewResult.TabIndex = 0;
             this.dataGridViewResult.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridViewResult_CellPainting);
             // 
@@ -417,7 +391,7 @@
             this.tab_batch.Margin = new System.Windows.Forms.Padding(4);
             this.tab_batch.Name = "tab_batch";
             this.tab_batch.Padding = new System.Windows.Forms.Padding(4);
-            this.tab_batch.Size = new System.Drawing.Size(1269, 440);
+            this.tab_batch.Size = new System.Drawing.Size(1269, 442);
             this.tab_batch.TabIndex = 3;
             this.tab_batch.Text = "批量调试";
             this.tab_batch.UseVisualStyleBackColor = true;
@@ -435,7 +409,7 @@
             this.DataGridViewRowBitch.ReadOnly = true;
             this.DataGridViewRowBitch.RowHeadersWidth = 51;
             this.DataGridViewRowBitch.RowTemplate.Height = 23;
-            this.DataGridViewRowBitch.Size = new System.Drawing.Size(1261, 432);
+            this.DataGridViewRowBitch.Size = new System.Drawing.Size(1261, 434);
             this.DataGridViewRowBitch.TabIndex = 0;
             this.DataGridViewRowBitch.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridViewRowBitch_CellMouseDoubleClick);
             // 
@@ -559,7 +533,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1596, 38);
+            this.menuStrip1.Size = new System.Drawing.Size(1277, 28);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -585,37 +559,6 @@
             this.tool_dataFieldSync.Size = new System.Drawing.Size(197, 26);
             this.tool_dataFieldSync.Text = "数据表字段同步";
             this.tool_dataFieldSync.Click += new System.EventHandler(this.tool_dataFieldSync_Click);
-            // 
-            // listDataSource
-            // 
-            this.listDataSource.FormattingEnabled = true;
-            this.listDataSource.ItemHeight = 15;
-            this.listDataSource.Items.AddRange(new object[] {
-            "乌海",
-            "通辽"});
-            this.listDataSource.Location = new System.Drawing.Point(896, 18);
-            this.listDataSource.Name = "listDataSource";
-            this.listDataSource.Size = new System.Drawing.Size(76, 34);
-            this.listDataSource.TabIndex = 26;
-            this.listDataSource.SelectedIndexChanged += new System.EventHandler(this.listDataSource_SelectedIndexChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(826, 22);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(52, 15);
-            this.label8.TabIndex = 27;
-            this.label8.Text = "数据源";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1009, 25);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(65, 19);
-            this.label9.TabIndex = 28;
-            this.label9.Text = "单组号";
             // 
             // FormMain
             // 
@@ -676,18 +619,13 @@
         private System.Windows.Forms.ToolStripMenuItem tool_AddFields;
         private System.Windows.Forms.ToolStripMenuItem tool_uploadFields;
         private System.Windows.Forms.ToolStripMenuItem 代码上传ToolStripMenuItem;
-        private System.Windows.Forms.TextBox txt_jydbh;
-        private System.Windows.Forms.Label jyd编号;
         private System.Windows.Forms.RichTextBox ritCode;
-        private System.Windows.Forms.TextBox txt_yjdbh_to;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TabPage tab_batch;
         private System.Windows.Forms.DataGridView DataGridViewRowBitch;
         private System.Windows.Forms.TextBox txt_y;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtdatafiled;
-        private System.Windows.Forms.CheckBox ck_other;
         private System.Windows.Forms.TextBox txt_wtdbh;
         private System.Windows.Forms.ToolStripMenuItem 数据库配置ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tool_fieldSet;

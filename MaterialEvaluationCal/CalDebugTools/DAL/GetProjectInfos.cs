@@ -71,7 +71,7 @@ namespace CalDebugTools
             }
 
             string sqlStr = $"select * from  PR_M_SYXM where SYXMBH  = '{info.BH}'";
-            var _sqlBase2 = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringWH);
+            var _sqlBase2 = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringJCJT);
             var dfd = _sqlBase2.ExecuteScalar(sqlStr);
             if (dfd == null)
             {
@@ -231,7 +231,7 @@ namespace CalDebugTools
         public string GetWTDBH(string ypbh)
         {
             string ParData = "";
-            var _sqlBase2 = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringWH);
+            var _sqlBase2 = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringJCJT);
 
             string sqlStr = $"select wtdbh from s_by join m_by on m_by.recid = s_by.byzbrecid  where ypbh = '{ypbh}' AND YTDWBH in('{FormMain._qybh.Replace(",", "','")}') ";
             try
@@ -286,7 +286,7 @@ namespace CalDebugTools
                         where += " and [" + item_y + "] in (select [" + item_s + "] from S" + BH + " where JYDBH = '" + jydbh + "')";
                 }
                 #region 获取数据表字段
-                var _sqlBase_jcjt = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringMain);
+                var _sqlBase_jcjt = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringJCJT);
                 string result = string.Empty;
                 string sqlStr = $"select ZDMC  from  ZDZD_{BH} where ( SJBMC = '{ytablist[i]}') and( lx like '%I%' or lx like '%O%')";
                 var redata = _sqlBase_jcjt.ExecuteDataset(sqlStr);
@@ -337,26 +337,10 @@ namespace CalDebugTools
 
             return mdata;
         }
-        public DataSet GetParmsCF(string BH, List<string> lisFields, string jydbh)
-        {
-            SqlBase baseChifeng = new SqlBase(ESqlConnType.ConnectionStringCF);
-
-            if (lisFields.Count != 2)
-            {
-                return null;
-            }
-
-            string sfield = lisFields[1];
-
-            sfield = string.IsNullOrEmpty(sfield) ? "*" : sfield;
-            string extra_sql = string.Format($"select {sfield} from S{BH} where  JYDBH='{jydbh}'");
-            DataSet extra_dt = baseChifeng.ExecuteDataset(extra_sql);
-            return extra_dt;
-        }
 
         public DataSet GetParmsWH(string BH, List<string> lisFields, string wtdbh)
         {
-            SqlBase baseChifeng = new SqlBase(ESqlConnType.ConnectionStringWH);
+            SqlBase baseChifeng = new SqlBase(ESqlConnType.ConnectionStringJCJT);
 
             if (lisFields.Count != 2)
             {

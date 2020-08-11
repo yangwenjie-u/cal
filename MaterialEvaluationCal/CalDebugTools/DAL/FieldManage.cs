@@ -17,10 +17,9 @@ namespace CalDebugTools.DAL
         private Common.DBUtility.SqlBase _sqlDebugTool = null;
         public FieldManage()
         {
-      
             if (_sqlBase == null)
             {
-                _sqlBase = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringMain);
+                _sqlBase = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringJCJT);
             }
             if (_sqlDebugTool == null)
                 _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
