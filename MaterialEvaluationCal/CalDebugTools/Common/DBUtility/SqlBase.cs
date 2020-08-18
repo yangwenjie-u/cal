@@ -13,15 +13,15 @@ namespace CalDebugTools.Common.DBUtility
         /// </summary>
         /// <param name="dalType">需实例化的类</param>
         /// <returns></returns>
-        public SqlBase() : base(ESqlConnType.ConnectionStringMain)
+        public SqlBase() : base(ESqlConnType.ConnectionStringJCJT)
         {
 
         }
         
-        public SqlBase(string type) : base(ESqlConnType.ConnectionStringLocal)
-        {
+        //public SqlBase(string type) : base(ESqlConnType.ConnectionStringLocal)
+        //{
 
-        }
+        //}
         public SqlBase(ESqlConnType eSqlConnType)
             : base(eSqlConnType)
         {

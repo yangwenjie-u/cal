@@ -14,14 +14,13 @@ namespace CalDebugTools.Common.DBUtility
     /// </summary>
     public enum ESqlConnType
     {
-        ConnectionStringMain,
+        //ConnectionStringMain,
         ConnectionStringJCJT,
-        ConnectionStringLocal,
+        //ConnectionStringLocal,
         ConnectionStringDebugTool,
-        ConnectionStringCF,
         ConnectionStringJCJG,
-        ConnectionStringWH
-
+        //ConnectionStringWH
+        ConnectionStringCF
     }
 
     /// <summary>
@@ -39,35 +38,34 @@ namespace CalDebugTools.Common.DBUtility
 
         public BaseDal(ESqlConnType eSqlConnType)
         {
+            string selectJCJGName = BLL.ConfigurationHelper.GetConfig("JCJGName");
             switch (eSqlConnType)
             {
-                case ESqlConnType.ConnectionStringMain:
-                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;    //数据数据库连接
-                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;  //数据数据库连接
-                    break;
+                //case ESqlConnType.ConnectionStringMain:
+                //    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;    //数据数据库连接
+                //    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;  //数据数据库连接
+                //    break;
                 case ESqlConnType.ConnectionStringJCJT:
-                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;    //数据数据库连接
-                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;  //数据数据库连接
+                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_"+ selectJCJGName].ConnectionString;    //数据数据库连接
+                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_" + selectJCJGName].ConnectionString;  //数据数据库连接
                     break;
-                case ESqlConnType.ConnectionStringLocal:
-                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;    //数据数据库连接
-                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;  //数据数据库连接
-                    break;
+                //case ESqlConnType.ConnectionStringLocal:
+                //    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;    //数据数据库连接
+                //    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;  //数据数据库连接
+                //    break;
+                //caldebugTool数据库
                 case ESqlConnType.ConnectionStringDebugTool:
                     sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringDebugTool"].ConnectionString;    //数据数据库连接
                     sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringDebugTool"].ConnectionString;  //数据数据库连接
                     break;
-                case ESqlConnType.ConnectionStringCF:
-                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringCF"].ConnectionString;    //数据数据库连接
-                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringCF"].ConnectionString;  //数据数据库连接
-                    break;
-                case ESqlConnType.ConnectionStringWH:
-                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;    //数据数据库连接
-                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;  //数据数据库连接
-                    break;
+                //case ESqlConnType.ConnectionStringWH:
+                //    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;    //数据数据库连接
+                //    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;  //数据数据库连接
+                //    break;
+                //监管数据库
                 case ESqlConnType.ConnectionStringJCJG:
-                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJG"].ConnectionString;    //数据数据库连接
-                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringJCJG"].ConnectionString;  //数据数据库连接
+                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJG_" + selectJCJGName].ConnectionString;    //数据数据库连接
+                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringJCJG_" + selectJCJGName].ConnectionString;  //数据数据库连接
                     break;
             }
         }

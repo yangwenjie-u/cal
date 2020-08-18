@@ -55,7 +55,8 @@ namespace Calculates
                 if (string.IsNullOrEmpty(mCpmc))
                     mCpmc = "";
                 mGgxh = sitem["GGXH"];
-                var mrsDj_item = mrsDj.FirstOrDefault(x => x["BZH"].Contains(sitem["BZH"].Trim()) && x["GGXH"].Contains(mGgxh.Trim()));
+                //var mrsDj_item = mrsDj.FirstOrDefault(x => x["BZH"].Contains(sitem["BZH"].Trim()) && x["GGXH"].Contains(mGgxh.Trim()));
+                var mrsDj_item = mrsDj.FirstOrDefault(x => x["BZH"] == sitem["BZH"].Trim() && x["GGXH"] == mGgxh.Trim());
                 if (mrsDj_item != null && mrsDj_item.Count() > 0)
                 {
                     mitem["G_DMJZL"] = mrsDj_item["DMJZL"];
@@ -229,10 +230,10 @@ namespace Calculates
                     {
                         #region 初检
                         if ((Conversion.Val(sitem["LDQLJ1"]) + Conversion.Val(sitem["LDQLJ2"]) + Conversion.Val(sitem["LDQLJ3"]) + Conversion.Val(sitem["LDQLJ4"]) + Conversion.Val(sitem["LDQLJ5"])) != 0)
-                    {
-                        sitem["LDQLJ"] = Round((Conversion.Val(sitem["LDQLJ1"]) + Conversion.Val(sitem["LDQLJ2"]) + Conversion.Val(sitem["LDQLJ3"]) + Conversion.Val(sitem["LDQLJ4"]) + Conversion.Val(sitem["LDQLJ5"])) / 5, 2).ToString("0.00");
-                        sitem["LDQLW"] = Round((Conversion.Val(sitem["LDQLW1"]) + Conversion.Val(sitem["LDQLW2"]) + Conversion.Val(sitem["LDQLW3"]) + Conversion.Val(sitem["LDQLW4"]) + Conversion.Val(sitem["LDQLW5"])) / 5, 2).ToString("0.00");
-                    }
+                        {
+                            sitem["LDQLJ"] = Round((Conversion.Val(sitem["LDQLJ1"]) + Conversion.Val(sitem["LDQLJ2"]) + Conversion.Val(sitem["LDQLJ3"]) + Conversion.Val(sitem["LDQLJ4"]) + Conversion.Val(sitem["LDQLJ5"])) / 5, 2).ToString("0.00");
+                            sitem["LDQLW"] = Round((Conversion.Val(sitem["LDQLW1"]) + Conversion.Val(sitem["LDQLW2"]) + Conversion.Val(sitem["LDQLW3"]) + Conversion.Val(sitem["LDQLW4"]) + Conversion.Val(sitem["LDQLW5"])) / 5, 2).ToString("0.00");
+                        }
                         #endregion
                     }
 

@@ -17,8 +17,6 @@ namespace Calculates
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "该组试样的检测结果全部合格";
-            var jgsm = "";
-            var jcjg = "";
             var SItems = data["S_FMH"];
 
             if (!data.ContainsKey("M_FMH"))
@@ -167,8 +165,10 @@ namespace Calculates
                     MItem[0]["G_XSLB"] = mrsDj["XSLB"];
                     /*
                      * 需水量比% = 试验胶砂流动度达到对比胶砂流动度（L0）的+-2mm时的加水量（g）/ 125（对比胶砂加水量[g]）* 100 
+                     * 实际检测机构要求  145 -155的计算公式   需水量比% = 试验胶砂流动度达到对比胶砂流动度（L0）的+-2mm时的加水量（g）/ （对比胶砂加水量[g]）* 100 
                      */
-                    sItem["XSLB"] = Round(Conversion.Val(sItem["SYXSLL1"]) / 125 * 100, 0).ToString("0");
+                    //sItem["XSLB"] = Round(Conversion.Val(sItem["SYXSLL1"]) / 125 * 100, 0).ToString("0");
+                    sItem["XSLB"] = Round(Conversion.Val(sItem["SYXSLL1"]) / Conversion.Val(sItem["DBXSL"]) * 100, 0).ToString("0");
                     var isQ = IsQualified(MItem[0]["G_XSLB"], sItem["XSLB"], true);
 
                     if ("符合" == isQ)
@@ -361,10 +361,10 @@ namespace Calculates
                     MItem[0]["G_SSL"] = mrsDj["SSL"];
                     //mrssubTable!SSLXLOI_1 = Format(Round(CDec(Val(mrssubTable!SSLM1) - (Val(mrssubTable!SSLM3_1) - Val(mrssubTable!SSLM4_1))) / CDec(Val(mrssubTable!SSLM1)) * 100, 2), "0.00")
                     //mrssubTable!SSLXLOI_2 = Format(Round(CDec(Val(mrssubTable!SSLM2) - (Val(mrssubTable!SSLM3_2) - Val(mrssubTable!SSLM4_2))) / CDec(Val(mrssubTable!SSLM2)) * 100, 2), "0.00")
-                    sItem["SSLXLOI_1"] = Round((GetSafeDouble(sItem["SSLM1"]) - (GetSafeDouble(sItem["SSLM3_1"]) - GetSafeDouble(sItem["SSLM4_1"]))) / GetSafeDouble(sItem["SSLM1"]) * 100, 2).ToString("0.00");
-                    sItem["SSLXLOI_2"] = Round((GetSafeDouble(sItem["SSLM2"]) - (GetSafeDouble(sItem["SSLM3_2"]) - GetSafeDouble(sItem["SSLM4_2"]))) / GetSafeDouble(sItem["SSLM2"]) * 100, 2).ToString("0.00");
+                    sItem["SSLXLOI_1"] = Round((GetSafeDouble(sItem["SSLM1"]) - (GetSafeDouble(sItem["SSLM3_1"]) - GetSafeDouble(sItem["SSLM4_1"]))) / GetSafeDouble(sItem["SSLM1"]) * 100, 1).ToString("0.0");
+                    sItem["SSLXLOI_2"] = Round((GetSafeDouble(sItem["SSLM2"]) - (GetSafeDouble(sItem["SSLM3_2"]) - GetSafeDouble(sItem["SSLM4_2"]))) / GetSafeDouble(sItem["SSLM2"]) * 100, 1).ToString("0.0");
                     //sItem["SSLXLOI_2"] = Round((GetSafeDouble(sItem["SSLM4_2"]) - GetSafeDouble(sItem["SSLM3_2"])) / (GetSafeDouble(sItem["SSLM4_2"]) - GetSafeDouble(sItem["SSLM2"])) * 100, 2).ToString("0.00");
-                    sItem["SSL"] = Round((GetSafeDouble(sItem["SSLXLOI_1"]) + GetSafeDouble(sItem["SSLXLOI_2"])) / 2, 2).ToString("0.00");
+                    sItem["SSL"] = Round((GetSafeDouble(sItem["SSLXLOI_1"]) + GetSafeDouble(sItem["SSLXLOI_2"])) / 2, 1).ToString("0.0");
 
                     var isQ = IsQualified(MItem[0]["G_SSL"], sItem["SSL"], true);
 
@@ -400,6 +400,18 @@ namespace Calculates
                 {
                     jcxmCur = "三氧化硫";
                     MItem[0]["G_SO3HL"] = mrsDj["SO3HL"];
+                    //硫酸钡重量法   硫酸盐三氧化硫的质量分数 % = （灼烧后沉淀质量 g - 空白试验灼烧后沉淀的质量 g）* 0.343  / 试料的质量 g  * 100 
+                    if (IsNumeric(sItem["SO3M6_1"].Trim()) && IsNumeric(sItem["SO3M5_1"].Trim()) && IsNumeric(sItem["SO3M4_1"].Trim()) 
+                        && IsNumeric(sItem["SO3M6_2"].Trim()) && IsNumeric(sItem["SO3M5_2"].Trim()) && IsNumeric(sItem["SO3M4_2"].Trim()))
+                    {
+                        sItem["XSO3_1"] = Round((GetSafeDouble(sItem["SO3M6_1"].Trim()) - GetSafeDouble(sItem["SO3M5_1"].Trim())) * 0.343 / GetSafeDouble(sItem["SO3M4_1"].Trim()) * 100, 1).ToString("0.0");
+                        sItem["XSO3_2"] = Round((GetSafeDouble(sItem["SO3M6_2"].Trim()) - GetSafeDouble(sItem["SO3M5_2"].Trim())) * 0.343 / GetSafeDouble(sItem["SO3M4_2"].Trim()) * 100, 1).ToString("0.0");
+                        sItem["SO3HL"] = Round((GetSafeDouble(sItem["XSO3_1"]) + GetSafeDouble(sItem["XSO3_2"])) / 2, 1).ToString("0.0");
+                    }
+                    else
+                    {
+                        throw new SystemException("三氧化硫试验数据录入有误");
+                    }
 
                     var isQ = IsQualified(MItem[0]["G_SO3HL"], sItem["SO3HL"], true);
 
@@ -429,7 +441,6 @@ namespace Calculates
                     sItem["SO3M4_2"] = "----";
                     sItem["XSO3_1"] = "----";
                     sItem["XSO3_2"] = "----";
-
                     MItem[0]["HG_SO3HL"] = "----";
                     MItem[0]["G_SO3HL"] = "----";
                 }
@@ -440,6 +451,35 @@ namespace Calculates
                 {
                     jcxmCur = "游离氧化钙";
                     MItem[0]["G_YHG"] = mrsDj["YHG"];
+                    //该代码只为区分数据录入提示内容，无其它含义
+                    //游离氧化钙质量分数 （%） = （滴定度（mg/mL） *  苯甲酸-无水乙醇标准溶液消耗体积（mL） * 0.1） / 试料质量（g）
+                    if ("甘油酒精法" == sItem["YHGSYFF"])
+                    {
+                        if (IsNumeric(sItem["TCAO"].Trim()) && IsNumeric(sItem["CAOV1_1"].Trim()) && IsNumeric(sItem["CAOM_1"].Trim()) && IsNumeric(sItem["CAOV1_2"].Trim()) && IsNumeric(sItem["CAOM_2"].Trim()))
+                        {
+                            sItem["CAO_1"] = Round(GetSafeDouble(sItem["TCAO"].Trim()) * GetSafeDouble(sItem["CAOV1_1"].Trim()) * 0.1 / GetSafeDouble(sItem["CAOM_1"].Trim()), 1).ToString("0.0");
+                            sItem["CAO_2"] = Round(GetSafeDouble(sItem["TCAO"].Trim()) * GetSafeDouble(sItem["CAOV1_2"].Trim()) * 0.1 / GetSafeDouble(sItem["CAOM_2"].Trim()), 1).ToString("0.0");
+                            sItem["PJCAO"] = Round((GetSafeDouble(sItem["CAO_1"].Trim()) + GetSafeDouble(sItem["CAO_2"].Trim())) / 2, 1).ToString("0.0");
+                        }
+                        else
+                        {
+                            throw new SystemException("游离氧化钙试验甘油酒精法数据录入有误");
+                        }
+                    }
+                    else
+                    {
+                        //乙二醇法
+                        if (IsNumeric(sItem["TCAO"].Trim()) && IsNumeric(sItem["CAOV1_1"].Trim()) && IsNumeric(sItem["CAOM_1"].Trim()) && IsNumeric(sItem["CAOV1_2"].Trim()) && IsNumeric(sItem["CAOM_2"].Trim()))
+                        {
+                            sItem["CAO_1"] = Round(GetSafeDouble(sItem["TCAO"].Trim()) * GetSafeDouble(sItem["CAOV1_1"].Trim()) * 0.1 / GetSafeDouble(sItem["CAOM_1"].Trim()), 1).ToString("0.0");
+                            sItem["CAO_2"] = Round(GetSafeDouble(sItem["TCAO"].Trim()) * GetSafeDouble(sItem["CAOV1_2"].Trim()) * 0.1 / GetSafeDouble(sItem["CAOM_2"].Trim()), 1).ToString("0.0");
+                            sItem["PJCAO"] = Round((GetSafeDouble(sItem["CAO_1"].Trim()) + GetSafeDouble(sItem["CAO_2"].Trim())) / 2, 1).ToString("0.0");
+                        }
+                        else
+                        {
+                            throw new SystemException("游离氧化钙试验乙二醇法数据录入有误");
+                        }
+                    }
 
                     var isQ = IsQualified(MItem[0]["G_YHG"], sItem["PJCAO"], true);
 

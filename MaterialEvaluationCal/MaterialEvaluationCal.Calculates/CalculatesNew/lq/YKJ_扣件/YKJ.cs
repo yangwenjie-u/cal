@@ -81,7 +81,7 @@ namespace Calculates
                 if (kjlb.Contains("、直角扣件、"))
                 {
                     //sitem["YPSL"] = sitem["YBDX"];
-                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["YBDX"].Contains(sitem["YBDX"].Trim()) && x["DJYB"].Contains(mitem["DJYB"]));
+                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["YBDX"].Contains(Conversion.Val(sitem["YBDX"]).ToString()) && x["DJYB"].Contains(mitem["DJYB"]));
                     mitem["ZYH"] = mrsDj_Filter2["ZYH"];//主要项AC
                     mitem["ZYB"] = mrsDj_Filter2["ZYB"];//主要项RE
                     mitem["YBH"] = mrsDj_Filter2["YBH"];//一般项AC
@@ -184,7 +184,7 @@ namespace Calculates
                 if (kjlb.Contains("、旋转扣件、"))
                 {
                     sitem["YPSL1"] = sitem["YBDX"];
-                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["YBDX"].Contains(sitem["YPSL1"].Trim()) && x["DJYB"].Contains(mitem["DJYB"]));
+                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["YBDX"].Contains(Conversion.Val(sitem["YPSL1"]).ToString()) && x["DJYB"].Contains(mitem["DJYB"]));
                     mitem["ZYH"] = mrsDj_Filter2["ZYH"];
                     mitem["ZYB"] = mrsDj_Filter2["ZYB"];
                     mitem["YBH"] = mrsDj_Filter2["YBH"];
@@ -284,7 +284,7 @@ namespace Calculates
                 if (kjlb.Contains("、对接扣件、"))
                 {
                     sitem["YPSL2"] = sitem["YBDX"];
-                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["YBDX"].Contains(sitem["YPSL2"].Trim()) && x["DJYB"].Contains(mitem["DJYB"]));
+                    var mrsDj_Filter2 = mrsDj.FirstOrDefault(x => x["YBDX"].Contains(Conversion.Val(sitem["YPSL2"]).ToString()) && x["DJYB"].Contains(mitem["DJYB"]));
                     mitem["ZYH"] = mrsDj_Filter2["ZYH"];
                     mitem["ZYB"] = mrsDj_Filter2["ZYB"];
                     mitem["YBH"] = mrsDj_Filter2["YBH"];

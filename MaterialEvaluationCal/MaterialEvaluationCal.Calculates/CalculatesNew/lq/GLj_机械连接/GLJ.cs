@@ -307,7 +307,7 @@ namespace Calculates
                 {
                     for (int i = 1; i <= mxlgs; i++)
                     {
-                        if (Conversion.Val(sitem["KLQD" + i]) >= GetSafeDouble(extraFieldsDj["QFQDBZZ"]))
+                        if (Conversion.Val(sitem["KLQD" + i]) >= GetSafeDouble(extraFieldsDj["KLQDBZZ"]))
                         {
                             mcnt++;
                         }

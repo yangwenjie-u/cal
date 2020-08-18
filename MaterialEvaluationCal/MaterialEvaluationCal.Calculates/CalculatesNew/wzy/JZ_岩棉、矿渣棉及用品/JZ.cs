@@ -1303,7 +1303,7 @@ namespace Calculates
                     jcxmCur = "管壳偏心度";
                     sign = IsNumeric(mitem["W_GQPXD"]) && !string.IsNullOrEmpty(mitem["W_GQPXD"]) ? sign : false;
                     if (sign)
-                    { 
+                    {
                         mitem["GH_GQPXD"] = IsQualified(mitem["G_GQPXD"], mitem["W_GQPXD"], false);
                         if (mitem["GH_GQPXD"] == "不合格")
                         {
@@ -1449,7 +1449,7 @@ namespace Calculates
                     //}
                     #endregion
 
-                    jcxmCur = "长度允许偏差"; 
+                    jcxmCur = "长度允许偏差";
                     sign = IsNumeric(mitem["W_CDPC"]) && !string.IsNullOrEmpty(mitem["W_CDPC"]) ? sign : false;
                     if (sign)
                     {
@@ -1629,127 +1629,135 @@ namespace Calculates
                 sign = true;
                 if (jcxm.Contains("、密度允许偏差、"))
                 {
-                    #region GB/T11835—2016
-                    //if (CPMC == "绝热用岩棉、矿渣棉及其制品（GB/T11835—2016）")
-                    //{
-                    //    if (lx == "岩棉")
-                    //    {
-                    //        switch (zpxs)
-                    //        {
-                    //            case "板":
-                    //                mitem["G_MDYXPC"] = "-10~10";
-                    //                break;
-                    //            case "毡":
-                    //                mitem["G_MDYXPC"] = "-10~10";
-                    //                break;
-                    //            case "缝毡":
-                    //                mitem["G_MDYXPC"] = "-10~10";
-                    //                break;
-                    //            case "管壳":
-                    //                mitem["G_MDYXPC"] = "-10~10";
-                    //                break;
-                    //            default:
-                    //                break;
-                    //        }
-
-                    //    }
-                    //    else if (lx == "矿渣棉")
-                    //    {
-                    //        switch (zpxs)
-                    //        {
-                    //            case "板":
-                    //                mitem["G_MDYXPC"] = "-10~10";
-                    //                break;
-                    //            case "毡":
-                    //                mitem["G_MDYXPC"] = "-10~10";
-                    //                break;
-                    //            case "缝毡":
-                    //                mitem["G_MDYXPC"] = "-10~10";
-                    //                break;
-                    //            case "管壳":
-                    //                mitem["G_MDYXPC"] = "-10~10";
-                    //                break;
-                    //            default:
-                    //                break;
-                    //        }
-                    //    }
-
-                    //}
-                    #endregion
-
-                    jcxmCur = "密度允许偏差";
-                    #region GB/T 19686-2015
-                    if (CPMC.Contains("19686")) //建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)
+                    if (IsNumeric(sitem["BCMD"])) //判断是否为数字
                     {
-
-                        switch (sitem["YYLX"].Trim())
-                        {
-                            case "屋面和地板":
-                                if (GetSafeDouble(sitem["BCMD"]) >= 80)
-                                {
-                                    mitem["G_MDYXPC"] = md11;
-                                }
-                                else
-                                {
-                                    mitem["G_MDYXPC"] = md12;
-                                }
-                                break;
-                            case "幕墙":
-                                if (GetSafeDouble(sitem["BCMD"]) >= 80)
-                                {
-                                    mitem["G_MDYXPC"] = md11;
-                                }
-                                else
-                                {
-                                    mitem["G_MDYXPC"] = md12;
-                                }
-                                break;
-                            case "金属面夹芯板":
-                                mitem["G_MDYXPC"] = md11;
-                                break;
-                            case "钢结构及内保温":
-                                if (GetSafeDouble(sitem["BCMD"]) >= 80)
-                                {
-                                    mitem["G_MDYXPC"] = md11;
-                                }
-                                else
-                                {
-                                    mitem["G_MDYXPC"] = md12;
-                                }
-                                break;
-                        }
-                    }
-                    #endregion
-
-                    if (CPMC.Contains("11835")) //GB/T11835—2016
-                    {
-                        sign = IsNumeric(mitem["W_MDYXPC"]) && !string.IsNullOrEmpty(mitem["W_MDYXPC"]) ? sign : false;
-
-                        //if (sign && IsQualified(md11, sitem["BCMD"], false) == "合格")  //判断标准密度是否符合要求
+                        #region GB/T11835—2016
+                        //if (CPMC == "绝热用岩棉、矿渣棉及其制品（GB/T11835—2016）")
                         //{
-                            mitem["GH_MDYXPC"] = IsQualified(mitem["G_MDYXPC"], mitem["W_MDYXPC"], false);
+                        //    if (lx == "岩棉")
+                        //    {
+                        //        switch (zpxs)
+                        //        {
+                        //            case "板":
+                        //                mitem["G_MDYXPC"] = "-10~10";
+                        //                break;
+                        //            case "毡":
+                        //                mitem["G_MDYXPC"] = "-10~10";
+                        //                break;
+                        //            case "缝毡":
+                        //                mitem["G_MDYXPC"] = "-10~10";
+                        //                break;
+                        //            case "管壳":
+                        //                mitem["G_MDYXPC"] = "-10~10";
+                        //                break;
+                        //            default:
+                        //                break;
+                        //        }
+
+                        //    }
+                        //    else if (lx == "矿渣棉")
+                        //    {
+                        //        switch (zpxs)
+                        //        {
+                        //            case "板":
+                        //                mitem["G_MDYXPC"] = "-10~10";
+                        //                break;
+                        //            case "毡":
+                        //                mitem["G_MDYXPC"] = "-10~10";
+                        //                break;
+                        //            case "缝毡":
+                        //                mitem["G_MDYXPC"] = "-10~10";
+                        //                break;
+                        //            case "管壳":
+                        //                mitem["G_MDYXPC"] = "-10~10";
+                        //                break;
+                        //            default:
+                        //                break;
+                        //        }
+                        //    }
+
                         //}
-                        //else
-                        //{
-                        //    mitem["GH_MDYXPC"] = "不合格";
-                        //}
-                    }
-                    else
-                    {
-                        sign = IsNumeric(mitem["W_MDYXPC"]) && !string.IsNullOrEmpty(mitem["W_MDYXPC"]) ? sign : false;
-                        if (sign)
+                        #endregion
+
+                        jcxmCur = "密度允许偏差";
+                        #region GB/T 19686-2015
+                        if (CPMC.Contains("19686")) //建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)
                         {
-                            mitem["GH_MDYXPC"] = IsQualified(mitem["G_MDYXPC"], mitem["W_MDYXPC"], false);
-                            if (mitem["GH_MDYXPC"] == "不合格")
+
+                            switch (sitem["YYLX"].Trim())
                             {
-                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                case "屋面和地板":
+                                    if (GetSafeDouble(sitem["BCMD"]) >= 80)
+                                    {
+                                        mitem["G_MDYXPC"] = md11;
+                                    }
+                                    else
+                                    {
+                                        mitem["G_MDYXPC"] = md12;
+                                    }
+                                    break;
+                                case "幕墙":
+                                    if (GetSafeDouble(sitem["BCMD"]) >= 80)
+                                    {
+                                        mitem["G_MDYXPC"] = md11;
+                                    }
+                                    else
+                                    {
+                                        mitem["G_MDYXPC"] = md12;
+                                    }
+                                    break;
+                                case "金属面夹芯板":
+                                    mitem["G_MDYXPC"] = md11;
+                                    break;
+                                case "钢结构及内保温":
+                                    if (GetSafeDouble(sitem["BCMD"]) >= 80)
+                                    {
+                                        mitem["G_MDYXPC"] = md11;
+                                    }
+                                    else
+                                    {
+                                        mitem["G_MDYXPC"] = md12;
+                                    }
+                                    break;
                             }
+                        }
+                        #endregion
+
+                        if (CPMC.Contains("11835")) //GB/T11835—2016
+                        {
+                            sign = IsNumeric(mitem["W_MDYXPC"]) && !string.IsNullOrEmpty(mitem["W_MDYXPC"]) ? sign : false;
+
+                            //if (sign && IsQualified(md11, sitem["BCMD"], false) == "合格")  //判断标准密度是否符合要求
+                            //{
+                            mitem["GH_MDYXPC"] = IsQualified(mitem["G_MDYXPC"], mitem["W_MDYXPC"], false);
+                            //}
+                            //else
+                            //{
+                            //    mitem["GH_MDYXPC"] = "不合格";
+                            //}
                         }
                         else
                         {
-                            mitem["GH_MDYXPC"] = "不合格";
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sign = IsNumeric(mitem["W_MDYXPC"]) && !string.IsNullOrEmpty(mitem["W_MDYXPC"]) ? sign : false;
+                            if (sign)
+                            {
+                                mitem["GH_MDYXPC"] = IsQualified(mitem["G_MDYXPC"], mitem["W_MDYXPC"], false);
+                                if (mitem["GH_MDYXPC"] == "不合格")
+                                {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                }
+                            }
+                            else
+                            {
+                                mitem["GH_MDYXPC"] = "不合格";
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
                         }
+                    }
+                    else
+                    {
+                        mitem["GH_MDYXPC"] = "----";
+                        mitem["W_MDYXPC"] = "----";
                     }
                 }
                 else

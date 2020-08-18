@@ -695,13 +695,13 @@ namespace Calculates
                         sItem["XDYQ"] = "最大粒径＞4.75mm 并且≤25mm";
                         if (IsQualified("＞4.75", sItem["ZDLJ"], true) == "符合" && IsQualified("≤25", sItem["ZDLJ"], true) == "符合")
                         {
-                            sItem["XDPD"] = "符合要求";
+                            sItem["XDPD"] = "合格";
                         }
                         else
                         {
                             itemHG = false;
                             mAllHg = false;
-                            sItem["XDPD"] = "不符合要求";
+                            sItem["XDPD"] = "不合格";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                         sItem["XDDW"] = "mm";
@@ -718,12 +718,12 @@ namespace Calculates
                             {
                                 itemHG = false;
                                 mAllHg = false;
-                                sItem["XDPD"] = "不符合要求";
+                                sItem["XDPD"] = "不合格";
                                 jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             }
                             else
                             {
-                                sItem["XDPD"] = "符合要求";
+                                sItem["XDPD"] = "合格";
                             }
                         }
                         else
@@ -770,13 +770,13 @@ namespace Calculates
 
                             if ("符合" == IsQualified(extraFieldsLDD["CSLDDYQ"], sItem["CSLDDB"], true) && "符合" == IsQualified(extraFieldsLDD["LDDYQ"], sItem["LDDDB"], true))
                             {
-                                sItem["LDDPD"] = "符合要求";
+                                sItem["LDDPD"] = "合格";
                             }
                             else if ("不符合" == IsQualified(extraFieldsLDD["CSLDDYQ"], sItem["CSLDDB"], true) && "不符合" == IsQualified(extraFieldsLDD["LDDYQ"], sItem["LDDDB"], true))
                             {
                                 itemHG = false;
                                 mAllHg = false;
-                                sItem["LDDPD"] = "不符合要求";
+                                sItem["LDDPD"] = "不合格";
                                 jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             }
                             else
@@ -804,13 +804,13 @@ namespace Calculates
                         {
                             if ("符合" == IsQualified(extraFieldsLDD["CSLDDYQ"], sItem["CSLCSJ"], true) && "符合" == IsQualified(extraFieldsLDD["LDDYQ"], sItem["LCSJ"], true))
                             {
-                                sItem["LDDPD"] = "符合要求";
+                                sItem["LDDPD"] = "合格";
                             }
                             else
                             {
                                 itemHG = false;
                                 mAllHg = false;
-                                sItem["LDDPD"] = "不符合要求";
+                                sItem["LDDPD"] = "不合格";
                                 jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             }
                         }
@@ -958,13 +958,13 @@ namespace Calculates
                         }
                         if ("符合" == IsQualified(sItem["SXPZLYQ3H"], sItem["SXPZL"], true) && "符合" == IsQualified(sItem["SXPZLYQ"], sItem["PZLZC"], true))
                         {
-                            sItem["PZLDXPD"] = "符合要求";
+                            sItem["PZLDXPD"] = "合格";
                         }
                         else
                         {
                             itemHG = false;
                             mAllHg = false;
-                            sItem["PZLDXPD"] = "不符合要求";
+                            sItem["PZLDXPD"] = "不合格";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                     }
@@ -1148,13 +1148,13 @@ namespace Calculates
                     if ("不合格" == sItem["HG_KYQD1"])
                     {
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        sItem["HG_KYQD1"] = "不符合要求";
+                        sItem["HG_KYQD1"] = "不合格";
                         itemHG = false;
                         mAllHg = false;
                     }
                     else
                     {
-                        sItem["HG_KYQD1"] = "符合要求";
+                        sItem["HG_KYQD1"] = "合格";
                     }
                 }
                 else
@@ -1329,13 +1329,13 @@ namespace Calculates
                     if ("不合格" == sItem["HG_KYQD3"])
                     {
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        sItem["HG_KYQD3"] = "不符合要求";
+                        sItem["HG_KYQD3"] = "不合格";
                         itemHG = false;
                         mAllHg = false;
                     }
                     else
                     {
-                        sItem["HG_KYQD3"] = "符合要求";
+                        sItem["HG_KYQD3"] = "合格";
                     }
 
                 }
@@ -1511,13 +1511,13 @@ namespace Calculates
                     if ("不合格" == sItem["HG_KYQD28"])
                     {
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        sItem["HG_KYQD28"] = "不符合要求";
+                        sItem["HG_KYQD28"] = "不合格";
                         itemHG = false;
                         mAllHg = false;
                     }
                     else
                     {
-                        sItem["HG_KYQD28"] = "符合要求";
+                        sItem["HG_KYQD28"] = "合格";
                     }
 
                 }
@@ -1601,13 +1601,13 @@ namespace Calculates
                         if (GetSafeDouble(sItem["QSL"]) > 0)
                         {
                             itemHG = false;
-                            sItem["QSLPD"] = "不符合要求";
+                            sItem["QSLPD"] = "不合格";
                             mAllHg = false;
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         }
                         else
                         {
-                            sItem["QSLPD"] = "符合要求";
+                            sItem["QSLPD"] = "合格";
                         }
                     }
                     else

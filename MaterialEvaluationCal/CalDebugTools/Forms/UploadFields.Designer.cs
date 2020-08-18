@@ -76,17 +76,17 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(900, 156);
+            this.label5.Location = new System.Drawing.Point(785, 161);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(219, 15);
+            this.label5.Size = new System.Drawing.Size(455, 15);
             this.label5.TabIndex = 17;
-            this.label5.Text = "其他格式:表名称多个以 | 隔开";
+            this.label5.Text = " 表名称1，别名1,别名2，别名3|表名称2，别名1，别名2|。。。。";
             // 
             // txtother
             // 
             this.txtother.Location = new System.Drawing.Point(1085, 112);
-            this.txtother.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtother.Margin = new System.Windows.Forms.Padding(4);
             this.txtother.Name = "txtother";
             this.txtother.Size = new System.Drawing.Size(132, 25);
             this.txtother.TabIndex = 16;
@@ -96,9 +96,9 @@
             // 
             this.rd_other.AutoSize = true;
             this.rd_other.Location = new System.Drawing.Point(1015, 114);
-            this.rd_other.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rd_other.Margin = new System.Windows.Forms.Padding(4);
             this.rd_other.Name = "rd_other";
-            this.rd_other.Size = new System.Drawing.Size(55, 19);
+            this.rd_other.Size = new System.Drawing.Size(58, 19);
             this.rd_other.TabIndex = 15;
             this.rd_other.TabStop = true;
             this.rd_other.Text = "其它";
@@ -122,7 +122,7 @@
             this.rd_s.Location = new System.Drawing.Point(945, 114);
             this.rd_s.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rd_s.Name = "rd_s";
-            this.rd_s.Size = new System.Drawing.Size(55, 19);
+            this.rd_s.Size = new System.Drawing.Size(58, 19);
             this.rd_s.TabIndex = 12;
             this.rd_s.TabStop = true;
             this.rd_s.Text = "从表";
@@ -136,7 +136,7 @@
             this.rd_m.Location = new System.Drawing.Point(877, 115);
             this.rd_m.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rd_m.Name = "rd_m";
-            this.rd_m.Size = new System.Drawing.Size(55, 19);
+            this.rd_m.Size = new System.Drawing.Size(58, 19);
             this.rd_m.TabIndex = 11;
             this.rd_m.TabStop = true;
             this.rd_m.Text = "主表";
@@ -177,6 +177,7 @@
             this.data_result.Location = new System.Drawing.Point(0, 298);
             this.data_result.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.data_result.Name = "data_result";
+            this.data_result.RowHeadersWidth = 51;
             this.data_result.RowTemplate.Height = 27;
             this.data_result.Size = new System.Drawing.Size(1253, 356);
             this.data_result.TabIndex = 5;

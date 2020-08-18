@@ -76,14 +76,15 @@
     <Compile Include="CalculatesNew\ltk\矿物外加剂MA\MA.cs" />
     <Compile Include="CalculatesNew\ltk\管桩_GZ\GZ.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\TPT.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼交货检验记录\TJH.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼合格证明书\THG.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼开盘配合比\TKP.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼抗压强度\HGZ.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼搅拌记录\STJ.cs" />
+    <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
+    <Compile Include="CalculatesNew\qsf\JLH楼板厚度\JLH.cs" />
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
+    <Compile Include="CalculatesNew\qsf\THG砼合格证明书\THG.cs" />
+    <Compile Include="CalculatesNew\qsf\TKP商砼开盘配合比\TKP.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
+    <Compile Include="CalculatesNew\wlb\JG_结构实体检测\JG.cs" />
+    <Compile Include="CalculatesNew\wlb\CBR_现场CBR值\CBR.cs" />
     <Compile Include="CalculatesNew\wlb\CT_沥青混合料抽提\CT.cs" />
     <Compile Include="CalculatesNew\wlb\TMS_回填土%28灌砂法%29管道\TMS.cs" />
     <Compile Include="CalculatesNew\wlb\SCY_土工\SCY.cs" />
@@ -103,7 +104,10 @@
     <Compile Include="CalculatesNew\wzy\GJJ_硅酮建筑密封胶\GJJ.cs" />
     <Compile Include="CalculatesNew\wzy\HSA_砂%28行标砼用%29\HSA.cs" />
     <Compile Include="CalculatesNew\wzy\HTZ_混凝土回弹-取芯法\HTZ.cs" />
+    <Compile Include="CalculatesNew\wzy\JCH_钢筋保护层厚度\JCH.cs" />
     <Compile Include="CalculatesNew\wzy\JGW_绝热用玻璃棉及其制品\JGW.cs" />
+    <Compile Include="CalculatesNew\wzy\JHT_结构实体混凝土回弹\JHT.cs" />
+    <Compile Include="CalculatesNew\wzy\JQX_混凝土取芯\JQX.cs" />
     <Compile Include="CalculatesNew\wzy\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\wzy\JZ_岩棉、矿渣棉及用品\JZ.cs" />
     <Compile Include="CalculatesNew\wzy\PGC_排水管\PGC.cs" />
@@ -197,10 +201,10 @@
     <Compile Include="CalculatesNew\ltk\FST_防水涂料\FST.cs" />
     <Compile Include="CalculatesNew\ywj\GJN_灌浆料\GJN.cs" />
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
+    <Compile Include="CalculatesNew\ywj\JZL_建筑密封材料\JZL.cs" />
     <Compile Include="CalculatesNew\ywj\MXE_马歇尔\MXE.cs" />
     <Compile Include="CalculatesNew\ywj\NZ_腻子\NZ.cs" />
     <Compile Include="CalculatesNew\ywj\SNK_灌浆料试块\SNK.cs" />
-    <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\ywj\TGB_土工合成材料\TGB.cs" />
     <Compile Include="CalculatesNew\ywj\FM_阀门\FM.cs" />
     <Compile Include="CalculatesNew\ywj\HB_空心隔墙板\HB.cs" />
@@ -253,6 +257,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CalculatesNew\ltk\配比通知单\re.txt" />
+    <Content Include="CalculatesNew\ltk\配比通知单\tpt.txt" />
     <Content Include="obj\Debug\Calculates.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\Calculates.dll" />
     <Content Include="obj\Debug\Calculates.pdb" />

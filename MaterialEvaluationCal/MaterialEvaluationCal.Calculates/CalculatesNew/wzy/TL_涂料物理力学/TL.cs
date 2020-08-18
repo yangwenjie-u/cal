@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
+
 namespace Calculates
 {
     public class TL : BaseMethods
@@ -147,6 +150,9 @@ namespace Calculates
                 if (jcxm.Contains("、干燥时间(表干)、") || jcxm.Contains("、表干时间、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "表干时间,干燥时间(表干)");
+
+                    sitem["BGSJ"] = GetSafeDouble(sitem["BGSJ"]).ToString("0.0");
+
                     sitem["HG_BGSJ"] = IsQualified(mitem["G_BGSJ"], sitem["BGSJ"], false);
                     if (sitem["HG_BGSJ"] == "不合格")
                     {
@@ -314,6 +320,21 @@ namespace Calculates
                 if (jcxm.Contains("、耐沾污性、"))
                 {
                     jcxmCur = "耐沾污性";
+
+                    double ys1 = (GetSafeDouble(sitem["ysfsxs1"]) + GetSafeDouble(sitem["ysfsxs2"]) + GetSafeDouble(sitem["ysfsxs3"]) / 3);
+                    double ys2 = (GetSafeDouble(sitem["ysfsxs4"]) + GetSafeDouble(sitem["ysfsxs5"]) + GetSafeDouble(sitem["ysfsxs6"]) / 3);
+                    double ys3 = (GetSafeDouble(sitem["ysfsxs7"]) + GetSafeDouble(sitem["ysfsxs8"]) + GetSafeDouble(sitem["ysfsxs9"]) / 3);
+
+                    double zw1 = (GetSafeDouble(sitem["zwhfsxs1"]) + GetSafeDouble(sitem["zwhfsxs2"]) + GetSafeDouble(sitem["zwhfsxs3"])/3);
+                    double zw2 = (GetSafeDouble(sitem["zwhfsxs4"]) + GetSafeDouble(sitem["zwhfsxs5"]) + GetSafeDouble(sitem["zwhfsxs6"]) / 3);
+                    double zw3 = (GetSafeDouble(sitem["zwhfsxs7"]) + GetSafeDouble(sitem["zwhfsxs8"]) + GetSafeDouble(sitem["zwhfsxs9"]) / 3);
+
+
+                    sitem["NZWX"] = (((((ys1 - zw1) / ys1) + ((ys2 - zw2) / ys2) + ((ys3 - zw3) / ys3)) / 3) * 100).ToString();
+
+                    sitem["NZWX"] = GetSafeDouble(sitem["NZWX"]).ToString("0.0");
+
+
                     sitem["HG_NZWX"] = IsQualified(mitem["G_NZWX"], sitem["NZWX"]);
                     if (sitem["HG_NZWX"] == "合格")
                     {
@@ -338,6 +359,17 @@ namespace Calculates
                 if (jcxm.Contains("、对比率、") && sitem["LX"] == "面漆")
                 {
                     jcxmCur = "对比率";
+                    //  sitem["DJ"]
+                    double fsl1 = (GetSafeDouble(sitem["hbfsl6"]) + GetSafeDouble(sitem["hbfsl1"])) / (GetSafeDouble(sitem["bbfsl6"]) + GetSafeDouble(sitem["bbfsl1"]));
+                    double fsl2 = (GetSafeDouble(sitem["hbfsl7"]) + GetSafeDouble(sitem["hbfsl2"])) / (GetSafeDouble(sitem["bbfsl7"]) + GetSafeDouble(sitem["bbfsl2"]));
+                    double fsl3 = (GetSafeDouble(sitem["hbfsl8"]) + GetSafeDouble(sitem["hbfsl3"])) / (GetSafeDouble(sitem["bbfsl8"]) + GetSafeDouble(sitem["bbfsl3"]));
+                    double fsl4 = (GetSafeDouble(sitem["hbfsl9"]) + GetSafeDouble(sitem["hbfsl4"])) / (GetSafeDouble(sitem["bbfsl9"]) + GetSafeDouble(sitem["bbfsl4"]));
+                    double fsl5 = (GetSafeDouble(sitem["hbfsl10"]) + GetSafeDouble(sitem["hbfsl5"])) / (GetSafeDouble(sitem["bbfsl10"]) + GetSafeDouble(sitem["bbfsl5"]));
+
+                    sitem["DBL"] = Math.Round((fsl1 + fsl2 + fsl3 + fsl4 + fsl5) / 5, 2).ToString();
+
+
+
 
                     sitem["HG_DBL"] = IsQualified(mitem["G_DBL"], sitem["DBL"]);
                     if (sitem["HG_DBL"] == "合格")

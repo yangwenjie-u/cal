@@ -624,7 +624,7 @@ namespace Calculates
                 calc_SCL(MItem[0], sItem, (int)mxlgs);
                 if (ggph.Contains("E"))
                 {
-                  
+
                     sItem["G_SCL"] = "----";
                     sItem["SCL1"] = "----";
                     sItem["SCL2"] = "----";

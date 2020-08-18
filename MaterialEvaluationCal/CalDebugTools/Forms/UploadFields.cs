@@ -157,7 +157,7 @@ namespace CalDebugTools.Forms
                 if (rd_other.Checked)
                 {
 
-                    // 表名称1，别名1,别名2，别名3|表名称2，别名1，别名2|。。。。
+                    // 表名称1,别名1,别名2，别名3|表名称2,别名1,别名2|。。。。
                     List<string> yTableNames = txtother.Text.Split('|').ToList();
 
                     string yTableName = "";

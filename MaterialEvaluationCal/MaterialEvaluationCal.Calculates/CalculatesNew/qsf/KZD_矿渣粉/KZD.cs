@@ -72,6 +72,23 @@ namespace Calculates
                     }
                     b1 = GetSafeDouble(sItem["G_HXZS7"]);
                     kz = GetSafeDouble(sItem["G_HXZS28"]);
+
+                    if (md >= b1)
+                    {
+                        sItem["HXZS7D_GH"] = "合格";
+                    }
+                    else
+                    {
+                        sItem["HXZS7D_GH"] = "不合格";
+                    }
+                    if (xd >= kz)
+                    {
+                        sItem["HXZS28D_GH"] = "合格";
+                    }
+                    else
+                    {
+                        sItem["HXZS28D_GH"] = "不合格";
+                    }
                     if (md >= b1 && xd >= kz)
                     {
                         sItem["HXZS_GH"] = "合格";
@@ -240,6 +257,9 @@ namespace Calculates
                 if (jcxm.Contains("、密度、"))
                 {
                     jcxmCur = "密度";
+                    sItem["MD1"] = ((Round(Conversion.Val(sItem["MDSYZL1"]) / (Conversion.Val(sItem["MDYYTJ1"]) - Conversion.Val(sItem["MDYTJ1"])), 4) * 1000) / 1000).ToString("0.00");
+                    sItem["MD2"] = ((Round(Conversion.Val(sItem["MDSYZL2"]) / (Conversion.Val(sItem["MDYYTJ2"]) - Conversion.Val(sItem["MDYTJ2"])), 4) * 1000) / 1000).ToString("0.00");
+                    sItem["W_MD"] = ((Conversion.Val(sItem["MD1"]) + Conversion.Val(sItem["MD2"])) / 2).ToString("0.0");
                     if (Conversion.Val(sItem["W_MD"]) >= Conversion.Val(sItem["G_MD"]))
                     {
                         sItem["MD_GH"] = "合格";

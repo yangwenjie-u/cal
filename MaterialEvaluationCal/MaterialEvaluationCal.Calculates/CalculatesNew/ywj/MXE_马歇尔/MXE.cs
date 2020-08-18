@@ -17,19 +17,17 @@ namespace Calculates
             var data = retData;
             var mrsDj = dataExtra["BZ_MXE_DJ"];
             var mrsCtDj = dataExtra["BZ_CT_DJ"];
+            var mrsMXEGG = dataExtra["BZ_MXEGG"];
             var MItem = data["M_MXE"];
             var mitem = MItem[0];
             var SItem = data["S_MXE"];
             int mbhggs = 0;
-            string mJSFF;
             bool mAllHg = true;
             bool mFlag_Hg = false, mFlag_Bhg = false;
-            var mSjdj = "";
             var jcxmBhg = "";
-            var jcxmCur = "";
             var mJcjg = "不合格";
             mitem["JCJGMS"] = "";
-
+            var jcxmCur = "";
             decimal pjmd, sum, md1, md2, md = 0;
             int Gs = 0;
             mFlag_Hg = false;
@@ -40,105 +38,178 @@ namespace Calculates
 
             foreach (var sitem in SItem)
             {
+                string gczdlj = "";
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
 
                 sitem["MDBS"] = "马歇尔标准密度";
-                #region 等级表取值
-                //取等级表，WDDMS:稳定度MS,LZFL:流值FL,KXLVV:空隙率VV
-                if (string.IsNullOrEmpty(sitem["DLLX"]))//道路类型
-                {
-                    sitem["DLLX"] = "其他等级公路";
-                }
 
-                if (string.IsNullOrEmpty(sitem["JTLX"]))//交通类型
-                {
-                    sitem["JTLX"] = "重载交通";
-                }
-                if (string.IsNullOrEmpty(sitem["QHFQ"]))//气候分区
-                {
-                    sitem["QHFQ"] = "2-1";
-                }
-                if (sitem["DLLX"] == "其他等级公路" || sitem["DLLX"] == "行人道路")
-                {
-                    sitem["JTLX"] = "----";
-                    sitem["QHFQ"] = "----";
-                }
-                if (string.IsNullOrEmpty(sitem["KXLSD"]))//空隙率深度(mm)
-                {
-                    sitem["KXLSD"] = "≤90";
-                }
-                if (string.IsNullOrEmpty(sitem["SJKXL"]))//设计空隙率(%)
-                {
-                    sitem["SJKXL"] = "4";
-                }
-                IDictionary<string, string> mrsDj_item = new Dictionary<string, string>();
-                if (sitem["KXLSD"] == "≤90" || IsQualified("≤90", sitem["KXLSD"]) == "合格")
-                {
-                    mrsDj_item = mrsDj.FirstOrDefault(x => x["DLLX"] == (sitem["DLLX"]) && x["JTLX"] == (sitem["JTLX"])
-                                       && x["QHFQ"].Contains(sitem["QHFQ"]) && x["KXLSD"] == "≤90");
-                }
-                else
-                {
-                    mrsDj_item = mrsDj.FirstOrDefault(x => x["DLLX"] == (sitem["DLLX"]) && x["JTLX"] == (sitem["JTLX"])
-                                         && x["QHFQ"].Contains(sitem["QHFQ"]) && x["KXLSD"] == "＞90");
-                }
-                if (mrsDj_item != null && mrsDj_item.Count() != 0)
-                {
-                    sitem["G_WDD"] = mrsDj_item["WDDMS"];
-                    sitem["G_KSL"] = mrsDj_item["KXLVV"];
-                    if (mrsDj_item["LZFL"].Replace("~", "～").IndexOf("～") == -1)
-                    {
-                        sitem["JCJG"] = "不下结论";
-                        mitem["JCJGMS"] = "找不到对应的标准";
-                        continue;
-                    }
-                    List<string> lzlist = mrsDj_item["LZFL"].Replace("~", "～").Split('～').ToList();
-                    sitem["G_SJLZ"] = (GetSafeDecimal(lzlist[0], 1) * 10).ToString() + "～" + (GetSafeDecimal(lzlist[1], 1) * 10).ToString();
-                }
-                else
-                {
-                    mJSFF = "";
-                    sitem["JCJG"] = "不下结论";
-                    mJcjg = "不下结论";
-                    mitem["JCJGMS"] = "找不到对应的标准";
-                    continue;
-                }
+                //获取最大公称粒径
+                var mrsZDGCLJ_item = mrsCtDj.FirstOrDefault(x => x["KLJPLX"] == (sitem["KLJPLX"]));
+                gczdlj = mrsZDGCLJ_item["GCZDLJ"];
 
-                //先更据KLJPLX:矿料级配类型,查出GCZDLJ:公称最大粒径(mm)
-                if (string.IsNullOrEmpty(sitem["KLJPLX"]))
+                if (sitem["KLJPLX"].Contains("AM"))
                 {
-                    sitem["KLJPLX"] = "AC-25C";
+                    var mrsMXEGG_item = mrsMXEGG.FirstOrDefault(x => x["KLJPLX"].Contains("AM"));
+                    sitem["G_WDD"] = mrsMXEGG_item["WDDGG"];
+                    sitem["G_KSL"] = mrsMXEGG_item["KXLGG"];
+                    sitem["G_SJLZ"] = mrsMXEGG_item["LZGG"];
+                    sitem["G_KLJXL"] = mrsMXEGG_item["KLJXLGG"];
+                    sitem["G_KLBHD"] = mrsMXEGG_item["LQBHDGG"];
                 }
-                var mrsCtDj_item = mrsCtDj.FirstOrDefault(x => x["KLJPLX"] == (sitem["KLJPLX"]));
-                if (mrsCtDj_item != null || mrsCtDj_item.Count() != 0)
+                else if (sitem["KLJPLX"].Contains("OGFC"))
                 {
-                    var GCZDLJ = mrsCtDj_item["GCZDLJ"];
-                    //更据GCZDLJ和SJKXL:设计空隙率(%),查出G_KLJXL：矿料间隙率(%)，LQBHDVFA：沥青饱和度VFA(%)
-                    var mrsD_item2 = mrsDj.FirstOrDefault(x => x["GCZDLJ"] == (GCZDLJ) && x["SJKXL"] == (sitem["SJKXL"]));
-                    if (mrsD_item2 != null || mrsD_item2.Count() != 0)
+                    var mrsMXEGG_item = mrsMXEGG.FirstOrDefault(x => x["KLJPLX"].Contains("OGFC"));
+                    sitem["G_WDD"] = mrsMXEGG_item["WDDGG"];
+                    sitem["G_KSL"] = mrsMXEGG_item["KXLGG"];
+                    sitem["G_SJLZ"] = mrsMXEGG_item["LZGG"];
+                    sitem["G_KLJXL"] = mrsMXEGG_item["KLJXLGG"];
+                    sitem["G_KLBHD"] = mrsMXEGG_item["LQBHDGG"];
+                }
+                else if (sitem["KLJPLX"].Contains("ATPB"))
+                {
+                    var mrsMXEGG_item = mrsMXEGG.FirstOrDefault(x => x["KLJPLX"].Contains("ATPB"));
+                    sitem["G_WDD"] = mrsMXEGG_item["WDDGG"];
+                    sitem["G_KSL"] = mrsMXEGG_item["KXLGG"];
+                    sitem["G_SJLZ"] = mrsMXEGG_item["LZGG"];
+                    sitem["G_KLJXL"] = mrsMXEGG_item["KLJXLGG"];
+                    sitem["G_KLBHD"] = mrsMXEGG_item["LQBHDGG"];
+                }
+                else if (sitem["KLJPLX"].Contains("ATB"))
+                {
+                    var mrsMXEGG_item = mrsMXEGG.FirstOrDefault();
+                    if (GetSafeDouble(mrsZDGCLJ_item["GCZDLJ"]) > 26.5)
                     {
-                        sitem["G_KLJXL"] = mrsD_item2["JXLVMA"];
-                        sitem["G_KLBHD"] = mrsD_item2["LQBHDVFA"];
+                        mrsMXEGG_item = mrsMXEGG.FirstOrDefault(x => x["KLJPLX"] == sitem["KLJPLX"] && x["SJKXL"] == sitem["SJKXL"] && x["GCZDLJ"] == "≥31.5");
                     }
                     else
                     {
-                        mJSFF = "";
+                        mrsMXEGG_item = mrsMXEGG.FirstOrDefault(x => x["KLJPLX"] == sitem["KLJPLX"] && x["SJKXL"] == sitem["SJKXL"] && x["GCZDLJ"] == "26.5");
+                    }
+
+                    if (mrsMXEGG_item != null && mrsMXEGG_item.Count() != 0)
+                    {
+                        sitem["G_WDD"] = mrsMXEGG_item["WDDGG"];
+                        sitem["G_KSL"] = mrsMXEGG_item["KXLGG"];
+                        sitem["G_SJLZ"] = mrsMXEGG_item["LZGG"];
+                        sitem["G_KLJXL"] = mrsMXEGG_item["KLJXLGG"];
+                        sitem["G_KLBHD"] = mrsMXEGG_item["LQBHDGG"];
+                    }
+                    else
+                    {
                         sitem["JCJG"] = "不下结论";
                         mJcjg = "不下结论";
-
                         mitem["JCJGMS"] = "找不到对应的标准";
                         continue;
                     }
+                    
                 }
                 else
                 {
-                    mJSFF = "";
-                    sitem["JCJG"] = "不下结论";
-                    mJcjg = "不下结论";
+                    //取等级表，WDDMS:稳定度MS,LZFL:流值FL,KXLVV:空隙率VV
+                    if (string.IsNullOrEmpty(sitem["DLLX"]))//道路类型
+                    {
+                        sitem["DLLX"] = "其他等级公路";
+                    }
 
-                    mitem["JCJGMS"] = "找不到对应的等级";
-                    continue;
+                    if (string.IsNullOrEmpty(sitem["JTLX"]))//交通类型
+                    {
+                        sitem["JTLX"] = "重载交通";
+                    }
+                    if (string.IsNullOrEmpty(sitem["QHFQ"]))//气候分区
+                    {
+                        sitem["QHFQ"] = "2-1";
+                    }
+                    if (sitem["DLLX"] == "其他等级公路" || sitem["DLLX"] == "行人道路")
+                    {
+                        sitem["JTLX"] = "----";
+                        sitem["QHFQ"] = "----";
+                    }
+                    if (string.IsNullOrEmpty(sitem["KXLSD"]))//空隙率深度(mm)
+                    {
+                        sitem["KXLSD"] = "≤90";
+                    }
+                    if (string.IsNullOrEmpty(sitem["SJKXL"]))//设计空隙率(%)
+                    {
+                        sitem["SJKXL"] = "4";
+                    }
+                    IDictionary<string, string> mrsDj_item = new Dictionary<string, string>();
+                    if (sitem["KXLSD"] == "≤90" || IsQualified("≤90", sitem["KXLSD"]) == "合格")
+                    {
+                        mrsDj_item = mrsDj.FirstOrDefault(x => x["DLLX"] == (sitem["DLLX"]) && x["JTLX"] == (sitem["JTLX"])
+                                           && x["QHFQ"].Contains(sitem["QHFQ"]) && x["KXLSD"] == "≤90");
+                    }
+                    else
+                    {
+                        mrsDj_item = mrsDj.FirstOrDefault(x => x["DLLX"] == (sitem["DLLX"]) && x["JTLX"] == (sitem["JTLX"])
+                                             && x["QHFQ"].Contains(sitem["QHFQ"]) && x["KXLSD"] == "＞90");
+                    }
+                    if (mrsDj_item != null && mrsDj_item.Count() != 0)
+                    {
+                        sitem["G_WDD"] = mrsDj_item["WDDMS"];
+                        sitem["G_KSL"] = mrsDj_item["KXLVV"];
+                        if (mrsDj_item["LZFL"].Replace("~", "～").IndexOf("～") == -1)
+                        {
+                            sitem["JCJG"] = "不下结论";
+                            mitem["JCJGMS"] = "找不到对应的标准";
+                            continue;
+                        }
+                        List<string> lzlist = mrsDj_item["LZFL"].Replace("~", "～").Split('～').ToList();
+                        sitem["G_SJLZ"] = (GetSafeDecimal(lzlist[0], 1) * 10).ToString() + "～" + (GetSafeDecimal(lzlist[1], 1) * 10).ToString();
+                    }
+                    else
+                    {
+
+                        sitem["JCJG"] = "不下结论";
+                        mJcjg = "不下结论";
+                        mitem["JCJGMS"] = "找不到对应的标准";
+                        continue;
+                    }
+
+                    //先更据KLJPLX:矿料级配类型,查出GCZDLJ:公称最大粒径(mm)
+                    if (string.IsNullOrEmpty(sitem["KLJPLX"]))
+                    {
+                        sitem["KLJPLX"] = "AC-25C";
+                    }
+                    var mrsCtDj_item = mrsCtDj.FirstOrDefault(x => x["KLJPLX"] == (sitem["KLJPLX"]));
+                    if (mrsCtDj_item != null && mrsCtDj_item.Count() != 0)
+                    {
+                        var GCZDLJ = mrsCtDj_item["GCZDLJ"];
+                        //更据GCZDLJ和SJKXL:设计空隙率(%),查出G_KLJXL：矿料间隙率(%)，LQBHDVFA：沥青饱和度VFA(%)
+                        var mrsD_item2 = mrsDj.FirstOrDefault(x => x["GCZDLJ"] == (GCZDLJ) && x["SJKXL"] == (sitem["SJKXL"]));
+                        if (mrsD_item2 != null && mrsD_item2.Count() != 0)
+                        {
+                            sitem["G_KLJXL"] = mrsD_item2["JXLVMA"];
+                            sitem["G_KLBHD"] = mrsD_item2["LQBHDVFA"];
+                        }
+                        else
+                        {
+                            sitem["JCJG"] = "不下结论";
+                            mJcjg = "不下结论";
+
+                            mitem["JCJGMS"] = "找不到对应的标准";
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        sitem["JCJG"] = "不下结论";
+                        mJcjg = "不下结论";
+
+                        mitem["JCJGMS"] = "找不到对应的等级";
+                        continue;
+
+                    }
+
                 }
+                //if (sitem["KLJPLX"].Contains("AM"))
+                //{
+                //    sitem["G_KLJXL"] = "----";
+                //    sitem["G_KLBHD"] = "40～70";
+                //}
+                //else
+                //{
+
+
 
                 //从设计等级表中取得相应的计算数值、等级标准
                 //var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj) && x["ZF"].Contains(dZf) && x["BZH"].Contains(dBzh));
@@ -153,7 +224,7 @@ namespace Calculates
                 //    mitem["JCJGMS"] = "找不到对应的等级";
                 //}
                 //25℃时水的密度
-                #endregion
+                //}
 
                 decimal S25md = (decimal)0.9971;
                 #region ZBDH:最大理论密度
