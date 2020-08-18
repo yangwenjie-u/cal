@@ -17,13 +17,12 @@ namespace CalDebugTools.Common.DBUtility
         {
 
         }
-        
-        //public SqlBase(string type) : base(ESqlConnType.ConnectionStringLocal)
-        //{
+        public SqlBase(ESqlConnType eSqlConnType, string dbName) : base(eSqlConnType, dbName)
+        {
 
-        //}
-        public SqlBase(ESqlConnType eSqlConnType)
-            : base(eSqlConnType)
+        }
+
+        public SqlBase(ESqlConnType eSqlConnType) : base(eSqlConnType)
         {
 
         }

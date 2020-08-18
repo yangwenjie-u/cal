@@ -2378,6 +2378,40 @@ namespace CalDebugTools.Common.DBUtility
         }
         #endregion
 
+        public static bool ExecuteTrans(string connectionString, CommandType commandType, List<string> commandTexts,out string msg)
+        {
+            msg = "";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlTransaction myTran = null;
+            SqlCommand cmdComm = new SqlCommand();
+         
+            try
+            {
+                if (connection.State != ConnectionState.Open)
+                {
+                    connection.Open();
+                }
+                myTran = connection.BeginTransaction();
+                cmdComm.Connection = connection;
+                cmdComm.Transaction = myTran;
+                foreach (string sql in commandTexts)
+                {
+                    cmdComm.CommandText = sql;
+                    cmdComm.ExecuteNonQuery();
+                }
+                myTran.Commit();
+                connection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                myTran.Rollback();
+                connection.Close();
+                msg = ex.Message;
+                return false;
+            }
+        }
     }
 
     /// <summary>

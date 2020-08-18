@@ -39,6 +39,7 @@ namespace CalDebugTools
             _projectInfo = new ProjectInfos();
             Init();
             CalInit();
+            InitBaseData();
             _qybh = ConfigurationHelper.GetConfig("Qybh");
         }
 
@@ -161,18 +162,7 @@ namespace CalDebugTools
         private void btn_Debug_Click(object sender, EventArgs e)
         {
             SaveXMinfos();
-            //var df = IsQualified("±150", "1424");
-            //测试乌海
             Debug("", txt_wtdbh.Text.Trim());
-            //if (this.ck_other.Checked)
-            //{
-            //    if (!string.IsNullOrEmpty(txt_wtdbh.Text.Trim()))
-            //    {
-            //        Debug("", txt_wtdbh.Text.Trim());
-            //    }
-            //}
-            //else
-            //    Debug();
         }
 
         private void Debug(string jydbh = "", string quertBH = "")
@@ -200,13 +190,8 @@ namespace CalDebugTools
                 //获取乌海的数据
                 quertBH = whWtdbh;
                 //参数
-
                 strIOParams = GetParams(zdzdIOParms, whWtdbh, ESqlConnType.ConnectionStringJCJT, "WH");
                 strIParams = GetParams(zdzdIParms, whWtdbh, ESqlConnType.ConnectionStringJCJT, "WH");
-            }
-            else
-            { 
-              
             }
 
             //代码
@@ -223,7 +208,6 @@ namespace CalDebugTools
             if (!string.IsNullOrEmpty(this.txt_helper.Text.Trim()))
             {
                 listExtraData = GetExtraData(this.txt_helper.Text.Trim());
-
             }
 
             #region 初始化dataGridView
@@ -296,7 +280,6 @@ namespace CalDebugTools
                     }
                 }
             }
-
 
             //将数据表添加到DataSet中 
             ds.Tables.Add(dt);
@@ -787,7 +770,7 @@ namespace CalDebugTools
 
         private void tool_AddFields_Click(object sender, EventArgs e)
         {
-            FormFields manage = new FormFields(this);
+            AddFields manage = new AddFields(this);
             this.Hide();
             manage.Show();
         }
@@ -844,7 +827,7 @@ namespace CalDebugTools
             }
         }
 
-          /// <summary>
+        /// <summary>
         /// 配置字段
         /// </summary>
         /// <param name="sender"></param>
@@ -1131,22 +1114,66 @@ namespace CalDebugTools
 
         private void listDataSource_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var sourceName = ((System.Windows.Forms.ListBox)sender).SelectedItem.ToString();
+
+
+        }
+
+        private void com_dataSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var sourceName = com_dataSource.SelectedItem.ToString();
             if (!string.IsNullOrEmpty(sourceName))
             {
                 Dictionary<string, string> dic = new Dictionary<string, string>();
-                if (sourceName == "乌海")
-                    dic.Add("Qybh", "JCQ005322,JCQ005324,JCQ005325");
-                else if (sourceName == "通辽")
-                    dic.Add("Qybh", "JCQ006880");
-                else if (sourceName == "台州")
-                    dic.Add("Qybh", "JCQ006689"); 
+
+                dic.Add("Qybh", com_dataSource.SelectedValue.ToString());
+
                 if (dic.Count > 0)
                     ConfigurationHelper.SaveConfig(dic);
 
                 _qybh = ConfigurationHelper.GetConfig("Qybh");
-            }            //_qybh = ConfigurationHelper.GetConfig("Qybh");
+            }
+        }
+        /// <summary>
+        /// 初始化检测机构控件
+        /// </summary>
+        public void InitBaseData()
+        {
+            List<string> jcjgInfos = Common.StringsOper.GetTextList(AppDomain.CurrentDomain.BaseDirectory + @"Resources\检测机构配置.txt");
 
+            //数据库信息
+            List<BaseDataInfo> listData = new List<BaseDataInfo>();
+            List<string> arrInfo = new List<string>();
+            if (jcjgInfos.Count == 0)
+            {
+                MessageBox.Show("获取数据库配置信息异常，请确认配置文件格式！");
+                return;
+            }
+            BaseDataInfo data = new BaseDataInfo();
+            foreach (var info in jcjgInfos)
+            {
+                if (info.StartsWith("--"))
+                {
+                    continue;
+                }
+
+                arrInfo = info.Split('-').ToList();
+
+                if (arrInfo.Count != 4)
+                {
+                    continue;
+                }
+                data = new BaseDataInfo();
+
+                data.Id = arrInfo[0];
+                data.Abbrevition = arrInfo[1];
+                data.Name = arrInfo[2];
+                data.Code = arrInfo[3];
+                listData.Add(data);
+
+            }
+            com_dataSource.DataSource = listData;
+            com_dataSource.DisplayMember = "Name";
+            com_dataSource.ValueMember = "Code";
         }
     }
 }

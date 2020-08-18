@@ -33,6 +33,9 @@ namespace CalDebugTools.Forms
                 _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);            
             if (_sqlJGJG == null)
                 _sqlJGJG = new SqlBase(ESqlConnType.ConnectionStringJCJG);
+
+            List<string> jcjgInfos = Common.StringsOper.GetTextList(AppDomain.CurrentDomain.BaseDirectory + @"Resources\检测机构配置.txt");
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -526,11 +529,6 @@ namespace CalDebugTools.Forms
             MessageBox.Show("Success!");
 
         }
-
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
+      
     }
 }

@@ -46,7 +46,7 @@ namespace CalDebugTools.Common.DBUtility
                 //    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;  //数据数据库连接
                 //    break;
                 case ESqlConnType.ConnectionStringJCJT:
-                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_"+ selectJCJGName].ConnectionString;    //数据数据库连接
+                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_" + selectJCJGName].ConnectionString;    //数据数据库连接
                     sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_" + selectJCJGName].ConnectionString;  //数据数据库连接
                     break;
                 //case ESqlConnType.ConnectionStringLocal:
@@ -70,6 +70,38 @@ namespace CalDebugTools.Common.DBUtility
             }
         }
 
+        public BaseDal(ESqlConnType eSqlConnType, string selectJCJGName = "WH")
+        {
+            switch (eSqlConnType)
+            {
+                //case ESqlConnType.ConnectionStringMain:
+                //    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;    //数据数据库连接
+                //    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringMain"].ConnectionString;  //数据数据库连接
+                //    break;
+                case ESqlConnType.ConnectionStringJCJT:
+                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_" + selectJCJGName].ConnectionString;    //数据数据库连接
+                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_" + selectJCJGName].ConnectionString;  //数据数据库连接
+                    break;
+                //case ESqlConnType.ConnectionStringLocal:
+                //    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;    //数据数据库连接
+                //    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringLocal"].ConnectionString;  //数据数据库连接
+                //    break;
+                //caldebugTool数据库
+                case ESqlConnType.ConnectionStringDebugTool:
+                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringDebugTool"].ConnectionString;    //数据数据库连接
+                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringDebugTool"].ConnectionString;  //数据数据库连接
+                    break;
+                //case ESqlConnType.ConnectionStringWH:
+                //    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;    //数据数据库连接
+                //    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringWH"].ConnectionString;  //数据数据库连接
+                //    break;
+                //监管数据库
+                case ESqlConnType.ConnectionStringJCJG:
+                    sqlConnectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJG_" + selectJCJGName].ConnectionString;    //数据数据库连接
+                    sqlConnectionStringWrite = ConfigurationManager.ConnectionStrings["ConnectionStringJCJG_" + selectJCJGName].ConnectionString;  //数据数据库连接
+                    break;
+            }
+        }
         #region ExecuteNonQuery
 
         /// <summary>
@@ -83,6 +115,7 @@ namespace CalDebugTools.Common.DBUtility
 
         }
 
+
         /// <summary>
         /// 执行SQL语句
         /// </summary>
@@ -93,11 +126,11 @@ namespace CalDebugTools.Common.DBUtility
         {
             if (sqlDbType == DB.Read)
             {
-                return DBUtility.SqlHelper.ExecuteNonQuery(sqlConnectionString, CommandType.Text, commandText);
+                return SqlHelper.ExecuteNonQuery(sqlConnectionString, CommandType.Text, commandText);
             }
             else
             {
-                return DBUtility.SqlHelper.ExecuteNonQuery(sqlConnectionStringWrite, CommandType.Text, commandText);
+                return SqlHelper.ExecuteNonQuery(sqlConnectionStringWrite, CommandType.Text, commandText);
             }
         }
 
@@ -628,8 +661,6 @@ namespace CalDebugTools.Common.DBUtility
         }
 
 
-
-
         /// <summary>
         ///  分页2 wsd_page_2：单表任意排序 
         /// </summary>
@@ -754,5 +785,20 @@ namespace CalDebugTools.Common.DBUtility
 
         }
         #endregion
+
+        public bool ExecuteTrans(List<string> commandTexts)
+        {
+            string msg = "";
+            try
+            {
+                //sqlConnectionString, CommandType.Text,
+                return SqlHelper.ExecuteTrans(sqlConnectionString, CommandType.Text, commandTexts, out msg);
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }
