@@ -39,7 +39,7 @@ namespace Calculates
             }
 
             double md1, md2, md, pjmd, sum, sum2 = 0;
-            bool flag, sign, mark = false;
+            bool flag, sign = false;
             bool SFlg = false;//是否两根
             bool itemHG = true;//判断单组是否合格
             int mbHggs = 0;//检测项目合格数量
@@ -358,6 +358,7 @@ namespace Calculates
                         md = 100 * (md1 - md2) / md2;
                         if (md > 10)
                         {
+                            //修约到%0.5
                             md = Math.Round(0.5 * (Math.Floor(0.5 + md / 0.5)), 1);
                         }
 

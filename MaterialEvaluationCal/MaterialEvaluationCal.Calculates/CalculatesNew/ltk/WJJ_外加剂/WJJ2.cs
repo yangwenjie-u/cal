@@ -11,6 +11,7 @@ namespace Calculates
         {
             /************************ 代码开始 *********************/
             #region
+            #region 参数定义
             var extraDJ = dataExtra["BZ_WJJ_DJ"];
             var data = retData;
             var mjcjg = "不合格";
@@ -44,7 +45,7 @@ namespace Calculates
             double mMaxKyqd, mMinKyqd, mMidKyqd, mAvgKyqd = 0;
 
             List<double> narr = new List<double>();
-
+            #endregion
             //遍历从表数据
             foreach (var sItem in SItems)
             {
@@ -107,7 +108,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_XD"] = IsQualified(sItem["XDKZZ"], sItem["XD"]);
+                        MItem[0]["HG_XD"] = IsQualified(sItem["XDKZZ"], sItem["XD"], false);
                     }
                     if (MItem[0]["HG_XD"] == "合格")
                     {
@@ -144,7 +145,7 @@ namespace Calculates
                         }
                         for (int i = 1; i < 3; i++)
                         {
-                            sItem["MD_" + i] = Round((Conversion.Val(sItem["MDBJWJJ_" + i]) - Conversion.Val(sItem["MDRLBZ_" + i])) / Conversion.Val(sItem["MDTJ_" + i]) , 3).ToString();
+                            sItem["MD_" + i] = Round((Conversion.Val(sItem["MDBJWJJ_" + i]) - Conversion.Val(sItem["MDRLBZ_" + i])) / Conversion.Val(sItem["MDTJ_" + i]), 3).ToString();
                         }
 
                         sItem["MD"] = Round((Conversion.Val(sItem["MD_1"]) + Conversion.Val(sItem["MD_2"])) / 2, 3).ToString();
@@ -155,15 +156,15 @@ namespace Calculates
                     {
                         sItem["MD"] = Round((Conversion.Val(sItem["MD2_1"]) + Conversion.Val(sItem["MD2_2"])) / 2, 3).ToString();
                     }
-                    #endregion 
+                    #endregion
                     if (GetSafeDouble(sItem["MDKZZ"]) > 1.1)
                     {
-                        MItem[0]["G_MD"] = Round(Conversion.Val(sItem["MDKZZ"]) - 0.03, 3).ToString() + "～" + Round(Conversion.Val(sItem["MDKZZ"]) + 0.03, 3).ToString();
+                        MItem[0]["G_MD"] = Round(GetSafeDouble(GetNum(sItem["MDKZZ"])) - 0.03, 3).ToString() + "～" + Round(GetSafeDouble(GetNum(sItem["MDKZZ"])) + 0.03, 3).ToString();
 
                     }
                     else
                     {
-                        MItem[0]["G_MD"] = Round(Conversion.Val(sItem["MDKZZ"]) - 0.02, 3).ToString() + "～" + Round(Conversion.Val(sItem["MDKZZ"]) + 0.02, 3).ToString();
+                        MItem[0]["G_MD"] = Round(GetSafeDouble(GetNum(sItem["MDKZZ"])) - 0.02, 3).ToString() + "～" + Round(GetSafeDouble(GetNum(sItem["MDKZZ"])) + 0.02, 3).ToString();
                     }
                     if (sItem["MDKZZ"] == "----")
                     {
@@ -172,7 +173,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_MD"] = IsQualified(MItem[0]["G_MD"], sItem["MD"]);
+                        MItem[0]["HG_MD"] = IsQualified(MItem[0]["G_MD"], sItem["MD"], false);
                     }
                     if (MItem[0]["HG_MD"] == "合格")
                     {
@@ -213,11 +214,11 @@ namespace Calculates
 
                     if (GetSafeDouble(sItem["HGLKZZ"]) > 25)
                     {
-                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HGLKZZ"]) * 0.95, 2).ToString() + "～" + Round(Conversion.Val(sItem["HGLKZZ"]) * 1.05, 2).ToString();
+                        MItem[0]["G_GTHL"] = Round(GetSafeDouble(GetNum(sItem["HGLKZZ"])) * 0.95, 2).ToString() + "～" + Round(GetSafeDouble(GetNum(sItem["HGLKZZ"])) * 1.05, 2).ToString();
                     }
                     else
                     {
-                        MItem[0]["G_GTHL"] = Round(Conversion.Val(sItem["HGLKZZ"]) * 0.9, 2).ToString() + "～" + Round(Conversion.Val(sItem["HGLKZZ"]) * 1.1, 2).ToString();
+                        MItem[0]["G_GTHL"] = Round(GetSafeDouble(GetNum(sItem["HGLKZZ"])) * 0.9, 2).ToString() + "～" + Round(GetSafeDouble(GetNum(sItem["HGLKZZ"])) * 1.1, 2).ToString();
                     }
                     if (sItem["HGLKZZ"] == "----")
                     {
@@ -226,7 +227,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_GTHL"] = IsQualified(MItem[0]["G_GTHL"], sItem["GTHL"]);
+                        MItem[0]["HG_GTHL"] = IsQualified(MItem[0]["G_GTHL"], sItem["GTHL"], false);
                     }
                     if (MItem[0]["HG_GTHL"] == "合格")
                     {
@@ -265,9 +266,9 @@ namespace Calculates
                     {
                         sItem["HSL_" + i] = Round((Conversion.Val(sItem["GTHLM1_" + i]) - Conversion.Val(sItem["GTHLM2_" + i])) / (Conversion.Val(sItem["GTHLM1_" + i]) - Conversion.Val(sItem["GTHLM0_" + i])) * 100, 2).ToString();
                     }
-                   
+
                     sItem["HSL"] = Round((Conversion.Val(sItem["HSL_1"]) + Conversion.Val(sItem["HSL_2"])) / 2, 2).ToString();
-                    var cjhsl =GetSafeDouble( GetNum(sItem["HSLKZZ"]));
+                    var cjhsl = GetSafeDouble(GetNum(sItem["HSLKZZ"]));
 
                     if (cjhsl > 5)
                     {
@@ -287,7 +288,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_HSL"] = IsQualified(MItem[0]["G_HSL"], sItem["HSL"]);
+                        MItem[0]["HG_HSL"] = IsQualified(MItem[0]["G_HSL"], sItem["HSL"], false);
                     }
                     if (MItem[0]["HG_HSL"] == "合格")
                     {
@@ -462,7 +463,7 @@ namespace Calculates
                         {
                             sItem["MSLB"] = Round(Conversion.Val(sItem["SPJMSL"]) / Conversion.Val(sItem["JPJMSL"]) * 100, 0).ToString();
                         }
-                        MItem[0]["HG_MSL"] = IsQualified(MItem[0]["G_MSL"], sItem["MSLB"]);
+                        MItem[0]["HG_MSL"] = IsQualified(MItem[0]["G_MSL"], sItem["MSLB"], false);
                     }
 
                     if (MItem[0]["HG_MSL"] == "合格")
@@ -548,7 +549,7 @@ namespace Calculates
                         }
                         else
                         {
-                            MItem[0]["HG_JSL"] = IsQualified(MItem[0]["G_JSL"], sItem["PJJSL"]);
+                            MItem[0]["HG_JSL"] = IsQualified(MItem[0]["G_JSL"], sItem["PJJSL"], false);
                         }
 
                         if (MItem[0]["HG_JSL"] == "合格")
@@ -586,7 +587,7 @@ namespace Calculates
                     md = sum / 3;
                     sItem["PJHQL"] = Math.Round(md, 1).ToString();
 
-                    MItem[0]["HG_HQL"] = IsQualified(MItem[0]["G_HQL"], sItem["PJHQL"]);
+                    MItem[0]["HG_HQL"] = IsQualified(MItem[0]["G_HQL"], sItem["PJHQL"], false);
                     if (MItem[0]["HG_HQL"] == "合格")
                     {
                         mFlag_Hg = true;
@@ -711,7 +712,7 @@ namespace Calculates
                         if (IsNumeric(sItem["CJHQL"]))
                         {
                             sItem["HQLBHL"] = (Round(Conversion.Val(sItem["CJHQL"]) - Conversion.Val(sItem["HQL1HH"]), 1)).ToString("0.0");
-                            MItem[0]["HG_HQLBHL"] = IsQualified(MItem[0]["G_HQLBHL"], sItem["HQLBHL"]);
+                            MItem[0]["HG_HQLBHL"] = IsQualified(MItem[0]["G_HQLBHL"], sItem["HQLBHL"], false);
                         }
                     }
 
@@ -779,7 +780,7 @@ namespace Calculates
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
                             sItem["PJTLDBHL"] = (Round(mAvgKyqd / 5, 0) * 5).ToString("0.0");
-                            
+
                         }
                     }
                     else
@@ -829,7 +830,7 @@ namespace Calculates
                         {
                             //最大最小强度值均未超出中间值的15%,试验结果取平均值"
                             sItem["PJTLDBHLSJ"] = (Round(mAvgKyqd / 5, 0) * 5).ToString("0.0");
-                         
+
                         }
                     }
                     else
@@ -847,10 +848,10 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_TLD"] = IsQualified(MItem[0]["G_TLD"], sItem["PJTLDBHL"]);
+                        MItem[0]["HG_TLD"] = IsQualified(MItem[0]["G_TLD"], sItem["PJTLDBHL"], false);
                         if (MItem[0]["HG_TLD"] == "合格")
                         {
-                            MItem[0]["HG_TLD"] = IsQualified(MItem[0]["G_TLD"], sItem["PJTLDBHLSJ"]);
+                            MItem[0]["HG_TLD"] = IsQualified(MItem[0]["G_TLD"], sItem["PJTLDBHLSJ"], false);
 
                         }
                     }
@@ -930,7 +931,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_CNSJC"] = IsQualified(MItem[0]["G_CNSJC"], sItem["CNPJSJC"]);
+                        MItem[0]["HG_CNSJC"] = IsQualified(MItem[0]["G_CNSJC"], sItem["CNPJSJC"], false);
                     }
 
                     if (MItem[0]["HG_CNSJC"] == "合格")
@@ -1008,7 +1009,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_ZNSJC"] = IsQualified(MItem[0]["G_ZNSJC"], sItem["ZNPJSJC"]);
+                        MItem[0]["HG_ZNSJC"] = IsQualified(MItem[0]["G_ZNSJC"], sItem["ZNPJSJC"], false);
                     }
 
                     if (MItem[0]["HG_ZNSJC"] == "合格")
@@ -1044,7 +1045,7 @@ namespace Calculates
                     }
                     sItem["XPJDTXML"] = Round((Conversion.Val(sItem["XDTXML_1"]) + Conversion.Val(sItem["XDTXML_1"]) + Conversion.Val(sItem["XDTXML_1"]) / 3), 0).ToString();
 
-                    MItem[0]["HG_XDNJX"] = IsQualified(MItem[0]["G_XDNJX"], sItem["XPJDTXML"]);
+                    MItem[0]["HG_XDNJX"] = IsQualified(MItem[0]["G_XDNJX"], sItem["XPJDTXML"], false);
                     if (MItem[0]["HG_XDNJX"] == "合格")
                     {
                         mFlag_Hg = true;
@@ -1084,6 +1085,7 @@ namespace Calculates
                     int vp = 0;
                     string[] mtmpArray;
                     double[] mkyqdArray = new double[3];
+
                     if (jcxm.Contains("、" + mlq.ToLower() + "抗压强度比、"))
                     {
                         jcxmCur = mlq.ToLower() + "抗压强度比";
@@ -1246,7 +1248,7 @@ namespace Calculates
                             MItem[0]["HG_KYQD" + mlq] = "重做";
                         }
                         else
-                            MItem[0]["HG_KYQD" + mlq] = IsQualified(MItem[0]["G_KYQD" + mlq], sItem["PJQDB" + mlq]);
+                            MItem[0]["HG_KYQD" + mlq] = IsQualified(MItem[0]["G_KYQD" + mlq], sItem["PJQDB" + mlq], false);
 
 
                         if (MItem[0]["HG_KYQD" + mlq] == "合格")
@@ -1267,7 +1269,7 @@ namespace Calculates
                         MItem[0]["HG_KYQD" + mlq] = "----";
                     }
                 }
-                
+
                 #region 收缩率比
                 if (jcxm.Contains("、收缩率比、"))
                 {
@@ -1281,7 +1283,7 @@ namespace Calculates
                     sItem["SSLB"] = Round((Conversion.Val(sItem["SSLB1"]) + Conversion.Val(sItem["SSLB2"]) + Conversion.Val(sItem["SSLB3"])) / 3, 0).ToString("0");
                     MItem[0]["G_SSLB"] = mrsDj["SSLB28D"];
 
-                    MItem[0]["HG_SSLB"] = IsQualified(MItem[0]["G_SSLB"], sItem["SSLB"]);
+                    MItem[0]["HG_SSLB"] = IsQualified(MItem[0]["G_SSLB"], sItem["SSLB"], false);
                     if (MItem[0]["HG_SSLB"] == "合格")
                     {
                         mFlag_Hg = true;
@@ -1311,7 +1313,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_PH"] = IsQualified(sItem["PHKZZ"], sItem["PH"]);
+                        MItem[0]["HG_PH"] = IsQualified(sItem["PHKZZ"], sItem["PH"], false);
                     }
                     MItem[0]["G_PH"] = sItem["PHKZZ"];
                     if (MItem[0]["HG_PH"] == "合格")
@@ -1340,7 +1342,7 @@ namespace Calculates
                     if (sItem["LLZKZZ"] == "----")
                         MItem[0]["HG_LLZHL"] = "----";
                     else
-                        MItem[0]["HG_LLZHL"] = IsQualified(sItem["LLZKZZ"], sItem["LLZHL"]);
+                        MItem[0]["HG_LLZHL"] = IsQualified(sItem["LLZKZZ"], sItem["LLZHL"], false);
                     MItem[0]["G_LLZHL"] = sItem["LLZKZZ"];
                     if (MItem[0]["HG_LLZHL"] == "合格")
                     {
@@ -1372,7 +1374,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_ZJL"] = IsQualified(sItem["ZJLKZZ"], sItem["ZJL"]);
+                        MItem[0]["HG_ZJL"] = IsQualified(sItem["ZJLKZZ"], sItem["ZJL"], false);
                     }
                     MItem[0]["G_ZJL"] = sItem["ZJLKZZ"];
                     if (MItem[0]["HG_ZJL"] == "合格")
@@ -1410,7 +1412,7 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_LSNHL"] = IsQualified(sItem["LSNKZZ"], sItem["LSNHL"]);
+                        MItem[0]["HG_LSNHL"] = IsQualified(sItem["LSNKZZ"], sItem["LSNHL"], false);
                     }
 
                     if (MItem[0]["HG_LSNHL"] == "合格")
@@ -1466,6 +1468,7 @@ namespace Calculates
 
             #endregion
             #endregion
+
             /************************ 代码结束 *********************/
 
         }

@@ -50,7 +50,7 @@ namespace Calculates
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
                 }
-
+                //KLHZ预拉力
                 mklhz1 = GetSafeDouble(sItem["KLHZ1_1"].Trim()) + GetSafeDouble(sItem["KLHZ1_2"].Trim());
                 if (mklhz1 >= 100)
                 {
@@ -104,12 +104,12 @@ namespace Calculates
                 {
                     mklhz3 = Math.Round(mklhz3, 3);
                 }
-
+                //抗滑移系数
                 sItem["HYXS1"] = Math.Round(GetSafeDouble(sItem["HYHZ1"]) / (2 * mklhz1), 2).ToString("0.00");
                 sItem["HYXS2"] = Math.Round(GetSafeDouble(sItem["HYHZ2"]) / (2 * mklhz2), 2).ToString("0.00");
                 sItem["HYXS3"] = Math.Round(GetSafeDouble(sItem["HYHZ3"]) / (2 * mklhz3), 2).ToString("0.00");
 
-                //抗压平均值
+                //K平均值
                 mPjz = Math.Round((GetSafeDouble(sItem["HYXS1"].Trim()) + GetSafeDouble(sItem["HYXS2"].Trim()) + GetSafeDouble(sItem["HYXS3"].Trim())) / 3, 2);
                 sItem["KPJ"] = mPjz.ToString("0.00");
 
@@ -161,7 +161,7 @@ namespace Calculates
                 mAllHg = mAllHg && (sItem["JCJG"] == "合格");
             }
 
-            #region 添加最终报告
+    
             #region 添加最终报告
             //综合判断
             if (mbhggs == 0)
@@ -177,7 +177,7 @@ namespace Calculates
                 //    MItem[0]["JCJGMS"] = "依据标准" + MItem[0]["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合标准要求。";
             }
             #endregion
-            #endregion
+            
             /************************ 代码结束 *********************/
             #endregion
         }

@@ -157,8 +157,8 @@ namespace Calculates
                         sum += md;
                         nArr.Add(md);
                     }
-                    pjmd = Math.Round(sum / 8, 3);
-                    sItem["KPJ"] = pjmd.ToString("0.000");
+                    pjmd = Math.Round(sum / 8, 2);
+                    sItem["KPJ"] = pjmd.ToString("0.00");
 
                     sum = 0;
                     for (int i = 0; i < 8; i++)

@@ -676,7 +676,7 @@ namespace Calculates
                             }
                             //zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]);
 
-                            sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - Conversion.Val(SLLZL) * zCD) / (Conversion.Val(SLLZL) * zCD), 0)).ToString();
+                            sItem["ZLPC"] = Math.Abs(Math.Round( (Conversion.Val(sItem["Z_ZZL"]) - Conversion.Val(SLLZL) * zCD) / (Conversion.Val(SLLZL) * zCD)*100, 1)).ToString();
                             if (jcxm.Contains("、拉伸、") && sItem["KLHZ1"] == "0")
                             {
                                 sItem["LW1"] = "0";
@@ -703,16 +703,17 @@ namespace Calculates
                             zCD = Conversion.Val(sItem["Z_CD1"]) + Conversion.Val(sItem["Z_CD2"]) + Conversion.Val(sItem["Z_CD3"]) + Conversion.Val(sItem["Z_CD4"]) + Conversion.Val(sItem["Z_CD5"]);
                             if (MItem[0]["PDBZ"].Contains("1499.2-2018"))
                             {
-                                sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD), 1)).ToString("0.0");
-                                if (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD), 1) == 0)
+                                sItem["ZLPC"] = Math .Abs(Math.Round( (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD) *100, 1)).ToString();
+                                
+                                if (Math.Abs(Math.Round((Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD) * 100, 1)) == 0)
                                 {
                                     sItem["ZLPC"] = "0";
                                 }
                             }
                             else
                             {
-                                sItem["ZLPC"] = (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD))).ToString();
-                                if (Math.Round(100 * (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD)) == 0)
+                                sItem["ZLPC"] = Math.Abs(Math.Round( (Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD) * 100, 1)).ToString();
+                                if (Math.Abs(Math.Round((Conversion.Val(sItem["Z_ZZL"]) - (SLLZL * zCD)) / (SLLZL * zCD) * 100, 1)) == 0)
                                 {
                                     sItem["ZLPC"] = "0";
                                 }
