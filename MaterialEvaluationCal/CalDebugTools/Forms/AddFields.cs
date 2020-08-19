@@ -192,7 +192,7 @@ namespace CalDebugTools.Forms
                 msgLen += _outMsg.Length;
                 AddFieldToDB(item, item.ToUpper(), xmbh, type, tableName, fieldName, fieldType, fieldMS, chksfxs, ssjcx, txtLX, locstionStr);
             }
-            txt_deleteSqlStr.Text = msgLen== txt_deleteSqlStr.TextLength?"": _deleteSqlStr;
+            txt_deleteSqlStr.Text = msgLen == txt_deleteSqlStr.TextLength ? "" : _deleteSqlStr;
 
             if (_outMsg.Length == msgLen)
             {
@@ -230,7 +230,7 @@ namespace CalDebugTools.Forms
 
 
 
-            resultDBNameList.Add(selectedDataBaseName);
+            resultDBNameList.Add(((CalDebugTools.Model.BaseDataInfo)com_dataSource.SelectedItem).Abbrevition);
 
             return resultDBNameList;
         }
@@ -428,28 +428,29 @@ namespace CalDebugTools.Forms
 
                 cmdList.AddRange(baseCmdList);
                 cmdList.AddRange(zdzdCmdList);
-                //if (cmdList.Count > 0 && !jcjtService.ExecuteTrans(cmdList))
-                //{
-                //    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。");
-                //    _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
-                //}
-                //if (zdzdCmdList_Cal.Count > 0 && !debugToolsService.ExecuteTrans(zdzdCmdList_Cal))
-                //{
-                //    Log.Warn("AddField", $"CalDebugTools数据库:添加字段失败，数据已回滚。");
-                //}
-                //if (cmdList.Count > 0 && chk_syncJcJG.Checked)
-                //{
-                //    if (!jcjgService.ExecuteTrans(cmdList))
-                //    {
-                //        Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。");
-                //        _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
-                //    }
-                //}
-
+                if (cmdList.Count > 0 && !jcjtService.ExecuteTrans(cmdList))
+                {
+                    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。");
+                    _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                }
+                if (zdzdCmdList_Cal.Count > 0 && !debugToolsService.ExecuteTrans(zdzdCmdList_Cal))
+                {
+                    Log.Warn("AddField", $"CalDebugTools数据库:添加字段失败，数据已回滚。");
+                }
+                if (cmdList.Count > 0 && chk_syncJcJG.Checked)
+                {
+                    if (!jcjgService.ExecuteTrans(cmdList))
+                    {
+                        Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。");
+                        _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                    }
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                Log.Error("AddField", $"{jcjgName}异常：{ex.Message}。" + "\r\n  StackTrace:" + ex.StackTrace);
+
             }
             #endregion
         }
