@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CalDebugTools.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -135,6 +136,57 @@ namespace CalDebugTools
 
         }
 
-     
+
+
+        /// <summary>
+        /// 初始话数据库选择
+        /// </summary>
+        public static List<JCJGConnectInfo> InitBaseData( out  string  msg)
+        {
+            msg = "";
+            List<string> jcjgInfos = Common.StringsOper.GetTextList(AppDomain.CurrentDomain.BaseDirectory + @"Resources\检测机构配置.txt");
+
+            //数据库信息
+            List<JCJGConnectInfo> listData = new List<JCJGConnectInfo>();
+            List<string> arrInfo = new List<string>();
+            if (jcjgInfos.Count == 0)
+            {
+                msg = "获取数据库配置信息异常，请确认配置文件格式！";
+                return listData;
+            }
+            JCJGConnectInfo data = new JCJGConnectInfo();
+
+            data.Id = "0";
+            data.Abbrevition = "ALL";
+            data.Name = "全部";
+            data.Code = "";
+            listData.Add(data);
+            foreach (var info in jcjgInfos)
+            {
+                if (info.StartsWith("--"))
+                {
+                    continue;
+                }
+
+                arrInfo = info.Split('-').ToList();
+
+                if (arrInfo.Count != 4)
+                {
+                    continue;
+                }
+                data = new JCJGConnectInfo();
+
+                data.Id = arrInfo[0];
+                data.Abbrevition = arrInfo[1];
+                data.Name = arrInfo[2];
+                data.Code = arrInfo[3];
+                listData.Add(data);
+
+            }
+
+            return listData;
+           
+        }
+
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalDebugTools.Model
 {
-    class BaseDataInfo
+    public class JCJGConnectInfo
     {
         /// <summary>
         /// id

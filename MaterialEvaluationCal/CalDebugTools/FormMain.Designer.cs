@@ -76,6 +76,7 @@
             this.数据库配置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_fieldSet = new System.Windows.Forms.ToolStripMenuItem();
             this.tool_dataFieldSync = new System.Windows.Forms.ToolStripMenuItem();
+            this.tool_AddProject = new System.Windows.Forms.ToolStripMenuItem();
             this.pan_table.SuspendLayout();
             this.tacDebug.SuspendLayout();
             this.tapCode.SuspendLayout();
@@ -118,7 +119,7 @@
             this.pan_table.Controls.Add(this.txt_jcxmbh);
             this.pan_table.Controls.Add(this.label1);
             this.pan_table.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pan_table.Location = new System.Drawing.Point(0, 48);
+            this.pan_table.Location = new System.Drawing.Point(0, 28);
             this.pan_table.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pan_table.Name = "pan_table";
             this.pan_table.Size = new System.Drawing.Size(1277, 129);
@@ -301,11 +302,11 @@
             this.tacDebug.Controls.Add(this.tapCompare);
             this.tacDebug.Controls.Add(this.tab_batch);
             this.tacDebug.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tacDebug.Location = new System.Drawing.Point(0, 209);
+            this.tacDebug.Location = new System.Drawing.Point(0, 157);
             this.tacDebug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tacDebug.Name = "tacDebug";
             this.tacDebug.SelectedIndex = 0;
-            this.tacDebug.Size = new System.Drawing.Size(1596, 576);
+            this.tacDebug.Size = new System.Drawing.Size(1277, 471);
             this.tacDebug.TabIndex = 3;
             // 
             // tapCode
@@ -315,7 +316,7 @@
             this.tapCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tapCode.Name = "tapCode";
             this.tapCode.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tapCode.Size = new System.Drawing.Size(1588, 547);
+            this.tapCode.Size = new System.Drawing.Size(1269, 442);
             this.tapCode.TabIndex = 0;
             this.tapCode.Text = "代码";
             this.tapCode.UseVisualStyleBackColor = true;
@@ -326,7 +327,7 @@
             this.ritCode.Location = new System.Drawing.Point(3, 2);
             this.ritCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ritCode.Name = "ritCode";
-            this.ritCode.Size = new System.Drawing.Size(1582, 543);
+            this.ritCode.Size = new System.Drawing.Size(1263, 438);
             this.ritCode.TabIndex = 1;
             this.ritCode.Text = "";
             this.ritCode.TextChanged += new System.EventHandler(this.ritCode_TextChanged);
@@ -416,7 +417,7 @@
             this.ProjectAdd,
             this.查看ToolStripMenuItem});
             this.项目管理ToolStripMenuItem.Name = "项目管理ToolStripMenuItem";
-            this.项目管理ToolStripMenuItem.Size = new System.Drawing.Size(83, 34);
+            this.项目管理ToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
             this.项目管理ToolStripMenuItem.Text = "项目管理";
             // 
             // ProjectAdd
@@ -443,7 +444,7 @@
             this.小工具ToolStripMenuItem,
             this.添加字段ToolStripMenuItem});
             this.项目管理2ToolStripMenuItem.Name = "项目管理2ToolStripMenuItem";
-            this.项目管理2ToolStripMenuItem.Size = new System.Drawing.Size(68, 34);
+            this.项目管理2ToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
             this.项目管理2ToolStripMenuItem.Text = "小工具";
             // 
             // tool_StrConver
@@ -493,9 +494,10 @@
             this.tool_AddFields,
             this.tool_uploadFields,
             this.代码上传ToolStripMenuItem,
-            this.tool_UploadFieldNew});
+            this.tool_UploadFieldNew,
+            this.tool_AddProject});
             this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
-            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(68, 34);
+            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
             this.设置ToolStripMenuItem.Text = "数据库";
             // 
             // tool_AddFields
@@ -537,7 +539,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1596, 38);
+            this.menuStrip1.Size = new System.Drawing.Size(1277, 28);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -547,22 +549,29 @@
             this.tool_fieldSet,
             this.tool_dataFieldSync});
             this.数据库配置ToolStripMenuItem.Name = "数据库配置ToolStripMenuItem";
-            this.数据库配置ToolStripMenuItem.Size = new System.Drawing.Size(98, 34);
+            this.数据库配置ToolStripMenuItem.Size = new System.Drawing.Size(98, 24);
             this.数据库配置ToolStripMenuItem.Text = "数据库配置";
             // 
             // tool_fieldSet
             // 
             this.tool_fieldSet.Name = "tool_fieldSet";
-            this.tool_fieldSet.Size = new System.Drawing.Size(197, 26);
+            this.tool_fieldSet.Size = new System.Drawing.Size(224, 26);
             this.tool_fieldSet.Text = "字段配置";
             this.tool_fieldSet.Click += new System.EventHandler(this.tool_fieldSet_Click);
             // 
             // tool_dataFieldSync
             // 
             this.tool_dataFieldSync.Name = "tool_dataFieldSync";
-            this.tool_dataFieldSync.Size = new System.Drawing.Size(197, 26);
+            this.tool_dataFieldSync.Size = new System.Drawing.Size(224, 26);
             this.tool_dataFieldSync.Text = "数据表字段同步";
             this.tool_dataFieldSync.Click += new System.EventHandler(this.tool_dataFieldSync_Click);
+            // 
+            // tool_AddProject
+            // 
+            this.tool_AddProject.Name = "tool_AddProject";
+            this.tool_AddProject.Size = new System.Drawing.Size(224, 26);
+            this.tool_AddProject.Text = "新增项目";
+            this.tool_AddProject.Click += new System.EventHandler(this.tool_AddProject_Click);
             // 
             // FormMain
             // 
@@ -644,6 +653,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ToolStripMenuItem 添加字段ToolStripMenuItem;
         private System.Windows.Forms.ComboBox com_dataSource;
+        private System.Windows.Forms.ToolStripMenuItem tool_AddProject;
     }
 }
 

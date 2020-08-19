@@ -786,16 +786,17 @@ namespace CalDebugTools.Common.DBUtility
         }
         #endregion
 
-        public bool ExecuteTrans(List<string> commandTexts)
+        public bool ExecuteTrans(List<string> commandTexts,out string msg)
         {
-            string msg = "";
+             msg = "";
             try
             {
+                //return true;
                 //sqlConnectionString, CommandType.Text,
                 return SqlHelper.ExecuteTrans(sqlConnectionString, CommandType.Text, commandTexts, out msg);
 
             }
-            catch (Exception ex)
+            catch 
             {
                 return false;
             }

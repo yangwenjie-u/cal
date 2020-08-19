@@ -1112,12 +1112,6 @@ namespace CalDebugTools
             manage.Show();
         }
 
-        private void listDataSource_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-
-        }
-
         private void com_dataSource_SelectedIndexChanged(object sender, EventArgs e)
         {
             var sourceName = com_dataSource.SelectedItem.ToString();
@@ -1141,14 +1135,14 @@ namespace CalDebugTools
             List<string> jcjgInfos = Common.StringsOper.GetTextList(AppDomain.CurrentDomain.BaseDirectory + @"Resources\检测机构配置.txt");
 
             //数据库信息
-            List<BaseDataInfo> listData = new List<BaseDataInfo>();
+            List<JCJGConnectInfo> listData = new List<JCJGConnectInfo>();
             List<string> arrInfo = new List<string>();
             if (jcjgInfos.Count == 0)
             {
                 MessageBox.Show("获取数据库配置信息异常，请确认配置文件格式！");
                 return;
             }
-            BaseDataInfo data = new BaseDataInfo();
+            JCJGConnectInfo data = new JCJGConnectInfo();
             foreach (var info in jcjgInfos)
             {
                 if (info.StartsWith("--"))
@@ -1162,7 +1156,7 @@ namespace CalDebugTools
                 {
                     continue;
                 }
-                data = new BaseDataInfo();
+                data = new JCJGConnectInfo();
 
                 data.Id = arrInfo[0];
                 data.Abbrevition = arrInfo[1];
@@ -1174,6 +1168,13 @@ namespace CalDebugTools
             com_dataSource.DataSource = listData;
             com_dataSource.DisplayMember = "Name";
             com_dataSource.ValueMember = "Code";
+        }
+
+        private void tool_AddProject_Click(object sender, EventArgs e)
+        {
+            AddProject manage = new AddProject(this);
+            this.Hide();
+            manage.Show();
         }
     }
 }

@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\ConfigurationHelper.cs" />
+    <Compile Include="BLL\ProjectService.cs" />
     <Compile Include="CodeUpload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,10 +97,10 @@
     <Compile Include="Common\DBUtility\SqlHelper.cs" />
     <Compile Include="Common\Log.cs" />
     <Compile Include="Common\StringsOper.cs" />
-    <Compile Include="DAL\DebugManage.cs" />
     <Compile Include="DAL\FieldManage.cs" />
     <Compile Include="Common\TokenHeple.cs" />
     <Compile Include="DAL\GetProjectInfos.cs" />
+    <Compile Include="DAL\ProjectServiceDao.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +112,12 @@
     </Compile>
     <Compile Include="Forms\AddFields.Designer.cs">
       <DependentUpon>AddFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddProject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddProject.Designer.cs">
+      <DependentUpon>AddProject.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FieldToUpper.cs">
       <SubType>Form</SubType>
@@ -166,7 +173,7 @@
     <Compile Include="Forms\ZDZDTableSync.Designer.cs">
       <DependentUpon>ZDZDTableSync.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\BaseDataInfo.cs" />
+    <Compile Include="Model\JCJGConnectInfo.cs" />
     <Compile Include="Model\CalculateParam.cs" />
     <Compile Include="Model\ProjectInfos.cs" />
     <Compile Include="Model\Token.cs" />
@@ -188,6 +195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddFields.resx">
       <DependentUpon>AddFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddProject.resx">
+      <DependentUpon>AddProject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FieldToUpper.resx">
       <DependentUpon>FieldToUpper.cs</DependentUpon>

@@ -2397,6 +2397,7 @@ namespace CalDebugTools.Common.DBUtility
                 cmdComm.Transaction = myTran;
                 foreach (string sql in commandTexts)
                 {
+                    msg = sql;
                     cmdComm.CommandText = sql;
                     cmdComm.ExecuteNonQuery();
                 }

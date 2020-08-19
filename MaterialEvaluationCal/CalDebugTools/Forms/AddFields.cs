@@ -23,61 +23,21 @@ namespace CalDebugTools.Forms
         {
             _formMain = main;
             InitializeComponent();
-            InitBaseData();
+            InitComboxJCJG();
         }
         /// <summary>
-        /// 初始话数据库选择
+        /// 初始化检测机构选择框
         /// </summary>
-        public void InitBaseData()
+        public void InitComboxJCJG()
         {
-            List<string> jcjgInfos = Common.StringsOper.GetTextList(AppDomain.CurrentDomain.BaseDirectory + @"Resources\检测机构配置.txt");
-
-            //数据库信息
-            List<BaseDataInfo> listData = new List<BaseDataInfo>();
-            List<string> arrInfo = new List<string>();
-            if (jcjgInfos.Count == 0)
-            {
-                MessageBox.Show("获取数据库配置信息异常，请确认配置文件格式！");
-                return;
-            }
-            BaseDataInfo data = new BaseDataInfo();
-
-            data.Id = "0";
-            data.Abbrevition = "ALL";
-            data.Name = "全部";
-            data.Code = "";
-            listData.Add(data);
-            foreach (var info in jcjgInfos)
-            {
-                if (info.StartsWith("--"))
-                {
-                    continue;
-                }
-
-                arrInfo = info.Split('-').ToList();
-
-                if (arrInfo.Count != 4)
-                {
-                    continue;
-                }
-                data = new BaseDataInfo();
-
-                data.Id = arrInfo[0];
-                data.Abbrevition = arrInfo[1];
-                data.Name = arrInfo[2];
-                data.Code = arrInfo[3];
-                listData.Add(data);
-
-            }
+            string msg = "";
+            List<JCJGConnectInfo> listData = new List<JCJGConnectInfo>();
+            listData = Comm.InitBaseData(out msg);
             com_dataSource.DataSource = listData;
             com_dataSource.DisplayMember = "Name";
             com_dataSource.ValueMember = "Abbrevition";
         }
-
-        private void btn_AddField_All_Click(object sender, EventArgs e)
-        {
-            InitBaseData();
-        }
+    
 
         private void btn_M_only_Click(object sender, EventArgs e)
         {
@@ -157,8 +117,6 @@ namespace CalDebugTools.Forms
                 return;
             }
 
-
-
             string tableName = "";
             switch (type)
             {
@@ -216,10 +174,10 @@ namespace CalDebugTools.Forms
 
             if (selectedDataBaseName.Equals("全部"))
             {
-                List<BaseDataInfo> listData = com_dataSource.DataSource as List<BaseDataInfo>;
+                List<JCJGConnectInfo> listData = com_dataSource.DataSource as List<JCJGConnectInfo>;
 
                 //遍历所有配置的数据库，添加字段及zdzd表
-                foreach (BaseDataInfo item in listData)
+                foreach (JCJGConnectInfo item in listData)
                 {
                     resultDBNameList.Add(item.Abbrevition);
                 }
@@ -227,10 +185,7 @@ namespace CalDebugTools.Forms
                 resultDBNameList.Remove("ALL");
                 return resultDBNameList;
             }
-
-
-
-            resultDBNameList.Add(((CalDebugTools.Model.BaseDataInfo)com_dataSource.SelectedItem).Abbrevition);
+            resultDBNameList.Add(((CalDebugTools.Model.JCJGConnectInfo)com_dataSource.SelectedItem).Abbrevition);
 
             return resultDBNameList;
         }
@@ -243,7 +198,7 @@ namespace CalDebugTools.Forms
             SqlBase debugToolsService = new SqlBase(ESqlConnType.ConnectionStringDebugTool, jcjgCode);
 
             string sqlstr = string.Format($" select top 1 * FROM  M_{xmbh}");
-
+            string msg = "";
             #region 插入字段
             if (jcjtService.ExecuteDataset(sqlstr) == null)
             {
@@ -428,20 +383,20 @@ namespace CalDebugTools.Forms
 
                 cmdList.AddRange(baseCmdList);
                 cmdList.AddRange(zdzdCmdList);
-                if (cmdList.Count > 0 && !jcjtService.ExecuteTrans(cmdList))
+                if (cmdList.Count > 0 && !jcjtService.ExecuteTrans(cmdList,out msg))
                 {
-                    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。");
+                    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。" + msg);
                     _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
                 }
-                if (zdzdCmdList_Cal.Count > 0 && !debugToolsService.ExecuteTrans(zdzdCmdList_Cal))
+                if (zdzdCmdList_Cal.Count > 0 && !debugToolsService.ExecuteTrans(zdzdCmdList_Cal, out msg))
                 {
-                    Log.Warn("AddField", $"CalDebugTools数据库:添加字段失败，数据已回滚。");
+                    Log.Warn("AddField", $"CalDebugTools数据库:添加字段失败，数据已回滚。" + msg);
                 }
                 if (cmdList.Count > 0 && chk_syncJcJG.Checked)
                 {
-                    if (!jcjgService.ExecuteTrans(cmdList))
+                    if (!jcjgService.ExecuteTrans(cmdList, out msg))
                     {
-                        Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。");
+                        Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。"+ msg);
                         _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
                     }
                 }
