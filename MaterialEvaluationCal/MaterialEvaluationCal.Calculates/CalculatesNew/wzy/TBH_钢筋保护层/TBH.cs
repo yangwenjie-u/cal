@@ -281,8 +281,9 @@ namespace Calculates
                             MItem[0]["BCCDS"] = (GetSafeDouble(MItem[0]["BCCDS"]) + mcc1_5ds).ToString();
                             MItem[0]["ZCGJB"] = (GetSafeDouble(MItem[0]["ZCGJB"]) + 1).ToString();
                             //MItem[0]["ZJGSB"] = (GetSafeDouble(MItem[0]["ZJGSB"]) + GetSafeDouble(sitem["zjgs"])).ToString();
+                            sitem["ZJGS"] = "6";
                             MItem[0]["ZJGSB"] = (GetSafeDouble(MItem[0]["ZJGSB"]) + Conversion.Val(sitem["ZJGS"])).ToString();
-                            MItem[0]["ZJGSB"] = "6";
+                            
                         }
                     }
                     bgzs = bgzs + 1;

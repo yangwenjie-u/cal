@@ -22,6 +22,7 @@ namespace Calculates
             var jsbeizhu = "合格";
             //bool itemHG = true;//判断单组是否合格
             var S_CBRS = data["S_CBR"];
+            var Y_CZB = data["Y_CZB"];
             if (!data.ContainsKey("M_CBR"))
             {
                 data["M_CBR"] = new List<IDictionary<string, string>>();
@@ -39,7 +40,7 @@ namespace Calculates
             var jcxmBhg = "";
             var jcxmCur = "";
             bool sign = true;
-
+            bool itemHG = true;
             foreach (var sItem in S_CBRS)
             {
                 itemHG = true;
@@ -211,15 +212,15 @@ namespace Calculates
                     }
                     if (sign)
                     {
-                        
+
                         for (int i = 1; i < 4; i++)
                         {
                             //水分质量 =    盒加湿土质量 - 盒加干土质量  两位小数
-                            sItem["SFZL" + i + "_1"] = Round(GetSafeDouble(sItem["HJSTZL" + i + "_1"]) - GetSafeDouble(sItem["HJGTZL" + i + "_1"]), 2).ToString("0.00"); 
-                            sItem["SFZL" + i + "_2"] = Round(GetSafeDouble(sItem["HJSTZL" + i + "_2"]) - GetSafeDouble(sItem["HJGTZL" + i + "_2"]), 2).ToString("0.00"); 
+                            sItem["SFZL" + i + "_1"] = Round(GetSafeDouble(sItem["HJSTZL" + i + "_1"]) - GetSafeDouble(sItem["HJGTZL" + i + "_1"]), 2).ToString("0.00");
+                            sItem["SFZL" + i + "_2"] = Round(GetSafeDouble(sItem["HJSTZL" + i + "_2"]) - GetSafeDouble(sItem["HJGTZL" + i + "_2"]), 2).ToString("0.00");
                             sItem["SFZL" + i + "_3"] = Round(GetSafeDouble(sItem["HJSTZL" + i + "_3"]) - GetSafeDouble(sItem["HJGTZL" + i + "_3"]), 2).ToString("0.00");
                             //干土质量
-                            sItem["GTZL" + i + "_1"] = Round(GetSafeDouble(sItem["HJGTZL"+ i + "_1"]) - GetSafeDouble(sItem["HZL" + i + "_1"]), 2).ToString("0.00");
+                            sItem["GTZL" + i + "_1"] = Round(GetSafeDouble(sItem["HJGTZL" + i + "_1"]) - GetSafeDouble(sItem["HZL" + i + "_1"]), 2).ToString("0.00");
                             sItem["GTZL" + i + "_2"] = Round(GetSafeDouble(sItem["HJGTZL" + i + "_2"]) - GetSafeDouble(sItem["HZL" + i + "_2"]), 2).ToString("0.00");
                             sItem["GTZL" + i + "_3"] = Round(GetSafeDouble(sItem["HJGTZL" + i + "_3"]) - GetSafeDouble(sItem["HZL" + i + "_3"]), 2).ToString("0.00");
                         }
@@ -242,7 +243,22 @@ namespace Calculates
                 #region 承载比
                 if (jcxm.Contains("、承载比、"))
                 {
+                    //计算平均承载比
+                    for (int i = 1; i < 10; i++)
+                    {
+                        if (Y_CZB != null && Y_CZB.Count != 0)
+                        {
+                            sItem["CZB" + i] = Y_CZB[i - 1]["CBRZ25"];
+                        }
+                        else
+                        {
+                            throw new SystemException("第"+i+"组承载比相关试验数据录入不完整或曲线计算有误");
+                        }
+                    }
 
+                    sItem["PJCZB1"] = Math.Round((GetSafeDouble(sItem["CZB1"]) + GetSafeDouble(sItem["CZB2"]) + GetSafeDouble(sItem["CZB3"])) / 3, 1).ToString("0.0");
+                    sItem["PJCZB2"] = Math.Round((GetSafeDouble(sItem["CZB4"]) + GetSafeDouble(sItem["CZB5"]) + GetSafeDouble(sItem["CZB6"])) / 3, 1).ToString("0.0");
+                    sItem["PJCZB3"] = Math.Round((GetSafeDouble(sItem["CZB7"]) + GetSafeDouble(sItem["CZB8"]) + GetSafeDouble(sItem["CZB9"])) / 3, 1).ToString("0.0");
                 }
                 else
                 {

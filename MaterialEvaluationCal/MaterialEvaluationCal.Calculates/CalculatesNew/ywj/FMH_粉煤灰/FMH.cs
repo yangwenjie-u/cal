@@ -384,12 +384,12 @@ namespace Calculates
                     }
                     else
                     {
-                        MItem[0]["HG_HSL"] = "----";
+                        MItem[0]["HG_SSL"] = "----";
                     }
                 }
                 else
                 {
-                    MItem[0]["HG_HSL"] = "----";
+                    MItem[0]["HG_SSL"] = "----";
                     sItem["SSL"] = "----";
                     MItem[0]["G_SSL"] = "----";
                 }
@@ -401,7 +401,7 @@ namespace Calculates
                     jcxmCur = "三氧化硫";
                     MItem[0]["G_SO3HL"] = mrsDj["SO3HL"];
                     //硫酸钡重量法   硫酸盐三氧化硫的质量分数 % = （灼烧后沉淀质量 g - 空白试验灼烧后沉淀的质量 g）* 0.343  / 试料的质量 g  * 100 
-                    if (IsNumeric(sItem["SO3M6_1"].Trim()) && IsNumeric(sItem["SO3M5_1"].Trim()) && IsNumeric(sItem["SO3M4_1"].Trim()) 
+                    if (IsNumeric(sItem["SO3M6_1"].Trim()) && IsNumeric(sItem["SO3M5_1"].Trim()) && IsNumeric(sItem["SO3M4_1"].Trim())
                         && IsNumeric(sItem["SO3M6_2"].Trim()) && IsNumeric(sItem["SO3M5_2"].Trim()) && IsNumeric(sItem["SO3M4_2"].Trim()))
                     {
                         sItem["XSO3_1"] = Round((GetSafeDouble(sItem["SO3M6_1"].Trim()) - GetSafeDouble(sItem["SO3M5_1"].Trim())) * 0.343 / GetSafeDouble(sItem["SO3M4_1"].Trim()) * 100, 1).ToString("0.0");

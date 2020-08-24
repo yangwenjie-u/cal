@@ -69,9 +69,9 @@ namespace Calculates
                     sum = 0;
                     for (int i = 1; i < 3; i++)
                     {
-                        sign = IsNumeric(sItem["SXHSSZL" + i].Trim());
-                        sign = IsNumeric(sItem["SXHSXL" + i].Trim());
-                        sign = IsNumeric(sItem["GZSYZL" + i].Trim());
+                        sign = IsNumeric(sItem["SXHSSZL" + i]);
+                        sign = IsNumeric(sItem["SXHSXL" + i]);
+                        sign = IsNumeric(sItem["GZSYZL" + i]);
                     }
                     if (!sign)
                     {
@@ -100,7 +100,7 @@ namespace Calculates
                     for (int i = 1; i < 3; i++)
                     {
                         //损耗质量   干燥试样总量 - 水洗后0.075筛下量(g)1
-                        sItem["SYSH" + i] = (GetSafeDouble(sItem["GZSYZL" + i]) - (GetSafeDouble(sItem["SXHSXL" + i]) + GetSafeDouble(sItem["SXHSSZL" + i]))).ToString();
+                        sItem["SYSH" + i] = (GetSafeDouble(sItem["GZSYZL" + i]) - (GetSafeDouble(sItem["SXHSXL" + i]) + GetSafeDouble(sItem["SXHSSZL" + i]))).ToString("0.00");
                         //损耗率
                         sItem["SYSHL" + i] = Round(GetSafeDouble(sItem["SYSH" + i]) / GetSafeDouble(sItem["GZSYZL" + i].Trim()) * 100, 1).ToString("0.00");
                     }
@@ -497,24 +497,49 @@ namespace Calculates
                     string smd1 = mrsSwDj_Filter1["SMD"];
                     string smd2 = mrsSwDj_Filter2["SMD"];
                     sign = true;
-                    sign = IsNumeric(sItem["HGZL1"].Trim());
-                    sign = IsNumeric(sItem["HGZL2"].Trim());
-                    sign = IsNumeric(sItem["BGZL1"].Trim());
-                    sign = IsNumeric(sItem["BGZL2"].Trim());
-                    sign = IsNumeric(sItem["SZZL1"].Trim());
-                    sign = IsNumeric(sItem["SZZL1"].Trim());
+                    sign = IsNumeric(sItem["HGZL1"]);
+                    sign = IsNumeric(sItem["HGZL2"]);
+                    sign = IsNumeric(sItem["BGZL1"]);
+                    sign = IsNumeric(sItem["BGZL2"]);
+                    sign = IsNumeric(sItem["SZZL1"]);
+                    sign = IsNumeric(sItem["SZZL1"]);
                     if (sign)
                     {
                         for (int i = 1; i < 3; i++)
                         {
-                            //表观相对密度
-                            sItem["BGXDMD" + i] = Round(GetSafeDouble(sItem["HGZL" + i].Trim()) / (GetSafeDouble(sItem["HGZL" + i].Trim()) - GetSafeDouble(sItem["SZZL" + i].Trim())), 3).ToString("0.000");
-                            //表干相对密度
-                            sItem["XDMDBG" + i] = Round(GetSafeDouble(sItem["BGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["SZZL" + i].Trim())), 3).ToString("0.000");
-                            //毛体积相对密度
-                            sItem["MTJXDMD" + i] = Round(GetSafeDouble(sItem["HGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["SZZL" + i].Trim())), 3).ToString("0.000");
-                            //吸水率
-                            sItem["XSL" + i] = Round((GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["HGZL" + i].Trim())) / GetSafeDouble(sItem["HGZL" + i].Trim()) * 100, 2).ToString("0.00");
+                            if ("网篮法" == sItem["MDJXSLJCFF"])
+                            {
+                                //表观相对密度
+                                sItem["BGXDMD" + i] = Round(GetSafeDouble(sItem["HGZL" + i].Trim()) / (GetSafeDouble(sItem["HGZL" + i].Trim()) - GetSafeDouble(sItem["SZZL" + i].Trim())), 3).ToString("0.000");
+                                //表干相对密度
+                                sItem["XDMDBG" + i] = Round(GetSafeDouble(sItem["BGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["SZZL" + i].Trim())), 3).ToString("0.000");
+                                //毛体积相对密度
+                                sItem["MTJXDMD" + i] = Round(GetSafeDouble(sItem["HGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["SZZL" + i].Trim())), 3).ToString("0.000");
+                                //吸水率
+                                sItem["XSL" + i] = Round((GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["HGZL" + i].Trim())) / GetSafeDouble(sItem["HGZL" + i].Trim()) * 100, 2).ToString("0.00");
+                            }
+                            else
+                            {
+                                //容量瓶法
+                                //表观相对密度   集料的烘干质量 / （集料的烘干质量+水、瓶及玻璃片总质量(g) - 集料试样、水、瓶及玻璃片总质量(g)）
+                                sItem["BGXDMD" + i] = Round(GetSafeDouble(sItem["HGZL" + i].Trim()) / (GetSafeDouble(sItem["HGZL" + i].Trim()) + GetSafeDouble(sItem["SPBZJL" + i].Trim()) - GetSafeDouble(sItem["JLSYSBZJL" + i].Trim())), 3).ToString("0.000");
+                                //表干相对密度   集料表干质量 / （集料表干质量 + 水、瓶及玻璃片总质量(g) - 集料试样、水、瓶及玻璃片总质量(g)）
+                                sItem["XDMDBG" + i] = Round(GetSafeDouble(sItem["BGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim()) + GetSafeDouble(sItem["SPBZJL" + i].Trim()) - GetSafeDouble(sItem["JLSYSBZJL" + i].Trim())), 3).ToString("0.000");
+                                //毛体积相对密度   集料的烘干质量 / （集料表干质量+水、瓶及玻璃片总质量(g) - 集料试样、水、瓶及玻璃片总质量(g)）
+                                sItem["MTJXDMD" + i] = Round(GetSafeDouble(sItem["HGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim())+ GetSafeDouble(sItem["SPBZJL" + i].Trim()) - GetSafeDouble(sItem["JLSYSBZJL" + i].Trim())), 3).ToString("0.000");
+                              
+                                //if (IsNumeric(sItem["BHZTHSSZL1"]) && IsNumeric(sItem["BHZTHSSZL2"]))
+                                //{
+                                    //吸水率还有一种计算方式 水泥混凝土需要以饱和面干试样作为基准求取集料的吸水率
+                                   // sItem["XSL" + i] = Round((GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["HGZL" + i].Trim())) / GetSafeDouble(sItem["BGZL" + i].Trim()) * 100, 1).ToString("0.0");
+                                //}
+                                //else
+                                //{
+                                    //吸水率   (集料表干质量 - 集料的烘干质量) / 集料的烘干质量 * 100    精确至 0.1%
+                                    sItem["XSL" + i] = Round((GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["HGZL" + i].Trim())) / GetSafeDouble(sItem["HGZL" + i].Trim()) * 100, 1).ToString("0.0");
+                                //}
+                                
+                            }
                         }
                         //平均表观相对密度
                         sItem["BGXDMD"] = Round((GetSafeDouble(sItem["BGXDMD1"]) + GetSafeDouble(sItem["BGXDMD2"])) / 2, 3).ToString("0.000");
@@ -605,7 +630,7 @@ namespace Calculates
                 if (jcxm.Contains("、含泥量、"))
                 {
                     jcxmCur = "含泥量";
-                    if (IsNumeric(ET_HNL["Q_ZL1"].Trim()) && IsNumeric(ET_HNL["Q_ZL2"].Trim()) && IsNumeric(ET_HNL["H_ZL1"].Trim()) && IsNumeric(ET_HNL["H_ZL2"].Trim()))
+                    if (IsNumeric(ET_HNL["Q_ZL1"]) && IsNumeric(ET_HNL["Q_ZL2"]) && IsNumeric(ET_HNL["H_ZL1"]) && IsNumeric(ET_HNL["H_ZL2"]))
                     {
                         ET_HNL["HNL1"] = Round((GetSafeDouble(ET_HNL["Q_ZL1"].Trim()) - GetSafeDouble(ET_HNL["H_ZL1"].Trim())) / GetSafeDouble(ET_HNL["Q_ZL1"].Trim()) * 100, 1).ToString("0.0");
                         ET_HNL["HNL2"] = Round((GetSafeDouble(ET_HNL["Q_ZL2"].Trim()) - GetSafeDouble(ET_HNL["H_ZL2"].Trim())) / GetSafeDouble(ET_HNL["Q_ZL2"].Trim()) * 100, 1).ToString("0.0");
@@ -660,10 +685,10 @@ namespace Calculates
                     {
                         sItem["G_ZZKL"] = mrsDj_Filter["G_ZPZ"];
                     }
-                    if (IsNumeric(EJL_ZPZ["KLZL1"].Trim()) && IsNumeric(EJL_ZPZ["KLZL2"].Trim()) && IsNumeric(EJL_ZPZ["ZZL1"].Trim()) && IsNumeric(EJL_ZPZ["ZZL2"].Trim()))
+                    if (IsNumeric(EJL_ZPZ["KLZL1"]) && IsNumeric(EJL_ZPZ["KLZL2"]) && IsNumeric(EJL_ZPZ["ZZL1"]) && IsNumeric(EJL_ZPZ["ZZL2"]))
                     {
 
-                        if (IsNumeric(EJL_ZPZ["KLZL3"].Trim()) && IsNumeric(EJL_ZPZ["ZZL3"].Trim()))
+                        if (IsNumeric(EJL_ZPZ["KLZL3"]) && IsNumeric(EJL_ZPZ["ZZL3"]))
                         {
                             EJL_ZPZ["ZPZ1"] = Round(GetSafeDouble(EJL_ZPZ["KLZL1"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL1"].Trim()) * 100, 1).ToString("0.0");
                             EJL_ZPZ["ZPZ2"] = Round(GetSafeDouble(EJL_ZPZ["KLZL2"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL2"].Trim()) * 100, 1).ToString("0.0");
@@ -730,8 +755,8 @@ namespace Calculates
                     sign = true;
                     for (int i = 1; i < 4; i++)
                     {
-                        sign = IsNumeric(ET_YSZ["XL_ZL" + i].Trim());
-                        sign = IsNumeric(ET_YSZ["HQ_ZL" + i].Trim());
+                        sign = IsNumeric(ET_YSZ["XL_ZL" + i]);
+                        sign = IsNumeric(ET_YSZ["HQ_ZL" + i]);
                     }
                     if (sign)
                     {

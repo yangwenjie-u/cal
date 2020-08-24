@@ -43,6 +43,7 @@ namespace Calculates
                     return ret_Lsign;
                 };
 
+            #region 跳转代码
             //Func<IDictionary<string, string>, IDictionary<string, string>, IList<IDictionary<string, string>>, bool, bool> sjtabcalc =
             //    delegate (IDictionary<string, string> Mitem, IDictionary<string, string> sitem, IList<IDictionary<string, string>> mrsDj_Fun, bool MAllHg)
             //    {
@@ -465,6 +466,7 @@ namespace Calculates
             //        return MAllHg;
             //    };
             #endregion
+            #endregion
 
             #region  集合取值
             var data = retData;
@@ -694,14 +696,6 @@ namespace Calculates
                 }
                 #endregion
 
-                //mAllHg = mbhgs > 0 ? false : true;
-                //if (!string.IsNullOrEmpty(mitem["SJTABS"]))
-                //{
-                //    if (sjtabcalc(mitem, sitem, mrsDj, mAllHg))
-                //    { }
-                //    continue;
-                //}
-
                 #region 含泥量
                 if (jcxm.Contains("、含泥量、"))
                 {
@@ -709,10 +703,12 @@ namespace Calculates
                     cd2 = Conversion.Val(sitem["HNLG1"].Trim());
                     md1 = 100 * (cd1 - cd2) / cd1;
                     md1 = Round(double.IsNaN(md1) ? 0 : md1, 1);
+                    sitem["HNL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["HNLG0_2"].Trim());
                     cd2 = Conversion.Val(sitem["HNLG1_2"].Trim());
                     md2 = 100 * (cd1 - cd2) / cd1;
                     md2 = Round(double.IsNaN(md2) ? 0 : md2, 1);
+                    sitem["HNL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
                     sitem["HNL"] = md.ToString();
@@ -764,10 +760,12 @@ namespace Calculates
                     cd2 = Conversion.Val(sitem["NKHLG2"].Trim());
                     md1 = 100 * (cd1 - cd2) / cd1;
                     md1 = Round(double.IsNaN(md1) ? 0 : md1, 1);
+                    sitem["NKHL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["NKHLG1_2"].Trim());
                     cd2 = Conversion.Val(sitem["NKHLG2_2"].Trim());
                     md2 = 100 * (cd1 - cd2) / cd1;
                     md2 = Round(double.IsNaN(md2) ? 0 : md2, 1);
+                    sitem["NKHL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
                     sitem["NKHL"] = md.ToString("0.0");
@@ -855,12 +853,14 @@ namespace Calculates
                     md1 = (cd1 - cd2) / (10 * md1);
                     md1 = Round(md1, 0);
                     md1 = 10 * md1;
+                    sitem["JMMD1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["JMMDG1_2"].Trim());
                     cd2 = Conversion.Val(sitem["JMMDG2_2"].Trim());
                     md2 = Conversion.Val(sitem["JMMDV"].Trim());
                     md2 = (cd1 - cd2) / (10 * md2);
                     md2 = Round(md2, 0);
                     md2 = 10 * md2;
+                    sitem["JMMD2"] = md2.ToString();
                     md = (md1 + md2) / 20;
                     md = Round(md, 0) * 10;
                     sitem["JMMD"] = md.ToString();
@@ -884,14 +884,14 @@ namespace Calculates
                     cd1 = Conversion.Val(sitem["BGMDG0"].Trim());
                     cd2 = Conversion.Val(sitem["BGMDG2"].Trim());
                     md1 = Conversion.Val(sitem["BGMDG1"].Trim());
-                    md1 = 100 * cd1 / (cd1 + cd2 - md1);
+                    md1 = 100 * (cd1 / (cd1 + cd2 - md1)- GetSafeDouble(sitem["SWXZXS1"].Trim()));
                     md1 = Round(md1, 0);
                     md1 = md1 * 10;
                     sitem["KXLP2"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["BGMDG0_2"].Trim());
                     cd2 = Conversion.Val(sitem["BGMDG2_2"].Trim());
                     md2 = Conversion.Val(sitem["BGMDG1_2"].Trim());
-                    md2 = 100 * cd1 / (cd1 + cd2 - md2);
+                    md2 = 100 * (cd1 / (cd1 + cd2 - md2) - GetSafeDouble(sitem["SWXZXS2"].Trim()));
                     md2 = Round(md2, 0);
                     md2 = md2 * 10;
                     sitem["KXLP2_2"] = md2.ToString();
@@ -923,10 +923,12 @@ namespace Calculates
                     cd2 = Conversion.Val(sitem["KXLP2"].Trim());
                     md1 = 100 * (1 - cd1 / cd2);
                     md1 = Round(md1, 0);
+                    sitem["KXL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["KXLP1_2"].Trim());
                     cd2 = Conversion.Val(sitem["KXLP2_2"].Trim());
                     md2 = 100 * (1 - cd1 / cd2);
                     md2 = Round(md2, 0);
+                    sitem["KXL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 0);
                     sitem["KXL"] = md.ToString();
@@ -1008,10 +1010,12 @@ namespace Calculates
                     cd2 = Conversion.Val(sitem["XSLG2"].Trim());
                     md1 = 100 * (500 - (cd2 - cd1)) / (cd2 - cd1);
                     md1 = Round(md1, 1);
+                    sitem["XSL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["XSLG1_2"].Trim());
                     cd2 = Conversion.Val(sitem["XSLG2_2"].Trim());
                     md2 = 100 * (500 - (cd2 - cd1)) / (cd2 - cd1);
                     md2 = Round(md2, 1);
+                    sitem["XSL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
                     sitem["XSL"] = md.ToString("F1");
@@ -1087,10 +1091,12 @@ namespace Calculates
                     cd2 = Conversion.Val(sitem["HSLG2"].Trim());
                     md1 = 100 * (cd2 - cd1) / cd1;
                     md1 = Round(md1, 1);
+                    sitem["HSL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["HSLG1_2"].Trim());
                     cd2 = Conversion.Val(sitem["HSLG2_2"].Trim());
                     md2 = 100 * (cd2 - cd1) / cd1;
                     md2 = Round(md2, 1);
+                    sitem["HSL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
 
