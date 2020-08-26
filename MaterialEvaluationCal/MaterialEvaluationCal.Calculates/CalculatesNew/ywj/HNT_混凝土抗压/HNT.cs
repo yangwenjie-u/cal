@@ -348,12 +348,10 @@ namespace Calculates
                 sItem["KYQD2"] = Round(KYQD2, 1).ToString("0.0");
                 sItem["KYQD3"] = Round(KYQD3, 1).ToString("0.0");
                 //同条件换算 代表值除以 0.88
-                if (sItem["YHTJ"] == "同条件养护(600℃ · d)" || (sItem["YHTJ"] == "同条件养护" && ))
+                if (sItem["YHTJ"] == "同条件养护(600℃ · d)" || (sItem["YHTJ"] == "同条件" && sItem["YHWD"] == "≥600"))
                 {
-
                     sItem["KYPJ"] = Round(GetSafeDouble(KYPJ) / 0.88, 1).ToString("0.0");
                     sItem["TTJHSXS"] = "0.88";
-
                 }
                 else
                 {
