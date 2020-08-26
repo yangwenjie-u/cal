@@ -54,18 +54,22 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txt_lx = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.btn_Customize = new System.Windows.Forms.Button();
             this.txt_customize = new System.Windows.Forms.TextBox();
             this.btn_helper = new System.Windows.Forms.Button();
             this.btn_S_only = new System.Windows.Forms.Button();
             this.btn_M_only = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.chk_jcjg_only = new System.Windows.Forms.CheckBox();
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.label8);
+            this.panel3.Controls.Add(this.chk_jcjg_only);
             this.panel3.Controls.Add(this.txt_deleteSqlStr);
             this.panel3.Controls.Add(this.label14);
             this.panel3.Controls.Add(this.com_dataSource);
@@ -92,14 +96,14 @@
             this.panel3.Controls.Add(this.txt_lx);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(764, 212);
             this.panel3.TabIndex = 68;
             // 
             // txt_deleteSqlStr
             // 
-            this.txt_deleteSqlStr.Location = new System.Drawing.Point(149, 139);
+            this.txt_deleteSqlStr.Location = new System.Drawing.Point(154, 140);
             this.txt_deleteSqlStr.Multiline = true;
             this.txt_deleteSqlStr.Name = "txt_deleteSqlStr";
             this.txt_deleteSqlStr.Size = new System.Drawing.Size(476, 70);
@@ -108,7 +112,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(90, 133);
+            this.label14.Location = new System.Drawing.Point(86, 160);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(53, 12);
             this.label14.TabIndex = 66;
@@ -118,7 +122,7 @@
             // 
             this.com_dataSource.FormattingEnabled = true;
             this.com_dataSource.Location = new System.Drawing.Point(32, 54);
-            this.com_dataSource.Margin = new System.Windows.Forms.Padding(2);
+            this.com_dataSource.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.com_dataSource.Name = "com_dataSource";
             this.com_dataSource.Size = new System.Drawing.Size(75, 20);
             this.com_dataSource.TabIndex = 38;
@@ -126,7 +130,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(166, 20);
+            this.label1.Location = new System.Drawing.Point(170, 28);
             this.label1.Margin = new System.Windows.Forms.Padding(0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(65, 12);
@@ -136,7 +140,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(302, 56);
+            this.label4.Location = new System.Drawing.Point(306, 54);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 12);
             this.label4.TabIndex = 48;
@@ -181,7 +185,7 @@
             // 
             // txt_fieldName
             // 
-            this.txt_fieldName.Location = new System.Drawing.Point(370, 17);
+            this.txt_fieldName.Location = new System.Drawing.Point(370, 26);
             this.txt_fieldName.Name = "txt_fieldName";
             this.txt_fieldName.Size = new System.Drawing.Size(86, 21);
             this.txt_fieldName.TabIndex = 47;
@@ -200,7 +204,7 @@
             // 
             this.chk_syncJcJG.AutoSize = true;
             this.chk_syncJcJG.Location = new System.Drawing.Point(370, 112);
-            this.chk_syncJcJG.Margin = new System.Windows.Forms.Padding(2);
+            this.chk_syncJcJG.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chk_syncJcJG.Name = "chk_syncJcJG";
             this.chk_syncJcJG.Size = new System.Drawing.Size(48, 16);
             this.chk_syncJcJG.TabIndex = 30;
@@ -218,7 +222,7 @@
             // 
             this.chk_SFXS.AutoSize = true;
             this.chk_SFXS.Location = new System.Drawing.Point(234, 110);
-            this.chk_SFXS.Margin = new System.Windows.Forms.Padding(2);
+            this.chk_SFXS.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chk_SFXS.Name = "chk_SFXS";
             this.chk_SFXS.Size = new System.Drawing.Size(48, 16);
             this.chk_SFXS.TabIndex = 33;
@@ -237,7 +241,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(312, 19);
+            this.label3.Location = new System.Drawing.Point(317, 28);
             this.label3.Margin = new System.Windows.Forms.Padding(0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(53, 12);
@@ -246,7 +250,7 @@
             // 
             // txt_fieldMs
             // 
-            this.txt_fieldMs.Location = new System.Drawing.Point(525, 17);
+            this.txt_fieldMs.Location = new System.Drawing.Point(525, 23);
             this.txt_fieldMs.Name = "txt_fieldMs";
             this.txt_fieldMs.Size = new System.Drawing.Size(100, 21);
             this.txt_fieldMs.TabIndex = 45;
@@ -264,7 +268,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(460, 19);
+            this.label2.Location = new System.Drawing.Point(464, 28);
             this.label2.Margin = new System.Windows.Forms.Padding(0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(65, 12);
@@ -273,7 +277,7 @@
             // 
             // txt_xmbh
             // 
-            this.txt_xmbh.Location = new System.Drawing.Point(234, 17);
+            this.txt_xmbh.Location = new System.Drawing.Point(236, 23);
             this.txt_xmbh.Name = "txt_xmbh";
             this.txt_xmbh.Size = new System.Drawing.Size(62, 21);
             this.txt_xmbh.TabIndex = 43;
@@ -300,7 +304,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(480, 56);
+            this.label10.Location = new System.Drawing.Point(487, 54);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(35, 12);
@@ -310,7 +314,7 @@
             // txt_lx
             // 
             this.txt_lx.Location = new System.Drawing.Point(525, 51);
-            this.txt_lx.Margin = new System.Windows.Forms.Padding(2);
+            this.txt_lx.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txt_lx.Name = "txt_lx";
             this.txt_lx.Size = new System.Drawing.Size(49, 21);
             this.txt_lx.TabIndex = 60;
@@ -325,13 +329,22 @@
             this.groupBox1.Controls.Add(this.btn_S_only);
             this.groupBox1.Controls.Add(this.btn_M_only);
             this.groupBox1.Location = new System.Drawing.Point(149, 228);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Size = new System.Drawing.Size(452, 164);
             this.groupBox1.TabIndex = 61;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "独立添加";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(39, 91);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(77, 12);
+            this.label6.TabIndex = 68;
+            this.label6.Text = "自定义表名称";
             // 
             // btn_Customize
             // 
@@ -346,7 +359,7 @@
             // txt_customize
             // 
             this.txt_customize.Location = new System.Drawing.Point(124, 88);
-            this.txt_customize.Margin = new System.Windows.Forms.Padding(2);
+            this.txt_customize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txt_customize.Name = "txt_customize";
             this.txt_customize.Size = new System.Drawing.Size(76, 21);
             this.txt_customize.TabIndex = 28;
@@ -381,14 +394,26 @@
             this.btn_M_only.UseVisualStyleBackColor = true;
             this.btn_M_only.Click += new System.EventHandler(this.btn_M_only_Click);
             // 
-            // label6
+            // label8
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(39, 91);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(77, 12);
-            this.label6.TabIndex = 68;
-            this.label6.Text = "自定义表名称";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(462, 114);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(95, 12);
+            this.label8.TabIndex = 68;
+            this.label8.Text = "仅添加监管系统:";
+            // 
+            // chk_jcjg_only
+            // 
+            this.chk_jcjg_only.AutoSize = true;
+            this.chk_jcjg_only.Location = new System.Drawing.Point(561, 113);
+            this.chk_jcjg_only.Margin = new System.Windows.Forms.Padding(2);
+            this.chk_jcjg_only.Name = "chk_jcjg_only";
+            this.chk_jcjg_only.Size = new System.Drawing.Size(15, 14);
+            this.chk_jcjg_only.TabIndex = 69;
+            this.chk_jcjg_only.UseVisualStyleBackColor = true;
+            this.chk_jcjg_only.CheckedChanged += new System.EventHandler(this.chk_jcjg_only_CheckedChanged);
             // 
             // AddFields
             // 
@@ -397,7 +422,7 @@
             this.ClientSize = new System.Drawing.Size(764, 429);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "AddFields";
             this.Text = "AddFields";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AddFields_FormClosed);
@@ -443,5 +468,7 @@
         private System.Windows.Forms.TextBox txt_deleteSqlStr;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox chk_jcjg_only;
     }
 }

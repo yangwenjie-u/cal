@@ -37,7 +37,7 @@ namespace CalDebugTools.Forms
             com_dataSource.DisplayMember = "Name";
             com_dataSource.ValueMember = "Abbrevition";
         }
-    
+
 
         private void btn_M_only_Click(object sender, EventArgs e)
         {
@@ -383,20 +383,26 @@ namespace CalDebugTools.Forms
 
                 cmdList.AddRange(baseCmdList);
                 cmdList.AddRange(zdzdCmdList);
-                if (cmdList.Count > 0 && !jcjtService.ExecuteTrans(cmdList,out msg))
+                if (chk_jcjg_only.Checked != true)
                 {
-                    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。" + msg);
-                    _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                    //检测集团
+                    if (cmdList.Count > 0 && !jcjtService.ExecuteTrans(cmdList, out msg))
+                    {
+                        Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。" + msg);
+                        _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                    }
+                    //caldebugTool
+                    if (zdzdCmdList_Cal.Count > 0 && !debugToolsService.ExecuteTrans(zdzdCmdList_Cal, out msg))
+                    {
+                        Log.Warn("AddField", $"CalDebugTools数据库:添加字段失败，数据已回滚。" + msg);
+                    }
                 }
-                if (zdzdCmdList_Cal.Count > 0 && !debugToolsService.ExecuteTrans(zdzdCmdList_Cal, out msg))
-                {
-                    Log.Warn("AddField", $"CalDebugTools数据库:添加字段失败，数据已回滚。" + msg);
-                }
+                //检测监管
                 if (cmdList.Count > 0 && chk_syncJcJG.Checked)
                 {
                     if (!jcjgService.ExecuteTrans(cmdList, out msg))
                     {
-                        Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。"+ msg);
+                        Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
                         _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
                     }
                 }
@@ -453,6 +459,15 @@ namespace CalDebugTools.Forms
                     e.Handled = true;   //表示按键输入已经被处理,这样按键将不会给应用程序,丢掉不想要的按键值,这样的缺点是backspace也会被返回
                 }
             }
+        }
+
+        private void chk_jcjg_only_CheckedChanged(object sender, EventArgs e)
+        {
+            if (((System.Windows.Forms.CheckBox)sender).CheckState == CheckState.Checked)
+            {
+                chk_syncJcJG.CheckState = CheckState.Checked;
+            }
+            //if()
         }
     }
 }
