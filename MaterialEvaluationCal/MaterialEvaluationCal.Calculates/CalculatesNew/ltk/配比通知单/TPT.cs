@@ -39,7 +39,7 @@ namespace Calculates
             //var TKPMItem = data["M_TKP"];
             //商砼搅拌记录
             //var STJMItem = data["M_STJ"];
-            var STJSItem = data["S_STJ"];
+            var TJBSItem = data["S_TJB"];
            
             //商砼交货检验记录
             //var TJHMItem = data["M_TJH"];
@@ -205,31 +205,31 @@ namespace Calculates
 
                 #endregion
 
-                #region STJ
-                STJSItem[0]["SHAHSL"] = sitem["SHAHSL"];
-                STJSItem[0]["SHIHSL"] = sitem["SHIHSL"];
-                STJSItem[0]["SHAHSHIL"] = sitem["SHAHSHIL"];
-                STJSItem[0]["S_CLSN"] = sitem["S_CLSN"];
-                STJSItem[0]["H_CLSN"] = sitem["H_CLSN"];
-                STJSItem[0]["S_CLSHA"] = sitem["S_CLSHA"];
-                STJSItem[0]["H_CLSHA"] = sitem["H_CLSHA"];
-                STJSItem[0]["S_CLSHI"] = sitem["S_CLSHI"];
-                STJSItem[0]["H_CLSHI"] = sitem["H_CLSHI"];
-                STJSItem[0]["S_CLS"] = sitem["S_CLS"];
-                STJSItem[0]["H_CLS"] = sitem["H_CLS"];
-                STJSItem[0]["S_CLWJJ1"] = sitem["S_CLWJJ1"];
-                STJSItem[0]["H_CLWJJ1"] = sitem["H_CLWJJ1"];
-                STJSItem[0]["S_CLWJJ2"] = sitem["S_CLWJJ2"];
-                STJSItem[0]["H_CLWJJ2"] = sitem["H_CLWJJ2"];
-                STJSItem[0]["S_CLWJJ3"] = sitem["S_CLWJJ3"];
-                STJSItem[0]["H_CLWJJ3"] = sitem["H_CLWJJ3"];
-                STJSItem[0]["S_CLCHL1"] = sitem["S_CLCHL1"];
-                STJSItem[0]["H_CLCHL1"] = sitem["H_CLCHL1"];
-                STJSItem[0]["S_CLCHL2"] = sitem["S_CLCHL2"];
-                STJSItem[0]["H_CLCHL2"] = sitem["H_CLCHL2"];
-                STJSItem[0]["S_CLCHL3"] = sitem["S_CLCHL3"];
-                STJSItem[0]["H_CLCHL3"] = sitem["H_CLCHL3"];
-                STJSItem[0]["HPBBGBH"] = sitem["HPBBGBH"];
+                #region TJB
+                TJBSItem[0]["SHAHSL"] = sitem["SHAHSL"];
+                TJBSItem[0]["SHIHSL"] = sitem["SHIHSL"];
+                TJBSItem[0]["SHAHSHIL"] = sitem["SHAHSHIL"];
+                TJBSItem[0]["S_CLSN"] = sitem["S_CLSN"];
+                TJBSItem[0]["H_CLSN"] = sitem["H_CLSN"];
+                TJBSItem[0]["S_CLSHA"] = sitem["S_CLSHA"];
+                TJBSItem[0]["H_CLSHA"] = sitem["H_CLSHA"];
+                TJBSItem[0]["S_CLSHI"] = sitem["S_CLSHI"];
+                TJBSItem[0]["H_CLSHI"] = sitem["H_CLSHI"];
+                TJBSItem[0]["S_CLS"] = sitem["S_CLS"];
+                TJBSItem[0]["H_CLS"] = sitem["H_CLS"];
+                TJBSItem[0]["S_CLWJJ1"] = sitem["S_CLWJJ1"];
+                TJBSItem[0]["H_CLWJJ1"] = sitem["H_CLWJJ1"];
+                TJBSItem[0]["S_CLWJJ2"] = sitem["S_CLWJJ2"];
+                TJBSItem[0]["H_CLWJJ2"] = sitem["H_CLWJJ2"];
+                TJBSItem[0]["S_CLWJJ3"] = sitem["S_CLWJJ3"];
+                TJBSItem[0]["H_CLWJJ3"] = sitem["H_CLWJJ3"];
+                TJBSItem[0]["S_CLCHL1"] = sitem["S_CLCHL1"];
+                TJBSItem[0]["H_CLCHL1"] = sitem["H_CLCHL1"];
+                TJBSItem[0]["S_CLCHL2"] = sitem["S_CLCHL2"];
+                TJBSItem[0]["H_CLCHL2"] = sitem["H_CLCHL2"];
+                TJBSItem[0]["S_CLCHL3"] = sitem["S_CLCHL3"];
+                TJBSItem[0]["H_CLCHL3"] = sitem["H_CLCHL3"];
+                TJBSItem[0]["HPBBGBH"] = sitem["HPBBGBH"];
                 #endregion
 
                 #region TKP

@@ -751,7 +751,7 @@ namespace Calculates
 
                 //求屈服强度
                 calc_qf(sItem, (int)mXLGS);
-                if (ggph.Contains("E"))
+                if (sItem["GCLX_PH"].ToUpper().EndsWith("E"))
                 {
                     mHggs_SCL = 0;
                     sItem["G_SCL"] = "----";
@@ -784,7 +784,7 @@ namespace Calculates
                 sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
                 #region 抗震要求
                 int mkZHggs = 0;
-                if (jcxm.Contains("、抗震要求、"))
+                if (jcxm.Contains("、抗震要求、")| sItem["GCLX_PH"].ToUpper().EndsWith("E"))
                 {
                     sItem["G_ZSCL"] = "≥" + extraFieldsDj["ZSCL"];
 
