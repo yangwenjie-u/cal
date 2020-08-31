@@ -347,37 +347,41 @@ namespace Calculates
                 sItem["KYQD1"] = Round(KYQD1, 1).ToString("0.0");
                 sItem["KYQD2"] = Round(KYQD2, 1).ToString("0.0");
                 sItem["KYQD3"] = Round(KYQD3, 1).ToString("0.0");
-                //同条件换算 代表值除以 0.88
-                if (sItem["YHTJ"] == "同条件养护(600℃ · d)" || (sItem["YHTJ"] == "同条件" && sItem["YHWD"] == "≥600"))
-                {
-                    sItem["KYPJ"] = Round(GetSafeDouble(KYPJ) / 0.88, 1).ToString("0.0");
-                    sItem["TTJHSXS"] = "0.88";
-                }
-                else
-                {
-                    sItem["TTJHSXS"] = "----";
-                    sItem["KYPJ"] = KYPJ;
-                }
 
-                sItem["DDSJQD"] = Round(GetSafeDouble(sItem["KYPJ"]) / mSz * 100, 0).ToString("0");
-                sItem["HSXS"] = HSXS.ToString();
-                sItem["LQ"] = LQ.ToString();
-               
-                if (100 > GetSafeDouble(sItem["DDSJQD"]))
-                {
-                    jcjg = "不合格";
-                    mAllHg = false;
-                }
 
                 sItem["JCJG"] = jcjg;
+                //试验结果无效判定逻辑有误
                 if (KYPJ == "试验结果无效")
                 {
+                    sItem["KYPJ"] = KYPJ;
                     mjcjg = "不下结论";
                     sItem["JCJG"] = "不下结论";
                     jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
                 }
                 else
                 {
+                    //同条件换算 代表值除以 0.88
+                    if (sItem["YHTJ"] == "同条件养护(600℃ · d)" || (sItem["YHTJ"] == "同条件" && sItem["YHWD"] == "≥600"))
+                    {
+                        sItem["KYPJ"] = Round(GetSafeDouble(KYPJ) / 0.88, 1).ToString("0.0");
+                        sItem["TTJHSXS"] = "0.88";
+                    }
+                    else
+                    {
+                        sItem["TTJHSXS"] = "----";
+                        sItem["KYPJ"] = KYPJ;
+                    }
+
+                    sItem["DDSJQD"] = Round(GetSafeDouble(sItem["KYPJ"]) / mSz * 100, 0).ToString("0");
+                    sItem["HSXS"] = HSXS.ToString();
+                    sItem["LQ"] = LQ.ToString();
+
+                    if (100 > GetSafeDouble(sItem["DDSJQD"]))
+                    {
+                        jcjg = "不合格";
+                        mAllHg = false;
+                    }
+
                     jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sItem["KYPJ"] + "MPa，" + "达到设计强度" + sItem["DDSJQD"] + "%。";
                 }
 
