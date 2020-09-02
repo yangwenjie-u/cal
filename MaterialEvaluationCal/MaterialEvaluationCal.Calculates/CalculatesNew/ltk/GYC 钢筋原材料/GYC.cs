@@ -13,6 +13,7 @@ namespace Calculates
         {
             #region
             /************************ 代码开始 *********************/
+            #region 字段定义
             bool mAllHg = true;
             string jcxm = "", MJcjg = "不合格", jsbeiZHu = "";
             var jcxmBhg = "";
@@ -46,7 +47,8 @@ namespace Calculates
             MItem[0]["FJJJ2"] = "";
             MItem[0]["FJJJ3"] = "";
             MItem[0]["ZLPCXS"] = "重量偏差";
-
+            #endregion
+            #region 局部函数
             //保留有效数字
             Func<double, int, string> mYxsz =
                   delegate (double t_numeric, int rndto)
@@ -458,9 +460,10 @@ namespace Calculates
                     }
                     return "";
                 };
-
+            #endregion
             foreach (var sItem in SItem)
             {
+                #region 初始化
                 jcxm = '、' + sItem["JCXM"].Replace(",", "、") + "、";
                 ggph = sItem["GCLX_PH"];
 
@@ -471,7 +474,7 @@ namespace Calculates
                 string mJSFF = "", sZlpc = "", LwBzyq = "";
                 double md = 0, md1 = 0, md2 = 0;
                 mGJLB = string.IsNullOrEmpty(sItem["GJLB"]) ? "----" : sItem["GJLB"];//钢材类别
-
+                #endregion
                 #region BZ_GYC_DJ处理
                 //'从设计等级表中取得相应的计算数值、等级标准                   钢材牌号
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["GJLB"] == mGJLB && GetSafeDouble(u["ZJFW1"]) < GetSafeDouble(sItem["ZJ"]) && GetSafeDouble(u["ZJFW2"]) > GetSafeDouble(sItem["ZJ"]));
@@ -964,6 +967,7 @@ namespace Calculates
                     MItem[0]["HG_HGJX"] = "----";
                 }
                 #endregion
+               
                 #region 截面维氏硬度
                 if (jcxm.Contains("、截面维氏硬度、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
                 {
@@ -986,6 +990,7 @@ namespace Calculates
                     }
                 }
                 #endregion
+                
                 #region 微观组织
                 if (jcxm.Contains("、微观组织、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
                 {
