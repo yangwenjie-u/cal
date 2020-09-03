@@ -101,6 +101,7 @@
     <Compile Include="Common\TokenHeple.cs" />
     <Compile Include="DAL\GetProjectInfos.cs" />
     <Compile Include="DAL\ProjectServiceDao.cs" />
+    <Compile Include="DataBase\DataHelper.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>

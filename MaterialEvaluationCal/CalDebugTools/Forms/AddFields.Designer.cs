@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label8 = new System.Windows.Forms.Label();
+            this.chk_jcjg_only = new System.Windows.Forms.CheckBox();
             this.txt_deleteSqlStr = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.com_dataSource = new System.Windows.Forms.ComboBox();
@@ -60,8 +62,7 @@
             this.btn_helper = new System.Windows.Forms.Button();
             this.btn_S_only = new System.Windows.Forms.Button();
             this.btn_M_only = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
-            this.chk_jcjg_only = new System.Windows.Forms.CheckBox();
+            this.btn_test = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -96,10 +97,31 @@
             this.panel3.Controls.Add(this.txt_lx);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(764, 212);
             this.panel3.TabIndex = 68;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(462, 114);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(95, 12);
+            this.label8.TabIndex = 68;
+            this.label8.Text = "仅添加监管系统:";
+            // 
+            // chk_jcjg_only
+            // 
+            this.chk_jcjg_only.AutoSize = true;
+            this.chk_jcjg_only.Location = new System.Drawing.Point(561, 113);
+            this.chk_jcjg_only.Margin = new System.Windows.Forms.Padding(2);
+            this.chk_jcjg_only.Name = "chk_jcjg_only";
+            this.chk_jcjg_only.Size = new System.Drawing.Size(15, 14);
+            this.chk_jcjg_only.TabIndex = 69;
+            this.chk_jcjg_only.UseVisualStyleBackColor = true;
+            this.chk_jcjg_only.CheckedChanged += new System.EventHandler(this.chk_jcjg_only_CheckedChanged);
             // 
             // txt_deleteSqlStr
             // 
@@ -122,7 +144,7 @@
             // 
             this.com_dataSource.FormattingEnabled = true;
             this.com_dataSource.Location = new System.Drawing.Point(32, 54);
-            this.com_dataSource.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.com_dataSource.Margin = new System.Windows.Forms.Padding(2);
             this.com_dataSource.Name = "com_dataSource";
             this.com_dataSource.Size = new System.Drawing.Size(75, 20);
             this.com_dataSource.TabIndex = 38;
@@ -204,7 +226,7 @@
             // 
             this.chk_syncJcJG.AutoSize = true;
             this.chk_syncJcJG.Location = new System.Drawing.Point(370, 112);
-            this.chk_syncJcJG.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chk_syncJcJG.Margin = new System.Windows.Forms.Padding(2);
             this.chk_syncJcJG.Name = "chk_syncJcJG";
             this.chk_syncJcJG.Size = new System.Drawing.Size(48, 16);
             this.chk_syncJcJG.TabIndex = 30;
@@ -222,7 +244,7 @@
             // 
             this.chk_SFXS.AutoSize = true;
             this.chk_SFXS.Location = new System.Drawing.Point(234, 110);
-            this.chk_SFXS.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chk_SFXS.Margin = new System.Windows.Forms.Padding(2);
             this.chk_SFXS.Name = "chk_SFXS";
             this.chk_SFXS.Size = new System.Drawing.Size(48, 16);
             this.chk_SFXS.TabIndex = 33;
@@ -314,7 +336,7 @@
             // txt_lx
             // 
             this.txt_lx.Location = new System.Drawing.Point(525, 51);
-            this.txt_lx.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txt_lx.Margin = new System.Windows.Forms.Padding(2);
             this.txt_lx.Name = "txt_lx";
             this.txt_lx.Size = new System.Drawing.Size(49, 21);
             this.txt_lx.TabIndex = 60;
@@ -322,6 +344,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btn_test);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.btn_Customize);
             this.groupBox1.Controls.Add(this.txt_customize);
@@ -329,9 +352,9 @@
             this.groupBox1.Controls.Add(this.btn_S_only);
             this.groupBox1.Controls.Add(this.btn_M_only);
             this.groupBox1.Location = new System.Drawing.Point(149, 228);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(452, 164);
             this.groupBox1.TabIndex = 61;
             this.groupBox1.TabStop = false;
@@ -359,7 +382,7 @@
             // txt_customize
             // 
             this.txt_customize.Location = new System.Drawing.Point(124, 88);
-            this.txt_customize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txt_customize.Margin = new System.Windows.Forms.Padding(2);
             this.txt_customize.Name = "txt_customize";
             this.txt_customize.Size = new System.Drawing.Size(76, 21);
             this.txt_customize.TabIndex = 28;
@@ -394,26 +417,15 @@
             this.btn_M_only.UseVisualStyleBackColor = true;
             this.btn_M_only.Click += new System.EventHandler(this.btn_M_only_Click);
             // 
-            // label8
+            // btn_test
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(462, 114);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(95, 12);
-            this.label8.TabIndex = 68;
-            this.label8.Text = "仅添加监管系统:";
-            // 
-            // chk_jcjg_only
-            // 
-            this.chk_jcjg_only.AutoSize = true;
-            this.chk_jcjg_only.Location = new System.Drawing.Point(561, 113);
-            this.chk_jcjg_only.Margin = new System.Windows.Forms.Padding(2);
-            this.chk_jcjg_only.Name = "chk_jcjg_only";
-            this.chk_jcjg_only.Size = new System.Drawing.Size(15, 14);
-            this.chk_jcjg_only.TabIndex = 69;
-            this.chk_jcjg_only.UseVisualStyleBackColor = true;
-            this.chk_jcjg_only.CheckedChanged += new System.EventHandler(this.chk_jcjg_only_CheckedChanged);
+            this.btn_test.Location = new System.Drawing.Point(274, 101);
+            this.btn_test.Name = "btn_test";
+            this.btn_test.Size = new System.Drawing.Size(75, 23);
+            this.btn_test.TabIndex = 69;
+            this.btn_test.Text = "测试";
+            this.btn_test.UseVisualStyleBackColor = true;
+            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
             // 
             // AddFields
             // 
@@ -422,7 +434,7 @@
             this.ClientSize = new System.Drawing.Size(764, 429);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AddFields";
             this.Text = "AddFields";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AddFields_FormClosed);
@@ -470,5 +482,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox chk_jcjg_only;
+        private System.Windows.Forms.Button btn_test;
     }
 }
