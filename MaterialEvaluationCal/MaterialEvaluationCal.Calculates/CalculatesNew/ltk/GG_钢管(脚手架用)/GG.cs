@@ -15,26 +15,13 @@ namespace Calculates
             /************************ 代码开始 *********************/
 
             #region 参数定义
-            string mcalBh="";
+            
             double[] mkyqdArray = new double[3];
-            double zj1, zj2;
-            int mHggs_QFQD, mHggs_KLQD, mHggs_scl, mHggs_lw;
-            int mFsgs_QFQD, mFsgs_KLQD, mFsgs_scl, mFsgs_lw;
-            string mSjdjbh, mSjdj;
-            double mQFQD, mKLQD, mScl, mLw;
-            int vp, mCnt_FjHg, mCnt_FjHg1, mxlgs, mxwgs;
-            string mMaxBgbh;
+            double  mScl;
+            int vp;
             string mJSFF;
             bool mAllHg;
-            bool msffs;
-            bool mGetBgbh;
-            bool mSFwc;
-            bool mFlag_Hg, mFlag_Bhg;
-            mSFwc = true;
-            mGetBgbh = false;
             mAllHg = true;
-            mFlag_Hg = false;
-            mFlag_Bhg = false;
             string which = "";
             #endregion
 
@@ -51,12 +38,13 @@ namespace Calculates
             var mrsDj = dataExtra["BZ_GG_DJ"];
             var MItem = data["M_GG"];
             var SItem = data["S_GG"];
+            MItem[0]["JCJGMS"] = "";
+          
             #endregion
 
+
+
             #region  计算开始
-            MItem[0]["JCJGMS"] = "";
-            zj1 = 0;
-            zj2 = 0;
             foreach (var sitem in SItem)
             {
                 #region 等级表处理

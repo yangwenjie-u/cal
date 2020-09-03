@@ -12,14 +12,14 @@ namespace Calculates
         public void Calc()
         {
             #region
+            
+            #region 数据准备
             var extraDJ = dataExtra["BZ_JGG_DJ"];
             var mjcjg = "不合格";
             var jsbeizhu = "";
             var jgsm = "";
             var mJcjg = "";//记录最终报告是否不下结论
             var SItems = retData["S_JGG"];
-
-
             if (!retData.ContainsKey("M_JGG"))
             {
                 retData["M_JGG"] = new List<IDictionary<string, string>>();
@@ -33,10 +33,11 @@ namespace Calculates
                 m["JCJGSM"] = jsbeizhu;
                 MItem.Add(m);
             }
-
+        
             var mAllHg = true;
             var mFlag_Bhg = false;
             var mFlag_Hg = false;
+            #endregion
 
             #region 局部函数
             Func<double, double> myint = delegate (double dataChar)
@@ -191,9 +192,10 @@ namespace Calculates
 
             foreach (var sItem in SItems)
             {
+                #region 数据处理
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
                 mSjdj = string.IsNullOrEmpty(sItem["SJDJ"]) ? "" : sItem["SJDJ"];
-
+                //厚度或直径
                 var hd_fw = "";
                 var md = 0.0;
                 var hd = sItem["HD"];
@@ -248,7 +250,8 @@ namespace Calculates
                     else
                         hd_fw = "";
                 }
-
+                #endregion
+                
                 #region  标准表
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["MC"] == mSjdj.Trim() && u["ZJM"] == hd_fw.Trim() && u["QYFX"] == sItem["QYFX"].Trim());
                 if (null == extraFieldsDj)
@@ -293,11 +296,14 @@ namespace Calculates
                 #endregion
 
                 #region 检测项
+                
+                #region 标准值赋值到数据表
                 var gclx_lb = sItem["GCLX_LB"];
                 if ((!gclx_lb.Contains("板") && !gclx_lb.Contains("带")) && MItem[0]["PDBZ"].Contains("GB/T 700-2006《碳素结构钢》"))
                 {
                     mlwzj = mlwzj - 0.5;
                 }
+                #region 伸长率标准值
                 if ((gclx_lb.Contains("板") || gclx_lb.Contains("带")) && MItem[0]["PDBZ"].Contains("GB/T 700-2006《碳素结构钢》"))
                 {
                     if (sItem["QYFX"] == "横向")
@@ -305,12 +311,12 @@ namespace Calculates
                         mScl = mScl - 2;
                     }
                 }
-
+                #endregion
                 if (Conversion.Val(sItem["HD"]) > 100 && MItem[0]["PDBZ"].Contains("GB/T 700-2006《碳素结构钢》"))
                 {
                     mKlqd = mKlqd - 20;
                 }
-
+                #region 弯曲标准
                 if (Conversion.Val(mlwzj) == 0 && Conversion.Val(MFFWQCS) != 0)
                 {
                     LwBzyq = "弯曲次数不小于" + MFFWQCS + "次，受弯曲部位表面无裂纹。";//'至少"(mxwgs)  "个试件外侧未发生破裂";
@@ -335,6 +341,7 @@ namespace Calculates
                         }
                     }
                 }
+                #endregion
                 sItem["G_LWZJ"] = mlwzj + "a";
                 sItem["G_QFQD"] = Conversion.Val(mQfqd).ToString();
                 sItem["G_KLQD"] = mKlqd.ToString();
@@ -342,7 +349,9 @@ namespace Calculates
                 sItem["G_SCL"] = mScl.ToString();
                 //冷弯性能标准要求
                 sItem["G_LWWZ"] = LwBzyq;
+                #endregion
 
+                #region 规格
                 if (!IsNumeric( sItem["ZJ"]))
                 {
                     sItem["MJ"] = (Conversion.Val(sItem["HD"]) * Conversion.Val(sItem["KD"])).ToString();
@@ -361,9 +370,9 @@ namespace Calculates
                     sItem["MJ"] = md.ToString("0.000");
                     sItem["GG"] = "Φ:" + sItem["ZJ"].Trim();
                 }
+                #endregion
 
-
-                //求伸长率
+                #region 长度
                 sItem["XGM"] = extraFieldsDj["XGM"];
 
                 if (Conversion.Val(sItem["ZJ"]) == 0)
@@ -379,7 +388,8 @@ namespace Calculates
                 {
                     sItem["CD"] = "100";
                 }
-
+                #endregion
+                
                 #region  QFQD
                 if (Math.Abs(Double.Parse(sItem["MJ"]) - 0) > 0.00001)
                 {
@@ -400,6 +410,7 @@ namespace Calculates
                     }
                 }
                 #endregion
+                
                 #region  KLHZ
                 if (Math.Abs(Double.Parse(sItem["MJ"]) - 0) > 0.00001)
                 {
@@ -420,6 +431,7 @@ namespace Calculates
                     }
                 }
                 #endregion
+                
                 #region  SCZ
                 if (Math.Abs(Double.Parse(sItem["MJ"]) - 0) > 0.00001)
                 {
@@ -444,19 +456,20 @@ namespace Calculates
                     }
                 }
 
-                #endregion
-
                 if ("0" == sItem["G_SCL"])
                 {
                     sItem["SCL1"] = "----";
                 }
-
+                #endregion
+                
                 var mallBhg_qf = 0;
                 var mallBhg_kl = 0;
                 var mallBhg_lw = 0;
 
                 //求单组屈服强度,抗拉强度,伸长率,冷弯 合格个数,并且返回值为不同组不合格数的累加值
                 mallBhg_qf = mallBhg_qf + find_singlezb_bhg(MItem[0], sItem, "qf", mQfqd, (int)mxlgs);
+                
+                #region 抗拉强度
                 sItem["HG_KL"] = "0";
 
                 for (int i = 1; i < mxlgs + 1; i++)
@@ -466,8 +479,9 @@ namespace Calculates
                     else
                         mallBhg_kl += 1;
                 }
+                #endregion
 
-                //伸长率
+                #region 伸长率
                 sItem["HG_SC"] = "0";
                 var mallBhg_sc = 0;
                 for (int i = 1; i < mxlgs + 1; i++)
@@ -477,13 +491,16 @@ namespace Calculates
                     else
                         mallBhg_sc += 1;
                 }
-
-
+                #endregion
+                
+                #region  弯曲
                 if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
                     mallBhg_lw = mallBhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, double.Parse(mxwgs));
                 }
-
+                #endregion
+               
+                #region 冲击试验
                 if (jcxm.Contains("、冲击试验、"))
                 {
                     jcxmCur = "冲击试验";
@@ -567,12 +584,13 @@ namespace Calculates
                     sItem["CJSY3"] = "----";
                     sItem["CJPJ"] = "----";
                 }
-
+                #endregion
+                
                 all_zb_jl(MItem[0], sItem, double.Parse(mHggs_qfqd), double.Parse(mHggs_klqd), double.Parse(mHggs_scl), double.Parse(mHggs_lw));
 
                 #endregion
 
-                #region
+                #region 拉根数==1，字段处理
                 if (mxlgs == 1)
                 {
                     sItem["QFHZ2"] = "----";
