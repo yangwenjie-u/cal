@@ -161,6 +161,7 @@ namespace CalDebugTools
         }
         private void btn_Debug_Click(object sender, EventArgs e)
         {
+            
             SaveXMinfos();
             Debug("", txt_wtdbh.Text.Trim());
         }

@@ -567,7 +567,8 @@ namespace Calculates
                     yxxdmd = Round((100 - GetSafeDouble(sItem["LQHL"].Trim())) / (100 / GetSafeDouble(sItem["SJMD"]) - GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3);
                     //理论密度   100 /（（100 - 沥青用量）/ 矿料的有效的相对密度 + 沥青用量 / 沥青相对密度）
                     //sItem["LLMD"] = Round(100 / ((100 - GetSafeDouble(sItem["LQHL"].Trim())) / yxxdmd + GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3).ToString("0.000");
-                    sItem["LLMD"] = Round((100 - GetSafeDouble(sItem["LQHL"].Trim())) / (100 / GetSafeDouble(sItem["SJMD"]) - GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3).ToString("0.000");
+                    //sItem["LLMD"] = Round((100 - GetSafeDouble(sItem["LQHL"].Trim())) / (100 / GetSafeDouble(sItem["SJMD"]) - GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3).ToString("0.000");
+                    //sItem["LLMD"] = Round(100 / ((100 - GetSafeDouble(sItem["LQHL"].Trim())) / yxxdmd + GetSafeDouble(sItem["LQHL"].Trim()) / GetSafeDouble(sItem["LQXDMD"].Trim())), 3).ToString("0.000");
                     sjCount = 0;
                     for (int i = 1; i < 7; i++)
                     {
