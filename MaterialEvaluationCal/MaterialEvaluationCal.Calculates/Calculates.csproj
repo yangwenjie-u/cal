@@ -53,6 +53,7 @@
     <Compile Include="Base\JsonHelper.cs" />
     <Compile Include="Base\SqlBase.cs" />
     <Compile Include="Base\SQLHelper.cs" />
+    <Compile Include="CalculatesNew\lq\井盖，水箅\JGS.cs" />
     <Compile Include="CalculatesNew\lq\其他排水管\QPS.cs" />
     <Compile Include="CalculatesNew\lq\其他给水管\QGS.cs" />
     <Compile Include="CalculatesNew\ltk\FS_防水卷材\FS.cs" />

@@ -301,7 +301,10 @@ namespace CalDebugTools.Forms
                     reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
                     if (reFieldCount == -2 || reFieldCount > 0)
                     {
+                        addFiled = false;
                         Log.Warn("AddField", $"CalDebugTools数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
+                        _outMsg += $"CalDebugTools数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
+
                     }
                     else
                     {
@@ -389,12 +392,14 @@ namespace CalDebugTools.Forms
                     if (cmdList.Count > 0 && !jcjtService.ExecuteTrans(cmdList, out msg))
                     {
                         Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。" + msg);
-                        _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                        _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，数据已回滚." + "\r\n";
                     }
                     //caldebugTool
                     if (zdzdCmdList_Cal.Count > 0 && !debugToolsService.ExecuteTrans(zdzdCmdList_Cal, out msg))
                     {
                         Log.Warn("AddField", $"CalDebugTools数据库:添加字段失败，数据已回滚。" + msg);
+                        _outMsg += $"CalDebugTools数据库:添加字段异常，数据已回滚." + "\r\n";
+
                     }
                 }
                 //检测监管

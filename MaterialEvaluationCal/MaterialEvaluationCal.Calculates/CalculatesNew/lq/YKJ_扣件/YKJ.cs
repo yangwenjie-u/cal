@@ -87,8 +87,8 @@ namespace Calculates
                     mitem["YBH"] = mrsDj_Filter2["YBH"];//一般项AC
                     mitem["YBB"] = mrsDj_Filter2["YBB"];//一般项RE
 
-                    var ZJPJKH7_pj = Math.Round(GetSafeDecimal(sitem["ZJPJKH7"].ToString()), 2).ToString("0.00");
-                    var ZJPJKH10_pj = Math.Round(GetSafeDecimal(sitem["ZJPJKH10"].ToString()), 2).ToString("0.00");
+                    var ZJPJKH7_pj = Math.Round(GetSafeDecimal(sitem["ZJPJKH7"]), 2).ToString("0.00");
+                    var ZJPJKH10_pj = Math.Round(GetSafeDecimal(sitem["ZJPJKH10"]), 2).ToString("0.00");
 
                     mitem["HG_ZJKH"] = IsQualified("≤7.00", ZJPJKH7_pj);
                     if (mitem["HG_ZJKH"] == "合格")
