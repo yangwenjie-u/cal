@@ -264,7 +264,7 @@ namespace Calculates
                             MItem[0]["LHGDS"] = (GetSafeDouble(MItem[0]["LHGDS"]) + mhgds).ToString();
                             MItem[0]["LCCDS"] = (GetSafeDouble(MItem[0]["LCCDS"]) + mcc1_5ds).ToString();
                             MItem[0]["ZCGJL"] = (GetSafeDouble(MItem[0]["ZCGJL"]) + 1).ToString();
-                           // MItem[0]["ZJGSL"] = (GetSafeDouble(MItem[0]["ZJGSL"]) + GetSafeDouble(sitem["ZJGS"])).ToString();
+                           //MItem[0]["ZJGSL"] = (GetSafeDouble(MItem[0]["ZJGSL"]) + GetSafeDouble(sitem["ZJGS"])).ToString();
                             MItem[0]["ZJGSL"] = (GetSafeDouble(MItem[0]["ZJGSL"]) + Conversion.Val(sitem["ZJGS"])).ToString();
                         }
                         if (sitem["BHCLB"].Contains("剪力墙板"))
@@ -281,8 +281,9 @@ namespace Calculates
                             MItem[0]["BCCDS"] = (GetSafeDouble(MItem[0]["BCCDS"]) + mcc1_5ds).ToString();
                             MItem[0]["ZCGJB"] = (GetSafeDouble(MItem[0]["ZCGJB"]) + 1).ToString();
                             //MItem[0]["ZJGSB"] = (GetSafeDouble(MItem[0]["ZJGSB"]) + GetSafeDouble(sitem["zjgs"])).ToString();
+                            sitem["ZJGS"] = "6";
                             MItem[0]["ZJGSB"] = (GetSafeDouble(MItem[0]["ZJGSB"]) + Conversion.Val(sitem["ZJGS"])).ToString();
-                            MItem[0]["ZJGSB"] = "6";
+                            
                         }
                     }
                     bgzs = bgzs + 1;
@@ -307,10 +308,10 @@ namespace Calculates
                         MItem[0]["QHGL"] = Round((GetSafeDouble(MItem[0]["QHGDS"]) / GetSafeDouble(MItem[0]["QJCDS"])) * 100, 1).ToString();
                         MItem[0]["QCCL"] = Round((GetSafeDouble(MItem[0]["QCCDS"]) / GetSafeDouble(MItem[0]["QJCDS"])) * 100, 1).ToString();
                     }
-                    MItem[0]["ZGJHGL"] = MItem[0]["ZHGL"];
-                    MItem[0]["LGJHGL"] = MItem[0]["LHGL"];
-                    MItem[0]["BGJHGL"] = MItem[0]["BHGL"];
-                    MItem[0]["QGJHGL"] = MItem[0]["QHGL"];
+                    MItem[0]["ZGJHGL"] = MItem[0]["ZHGL"];//柱
+                    MItem[0]["LGJHGL"] = MItem[0]["LHGL"];//梁
+                    MItem[0]["BGJHGL"] = MItem[0]["BHGL"];//板
+                    MItem[0]["QGJHGL"] = MItem[0]["QHGL"];//墙
                     if (GetSafeDouble(MItem[0]["ZJCDS"]) + GetSafeDouble(MItem[0]["LJCDS"]) + GetSafeDouble(MItem[0]["BJCDS"]) + GetSafeDouble(MItem[0]["QJCDS"]) != 0)
                         MItem[0]["ZTHGL"] = Round((GetSafeDouble(MItem[0]["ZHGDS"]) + GetSafeDouble(MItem[0]["LHGDS"]) + GetSafeDouble(MItem[0]["BHGDS"]) + GetSafeDouble(MItem[0]["QHGDS"])) / (GetSafeDouble(MItem[0]["ZJCDS"]) + GetSafeDouble(MItem[0]["LJCDS"]) + GetSafeDouble(MItem[0]["BJCDS"]) + GetSafeDouble(MItem[0]["QJCDS"])) * 100, 1).ToString();
                     mAllHg = true;

@@ -136,26 +136,26 @@ namespace Calculates
 
 
 
-                    if (jcxm.Contains("、容器中状态、"))
-                    {
-                        jcxmCur = "容器中状态";
+                if (jcxm.Contains("、容器中状态、"))
+                {
+                    jcxmCur = "容器中状态";
 
-                        if ("符合" != sitem["HG_RQZZT"] && "合格" != sitem["HG_RQZZT"])
-                        {
-                            mbhggs = mbhggs + 1;
-                            mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        }
-                        else
-                        {
-                            mFlag_Hg = true;
-                        }
+                    if ("符合" != sitem["HG_RQZZT"] && "合格" != sitem["HG_RQZZT"])
+                    {
+                        mbhggs = mbhggs + 1;
+                        mFlag_Bhg = true; jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
                     else
                     {
-                        sitem["RQZZT"] = "----";
-                        sitem["HG_RQZZT"] = "----";
-                        mitem["G_RQZZT"] = "----";
+                        mFlag_Hg = true;
                     }
+                }
+                else
+                {
+                    sitem["RQZZT"] = "----";
+                    sitem["HG_RQZZT"] = "----";
+                    mitem["G_RQZZT"] = "----";
+                }
 
                 if (jcxm.Contains("、施工性、"))
                 {
@@ -577,12 +577,13 @@ namespace Calculates
                 if (sffj)
                 {
                     mitem["JCJG"] = "合格";
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
+                   
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，经复检,所检项目均符合要求。";
                 }
                 else
                 {
                     mitem["JCJG"] = "合格";
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，经复检,所检项目均符合要求。";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
                 }
             }
             else

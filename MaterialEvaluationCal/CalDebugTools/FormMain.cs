@@ -39,6 +39,7 @@ namespace CalDebugTools
             _projectInfo = new ProjectInfos();
             Init();
             CalInit();
+            InitBaseData();
             _qybh = ConfigurationHelper.GetConfig("Qybh");
         }
 
@@ -51,14 +52,10 @@ namespace CalDebugTools
                 txt_s.Text = ConfigurationHelper.GetConfig("tableS");
                 txt_helper.Text = ConfigurationHelper.GetConfig("tableBZ");
                 txt_helper.Text = ConfigurationHelper.GetConfig("tableSJ");
-                txt_jydbh.Text = ConfigurationHelper.GetConfig("jydbhFrom");
-                txt_yjdbh_to.Text = ConfigurationHelper.GetConfig("jydbhTo");
                 txtdatafiled.Text = ConfigurationHelper.GetConfig("datafiled");
                 txt_y.Text = ConfigurationHelper.GetConfig("tableY");
                 txt_wtdbh.Text = ConfigurationHelper.GetConfig("wtdbh");
                 var checkVal = ConfigurationHelper.GetConfig("checkWH");
-
-                ck_other.Checked = checkVal == "1" ? true : false;
             }
             catch
             {
@@ -76,11 +73,8 @@ namespace CalDebugTools
             dic.Add("tableS", txt_s.Text);
             dic.Add("tableBZ", txt_helper.Text);
             dic.Add("tableSJ", txt_helper.Text);
-            dic.Add("jydbhFrom", txt_jydbh.Text);
-            dic.Add("jydbhTo", txt_yjdbh_to.Text);
             dic.Add("datafiled", txtdatafiled.Text);
             dic.Add("tableY", txt_y.Text);
-            dic.Add("checkWH", ck_other.Checked ? "1" : "0");
             dic.Add("wtdbh", txt_wtdbh.Text);
             ConfigurationHelper.SaveConfig(dic);
 
@@ -110,34 +104,6 @@ namespace CalDebugTools
             manage.Show();
         }
 
-        public List<string> GetJYDBHs()
-        {
-            List<string> listJYDBH = new List<string>();
-
-            string txtJYDBH = txt_jydbh.Text.Trim();
-            if (string.IsNullOrEmpty(txtJYDBH))
-            {
-                MessageBox.Show("jydbh err ");
-                return null;
-            }
-            string xmbh = this.txt_jcxmbh.Text.Trim();
-            string txtJYDBHto = txt_yjdbh_to.Text.Trim();
-
-            DataSet ch_mdata = _projectInfo.GetChiFengDate(xmbh, txtJYDBH, txtJYDBHto);
-
-            foreach (DataRow mDr in ch_mdata.Tables[0].Rows)
-            {
-                listJYDBH.Add(mDr["JYDBH"].ToString());
-            }
-            if (listJYDBH.Count == 0)
-            {
-                MessageBox.Show($"找不到试验项目{xmbh}数据，请确定 JYDBH对应的BGBH不为空 ", "调试", MessageBoxButtons.OK);
-                return null;
-            }
-
-            return listJYDBH;
-        }
-
         /// <summary>
         /// 获取数据
         /// </summary>
@@ -158,14 +124,8 @@ namespace CalDebugTools
             // zdzd表中获取需要获取的参数  
 
             string strParams = "";
-            if (dataType == "CF")//取赤峰的数据
-            {
-                strParams = _projectInfo.GetPar(xmbh, zdzdParms, txt_y.Text, txtdatafiled.Text, connType, queryNumber);
-            }
-            else if (dataType == "WH")
-            {
-                strParams = _projectInfo.GetPar2(xmbh, zdzdParms, txt_y.Text, txtdatafiled.Text, connType, queryNumber);
-            }
+            strParams = _projectInfo.GetPar2(xmbh, zdzdParms, txt_y.Text, txtdatafiled.Text, connType, queryNumber);
+
             if (string.IsNullOrWhiteSpace(strParams.Trim()))
             {
                 MessageBox.Show("参数数据不能为空！", "调试", MessageBoxButtons.OK);
@@ -201,19 +161,9 @@ namespace CalDebugTools
         }
         private void btn_Debug_Click(object sender, EventArgs e)
         {
+            
             SaveXMinfos();
-            //var df = IsQualified("±150", "1424");
-            //测试乌海
             Debug("", txt_wtdbh.Text.Trim());
-            //if (this.ck_other.Checked)
-            //{
-            //    if (!string.IsNullOrEmpty(txt_wtdbh.Text.Trim()))
-            //    {
-            //        Debug("", txt_wtdbh.Text.Trim());
-            //    }
-            //}
-            //else
-            //    Debug();
         }
 
         private void Debug(string jydbh = "", string quertBH = "")
@@ -241,35 +191,8 @@ namespace CalDebugTools
                 //获取乌海的数据
                 quertBH = whWtdbh;
                 //参数
-
-                strIOParams = GetParams(zdzdIOParms, whWtdbh, ESqlConnType.ConnectionStringWH, "WH");
-                strIParams = GetParams(zdzdIParms, whWtdbh, ESqlConnType.ConnectionStringWH, "WH");
-            }
-            else
-            {
-                //获取JYDBH
-
-                if (string.IsNullOrEmpty(jydbh))
-                    listJYDBH = GetJYDBHs();
-                else
-                    listJYDBH.Add(jydbh);
-
-
-                if (listJYDBH == null || listJYDBH.Count == 0)
-                {
-                    MessageBox.Show("获取JYDBH失败！", "调试", MessageBoxButtons.OK);
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(this.ritCode.Text.Trim()))
-                {
-                    MessageBox.Show("计算方法代码不能为空！", "调试", MessageBoxButtons.OK);
-                    return;
-                }
-                quertBH = listJYDBH[0];
-                //参数
-                strIOParams = GetParams(zdzdIOParms, quertBH, ESqlConnType.ConnectionStringDebugTool);
-                strIParams = GetParams(zdzdIParms, quertBH, ESqlConnType.ConnectionStringDebugTool);
-
+                strIOParams = GetParams(zdzdIOParms, whWtdbh, ESqlConnType.ConnectionStringJCJT, "WH");
+                strIParams = GetParams(zdzdIParms, whWtdbh, ESqlConnType.ConnectionStringJCJT, "WH");
             }
 
             //代码
@@ -286,7 +209,6 @@ namespace CalDebugTools
             if (!string.IsNullOrEmpty(this.txt_helper.Text.Trim()))
             {
                 listExtraData = GetExtraData(this.txt_helper.Text.Trim());
-
             }
 
             #region 初始化dataGridView
@@ -308,10 +230,7 @@ namespace CalDebugTools
             {
                 ch_sdata = _projectInfo.GetParmsWH(jcxmBH, zdzdIOParms, quertBH);
             }
-            else
-            {
-                ch_sdata = _projectInfo.GetParmsCF(jcxmBH, zdzdIOParms, quertBH);
-            }
+
             //给字段列赋值
             int flag = 0;
             foreach (DataColumn mDc in ch_sdata.Tables[0].Columns)
@@ -363,7 +282,6 @@ namespace CalDebugTools
                 }
             }
 
-
             //将数据表添加到DataSet中 
             ds.Tables.Add(dt);
 
@@ -392,7 +310,7 @@ namespace CalDebugTools
                     {
                         continue;
                     }
-                    extraDJjson = JsonHelper.GetDataJson($"select * from {extras[1]} ", extras[1], ESqlConnType.ConnectionStringWH);
+                    extraDJjson = JsonHelper.GetDataJson($"select * from {extras[1]} ", extras[1], ESqlConnType.ConnectionStringJCJT);
                     extraJsonData = JsonHelper.GetDictionary(extraDJjson);
                     listExtraData.Add(extras[1], extraJsonData[extras[1]]);
                 }
@@ -853,7 +771,7 @@ namespace CalDebugTools
 
         private void tool_AddFields_Click(object sender, EventArgs e)
         {
-            FormFields manage = new FormFields(this);
+            AddFields manage = new AddFields(this);
             this.Hide();
             manage.Show();
         }
@@ -908,24 +826,6 @@ namespace CalDebugTools
             catch (Exception ex)
             {
             }
-        }
-
-        private void ck_other_CheckedChanged(object sender, EventArgs e)
-        {
-            if (this.ck_other.Checked)
-            {
-                this.txt_wtdbh.Visible = true;
-                //Debug("","");
-            }
-            else
-            {
-                this.txt_wtdbh.Visible = false;
-            }
-        }
-
-        private void pan_table_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         /// <summary>
@@ -1213,22 +1113,69 @@ namespace CalDebugTools
             manage.Show();
         }
 
-        private void listDataSource_SelectedIndexChanged(object sender, EventArgs e)
+        private void com_dataSource_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var sourceName = ((System.Windows.Forms.ListBox)sender).SelectedItem.ToString();
+            var sourceName = com_dataSource.SelectedItem.ToString();
             if (!string.IsNullOrEmpty(sourceName))
             {
                 Dictionary<string, string> dic = new Dictionary<string, string>();
-                if (sourceName == "乌海")
-                    dic.Add("Qybh", "JCQ005322,JCQ005324,JCQ005325");
-                else if (sourceName == "通辽")
-                    dic.Add("Qybh", "JCQ006880");
+
+                dic.Add("Qybh", com_dataSource.SelectedValue.ToString());
+
                 if (dic.Count > 0)
                     ConfigurationHelper.SaveConfig(dic);
 
                 _qybh = ConfigurationHelper.GetConfig("Qybh");
-            }            //_qybh = ConfigurationHelper.GetConfig("Qybh");
+            }
+        }
+        /// <summary>
+        /// 初始化检测机构控件
+        /// </summary>
+        public void InitBaseData()
+        {
+            List<string> jcjgInfos = Common.StringsOper.GetTextList(AppDomain.CurrentDomain.BaseDirectory + @"Resources\检测机构配置.txt");
 
+            //数据库信息
+            List<JCJGConnectInfo> listData = new List<JCJGConnectInfo>();
+            List<string> arrInfo = new List<string>();
+            if (jcjgInfos.Count == 0)
+            {
+                MessageBox.Show("获取数据库配置信息异常，请确认配置文件格式！");
+                return;
+            }
+            JCJGConnectInfo data = new JCJGConnectInfo();
+            foreach (var info in jcjgInfos)
+            {
+                if (info.StartsWith("--"))
+                {
+                    continue;
+                }
+
+                arrInfo = info.Split('-').ToList();
+
+                if (arrInfo.Count != 4)
+                {
+                    continue;
+                }
+                data = new JCJGConnectInfo();
+
+                data.Id = arrInfo[0];
+                data.Abbrevition = arrInfo[1];
+                data.Name = arrInfo[2];
+                data.Code = arrInfo[3];
+                listData.Add(data);
+
+            }
+            com_dataSource.DataSource = listData;
+            com_dataSource.DisplayMember = "Name";
+            com_dataSource.ValueMember = "Code";
+        }
+
+        private void tool_AddProject_Click(object sender, EventArgs e)
+        {
+            AddProject manage = new AddProject(this);
+            this.Hide();
+            manage.Show();
         }
     }
 }

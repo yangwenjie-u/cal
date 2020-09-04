@@ -184,6 +184,7 @@ namespace Calculates
                     mfmzl = "其它类型阀";
                 }
                 zj1 = Conversion.Val(sItem["GGXH"]);
+                zj1 =GetSafeDouble( GetNum(sItem["GGXH"]));
                 if (zj1 == 63)
                 {
                     zj1 = 50;

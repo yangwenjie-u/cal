@@ -158,7 +158,7 @@ namespace Calculates
                         nArr.Add(md);
                     }
                     pjmd = Math.Round(sum / 8, 3);
-                    sItem["KPJ"] = pjmd.ToString("0.000");
+                    
 
                     sum = 0;
                     for (int i = 0; i < 8; i++)
@@ -167,9 +167,10 @@ namespace Calculates
                         sum += Math.Pow(md, 2);
                     }
 
-                    md1 = Math.Round(Math.Sqrt(sum / 7), 3);
-
-                    sItem["KBZC"] = md1.ToString("0.000");
+                    md1 = Math.Round(Math.Sqrt(sum / 7), 4);
+                    pjmd = Math.Round(pjmd, 2);
+                    sItem["KPJ"] = pjmd.ToString("0.00");
+                    sItem["KBZC"] = md1.ToString("0.0000");
 
                     if ("符合" == IsQualified(mrsDj["KPJ"], sItem["KPJ"], true) && "符合" == IsQualified(mrsDj["KBZC"], sItem["KBZC"], true))
                     {

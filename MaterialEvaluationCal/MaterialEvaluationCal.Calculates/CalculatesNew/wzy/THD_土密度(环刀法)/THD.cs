@@ -87,39 +87,39 @@ namespace Calculates
                 {
                     if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
-                        sitem["SMD1"] = Round(Conversion.Val(sitem["TZL1"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
-                        sitem["SMD2"] = Round(Conversion.Val(sitem["TZL2"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
-                        if (Conversion.Val(sitem["HSL11"]) >= 40 && Conversion.Val(sitem["HSL12"]) >= 40)
+                        sitem["SMD1"] = Round(GetSafeDouble(sitem["TZL1"]) / GetSafeDouble(sitem["HDRJ1"]), 2).ToString("0.00");
+                        sitem["SMD2"] = Round(GetSafeDouble(sitem["TZL2"]) / GetSafeDouble(sitem["HDRJ1"]), 2).ToString("0.00");
+                        if (GetSafeDouble(sitem["HSL11"]) >= 40 && GetSafeDouble(sitem["HSL12"]) >= 40)
                         {
-                            if (Math.Abs(Conversion.Val(sitem["HSL11"]) - Conversion.Val(sitem["HSL12"])) > 2)
+                            if (Math.Abs(GetSafeDouble(sitem["HSL11"]) - GetSafeDouble(sitem["HSL12"])) > 2)
                                 sitem["PJHSL1"] = "无效";
                         }
                         else
                         {
-                            if (Math.Abs(Conversion.Val(sitem["HSL11"]) - Conversion.Val(sitem["HSL12"])) > 1)
+                            if (Math.Abs(GetSafeDouble(sitem["HSL11"]) - GetSafeDouble(sitem["HSL12"])) > 1)
                                 sitem["PJHSL1"] = "无效";
                         }
 
 
-                        if (Conversion.Val(sitem["HSL21"]) >= 40 && Conversion.Val(sitem["HSL22"]) >= 40)
+                        if (GetSafeDouble(sitem["HSL21"]) >= 40 && GetSafeDouble(sitem["HSL22"]) >= 40)
                         {
-                            if (Math.Abs(Conversion.Val(sitem["HSL21"]) - Conversion.Val(sitem["HSL22"])) > 2)
+                            if (Math.Abs(GetSafeDouble(sitem["HSL21"]) - GetSafeDouble(sitem["HSL22"])) > 2)
                                 sitem["PJHSL2"] = "无效";
                         }
                         else
                         {
-                            if (Math.Abs(Conversion.Val(sitem["HSL21"]) - Conversion.Val(sitem["HSL22"])) > 1)
+                            if (Math.Abs(GetSafeDouble(sitem["HSL21"]) - GetSafeDouble(sitem["HSL22"])) > 1)
                                 sitem["PJHSL2"] = "无效";
                         }
-                        if (Math.Abs(Conversion.Val(sitem["GMD1"]) - Conversion.Val(sitem["GMD2"])) <= 0.03)
-                            sitem["GMD"] = Round((Conversion.Val(sitem["GMD1"]) + Conversion.Val(sitem["GMD2"])) / 2, 2).ToString("0.00");
+                        if (Math.Abs(GetSafeDouble(sitem["GMD1"]) - GetSafeDouble(sitem["GMD2"])) <= 0.03)
+                            sitem["GMD"] = Round((GetSafeDouble(sitem["GMD1"]) + GetSafeDouble(sitem["GMD2"])) / 2, 2).ToString("0.00");
                         else
                             sitem["GMD"] = "无效";
-                        if (Conversion.Val(sitem["ZDGMD"]) == 0)
+                        if (GetSafeDouble(sitem["ZDGMD"]) == 0)
                             sitem["PJYSD"] = "0";
                         else
-                            sitem["PJYSD"] = Round(100 * Conversion.Val(sitem["GMD"]) / Conversion.Val(sitem["ZDGMD"]), 0).ToString();
-                        if (Conversion.Val(sitem["SJYSD"]) <= Conversion.Val(sitem["PJYSD"]))
+                            sitem["PJYSD"] = Round(100 * GetSafeDouble(sitem["GMD"]) / GetSafeDouble(sitem["ZDGMD"]), 0).ToString();
+                        if (GetSafeDouble(sitem["SJYSD"]) <= GetSafeDouble(sitem["PJYSD"]))
                             iHgs = iHgs + 1;
                         sitem["JCJG"] = "----";
                     }
@@ -134,71 +134,71 @@ namespace Calculates
                     if (jcxm.Contains("、干密度、") || jcxm.Contains("、压实度、"))
                     {
                         //计算单组的抗压强度,并进行合格判断
-                        double p1 = Conversion.Val(sitem["HDJT1"]) - Conversion.Val(sitem["HDZL1"]);
-                        double p2 = Conversion.Val(sitem["HDJT2"]) - Conversion.Val(sitem["HDZL2"]);
+                        double p1 = GetSafeDouble(sitem["HDJT1"]) - GetSafeDouble(sitem["HDZL1"]);
+                        double p2 = GetSafeDouble(sitem["HDJT2"]) - GetSafeDouble(sitem["HDZL2"]);
                         if (p1 != 0)
                         {
                             sitem["TZL1"] = p1.ToString();
                             sitem["TZL2"] = p2.ToString();
                         }
-                        sitem["SMD1"] = Round(Conversion.Val(sitem["TZL1"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
-                        sitem["SMD2"] = Round(Conversion.Val(sitem["TZL2"]) / Conversion.Val(sitem["HDRJ1"]), 2).ToString("0.00");
-                        sitem["SZL11"] = (Conversion.Val(sitem["HJST11"]) - Conversion.Val(sitem["HJGT11"])).ToString();
-                        sitem["GTZL11"] = (Conversion.Val(sitem["HJGT11"]) - Conversion.Val(sitem["HZL11"])).ToString();
-                        sitem["HSL11"] = Round(Conversion.Val(sitem["SZL11"]) / Conversion.Val(sitem["GTZL11"]) * 100, 1).ToString("0.0");
+                        sitem["SMD1"] = Round(GetSafeDouble(sitem["TZL1"]) / GetSafeDouble(sitem["HDRJ1"]), 2).ToString("0.00");
+                        sitem["SMD2"] = Round(GetSafeDouble(sitem["TZL2"]) / GetSafeDouble(sitem["HDRJ1"]), 2).ToString("0.00");
+                        sitem["SZL11"] = (GetSafeDouble(sitem["HJST11"]) - GetSafeDouble(sitem["HJGT11"])).ToString();
+                        sitem["GTZL11"] = (GetSafeDouble(sitem["HJGT11"]) - GetSafeDouble(sitem["HZL11"])).ToString();
+                        sitem["HSL11"] = Round(GetSafeDouble(sitem["SZL11"]) / GetSafeDouble(sitem["GTZL11"]) * 100, 1).ToString("0.0");
                         if (sitem["HJGT12"].Trim() == "0" || string.IsNullOrEmpty(sitem["HJGT12"]) || !IsNumeric(sitem["HJGT12"]))
                         {
                             if (IsNumeric(sitem["HZL12"]) && sitem["HZL12"].Trim() != "0")
                                 sitem["HJGT12"] = calc_hjgt(GetSafeDouble(sitem["HZL12"]), GetSafeDouble(sitem["HJST12"].Trim()), GetSafeDouble(sitem["HSL11"].Trim()));
                         }
-                        sitem["SZL12"] = (Conversion.Val(sitem["HJST12"]) - Conversion.Val(sitem["HJGT12"])).ToString();
-                        sitem["GTZL12"] = (Conversion.Val(sitem["HJGT12"]) - Conversion.Val(sitem["HZL12"])).ToString();
-                        sitem["HSL12"] = Round(Conversion.Val(sitem["SZL12"]) / Conversion.Val(sitem["GTZL12"]) * 100, 1).ToString("0.0");
-                        sitem["SZL21"] = (Conversion.Val(sitem["HJST21"]) - Conversion.Val(sitem["HJGT21"])).ToString();
-                        sitem["GTZL21"] = (Conversion.Val(sitem["HJGT21"]) - Conversion.Val(sitem["HZL21"])).ToString();
-                        sitem["HSL21"] = Round(Conversion.Val(sitem["SZL21"]) / Conversion.Val(sitem["GTZL21"]) * 100, 1).ToString("0.0");
+                        sitem["SZL12"] = (GetSafeDouble(sitem["HJST12"]) - GetSafeDouble(sitem["HJGT12"])).ToString();
+                        sitem["GTZL12"] = (GetSafeDouble(sitem["HJGT12"]) - GetSafeDouble(sitem["HZL12"])).ToString();
+                        sitem["HSL12"] = Round(GetSafeDouble(sitem["SZL12"]) / GetSafeDouble(sitem["GTZL12"]) * 100, 1).ToString("0.0");
+                        sitem["SZL21"] = (GetSafeDouble(sitem["HJST21"]) - GetSafeDouble(sitem["HJGT21"])).ToString();
+                        sitem["GTZL21"] = (GetSafeDouble(sitem["HJGT21"]) - GetSafeDouble(sitem["HZL21"])).ToString();
+                        sitem["HSL21"] = Round(GetSafeDouble(sitem["SZL21"]) / GetSafeDouble(sitem["GTZL21"]) * 100, 1).ToString("0.0");
                         if (sitem["HJGT22"].Trim() == "0" || string.IsNullOrEmpty(sitem["HJGT22"]) || !IsNumeric(sitem["HJGT22"]))
                         {
                             if (IsNumeric(sitem["HZL22"]) && sitem["HZL22"].Trim() != "0")
                                 sitem["HJGT22"] = calc_hjgt(GetSafeDouble(sitem["HZL22"].Trim()), GetSafeDouble(sitem["HJST22"].Trim()), GetSafeDouble(sitem["HSL21"].Trim()));
                         }
-                        sitem["SZL22"] = (Conversion.Val(sitem["HJST22"]) - Conversion.Val(sitem["HJGT22"])).ToString();
-                        sitem["GTZL22"] = (Conversion.Val(sitem["HJGT22"]) - Conversion.Val(sitem["HZL22"])).ToString();
-                        sitem["HSL22"] = Round(Conversion.Val(sitem["SZL22"]) / Conversion.Val(sitem["GTZL22"]) * 100, 1).ToString("0.0");
-                        sitem["PJHSL1"] = Round((Conversion.Val(sitem["HSL11"]) + Conversion.Val(sitem["HSL12"])) / 2, 1).ToString("0.0");
-                        sitem["PJHSL2"] = Round((Conversion.Val(sitem["HSL21"]) + Conversion.Val(sitem["HSL22"])) / 2, 1).ToString("0.0");
-                        if (Conversion.Val(sitem["HSL11"]) >= 40 && Conversion.Val(sitem["HSL12"]) >= 40)
+                        sitem["SZL22"] = (GetSafeDouble(sitem["HJST22"]) - GetSafeDouble(sitem["HJGT22"])).ToString();
+                        sitem["GTZL22"] = (GetSafeDouble(sitem["HJGT22"]) - GetSafeDouble(sitem["HZL22"])).ToString();
+                        sitem["HSL22"] = Round(GetSafeDouble(sitem["SZL22"]) / GetSafeDouble(sitem["GTZL22"]) * 100, 1).ToString("0.0");
+                        sitem["PJHSL1"] = Round((GetSafeDouble(sitem["HSL11"]) + GetSafeDouble(sitem["HSL12"])) / 2, 1).ToString("0.0");
+                        sitem["PJHSL2"] = Round((GetSafeDouble(sitem["HSL21"]) + GetSafeDouble(sitem["HSL22"])) / 2, 1).ToString("0.0");
+                        if (GetSafeDouble(sitem["HSL11"]) >= 40 && GetSafeDouble(sitem["HSL12"]) >= 40)
                         {
-                            if (Math.Abs(Conversion.Val(sitem["HSL11"]) - Conversion.Val(sitem["HSL12"])) > 2)
+                            if (Math.Abs(GetSafeDouble(sitem["HSL11"]) - GetSafeDouble(sitem["HSL12"])) > 2)
                                 sitem["PJHSL1"] = "无效";
                         }
                         else
                         {
-                            if (Math.Abs(Conversion.Val(sitem["HSL11"]) - Conversion.Val(sitem["HSL12"])) > 1)
+                            if (Math.Abs(GetSafeDouble(sitem["HSL11"]) - GetSafeDouble(sitem["HSL12"])) > 1)
                                 sitem["PJHSL1"] = "无效";
                         }
-                        if (Conversion.Val(sitem["HSL21"]) >= 40 && Conversion.Val(sitem["HSL22"]) >= 40)
+                        if (GetSafeDouble(sitem["HSL21"]) >= 40 && GetSafeDouble(sitem["HSL22"]) >= 40)
                         {
-                            if (Math.Abs(Conversion.Val(sitem["HSL21"]) - Conversion.Val(sitem["HSL22"])) > 2)
+                            if (Math.Abs(GetSafeDouble(sitem["HSL21"]) - GetSafeDouble(sitem["HSL22"])) > 2)
                                 sitem["PJHSL2"] = "无效";
                         }
                         else
                         {
-                            if (Math.Abs(Conversion.Val(sitem["HSL21"]) - Conversion.Val(sitem["HSL22"])) > 1)
+                            if (Math.Abs(GetSafeDouble(sitem["HSL21"]) - GetSafeDouble(sitem["HSL22"])) > 1)
                                 sitem["PJHSL2"] = "无效";
                         }
-                        sitem["GMD1"] = Round((Conversion.Val(sitem["SMD1"])) / (1 + 0.01 * (Conversion.Val(sitem["PJHSL1"]))), 2).ToString("0.00");
-                        sitem["GMD2"] = Round((Conversion.Val(sitem["SMD2"])) / (1 + 0.01 * (Conversion.Val(sitem["PJHSL2"]))), 2).ToString("0.00");
-                        if (Math.Abs((Conversion.Val(sitem["GMD1"])) - (Conversion.Val(sitem["GMD2"]))) <= 0.03)
-                            sitem["GMD"] = Round((Conversion.Val(sitem["GMD1"]) + Conversion.Val(sitem["GMD2"])) / 2, 2).ToString("0.00");
+                        sitem["GMD1"] = Round((GetSafeDouble(sitem["SMD1"])) / (1 + 0.01 * (GetSafeDouble(sitem["PJHSL1"]))), 2).ToString("0.00");
+                        sitem["GMD2"] = Round((GetSafeDouble(sitem["SMD2"])) / (1 + 0.01 * (GetSafeDouble(sitem["PJHSL2"]))), 2).ToString("0.00");
+                        if (Math.Abs((GetSafeDouble(sitem["GMD1"])) - (GetSafeDouble(sitem["GMD2"]))) <= 0.03)
+                            sitem["GMD"] =Math.Round((GetSafeDecimal(sitem["GMD1"]) + GetSafeDecimal(sitem["GMD2"])) / 2, 2).ToString("0.00");
                         else
                             sitem["GMD"] = "无效";
-                        if (Conversion.Val(sitem["ZDGMD"]) == 0)
+                        if (GetSafeDouble(sitem["ZDGMD"]) == 0)
                             sitem["PJYSD"] = "0";
                         else
-                            sitem["PJYSD"] = Round(100 * (Conversion.Val(sitem["GMD"])) / (Conversion.Val(sitem["ZDGMD"])), 0).ToString("0");
+                            sitem["PJYSD"] = Round(100 * (GetSafeDouble(sitem["GMD"])) / (GetSafeDouble(sitem["ZDGMD"])), 0).ToString("0");
                         iZs = iZs + 1;
-                        if (Conversion.Val(sitem["SJYSD"]) <= Conversion.Val(sitem["PJYSD"]))
+                        if (GetSafeDouble(sitem["SJYSD"]) <= GetSafeDouble(sitem["PJYSD"]))
                         {
                             iHgs = iHgs + 1;
                             //单组判定
@@ -222,7 +222,7 @@ namespace Calculates
             iZs = SItem.Count();
             if (iZs != 0)
                 mitem["HGL"] = Round((100 * iHgs / iZs), 1).ToString("0.0");
-            if (Conversion.Val(mitem["HGL"]) < 100)
+            if (GetSafeDouble(mitem["HGL"]) < 100)
                 mAllHg = false;
             //主表总判断赋值
             if (mAllHg)

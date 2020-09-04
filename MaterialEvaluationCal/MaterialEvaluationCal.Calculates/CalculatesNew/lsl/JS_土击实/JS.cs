@@ -218,6 +218,7 @@ namespace Calculates
                 string mYpmcJcxm = sItem["YPMC"].Trim() + "样品" + sItem["JCXM"].Trim();
                 mItem["PDBZ"] = "《土工试验方法标准》GB/T 50123-2019";
                 double sStzl, sSmd, sSzl1, sSzl2, sGtzl1, sGtzl2, sHsl1, sHsl2;
+                //第一组
                 for (int i = 1; i <= 6; i++)
                 {
                     //模桶加湿土质量
@@ -225,7 +226,7 @@ namespace Calculates
                     {
                         //湿土质量
                         sStzl = GetSafeDouble(sItem["MTJST" + i].Trim()) - GetSafeDouble(mItem["MTZL"].Trim());
-                        sItem["STZL1_" + i] = sStzl.ToString();
+                        sItem["STZL1_" + i] = sStzl.ToString("0");
                         if (GetSafeDouble(mItem["MTTJ"].Trim()) == 0)
                         {
                             sSmd = 0;
@@ -269,7 +270,7 @@ namespace Calculates
                         if (sHsl1 == 0 || sHsl2 == 0)
                             sItem["PJHSL" + i] = Round((sHsl1 + sHsl2), 1).ToString("0.0");
                         else
-                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString("0.00");
+                            sItem["PJHSL" + i] = Round((sHsl1 + sHsl2) / 2, 1).ToString("0.0");
                         sItem["GMD" + i] = Round(sSmd / (1 + 0.01 * GetSafeDouble(sItem["PJHSL" + i])), 2).ToString("0.00");
                         x[i] = GetSafeDouble(sItem["PJHSL" + i]);
                         y[i] = GetSafeDouble(sItem["GMD" + i]);
@@ -312,6 +313,7 @@ namespace Calculates
                     mItem["ZJHSL1"] = Round(0, 1).ToString("0.0");
                 }
 
+                //第二组  一般只做一组
                 n = 0;
                 for (int i = 1; i <= 6; i++)
                 {
@@ -319,7 +321,7 @@ namespace Calculates
                     {
                         sStzl = GetSafeDouble(sItem["S_MTJST" + i].Trim()) - GetSafeDouble(mItem["MTZL"].Trim());
                         //湿土质量
-                        sItem["STZL2_" + i] = sStzl.ToString();
+                        sItem["STZL2_" + i] = sStzl.ToString("0");
                         if (GetSafeDouble(mItem["MTTJ"].Trim()) == 0)
                         {
                             sSmd = 0;
@@ -391,6 +393,10 @@ namespace Calculates
                     mItem["ZDGMD2"] = Round(0, 2).ToString("0.00");
                     mItem["ZJHSL2"] = Round(0, 1).ToString("0.0");
                 }
+                /*
+                 * 实际最大干密度与最佳含水率并不是在该计算代码中计算所得，由数据生成曲线图计算返回
+                 */
+                #region  
                 if (GetSafeDouble(mItem["ZDGMD1"]) * GetSafeDouble(mItem["ZDGMD2"]) == 0)
                 {
                     mItem["ZDGMD"] = Round(GetSafeDouble(mItem["ZDGMD1"]) + GetSafeDouble(mItem["ZDGMD2"]), 2).ToString("0.00");
@@ -407,6 +413,8 @@ namespace Calculates
                 {
                     mItem["ZJHSL"] = Round((GetSafeDouble(mItem["ZJHSL1"]) + GetSafeDouble(mItem["ZJHSL2"])) / 2, 1).ToString("0.0");
                 }
+                #endregion
+                //区分不同标准 50123  与  E51
                 bool flag, sign;
                 mItem["S_BZ"] = "1";
                 if (mItem["JCYJ"].Contains("51"))

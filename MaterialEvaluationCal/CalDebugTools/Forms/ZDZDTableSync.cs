@@ -36,7 +36,7 @@ namespace CalDebugTools.Forms
                 sqlStr = $" select name from sysobjects where xtype='u'  and name = 'ZDZD_{tabName}'";
             }
             //ZDZD_ZX
-            SqlBase _sqlBase = new SqlBase(ESqlConnType.ConnectionStringMain);
+            SqlBase _sqlBase = new SqlBase(ESqlConnType.ConnectionStringJCJT);
             SqlBase _DebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
             SqlBase ngJCJG = new SqlBase(ESqlConnType.ConnectionStringJCJG);
 

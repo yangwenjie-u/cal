@@ -306,15 +306,18 @@ namespace Calculates
 
                     #region  帽舌
                     /*
-                     * 要求 10～70mm
+                     * 要求 10～70mm     2007
+                     * 标准变更  ≤70mm  2019
                      */
                     if (jcxm.Contains("、帽舌、"))
                     {
                         jcxmCur = "帽舌";
-                        sItem["MS_YQ"] = "帽舌:10～70mm";
+                        //sItem["MS_YQ"] = "帽舌:10～70mm";
+                        //标准变更
+                        sItem["MS_YQ"] = "帽舌:≤70mm";
                         if (IsNumeric(sItem["MS_SC"]))
                         {
-                            if (GetSafeDouble(sItem["MS_SC"].Trim()) >= 10 && GetSafeDouble(sItem["MS_SC"].Trim()) <= 70)
+                            if (GetSafeDouble(sItem["MS_SC"].Trim()) <= 70)
                             {
                                 sItem["MS_PD"] = "合格";
                                 mHggs++;
@@ -379,14 +382,16 @@ namespace Calculates
                     #region  佩戴高度
                     /*
                      * 要求 80～90mm
+                     * 标准变更 ≥80mm
                      */
                     if (jcxm.Contains("、佩戴高度、"))
                     {
                         jcxmCur = "佩戴高度";
-                        sItem["PDGD_YQ"] = "佩戴高度:80～90mm";
+                        //sItem["PDGD_YQ"] = "佩戴高度:80～90mm";
+                        sItem["PDGD_YQ"] = "佩戴高度:≥80mm";
                         if (IsNumeric(sItem["PDGD_SC"]))
                         {
-                            if (GetSafeDouble(sItem["PDGD_SC"].Trim()) <= 90 && GetSafeDouble(sItem["PDGD_SC"].Trim()) >= 80)
+                            if (GetSafeDouble(sItem["PDGD_SC"].Trim()) >= 80)
                             {
                                 sItem["PDGD_PD"] = "合格";
                                 mHggs++;
@@ -451,11 +456,13 @@ namespace Calculates
                     #region  水平间距
                     /*
                      * 要求 5～20mm
+                     * 标准变更   ≥6
                      */
                     if (jcxm.Contains("、水平间距、"))
                     {
                         jcxmCur = "水平间距";
-                        sItem["SPJJ_YQ"] = "水平间距:5～20mm";
+                        //sItem["SPJJ_YQ"] = "水平间距:5～20mm";
+                        sItem["SPJJ_YQ"] = "水平间距:≥6mm";
                         if (IsNumeric(sItem["SPJJ_SC"]))
                         {
                             if (GetSafeDouble(sItem["SPJJ_SC"].Trim()) <= 20 && GetSafeDouble(sItem["SPJJ_SC"].Trim()) >= 5)
@@ -552,7 +559,7 @@ namespace Calculates
                     /*
                      * 标准要求   长195～250mm  宽170～220mm   高120～150mm
                      */
-                    if (jcxm.Contains("、帽壳内部尺寸、"))
+                    if (jcxm.Contains("、帽壳内部尺寸-新标准不做该指标废弃、"))
                     {
                         jcxmCur = "帽壳内部尺寸";
                         //内部尺寸长

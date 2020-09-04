@@ -52,6 +52,13 @@ namespace Calculates
                 #region 筛分
                 if (jcxm.Contains("、筛分、"))
                 {
+                    //筛余量总和1
+                    sItem["SYLZH1"] = Math.Round(GetSafeDouble(sItem["SY1_1"].Trim()) + GetSafeDouble(sItem["SY1_2"].Trim()) + GetSafeDouble(sItem["SY1_3"].Trim()) + GetSafeDouble(sItem["SY1_4"].Trim())
+                        + GetSafeDouble(sItem["SY1_5"].Trim()) + GetSafeDouble(sItem["SY1_6"].Trim()) + GetSafeDouble(sItem["SY1_7"].Trim()) + GetSafeDouble(sItem["SY1_8"].Trim()) + GetSafeDouble(sItem["SY_SD1"].Trim()), 1).ToString("0.0");
+                    //筛余量总和2
+                    sItem["SYLZH2"] = Math.Round(GetSafeDouble(sItem["SY2_1"].Trim()) + GetSafeDouble(sItem["SY2_2"].Trim()) + GetSafeDouble(sItem["SY2_3"].Trim()) + GetSafeDouble(sItem["SY2_4"].Trim())
+                        + GetSafeDouble(sItem["SY2_5"].Trim()) + GetSafeDouble(sItem["SY2_6"].Trim()) + GetSafeDouble(sItem["SY2_7"].Trim()) + GetSafeDouble(sItem["SY2_8"].Trim()) + GetSafeDouble(sItem["SY_SD2"].Trim()), 1).ToString("0.0");
+
                     jcxmCur = "筛分";
                     #region 获取筛分标准值
                     if ("人工砂" == sItem["CPMC"] || "石屑" == sItem["CPMC"])
@@ -375,7 +382,7 @@ namespace Calculates
                 #endregion
 
                 #region 表观密度
-                if (jcxm.Contains("、表观密度、") || sItem["JCXM"].Contains("、密度、"))
+                if (jcxm.Contains("、表观密度、") || jcxm.Contains("、密度、"))
                 {
                     jcxmCur = "表观密度";
                     //不同温度水时的密度及水温修正系数
@@ -392,8 +399,9 @@ namespace Calculates
                     {
                         sItem["G_BGMD"] = "≥2.45";
                     }
-                    else if ("城市快速路、主干路" == sItem["DLDJ"])
+                    else
                     {
+                        //高速公路、一级公路
                         sItem["G_BGMD"] = "≥2.50";
                     }
                     sign = true;
@@ -474,8 +482,45 @@ namespace Calculates
                 #region 含泥量
                 if (jcxm.Contains("、含泥量、"))
                 {
-                    sItem["HNL_GH"] = IsQualified(sItem["G_HNL"], sItem["W_HNL"], true);
-                    if (sItem["HNL_GH"] == "不符合") { mAllHg = false; jcjgHg = false; }
+
+                    if ("其它等级道路" == sItem["DLDJ"])
+                    {
+                        sItem["G_HNL"] = "≤5";
+                    }
+                    else
+                    {
+                        //高速公路、一级公路
+                        sItem["G_HNL"] = "≤3";
+                    }
+                    //含泥量 = （试验前的烘干试样质量 - 试验后的烘干试样质量） / 试验前的烘干试样质量   * 100
+                    jcxmCur = "含泥量";
+                    if (IsNumeric(sItem["SYQHGZL1_1"]) && IsNumeric(sItem["SYQHGZL1_2"]) && IsNumeric(sItem["SYHHGZL1_1"]) && IsNumeric(sItem["SYHHGZL1_2"]))
+                    {
+                        sItem["HNL1"] = Round((GetSafeDouble(sItem["SYQHGZL1_1"].Trim()) - GetSafeDouble(sItem["SYHHGZL1_1"].Trim())) / GetSafeDouble(sItem["SYQHGZL1_1"].Trim()) * 100, 1).ToString("0.0");
+                        sItem["HNL2"] = Round((GetSafeDouble(sItem["SYQHGZL1_2"].Trim()) - GetSafeDouble(sItem["SYHHGZL1_2"].Trim())) / GetSafeDouble(sItem["SYQHGZL1_2"].Trim()) * 100, 1).ToString("0.0");
+                        sItem["W_HNL"] = Round((GetSafeDouble(sItem["HNL1"]) + GetSafeDouble(sItem["HNL2"])) / 2, 1).ToString("0.0");
+                    }
+                    else
+                    {
+                        throw new SystemException("含泥量数据录入有误");
+                    }
+
+                    if (Math.Abs(GetSafeDouble(sItem["HNL1"]) - GetSafeDouble(sItem["HNL2"])) > 0.5)
+                    {
+                        sItem["W_HNL"] = "重做试验";
+                        sItem["HNL_GH"] = "重做试验";
+                    }
+                    else
+                    {
+                        sItem["HNL_GH"] = IsQualified(sItem["G_HNL"], sItem["W_HNL"], true);
+                        if (sItem["HNL_GH"] == "不符合")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            mAllHg = false;
+                            jcjgHg = false;
+                        }
+                    }
+
                 }
                 else
                 {

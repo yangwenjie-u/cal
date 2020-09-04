@@ -27,7 +27,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
             string mGxl, mSjdj;
             bool GGCCBHG = false;//规格尺寸是否合格
             mAllHg = true;
-            bool sffj = false;
+            string sffj;
 
             var jcxm = "";
             var jcxmBhg = "";
@@ -38,8 +38,8 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                 //  sitem["GGXH"] = sitem["GCWJ"] + sitem["GCBH"];
                 mSjdj = sitem["SJDJ"]; //管材名称
                                        //是否复检
-                sffj = Convert.ToBoolean(mitem["SFFJ"]);
-
+                                       // sffj = Convert.ToBoolean(mitem["SFFJ"]);
+                sffj = mitem["SFFJ"];
                 if (string.IsNullOrEmpty(mSjdj))
                     mSjdj = "";
                 mGxl = sitem["GXL"]; //环刚度(管系列)
@@ -233,7 +233,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                             }
 
                             arrWJ.AddRange(arrDZWJ);
-                            DZBHG_FLAG:
+                        DZBHG_FLAG:
                             continue;
 
 
@@ -299,7 +299,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                                     //尺寸不合格
                                 }
                                 arrDZBH.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
-                                DZBHG_FLAG:
+                            DZBHG_FLAG:
                                 continue;
                             }
                             if (bhg > 1)
@@ -588,7 +588,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
                     decimal PJ = 0;
                     decimal PJ1 = 0;
-                    if (!sffj)
+                    if (sffj == "否")
                     {
                         PJ = Math.Round(((GetSafeDecimal(mitem["RHWD1"]) + GetSafeDecimal(mitem["RHWD2"])) / 2), 1);
                         mitem["RHWD"] = Math.Round(PJ, 1).ToString();
@@ -658,7 +658,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                         MItem[0]["HGD"] = ((S1 + S2 + S3) / 3).ToString("0.0");
                         MItem[0]["HGD_HG"] = IsQualified(MItem[0]["G_HGD"], MItem[0]["HGD"]);
 
-                        if (sffj)
+                        if (sffj == "是")
                         {
                             S4 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI4"]) / ((GetSafeDouble(MItem[0]["HGD_LI4"]) / 1000) * Yi);
                             S5 = (0.0186 + 0.025 * 0.03) * GetSafeDouble(MItem[0]["HGD_FI5"]) / ((GetSafeDouble(MItem[0]["HGD_LI5"]) / 1000) * Yi);
@@ -918,7 +918,7 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                 }
                 mAllHg = (mAllHg && sitem["JCJG"].Trim() == "合格");
 
-                CCBHG_FLAG:
+            CCBHG_FLAG:
                 if (GGCCBHG)
                 {
                     mAllHg = false;
@@ -926,7 +926,17 @@ namespace Calculates.CalculatesNew.lq.PSG_排水管
                     jcxmBhg = "规格尺寸";
                 }
             }
-            var fjpd = MItem[0]["SFFJ"].ToUpper() == "TRUE" ? "复检" : "";
+            //  var fjpd = MItem[0]["SFFJ"].ToUpper() == "TRUE" ? "复检" : "";
+            var fjpd = "";
+            if (MItem[0]["SFFJ"] == "是")
+            {
+                fjpd = "复检";
+            }
+            else
+            {
+                fjpd = "";
+            }
+
             //主表总判断赋值
             if (mAllHg)
             {

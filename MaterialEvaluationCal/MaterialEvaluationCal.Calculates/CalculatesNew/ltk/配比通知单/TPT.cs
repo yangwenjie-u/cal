@@ -13,18 +13,15 @@ namespace Calculates
         {
             #region
             /************************ 代码开始 *********************/
+          
             #region 变量定义
-            string mcalBh, mlongStr, mSjdjbh, mSjdj, mMaxBgbh, mJSFF,myqsyrq;
-            myqsyrq = "0";
-
-            double mSjcc, mMj, mSjcc1, mMaxKyqd, mMinKyqd, mMidKyqd, mAvgKyqd, mMaxKyhz, mMinKyhz, mMidKyhz, mAvgKyhz,mSz, mQdyq, mHsxs, mttjhsxs;
-            int vp;
-            bool mAllHg, mGetBgbh, mSFwc;
+          
             double[] mkyhzArray = new double[2];
             double[] mkyqdArray = new double [2];
-            mSFwc = true;
+    
 
             #endregion
+           
             #region  集合取值
             var data = retData;
             var mrsDj = dataExtra["BZ_TPT_DJ"];
@@ -33,22 +30,23 @@ namespace Calculates
             var SItem = data["S_TPT"];
             //砼合格证明书
 
-            /*var THGSItem = data["S_THG"];
-            var THGMItem = data["M_THG"];*/
+           
+           // var THGMItem = data["M_THG"];
+            var THGSItem = data["S_THG"];
             //商砼开盘配合比
-            
+
             var TKPSItem = data["S_TKP"];
-            var TKPMItem = data["M_TKP"];
+            //var TKPMItem = data["M_TKP"];
             //商砼搅拌记录
-            var STJMItem = data["M_STJ"];
-            var STJSItem = data["S_STJ"];
+            //var STJMItem = data["M_STJ"];
+            var TJBSItem = data["S_TJB"];
            
             //商砼交货检验记录
-            var TJHMItem = data["M_TJH"];
+            //var TJHMItem = data["M_TJH"];
             var TJHSItem = data["S_TJH"];
-          /*  //商砼抗压强度
-            var HGZMItem = data["M_HGZ"];
-            var HGZSItem = data["S_HGZ"];*/
+            /*  //商砼抗压强度
+              var HGZMItem = data["M_HGZ"];*/
+            var HGZSItem = data["S_HGZ"];
             #endregion
             
             #region 计算开始
@@ -157,19 +155,22 @@ namespace Calculates
 
                 if (d_T_CLWJJ1 == 0)
                 {
-                    sitem["H_CLWJJ1"] = d_T_CLWJJ1.ToString();
+                    sitem["H_CLWJJ1"] = "----";
+                    
                 }
-                else { sitem["H_CLWJJ1"] = "----"; }
+                else { sitem["H_CLWJJ1"] = d_T_CLWJJ1.ToString(); }
                 if (d_T_CLWJJ2 == 0)
                 {
-                    sitem["H_CLWJJ2"] = d_T_CLWJJ2.ToString();
+                    sitem["H_CLWJJ2"] = "----";
+                    
                 }
-                else { sitem["H_CLWJJ2"] = "----"; }
+                else { sitem["H_CLWJJ2"] = d_T_CLWJJ2.ToString(); }
                 if (d_T_CLWJJ3 == 0)
                 {
-                    sitem["H_CLWJJ3"] = d_T_CLWJJ3.ToString();
+                    sitem["H_CLWJJ3"] = "----";
+                    
                 }
-                else { sitem["H_CLWJJ3"] = "----"; }
+                else { sitem["H_CLWJJ3"] = d_T_CLWJJ3.ToString(); }
 
                 if (d_T_CLCHL1 == 0)
                 {
@@ -204,30 +205,31 @@ namespace Calculates
 
                 #endregion
 
-                #region STJ
-                STJSItem[0]["SHAHSL"] = sitem["SHAHSL"];
-                STJSItem[0]["SHIHSL"] = sitem["SHIHSL"];
-                STJSItem[0]["SHAHSHIL"] = sitem["SHAHSHIL"];
-                STJSItem[0]["S_CLSN"] = sitem["S_CLSN"];
-                STJSItem[0]["H_CLSN"] = sitem["H_CLSN"];
-                STJSItem[0]["S_CLSHA"] = sitem["S_CLSHA"];
-                STJSItem[0]["H_CLSHA"] = sitem["H_CLSHA"];
-                STJSItem[0]["S_CLSHI"] = sitem["S_CLSHI"];
-                STJSItem[0]["H_CLSHI"] = sitem["H_CLSHI"];
-                STJSItem[0]["S_CLS"] = sitem["S_CLS"];
-                STJSItem[0]["H_CLS"] = sitem["H_CLS"];
-                STJSItem[0]["S_CLWJJ1"] = sitem["S_CLWJJ1"];
-                STJSItem[0]["H_CLWJJ1"] = sitem["H_CLWJJ1"];
-                STJSItem[0]["S_CLWJJ2"] = sitem["S_CLWJJ2"];
-                STJSItem[0]["H_CLWJJ2"] = sitem["H_CLWJJ2"];
-                STJSItem[0]["S_CLWJJ3"] = sitem["S_CLWJJ3"];
-                STJSItem[0]["H_CLWJJ3"] = sitem["H_CLWJJ3"];
-                STJSItem[0]["S_CLCHL1"] = sitem["S_CLCHL1"];
-                STJSItem[0]["H_CLCHL1"] = sitem["H_CLCHL1"];
-                STJSItem[0]["S_CLCHL2"] = sitem["S_CLCHL2"];
-                STJSItem[0]["H_CLCHL2"] = sitem["H_CLCHL2"];
-                STJSItem[0]["S_CLCHL3"] = sitem["S_CLCHL3"];
-                STJSItem[0]["H_CLCHL3"] = sitem["H_CLCHL3"];
+                #region TJB
+                TJBSItem[0]["SHAHSL"] = sitem["SHAHSL"];
+                TJBSItem[0]["SHIHSL"] = sitem["SHIHSL"];
+                TJBSItem[0]["SHAHSHIL"] = sitem["SHAHSHIL"];
+                TJBSItem[0]["S_CLSN"] = sitem["S_CLSN"];
+                TJBSItem[0]["H_CLSN"] = sitem["H_CLSN"];
+                TJBSItem[0]["S_CLSHA"] = sitem["S_CLSHA"];
+                TJBSItem[0]["H_CLSHA"] = sitem["H_CLSHA"];
+                TJBSItem[0]["S_CLSHI"] = sitem["S_CLSHI"];
+                TJBSItem[0]["H_CLSHI"] = sitem["H_CLSHI"];
+                TJBSItem[0]["S_CLS"] = sitem["S_CLS"];
+                TJBSItem[0]["H_CLS"] = sitem["H_CLS"];
+                TJBSItem[0]["S_CLWJJ1"] = sitem["S_CLWJJ1"];
+                TJBSItem[0]["H_CLWJJ1"] = sitem["H_CLWJJ1"];
+                TJBSItem[0]["S_CLWJJ2"] = sitem["S_CLWJJ2"];
+                TJBSItem[0]["H_CLWJJ2"] = sitem["H_CLWJJ2"];
+                TJBSItem[0]["S_CLWJJ3"] = sitem["S_CLWJJ3"];
+                TJBSItem[0]["H_CLWJJ3"] = sitem["H_CLWJJ3"];
+                TJBSItem[0]["S_CLCHL1"] = sitem["S_CLCHL1"];
+                TJBSItem[0]["H_CLCHL1"] = sitem["H_CLCHL1"];
+                TJBSItem[0]["S_CLCHL2"] = sitem["S_CLCHL2"];
+                TJBSItem[0]["H_CLCHL2"] = sitem["H_CLCHL2"];
+                TJBSItem[0]["S_CLCHL3"] = sitem["S_CLCHL3"];
+                TJBSItem[0]["H_CLCHL3"] = sitem["H_CLCHL3"];
+                TJBSItem[0]["HPBBGBH"] = sitem["HPBBGBH"];
                 #endregion
 
                 #region TKP
@@ -254,6 +256,13 @@ namespace Calculates
                 TKPSItem[0]["H_CLCHL2"] = sitem["H_CLCHL2"];
                 TKPSItem[0]["S_CLCHL3"] = sitem["S_CLCHL3"];
                 TKPSItem[0]["H_CLCHL3"] = sitem["H_CLCHL3"];
+                TKPSItem[0]["WJJ1MC"] = sitem["WJJ1MC"];
+                TKPSItem[0]["WJJ2MC"] = sitem["WJJ2MC"];
+                TKPSItem[0]["WJJ3MC"] = sitem["WJJ3MC"];
+                TKPSItem[0]["CHL1MC"] = sitem["CHL1MC"];
+                TKPSItem[0]["CHL2MC"] = sitem["CHL3MC"];
+                TKPSItem[0]["CHL3MC"] = sitem["CHL3MC"];
+                TKPSItem[0]["HPBBGBH"] = sitem["HPBBGBH"];
                 #endregion
 
                 #region TJH
@@ -282,15 +291,56 @@ namespace Calculates
                 TJHSItem[0]["H_CLCHL3"] = sitem["H_CLCHL3"];
                 #endregion
 
+                #region HGZ
+                HGZSItem[0]["WJJ1MC"] = sitem["WJJ1MC"];
+                HGZSItem[0]["WJJ2MC"] = sitem["WJJ2MC"];
+                HGZSItem[0]["WJJ3MC"] = sitem["WJJ3MC"];
+                HGZSItem[0]["CHL1MC"] = sitem["CHL1MC"];
+                HGZSItem[0]["CHL2MC"] = sitem["CHL3MC"];
+                HGZSItem[0]["CHL3MC"] = sitem["CHL3MC"];
+                HGZSItem[0]["SNPZDJ"] = sitem["SNPZDJ"];
+                HGZSItem[0]["SAGG"] = sitem["SAGG"];
+                HGZSItem[0]["SZGG"] = sitem["SZGG"];
+                HGZSItem[0]["WJJ1ZL"] = sitem["WJJ1ZL"];
+                HGZSItem[0]["WJJ2ZL"] = sitem["WJJ2ZL"];
+                HGZSItem[0]["WJJ3ZL"] = sitem["WJJ3ZL"];
+                HGZSItem[0]["CHL1ZL"] = sitem["CHL1ZL"];
+                HGZSItem[0]["CHL2ZL"] = sitem["CHL3ZL"];
+                HGZSItem[0]["CHL3ZL"] = sitem["CHL3ZL"];
+                HGZSItem[0]["SNSCCJ"] = sitem["SNSCCJ"];
+                HGZSItem[0]["SACD"] = sitem["SACD"];
+                HGZSItem[0]["SZCD"] = sitem["SZCD"];
+                HGZSItem[0]["WJJ1CJ"] = sitem["WJJ1CJ"];
+                HGZSItem[0]["WJJ2CJ"] = sitem["WJJ2CJ"];
+                HGZSItem[0]["WJJ3CJ"] = sitem["WJJ3CJ"];
+                HGZSItem[0]["CHL1CJ"] = sitem["CHL1CJ"];
+                HGZSItem[0]["CHL2CJ"] = sitem["CHL3CJ"];
+                HGZSItem[0]["CHL3CJ"] = sitem["CHL3CJ"];
+                #endregion
+
+                #region THG
+                THGSItem[0]["SAGG"] = sitem["SAGG"];
+                THGSItem[0]["SZGG"] = sitem["SZGG"];
+                THGSItem[0]["WJJ1ZL"] = sitem["WJJ1ZL"];
+                THGSItem[0]["WJJ2ZL"] = sitem["WJJ2ZL"];
+                THGSItem[0]["WJJ3ZL"] = sitem["WJJ3ZL"];
+                THGSItem[0]["CHL1ZL"] = sitem["CHL1ZL"];
+                THGSItem[0]["CHL2ZL"] = sitem["CHL3ZL"];
+                THGSItem[0]["CHL3ZL"] = sitem["CHL3ZL"];
+                THGSItem[0]["SNBGBH"] = sitem["SNBGBH"];
+                THGSItem[0]["SABGBH"] = sitem["SABGBH"];
+                THGSItem[0]["SZBGBH"] = sitem["SZBGBH"];
+                THGSItem[0]["WJJ1BGBH"] = sitem["WJJ1BGBH"];
+                THGSItem[0]["WJJ2BGBH"] = sitem["WJJ2BGBH"];
+                THGSItem[0]["WJJ3BGBH"] = sitem["WJJ3BGBH"];
+                THGSItem[0]["CHL1BGBH"] = sitem["CHL1BGBH"];
+                THGSItem[0]["CHL2BGBH"] = sitem["CHL2BGBH"];
+                THGSItem[0]["CHL3BGBH"] = sitem["CHL3BGBH"];
+                #endregion
+
             }
-
-
             #endregion
-
-
-
-
-
+            
             /************************ 代码结束 *********************/
             #endregion
 

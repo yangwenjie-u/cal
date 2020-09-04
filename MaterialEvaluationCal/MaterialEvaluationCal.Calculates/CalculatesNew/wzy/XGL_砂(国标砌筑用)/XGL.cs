@@ -14,8 +14,6 @@ namespace Calculates
             /************************ 代码开始 *********************/
             #region
             #region  参数定义
-            string mcalBh, mlongStr;
-            string mMaxBgbh, mkljpq;
             string mJSFF;
             bool mAllHg;
             bool mGetBgbh;
@@ -45,750 +43,429 @@ namespace Calculates
                     return ret_Lsign;
                 };
 
-            //以下为对用设计值的判定方式
-            Func<string, string, string> calc_pd =
-                delegate (string sj, string sc)
-                {
-                    sj = sj.Trim();
-                    string calc_pd_ret = "";
-                    bool isStart = false;
-                    string tmpStr = string.Empty;
-                    if (string.IsNullOrEmpty(sc))
-                        sc = "";
-                    for (int i = 1; i <= sc.Length; i++)
-                    {
-                        if (IsNumeric(sc.Substring(i - 1, 1)) || sc.Substring(i - 1, 1) == "." || sc.Substring(i - 1, 1) == "-")
-                        {
-                            isStart = true;
-                            tmpStr = tmpStr + sc.Substring(i - 1, 1);
-                        }
-                        else
-                        {
-                            if (isStart == false && tmpStr != "")
-                                break;
-                        }
-                    }
-                    sc = tmpStr;
-                    if (!IsNumeric(sc))
-                    {
-                        calc_pd_ret = "----";
-                    }
-                    else
-                    {
-                        double min_sjz, max_sjz, scz;
-                        int length, dw;
-                        if (sj.Contains("＞"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("＞") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains(">"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf(">") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("≥"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("≥") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("＜"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("＜") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz < max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("<"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("<") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz < max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("≤"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("≤") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("="))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("=") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz == max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("～"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj.Substring(0, dw - 1));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= min_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(min_sjz.ToString().Substring(i - 1, 1)) || min_sjz.ToString().Substring(i - 1, 1) == "." || min_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + min_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            min_sjz = Conversion.Val(tmpStr);
-                            max_sjz = GetSafeDouble(sj.Substring(dw, length - dw));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= max_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(max_sjz.ToString().Substring(i - 1, 1)) || max_sjz.ToString().Substring(i - 1, 1) == "." || max_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + max_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            max_sjz = Conversion.Val(tmpStr);
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz && scz >= min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("~"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("~") + 1;
-                            min_sjz = GetSafeDouble(sj.Substring(0, dw - 1));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= min_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(min_sjz.ToString().Substring(i - 1, 1)) || min_sjz.ToString().Substring(i - 1, 1) == "." || min_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + min_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            min_sjz = Conversion.Val(tmpStr);
-                            max_sjz = GetSafeDouble(sj.Substring(dw, length - dw));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= max_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(max_sjz.ToString().Substring(i - 1, 1)) || max_sjz.ToString().Substring(i - 1, 1) == "." || max_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + max_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            max_sjz = Conversion.Val(tmpStr);
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz && scz >= min_sjz ? "符合" : "不符合";
-                        }
-                    }
-                    return calc_pd_ret;
-                };
+            #region 跳转代码
+            //Func<IDictionary<string, string>, IDictionary<string, string>, IList<IDictionary<string, string>>, bool, bool> sjtabcalc =
+            //    delegate (IDictionary<string, string> Mitem, IDictionary<string, string> sitem, IList<IDictionary<string, string>> mrsDj_Fun, bool MAllHg)
+            //    {
+            //        zSalbs = 1;
+            //        mbhgs = 0;
+            //        var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+            //        if (jcxm.Contains("、含泥量、"))
+            //        {
+            //            sitem["HNLPD"] = "";
+            //            foreach (var mrsDj_Filter in mrsDj_Fun)
+            //            {
+            //                if (IsQualified(mrsDj_Filter["HNL"], sitem["HNL"]) == "符合")
+            //                {
+            //                    sitem["HNLPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
+            //                    break;
+            //                }
+            //            }
+            //            if (sitem["HNLPD"] == "")
+            //            {
+            //                sitem["HNLPD"] = "不符合";
+            //                mbhgs = mbhgs + 1;
+            //                mFlag_Bhg = true;
+            //            }
+            //            else
+            //                mFlag_Hg = true;
 
-            //这个函数总括了对于判定(符合,不符合) 还是判断(合格,不合格)
-            Func<string, string, bool, string> calc_PB =
-                delegate (string sj_fun, string sc_fun, bool flag_fun)
-                {
-                    string calc_PB_fun = string.Empty;
-                    sj_fun = sj_fun.Trim();
-                    sc_fun = sc_fun.Trim();
-                    if (!IsNumeric(sc_fun))
-                    {
-                        calc_PB_fun = "----";
-                    }
-                    else
-                    {
-                        sj_fun = sj_fun.Replace("~", "～");
-                        string l_bl, r_bl;
-                        double min_sjz, max_sjz, scz;
-                        int length, dw;
-                        bool min_bl, max_bl, sign_fun;
-                        min_sjz = -99999;
-                        max_sjz = 99999;
-                        scz = GetSafeDouble(sc_fun);
-                        sign_fun = false;
-                        min_bl = false;
-                        max_bl = false;
-                        if (sj_fun.Contains("＞"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("＞") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
-                            r_bl = sj_fun.Substring(dw, length - dw);
-                            if (IsNumeric(l_bl))
-                            {
-                                max_sjz = GetSafeDouble(l_bl);
-                                max_bl = false;
-                            }
-                            if (IsNumeric(r_bl))
-                            {
-                                min_sjz = GetSafeDouble(r_bl);
-                                min_bl = false;
-                            }
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("≥"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("≥") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
-                            r_bl = sj_fun.Substring(dw, length - dw);
-                            if (IsNumeric(l_bl))
-                            {
-                                max_sjz = GetSafeDouble(l_bl);
-                                max_bl = true;
-                            }
-                            if (IsNumeric(r_bl))
-                            {
-                                min_sjz = GetSafeDouble(r_bl);
-                                min_bl = true;
-                            }
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("＜"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("＜") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
-                            r_bl = sj_fun.Substring(dw, length - dw);
-                            if (IsNumeric(l_bl))
-                            {
-                                min_sjz = GetSafeDouble(l_bl);
-                                min_bl = false;
-                            }
-                            if (IsNumeric(r_bl))
-                            {
-                                max_sjz = GetSafeDouble(r_bl);
-                                max_bl = false;
-                            }
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("≤"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("≤") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
-                            r_bl = sj_fun.Substring(dw, length - dw);
-                            if (IsNumeric(l_bl))
-                            {
-                                min_sjz = GetSafeDouble(l_bl);
-                                min_bl = true;
-                            }
-                            if (IsNumeric(r_bl))
-                            {
-                                max_sjz = GetSafeDouble(r_bl);
-                                max_bl = true;
-                            }
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("～"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
-                            max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
-                            min_bl = true;
-                            max_bl = true;
-                            sign_fun = true;
-                        }
-                        if (sj_fun.Contains("±"))
-                        {
-                            length = sj_fun.Length;
-                            dw = sj_fun.IndexOf("±") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
-                            max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
-                            min_sjz = min_sjz - max_sjz;
-                            max_sjz = min_sjz + 2 * max_sjz;
-                            min_bl = true;
-                            max_bl = true;
-                            sign_fun = true;
-                        }
-                        if (sj_fun == "0" && !string.IsNullOrEmpty(sj_fun))
-                        {
-                            sign_fun = true;
-                            min_bl = false;
-                            max_bl = false;
-                            max_sjz = 0;
-                        }
-                        if (!sign_fun)
-                        {
-                            calc_PB_fun = "----";
-                        }
-                        else
-                        {
-                            string hgjl, bhgjl;
-                            hgjl = flag_fun ? "符合" : "合格";
-                            bhgjl = flag_fun ? "不符合" : "不合格";
-                            sign_fun = true; //做为判定了
-                            if (min_bl)
-                                sign_fun = scz >= min_sjz ? sign_fun : false;
-                            else
-                                sign_fun = scz > min_sjz ? sign_fun : false;
-                            if (max_bl)
-                                sign_fun = scz <= max_sjz ? sign_fun : false;
-                            else
-                                sign_fun = scz < max_sjz ? sign_fun : false;
-                            calc_PB_fun = sign_fun ? hgjl : bhgjl;
-                        }
-                    }
-                    return calc_PB_fun;
-                };
+            //            switch (sitem["HNLPD"].Trim())
+            //            {
+            //                case "Ⅰ类":
+            //                    zSalbs = zSalbs < 1 ? 1 : zSalbs;
+            //                    break;
+            //                case "Ⅱ类":
+            //                    zSalbs = zSalbs < 2 ? 2 : zSalbs;
+            //                    break;
+            //                case "Ⅲ类":
+            //                    zSalbs = zSalbs < 3 ? 3 : zSalbs;
+            //                    break;
+            //                default:
+            //                    zSalbs = zSalbs < 4 ? 4 : zSalbs;
+            //                    break;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            sitem["HNLPD"] = "----";
+            //            sitem["HNL"] = "----";
+            //        }
+            //        if (jcxm.Contains("、泥块含量、"))
+            //        {
+            //            sitem["NKHLPD"] = "";
+            //            foreach (var mrsDj_Filter in mrsDj_Fun)
+            //            {
+            //                if (IsQualified(mrsDj_Filter["NKHL"], sitem["NKHL"]) == "符合")
+            //                {
+            //                    sitem["NKHLPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
+            //                    break;
+            //                }
+            //            }
+            //            if (sitem["NKHLPD"] == "")
+            //            {
+            //                sitem["NKHLPD"] = "不符合";
+            //                mbhgs = mbhgs + 1;
+            //                mFlag_Bhg = true;
+            //            }
+            //            else
+            //                mFlag_Hg = true;
+            //            switch (sitem["NKHLPD"].Trim())
+            //            {
+            //                case "Ⅰ类":
+            //                    zSalbs = zSalbs < 1 ? 1 : zSalbs;
+            //                    break;
+            //                case "Ⅱ类":
+            //                    zSalbs = zSalbs < 2 ? 2 : zSalbs;
+            //                    break;
+            //                case "Ⅲ类":
+            //                    zSalbs = zSalbs < 3 ? 3 : zSalbs;
+            //                    break;
+            //                default:
+            //                    zSalbs = zSalbs < 4 ? 4 : zSalbs;
+            //                    break;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            sitem["NKHLPD"] = "----";
+            //            sitem["NKHL"] = "----";
+            //        }
+            //        if (jcxm.Contains("、堆积密度、"))
+            //        {
+            //            sitem["DJMDPD"] = IsQualified(mrsDj_Fun[0]["DJMD"], sitem["DJMD"], true);
+            //            mbhgs = sitem["DJMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
+            //            if (sitem["DJMDPD"] != "不符合")
+            //                mFlag_Hg = true;
+            //            else
+            //                mFlag_Bhg = true;
+            //        }
+            //        else
+            //        {
+            //            sitem["DJMDPD"] = "----";
+            //            sitem["DJMD"] = "----";
+            //        }
+            //        if (jcxm.Contains("、紧密密度、"))
+            //        {
+            //            sitem["JMMDPD"] = IsQualified(mrsDj_Fun[0]["JMMD"], sitem["JMMD"], true);
+            //            mbhgs = sitem["JMMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
+            //            if (sitem["JMMDPD"] != "不符合")
+            //                mFlag_Hg = true;
+            //            else
+            //                mFlag_Bhg = true;
+            //        }
+            //        else
+            //        {
+            //            sitem["JMMDPD"] = "----";
+            //            sitem["JMMD"] = "----";
+            //        }
+            //        if (jcxm.Contains("、表观密度、"))
+            //        {
 
-            Func<IDictionary<string, string>, IDictionary<string, string>, IList<IDictionary<string, string>>, bool, bool> sjtabcalc =
-                delegate (IDictionary<string, string> Mitem, IDictionary<string, string> sitem, IList<IDictionary<string, string>> mrsDj_Fun, bool MAllHg)
-                {
-                    zSalbs = 1;
-                    mbhgs = 0;
-                    var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
-                    if (jcxm.Contains("、含泥量、"))
-                    {
-                        sitem["HNLPD"] = "";
-                        foreach (var mrsDj_Filter in mrsDj_Fun)
-                        {
-                            if (calc_pd(mrsDj_Filter["HNL"], sitem["HNL"]) == "符合")
-                            {
-                                sitem["HNLPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
-                                break;
-                            }
-                        }
-                        if (sitem["HNLPD"] == "")
-                        {
-                            sitem["HNLPD"] = "不符合";
-                            mbhgs = mbhgs + 1;
-                            mFlag_Bhg = true;
-                        }
-                        else
-                            mFlag_Hg = true;
+            //            sitem["BGMDPD"] = IsQualified(mrsDj_Fun[0]["BGMD"], sitem["BGMD"], true);
+            //            mbhgs = sitem["BGMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
+            //            if (sitem["BGMDPD"] != "不符合")
+            //                mFlag_Hg = true;
+            //            else
+            //                mFlag_Bhg = true;
+            //        }
+            //        else
+            //        {
+            //            sitem["BGMDPD"] = "----";
+            //            sitem["BGMD"] = "----";
+            //        }
+            //        if (jcxm.Contains("、空隙率、"))
+            //        {
+            //            sitem["KXLPD"] = IsQualified(mrsDj_Fun[0]["KXL"], sitem["KXL"], true);
+            //            mbhgs = sitem["KXLPD"] == "不符合" ? mbhgs + 1 : mbhgs;
+            //            if (sitem["KXLPD"] != "不符合")
+            //                mFlag_Hg = true;
+            //            else
+            //                mFlag_Bhg = true;
+            //        }
+            //        else
+            //        {
+            //            sitem["KXLPD"] = "----";
+            //            sitem["KXL"] = "----";
+            //        }
+            //        if (jcxm.Contains("、氯离子含量、"))
+            //        {
+            //            sitem["LLZHLPD"] = "";
+            //            foreach (var mrsDj_Filter in mrsDj_Fun)
+            //            {
+            //                if (IsQualified(mrsDj_Filter["LLZHL"], sitem["LLZHL"]) == "符合")
+            //                {
+            //                    sitem["LLZHLPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
+            //                    break;
+            //                }
+            //            }
+            //            if (sitem["LLZHLPD"] == "")
+            //            {
+            //                sitem["LLZHLPD"] = "不符合";
+            //                mbhgs = mbhgs + 1;
+            //                mFlag_Bhg = true;
+            //            }
+            //            else
+            //                mFlag_Hg = true;
+            //            switch (sitem["LLZHLPD"].Trim())
+            //            {
+            //                case "Ⅰ类":
+            //                    zSalbs = zSalbs < 1 ? 1 : zSalbs;
+            //                    break;
+            //                case "Ⅱ类":
+            //                    zSalbs = zSalbs < 2 ? 2 : zSalbs;
+            //                    break;
+            //                case "Ⅲ类":
+            //                    zSalbs = zSalbs < 3 ? 3 : zSalbs;
+            //                    break;
+            //                default:
+            //                    zSalbs = zSalbs < 4 ? 4 : zSalbs;
+            //                    break;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            sitem["LLZHLPD"] = "----";
+            //            sitem["LLZHL"] = "----";
+            //        }
+            //        if (jcxm.Contains("、吸水率、"))
+            //            sitem["XSLPD"] = "----";
+            //        else
+            //        {
+            //            sitem["XSL"] = "----";
+            //            sitem["XSLPD"] = "----";
+            //        }
+            //        if (jcxm.Contains("、云母含量、"))
+            //        {
+            //            sitem["YMPD"] = "";
+            //            foreach (var mrsDj_Filter in mrsDj_Fun)
+            //            {
+            //                if (IsQualified(mrsDj_Filter["YM"], sitem["YM"]) == "符合")
+            //                {
+            //                    sitem["YMPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
+            //                    break;
+            //                }
+            //            }
+            //            if (sitem["YMPD"] == "")
+            //            {
+            //                sitem["YMPD"] = "不符合";
+            //                mbhgs = mbhgs + 1;
+            //                mFlag_Bhg = true;
+            //            }
+            //            else
+            //                mFlag_Hg = true;
 
-                        switch (sitem["HNLPD"].Trim())
-                        {
-                            case "Ⅰ类":
-                                zSalbs = zSalbs < 1 ? 1 : zSalbs;
-                                break;
-                            case "Ⅱ类":
-                                zSalbs = zSalbs < 2 ? 2 : zSalbs;
-                                break;
-                            case "Ⅲ类":
-                                zSalbs = zSalbs < 3 ? 3 : zSalbs;
-                                break;
-                            default:
-                                zSalbs = zSalbs < 4 ? 4 : zSalbs;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        sitem["HNLPD"] = "----";
-                        sitem["HNL"] = "----";
-                    }
-                    if (jcxm.Contains("、泥块含量、"))
-                    {
-                        sitem["NKHLPD"] = "";
-                        foreach (var mrsDj_Filter in mrsDj_Fun)
-                        {
-                            if (calc_pd(mrsDj_Filter["NKHL"], sitem["NKHL"]) == "符合")
-                            {
-                                sitem["NKHLPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
-                                break;
-                            }
-                        }
-                        if (sitem["NKHLPD"] == "")
-                        {
-                            sitem["NKHLPD"] = "不符合";
-                            mbhgs = mbhgs + 1;
-                            mFlag_Bhg = true;
-                        }
-                        else
-                            mFlag_Hg = true;
-                        switch (sitem["NKHLPD"].Trim())
-                        {
-                            case "Ⅰ类":
-                                zSalbs = zSalbs < 1 ? 1 : zSalbs;
-                                break;
-                            case "Ⅱ类":
-                                zSalbs = zSalbs < 2 ? 2 : zSalbs;
-                                break;
-                            case "Ⅲ类":
-                                zSalbs = zSalbs < 3 ? 3 : zSalbs;
-                                break;
-                            default:
-                                zSalbs = zSalbs < 4 ? 4 : zSalbs;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        sitem["NKHLPD"] = "----";
-                        sitem["NKHL"] = "----";
-                    }
-                    if (jcxm.Contains("、堆积密度、"))
-                    {
-                        sitem["DJMDPD"] = calc_PB(mrsDj_Fun[0]["DJMD"], sitem["DJMD"], true);
-                        mbhgs = sitem["DJMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
-                        if (sitem["DJMDPD"] != "不符合")
-                            mFlag_Hg = true;
-                        else
-                            mFlag_Bhg = true;
-                    }
-                    else
-                    {
-                        sitem["DJMDPD"] = "----";
-                        sitem["DJMD"] = "----";
-                    }
-                    if (jcxm.Contains("、紧密密度、"))
-                    {
-                        sitem["JMMDPD"] = calc_PB(mrsDj_Fun[0]["JMMD"], sitem["JMMD"], true);
-                        mbhgs = sitem["JMMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
-                        if (sitem["JMMDPD"] != "不符合")
-                            mFlag_Hg = true;
-                        else
-                            mFlag_Bhg = true;
-                    }
-                    else
-                    {
-                        sitem["JMMDPD"] = "----";
-                        sitem["JMMD"] = "----";
-                    }
-                    if (jcxm.Contains("、表观密度、"))
-                    {
+            //            switch (sitem["YMPD"].Trim())
+            //            {
+            //                case "Ⅰ类":
+            //                    zSalbs = zSalbs < 1 ? 1 : zSalbs;
+            //                    break;
+            //                case "Ⅱ类":
+            //                    zSalbs = zSalbs < 2 ? 2 : zSalbs;
+            //                    break;
+            //                case "Ⅲ类":
+            //                    zSalbs = zSalbs < 3 ? 3 : zSalbs;
+            //                    break;
+            //                default:
+            //                    zSalbs = zSalbs < 4 ? 4 : zSalbs;
+            //                    break;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            sitem["YMPD"] = "----";
+            //            sitem["YM"] = "----";
+            //        }
+            //        if (jcxm.Contains("、含水率、"))
+            //            sitem["HSLPD"] = "----";
+            //        else
+            //        {
+            //            sitem["HSL"] = "----";
+            //            sitem["HSLPD"] = "----";
+            //        }
+            //        if (jcxm.Contains("、有机物含量、"))
+            //        {
+            //            sitem["YJWHLPD"] = sitem["YJWHL"].Contains("不") ? "不符合" : "符合";
+            //            mbhgs = sitem["YJWHLPD"].Contains("不") ? mbhgs + 1 : mbhgs;
+            //            if (sitem["YJWHLPD"].Contains("不"))
+            //                mFlag_Bhg = true;
+            //            else
+            //                mFlag_Hg = true;
+            //        }
+            //        else
+            //            sitem["YJWHLPD"] = "----";
+            //        if (jcxm.Contains("、碱活性、"))
+            //        {
+            //            if (IsQualified(mrsDj_Fun[0]["JHX"], sitem["JHX"]) == "符合")
+            //            {
+            //                sitem["JHXPD"] = "符合";
+            //                mFlag_Hg = true;
+            //            }
+            //            else
+            //            {
+            //                mbhgs = mbhgs + 1;
+            //                mFlag_Bhg = true;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            sitem["JHXPD"] = "----";
+            //            sitem["JHX"] = "----";
+            //        }
+            //        if (jcxm.Contains("、轻物质含量、"))
+            //        {
+            //            if (IsQualified(mrsDj_Fun[0]["QWZ"], sitem["QWZ"]) == "符合")
+            //            {
+            //                sitem["QWZPD"] = "符合";
+            //                mFlag_Hg = true;
+            //            }
+            //            else
+            //            {
+            //                mbhgs = mbhgs + 1;
+            //                mFlag_Bhg = true;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            sitem["QWZPD"] = "----";
+            //            sitem["QWZ"] = "----";
+            //        }
+            //        if (jcxm.Contains("、硫化物和硫酸盐含量、"))
+            //        {
+            //            if (IsQualified(mrsDj_Fun[0]["SO3"], sitem["SO3"]) == "符合")
+            //            {
+            //                sitem["SO3PD"] = "符合";
+            //                mFlag_Hg = true;
+            //            }
+            //            else
+            //            {
+            //                sitem["SO3PD"] = "不符合";
+            //                mbhgs = mbhgs + 1;
+            //                mFlag_Bhg = true;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            sitem["SO3PD"] = "----";
+            //            sitem["SO3"] = "----";
+            //        }
+            //        if (jcxm.Contains("、坚固性、"))
+            //        {
+            //            double sum = 0;
+            //            int xd = 0;
+            //            double md1 = 0;
+            //            double md2 = 0;
+            //            double md = 0;
 
-                        sitem["BGMDPD"] = calc_PB(mrsDj_Fun[0]["BGMD"], sitem["BGMD"], true);
-                        mbhgs = sitem["BGMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
-                        if (sitem["BGMDPD"] != "不符合")
-                            mFlag_Hg = true;
-                        else
-                            mFlag_Bhg = true;
-                    }
-                    else
-                    {
-                        sitem["BGMDPD"] = "----";
-                        sitem["BGMD"] = "----";
-                    }
-                    if (jcxm.Contains("、空隙率、"))
-                    {
-                        sitem["KXLPD"] = calc_PB(mrsDj_Fun[0]["KXL"], sitem["KXL"], true);
-                        mbhgs = sitem["KXLPD"] == "不符合" ? mbhgs + 1 : mbhgs;
-                        if (sitem["KXLPD"] != "不符合")
-                            mFlag_Hg = true;
-                        else
-                            mFlag_Bhg = true;
-                    }
-                    else
-                    {
-                        sitem["KXLPD"] = "----";
-                        sitem["KXL"] = "----";
-                    }
-                    if (jcxm.Contains("、氯离子含量、"))
-                    {
-                        sitem["LLZHLPD"] = "";
-                        foreach (var mrsDj_Filter in mrsDj_Fun)
-                        {
-                            if (calc_pd(mrsDj_Filter["LLZHL"], sitem["LLZHL"]) == "符合")
-                            {
-                                sitem["LLZHLPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
-                                break;
-                            }
-                        }
-                        if (sitem["LLZHLPD"] == "")
-                        {
-                            sitem["LLZHLPD"] = "不符合";
-                            mbhgs = mbhgs + 1;
-                            mFlag_Bhg = true;
-                        }
-                        else
-                            mFlag_Hg = true;
-                        switch (sitem["LLZHLPD"].Trim())
-                        {
-                            case "Ⅰ类":
-                                zSalbs = zSalbs < 1 ? 1 : zSalbs;
-                                break;
-                            case "Ⅱ类":
-                                zSalbs = zSalbs < 2 ? 2 : zSalbs;
-                                break;
-                            case "Ⅲ类":
-                                zSalbs = zSalbs < 3 ? 3 : zSalbs;
-                                break;
-                            default:
-                                zSalbs = zSalbs < 4 ? 4 : zSalbs;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        sitem["LLZHLPD"] = "----";
-                        sitem["LLZHL"] = "----";
-                    }
-                    if (jcxm.Contains("、吸水率、"))
-                        sitem["XSLPD"] = "----";
-                    else
-                    {
-                        sitem["XSL"] = "----";
-                        sitem["XSLPD"] = "----";
-                    }
-                    if (jcxm.Contains("、云母含量、"))
-                    {
-                        sitem["YMPD"] = "";
-                        foreach (var mrsDj_Filter in mrsDj_Fun)
-                        {
-                            if (calc_pd(mrsDj_Filter["YM"], sitem["YM"]) == "符合")
-                            {
-                                sitem["YMPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
-                                break;
-                            }
-                        }
-                        if (sitem["YMPD"] == "")
-                        {
-                            sitem["YMPD"] = "不符合";
-                            mbhgs = mbhgs + 1;
-                            mFlag_Bhg = true;
-                        }
-                        else
-                            mFlag_Hg = true;
+            //            double[,] narr = new double[3, 5];
+            //            for (xd = 1; xd <= 4; xd++)
+            //            {
+            //                md1 = Conversion.Val(sitem["JGXQG1_" + xd].Trim());
+            //                sum = sum + md1;
+            //                md2 = Conversion.Val(sitem["JGXHG2_" + xd].Trim());
+            //                md = 100 * (md1 - md2) / md1;
+            //                md = Round(md, 1);
+            //                narr[1, xd] = md;
+            //            }
+            //            for (xd = 1; xd <= 4; xd++)
+            //            {
+            //                narr[2, xd] = 100 * narr[1, xd] / sum;
+            //                narr[2, xd] = Round(narr[2, xd], 1);
+            //            }
+            //            sum = 0;
+            //            for (xd = 1; xd <= 4; xd++)
+            //            {
+            //                md = narr[1, xd] * narr[2, xd];
+            //                sum = sum + md;
+            //            }
+            //            md1 = sum;
+            //            sum = 0;
+            //            for (xd = 1; xd <= 4; xd++)
+            //                sum = sum + narr[2, xd];
+            //            md2 = sum;
+            //            md = md1 / md2;
+            //            md = Round(md, 0);
 
-                        switch (sitem["YMPD"].Trim())
-                        {
-                            case "Ⅰ类":
-                                zSalbs = zSalbs < 1 ? 1 : zSalbs;
-                                break;
-                            case "Ⅱ类":
-                                zSalbs = zSalbs < 2 ? 2 : zSalbs;
-                                break;
-                            case "Ⅲ类":
-                                zSalbs = zSalbs < 3 ? 3 : zSalbs;
-                                break;
-                            default:
-                                zSalbs = zSalbs < 4 ? 4 : zSalbs;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        sitem["YMPD"] = "----";
-                        sitem["YM"] = "----";
-                    }
-                    if (jcxm.Contains("、含水率、"))
-                        sitem["HSLPD"] = "----";
-                    else
-                    {
-                        sitem["HSL"] = "----";
-                        sitem["HSLPD"] = "----";
-                    }
-                    if (jcxm.Contains("、有机物含量、"))
-                    {
-                        sitem["YJWHLPD"] = sitem["YJWHL"].Contains("不") ? "不符合" : "符合";
-                        mbhgs = sitem["YJWHLPD"].Contains("不") ? mbhgs + 1 : mbhgs;
-                        if (sitem["YJWHLPD"].Contains("不"))
-                            mFlag_Bhg = true;
-                        else
-                            mFlag_Hg = true;
-                    }
-                    else
-                        sitem["YJWHLPD"] = "----";
-                    if (jcxm.Contains("、碱活性、"))
-                    {
-                        if (calc_pd(mrsDj_Fun[0]["JHX"], sitem["JHX"]) == "符合")
-                        {
-                            sitem["JHXPD"] = "符合";
-                            mFlag_Hg = true;
-                        }
-                        else
-                        {
-                            mbhgs = mbhgs + 1;
-                            mFlag_Bhg = true;
-                        }
-                    }
-                    else
-                    {
-                        sitem["JHXPD"] = "----";
-                        sitem["JHX"] = "----";
-                    }
-                    if (jcxm.Contains("、轻物质含量、"))
-                    {
-                        if (calc_pd(mrsDj_Fun[0]["QWZ"], sitem["QWZ"]) == "符合")
-                        {
-                            sitem["QWZPD"] = "符合";
-                            mFlag_Hg = true;
-                        }
-                        else
-                        {
-                            mbhgs = mbhgs + 1;
-                            mFlag_Bhg = true;
-                        }
-                    }
-                    else
-                    {
-                        sitem["QWZPD"] = "----";
-                        sitem["QWZ"] = "----";
-                    }
-                    if (jcxm.Contains("、硫化物和硫酸盐含量、"))
-                    {
-                        if (calc_pd(mrsDj_Fun[0]["SO3"], sitem["SO3"]) == "符合")
-                        {
-                            sitem["SO3PD"] = "符合";
-                            mFlag_Hg = true;
-                        }
-                        else
-                        {
-                            sitem["SO3PD"] = "不符合";
-                            mbhgs = mbhgs + 1;
-                            mFlag_Bhg = true;
-                        }
-                    }
-                    else
-                    {
-                        sitem["SO3PD"] = "----";
-                        sitem["SO3"] = "----";
-                    }
-                    if (jcxm.Contains("、坚固性、"))
-                    {
-                        double sum = 0;
-                        int xd = 0;
-                        double md1 = 0;
-                        double md2 = 0;
-                        double md = 0;
+            //            sitem["JGX"] = md.ToString("F0");
+            //            sitem["JGXPD"] = "";
+            //            foreach (var mrsDj_Filter in mrsDj_Fun)
+            //            {
+            //                if (IsQualified(mrsDj_Filter["JGX"], sitem["JGX"]) == "符合")
+            //                {
+            //                    sitem["JGXPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
+            //                    break;
+            //                }
+            //            }
+            //            if (sitem["JGXPD"] == "")
+            //            {
+            //                sitem["JGXPD"] = "不符合";
+            //                mbhgs = mbhgs + 1;
+            //                mFlag_Bhg = true;
+            //            }
+            //            else
+            //                mFlag_Hg = true;
 
-                        double[,] narr = new double[3, 5];
-                        for (xd = 1; xd <= 4; xd++)
-                        {
-                            md1 = Conversion.Val(sitem["JGXQG1_" + xd].Trim());
-                            sum = sum + md1;
-                            md2 = Conversion.Val(sitem["JGXHG2_" + xd].Trim());
-                            md = 100 * (md1 - md2) / md1;
-                            md = Round(md, 1);
-                            narr[1, xd] = md;
-                        }
-                        for (xd = 1; xd <= 4; xd++)
-                        {
-                            narr[2, xd] = 100 * narr[1, xd] / sum;
-                            narr[2, xd] = Round(narr[2, xd], 1);
-                        }
-                        sum = 0;
-                        for (xd = 1; xd <= 4; xd++)
-                        {
-                            md = narr[1, xd] * narr[2, xd];
-                            sum = sum + md;
-                        }
-                        md1 = sum;
-                        sum = 0;
-                        for (xd = 1; xd <= 4; xd++)
-                            sum = sum + narr[2, xd];
-                        md2 = sum;
-                        md = md1 / md2;
-                        md = Round(md, 0);
-
-                        sitem["JGX"] = md.ToString("F0");
-                        sitem["JGXPD"] = "";
-                        foreach (var mrsDj_Filter in mrsDj_Fun)
-                        {
-                            if (calc_pd(mrsDj_Filter["JGX"], sitem["JGX"]) == "符合")
-                            {
-                                sitem["JGXPD"] = mrsDj_Filter["MC"].Trim().Substring(mrsDj_Filter["MC"].Trim().Length - 2);
-                                break;
-                            }
-                        }
-                        if (sitem["JGXPD"] == "")
-                        {
-                            sitem["JGXPD"] = "不符合";
-                            mbhgs = mbhgs + 1;
-                            mFlag_Bhg = true;
-                        }
-                        else
-                            mFlag_Hg = true;
-
-                        switch (sitem["JGXPD"].Trim())
-                        {
-                            case "Ⅰ类":
-                                zSalbs = zSalbs < 1 ? 1 : zSalbs;
-                                break;
-                            case "Ⅱ类":
-                                zSalbs = zSalbs < 2 ? 2 : zSalbs;
-                                break;
-                            case "Ⅲ类":
-                                zSalbs = zSalbs < 3 ? 3 : zSalbs;
-                                break;
-                            default:
-                                zSalbs = zSalbs < 4 ? 4 : zSalbs;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        sitem["JGXPD"] = "----";
-                        sitem["JGX"] = "----";
-                    }
-                    switch (sitem["SJDJ"].Trim())
-                    {
-                        case "Ⅰ类":
-                            Salbs = 1;
-                            break;
-                        case "Ⅱ类":
-                            Salbs = 2;
-                            break;
-                        case "Ⅲ类":
-                            Salbs = 3;
-                            break;
-                    }
-                    sitem["JCJG"] = mbhgs == 0 && zSalbs <= Salbs && MAllHg ? "合格" : "不合格";
-                    MAllHg = (MAllHg && sitem["JCJG"] == "合格");
-                    if (sitem["SJDJ"] != "----")
-                    {
-                        if (MAllHg)
-                        {
-                            Mitem["JCJG"] = "合格";
-                            Mitem["JCJGMS"] = "该组试样所检项目依据" + Mitem["PDBZ"] + "符合" + sitem["SJDJ"] + "砂的标准要求。";
-                        }
-                        else
-                        {
-                            Mitem["JCJG"] = "不合格";
-                            Mitem["JCJGMS"] = "该组试样所检项目依据" + Mitem["PDBZ"] + "不符合" + sitem["SJDJ"] + "砂的标准要求。";
-                            if (mFlag_Bhg && mFlag_Hg)
-                                Mitem["JCJGMS"] = "该组试样所检项目依据" + Mitem["PDBZ"] + "部分不符合" + sitem["SJDJ"] + "砂的标准要求。";
-                        }
-                    }
-                    else
-                        Mitem["JCJGMS"] = "----";
-                    if (sitem["JPPD"].Contains("不"))
-                    {
-                        Mitem["JCJGMS"] = "该组试样颗粒级配不符合标准要求。";
-                        Mitem["JCJG"] = "不合格";
-                        sitem["JCJG"] = "不合格";
-                    }
-                    return MAllHg;
-                };
+            //            switch (sitem["JGXPD"].Trim())
+            //            {
+            //                case "Ⅰ类":
+            //                    zSalbs = zSalbs < 1 ? 1 : zSalbs;
+            //                    break;
+            //                case "Ⅱ类":
+            //                    zSalbs = zSalbs < 2 ? 2 : zSalbs;
+            //                    break;
+            //                case "Ⅲ类":
+            //                    zSalbs = zSalbs < 3 ? 3 : zSalbs;
+            //                    break;
+            //                default:
+            //                    zSalbs = zSalbs < 4 ? 4 : zSalbs;
+            //                    break;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            sitem["JGXPD"] = "----";
+            //            sitem["JGX"] = "----";
+            //        }
+            //        switch (sitem["SJDJ"].Trim())
+            //        {
+            //            case "Ⅰ类":
+            //                Salbs = 1;
+            //                break;
+            //            case "Ⅱ类":
+            //                Salbs = 2;
+            //                break;
+            //            case "Ⅲ类":
+            //                Salbs = 3;
+            //                break;
+            //        }
+            //        sitem["JCJG"] = mbhgs == 0 && zSalbs <= Salbs && MAllHg ? "合格" : "不合格";
+            //        MAllHg = (MAllHg && sitem["JCJG"] == "合格");
+            //        if (sitem["SJDJ"] != "----")
+            //        {
+            //            if (MAllHg)
+            //            {
+            //                Mitem["JCJG"] = "合格";
+            //                Mitem["JCJGMS"] = "该组试样所检项目依据" + Mitem["PDBZ"] + "符合" + sitem["SJDJ"] + "砂的标准要求。";
+            //            }
+            //            else
+            //            {
+            //                Mitem["JCJG"] = "不合格";
+            //                Mitem["JCJGMS"] = "该组试样所检项目依据" + Mitem["PDBZ"] + "不符合" + sitem["SJDJ"] + "砂的标准要求。";
+            //                if (mFlag_Bhg && mFlag_Hg)
+            //                    Mitem["JCJGMS"] = "该组试样所检项目依据" + Mitem["PDBZ"] + "部分不符合" + sitem["SJDJ"] + "砂的标准要求。";
+            //            }
+            //        }
+            //        else
+            //            Mitem["JCJGMS"] = "----";
+            //        if (sitem["JPPD"].Contains("不"))
+            //        {
+            //            Mitem["JCJGMS"] = "该组试样颗粒级配不符合标准要求。";
+            //            Mitem["JCJG"] = "不合格";
+            //            sitem["JCJG"] = "不合格";
+            //        }
+            //        return MAllHg;
+            //    };
+            #endregion
             #endregion
 
             #region  集合取值
@@ -827,6 +504,8 @@ namespace Calculates
                 sitem["JPPD"] = "";
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 narr = new double[3, 8];
+
+                #region 级配
                 if (jcxm.Contains("、级配、"))
                 {
                     for (xd = 1; xd <= 6; xd++)
@@ -878,16 +557,20 @@ namespace Calculates
                     }
                     IList<IDictionary<string, string>> mrsHS_Where = new List<IDictionary<string, string>>();
                     if (mitem["JCYJ"].Contains("14684-2011"))
+                    {
                         mrsHS_Where = mrsHS.Where(x => x["SACY"].Contains(sitem["SACY"]) && x["JCYJ"].Contains("14684-2011")).ToList();
+                    }
                     else
+                    {
                         mrsHS_Where = mrsHS.Where(x => x["SACY"].Contains(sitem["SACY"]) && x["JCYJ"].Contains("14684-2001")).ToList();
+                    }
                     Gs = mrsHS_Where.Count();
                     var mrsHS_Filter = mrsHS_Where[0];
                     for (xd = 1; xd <= Gs; xd++)
                     {
                         flag = true;
-                        flag = calc_PB(mrsHS_Filter["MSKCC1"], sitem["LJSYB1_PJ"], true) == "符合" ? flag : false;
-                        flag = calc_PB(mrsHS_Filter["MSKCC4"], sitem["LJSYB4_PJ"], true) == "符合" ? flag : false;
+                        flag = IsQualified(mrsHS_Filter["MSKCC1"], sitem["LJSYB1_PJ"], true) == "符合" ? flag : false;
+                        flag = IsQualified(mrsHS_Filter["MSKCC4"], sitem["LJSYB4_PJ"], true) == "符合" ? flag : false;
                         sum = 0;
                         for (Ud = 1; Ud <= 6; Ud++)
                         {
@@ -956,7 +639,9 @@ namespace Calculates
                         sitem["LJSYB" + xd + "_pj"] = "----";
                     }
                 }
-                //细度模数计算
+                #endregion
+
+                #region 细度模数
                 if (jcxm.Contains("、细度模数、"))
                 {
                     md1 = 0;
@@ -1009,30 +694,28 @@ namespace Calculates
                     sitem["XDMSPD"] = "----";
                     sitem["XDMS"] = "----";
                 }
-                mAllHg = mbhgs > 0 ? false : true;
-                if (!string.IsNullOrEmpty(mitem["SJTABS"]))
-                {
-                    if (sjtabcalc(mitem, sitem, mrsDj, mAllHg))
-                    { }
-                    continue;
-                }
+                #endregion
+
+                #region 含泥量
                 if (jcxm.Contains("、含泥量、"))
                 {
                     cd1 = Conversion.Val(sitem["HNLG0"].Trim());
                     cd2 = Conversion.Val(sitem["HNLG1"].Trim());
                     md1 = 100 * (cd1 - cd2) / cd1;
                     md1 = Round(double.IsNaN(md1) ? 0 : md1, 1);
+                    sitem["HNL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["HNLG0_2"].Trim());
                     cd2 = Conversion.Val(sitem["HNLG1_2"].Trim());
                     md2 = 100 * (cd1 - cd2) / cd1;
                     md2 = Round(double.IsNaN(md2) ? 0 : md2, 1);
+                    sitem["HNL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
                     sitem["HNL"] = md.ToString();
                     sitem["HNLPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (calc_pd(mrsDj_temp["HNL"], sitem["HNL"]) == "符合")
+                        if (IsQualified(mrsDj_temp["HNL"], sitem["HNL"]) == "符合")
                         {
                             sitem["HNLPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -1068,23 +751,28 @@ namespace Calculates
                     sitem["HNLPD"] = "----";
                     sitem["HNL"] = "----";
                 }
+                #endregion
+
+                #region 泥块含量
                 if (jcxm.Contains("、泥块含量、"))
                 {
                     cd1 = Conversion.Val(sitem["NKHLG1"].Trim());
                     cd2 = Conversion.Val(sitem["NKHLG2"].Trim());
                     md1 = 100 * (cd1 - cd2) / cd1;
                     md1 = Round(double.IsNaN(md1) ? 0 : md1, 1);
+                    sitem["NKHL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["NKHLG1_2"].Trim());
                     cd2 = Conversion.Val(sitem["NKHLG2_2"].Trim());
                     md2 = 100 * (cd1 - cd2) / cd1;
                     md2 = Round(double.IsNaN(md2) ? 0 : md2, 1);
+                    sitem["NKHL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
                     sitem["NKHL"] = md.ToString("0.0");
                     sitem["NKHLPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (calc_pd(mrsDj_temp["NKHL"], sitem["NKHL"]) == "符合")
+                        if (IsQualified(mrsDj_temp["NKHL"], sitem["NKHL"]) == "符合")
                         {
                             sitem["NKHLPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -1120,6 +808,9 @@ namespace Calculates
                     sitem["NKHLPD"] = "----";
                     sitem["NKHL"] = "----";
                 }
+                #endregion
+
+                #region 堆积密度
                 if (jcxm.Contains("、堆积密度、"))
                 {
                     cd1 = Conversion.Val(sitem["DJMDG1"].Trim());
@@ -1139,7 +830,7 @@ namespace Calculates
                     md = (md1 + md2) / 20;
                     md = Round(md, 0) * 10;
                     sitem["DJMD"] = md.ToString();
-                    sitem["DJMDPD"] = calc_PB(mrsDj[0]["DJMD"], sitem["DJMD"], true);
+                    sitem["DJMDPD"] = IsQualified(mrsDj[0]["DJMD"], sitem["DJMD"], true);
                     mbhgs = sitem["DJMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
                     if (sitem["DJMDPD"] != "不符合")
                         mFlag_Hg = true;
@@ -1151,6 +842,9 @@ namespace Calculates
                     sitem["DJMDPD"] = "----";
                     sitem["DJMD"] = "----";
                 }
+                #endregion
+
+                #region 紧密密度
                 if (jcxm.Contains("、紧密密度、"))
                 {
                     cd1 = Conversion.Val(sitem["JMMDG1"].Trim());
@@ -1159,16 +853,18 @@ namespace Calculates
                     md1 = (cd1 - cd2) / (10 * md1);
                     md1 = Round(md1, 0);
                     md1 = 10 * md1;
+                    sitem["JMMD1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["JMMDG1_2"].Trim());
                     cd2 = Conversion.Val(sitem["JMMDG2_2"].Trim());
                     md2 = Conversion.Val(sitem["JMMDV"].Trim());
                     md2 = (cd1 - cd2) / (10 * md2);
                     md2 = Round(md2, 0);
                     md2 = 10 * md2;
+                    sitem["JMMD2"] = md2.ToString();
                     md = (md1 + md2) / 20;
                     md = Round(md, 0) * 10;
                     sitem["JMMD"] = md.ToString();
-                    sitem["JMMDPD"] = calc_PB(mrsDj[0]["JMMD"], sitem["JMMD"], true);
+                    sitem["JMMDPD"] = IsQualified(mrsDj[0]["JMMD"], sitem["JMMD"], true);
                     mbhgs = sitem["JMMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
                     if (sitem["JMMDPD"] != "不符合")
                         mFlag_Hg = true;
@@ -1180,19 +876,22 @@ namespace Calculates
                     sitem["JMMDPD"] = "----";
                     sitem["JMMD"] = "----";
                 }
+                #endregion
+
+                #region 表观密度
                 if (jcxm.Contains("、表观密度、"))
                 {
                     cd1 = Conversion.Val(sitem["BGMDG0"].Trim());
                     cd2 = Conversion.Val(sitem["BGMDG2"].Trim());
                     md1 = Conversion.Val(sitem["BGMDG1"].Trim());
-                    md1 = 100 * cd1 / (cd1 + cd2 - md1);
+                    md1 = 100 * (cd1 / (cd1 + cd2 - md1)- GetSafeDouble(sitem["SWXZXS1"].Trim()));
                     md1 = Round(md1, 0);
                     md1 = md1 * 10;
                     sitem["KXLP2"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["BGMDG0_2"].Trim());
                     cd2 = Conversion.Val(sitem["BGMDG2_2"].Trim());
                     md2 = Conversion.Val(sitem["BGMDG1_2"].Trim());
-                    md2 = 100 * cd1 / (cd1 + cd2 - md2);
+                    md2 = 100 * (cd1 / (cd1 + cd2 - md2) - GetSafeDouble(sitem["SWXZXS2"].Trim()));
                     md2 = Round(md2, 0);
                     md2 = md2 * 10;
                     sitem["KXLP2_2"] = md2.ToString();
@@ -1200,7 +899,7 @@ namespace Calculates
                     md = 10 * Round(md, 0);
 
                     sitem["BGMD"] = md.ToString();
-                    sitem["BGMDPD"] = calc_PB(mrsDj[0]["BGMD"], sitem["BGMD"], true);
+                    sitem["BGMDPD"] = IsQualified(mrsDj[0]["BGMD"], sitem["BGMD"], true);
                     mbhgs = sitem["BGMDPD"] == "不符合" ? mbhgs + 1 : mbhgs;
                     md = Math.Abs(md1 - md2);
                     sitem["BGMDPD"] = md > 20 ? "两次结果差大于20，须重新试验" : sitem["BGMDPD"];
@@ -1215,20 +914,25 @@ namespace Calculates
                     sitem["BGMDPD"] = "----";
                     sitem["BGMD"] = "----";
                 }
+                #endregion
+
+                #region 空隙率
                 if (jcxm.Contains("、空隙率、"))
                 {
                     cd1 = Conversion.Val(sitem["KXLP1"].Trim());
                     cd2 = Conversion.Val(sitem["KXLP2"].Trim());
                     md1 = 100 * (1 - cd1 / cd2);
                     md1 = Round(md1, 0);
+                    sitem["KXL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["KXLP1_2"].Trim());
                     cd2 = Conversion.Val(sitem["KXLP2_2"].Trim());
                     md2 = 100 * (1 - cd1 / cd2);
                     md2 = Round(md2, 0);
+                    sitem["KXL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 0);
                     sitem["KXL"] = md.ToString();
-                    sitem["KXLPD"] = calc_PB(mrsDj[0]["KXL"], sitem["KXL"], true);
+                    sitem["KXLPD"] = IsQualified(mrsDj[0]["KXL"], sitem["KXL"], true);
                     mbhgs = sitem["KXLPD"] == "不符合" ? mbhgs + 1 : mbhgs;
                     if (sitem["KXLPD"] != "不符合")
                         mFlag_Hg = true;
@@ -1240,6 +944,9 @@ namespace Calculates
                     sitem["KXLPD"] = "----";
                     sitem["KXL"] = "----";
                 }
+                #endregion
+
+                #region 氯离子含量
                 if (jcxm.Contains("、氯离子含量、"))
                 {
                     cd1 = Conversion.Val(sitem["LLZV"].Trim());
@@ -1258,7 +965,7 @@ namespace Calculates
                     sitem["LLZHLPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (calc_pd(mrsDj_temp["LLZHL"], sitem["LLZHL"]) == "符合")
+                        if (IsQualified(mrsDj_temp["LLZHL"], sitem["LLZHL"]) == "符合")
                         {
                             sitem["LLZHLPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -1294,16 +1001,21 @@ namespace Calculates
                     sitem["LLZHLPD"] = "----";
                     sitem["LLZHL"] = "----";
                 }
+                #endregion
+
+                #region 吸水率
                 if (jcxm.Contains("、吸水率、"))
                 {
                     cd1 = Conversion.Val(sitem["XSLG1"].Trim());
                     cd2 = Conversion.Val(sitem["XSLG2"].Trim());
                     md1 = 100 * (500 - (cd2 - cd1)) / (cd2 - cd1);
                     md1 = Round(md1, 1);
+                    sitem["XSL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["XSLG1_2"].Trim());
                     cd2 = Conversion.Val(sitem["XSLG2_2"].Trim());
                     md2 = 100 * (500 - (cd2 - cd1)) / (cd2 - cd1);
                     md2 = Round(md2, 1);
+                    sitem["XSL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
                     sitem["XSL"] = md.ToString("F1");
@@ -1314,6 +1026,9 @@ namespace Calculates
                     sitem["XSL"] = "----";
                     sitem["XSLPD"] = "----";
                 }
+                #endregion
+
+                #region 云母含量
                 if (jcxm.Contains("、云母含量、"))
                 {
                     cd1 = Conversion.Val(sitem["YMG1"]);
@@ -1330,7 +1045,7 @@ namespace Calculates
                     sitem["YMPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (calc_pd(mrsDj_temp["YM"], sitem["YM"]) == "符合")
+                        if (IsQualified(mrsDj_temp["YM"], sitem["YM"]) == "符合")
                         {
                             sitem["YMPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -1367,16 +1082,21 @@ namespace Calculates
                     sitem["YMPD"] = "----";
                     sitem["YM"] = "----";
                 }
+                #endregion
+
+                #region 含水率
                 if (jcxm.Contains("、含水率、"))
                 {
                     cd1 = Conversion.Val(sitem["HSLG1"].Trim());
                     cd2 = Conversion.Val(sitem["HSLG2"].Trim());
                     md1 = 100 * (cd2 - cd1) / cd1;
                     md1 = Round(md1, 1);
+                    sitem["HSL1"] = md1.ToString();
                     cd1 = Conversion.Val(sitem["HSLG1_2"].Trim());
                     cd2 = Conversion.Val(sitem["HSLG2_2"].Trim());
                     md2 = 100 * (cd2 - cd1) / cd1;
                     md2 = Round(md2, 1);
+                    sitem["HSL2"] = md2.ToString();
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
 
@@ -1388,6 +1108,9 @@ namespace Calculates
                     sitem["HSL"] = "----";
                     sitem["HSLPD"] = "----";
                 }
+                #endregion
+
+                #region 有机物含量
                 if (jcxm.Contains("、有机物含量、"))
                 {
                     sitem["YJWHLPD"] = sitem["YJWHLPD"].Contains("不") ? "不符合" : "符合";
@@ -1399,10 +1122,13 @@ namespace Calculates
                 }
                 else
                     sitem["YJWHLPD"] = "----";
+                #endregion
+
+                #region 碱活性
                 if (jcxm.Contains("、碱活性、"))
                 {
                     md = Conversion.Val(sitem["JHX"].Trim());
-                    if (calc_pd(mrsDj[0]["JHX"], sitem["JHX"]) == "符合")
+                    if (IsQualified(mrsDj[0]["JHX"], sitem["JHX"]) == "符合")
                     {
                         sitem["JHXPD"] = "符合";
                         mFlag_Hg = true;
@@ -1418,6 +1144,9 @@ namespace Calculates
                     sitem["JHXPD"] = "----";
                     sitem["JHX"] = "----";
                 }
+                #endregion
+
+                #region 轻物质含量
                 if (jcxm.Contains("、轻物质含量、"))
                 {
                     cd1 = Conversion.Val(sitem["QWZG1_1"].Trim());
@@ -1433,7 +1162,7 @@ namespace Calculates
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
                     sitem["QWZ"] = md.ToString("0.0");
-                    if (calc_pd(mrsDj[0]["QWZ"], sitem["QWZ"]) == "符合")
+                    if (IsQualified(mrsDj[0]["QWZ"], sitem["QWZ"]) == "符合")
                     {
                         sitem["QWZPD"] = "符合";
                         mFlag_Hg = true;
@@ -1449,6 +1178,9 @@ namespace Calculates
                     sitem["QWZPD"] = "----";
                     sitem["QWZ"] = "----";
                 }
+                #endregion
+
+                #region 硫化物和硫酸盐含量
                 if (jcxm.Contains("、硫化物和硫酸盐含量、"))
                 {
                     cd1 = Conversion.Val(sitem["SO3G1_1"].Trim());
@@ -1461,7 +1193,7 @@ namespace Calculates
                     pjmd = sum / 2;
                     pjmd = Round(pjmd, 2);
                     sitem["SO3"] = pjmd.ToString("0.00");
-                    if (calc_pd(mrsDj[0]["SO3"], sitem["SO3"]) == "符合")
+                    if (IsQualified(mrsDj[0]["SO3"], sitem["SO3"]) == "符合")
                     {
                         sitem["SO3PD"] = "符合";
                         mFlag_Hg = true;
@@ -1479,6 +1211,9 @@ namespace Calculates
                     sitem["SO3PD"] = "----";
                     sitem["SO3"] = "----";
                 }
+                #endregion
+
+                #region 坚固性
                 if (jcxm.Contains("、坚固性、"))
                 {
                     sum = 0;
@@ -1514,7 +1249,7 @@ namespace Calculates
                     sitem["JGXPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (calc_pd(mrsDj_temp["JGX"], sitem["JGX"]) == "符合")
+                        if (IsQualified(mrsDj_temp["JGX"], sitem["JGX"]) == "符合")
                         {
                             sitem["JGXPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -1550,6 +1285,8 @@ namespace Calculates
                     sitem["JGXPD"] = "----";
                     sitem["JGX"] = "----";
                 }
+                #endregion
+
                 switch (sitem["SJDJ"].Trim())
                 {
                     case "Ⅰ类":
@@ -1583,7 +1320,7 @@ namespace Calculates
                     mitem["JCJGMS"] = "----";
                 if (sitem["JPPD"].Contains("不"))
                 {
-                    mitem["JCJGMS"] = "该组试样颗粒级配不符合标准要求。";
+                    //mitem["JCJGMS"] = "该组试样颗粒级配不符合标准要求。";
                     mitem["JCJG"] = "不合格";
                     sitem["JCJG"] = "不合格";
                 }

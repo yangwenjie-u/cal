@@ -30,9 +30,11 @@ namespace CalDebugTools.Forms
             if (_sqlBase == null)
                 _sqlBase = new SqlBase();
             if (_sqlDebugTool == null)
-                _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);
+                _sqlDebugTool = new SqlBase(ESqlConnType.ConnectionStringDebugTool);            
             if (_sqlJGJG == null)
                 _sqlJGJG = new SqlBase(ESqlConnType.ConnectionStringJCJG);
+
+            List<string> jcjgInfos = Common.StringsOper.GetTextList(AppDomain.CurrentDomain.BaseDirectory + @"Resources\检测机构配置.txt");
 
         }
 
@@ -527,11 +529,6 @@ namespace CalDebugTools.Forms
             MessageBox.Show("Success!");
 
         }
-
-        private void panel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
+      
     }
 }

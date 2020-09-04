@@ -84,7 +84,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(47, 35);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(82, 15);
+            this.label1.Size = new System.Drawing.Size(65, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "项目编号：";
             // 
@@ -92,14 +92,14 @@
             // 
             this.txt_xmbh.Location = new System.Drawing.Point(118, 33);
             this.txt_xmbh.Name = "txt_xmbh";
-            this.txt_xmbh.Size = new System.Drawing.Size(100, 25);
+            this.txt_xmbh.Size = new System.Drawing.Size(100, 21);
             this.txt_xmbh.TabIndex = 1;
             // 
             // txt_fieldMs
             // 
             this.txt_fieldMs.Location = new System.Drawing.Point(502, 32);
             this.txt_fieldMs.Name = "txt_fieldMs";
-            this.txt_fieldMs.Size = new System.Drawing.Size(100, 25);
+            this.txt_fieldMs.Size = new System.Drawing.Size(100, 21);
             this.txt_fieldMs.TabIndex = 3;
             // 
             // label2
@@ -107,7 +107,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(431, 35);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 15);
+            this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 2;
             this.label2.Text = "字段描述：";
             // 
@@ -115,7 +115,7 @@
             // 
             this.txt_fieldName.Location = new System.Drawing.Point(317, 32);
             this.txt_fieldName.Name = "txt_fieldName";
-            this.txt_fieldName.Size = new System.Drawing.Size(100, 25);
+            this.txt_fieldName.Size = new System.Drawing.Size(100, 21);
             this.txt_fieldName.TabIndex = 5;
             // 
             // label3
@@ -123,7 +123,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(257, 35);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 15);
+            this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 4;
             this.label3.Text = "字段名：";
             // 
@@ -141,7 +141,7 @@
             // 
             this.txt_fieldType.Location = new System.Drawing.Point(119, 66);
             this.txt_fieldType.Name = "txt_fieldType";
-            this.txt_fieldType.Size = new System.Drawing.Size(100, 25);
+            this.txt_fieldType.Size = new System.Drawing.Size(100, 21);
             this.txt_fieldType.TabIndex = 8;
             this.txt_fieldType.Text = "nvarchar(20)";
             // 
@@ -150,7 +150,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(48, 69);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 15);
+            this.label4.Size = new System.Drawing.Size(65, 12);
             this.label4.TabIndex = 7;
             this.label4.Text = "字段类型：";
             // 
@@ -160,7 +160,7 @@
             this.label5.Location = new System.Drawing.Point(257, 69);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(112, 15);
+            this.label5.Size = new System.Drawing.Size(89, 12);
             this.label5.TabIndex = 9;
             this.label5.Text = "从表字段数量：";
             // 
@@ -168,7 +168,7 @@
             // 
             this.txt_STabCount.Location = new System.Drawing.Point(351, 67);
             this.txt_STabCount.Name = "txt_STabCount";
-            this.txt_STabCount.Size = new System.Drawing.Size(23, 25);
+            this.txt_STabCount.Size = new System.Drawing.Size(23, 21);
             this.txt_STabCount.TabIndex = 10;
             this.txt_STabCount.Text = "1";
             this.txt_STabCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_STabCount_KeyPress);
@@ -237,7 +237,7 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(14, 158);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(127, 15);
+            this.label14.Size = new System.Drawing.Size(101, 12);
             this.label14.TabIndex = 39;
             this.label14.Text = "自定义查询字段：";
             // 
@@ -245,14 +245,14 @@
             // 
             this.txtSerchFields.Location = new System.Drawing.Point(115, 155);
             this.txtSerchFields.Name = "txtSerchFields";
-            this.txtSerchFields.Size = new System.Drawing.Size(546, 25);
+            this.txtSerchFields.Size = new System.Drawing.Size(546, 21);
             this.txtSerchFields.TabIndex = 40;
             // 
             // txt_ssjcx
             // 
             this.txt_ssjcx.Location = new System.Drawing.Point(502, 94);
             this.txt_ssjcx.Name = "txt_ssjcx";
-            this.txt_ssjcx.Size = new System.Drawing.Size(159, 25);
+            this.txt_ssjcx.Size = new System.Drawing.Size(159, 21);
             this.txt_ssjcx.TabIndex = 38;
             // 
             // label13
@@ -261,7 +261,7 @@
             this.label13.Location = new System.Drawing.Point(409, 96);
             this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(97, 15);
+            this.label13.Size = new System.Drawing.Size(77, 12);
             this.label13.TabIndex = 37;
             this.label13.Text = "所属检测项：";
             // 
@@ -269,7 +269,7 @@
             // 
             this.txt_SFieldeStartIndex.Location = new System.Drawing.Point(351, 89);
             this.txt_SFieldeStartIndex.Name = "txt_SFieldeStartIndex";
-            this.txt_SFieldeStartIndex.Size = new System.Drawing.Size(23, 25);
+            this.txt_SFieldeStartIndex.Size = new System.Drawing.Size(23, 21);
             this.txt_SFieldeStartIndex.TabIndex = 36;
             this.txt_SFieldeStartIndex.Text = "1";
             this.txt_SFieldeStartIndex.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_SFieldeStartIndex_KeyPress);
@@ -280,7 +280,7 @@
             this.label12.Location = new System.Drawing.Point(257, 90);
             this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(112, 15);
+            this.label12.Size = new System.Drawing.Size(89, 12);
             this.label12.TabIndex = 35;
             this.label12.Text = "字段初始序号：";
             // 
@@ -315,7 +315,7 @@
             this.txt_customize.Location = new System.Drawing.Point(30, 139);
             this.txt_customize.Margin = new System.Windows.Forms.Padding(2);
             this.txt_customize.Name = "txt_customize";
-            this.txt_customize.Size = new System.Drawing.Size(76, 25);
+            this.txt_customize.Size = new System.Drawing.Size(76, 21);
             this.txt_customize.TabIndex = 28;
             // 
             // btn_helper
@@ -354,7 +354,7 @@
             this.chk_SFXS.Location = new System.Drawing.Point(760, 70);
             this.chk_SFXS.Margin = new System.Windows.Forms.Padding(2);
             this.chk_SFXS.Name = "chk_SFXS";
-            this.chk_SFXS.Size = new System.Drawing.Size(56, 19);
+            this.chk_SFXS.Size = new System.Drawing.Size(48, 16);
             this.chk_SFXS.TabIndex = 33;
             this.chk_SFXS.Text = "显示";
             this.chk_SFXS.UseVisualStyleBackColor = true;
@@ -365,7 +365,7 @@
             this.label7.Location = new System.Drawing.Point(689, 70);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(75, 15);
+            this.label7.Size = new System.Drawing.Size(59, 12);
             this.label7.TabIndex = 32;
             this.label7.Text = "是否显示:";
             // 
@@ -375,7 +375,7 @@
             this.chk_syncJcJG.Location = new System.Drawing.Point(760, 106);
             this.chk_syncJcJG.Margin = new System.Windows.Forms.Padding(2);
             this.chk_syncJcJG.Name = "chk_syncJcJG";
-            this.chk_syncJcJG.Size = new System.Drawing.Size(56, 19);
+            this.chk_syncJcJG.Size = new System.Drawing.Size(48, 16);
             this.chk_syncJcJG.TabIndex = 30;
             this.chk_syncJcJG.Text = "同步";
             this.chk_syncJcJG.UseVisualStyleBackColor = true;
@@ -386,7 +386,7 @@
             this.label11.Location = new System.Drawing.Point(689, 106);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(75, 15);
+            this.label11.Size = new System.Drawing.Size(59, 12);
             this.label11.TabIndex = 29;
             this.label11.Text = "同步监管:";
             // 
@@ -395,7 +395,7 @@
             this.txt_lx.Location = new System.Drawing.Point(612, 66);
             this.txt_lx.Margin = new System.Windows.Forms.Padding(2);
             this.txt_lx.Name = "txt_lx";
-            this.txt_lx.Size = new System.Drawing.Size(49, 25);
+            this.txt_lx.Size = new System.Drawing.Size(49, 21);
             this.txt_lx.TabIndex = 28;
             this.txt_lx.Text = "S";
             // 
@@ -405,7 +405,7 @@
             this.label10.Location = new System.Drawing.Point(551, 70);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(75, 15);
+            this.label10.Size = new System.Drawing.Size(59, 12);
             this.label10.TabIndex = 27;
             this.label10.Text = "字段类型:";
             // 
@@ -413,7 +413,7 @@
             // 
             this.txt_bzCount.Location = new System.Drawing.Point(503, 68);
             this.txt_bzCount.Name = "txt_bzCount";
-            this.txt_bzCount.Size = new System.Drawing.Size(23, 25);
+            this.txt_bzCount.Size = new System.Drawing.Size(23, 21);
             this.txt_bzCount.TabIndex = 25;
             this.txt_bzCount.Text = "1";
             // 
@@ -423,7 +423,7 @@
             this.label9.Location = new System.Drawing.Point(409, 70);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(112, 15);
+            this.label9.Size = new System.Drawing.Size(89, 12);
             this.label9.TabIndex = 24;
             this.label9.Text = "标准字段数量：";
             // 
@@ -432,7 +432,7 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(26, 137);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(112, 15);
+            this.label8.Size = new System.Drawing.Size(89, 12);
             this.label8.TabIndex = 22;
             this.label8.Text = "标准表查询条件";
             // 
@@ -459,7 +459,7 @@
             this.radio_m.AutoSize = true;
             this.radio_m.Location = new System.Drawing.Point(110, 12);
             this.radio_m.Name = "radio_m";
-            this.radio_m.Size = new System.Drawing.Size(55, 19);
+            this.radio_m.Size = new System.Drawing.Size(47, 16);
             this.radio_m.TabIndex = 15;
             this.radio_m.Text = "主表";
             this.radio_m.UseVisualStyleBackColor = true;
@@ -469,7 +469,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(3, 13);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(129, 15);
+            this.label6.Size = new System.Drawing.Size(101, 12);
             this.label6.TabIndex = 17;
             this.label6.Text = "判定字段(HG)保存";
             // 
@@ -479,7 +479,7 @@
             this.radio_s.Checked = true;
             this.radio_s.Location = new System.Drawing.Point(169, 11);
             this.radio_s.Name = "radio_s";
-            this.radio_s.Size = new System.Drawing.Size(55, 19);
+            this.radio_s.Size = new System.Drawing.Size(47, 16);
             this.radio_s.TabIndex = 16;
             this.radio_s.TabStop = true;
             this.radio_s.Text = "从表";

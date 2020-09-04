@@ -14,10 +14,10 @@ namespace Calculates
         {
             #region 计算开始
             var data = retData;
-            var mrsDj = dataExtra["BZ_GJN_DJ"];
-            var MItem = data["M_GJN"];
+            var mrsDj = dataExtra["BZ_GJL_DJ"];
+            var MItem = data["M_GJL"];
             var mitem = MItem[0];
-            var SItem = data["S_GJN"];
+            var SItem = data["S_GJL"];
             bool mAllHg = true;
             bool dzpd = true;
             var jcxm = "";

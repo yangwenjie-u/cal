@@ -601,7 +601,8 @@ namespace Calculates
                     jcxmCur = "重量偏差";
                     Double zcd = 0;
                     zcd = GetSafeDouble(sItem["Z_CD1"]) + GetSafeDouble(sItem["Z_CD2"]) + GetSafeDouble(sItem["Z_CD3"]) + GetSafeDouble(sItem["Z_CD4"]) + GetSafeDouble(sItem["Z_CD5"]) + GetSafeDouble(sItem["Z_CD6"]) + GetSafeDouble(sItem["Z_CD7"]) + GetSafeDouble(sItem["Z_CD8"]) + GetSafeDouble(sItem["Z_CD9"]) + GetSafeDouble(sItem["Z_CD10"]);
-                    sItem["ZLPC"] = Math.Round(100 * (GetSafeDouble(sItem["Z_ZZL"]) - sLlzl * zcd) / (sLlzl * zcd), 0).ToString();
+                    //sItem["ZLPC"] = Math.Round(100 * (GetSafeDouble(sItem["Z_ZZL"]) - sLlzl * zcd) / (sLlzl * zcd), 0).ToString();
+                    sItem["ZLPC"] = Math.Abs(Math.Round((Conversion.Val(sItem["Z_ZZL"]) - sLlzl * zcd) / (sLlzl * zcd) * 100, 1)).ToString();
                     if (GetSafeDouble(sItem["ZLPC"]) <= sZlpc)
                     {
                         sItem["JCJG_ZLPC"] = "符合";
