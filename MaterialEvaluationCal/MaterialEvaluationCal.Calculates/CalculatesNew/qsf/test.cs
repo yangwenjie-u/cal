@@ -19,7 +19,7 @@ namespace Calculates.CalculatesNew.qsf
                 string jcxm = "、" + dic["jcxm"].Replace(',', '、') + "、";
                 if (jcxm.Contains("、厚度、"))
                 {
-                    dic["hd"] = Math.Round((dic["schd1"].GetSafeDouble() + dic["schd2"].GetSafeDouble() + dic["schd3"].GetSafeDouble() + dic["schd4"].GetSafeDouble()) / 4, 0).ToString("F0");
+                    dic["hd"] = Math.Round((dic["schd1"].GetSafeDouble() + dic["schd2"].GetSafeDouble() + dic["schd3"].GetSafeDouble() + dic["schd4"].GetSafeDouble()) / 4, 2).ToString("0.00");
                 }
                 else
                 {
@@ -65,5 +65,9 @@ namespace Calculates.CalculatesNew.qsf
 
 
         }
+
+
+        public wh() { }
+        public fy() { }
     }
 }

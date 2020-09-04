@@ -530,89 +530,89 @@ namespace Calculates
                         sItem["MJ10"] = mMj10.ToString();
                         //if (sItem["ZLB"].Contains("混凝土多孔砖"))
                         //{
-                        if (mMj1 != 0)
-                            sItem["KYQD1"] = Round(1000 * (Conversion.Val(sItem["KYHZ1"])) / mMj1, 1).ToString("0.0");
-                        else
-                            sItem["KYQD1"] = "0";
-                        if (mMj2 != 0)
-                            sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 1).ToString("0.0");
-                        else
-                            sItem["KYQD2"] = "0";
-                        if (mMj3 != 0)
-                            sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 1).ToString("0.0");
-                        else
-                            sItem["KYQD3"] = "0";
-                        if (mMj4 != 0)
-                            sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 1).ToString("0.0");
-                        else
-                            sItem["KYQD4"] = "0";
-                        if (mMj5 != 0)
-                            sItem["KYQD5"] = Round(1000 * (Conversion.Val(sItem["KYHZ5"])) / mMj5, 1).ToString("0.0");
-                        else
-                            sItem["KYQD5"] = "0";
-                        if (mMj6 != 0)
-                            sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 1).ToString("0.0");
-                        else
-                            sItem["KYQD6"] = "0";
-                        if (mMj7 != 0)
-                            sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 1).ToString("0.0");
-                        else
-                            sItem["KYQD7"] = "0";
-                        if (mMj8 != 0)
-                            sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 1).ToString("0.0");
-                        else
-                            sItem["KYQD8"] = "0";
-                        if (mMj9 != 0)
-                            sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 1).ToString("0.0");
-                        else
-                            sItem["KYQD9"] = "0";
-                        if (mMj10 != 0)
-                            sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 1).ToString("0.0");
-                        else
-                            sItem["KYQD10"] = "0";
+                        //if (mMj1 != 0)
+                        //    sItem["KYQD1"] = Round(1000 * (Conversion.Val(sItem["KYHZ1"])) / mMj1, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD1"] = "0";
+                        //if (mMj2 != 0)
+                        //    sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD2"] = "0";
+                        //if (mMj3 != 0)
+                        //    sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD3"] = "0";
+                        //if (mMj4 != 0)
+                        //    sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD4"] = "0";
+                        //if (mMj5 != 0)
+                        //    sItem["KYQD5"] = Round(1000 * (Conversion.Val(sItem["KYHZ5"])) / mMj5, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD5"] = "0";
+                        //if (mMj6 != 0)
+                        //    sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD6"] = "0";
+                        //if (mMj7 != 0)
+                        //    sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD7"] = "0";
+                        //if (mMj8 != 0)
+                        //    sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD8"] = "0";
+                        //if (mMj9 != 0)
+                        //    sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD9"] = "0";
+                        //if (mMj10 != 0)
+                        //    sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 1).ToString("0.0");
+                        //else
+                        //    sItem["KYQD10"] = "0";
                         //}
                         //else
                         //{
-                        //    if (mMj1 != 0)
-                        //        sItem["KYQD1"] = Round(1000 * Conversion.Val(sItem["KYHZ1"]) / mMj1, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD1"] = "0";
-                        //    if (mMj2 != 0)
-                        //        sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD2"] = "0";
-                        //    if (mMj3 != 0)
-                        //        sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD3"] = "0";
-                        //    if (mMj4 != 0)
-                        //        sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD4"] = "0";
-                        //    if (mMj5 != 0)
-                        //        sItem["KYQD5"] = Round(1000 * Conversion.Val(sItem["KYHZ5"]) / mMj5, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD5"] = "0";
-                        //    if (mMj6 != 0)
-                        //        sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD6"] = "0";
-                        //    if (mMj7 != 0)
-                        //        sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD7"] = "0";
-                        //    if (mMj8 != 0)
-                        //        sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD8"] = "0";
-                        //    if (mMj9 != 0)
-                        //        sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD9"] = "0";
-                        //    if (mMj10 != 0)
-                        //        sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 2).ToString("0.00");
-                        //    else
-                        //        sItem["KYQD10"] = "0";
+                        if (mMj1 != 0)
+                            sItem["KYQD1"] = Round(1000 * Conversion.Val(sItem["KYHZ1"]) / mMj1, 2).ToString("0.00");
+                        else
+                            sItem["KYQD1"] = "0";
+                        if (mMj2 != 0)
+                            sItem["KYQD2"] = Round(1000 * Conversion.Val(sItem["KYHZ2"]) / mMj2, 2).ToString("0.00");
+                        else
+                            sItem["KYQD2"] = "0";
+                        if (mMj3 != 0)
+                            sItem["KYQD3"] = Round(1000 * Conversion.Val(sItem["KYHZ3"]) / mMj3, 2).ToString("0.00");
+                        else
+                            sItem["KYQD3"] = "0";
+                        if (mMj4 != 0)
+                            sItem["KYQD4"] = Round(1000 * Conversion.Val(sItem["KYHZ4"]) / mMj4, 2).ToString("0.00");
+                        else
+                            sItem["KYQD4"] = "0";
+                        if (mMj5 != 0)
+                            sItem["KYQD5"] = Round(1000 * Conversion.Val(sItem["KYHZ5"]) / mMj5, 2).ToString("0.00");
+                        else
+                            sItem["KYQD5"] = "0";
+                        if (mMj6 != 0)
+                            sItem["KYQD6"] = Round(1000 * Conversion.Val(sItem["KYHZ6"]) / mMj6, 2).ToString("0.00");
+                        else
+                            sItem["KYQD6"] = "0";
+                        if (mMj7 != 0)
+                            sItem["KYQD7"] = Round(1000 * Conversion.Val(sItem["KYHZ7"]) / mMj7, 2).ToString("0.00");
+                        else
+                            sItem["KYQD7"] = "0";
+                        if (mMj8 != 0)
+                            sItem["KYQD8"] = Round(1000 * Conversion.Val(sItem["KYHZ8"]) / mMj8, 2).ToString("0.00");
+                        else
+                            sItem["KYQD8"] = "0";
+                        if (mMj9 != 0)
+                            sItem["KYQD9"] = Round(1000 * Conversion.Val(sItem["KYHZ9"]) / mMj9, 2).ToString("0.00");
+                        else
+                            sItem["KYQD9"] = "0";
+                        if (mMj10 != 0)
+                            sItem["KYQD10"] = Round(1000 * Conversion.Val(sItem["KYHZ10"]) / mMj10, 2).ToString("0.00");
+                        else
+                            sItem["KYQD10"] = "0";
                         //}
                         //抗压平均值
                         mPjz = Round((Conversion.Val(sItem["KYQD1"]) + Conversion.Val(sItem["KYQD2"]) + Conversion.Val(sItem["KYQD3"]) + Conversion.Val(sItem["KYQD4"]) + Conversion.Val(sItem["KYQD5"]) +
@@ -629,7 +629,7 @@ namespace Calculates
                             (Conversion.Val(sItem["KYQD9"]) - mPjz) * (Conversion.Val(sItem["KYQD9"]) - mPjz) +
                             (Conversion.Val(sItem["KYQD10"]) - mPjz) * (Conversion.Val(sItem["KYQD10"]) - mPjz)) / 9);
                         mS = Round(mS, 2);
-                        sItem["BZC"] = Round(mS, 1).ToString("0.0");
+                        sItem["BZC"] = Round(mS, 2).ToString("0.00");
                         sItem["KYPJ"] = Round(mPjz, 1).ToString("0.0");
 
 
