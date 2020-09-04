@@ -32,6 +32,7 @@ namespace Calculates
                 //从设计等级表中取得相应的计算数值、等级标准
                 var extraFieldsDj = mrsDj.FirstOrDefault(x => x["D_DJ"].Contains(sitem["LB"]));
 
+                
                 MItem[0]["G_BZHZ"] = extraFieldsDj["D_SYHZ"].Trim();
 
                 if (jcxm.Contains("、外观质量、"))
