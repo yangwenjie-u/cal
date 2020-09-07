@@ -20,7 +20,7 @@ namespace Calculates
             var mjcjg = "不合格";
             var jsbeizhu = "";
             var jgsm = "";
-            var jcjg = "";
+            var jcjg = "合格";
             var S_HNTS = data["S_HNT"];
             var mAllHg = true;
             var MItem = data["M_HNT"];
@@ -69,7 +69,7 @@ namespace Calculates
                     LQ = (SYRQ - ZZRQ).Days;
                     //if (LQ != 28 && YHTJ.Equals("标准"))
                     //{
-                       // LQ = 28;
+                    // LQ = 28;
                     //}
                 }
 
@@ -91,15 +91,6 @@ namespace Calculates
                 {
                     HSXS = 1.05;
                 }
-                //var mttjhsxs = 1.0;
-                //if (IsNumeric(sItem["TTJHSXS"]) && GetSafeDouble(sItem["TTJHSXS"]) != 0)
-                //{
-                //    mttjhsxs = GetSafeDouble(sItem["TTJHSXS"]);
-                //}
-                //else
-                //{
-                //    sItem["TTJHSXS"] = "----";
-                //}
 
                 var KYQD1 = Math.Round(KYHZ1 * 1000 / SJCCMJ * HSXS, 1);
                 var KYQD2 = Math.Round(KYHZ2 * 1000 / SJCCMJ * HSXS, 1);
@@ -115,19 +106,11 @@ namespace Calculates
                 var MaxKYQD = KYQDS[2];
 
                 var KYPJ = "";
-                var ddsjqd = "";
-                var hzcase = 1;
-
-                var midavg = false;
 
                 var mSz = 0.0;
                 var mQdyq = 0.0;
                 if (!String.IsNullOrEmpty(SJDJ))
                 {
-                    //if (SJDJ.ToUpper()[0] != 'C')
-                    //{
-                    //    SJDJ = "C" + SJDJ;
-                    //}
                     var DJ = extraDJ.FirstOrDefault(x => x["MC"].Trim().Equals(SJDJ, StringComparison.OrdinalIgnoreCase));
                     if (DJ != null)
                     {
@@ -142,7 +125,7 @@ namespace Calculates
                         mSz = 0;
                         mQdyq = 0;
                         jsbeizhu = "设计等级为空或不存在。";
-                        sItem["JCJG"] = "不合格";
+                        sItem["JCJG"] = "不下结论";
                         mAllHg = false;
                         continue;
                     }
@@ -155,44 +138,13 @@ namespace Calculates
                 {
                     if ((BaiFenBi2 > 15 || BaiFenBi1 > 15))
                     {
-                        hzcase = 2;
                         jsbeizhu = "最大最小强度值其中一个超出中间值的15%,试验结果取中间值";
                         KYPJ = MiddleKYQD.ToString("0.0");
-                        if (mSz > 0)
-                        {
-                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
-                            if (mQdyq > 0)
-                            {
-                                if (GetSafeDouble(ddsjqd) > mQdyq)
-                                {
-                                    jcjg = "合格";
-                                }
-                                else
-                                {
-                                    jcjg = "不合格";
-                                    mAllHg = false;
-                                }
-                            }
-                            else
-                            {
-                                jcjg = "----";
-                                mjcjg = "----";
-                            }
-                        }
-                        else
-                        {
-                            jcjg = "----";
-                            mjcjg = "----";
-                            ddsjqd = "----";
-                        }
-                        midavg = true;
                     }
                     else if (BaiFenBi1 > 15 && BaiFenBi2 > 15)
                     {
                         mjcjg = "不下结论";
                         KYPJ = "试验结果无效";
-                        ddsjqd = "不作评定";
-                        hzcase = 1;
                         jcjg = "不下结论";
                         jsbeizhu = "最大最小强度值超出中间值的15%,试验结果不作评定依据";
                         mAllHg = false;
@@ -200,112 +152,24 @@ namespace Calculates
                     else
                     {
                         KYPJ = Math.Round((KYQD1 + KYQD2 + KYQD3) / 3, 1).ToString("0.0");
-                        hzcase = 4;
-                        if (mSz > 0)
-                        {
-                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
-                            if (mQdyq > 0)
-                            {
-                                if (GetSafeDouble(ddsjqd) > mQdyq)
-                                {
-                                    jcjg = "合格";
-                                }
-                                else
-                                {
-                                    jcjg = "不合格";
-                                    mAllHg = false;
-                                }
-                            }
-                            else
-                            {
-                                jcjg = "----";
-                                mjcjg = "----";
-                            }
-                        }
-                        else
-                        {
-                            jcjg = "----";
-                            mjcjg = "----";
-                            ddsjqd = "----";
-                        }
                     }
                 }
                 else
                 {
                     if ((BaiFenBi2 > 15 && BaiFenBi1 <= 15))
                     {
-                        hzcase = 2;
                         jsbeizhu = "最大最小强度值其中一个超出中间值的15%,试验结果取中间值";
                         KYPJ = MiddleKYQD.ToString("0.0");
-                        if (mSz > 0)
-                        {
-                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
-                            if (mQdyq > 0)
-                            {
-                                if (GetSafeDouble(ddsjqd) > mQdyq)
-                                {
-                                    jcjg = "合格";
-                                }
-                                else
-                                {
-                                    jcjg = "不合格";
-                                    mAllHg = false;
-                                }
-                            }
-                            else
-                            {
-                                jcjg = "----";
-                                mjcjg = "----";
-                            }
-                        }
-                        else
-                        {
-                            jcjg = "----";
-                            mjcjg = "----";
-                            ddsjqd = "----";
-                        }
-                        midavg = true;
                     }
                     else if (BaiFenBi1 > 15 && BaiFenBi2 <= 15)
                     {
-                        hzcase = 3;
                         jsbeizhu = "最大最小强度值其中一个超出中间值的15%,试验结果取中间值";
                         KYPJ = MiddleKYQD.ToString("0.0");
-                        if (mSz > 0)
-                        {
-                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
-                            if (mQdyq > 0)
-                            {
-                                if (GetSafeDouble(ddsjqd) > mQdyq)
-                                {
-                                    jcjg = "合格";
-                                }
-                                else
-                                {
-                                    jcjg = "不合格";
-                                    mAllHg = false;
-                                }
-                            }
-                            else
-                            {
-                                jcjg = "----";
-                                mjcjg = "----";
-                            }
-                        }
-                        else
-                        {
-                            jcjg = "----";
-                            mjcjg = "----";
-                            ddsjqd = "----";
-                        }
-                        midavg = true;
                     }
                     else if (BaiFenBi1 > 15 && BaiFenBi2 > 15)
                     {
                         mjcjg = "不下结论";
                         KYPJ = "试验结果无效";
-                        ddsjqd = "不作评定";
-                        hzcase = 1;
                         jcjg = "不下结论";
                         jsbeizhu = "最大最小强度值超出中间值的15%,试验结果不作评定依据";
                         mAllHg = false;
@@ -313,49 +177,18 @@ namespace Calculates
                     else
                     {
                         KYPJ = Math.Round((KYQD1 + KYQD2 + KYQD3) / 3, 1).ToString("0.0");
-                        hzcase = 4;
-                        if (mSz > 0)
-                        {
-                            ddsjqd = Math.Round(GetSafeDouble(KYPJ) / mSz * 100, 0).ToString();
-                            if (mQdyq > 0)
-                            {
-                                if (GetSafeDouble(ddsjqd) > mQdyq)
-                                {
-                                    jcjg = "合格";
-                                }
-                                else
-                                {
-                                    jcjg = "不合格";
-                                    mAllHg = false;
-                                }
-                            }
-                            else
-                            {
-                                jcjg = "----";
-                                mjcjg = "----";
-                            }
-                        }
-                        else
-                        {
-                            jcjg = "----";
-                            mjcjg = "----";
-                            ddsjqd = "----";
-                        }
                     }
                 }
-
                 sItem["KYQD1"] = Round(KYQD1, 1).ToString("0.0");
                 sItem["KYQD2"] = Round(KYQD2, 1).ToString("0.0");
                 sItem["KYQD3"] = Round(KYQD3, 1).ToString("0.0");
 
-
-                sItem["JCJG"] = jcjg;
                 //试验结果无效判定逻辑有误
                 if (KYPJ == "试验结果无效")
                 {
                     sItem["KYPJ"] = KYPJ;
                     mjcjg = "不下结论";
-                    sItem["JCJG"] = "不下结论";
+                    jcjg = "不下结论";
                     jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
                 }
                 else
@@ -384,6 +217,7 @@ namespace Calculates
 
                     jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sItem["KYPJ"] + "MPa，" + "达到设计强度" + sItem["DDSJQD"] + "%。";
                 }
+                sItem["JCJG"] = jcjg;
 
             }
 
@@ -399,14 +233,13 @@ namespace Calculates
 
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jgsm;
-            if ("----" ==  S_HNTS[0]["SJDJ"])
+            //单组混凝土试块
+            if ("----" == S_HNTS[0]["SJDJ"])
             {
-               S_HNTS[0]["JCJG"] = "不下结论";
+                S_HNTS[0]["JCJG"] = "不下结论";
                 MItem[0]["JCJGMS"] = "----";
                 MItem[0]["JCJG"] = "不下结论";
             }
-            //MItem[0]["JCJGMS"] = "----";
-
             #endregion
             /************************ 代码结束 *********************/
         }

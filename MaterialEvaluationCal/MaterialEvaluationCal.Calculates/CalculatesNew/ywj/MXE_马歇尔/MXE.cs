@@ -622,7 +622,7 @@ namespace Calculates
                     //马歇尔模数
                     sitem["MXEMS"] = Math.Round(mxemsList.Average(), 3).ToString("0.000");
                     //密度
-                    sitem["W_MXEMD"] = Math.Round(mdList.Average(), 1).ToString("0.0");
+                    sitem["W_MXEMD"] = Math.Round(mdList.Average(), 3).ToString("0.000");
                     //实测空隙率
                     sitem["W_KSL"] = Math.Round(kxlList.Average(), 1).ToString("0.0");
                     //实测矿料间隙率(%)

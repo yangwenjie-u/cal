@@ -477,7 +477,7 @@ namespace Calculates
                     var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("坚固性")).ToList();
                     foreach (var item in mrsZbyq_where)
                     {
-                        if (IsQualified(item["YQ"], sitem["JGX"],true) == "符合")
+                        if (IsQualified(item["YQ"], sitem["JGX"], true) == "符合")
                         {
                             sitem["JGXPD"] = item["DJ"];
                             break;
@@ -500,7 +500,7 @@ namespace Calculates
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
                     mbhgs = 0;
-                   // double[] narr;
+                    // double[] narr;
                     #region 含泥量
                     if (jcxm.Contains("、含泥量、"))
                     {
@@ -508,7 +508,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("含泥量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["HNL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["HNL"], true) == "符合")
                             {
                                 sitem["HNLPD"] = item["DJ"].Trim();
                                 break;
@@ -534,7 +534,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("泥块含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["NKHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["NKHL"], true) == "符合")
                             {
                                 sitem["NKHLPD"] = item["DJ"].Trim();
                                 break;
@@ -600,7 +600,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("氯离子含量") && x["SPZ"].Equals(sitem["SYT"].Trim())).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["LLZHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["LLZHL"], true) == "符合")
                             {
                                 sitem["LLZHLPD"] = item["DJ"].Trim();
                                 break;
@@ -669,7 +669,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("贝壳含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["BKHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["BKHL"], true) == "符合")
                             {
                                 sitem["BKHLPD"] = item["DJ"].Trim();
                                 break;
@@ -695,7 +695,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("云母含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["YMHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["YMHL"], true) == "符合")
                             {
                                 sitem["YMHLPD"] = item["DJ"].Trim();
                                 break;
@@ -734,7 +734,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("轻物质含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["QWZHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["QWZHL"], true) == "符合")
                             {
                                 sitem["QWZHLPD"] = item["DJ"].Trim();
                                 break;
@@ -760,7 +760,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("硫化物和硫酸盐含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["SO3"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["SO3"], true) == "符合")
                             {
                                 sitem["SO3PD"] = item["DJ"].Trim();
                                 break;
@@ -807,7 +807,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("含泥量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["HNL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["HNL"], true) == "符合")
                                 {
                                     sitem["HNLPD"] = item["DJ"].Trim();
                                     break;
@@ -851,7 +851,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("泥块含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["NKHL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["NKHL"], true) == "符合")
                                 {
                                     sitem["NKHLPD"] = item["DJ"].Trim();
                                     break;
@@ -992,7 +992,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("氯离子含量") && x["SPZ"].Equals(sitem["SYT"].Trim())).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["LLZHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["LLZHL"], true) == "符合")
                             {
                                 sitem["LLZHLPD"] = item["DJ"].Trim();
                                 break;
@@ -1020,7 +1020,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("碱活性")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["JHX"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["JHX"], true) == "符合")
                             {
                                 sitem["JHXPD"] = item["DJ"].Trim();
                                 break;
@@ -1112,7 +1112,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("贝壳含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["BKHL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["BKHL"], true) == "符合")
                                 {
                                     sitem["BKHLPD"] = item["DJ"].Trim();
                                     break;
@@ -1149,7 +1149,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("云母含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["YMHL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["YMHL"], true) == "符合")
                                 {
                                     sitem["YMHLPD"] = item["DJ"].Trim();
                                     break;
@@ -1201,7 +1201,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("轻物质含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["QWZHL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["QWZHL"], true) == "符合")
                                 {
                                     sitem["QWZHLPD"] = item["DJ"].Trim();
                                     break;
@@ -1236,7 +1236,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("硫化物和硫酸盐含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["SO3"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["SO3"], true) == "符合")
                                 {
                                     sitem["SO3PD"] = item["DJ"].Trim();
                                     break;
@@ -1281,7 +1281,7 @@ namespace Calculates
                 #endregion
             }
 
-            
+
             string dj = "";
 
             if (!string.IsNullOrEmpty(SItem[0]["NKHLPD"]) && SItem[0]["NKHLPD"] != "----" && SItem[0]["NKHLPD"] != "不符合"
@@ -1291,9 +1291,9 @@ namespace Calculates
                 {
                     dj = SItem[0]["NKHLPD"];
                 }
-                else if (SItem[0]["NKHLPD"] .Contains("～") && !SItem[0]["HNLPD"].Contains("～"))
+                else if (SItem[0]["NKHLPD"].Contains("～") && !SItem[0]["HNLPD"].Contains("～"))
                 {
-                    if (Conversion.Val(SItem[0]["HNLPD"]) > 55)
+                    if (GetSafeDouble(GetNum(SItem[0]["HNLPD"])) > 55)
                     {
                         //dj = SItem[0]["HNLPD"];
                         dj = SItem[0]["NKHLPD"];
@@ -1306,7 +1306,7 @@ namespace Calculates
                 }
                 else if (SItem[0]["HNLPD"].Contains("～") && !SItem[0]["NKHLPD"].Contains("～"))
                 {
-                    if (Conversion.Val(SItem[0]["NKHLPD"]) > 55)
+                    if (GetSafeDouble(GetNum(SItem[0]["NKHLPD"])) > 55)
                     {
                         //dj = SItem[0]["NKHLPD"];
                         dj = SItem[0]["HNLPD"];
@@ -1319,7 +1319,7 @@ namespace Calculates
                 }
                 else if (!SItem[0]["HNLPD"].Contains("～") && !SItem[0]["NKHLPD"].Contains("～"))
                 {
-                    if (Conversion.Val(SItem[0]["NKHLPD"]) > Conversion.Val(SItem[0]["HNLPD"]))
+                    if (GetSafeDouble(GetNum(SItem[0]["NKHLPD"])) > GetSafeDouble(GetNum(SItem[0]["HNLPD"])))
                     {
                         //dj = SItem[0]["NKHLPD"];
                         dj = SItem[0]["HNLPD"];
