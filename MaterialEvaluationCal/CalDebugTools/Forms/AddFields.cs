@@ -88,7 +88,7 @@ namespace CalDebugTools.Forms
         /// <param name="type"></param>
         public void CreateTableColumn(string type)
         {
-            string xmbh = string.IsNullOrEmpty(txt_xmbh.Text) ? "" : txt_xmbh.Text.Trim();
+            string xmbh = string.IsNullOrEmpty(txt_xmbh.Text) ? "" : txt_xmbh.Text.Trim().ToUpper();
             string fieldName = string.IsNullOrEmpty(txt_fieldName.Text) ? "" : txt_fieldName.Text.Trim();
             string fieldMS = string.IsNullOrEmpty(txt_fieldMs.Text) ? "" : txt_fieldMs.Text.Trim();
             string fieldType = string.IsNullOrEmpty(txt_fieldType.Text) ? "" : txt_fieldType.Text.Trim();
@@ -199,31 +199,70 @@ namespace CalDebugTools.Forms
                 DataHelper jcjtService = new DataHelper($"ConnectionStringJCJT_{jcjgCode}");
                 DataHelper jcjgService = new DataHelper($"ConnectionStringJCJG_{jcjgCode}");
                 DataHelper debugToolsService = new DataHelper($"ConnectionStringDebugTool");
-                //SqlBase jcjtService2 = new SqlBase(ESqlConnType.ConnectionStringJCJT, jcjgCode);
-                //SqlBase jcjgService2 = new SqlBase(ESqlConnType.ConnectionStringJCJG, jcjgCode);
-                //SqlBase debugToolsService2 = new SqlBase(ESqlConnType.ConnectionStringDebugTool, jcjgCode);
 
                 string sqlstr = string.Format($" select count(1) FROM  M_{xmbh}");
+                string customize = txt_customize.Text.ToUpper();
                 string msg = "";
                 #region 插入字段
-                if (jcjtService.ExecuteReader(sqlstr) == null)
+                if (chk_jcjg_only.Checked == true) //是否只监管
                 {
-                    MessageBox.Show($"项目{xmbh}不存在！");
-                    Log.Warn("AddField", $"{jcjgName}:项目{xmbh}不存在！");
-                    _outMsg += $"{jcjgName}:项目{xmbh}不存在！" + "\r\n";
-                    return;
+                    if (jcjgService.ExecuteReader(sqlstr) == null)
+                    {
+                        MessageBox.Show($"项目{xmbh}不存在！");
+                        Log.Warn("AddField", $"{jcjgName}:项目{xmbh}不存在！");
+                        _outMsg += $"{jcjgName}:项目{xmbh}不存在！" + "\r\n";
+                        return;
+                    }
+                }
+                else
+                {
+                    if (jcjtService.ExecuteReader(sqlstr) == null)
+                    {
+                        MessageBox.Show($"{jcjgName}检测集团:自定义表{customize}不存在！");
+                        Log.Warn("AddField", $"{jcjgName}:项目{xmbh}不存在！");
+                        _outMsg += $"{jcjgName}:项目{xmbh}不存在！" + "\r\n";
+                        return;
+                    }
+                    if (chk_syncJcJG.Checked && jcjgService.ExecuteReader(sqlstr) == null) //同步监管
+                    {
+                        MessageBox.Show($"{jcjgName}监管:自定义表{customize}不存在！");
+                        Log.Warn("AddField", $"{jcjgName}:项目{xmbh}不存在！");
+                        _outMsg += $"{jcjgName}:项目{xmbh}不存在！" + "\r\n";
+                        return;
+                    }
                 }
 
                 //自定义表
                 if (insertTabType == "C")
                 {
-                    sqlstr = string.Format($" select count(1) FROM  {txt_customize.Text}");
+                    sqlstr = string.Format($" select count(1) FROM  {customize}");
 
-                    if (jcjtService.ExecuteReader(sqlstr) == null)
+                    if (chk_jcjg_only.Checked) //是否只监管
                     {
-                        Log.Warn("AddField", $"{jcjgName}:自定义表{txt_customize.Text}不存在！");
-                        _outMsg += $"{jcjgName}:自定义表{txt_customize.Text}不存在！" + "\r\n";
-                        return;
+                        if (jcjgService.ExecuteReader(sqlstr) == null)
+                        {
+                            MessageBox.Show($"{jcjgName}监管:自定义表{customize}不存在！");
+                            Log.Warn("AddField", $"{jcjgName}监管数据库:自定义表{customize}不存在！");
+                            _outMsg += $"{jcjgName}监管数据库:自定义表{txt_customize.Text}不存在！" + "\r\n";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (jcjtService.ExecuteReader(sqlstr) == null)
+                        {
+                            MessageBox.Show($"{jcjgName}检测集团:自定义表{customize}不存在！");
+                            Log.Warn("AddField", $"{jcjgName}检测集团数据库:自定义表{customize}不存在！");
+                            _outMsg += $"{jcjgName}检测集团数据库:自定义表{txt_customize.Text}不存在！" + "\r\n";
+                            return;
+                        }
+                        if (chk_syncJcJG.Checked && jcjgService.ExecuteReader(sqlstr) == null) //同步监管
+                        {
+                            MessageBox.Show($"{jcjgName}监管:自定义表{customize}不存在！");
+                            Log.Warn("AddField", $"{jcjgName}监管数据库:自定义表{customize}不存在！");
+                            _outMsg += $"{jcjgName}监管数据库:自定义表{txt_customize.Text}不存在！" + "\r\n";
+                            return;
+                        }
                     }
                 }
 
@@ -235,28 +274,72 @@ namespace CalDebugTools.Forms
                     ArrayList zdzdCmdList = new ArrayList();
                     ArrayList zdzdCmdList_Cal = new ArrayList();
                     ArrayList cmdList = new ArrayList();
-                    //List<string> baseCmdList = new List<string>();
-                    //List<string> zdzdCmdList = new List<string>();
-                    //List<string> zdzdCmdList_Cal = new List<string>();
-                    //List<string> cmdList = new List<string>();
                     string sqlStrCheck = "";
                     int reFieldCount = 0;
                     if (txt_STabCount.Text == "1" && txt_SFieldeStartIndex.Text == "1")
                     {
                         sqlStrCheck = $"select * from information_schema.columns where table_name = '{tableName}' and column_name = '{fieldName}';";
                         //判断检测集团数据库是否已经添加字段
-                        reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
-                        if (reFieldCount == -2 || reFieldCount > 0)
-                        {
-                            Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}");
-                            _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}" + "\r\n";
 
-                        }
-                        else
+                        if (chk_jcjg_only.Checked == true) //仅添加监管
                         {
-                            baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
-                            _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                            reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
+                            if (reFieldCount == 0)
+                            {
+                                baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
+                                _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                            }
+                            else
+                            {
+                                Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}");
+                                _outMsg += $"{jcjgName}_监管数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}" + "\r\n";
+                            }
                         }
+                        else if (chk_syncJcJG.Checked == true) //两个数据库都添加
+                        {
+                            #region 检测集团
+                            reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
+                            if (reFieldCount == 0)
+                            {
+                                baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
+                                _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                            }
+                            else
+                            {
+                                Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}");
+                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}" + "\r\n";
+                            }
+                            #endregion
+
+                            #region 监管
+                            reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
+                            if (reFieldCount == 0)
+                            {
+                                baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
+                                _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                            }
+                            else
+                            {
+                                Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}");
+                                _outMsg += $"{jcjgName}_监管数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}" + "\r\n";
+                            }
+                            #endregion
+                        }
+                        else  // 检测集团
+                        {
+                            reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
+                            if (reFieldCount == 0)
+                            {
+                                baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
+                                _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                            }
+                            else
+                            {
+                                Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}");
+                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表已存在字段{fieldName}！count:{reFieldCount}" + "\r\n";
+                            }
+                        }
+
                     }
                     else
                     {
@@ -273,18 +356,75 @@ namespace CalDebugTools.Forms
                         {
                             sqlStrCheck = $"select * from information_schema.columns where table_name = '{tableName}' and column_name = '{fieldName}{startIndex + i}';";
                             //判断检测集团数据库是否已经添加字段
-                            reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
-                            if (reFieldCount == -2 || reFieldCount > 0)
+
+                            if (chk_jcjg_only.Checked == true) //仅添加监管
                             {
-                                Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
-                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
+                                if (reFieldCount == 0)
+                                {
+
+                                    baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
+                                    _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                }
+                                else
+                                {
+                                    Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
+                                    _outMsg += $"{jcjgName}_监管数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                }
                             }
-                            else
+                            else if (chk_syncJcJG.Checked == true) //两个数据库都添加
                             {
-                                baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
-                                _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                //集团数据库
+                                #region 检测集团
+                                reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
+                                if (reFieldCount == 0)
+                                {
+                                    baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
+                                    _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                }
+                                else
+                                {
+                                    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
+                                    _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                }
+                                #endregion
+
+                                #region 监管数据库
+                                reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
+                                if (reFieldCount == 0)
+                                {
+
+                                    baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
+                                    _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                }
+                                else
+                                {
+                                    Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
+                                    _outMsg += $"{jcjgName}_监管数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                }
+                                #endregion
+                            }
+                            else //检测集团
+                            {
+                                reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
+                                if (reFieldCount == 0)
+                                {
+                                    baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
+                                    _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                }
+                                else
+                                {
+                                    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
+                                    _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，{tableName}表中已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+
+                                }
                             }
                         }
+                    }
+
+                    if (baseCmdList.Count == 0)
+                    {
+                        return;
                     }
                     #endregion
 
@@ -294,44 +434,57 @@ namespace CalDebugTools.Forms
                     bool addFiled = true;
                     List<string> lst = new List<string>();
 
-                    //
-
                     if (txt_STabCount.Text == "1" && txt_SFieldeStartIndex.Text == "1")
                     {
+                        #region  添加一个字段
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
             $"VALUES('{tableName}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', '0', '', '0', '{chksfxs}', '0', '367.0000', '0', '0', '', '', '', 'S', '367.0000', '1', '', '', '', '1', '{ssjcx}', '1', '', '{fielsLx}', NULL, NULL, NULL, NULL, NULL, NULL)  ";
 
                         sqlStrCheck = $" select * from ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}'";
+
                         //判断检测集团数据库是否已经添加字段
-                        reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
-                        if (reFieldCount == -2 || reFieldCount > 0)
+                        if (chk_jcjg_only.Checked == true) //仅添加监管
                         {
-                            addFiled = false;
-                            Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
-                            _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
-                        }
-
-                        reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
-                        if (reFieldCount == -2 || reFieldCount > 0)
-                        {
-                            Log.Warn("AddField", $"CalDebugTools数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
-                        }
-                        else
-                        {
-                            zdzdCmdList_Cal.Add(sqlStr);
-                            _deleteSqlStr += $"delete CalDebugTool.dbo.ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}';\r\n";
-
-                        }
-
-                        if (chk_syncJcJG.Checked)
-                        {
-                            //判断监管系统数据库是否已经添加字段
                             reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
                             if (reFieldCount == -2 || reFieldCount > 0)
                             {
                                 addFiled = false;
-                                Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
-                                _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
+                                Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
+                                _outMsg += $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
+                            }
+                        }
+                        else if (chk_syncJcJG.Checked == true) //两个数据库都添加
+                        {
+                            #region 集团版本
+                            reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
+                            if (reFieldCount == -2 || reFieldCount > 0)
+                            {
+                                addFiled = false;
+                                Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
+                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
+                            }
+                            #endregion
+
+                            if (chk_syncJcJG.Checked) //监管
+                            {
+                                reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
+                                if (reFieldCount == -2 || reFieldCount > 0)
+                                {
+                                    addFiled = false;
+                                    Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
+                                    _outMsg += $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
+                                }
+                            }
+                        }
+                        else //集团版本
+                        {
+                            reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
+
+                            if (reFieldCount == -2 || reFieldCount > 0)
+                            {
+                                addFiled = false;
+                                Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
+                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
                             }
                         }
 
@@ -340,11 +493,12 @@ namespace CalDebugTools.Forms
                             _deleteSqlStr += $"delete ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}';\r\n";
                             zdzdCmdList.Add(sqlStr);
                         }
+                        #endregion
                     }
                     else
                     {
+                        #region  添加多个字段
                         startIndex = Convert.ToInt16(txt_SFieldeStartIndex.Text);
-
                         for (int i = 0; i < Convert.ToInt16(txt_STabCount.Text); i++)
                         {
                             addFiled = true;
@@ -352,36 +506,47 @@ namespace CalDebugTools.Forms
             $"VALUES('{tableName}', '{fieldName}{startIndex + i}', '{fieldMS}{startIndex + i}', 'nvarchar', '200', '0', 'nvarchar', '', '0', '', '0', '{chksfxs}', '0', '367.0000', '0', '0', '', '', '', 'S', '367.0000', '1', '', '', '', '1', '{ssjcx}', '1', '', '{fielsLx}', NULL, NULL, NULL, NULL, NULL, NULL)  ";
 
                             sqlStrCheck = $" select count(1) from ZDZD_{xmbh} where ZDMC = '{fieldName}{startIndex + i}' and SJBMC = '{tableName}'";
-                            //判断检测集团数据库是否已经添加字段
-                            reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
-                            if (reFieldCount == -2 || reFieldCount > 0)
+                            if (chk_jcjg_only.Checked == true) //仅添加监管
                             {
-                                addFiled = false;
-                                Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
-                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
-                            }
-
-                            //判断上传字段数据库是否已经添加字段
-                            reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
-                            if (reFieldCount == -2 || reFieldCount > 0)
-                            {
-                                Log.Warn("AddField", $"CalDebugTools数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
-                            }
-                            else
-                            {
-                                zdzdCmdList_Cal.Add(sqlStr);
-                                _deleteSqlStr += $"delete CalDebugTool.dbo.ZDZD_{xmbh} where ZDMC = '{fieldName}{startIndex + i}' and SJBMC = '{tableName}';\r\n";
-                            }
-
-                            if (chk_syncJcJG.Checked)
-                            {
-                                //判断监管系统数据库是否已经添加字段
                                 reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
                                 if (reFieldCount == -2 || reFieldCount > 0)
                                 {
                                     addFiled = false;
-                                    Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
-                                    _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                    Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
+                                    _outMsg += $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                }
+                            }
+                            else if (chk_syncJcJG.Checked == true) //两个数据库都添加
+                            {
+                                #region 检测集团
+                                reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
+                                if (reFieldCount == -2 || reFieldCount > 0)
+                                {
+                                    addFiled = false;
+                                    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
+                                    _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                }
+                                #endregion
+
+                                if (chk_syncJcJG.Checked) //监管
+                                {
+                                    reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
+                                    if (reFieldCount == -2 || reFieldCount > 0)
+                                    {
+                                        addFiled = false;
+                                        Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
+                                        _outMsg += $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                    }
+                                }
+                            }
+                            else //检测集团
+                            {
+                                reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
+                                if (reFieldCount == -2 || reFieldCount > 0)
+                                {
+                                    addFiled = false;
+                                    Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
+                                    _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
                                 }
                             }
 
@@ -391,12 +556,25 @@ namespace CalDebugTools.Forms
                                 _deleteSqlStr += $"delete ZDZD_{xmbh} where ZDMC = '{fieldName}{startIndex + i}' and SJBMC = '{tableName}';\r\n";
                             }
                         }
+                        #endregion
                     }
+
                     #endregion
 
                     cmdList.AddRange(baseCmdList);
                     cmdList.AddRange(zdzdCmdList);
-                    if (chk_jcjg_only.Checked != true)
+
+                    //仅添加监管
+                    if (chk_jcjg_only.Checked == true)
+                    {
+                        jcjgService.ExecuteSqlTran(cmdList, out msg);
+                        if (!string.IsNullOrEmpty(msg))
+                        {
+                            Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
+                            _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                        }
+                    }
+                    else
                     {
                         //检测集团
                         if (cmdList.Count > 0)
@@ -418,15 +596,16 @@ namespace CalDebugTools.Forms
                                 _outMsg += $"CalDebugTools数据库_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
                             }
                         }
-                    }
-                    //检测监管
-                    if (cmdList.Count > 0 && chk_syncJcJG.Checked)
-                    {
-                        jcjgService.ExecuteSqlTran(cmdList, out msg);
-                        if (!string.IsNullOrEmpty(msg))
+
+                        //同步到监管
+                        if (chk_syncJcJG.Checked)
                         {
-                            Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
-                            _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                            jcjgService.ExecuteSqlTran(cmdList, out msg); 
+                            if (!string.IsNullOrEmpty(msg))
+                            {
+                                Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
+                                _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                            }
                         }
                     }
                 }
@@ -489,14 +668,14 @@ namespace CalDebugTools.Forms
             }
         }
 
-        private void chk_jcjg_only_CheckedChanged(object sender, EventArgs e)
-        {
-            if (((System.Windows.Forms.CheckBox)sender).CheckState == CheckState.Checked)
-            {
-                chk_syncJcJG.CheckState = CheckState.Checked;
-            }
-            //if()
-        }
+        //private void chk_jcjg_only_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    if (((System.Windows.Forms.CheckBox)sender).CheckState == CheckState.Checked)
+        //    {
+        //        chk_syncJcJG.CheckState = CheckState.Checked;
+        //    }
+        //    //if()
+        //}
 
         private void btn_test_Click(object sender, EventArgs e)
         {
