@@ -37,6 +37,7 @@ namespace CalDebugTools.Forms
             com_dataSource.DataSource = listData;
             com_dataSource.DisplayMember = "Name";
             com_dataSource.ValueMember = "Abbrevition";
+            com_dataSource.SelectedIndex = -1;
         }
 
 
@@ -88,6 +89,10 @@ namespace CalDebugTools.Forms
         /// <param name="type"></param>
         public void CreateTableColumn(string type)
         {
+            if (com_dataSource.SelectedIndex == -1) {
+                MessageBox.Show("请选择检测机构！");
+                return;
+            }
             string xmbh = string.IsNullOrEmpty(txt_xmbh.Text) ? "" : txt_xmbh.Text.Trim().ToUpper();
             string fieldName = string.IsNullOrEmpty(txt_fieldName.Text) ? "" : txt_fieldName.Text.Trim();
             string fieldMS = string.IsNullOrEmpty(txt_fieldMs.Text) ? "" : txt_fieldMs.Text.Trim();
@@ -561,8 +566,8 @@ namespace CalDebugTools.Forms
 
                     #endregion
 
-                    cmdList.AddRange(baseCmdList);
                     cmdList.AddRange(zdzdCmdList);
+                    cmdList.AddRange(baseCmdList);
 
                     //仅添加监管
                     if (chk_jcjg_only.Checked == true)
@@ -571,7 +576,7 @@ namespace CalDebugTools.Forms
                         if (!string.IsNullOrEmpty(msg))
                         {
                             Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
-                            _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                            _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + msg + "\r\n";
                         }
                     }
                     else
@@ -583,7 +588,7 @@ namespace CalDebugTools.Forms
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。" + msg);
-                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，数据已回滚." + "\r\n";
+                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，数据已回滚." + msg + "\r\n";
                             }
                         }
                         //caldebugTool
@@ -593,7 +598,7 @@ namespace CalDebugTools.Forms
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"CalDebugTools数据库_检测集团数据库:添加字段失败，数据已回滚。" + msg);
-                                _outMsg += $"CalDebugTools数据库_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                                _outMsg += $"CalDebugTools数据库_检测监管数据库:添加字段异常，数据已回滚." + msg + "\r\n";
                             }
                         }
 
@@ -604,7 +609,7 @@ namespace CalDebugTools.Forms
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
-                                _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                                _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + msg + "\r\n";
                             }
                         }
                     }

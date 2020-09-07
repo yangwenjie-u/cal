@@ -802,8 +802,8 @@ namespace Calculates
                 
                 //断前距L0(MM)1
                 sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
-                
-                #region 抗震要求,最大力总伸长率,强度和屈服比，实屈与标屈比
+
+                #region 抗震要求,最大力总伸长率,Rom/Roel:实测抗拉强度和实测屈服强度比；Roel/Rel:实测屈服强度与屈服强度特征值之比
                 int mkZHggs = 0;
                 if (jcxm.Contains("、抗震要求、")| sItem["GCLX_PH"].ToUpper().EndsWith("E"))
                 {
