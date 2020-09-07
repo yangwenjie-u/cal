@@ -440,7 +440,7 @@ namespace CalDebugTools.Forms
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
             $"VALUES('{tableName}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', '0', '', '0', '{chksfxs}', '0', '367.0000', '0', '0', '', '', '', 'S', '367.0000', '1', '', '', '', '1', '{ssjcx}', '1', '', '{fielsLx}', NULL, NULL, NULL, NULL, NULL, NULL)  ";
 
-                        sqlStrCheck = $" select count(1) from ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}'";
+                        sqlStrCheck = $" select * from ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}'";
 
                         //判断检测集团数据库是否已经添加字段
                         if (chk_jcjg_only.Checked == true) //仅添加监管
@@ -567,7 +567,7 @@ namespace CalDebugTools.Forms
                     //仅添加监管
                     if (chk_jcjg_only.Checked == true)
                     {
-                        //jcjgService.ExecuteSqlTran(cmdList, out msg);
+                        jcjgService.ExecuteSqlTran(cmdList, out msg);
                         if (!string.IsNullOrEmpty(msg))
                         {
                             Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
@@ -579,17 +579,17 @@ namespace CalDebugTools.Forms
                         //检测集团
                         if (cmdList.Count > 0)
                         {
-                            //jcjtService.ExecuteSqlTran(cmdList, out msg);
+                            jcjtService.ExecuteSqlTran(cmdList, out msg);
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。" + msg);
-                                _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，数据已回滚." + "\r\n";
                             }
                         }
                         //caldebugTool
                         if (zdzdCmdList_Cal.Count > 0)
                         {
-                            //debugToolsService.ExecuteSqlTran(zdzdCmdList_Cal, out msg);
+                            debugToolsService.ExecuteSqlTran(zdzdCmdList_Cal, out msg);
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"CalDebugTools数据库_检测集团数据库:添加字段失败，数据已回滚。" + msg);
@@ -600,7 +600,7 @@ namespace CalDebugTools.Forms
                         //同步到监管
                         if (chk_syncJcJG.Checked)
                         {
-                            //jcjgService.ExecuteSqlTran(cmdList, out msg);
+                            jcjgService.ExecuteSqlTran(cmdList, out msg); 
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
