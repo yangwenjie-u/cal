@@ -121,7 +121,6 @@
             this.chk_jcjg_only.Size = new System.Drawing.Size(15, 14);
             this.chk_jcjg_only.TabIndex = 69;
             this.chk_jcjg_only.UseVisualStyleBackColor = true;
-            this.chk_jcjg_only.CheckedChanged += new System.EventHandler(this.chk_jcjg_only_CheckedChanged);
             // 
             // txt_deleteSqlStr
             // 
