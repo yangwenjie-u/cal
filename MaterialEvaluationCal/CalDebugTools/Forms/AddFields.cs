@@ -301,7 +301,7 @@ namespace CalDebugTools.Forms
                         sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
             $"VALUES('{tableName}', '{fieldName}', '{fieldMS}', 'nvarchar', '200', '0', 'nvarchar', '', '0', '', '0', '{chksfxs}', '0', '367.0000', '0', '0', '', '', '', 'S', '367.0000', '1', '', '', '', '1', '{ssjcx}', '1', '', '{fielsLx}', NULL, NULL, NULL, NULL, NULL, NULL)  ";
 
-                        sqlStrCheck = $" select* from ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}'";
+                        sqlStrCheck = $" select * from ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}'";
                         //判断检测集团数据库是否已经添加字段
                         reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
                         if (reFieldCount == -2 || reFieldCount > 0)
@@ -351,7 +351,7 @@ namespace CalDebugTools.Forms
                             sqlStr = $"insert into ZDZD_{xmbh} ( SJBMC, ZDMC, SY, ZDLX, ZDCD1, ZDCD2, INPUTZDLX, KJLX, SFBHZD, BHMS,ZDSX, SFXS, XSCD, XSSX, SFGD, MUSTIN, DEFAVAL, HELPLNK, CTRLSTRING, ZDXZ,WXSSX, WSFXS, MSGINFO, EQLFUNC, HELPWHERE, GETBYBH, SSJCX, SFBGZD,VALIDPROC, LX, ZDSXSQL, ENCRYPT, FZYC, FZCS, NOSAVE, location)" +
             $"VALUES('{tableName}', '{fieldName}{startIndex + i}', '{fieldMS}{startIndex + i}', 'nvarchar', '200', '0', 'nvarchar', '', '0', '', '0', '{chksfxs}', '0', '367.0000', '0', '0', '', '', '', 'S', '367.0000', '1', '', '', '', '1', '{ssjcx}', '1', '', '{fielsLx}', NULL, NULL, NULL, NULL, NULL, NULL)  ";
 
-                            sqlStrCheck = $" select * from ZDZD_{xmbh} where ZDMC = '{fieldName}{startIndex + i}' and SJBMC = '{tableName}'";
+                            sqlStrCheck = $" select count(1) from ZDZD_{xmbh} where ZDMC = '{fieldName}{startIndex + i}' and SJBMC = '{tableName}'";
                             //判断检测集团数据库是否已经添加字段
                             reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
                             if (reFieldCount == -2 || reFieldCount > 0)
@@ -405,7 +405,7 @@ namespace CalDebugTools.Forms
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段失败，数据已回滚。" + msg);
-                                _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
+                                _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，数据已回滚." + "\r\n";
                             }
                         }
                         //caldebugTool
@@ -422,14 +422,12 @@ namespace CalDebugTools.Forms
                     //检测监管
                     if (cmdList.Count > 0 && chk_syncJcJG.Checked)
                     {
-                        jcjgService.ExecuteSqlTran(zdzdCmdList_Cal, out msg);
+                        jcjgService.ExecuteSqlTran(cmdList, out msg);
                         if (!string.IsNullOrEmpty(msg))
                         {
                             Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
                             _outMsg += $"{jcjgName}_检测监管数据库:添加字段异常，数据已回滚." + "\r\n";
                         }
-                        _outMsg += $"CalDebugTools数据库:添加字段异常，数据已回滚." + "\r\n";
-
                     }
                 }
                 catch (Exception ex)
@@ -456,7 +454,7 @@ namespace CalDebugTools.Forms
         {
             try
             {
-                return dbService.GetDataSet(sql).Tables.Count == 0 ? 0 : 1;
+                return dbService.GetDataSet(sql).Tables[0].Rows.Count == 0 ? 0 : 1;
             }
             catch
             {

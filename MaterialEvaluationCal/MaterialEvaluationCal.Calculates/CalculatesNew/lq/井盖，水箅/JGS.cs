@@ -32,7 +32,10 @@ namespace Calculates
                 //从设计等级表中取得相应的计算数值、等级标准
                 var extraFieldsDj = mrsDj.FirstOrDefault(x => x["D_DJ"].Contains(sitem["LB"]));
 
+                
                 MItem[0]["G_BZHZ"] = extraFieldsDj["D_SYHZ"].Trim();
+                MItem[0]["G_QRSD"] = extraFieldsDj["QRSD"].Trim();
+
 
                 if (jcxm.Contains("、外观质量、"))
                 {
@@ -50,7 +53,43 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、结构尺寸、"))
                 {
-                    //GB / T23858 - 2009
+                    if (sitem["LB"] == "A15" || sitem["LB"] == "B125" || sitem["LB"] == "C250")
+                    {
+                        if (2 < GetSafeDouble(sitem["HWGD"]) && GetSafeDouble(sitem["HWGD"]) < 6)
+                        {
+                            sitem["GDPD"] = "合格";
+                        }
+                        else
+                        {
+                            sitem["GDPD"] = "不合格";
+                        }
+
+
+                    }
+                    if (sitem["LB"] == "D400" || sitem["LB"] == "E600" || sitem["LB"] == "F900")
+                    {
+                        if (3 < GetSafeDouble(sitem["HWGD"]) && GetSafeDouble(sitem["HWGD"]) < 8)
+                        {
+                            sitem["GDPD"] = "合格";
+                        }
+                        else
+                        {
+                            sitem["GDPD"] = "不合格";
+                        }
+
+
+                    }
+                    //嵌入深度
+                    if (GetSafeDouble(sitem["SCSD"]) >= GetSafeDouble(MItem[0]["G_QRSD"]))
+                    {
+                        sitem["SDPD"] = "合格";
+                    }
+                    else
+                    {
+                        sitem["SDPD"] = "不合格";
+                    }
+
+
                 }
                 if (jcxm.Contains("、承载能力、"))
                 {
