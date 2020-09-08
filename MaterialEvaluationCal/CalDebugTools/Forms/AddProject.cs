@@ -33,11 +33,17 @@ namespace CalDebugTools.Forms
             com_dataSource.DataSource = listData;
             com_dataSource.DisplayMember = "Name";
             com_dataSource.ValueMember = "Abbrevition";
+            com_dataSource.SelectedIndex = -1;
         }
 
 
         private void btn_add_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(com_dataSource.SelectedValue.ToString()))
+            {
+                MessageBox.Show("请选择要添加到检测结构");
+                return;
+            }
             if (string.IsNullOrEmpty(txt_ProjectName.Text))
             {
                 return;
@@ -47,11 +53,22 @@ namespace CalDebugTools.Forms
                 return;
             }
 
-
             string msg = "";
-            projectService.CreateProjectTable(com_dataSource.SelectedValue.ToString(), txt_ProjectName.Text, out msg) ;
+            projectService.CreateProjectTable(com_dataSource.SelectedValue.ToString(), txt_ProjectName.Text.ToUpper(), this.chk_addjcjt.Checked, this.chk_addjcjg.Checked, out msg);
 
+            if (string.IsNullOrEmpty(msg))
+            {
+                MessageBox.Show("添加成功", "提示");
+            }
+            else
+            {
+                MessageBox.Show("添加成功,请查看日志信息", "提示");
+            }
+        }
 
+        private void AddProject_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _formMain.Show();
         }
     }
 }
