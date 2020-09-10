@@ -489,6 +489,11 @@ namespace CalDebugTools.Forms
                         }
                         else //集团版本
                         {
+                            var df = jcjtService.ExecuteReader(sqlStrCheck);
+                            if (df == null)
+                            { 
+                            
+                            }
                             reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
 
                             if (reFieldCount == -2 || reFieldCount > 0)
@@ -503,6 +508,12 @@ namespace CalDebugTools.Forms
                         {
                             _deleteSqlStr += $"delete ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}';\r\n";
                             zdzdCmdList.Add(sqlStr);
+
+                            reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
+                            if (reFieldCount == 0)
+                            {
+                                zdzdCmdList_Cal.AddRange(zdzdCmdList);
+                            }
                         }
                         #endregion
                     }
@@ -565,6 +576,13 @@ namespace CalDebugTools.Forms
                             {
                                 zdzdCmdList.Add(sqlStr);
                                 _deleteSqlStr += $"delete ZDZD_{xmbh} where ZDMC = '{fieldName}{startIndex + i}' and SJBMC = '{tableName}';\r\n";
+
+                                reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
+                                if (reFieldCount== 0)
+                                {
+                                    zdzdCmdList_Cal.AddRange(zdzdCmdList);
+                                }
+
                             }
                         }
                         #endregion
@@ -574,7 +592,6 @@ namespace CalDebugTools.Forms
 
                     cmdList.AddRange(zdzdCmdList);
                     cmdList.AddRange(baseCmdList);
-                    zdzdCmdList_Cal.AddRange(zdzdCmdList);
 
                     //仅添加监管
                     if (chk_jcjg_only.Checked == true)
