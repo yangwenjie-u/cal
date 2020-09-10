@@ -216,7 +216,7 @@ namespace Calculates
                         }
 
                         //sItem["MDDJFW"] = "密度等级范围≤" + GetSafeDouble(sItem["MDDJFW"]).ToString("0") + "kg/m&scsup3&scend";
-                        sItem["MDDJFW"] = "≥" + yqgmdx.ToString() + "且" + "≤" + yqgmdd.ToString();
+                        sItem["MDDJFW"] = "≥" + yqgmdx.ToString() + "且" + "≤" + yqgmdd.ToString() + "kg/m&scsup3&scend";
                     }
                     else
                     {

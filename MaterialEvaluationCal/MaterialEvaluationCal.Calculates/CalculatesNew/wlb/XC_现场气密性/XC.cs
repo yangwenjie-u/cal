@@ -327,14 +327,16 @@ namespace Calculates
                     {
                         case "符合":
                             mbhgjg = mbhgjg + "、气密性能";
-                            jsbeizhu = "该组试样气密性能符合设计要求。";
+                            //jsbeizhu = "该组试样气密性能符合设计要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                             sItem["JCJG"] = "合格";
                             break;
 
                         case "不符合":
                             mhgjg = mhgjg + "、气密性能";
                             sItem["JCJG"] = "不合格";
-                            jsbeizhu = "该组试样气密性能不符合设计要求。";
+                            //jsbeizhu = "该组试样气密性能不符合设计要求。";
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目气密性性能不符合要求。";
                             mbhggs++;
                             break;
 

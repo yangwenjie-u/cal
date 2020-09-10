@@ -52,7 +52,7 @@ namespace Calculates
 
                 Gs = extraDJ.Count;
 
-                for (xd = 1; xd < Gs + 1; xd++)
+                for (xd = 0; xd < Gs; xd++)
                 {
                     if (sItem["SJDJ"] == extraDJ[xd]["MC"])
                     {
@@ -142,7 +142,7 @@ namespace Calculates
                     jcxmCur = "抗折强度";
 
                     string GG = !string.IsNullOrEmpty(sItem["GG"]) && sItem["GG"].ToLower().Replace("*", "x").Contains("x") ? sItem["GG"] : "";
-       
+
                     int ZGKJ = 160;
                     if (string.IsNullOrEmpty(GG))
                     {
