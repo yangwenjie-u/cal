@@ -161,7 +161,7 @@
     <Compile Include="CalculatesNew\wzy\DXL_电线电缆\DXL.cs" />
     <Compile Include="CalculatesNew\wzy\FSJ_砂浆混凝土防水剂\FSJ.cs" />
     <Compile Include="CalculatesNew\wzy\FSX_放射性核素限量\FSX.cs" />
-    <Compile Include="CalculatesNew\ltk\GG_钢管%28脚手架用%29\GG.cs" />
+    <Compile Include="CalculatesNew\ltk\GG_钢管\GG.cs" />
     <Compile Include="CalculatesNew\wzy\GHT_高强度混凝土回弹\GHT.cs" />
     <Compile Include="CalculatesNew\wzy\HJ_室内环境\HJ.cs" />
     <Compile Include="CalculatesNew\wzy\JMC_门窗传热系数\JMC.cs" />

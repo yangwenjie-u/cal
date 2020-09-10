@@ -352,7 +352,7 @@ namespace Calculates
                     }
                     if (0 == Conversion.Val(sItem["MJ" + i]))
                     {
-                        sItem["QFHZ" + i] = "0";
+                        sItem["QFQD" + i] = "0";
                     }
                     else
                     {

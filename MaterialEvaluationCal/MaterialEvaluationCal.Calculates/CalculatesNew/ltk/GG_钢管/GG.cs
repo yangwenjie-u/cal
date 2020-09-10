@@ -175,7 +175,7 @@ namespace Calculates
                     #endregion
 
                     #region 拉伸
-                    if (sitem["JCXM"].Contains("拉伸") && sitem["WGPD"] != "不合格")
+                    if (sitem["JCXM"].Contains("拉伸")|| sitem["JCXM"].Contains("抗拉强度")||sitem["JCXM"].Contains("断后伸长率") && sitem["WGPD"] != "不合格")
                     {
                         double mMj1 = Round(3.14159 * (Conversion.Val(sitem["GGWJ1"]) / 2) * (Conversion.Val(sitem["GGWJ1"]) / 2) - 3.14159 * (Conversion.Val(sitem["GGWJ1"]) / 2 - Conversion.Val(sitem["GGBH1"])) * (Conversion.Val(sitem["GGWJ1"]) / 2 - Conversion.Val(sitem["GGBH1"])), 2);
                         double mMj2 = Round(3.14159 * (Conversion.Val(sitem["GGWJ2"]) / 2) * (Conversion.Val(sitem["GGWJ2"]) / 2) - 3.14159 * (Conversion.Val(sitem["GGWJ2"]) / 2 - Conversion.Val(sitem["GGBH2"])) * (Conversion.Val(sitem["GGWJ2"]) / 2 - Conversion.Val(sitem["GGBH2"])), 2);
