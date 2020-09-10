@@ -153,23 +153,26 @@ namespace Calculates
                 }
 
                 //撕破强力
-                //if (jcxm.Contains("、撕破强力、"))
-                //{
-                //    sItem["HG_ZXSPQL"] = IsQualified(MItem[0]["G_ZXSPQL"], sItem["ZXSPQL"], false);
-                //    sItem["HG_HXSPQL"] = IsQualified(MItem[0]["G_HXSPQL"], sItem["HXSPQL"], false);
-                //    mAllHg = sItem["HG_ZXSPQL"] == "合格" ? mAllHg : false;
-                //    mAllHg = sItem["HG_HXSPQL"] == "合格" ? mAllHg : false;
-                //}
-                //else
-                //{
-                //    sItem["HG_ZXSPQL"] = "----";
-                //    sItem["HG_HXSPQL"] = "----";
-                //    sItem["ZXSPQL"] = "----";
-                //    sItem["HXSPQL"] = "----";
-                //    MItem[0]["G_HXSPQL"] = "----";
-                //    MItem[0]["G_ZXSPQL"] = "----";
+                if (jcxm.Contains("、撕破强力、"))
+                {
 
-                //}
+
+
+                    sItem["HG_ZXSPQL"] = IsQualified(MItem[0]["G_ZXSPQL"], sItem["ZXSPQL"], false);
+                    sItem["HG_HXSPQL"] = IsQualified(MItem[0]["G_HXSPQL"], sItem["HXSPQL"], false);
+                    mAllHg = sItem["HG_ZXSPQL"] == "合格" ? mAllHg : false;
+                    mAllHg = sItem["HG_HXSPQL"] == "合格" ? mAllHg : false;
+                }
+                else
+                {
+                    sItem["HG_ZXSPQL"] = "----";
+                    sItem["HG_HXSPQL"] = "----";
+                    sItem["ZXSPQL"] = "----";
+                    sItem["HXSPQL"] = "----";
+                    MItem[0]["G_HXSPQL"] = "----";
+                    MItem[0]["G_ZXSPQL"] = "----";
+
+                }
 
                 //耐静水压
                 //if (jcxm.Contains("、耐静水压、"))

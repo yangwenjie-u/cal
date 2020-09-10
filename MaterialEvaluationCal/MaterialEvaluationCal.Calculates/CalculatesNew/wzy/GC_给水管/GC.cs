@@ -372,8 +372,11 @@ namespace Calculates
                         List<decimal> arrWJ = new List<decimal>();
                         List<decimal> arrWJHG = new List<decimal>();
                         List<decimal> arrWJBHG = new List<decimal>();
+                        //符合条件的壁厚信息（单组中一个不合格，这组记录就舍弃）
                         List<decimal> arrBH = new List<decimal>();
                         List<decimal> arrDZWJ = new List<decimal>();
+                        //记录所有壁厚信息
+                        List<decimal> arrBHAll = new List<decimal>();
 
                         //单组壁厚
                         List<decimal> arrDZBH = new List<decimal>();
@@ -461,6 +464,8 @@ namespace Calculates
                                     break;
                                 }
 
+                                arrBHAll.Add(GetSafeDecimal(sitem["SCBH" + i + "_" + j]));
+
                                 if (GetSafeDecimal(sitem["SCBH" + i + "_" + j]) < bhMin || GetSafeDecimal(sitem["SCBH" + i + "_" + j]) > bhMax) //该组不合格，则去掉该组，如果大于1，尺寸不合格
                                 {
                                     bh_bhg++;
@@ -480,14 +485,25 @@ namespace Calculates
                         }
 
                         arrBH.Sort();
-                        if (arrBH.Count < 1)
+
+                        if (arrBHAll.Count == 0)
                         {
                             throw new Exception("请输入壁厚信息！");
                         }
 
-                        sitem["PJBH1"] = (arrBH[0]).ToString("0.0");
-                        sitem["PJBH2"] = (arrBH[arrBH.Count - 1]).ToString("0.0");
-                        sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
+                        if (arrBH.Count >= 1)
+                        {
+                            sitem["PJBH1"] = (arrBH[0]).ToString("0.0");
+                            sitem["PJBH2"] = (arrBH[arrBH.Count - 1]).ToString("0.0");
+                            sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
+                        }
+                        else
+                        {
+                            sitem["PJBH1"] = (arrBHAll[0]).ToString("0.0");
+                            sitem["PJBH2"] = (arrBHAll[arrBHAll.Count - 1]).ToString("0.0");
+                            sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
+                        }
+
 
                         #region 判定如果尺寸或者壁厚有两个不合格，则不合格
                         if (wj_bhg > 1)
@@ -762,7 +778,7 @@ namespace Calculates
                                     ztsj = "16h±1h;";
                                 }
                                 sitem["YYTJSJ"] = ztsj;
-                                sitem["YYSYZT"] = "试验制备条件：" + (string.IsNullOrEmpty(sitem["YYZBTJ"].ToString()) == true ? "/" : sitem["YYSYHJ"]) + "；状态调节时间：" + sitem["YYTJSJ"] + "；试验环境：" + sitem["YYSYHJ"] + "；密封接头类型：" + sitem["YYSYJTLX"];
+                                sitem["YYSYZT"] = "试验制备条件：" + (string.IsNullOrEmpty(sitem["YYZBTJ"]) == true ? "/" : sitem["YYSYHJ"]) + "；状态调节时间：" + sitem["YYTJSJ"] + "；试验环境：" + sitem["YYSYHJ"] + "；密封接头类型：" + sitem["YYSYJTLX"];
                                 //sitem["BGJCXM" + (curJcxmCount + md - 1)] = mtmpArray[xd] + yysyCs;
 
                                 if (!string.IsNullOrEmpty(yysyCs))
@@ -913,7 +929,7 @@ namespace Calculates
                 if (jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = "维卡软化温度";
-                    if (sffj=="0")
+                    if (sffj == "0")
                     {
                         //初检
                         mitem["RHWD"] = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1).ToString();
@@ -963,7 +979,7 @@ namespace Calculates
                     mitem["RHWD_HG"] = "----";
                     mitem["G_RHWD"] = "----";
                 }
-                
+
                 if (jcxm.Contains("、纵向回缩率、"))
                 {
                     jcxmCur = "纵向回缩率";
@@ -974,7 +990,7 @@ namespace Calculates
                     MItem[0]["HSLL0_5"] = "100";
                     MItem[0]["HSLL0_6"] = "100";
 
-                    if (sffj=="0")
+                    if (sffj == "0")
                     {
                         //初检  
                         decimal sum = 0;
@@ -1039,7 +1055,7 @@ namespace Calculates
                 {
                     sitem["BGJCXM" + curJcxmCount] = "以下空白";
                 }
-                    
+
                 if (mbhggs == 0)
                 {
                     sitem["JCJG"] = "合格";
