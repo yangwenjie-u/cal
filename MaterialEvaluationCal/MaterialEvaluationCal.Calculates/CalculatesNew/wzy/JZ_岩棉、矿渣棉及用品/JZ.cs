@@ -413,7 +413,8 @@ namespace Calculates
                                 mitem["G_MDYXPC"] = mrsDj_item["G_MD"];  //密度偏差要求
                             }
                             break;
-                        case "建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)":
+                        //case "建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)":
+                        case "建筑用岩棉绝热制品(GB/T 19686-2015)":
                             if (sitem["ZPXS"].Trim() == mrsDj_item["ZPXS"])
                             {
                                 if (sitem["ZPXS"].Trim() == "板" || sitem["ZPXS"].Trim() == "条") //GB/T 19686 只有板、条才有导热系数

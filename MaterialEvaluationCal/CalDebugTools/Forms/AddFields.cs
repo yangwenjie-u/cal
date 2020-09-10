@@ -89,7 +89,8 @@ namespace CalDebugTools.Forms
         /// <param name="type"></param>
         public void CreateTableColumn(string type)
         {
-            if (com_dataSource.SelectedIndex == -1) {
+            if (com_dataSource.SelectedIndex == -1)
+            {
                 MessageBox.Show("请选择检测机构！");
                 return;
             }
@@ -605,7 +606,7 @@ namespace CalDebugTools.Forms
                         //同步到监管
                         if (chk_syncJcJG.Checked)
                         {
-                            jcjgService.ExecuteSqlTran(cmdList, out msg); 
+                            jcjgService.ExecuteSqlTran(cmdList, out msg);
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"{jcjgName}_检测监管数据库:添加字段失败，数据已回滚。" + msg);
@@ -640,8 +641,9 @@ namespace CalDebugTools.Forms
             {
                 return dbService.GetDataSet(sql).Tables[0].Rows.Count == 0 ? 0 : 1;
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Error("AddField", $" 检测是否有数据是异常，msg:" + ex.Message);
                 return -2;
             }
         }

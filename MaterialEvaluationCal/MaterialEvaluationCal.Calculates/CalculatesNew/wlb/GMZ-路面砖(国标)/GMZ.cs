@@ -921,15 +921,15 @@ namespace Calculates
                 }
                 #endregion
 
-                //单组判断
-                if (itemHG)
-                {
-                    sItem["JCJG"] = "合格";
-                }
-                else
-                {
-                    sItem["JCJG"] = "不合格";
-                }
+                ////单组判断
+                //if (itemHG)
+                //{
+                //    sItem["JCJG"] = "合格";
+                //}
+                //else
+                //{
+                //    sItem["JCJG"] = "不合格";
+                //}
             }
 
             //添加最终报告

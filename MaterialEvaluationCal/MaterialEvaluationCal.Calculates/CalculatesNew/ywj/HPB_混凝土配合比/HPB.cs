@@ -161,8 +161,7 @@ namespace Calculates.HPB_混凝土配合比
                     MItem[0]["SYRQQ1"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(7).ToShortDateString();
                     MItem[0]["SYRQQ2"] = DateTime.Parse(sItem["ZZRQ"]).AddDays(28).ToShortDateString();
                 }
-
-
+                
                 var dateTime = new DateTime();
                 if (jcxm.Contains("、7天强度、") || jcxm.Contains("、配合比、"))
                 {
@@ -184,6 +183,7 @@ namespace Calculates.HPB_混凝土配合比
                     }
                     MItem[0]["SYRQQ1"] = "";
                 }
+
                 if (jcxm.Contains("、28天强度、") || jcxm.Contains("、配合比、"))
                 {
                     if ((-0.001 <= Conversion.Val(sItem["KYPJ_7"]) && -0.001 <= Conversion.Val(sItem["KYPJ"])) && (null == sItem["TOMARK"] || Conversion.Val(sItem["TOMARK"]) <= 0))
@@ -213,6 +213,7 @@ namespace Calculates.HPB_混凝土配合比
                 else
                 {
                     MItem[0]["SYRQQ2"] = "";
+                    sItem["KYPJ"] = "----";
                 }
 
                 if (jcxm.Contains("、28天强度、") || jcxm.Contains("、配合比、"))
@@ -232,7 +233,7 @@ namespace Calculates.HPB_混凝土配合比
 
                 if (jcxm.Contains("、抗渗、") || jcxm.Contains("、配合比、"))
                 {
-                    if (string.IsNullOrEmpty(sItem["KYPJ"]) && sItem["KYPJ"] != "----" && Conversion.Val(sItem["KSQD1"]) != 0)
+                    if (!string.IsNullOrEmpty(sItem["KYPJ"]) && sItem["KYPJ"] != "----" && Conversion.Val(sItem["KSQD1"]) != 0)
                     {
                         sItem["DDKSDJ"] = "P" + (Conversion.Val(sItem["KSQD1"]) * 10 - 2).ToString();
                     }
