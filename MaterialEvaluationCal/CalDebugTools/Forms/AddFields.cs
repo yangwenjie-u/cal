@@ -491,8 +491,8 @@ namespace CalDebugTools.Forms
                         {
                             var df = jcjtService.ExecuteReader(sqlStrCheck);
                             if (df == null)
-                            { 
-                            
+                            {
+
                             }
                             reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
 
@@ -509,10 +509,13 @@ namespace CalDebugTools.Forms
                             _deleteSqlStr += $"delete ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}';\r\n";
                             zdzdCmdList.Add(sqlStr);
 
-                            reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
-                            if (reFieldCount == 0)
+                            if (!chk_jcjg_only.Checked)
                             {
-                                zdzdCmdList_Cal.AddRange(zdzdCmdList);
+                                reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
+                                if (reFieldCount == 0)
+                                {
+                                    zdzdCmdList_Cal.AddRange(zdzdCmdList);
+                                }
                             }
                         }
                         #endregion
@@ -577,12 +580,14 @@ namespace CalDebugTools.Forms
                                 zdzdCmdList.Add(sqlStr);
                                 _deleteSqlStr += $"delete ZDZD_{xmbh} where ZDMC = '{fieldName}{startIndex + i}' and SJBMC = '{tableName}';\r\n";
 
-                                reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
-                                if (reFieldCount== 0)
+                                if (!chk_jcjg_only.Checked)
                                 {
-                                    zdzdCmdList_Cal.AddRange(zdzdCmdList);
+                                    reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
+                                    if (reFieldCount == 0)
+                                    {
+                                        zdzdCmdList_Cal.AddRange(zdzdCmdList);
+                                    }
                                 }
-
                             }
                         }
                         #endregion
