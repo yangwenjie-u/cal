@@ -56,13 +56,13 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txt_lx = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btn_test = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.btn_Customize = new System.Windows.Forms.Button();
             this.txt_customize = new System.Windows.Forms.TextBox();
             this.btn_helper = new System.Windows.Forms.Button();
             this.btn_S_only = new System.Windows.Forms.Button();
             this.btn_M_only = new System.Windows.Forms.Button();
-            this.btn_test = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -359,6 +359,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "独立添加";
             // 
+            // btn_test
+            // 
+            this.btn_test.Location = new System.Drawing.Point(274, 101);
+            this.btn_test.Name = "btn_test";
+            this.btn_test.Size = new System.Drawing.Size(75, 23);
+            this.btn_test.TabIndex = 69;
+            this.btn_test.Text = "测试";
+            this.btn_test.UseVisualStyleBackColor = true;
+            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -416,16 +426,6 @@
             this.btn_M_only.UseVisualStyleBackColor = true;
             this.btn_M_only.Click += new System.EventHandler(this.btn_M_only_Click);
             // 
-            // btn_test
-            // 
-            this.btn_test.Location = new System.Drawing.Point(274, 101);
-            this.btn_test.Name = "btn_test";
-            this.btn_test.Size = new System.Drawing.Size(75, 23);
-            this.btn_test.TabIndex = 69;
-            this.btn_test.Text = "测试";
-            this.btn_test.UseVisualStyleBackColor = true;
-            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
-            // 
             // AddFields
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -435,7 +435,7 @@
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AddFields";
-            this.Text = "AddFields";
+            this.Text = "添加字段";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AddFields_FormClosed);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();

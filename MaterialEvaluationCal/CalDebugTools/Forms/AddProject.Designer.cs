@@ -42,7 +42,7 @@
             // btn_add
             // 
             this.btn_add.Location = new System.Drawing.Point(237, 237);
-            this.btn_add.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_add.Margin = new System.Windows.Forms.Padding(2);
             this.btn_add.Name = "btn_add";
             this.btn_add.Size = new System.Drawing.Size(63, 26);
             this.btn_add.TabIndex = 0;
@@ -63,7 +63,7 @@
             // txt_ProjectName
             // 
             this.txt_ProjectName.Location = new System.Drawing.Point(264, 131);
-            this.txt_ProjectName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txt_ProjectName.Margin = new System.Windows.Forms.Padding(2);
             this.txt_ProjectName.Name = "txt_ProjectName";
             this.txt_ProjectName.Size = new System.Drawing.Size(76, 21);
             this.txt_ProjectName.TabIndex = 2;
@@ -81,7 +81,7 @@
             // 
             this.com_dataSource.FormattingEnabled = true;
             this.com_dataSource.Location = new System.Drawing.Point(264, 98);
-            this.com_dataSource.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.com_dataSource.Margin = new System.Windows.Forms.Padding(2);
             this.com_dataSource.Name = "com_dataSource";
             this.com_dataSource.Size = new System.Drawing.Size(75, 20);
             this.com_dataSource.TabIndex = 39;
@@ -141,9 +141,9 @@
             this.Controls.Add(this.txt_ProjectName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_add);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AddProject";
-            this.Text = "AddProject";
+            this.Text = "添加项目";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AddProject_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
