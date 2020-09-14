@@ -83,20 +83,30 @@ namespace Calculates
                 //断裂强度
                 if (jcxm.Contains("、断裂强度、"))
                 {
-                    sItem["HG_HXDLQD"] = IsQualified(MItem[0]["G_HXDLQD"], sItem["HXDLQD"], false);
-                    sItem["HG_ZXDLQD"] = IsQualified(MItem[0]["G_ZXDLQD"], sItem["ZXDLQD"], false);
+                    for (int i = 1; i<= 10; i++)
+                    {
+                        sItem["DLQD_" + i] = (GetSafeDouble(sItem["ZDFH" + i]) * (1 / GetSafeDouble(sItem["MYKD" + i]))).ToString("0.00");
 
-                    mAllHg = sItem["HG_ZXDLQD"] == "合格" ? mAllHg : false;
-                    mAllHg = sItem["HG_HXDLQD"] == "合格" ? mAllHg : false;
+                    }
+                    sItem["H_SCDLPJZ"] = ((GetSafeDouble(sItem["DLQD_1"]) + GetSafeDouble(sItem["DLQD_2"]) + GetSafeDouble(sItem["DLQD_3"]) + GetSafeDouble(sItem["DLQD_4"]) + GetSafeDouble(sItem["DLQD_5"])) / 5).ToString("0.00");
+                    sItem["Z_SCDLPJZ"] = ((GetSafeDouble(sItem["DLQD_6"]) + GetSafeDouble(sItem["DLQD_7"]) + GetSafeDouble(sItem["DLQD_8"]) + GetSafeDouble(sItem["DLQD_9"]) + GetSafeDouble(sItem["DLQD_10"])) / 5).ToString("0.00");
+
+
+
+                    sItem["H_DXDLPD"] = IsQualified(MItem[0]["G_HXDLQD"], sItem["H_SCDLPJZ"], false);
+                    sItem["Z_DXDLPD"] = IsQualified(MItem[0]["G_ZXDLQD"], sItem["Z_SCDLPJZ"], false);
+
+                    mAllHg = sItem["H_DXDLPD"] == "合格" ? mAllHg : false;
+                    mAllHg = sItem["Z_DXDLPD"] == "合格" ? mAllHg : false;
                 }
                 else
                 {
-                    sItem["HG_ZXDLQD"] = "----";
-                    sItem["HG_ZXDLQD"] = "----";
-                    sItem["HXDLQD"] = "----";
-                    sItem["ZXDLQD"] = "----";
-                    MItem[0]["G_HXDLQD"] = "----";
-                    MItem[0]["G_ZXDLQD"] = "----";
+                    //sItem["HG_ZXDLQD"] = "----";
+                    //sItem["HG_ZXDLQD"] = "----";
+                    //sItem["HXDLQD"] = "----";
+                    //sItem["ZXDLQD"] = "----";
+                    //MItem[0]["G_HXDLQD"] = "----";
+                    //MItem[0]["G_ZXDLQD"] = "----";
                 }
 
                 //断裂伸长率
@@ -105,14 +115,24 @@ namespace Calculates
                     //sItem["GH_HXQD"] = IsQualified(sItem["HXQDSJZ"], sItem["W_HXQD"], false);
                     //sItem["GH_ZXQD"] = IsQualified(sItem["ZXQDSJZ"], sItem["W_ZXQD"], false);
 
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        sItem["DLSCL" + i] = ((GetSafeDouble(sItem["ZDFHXSC" + i])- GetSafeDouble(sItem["YFHSC" + i]))/(GetSafeDouble(sItem["GJCD" + i])+ GetSafeDouble(sItem["YFHSC" + i]))).ToString("0.00");
 
-                    sItem["GH_ZSCL"] = IsQualified(sItem["G_JXSCL"], sItem["W_ZSCL"], false);
-                    sItem["GH_HSCL"] = IsQualified(sItem["G_WXSCL"], sItem["W_HSCL"], false);
+                    }
+                    sItem["H_SCLPJZ"] = (((GetSafeDouble(sItem["DLSCL1"]) + GetSafeDouble(sItem["DLSCL2"]) + GetSafeDouble(sItem["DLSCL3"]) + GetSafeDouble(sItem["DLSCL4"]) + GetSafeDouble(sItem["DLSCL5"])) / 5)*100).ToString("0.00");
+
+                    sItem["Z_SCLPJZ"] = (((GetSafeDouble(sItem["DLSCL6"]) + GetSafeDouble(sItem["DLSCL7"]) + GetSafeDouble(sItem["DLSCL8"]) + GetSafeDouble(sItem["DLSCL9"]) + GetSafeDouble(sItem["DLSCL10"])) / 5)*100).ToString("0.00");
+
+
+
+                    sItem["Z_DXSCLPD"] = IsQualified(sItem["G_JXSCL"], sItem["Z_SCLPJZ"], false);
+                    sItem["H_DXSCLPD"] = IsQualified(sItem["G_WXSCL"], sItem["H_SCLPJZ"], false);
 
                     //mAllHg = sItem["GH_HXQD"] == "合格" ? mAllHg : false;
                     //mAllHg = sItem["GH_ZXQD"] == "合格" ? mAllHg : false;
-                    mAllHg = sItem["GH_ZSCL"] == "合格" ? mAllHg : false;
-                    mAllHg = sItem["GH_HSCL"] == "合格" ? mAllHg : false;
+                    mAllHg = sItem["Z_DXSCLPD"] == "合格" ? mAllHg : false;
+                    mAllHg = sItem["H_DXSCLPD"] == "合格" ? mAllHg : false;
                 }
                 else
                 {
@@ -133,36 +153,36 @@ namespace Calculates
                 }
 
                 //撕破强力
-                if (jcxm.Contains("、撕破强力、"))
-                {
-                    sItem["HG_ZXSPQL"] = IsQualified(MItem[0]["G_ZXSPQL"], sItem["ZXSPQL"], false);
-                    sItem["HG_HXSPQL"] = IsQualified(MItem[0]["G_HXSPQL"], sItem["HXSPQL"], false);
-                    mAllHg = sItem["HG_ZXSPQL"] == "合格" ? mAllHg : false;
-                    mAllHg = sItem["HG_HXSPQL"] == "合格" ? mAllHg : false;
-                }
-                else
-                {
-                    sItem["HG_ZXSPQL"] = "----";
-                    sItem["HG_HXSPQL"] = "----";
-                    sItem["ZXSPQL"] = "----";
-                    sItem["HXSPQL"] = "----";
-                    MItem[0]["G_HXSPQL"] = "----";
-                    MItem[0]["G_ZXSPQL"] = "----";
+                //if (jcxm.Contains("、撕破强力、"))
+                //{
+                //    sItem["HG_ZXSPQL"] = IsQualified(MItem[0]["G_ZXSPQL"], sItem["ZXSPQL"], false);
+                //    sItem["HG_HXSPQL"] = IsQualified(MItem[0]["G_HXSPQL"], sItem["HXSPQL"], false);
+                //    mAllHg = sItem["HG_ZXSPQL"] == "合格" ? mAllHg : false;
+                //    mAllHg = sItem["HG_HXSPQL"] == "合格" ? mAllHg : false;
+                //}
+                //else
+                //{
+                //    sItem["HG_ZXSPQL"] = "----";
+                //    sItem["HG_HXSPQL"] = "----";
+                //    sItem["ZXSPQL"] = "----";
+                //    sItem["HXSPQL"] = "----";
+                //    MItem[0]["G_HXSPQL"] = "----";
+                //    MItem[0]["G_ZXSPQL"] = "----";
 
-                }
+                //}
 
                 //耐静水压
-                if (jcxm.Contains("、耐静水压、"))
-                {
-                    sItem["HG_NJSY"] = IsQualified(MItem[0]["G_NJSY"], sItem["NJSY"], false);
-                    mAllHg = sItem["HG_NJSY"] == "合格" ? mAllHg : false;
-                }
-                else
-                {
-                    sItem["HG_NJSY"] = "----";
-                    MItem[0]["G_NJSY"] = "----";
-                    sItem["NJSY"] = "----";
-                }
+                //if (jcxm.Contains("、耐静水压、"))
+                //{
+                //    sItem["HG_NJSY"] = IsQualified(MItem[0]["G_NJSY"], sItem["NJSY"], false);
+                //    mAllHg = sItem["HG_NJSY"] == "合格" ? mAllHg : false;
+                //}
+                //else
+                //{
+                //    sItem["HG_NJSY"] = "----";
+                //    MItem[0]["G_NJSY"] = "----";
+                //    sItem["NJSY"] = "----";
+                //}
 
                 if (!mAllHg)
                 {

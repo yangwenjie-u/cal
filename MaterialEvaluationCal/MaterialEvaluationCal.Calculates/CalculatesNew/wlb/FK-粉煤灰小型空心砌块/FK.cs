@@ -576,7 +576,7 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["DRPD"] = "----";
+                    sItem["KDPD"] = "----";
                     sItem["KDYQ"] = "----";
                     sItem["DRQDSSL"] = "----";
                 }

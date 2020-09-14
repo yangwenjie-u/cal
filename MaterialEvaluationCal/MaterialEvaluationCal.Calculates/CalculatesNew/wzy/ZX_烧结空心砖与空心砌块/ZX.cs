@@ -450,7 +450,7 @@ namespace Calculates
 
                         mrssubTable_filter["QDYQ"] = "抗压强度平均值需≥" + GetSafeDouble(mrsmainTable_filter["G_PJZ"]).ToString("0.0") +
                                         "MPa。当变异系数δ≤0.21时，强度标准值需≥" + GetSafeDouble(mrsmainTable_filter["G_BZZ"]).ToString("0.0") +
-                                        "，当变异系数δ＞0.21时，单块最小强度值需≥" + GetSafeDouble(mrsmainTable_filter["G_MIN"]).ToString("0.0") +
+                                        "MPa，当变异系数δ＞0.21时，单块最小强度值需≥" + GetSafeDouble(mrsmainTable_filter["G_MIN"]).ToString("0.0") +
                                         "MPa。";
 
 
@@ -799,7 +799,7 @@ namespace Calculates
                     mS = Round(mS, 2);
                     sitem["BZC"] = Round(mS, 2).ToString("0.00");
                     sitem["KYPJ"] = Round(mPjz, 1).ToString("0.0");
-                    sitem["QDYQ"] = "抗压强度平均值需≥" + GetSafeDouble(MItem[0]["G_PJZ"]).ToString("0.0").Trim() + "MPa。当变异系数δ≤0.21时，强度标准值需≥" + GetSafeDouble(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "，当变异系数δ＞0.21时，单块最小强度值需≥" + GetSafeDouble(MItem[0]["G_MIN"]).ToString("0.0").Trim() + "MPa。";
+                    sitem["QDYQ"] = "抗压强度平均值需≥" + GetSafeDouble(MItem[0]["G_PJZ"]).ToString("0.0").Trim() + "MPa。当变异系数δ≤0.21时，强度标准值需≥" + GetSafeDouble(MItem[0]["G_BZZ"]).ToString("0.0").Trim() + "MPa，当变异系数δ＞0.21时，单块最小强度值需≥" + GetSafeDouble(MItem[0]["G_MIN"]).ToString("0.0").Trim() + "MPa。";
                     //变异系数
                     if (mPjz != 0)
                         sitem["BYXS"] = Round(mS / mPjz, 2).ToString("0.00");

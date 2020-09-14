@@ -320,12 +320,13 @@ namespace Calculates
                 mbhggs = 0;
                 mSFwc = true;
                 //从设计等级表中取得相应的计算数值、等级标准
-                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["SCZL"].Contains(sitem["SCZL"]) && x["KWZCFL"].Contains(sitem["KWZCFL"]));
+                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["SCZL"].Contains(sitem["SCZL"]) && sitem["KWZCFL"].Contains(x["KWZCFL"]));
                 if (mrsDj_Filter != null && mrsDj_Filter.Count > 0)
                 {
                     MItem[0]["G_TJMD"] = mrsDj_Filter["TJMD"].Trim();
                     MItem[0]["G_XSL"] = mrsDj_Filter["XSL"].Trim();
                     MItem[0]["G_YSQD"] = mrsDj_Filter["GZYSQD"].Trim();
+                    MItem[0]["G_DRYSQD"] = mrsDj_Filter["GZYSQD"].Trim();
                     MItem[0]["G_SBHYSQD"] = mrsDj_Filter["SBHYSQD"].Trim();
                     MItem[0]["G_WQQD"] = mrsDj_Filter["GZWQQD"].Trim();
                     MItem[0]["G_SBHWQQD"] = mrsDj_Filter["SBHWQQD"].Trim();
@@ -555,13 +556,13 @@ namespace Calculates
                     {
                         throw new SystemException("干燥弯曲强度试验数据录入有误");
                     }
-                    
+
                 }
                 else
                 {
                     sign = false;
                 }
-                    
+
                 if (!sign)
                 {
                     MItem[0]["GH_WQQD"] = "----";
@@ -615,7 +616,7 @@ namespace Calculates
                     {
                         throw new SystemException("水饱和压缩强度试验数据录入有误");
                     }
-                    
+
                 }
                 else
                 {
@@ -670,7 +671,7 @@ namespace Calculates
                     {
                         throw new SystemException("水饱和弯曲强度试验数据录入有误");
                     }
-                    
+
                 }
                 else
                 {
@@ -685,6 +686,63 @@ namespace Calculates
 
                 #endregion
 
+                #region 冻融压缩强度
+                sign = true;
+                if (jcxm.Contains("、冻融压缩强度、"))
+                {
+                    jcxmCur = "冻融压缩强度";
+                    for (int i = 1; i < 6; i++)
+                    {
+                        sign = IsNumeric(sitem["DRYSQDC" + i + "_1"].Trim());
+                        sign = IsNumeric(sitem["DRYSQDC" + i + "_2"].Trim());
+                        sign = IsNumeric(sitem["DRYSQDK" + i + "_1"].Trim());
+                        sign = IsNumeric(sitem["DRYSQDK" + i + "_2"].Trim());
+                        sign = IsNumeric(sitem["DRYSQDZDZH" + i].Trim());
+                    }
+                    if (sign)
+                    {
+                        double qdsum = 0;
+                        //压缩强度MPa = 试样破坏荷载N / 试样受力面面积mm²
+                        for (int i = 1; i < 6; i++)
+                        {
+                            //试样受力面面积mm²
+                            sitem["DRYSQDMJPJ" + i] = Round((GetSafeDouble(sitem["DRYSQDC" + i + "_1"].Trim()) + GetSafeDouble(sitem["DRYSQDC" + i + "_2"].Trim())) / 2
+                                * (GetSafeDouble(sitem["DRYSQDK" + i + "_1"].Trim()) + GetSafeDouble(sitem["DRYSQDK" + i + "_2"].Trim())) / 2, 2).ToString("0.00");
+                            //压缩强度MPa
+                            sitem["DRYSQD" + i] = Round(GetSafeDouble(sitem["DRYSQDZDZH" + i].Trim()) / GetSafeDouble(sitem["DRYSQDMJPJ" + i]), 0).ToString("0");
+                            qdsum = qdsum + GetSafeDouble(sitem["DRYSQD" + i]);
+                        }
+                        //平均压缩强度
+                        MItem[0]["W_DRYSQD"] = Round(qdsum / 5, 0).ToString("0");
+                        MItem[0]["GH_DRYSQD"] = IsQualified(MItem[0]["G_DRYSQD"], MItem[0]["W_DRYSQD"], false);
+                        mbhggs = MItem[0]["GH_DRYSQD"] == "合格" ? mbhggs : mbhggs + 1;
+                        if (MItem[0]["GH_DRYSQD"] == "合格")
+                        {
+                            mFlag_Hg = true;
+                        }
+                        else
+                        {
+                            mFlag_Bhg = true;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                    }
+                    else
+                    {
+                        throw new SystemException("冻融压缩强度试验数据录入有误");
+                    }
+                }
+                else
+                {
+                    sign = false;
+                }
+                if (!sign)
+                {
+                    MItem[0]["W_DRYSQD"] = "----";
+                    MItem[0]["G_DRYSQD"] = "----";
+                    MItem[0]["GH_DRYSQD"] = "----";
+                }
+                #endregion
+
                 sitem["JCJG"] = mbhggs == 0 ? "合格" : "不合格";
                 MItem[0]["JCJG"] = mbhggs == 0 ? "合格" : "不合格";
                 mAllHg = mbhggs == 0 ? mAllHg : false;
@@ -694,9 +752,8 @@ namespace Calculates
             //{
             //    MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
             //}
-               
-            #endregion
 
+            #endregion
             /************************ 代码结束 *********************/
         }
     }

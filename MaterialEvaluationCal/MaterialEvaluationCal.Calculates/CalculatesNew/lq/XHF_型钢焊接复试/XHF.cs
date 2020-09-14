@@ -139,6 +139,11 @@ namespace Calculates
                 //sItem["G_LWWZ"] = LwBzyq.ToString(); //
 
                 //求抗拉强度
+                for(int i = 1; i < 5; i++)
+                {
+                    sItem["GG"+i]= sItem["HD"+i] + "×" + sItem["KD"+i];
+                }
+               
                 if (0 == Conversion.Val(sItem["ZJ"]))
                 {
                     sItem["MJ"] = (Conversion.Val(sItem["HD1"]) * Conversion.Val(sItem["KD1"])).ToString("0.000");
@@ -149,49 +154,17 @@ namespace Calculates
                     md = Conversion.Val(sItem["ZJ"].Trim()) / 2;
                     md = Math.Round(3.14159 * Math.Pow(md, 2), 3);
                     sItem["MJ"] = md.ToString("0.000");
-                    //sItem["GG"] = "Φ:" + sItem["ZJ"].Trim();
+                    // = "Φ:" + sItem["ZJ"].Trim();
                 }
                 decimal kl1, kl2 = 0;
                 string kj1, kj2 = "";
                 {
                     kl1 = GetSafeDecimal(sItem["KLQD1"]);
                     kl2 = GetSafeDecimal(sItem["KLQD2"]);
-                    //kj1 = sItem["DKJ1"];
-                    //kj2 = sItem["DKJ2"];
+                  
 
-                    //switch (kj1.ToString())
-                    //{
-                    //    case "1":
-                    //        sItem["DLTZ1"] = "断于焊缝之外，延性断裂";
-                    //        break;
-                    //    case "2":
-                    //        sItem["DLTZ1"] = "断于焊缝，延性断裂";
-                    //        break;
-                    //    case "3":
-                    //        sItem["DLTZ1"] = "断于焊缝之外，脆性断裂";
-                    //        break;
-                    //    case "4":
-                    //        sItem["DLTZ1"] = "断于焊缝，脆性断裂";
-                    //        break;
-                    //    case "5":
-                    //        sItem["DLTZ1"] = "既断于热影响区又脆断";
-                    //        break;
-                    //    case "6":
-                    //        sItem["DLTZ1"] = "断于热影响区，延性断裂";
-                    //        break;
-                    //    case "7":
-                    //        sItem["DLTZ1"] = "断于钢筋母材，延性断裂";
-                    //        break;
-                    //    case "8":
-                    //        sItem["DLTZ1"] = "断于钢筋母材，脆性断裂";
-                    //        break;
-                    //    case "9":
-                    //        sItem["DLTZ1"] = "断于焊缝，脆性断裂(焊口开裂)";
-                    //        break;
-                    //}
 
-                    
-
+                    #region 拉伸
                     if (jcxm.Contains("、拉伸、"))
                     {
                         jcxmCur = "拉伸";
@@ -210,6 +183,10 @@ namespace Calculates
                                 sItem["KLHZ" + i] = "0";
                             }
                             sItem["KLQD" + i] = myint(1000 * Conversion.Val(sItem["KLHZ" + i]) / mj).ToString();
+                            if(Conversion.Val(sItem["KLQD" + i]) == 0)
+                            {
+                                sItem["KLQD" + i] = "----";
+                            }
                         }
 
                         var mallBhg_kl = 0;
@@ -241,8 +218,26 @@ namespace Calculates
                     {
                         sItem["WQJD"] = "----";
                     }
+                    if (!jcxm.Contains("、拉伸、"))
+                    {
+                        for (int i = 1; i < 5; i++)
+                        {
 
 
+                            sItem["KLQD" + i] = "----";
+                            sItem["HD" + i] = "--";
+                            sItem["KD" + i] = "--";
+                            sItem["G_KLQD"] = "----";
+                           
+                                sItem["GG" + i] = "----";
+
+
+
+                        }
+                    }
+                    #endregion
+
+                    #region 弯曲
                     if (jcxm.Contains("、弯曲、"))
                     {
                         jcxmCur = "弯曲";
@@ -253,28 +248,23 @@ namespace Calculates
                         {
                             for (int i = 1; i < 5; i++)
                             {
-                                if (sItem["SYLX" + i] == "面弯" && string.IsNullOrEmpty(sItem["MWJG1"]))
-                                {
-                                    sItem["MWJG1"] = sItem["LW" + i];
-                                }
-                                else if (sItem["SYLX" + i] == "面弯")
-                                {
-                                    sItem["MWJG2"] = sItem["LW" + i];
-                                }
-                                if (sItem["SYLX" + i] == "背弯" && string.IsNullOrEmpty(sItem["BWJG1"]))
-                                {
-                                    sItem["BWJG1"] = sItem["LW" + i];
-                                }
-                                else if (sItem["SYLX" + i] == "背弯")
-                                {
-                                    sItem["BWJG2"] = sItem["LW" + i];
-                                }
+                               
+                                    sItem["MWJG" + i] = sItem["LW" + i];
+                              
+                                    
+                             
 
+                            }
+                            for(int i = 5; i < 9; i++)
+                            {
+                                sItem["BWJG" + (i - 4)] = sItem["LW" + i];
+                            }
+                            for(int i = 1; i < 9; i++)
+                            {
                                 if (sItem["SYLX" + i] == "侧弯")
                                 {
                                     sItem["CWJG" + i] = sItem["LW" + i];
                                 }
-
                                 //弯曲最大单值 
                                 if (GetSafeDecimal(sItem["WQZDDZ" + i]) > 3)
                                 {
@@ -296,7 +286,7 @@ namespace Calculates
                         else
                         {
                             //栓钉焊接头
-                            for (int i = 1; i < 5; i++)
+                            for (int i = 1; i < 9; i++)
                             {
                                 if (sItem["LW" + i] != "无裂纹")
                                 {
@@ -324,7 +314,7 @@ namespace Calculates
                         sItem["LW3"] = "----";
                         sItem["LW4"] = "----";
                     }
-
+                    #endregion
                     if ((sItem["JCJG_LS"] == "符合" || sItem["JCJG_LS"] == "----") && (sItem["JCJG_LW"] == "符合" || sItem["JCJG_LW"] == "----"))
                     {
                         sItem["JCJG"] = "合格";
@@ -345,11 +335,11 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，经复检所检项目符合要求。";
             }
             else
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，经复检所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求";
             }
 
             if (mjcjg == "不下结论")

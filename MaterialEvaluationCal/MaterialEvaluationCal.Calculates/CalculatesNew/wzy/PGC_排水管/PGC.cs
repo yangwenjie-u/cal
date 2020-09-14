@@ -258,7 +258,7 @@ namespace Calculates
 
                     #region
                     //平均外径
-                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"] && x["HGDBH"] == sitem["GXL"]);
+                    var mrsWgcc_Filter = mrsWgcc.FirstOrDefault(x => x["MC"].Contains(mSjdj) && x["GCCC"] == sitem["GCCC"] && x["HGDBH"] == sitem["GXL"] && x["GCFL"] == sitem["GCDJ"]);
                     if (mrsWgcc_Filter != null && mrsWgcc_Filter.Count() > 0)
                     {
                         MItem[0]["G_PJWJ"] = mrsWgcc_Filter["WJMin"] + "～" + mrsWgcc_Filter["WJMax"];
@@ -414,12 +414,23 @@ namespace Calculates
                             throw new Exception("请输入壁厚信息！");
                         }
 
-                        sitem["PJBH1"] = arrBH[0].ToString();
-                        sitem["PJBH2"] = arrBH[arrBH.Count - 1].ToString();
-                        sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
+                        if (GetSafeDouble(sitem["GCBH"]) <= 30)
+                        { 
+                         sitem["PJBH1"] = arrBH[0].ToString("0.00");
+                         sitem["PJBH2"] = arrBH[arrBH.Count - 1].ToString("0.00");
+                         sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
+                        }
+                        if (GetSafeDouble(sitem["GCBH"]) > 30)
+                        {
+                            sitem["PJBH1"] = arrBH[0].ToString("0.0");
+                            sitem["PJBH2"] = arrBH[arrBH.Count - 1].ToString("0.0");
+                            sitem["PJBH"] = sitem["PJBH1"] + "～" + sitem["PJBH2"];
 
-                        #region 判定如果尺寸或者壁厚有两个不合格，则不合格
-                        if (wj_bhg > 1)
+                        }
+
+
+                            #region 判定如果尺寸或者壁厚有两个不合格，则不合格
+                            if (wj_bhg > 1)
                         {
                             MItem[0]["PJWJ_HG"] = "不合格";
                             //不合格
@@ -999,7 +1010,7 @@ namespace Calculates
                     sitem["BGDXPD" + curJcxmCount] = "----";
                     curJcxmCount = curJcxmCount + 1;
                 }
-                curJcxmCount = 5;
+             
                 if (jcxm.Contains("、软化温度、") || jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "软化温度,维卡软化温度");
@@ -1398,26 +1409,33 @@ namespace Calculates
                 }
 
                 string CC = sitem["GCCC"];
+                string gcbh = sitem["GCBH"];
                 string HG = sitem["GXL"];
-                if (HG == "----")
-                {
-                    HG = null;
 
-                }
-
-                if (CC.Contains("DN"))
+                if (sitem["SJDJ"] == "埋地用聚乙烯(PE)双壁波纹管材")
                 {
-                    CC += " " + HG;
+                    sitem["GGXH"] = CC +" "+ HG;
                 }
                 else
                 {
-                    CC = "DN " + sitem["GCWJ"] + HG;
+                    if (HG == "----")
+                    {
+                        HG = null;
+
+                    }
+                    if (CC.Contains("dn"))
+                    {
+                        CC += " " + HG;
+                    }
+                    else
+                    {
+                        CC = "dn " + sitem["GCWJ"] + HG;
+                    }
+
+                    sitem["GGXH"] = CC;
                 }
+             
 
-
-
-
-                sitem["GGXH"] = CC;
 
                 if (curJcxmCount < 9)
                     sitem["BGBZYQ" + curJcxmCount] = "以下空白";

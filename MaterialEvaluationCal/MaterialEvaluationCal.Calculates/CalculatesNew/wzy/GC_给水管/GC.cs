@@ -25,7 +25,7 @@ namespace Calculates
 
             bool mAllHg;
             bool mFlag_Hg, mFlag_Bhg;
-            bool sffj = false;
+            string sffj;
             bool realBhg = false;//标识直接不合格 。外观颜色不合格就不需要复试，直接不合格
                                  //当前项目的变量声明
             int mbhggs = 0;
@@ -61,7 +61,7 @@ namespace Calculates
                 mSjdj = sitem["SJDJ"]; //管材名称
 
                 //是否复检
-                sffj = Convert.ToBoolean(mitem["SFFJ"]);
+                sffj = mitem["SFFJ"];
 
                 jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 mtmpArray = sitem["JCXM"].Replace(",", "、").Split('、').ToList();
@@ -913,7 +913,7 @@ namespace Calculates
                 if (jcxm.Contains("、维卡软化温度、"))
                 {
                     jcxmCur = "维卡软化温度";
-                    if (!sffj)
+                    if (sffj=="0")
                     {
                         //初检
                         mitem["RHWD"] = Math.Round(((GetSafeDecimal(sitem["RHWD1"]) + GetSafeDecimal(sitem["RHWD2"])) / 2), 1).ToString();
@@ -963,7 +963,7 @@ namespace Calculates
                     mitem["RHWD_HG"] = "----";
                     mitem["G_RHWD"] = "----";
                 }
-
+                
                 if (jcxm.Contains("、纵向回缩率、"))
                 {
                     jcxmCur = "纵向回缩率";
@@ -974,7 +974,7 @@ namespace Calculates
                     MItem[0]["HSLL0_5"] = "100";
                     MItem[0]["HSLL0_6"] = "100";
 
-                    if (!sffj)
+                    if (sffj=="0")
                     {
                         //初检  
                         decimal sum = 0;
@@ -1036,7 +1036,10 @@ namespace Calculates
                 }
 
                 if (curJcxmCount < 11)
+                {
                     sitem["BGJCXM" + curJcxmCount] = "以下空白";
+                }
+                    
                 if (mbhggs == 0)
                 {
                     sitem["JCJG"] = "合格";
@@ -1055,7 +1058,17 @@ namespace Calculates
                 //        jcxmBhg = "规格尺寸";
                 //    }
             }
-            var fjpd = sffj ? "经复检" : "";
+            // var fjpd = sffj ? "经复检" : "";
+            var fjpd = "";
+            if (mitem["sffj"] == "1")
+            {
+                fjpd = "经复检";
+            }
+            else
+            {
+                fjpd = "";
+            }
+
             //主表总判断赋值
             if (mAllHg)
             {
@@ -1078,7 +1091,7 @@ namespace Calculates
                 {
                     if (mbhggs == 1)
                     {
-                        if (sffj)
+                        if (mitem["sffj"] == "1")
                         {
                             mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + fjpd + "不符合要求，详情见下页。";
                         }

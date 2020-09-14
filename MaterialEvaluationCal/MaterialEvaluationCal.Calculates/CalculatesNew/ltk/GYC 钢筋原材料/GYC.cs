@@ -12,7 +12,10 @@ namespace Calculates
         public void Calc()
         {
             #region
+            
             /************************ 代码开始 *********************/
+            
+            #region 字段定义
             bool mAllHg = true;
             string jcxm = "", MJcjg = "不合格", jsbeiZHu = "";
             var jcxmBhg = "";
@@ -46,7 +49,10 @@ namespace Calculates
             MItem[0]["FJJJ2"] = "";
             MItem[0]["FJJJ3"] = "";
             MItem[0]["ZLPCXS"] = "重量偏差";
-
+            #endregion
+            
+            #region 局部函数
+            
             //保留有效数字
             Func<double, int, string> mYxsz =
                   delegate (double t_numeric, int rndto)
@@ -70,7 +76,8 @@ namespace Calculates
                       }
                       return mYxsz_ret;
                   };
-
+            
+            //断后伸长率
             Func<IDictionary<string, string>, IDictionary<string, string>, int, string> calc_SCL =
            delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, int count)
            {
@@ -108,7 +115,8 @@ namespace Calculates
                }
                return "";
            };
-
+            
+            //屈服强度
             Func<IDictionary<string, string>, int, string> calc_qf =
                 delegate (IDictionary<string, string> sItem, int count)
                 {
@@ -168,7 +176,7 @@ namespace Calculates
 
                     return "";
                 };
-
+            //抗拉强度
             Func<IDictionary<string, string>, int, string> calc_kl =
                 delegate (IDictionary<string, string> sItem, int count)
                 {
@@ -299,6 +307,7 @@ namespace Calculates
                     }
                     return "";
                 };
+            
             //单项检测项目不合格
             Func<IDictionary<string, string>, IDictionary<string, string>, string, double, int, int> find_singlezb_bhg =
                 delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, string zbName, double mbzValue, int count)
@@ -383,7 +392,8 @@ namespace Calculates
 
                     return this_bhg;
                 };
-
+            
+            //判定单项指标是否合格,根据单项指标再判定单组结论是否合格
             Func<IDictionary<string, string>, IDictionary<string, string>, int, int, int, int, string> all_zb_jl =
                 delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, int mHggs_QFQD, int mHggs_KLQD, int mHggs_SCL, int mHggs_LW)
                 {
@@ -440,6 +450,7 @@ namespace Calculates
                     return "";
                 };
 
+            //单组是否需双倍复检的判定
             Func<IDictionary<string, string>, IDictionary<string, string>, int, int, int, int, int, int, int, int, string> check_double_Fj =
                 delegate (IDictionary<string, string> mItem, IDictionary<string, string> sItem, int mHggs_QFQD, int mHggs_KLQD, int mHggs_SCL, int mHggs_LW, int mFsgs_QFQD, int mFsgs_KLQD, int mFsgs_SCL, int mFsgs_LW)
                 {
@@ -458,9 +469,12 @@ namespace Calculates
                     }
                     return "";
                 };
-
+            
+            #endregion
+            
             foreach (var sItem in SItem)
             {
+                #region 初始化
                 jcxm = '、' + sItem["JCXM"].Replace(",", "、") + "、";
                 ggph = sItem["GCLX_PH"];
 
@@ -471,10 +485,14 @@ namespace Calculates
                 string mJSFF = "", sZlpc = "", LwBzyq = "";
                 double md = 0, md1 = 0, md2 = 0;
                 mGJLB = string.IsNullOrEmpty(sItem["GJLB"]) ? "----" : sItem["GJLB"];//钢材类别
-
-                #region BZ_GYC_DJ处理
+                #endregion
+                
+                #region BZ_GYC_DJ 等级表处理
+                
                 //'从设计等级表中取得相应的计算数值、等级标准                   钢材牌号
+                
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["GJLB"] == mGJLB && GetSafeDouble(u["ZJFW1"]) < GetSafeDouble(sItem["ZJ"]) && GetSafeDouble(u["ZJFW2"]) > GetSafeDouble(sItem["ZJ"]));
+                
                 if (null != extraFieldsDj)
                 {
                     sItem["SJDJ"] = extraFieldsDj["MC"];
@@ -519,7 +537,7 @@ namespace Calculates
                 }
                 #endregion
                 
-                #region BZ_ZLPCB
+                #region BZ_ZLPCB 重量偏差表
                 var extraFieldsZLPCB = extraZLPCB.FirstOrDefault(u => u["MC"] == sItem["GJLB"] && GetSafeDouble(u["ZJ"]) == GetSafeDouble(sItem["ZJ"]));
                 if (extraFieldsZLPCB != null)
                 {
@@ -745,13 +763,13 @@ namespace Calculates
                 #endregion
 
 
-
-                //求伸长率
+                //求断后伸长率
                 calc_SCL(MItem[0], sItem, (int)mXLGS);
 
                 //求屈服强度
                 calc_qf(sItem, (int)mXLGS);
-                if (ggph.Contains("E"))
+                
+                if (sItem["GCLX_PH"].ToUpper().EndsWith("E"))
                 {
                     mHggs_SCL = 0;
                     sItem["G_SCL"] = "----";
@@ -759,6 +777,7 @@ namespace Calculates
                     sItem["SCL2"] = "----";
                     sItem["SCL3"] = "----";
                 }
+                
                 //求抗拉强度
                 calc_kl(sItem, (int)mXLGS);
 
@@ -767,6 +786,7 @@ namespace Calculates
                 mallBHG_QF = mallBHG_QF + find_singlezb_bhg(MItem[0], sItem, "qf", mQfqd, (int)mXLGS);
                 mallBHG_KL = mallBHG_KL + find_singlezb_bhg(MItem[0], sItem, "kl", mKlqd, (int)mXLGS);
                 mallBHG_SC = mallBHG_SC + find_singlezb_bhg(MItem[0], sItem, "SCL", mScl, (int)mXLGS);
+                
                 if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mXWGS);
@@ -782,9 +802,10 @@ namespace Calculates
                 
                 //断前距L0(MM)1
                 sItem["DQJL01"] = (GetSafeDouble(sItem["ZJ"]) * 5).ToString();
-                #region 抗震要求
+
+                #region 抗震要求,最大力总伸长率,Rom/Roel:实测抗拉强度和实测屈服强度比；Roel/Rel:实测屈服强度与屈服强度特征值之比
                 int mkZHggs = 0;
-                if (jcxm.Contains("、抗震要求、"))
+                if (jcxm.Contains("、抗震要求、")| sItem["GCLX_PH"].ToUpper().EndsWith("E"))
                 {
                     sItem["G_ZSCL"] = "≥" + extraFieldsDj["ZSCL"];
 
@@ -964,6 +985,7 @@ namespace Calculates
                     MItem[0]["HG_HGJX"] = "----";
                 }
                 #endregion
+               
                 #region 截面维氏硬度
                 if (jcxm.Contains("、截面维氏硬度、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
                 {
@@ -986,6 +1008,7 @@ namespace Calculates
                     }
                 }
                 #endregion
+                
                 #region 微观组织
                 if (jcxm.Contains("、微观组织、") && MItem[0]["PDBZ"].Contains("1499.2-2018"))
                 {
@@ -1014,6 +1037,7 @@ namespace Calculates
                     sItem["DLWZ3"] = "----";
                     sItem["SCZ3"] = "----";
                 }
+                
                 if (sItem["JCJG_KZ"] == "不符合" || sItem["JCJG_LS"] == "不符合")
                 {
                     sItem["JCJG_LS"] = "不符合";
@@ -1039,6 +1063,7 @@ namespace Calculates
                     mFlag_Bhg = true;
                     mbhggs = mbhggs + 1;
                 }
+                
                 if (sItem["JCJG_ZLPC"] == "不符合")
                 {
                     jcxmCur = "重量偏差";
@@ -1047,6 +1072,7 @@ namespace Calculates
                     mbhggs = mbhggs + 1;
 
                 }
+                
                 if (sItem["JCJG_LS"] == "不符合" && sItem["JCJG_LW"] == "不符合" && sItem["JCJG_ZLPC"] == "不符合")
                 {
                     mFlag_Bhg = true;
@@ -1062,6 +1088,7 @@ namespace Calculates
                     mFlag_Hg = true;
                     mFlag_Bhg = true;
                 }
+                
                 mAllHg = mAllHg && (sItem["JCJG"] == "合格");
 
                 //------------------------单组是否需双倍复检的判定------------------------------------------
@@ -1106,16 +1133,10 @@ namespace Calculates
             }
             if (MItem[0]["FJJJ2"] != "")
             {
-                //if (mFlag_Bhg && mFlag_Hg)
-                //{
+               
                 jsbeiZHu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + ggph + "要求。";
                 MItem[0]["FJJJ2"] = jsbeiZHu;
-                //}
-                //else
-                //{
-                //    MItem[0]["FJJJ2"] = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                //    jsbeiZHu = "该组试样所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                //}
+               
             }
             if (MItem[0]["FJJJ1"] != "")
             {
@@ -1137,7 +1158,7 @@ namespace Calculates
                 jsbeiZHu = "";
             }
             MItem[0]["JCJGMS"] = jsbeiZHu;
-            //MItem[0]["MSGINFO"] = "合同号：" + MItem[0]["HTBH"] + "，委托编号：" + MItem[0]["WTDBH"] + "的钢筋原材料" + jsbeiZHu;
+            
             #endregion
 
             /************************ 代码结束 *********************/

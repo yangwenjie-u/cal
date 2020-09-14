@@ -53,6 +53,7 @@
     <Compile Include="Base\JsonHelper.cs" />
     <Compile Include="Base\SqlBase.cs" />
     <Compile Include="Base\SQLHelper.cs" />
+    <Compile Include="CalculatesNew\lq\井盖，水箅\JGS.cs" />
     <Compile Include="CalculatesNew\lq\其他排水管\QPS.cs" />
     <Compile Include="CalculatesNew\lq\其他给水管\QGS.cs" />
     <Compile Include="CalculatesNew\ltk\FS_防水卷材\FS.cs" />
@@ -76,6 +77,11 @@
     <Compile Include="CalculatesNew\ltk\矿物外加剂MA\MA.cs" />
     <Compile Include="CalculatesNew\ltk\管桩_GZ\GZ.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\TPT.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单\商砼交货检验记录\TJH.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单\商砼合格证明书\THG.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单\商砼开盘配合比\TKP.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单\商砼抗压强度\HGZ.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单\商砼搅拌记录\TJB.cs" />
     <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
     <Compile Include="CalculatesNew\qsf\JLH楼板厚度\JLH.cs" />
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
@@ -155,7 +161,7 @@
     <Compile Include="CalculatesNew\wzy\DXL_电线电缆\DXL.cs" />
     <Compile Include="CalculatesNew\wzy\FSJ_砂浆混凝土防水剂\FSJ.cs" />
     <Compile Include="CalculatesNew\wzy\FSX_放射性核素限量\FSX.cs" />
-    <Compile Include="CalculatesNew\ltk\GG_钢管%28脚手架用%29\GG.cs" />
+    <Compile Include="CalculatesNew\ltk\GG_钢管\GG.cs" />
     <Compile Include="CalculatesNew\wzy\GHT_高强度混凝土回弹\GHT.cs" />
     <Compile Include="CalculatesNew\wzy\HJ_室内环境\HJ.cs" />
     <Compile Include="CalculatesNew\wzy\JMC_门窗传热系数\JMC.cs" />
@@ -201,6 +207,7 @@
     <Compile Include="CalculatesNew\ltk\FST_防水涂料\FST.cs" />
     <Compile Include="CalculatesNew\ywj\GJN_灌浆料\GJN.cs" />
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
+    <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\ywj\JZL_建筑密封材料\JZL.cs" />
     <Compile Include="CalculatesNew\ywj\MXE_马歇尔\MXE.cs" />
     <Compile Include="CalculatesNew\ywj\NZ_腻子\NZ.cs" />

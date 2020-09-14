@@ -1,6 +1,6 @@
 ﻿using CalDebugTools.Common.DBUtility;
 using CalDebugTools.DAL;
-using System;
+using Renci.SshNet.Messages;using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +12,7 @@ namespace CalDebugTools.BLL
     public class ProjectService
     {
         ProjectServiceDao _Dao = new ProjectServiceDao();
-        public void CreateProjectTable(string jcjgAbbrevition, string projectCode, out string oMsg)
+        public void CreateProjectTable(string jcjgAbbrevition, string projectCode, bool addJcjt, bool addJcjg, out string oMsg)
         {
             oMsg = "";
             if (string.IsNullOrEmpty(projectCode))
@@ -21,18 +21,8 @@ namespace CalDebugTools.BLL
                 return;
             }
 
-            _Dao.CreateProjectTable(jcjgAbbrevition, projectCode, out oMsg);
-
-            if (string.IsNullOrEmpty(oMsg))
-            {
-                MessageBox.Show("添加成功", "提示");
-            }
-            else
-            {
-                MessageBox.Show("err:" + oMsg, "提示");
-            }
+            _Dao.CreateProjectTable(jcjgAbbrevition, projectCode, addJcjt, addJcjg, out oMsg);
+         
         }
-
     }
-
 }

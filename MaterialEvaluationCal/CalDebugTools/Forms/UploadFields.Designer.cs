@@ -67,38 +67,35 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1253, 654);
+            this.panel1.Size = new System.Drawing.Size(940, 523);
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(785, 161);
-            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label5.Location = new System.Drawing.Point(589, 129);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(455, 15);
+            this.label5.Size = new System.Drawing.Size(359, 12);
             this.label5.TabIndex = 17;
             this.label5.Text = " 表名称1，别名1,别名2，别名3|表名称2，别名1，别名2|。。。。";
             // 
             // txtother
             // 
-            this.txtother.Location = new System.Drawing.Point(1085, 112);
-            this.txtother.Margin = new System.Windows.Forms.Padding(4);
+            this.txtother.Location = new System.Drawing.Point(814, 90);
             this.txtother.Name = "txtother";
-            this.txtother.Size = new System.Drawing.Size(132, 25);
+            this.txtother.Size = new System.Drawing.Size(100, 21);
             this.txtother.TabIndex = 16;
             this.txtother.Visible = false;
             // 
             // rd_other
             // 
             this.rd_other.AutoSize = true;
-            this.rd_other.Location = new System.Drawing.Point(1015, 114);
-            this.rd_other.Margin = new System.Windows.Forms.Padding(4);
+            this.rd_other.Location = new System.Drawing.Point(761, 91);
             this.rd_other.Name = "rd_other";
-            this.rd_other.Size = new System.Drawing.Size(58, 19);
+            this.rd_other.Size = new System.Drawing.Size(47, 16);
             this.rd_other.TabIndex = 15;
             this.rd_other.TabStop = true;
             this.rd_other.Text = "其它";
@@ -107,10 +104,10 @@
             // 
             // btn_sava
             // 
-            this.btn_sava.Location = new System.Drawing.Point(961, 229);
-            this.btn_sava.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_sava.Location = new System.Drawing.Point(721, 183);
+            this.btn_sava.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_sava.Name = "btn_sava";
-            this.btn_sava.Size = new System.Drawing.Size(75, 34);
+            this.btn_sava.Size = new System.Drawing.Size(56, 27);
             this.btn_sava.TabIndex = 13;
             this.btn_sava.Text = "保存";
             this.btn_sava.UseVisualStyleBackColor = true;
@@ -119,10 +116,10 @@
             // rd_s
             // 
             this.rd_s.AutoSize = true;
-            this.rd_s.Location = new System.Drawing.Point(945, 114);
-            this.rd_s.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.rd_s.Location = new System.Drawing.Point(709, 91);
+            this.rd_s.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rd_s.Name = "rd_s";
-            this.rd_s.Size = new System.Drawing.Size(58, 19);
+            this.rd_s.Size = new System.Drawing.Size(47, 16);
             this.rd_s.TabIndex = 12;
             this.rd_s.TabStop = true;
             this.rd_s.Text = "从表";
@@ -133,10 +130,10 @@
             // 
             this.rd_m.AutoSize = true;
             this.rd_m.Checked = true;
-            this.rd_m.Location = new System.Drawing.Point(877, 115);
-            this.rd_m.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.rd_m.Location = new System.Drawing.Point(658, 92);
+            this.rd_m.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rd_m.Name = "rd_m";
-            this.rd_m.Size = new System.Drawing.Size(58, 19);
+            this.rd_m.Size = new System.Drawing.Size(47, 16);
             this.rd_m.TabIndex = 11;
             this.rd_m.TabStop = true;
             this.rd_m.Text = "主表";
@@ -147,26 +144,28 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(804, 119);
+            this.label4.Location = new System.Drawing.Point(603, 95);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 15);
+            this.label4.Size = new System.Drawing.Size(53, 12);
             this.label4.TabIndex = 8;
             this.label4.Text = "字段来源";
             // 
             // txt_xmbh
             // 
-            this.txt_xmbh.Location = new System.Drawing.Point(877, 55);
-            this.txt_xmbh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txt_xmbh.Location = new System.Drawing.Point(658, 44);
+            this.txt_xmbh.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txt_xmbh.Name = "txt_xmbh";
-            this.txt_xmbh.Size = new System.Drawing.Size(100, 25);
+            this.txt_xmbh.Size = new System.Drawing.Size(76, 21);
             this.txt_xmbh.TabIndex = 7;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(804, 58);
+            this.label3.Location = new System.Drawing.Point(603, 46);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 15);
+            this.label3.Size = new System.Drawing.Size(53, 12);
             this.label3.TabIndex = 6;
             this.label3.Text = "项目编号";
             // 
@@ -174,21 +173,21 @@
             // 
             this.data_result.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.data_result.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.data_result.Location = new System.Drawing.Point(0, 298);
-            this.data_result.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.data_result.Location = new System.Drawing.Point(0, 238);
+            this.data_result.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.data_result.Name = "data_result";
             this.data_result.RowHeadersWidth = 51;
             this.data_result.RowTemplate.Height = 27;
-            this.data_result.Size = new System.Drawing.Size(1253, 356);
+            this.data_result.Size = new System.Drawing.Size(940, 285);
             this.data_result.TabIndex = 5;
             this.data_result.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.data_result_CellEndEdit);
             // 
             // btn_ok
             // 
-            this.btn_ok.Location = new System.Drawing.Point(796, 229);
-            this.btn_ok.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_ok.Location = new System.Drawing.Point(597, 183);
+            this.btn_ok.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_ok.Name = "btn_ok";
-            this.btn_ok.Size = new System.Drawing.Size(75, 34);
+            this.btn_ok.Size = new System.Drawing.Size(56, 27);
             this.btn_ok.TabIndex = 4;
             this.btn_ok.Text = "生成";
             this.btn_ok.UseVisualStyleBackColor = true;
@@ -196,54 +195,56 @@
             // 
             // txt_result
             // 
-            this.txt_result.Location = new System.Drawing.Point(123, 172);
-            this.txt_result.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txt_result.Location = new System.Drawing.Point(92, 138);
+            this.txt_result.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txt_result.MaxLength = 999999999;
             this.txt_result.Multiline = true;
             this.txt_result.Name = "txt_result";
             this.txt_result.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txt_result.Size = new System.Drawing.Size(597, 100);
+            this.txt_result.Size = new System.Drawing.Size(449, 81);
             this.txt_result.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(35, 175);
+            this.label2.Location = new System.Drawing.Point(26, 140);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 15);
+            this.label2.Size = new System.Drawing.Size(65, 12);
             this.label2.TabIndex = 2;
             this.label2.Text = "生成字段：";
             // 
             // txt_code
             // 
-            this.txt_code.Location = new System.Drawing.Point(123, 12);
-            this.txt_code.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txt_code.Location = new System.Drawing.Point(92, 10);
+            this.txt_code.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txt_code.MaxLength = 999999999;
             this.txt_code.Multiline = true;
             this.txt_code.Name = "txt_code";
             this.txt_code.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txt_code.Size = new System.Drawing.Size(597, 122);
+            this.txt_code.Size = new System.Drawing.Size(449, 98);
             this.txt_code.TabIndex = 1;
             this.txt_code.TextChanged += new System.EventHandler(this.txt_code_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(65, 32);
+            this.label1.Location = new System.Drawing.Point(49, 26);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 15);
+            this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "代码：";
             // 
             // UploadFields
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1253, 654);
+            this.ClientSize = new System.Drawing.Size(940, 523);
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "UploadFields";
-            this.Text = "UploadFields";
+            this.Text = "上传代码";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UploadFields_FormClosed);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

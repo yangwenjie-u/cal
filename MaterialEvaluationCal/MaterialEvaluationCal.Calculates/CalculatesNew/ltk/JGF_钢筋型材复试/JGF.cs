@@ -323,7 +323,7 @@ namespace Calculates
                 {
                     if (0 == Conversion.Val(sItem["ZJ" + i]))
                     {
-                        sItem["MJ" + i] = (double.Parse(sItem["HD" + i]) * double.Parse(sItem["KD" + i])).ToString("0.0000");
+                        sItem["MJ" + i] = (Conversion.Val(sItem["HD" + i]) * Conversion.Val(sItem["KD" + i])).ToString("0.0000");
                         sItem["GG" + i] = "宽:" + sItem["KD" + i] + "\n厚:" + sItem["HD" + i];
                         sItem["CD" + i] = myint(5.65 * Math.Sqrt(Conversion.Val(sItem["MJ" + i]))).ToString();
                     }
@@ -352,7 +352,7 @@ namespace Calculates
                     }
                     if (0 == Conversion.Val(sItem["MJ" + i]))
                     {
-                        sItem["QFHZ" + i] = "0";
+                        sItem["QFQD" + i] = "0";
                     }
                     else
                     {
