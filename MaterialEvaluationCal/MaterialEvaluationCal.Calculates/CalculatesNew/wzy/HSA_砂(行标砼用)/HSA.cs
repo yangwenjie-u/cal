@@ -24,182 +24,6 @@ namespace Calculates
             double cczl;
             #endregion
 
-            #region 自定义函数
-            //以下为对用设计值的判定方式
-            Func<string, string, string> calc_pd =
-                delegate (string sj, string sc)
-                {
-                    sj = sj.Trim();
-                    string calc_pd_ret = "";
-                    bool isStart = false;
-                    string tmpStr = string.Empty;
-                    if (string.IsNullOrEmpty(sc))
-                        sc = "";
-                    for (int i = 1; i <= sc.Length; i++)
-                    {
-                        if (IsNumeric(sc.Substring(i - 1, 1)) || sc.Substring(i - 1, 1) == "." || sc.Substring(i - 1, 1) == "-")
-                        {
-                            isStart = true;
-                            tmpStr = tmpStr + sc.Substring(i - 1, 1);
-                        }
-                        else
-                        {
-                            if (isStart == false && tmpStr != "")
-                                break;
-                        }
-                    }
-                    sc = tmpStr;
-                    if (!IsNumeric(sc))
-                    {
-                        calc_pd_ret = "----";
-                    }
-                    else
-                    {
-                        double min_sjz, max_sjz, scz;
-                        int length, dw;
-                        if (sj.Contains("＞"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("＞") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains(">"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf(">") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("≥"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("≥") + 1;
-                            min_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz > min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("＜"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("＜") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz < max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("<"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("<") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz < max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("≤"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("≤") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("="))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("=") + 1;
-                            max_sjz = Conversion.Val(sj.Substring(dw, length - dw));
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz == max_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("～"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj.Substring(0, dw - 1));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= min_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(min_sjz.ToString().Substring(i - 1, 1)) || min_sjz.ToString().Substring(i - 1, 1) == "." || min_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + min_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            min_sjz = Conversion.Val(tmpStr);
-                            max_sjz = GetSafeDouble(sj.Substring(dw, length - dw));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= max_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(max_sjz.ToString().Substring(i - 1, 1)) || max_sjz.ToString().Substring(i - 1, 1) == "." || max_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + max_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            max_sjz = Conversion.Val(tmpStr);
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz && scz >= min_sjz ? "符合" : "不符合";
-                        }
-                        if (sj.Contains("~"))
-                        {
-                            length = sj.Length;
-                            dw = sj.IndexOf("~") + 1;
-                            min_sjz = GetSafeDouble(sj.Substring(0, dw - 1));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= min_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(min_sjz.ToString().Substring(i - 1, 1)) || min_sjz.ToString().Substring(i - 1, 1) == "." || min_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + min_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            min_sjz = Conversion.Val(tmpStr);
-                            max_sjz = GetSafeDouble(sj.Substring(dw, length - dw));
-                            isStart = false;
-                            tmpStr = "";
-                            for (int i = 1; i <= max_sjz.ToString().Length; i++)
-                            {
-                                if (IsNumeric(max_sjz.ToString().Substring(i - 1, 1)) || max_sjz.ToString().Substring(i - 1, 1) == "." || max_sjz.ToString().Substring(i - 1, 1) == "-")
-                                {
-                                    isStart = true;
-                                    tmpStr = tmpStr + max_sjz.ToString().Substring(i - 1, 1);
-                                }
-                                else
-                                {
-                                    if (!isStart && tmpStr != "")
-                                        break;
-                                }
-                            }
-                            max_sjz = Conversion.Val(tmpStr);
-                            scz = Conversion.Val(sc);
-                            calc_pd_ret = scz <= max_sjz && scz >= min_sjz ? "符合" : "不符合";
-                        }
-                    }
-                    return calc_pd_ret;
-                };
-            #endregion
-
             #region  集合取值
             var data = retData;
             var mrsDj = dataExtra["BZ_HSA_DJ"];
@@ -220,7 +44,6 @@ namespace Calculates
             if (string.IsNullOrEmpty(msyzl1.ToString()) || msyzl1 == 0)
                 msyzl1 = 500;
             mAllHg = true;
-
             foreach (var sitem in SItem)
             {
                 double mbhgs = 0;
@@ -477,7 +300,7 @@ namespace Calculates
                     var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("坚固性")).ToList();
                     foreach (var item in mrsZbyq_where)
                     {
-                        if (IsQualified(item["YQ"], sitem["JGX"],true) == "符合")
+                        if (IsQualified(item["YQ"], sitem["JGX"], true) == "符合")
                         {
                             sitem["JGXPD"] = item["DJ"];
                             break;
@@ -500,7 +323,7 @@ namespace Calculates
                 if (!string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
                     mbhgs = 0;
-                   // double[] narr;
+                    // double[] narr;
                     #region 含泥量
                     if (jcxm.Contains("、含泥量、"))
                     {
@@ -508,7 +331,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("含泥量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["HNL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["HNL"], true) == "符合")
                             {
                                 sitem["HNLPD"] = item["DJ"].Trim();
                                 break;
@@ -534,7 +357,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("泥块含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["NKHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["NKHL"], true) == "符合")
                             {
                                 sitem["NKHLPD"] = item["DJ"].Trim();
                                 break;
@@ -600,7 +423,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("氯离子含量") && x["SPZ"].Equals(sitem["SYT"].Trim())).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["LLZHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["LLZHL"], true) == "符合")
                             {
                                 sitem["LLZHLPD"] = item["DJ"].Trim();
                                 break;
@@ -669,7 +492,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("贝壳含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["BKHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["BKHL"], true) == "符合")
                             {
                                 sitem["BKHLPD"] = item["DJ"].Trim();
                                 break;
@@ -695,7 +518,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("云母含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["YMHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["YMHL"], true) == "符合")
                             {
                                 sitem["YMHLPD"] = item["DJ"].Trim();
                                 break;
@@ -734,7 +557,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("轻物质含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["QWZHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["QWZHL"], true) == "符合")
                             {
                                 sitem["QWZHLPD"] = item["DJ"].Trim();
                                 break;
@@ -760,7 +583,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("硫化物和硫酸盐含量")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["SO3"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["SO3"], true) == "符合")
                             {
                                 sitem["SO3PD"] = item["DJ"].Trim();
                                 break;
@@ -807,7 +630,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("含泥量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["HNL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["HNL"], true) == "符合")
                                 {
                                     sitem["HNLPD"] = item["DJ"].Trim();
                                     break;
@@ -851,7 +674,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("泥块含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["NKHL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["NKHL"], true) == "符合")
                                 {
                                     sitem["NKHLPD"] = item["DJ"].Trim();
                                     break;
@@ -992,7 +815,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("氯离子含量") && x["SPZ"].Equals(sitem["SYT"].Trim())).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["LLZHL"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["LLZHL"], true) == "符合")
                             {
                                 sitem["LLZHLPD"] = item["DJ"].Trim();
                                 break;
@@ -1020,7 +843,7 @@ namespace Calculates
                         var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("碱活性")).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
-                            if (IsQualified(item["YQ"], sitem["JHX"],true) == "符合")
+                            if (IsQualified(item["YQ"], sitem["JHX"], true) == "符合")
                             {
                                 sitem["JHXPD"] = item["DJ"].Trim();
                                 break;
@@ -1112,7 +935,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("贝壳含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["BKHL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["BKHL"], true) == "符合")
                                 {
                                     sitem["BKHLPD"] = item["DJ"].Trim();
                                     break;
@@ -1149,7 +972,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("云母含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["YMHL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["YMHL"], true) == "符合")
                                 {
                                     sitem["YMHLPD"] = item["DJ"].Trim();
                                     break;
@@ -1201,7 +1024,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("轻物质含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["QWZHL"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["QWZHL"], true) == "符合")
                                 {
                                     sitem["QWZHLPD"] = item["DJ"].Trim();
                                     break;
@@ -1236,7 +1059,7 @@ namespace Calculates
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("硫化物和硫酸盐含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
-                                if (IsQualified(item["YQ"], sitem["SO3"],true) == "符合")
+                                if (IsQualified(item["YQ"], sitem["SO3"], true) == "符合")
                                 {
                                     sitem["SO3PD"] = item["DJ"].Trim();
                                     break;
@@ -1264,11 +1087,87 @@ namespace Calculates
                     #endregion
 
                     #region 石粉含量
-                    /**
-                     * 亚甲蓝试验    
-                     * 亚加蓝MB值 = 加入的亚甲蓝溶液总量 / 试样质量 * 10    精确至 0.01
-                     */
-                    #endregion 
+                    bool sign = true;
+                    if (jcxm.Contains("、石粉含量、"))
+                    {
+                        jcxmCur = "石粉含量";
+                        /**
+                         * 亚甲蓝试验    
+                         * 亚加蓝MB值 = 加入的亚甲蓝溶液总量 / 试样质量 * 10    精确至 0.01    g/kg
+                         */
+                        sign = IsNumeric(sitem["YJLSYZL"]) ? sign : false;
+                        sign = IsNumeric(sitem["YJLRYZL"]) ? sign : false;
+                        if (sign)
+                        {
+                            //亚甲蓝值 MB
+                            sitem["YJLZ"] = Round(GetSafeDouble(sitem["YJLRYZL"].Trim()) / GetSafeDouble(sitem["YJLSYZL"].Trim()) * 10, 2).ToString("0.00");
+                            //亚甲蓝试验判定   MB值 ＜1.4  石粉为主     MB值 ≥1.4 泥粉为主
+                            var mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"].Equals("石粉含量"));
+                            if (Conversion.Val(sitem["YJLZ"]) < 1.4)
+                            {
+                                sitem["YJLPD"] = "石粉为主";
+                                mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"] == "石粉含量" && x["MB"] == "＜1.4" && x["DJ"] == sitem["NKHLPD"]);
+                                if (mrsZbyqDj != null && mrsZbyqDj.Count > 0)
+                                {
+                                    sitem["SFHL1"] = Round((GetSafeDouble(sitem["SYQHGZL1"].Trim()) - GetSafeDouble(sitem["SYHHGZL1"].Trim())) / GetSafeDouble(sitem["SYQHGZL1"].Trim()) * 100, 1).ToString("0.0");
+                                    sitem["SFHL2"] = Round((GetSafeDouble(sitem["SYQHGZL2"].Trim()) - GetSafeDouble(sitem["SYHHGZL2"].Trim())) / GetSafeDouble(sitem["SYQHGZL2"].Trim()) * 100, 1).ToString("0.0");
+                                    sitem["SFHLPJZ"] = Round((Conversion.Val(sitem["SFHL1"]) + Conversion.Val(sitem["SFHL2"])) / 2, 1).ToString("0.0");
+                                    sitem["SFHLYQ"] = mrsZbyqDj["YQ"];
+                                    sitem["SFHLPD"] = IsQualified(sitem["SFHLYQ"], sitem["SFHLPJZ"]);
+                                }
+                                else
+                                {
+                                    sitem["SFHL1"] = "----";
+                                    sitem["SFHL2"] = "----";
+                                    sitem["SFHLPJZ"] = "----";
+                                    sitem["SFHLYQ"] = "获取技术指标失败";
+                                    sitem["SFHLPD"] = "----";
+                                }
+                            }
+                            else
+                            {
+                                sitem["YJLPD"] = "泥粉为主";
+                                mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"] == "石粉含量" && x["MB"] == "≥1.4" && x["DJ"] == sitem["NKHLPD"]);
+                                if (mrsZbyqDj != null && mrsZbyqDj.Count > 0)
+                                {
+                                    sitem["SFHL1"] = Round((GetSafeDouble(sitem["SYQHGZL1"].Trim()) - GetSafeDouble(sitem["SYHHGZL1"].Trim())) / GetSafeDouble(sitem["SYQHGZL1"].Trim()) * 100, 1).ToString("0.0");
+                                    sitem["SFHL2"] = Round((GetSafeDouble(sitem["SYQHGZL2"].Trim()) - GetSafeDouble(sitem["SYHHGZL2"].Trim())) / GetSafeDouble(sitem["SYQHGZL2"].Trim()) * 100, 1).ToString("0.0");
+                                    sitem["SFHLPJZ"] = Round((Conversion.Val(sitem["SFHL1"]) + Conversion.Val(sitem["SFHL2"])) / 2, 1).ToString("0.0");
+                                    sitem["SFHLYQ"] = mrsZbyqDj["YQ"];
+                                    sitem["SFHLPD"] = IsQualified(sitem["SFHLYQ"], sitem["SFHLPJZ"]);
+                                }
+                                else
+                                {
+                                    sitem["SFHL1"] = "----";
+                                    sitem["SFHL2"] = "----";
+                                    sitem["SFHLPJZ"] = "----";
+                                    sitem["SFHLYQ"] = "获取技术指标失败";
+                                    sitem["SFHLPD"] = "----";
+                                }
+                            }
+
+                            if (sitem["SFHLPD"] != "----")
+                            {
+                                if (sitem["SFHLPD"] == "不合格")
+                                {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                    mbhgs = mbhgs + 1;
+                                }
+                                if (Math.Abs(Conversion.Val(sitem["SFHL1"]) - Conversion.Val(sitem["SFHL2"])) > 0.5)
+                                {
+                                    sitem["SFHLPD"] = "重新试验";
+                                    sitem["SFHLPJZ"] = "重新试验";
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        sitem["SFHLPJZ"] = "----";
+                        sitem["SFHLYQ"] = "----";
+                        sitem["SFHLPD"] = "----";
+                    }
+                    #endregion
 
                     if (mbhgs > 0)
                     {
@@ -1280,8 +1179,6 @@ namespace Calculates
                 }
                 #endregion
             }
-
-            
             string dj = "";
 
             if (!string.IsNullOrEmpty(SItem[0]["NKHLPD"]) && SItem[0]["NKHLPD"] != "----" && SItem[0]["NKHLPD"] != "不符合"
@@ -1291,9 +1188,9 @@ namespace Calculates
                 {
                     dj = SItem[0]["NKHLPD"];
                 }
-                else if (SItem[0]["NKHLPD"] .Contains("～") && !SItem[0]["HNLPD"].Contains("～"))
+                else if (SItem[0]["NKHLPD"].Contains("～") && !SItem[0]["HNLPD"].Contains("～"))
                 {
-                    if (Conversion.Val(SItem[0]["HNLPD"]) > 55)
+                    if (GetSafeDouble(GetNum(SItem[0]["HNLPD"])) > 55)
                     {
                         //dj = SItem[0]["HNLPD"];
                         dj = SItem[0]["NKHLPD"];
@@ -1306,7 +1203,7 @@ namespace Calculates
                 }
                 else if (SItem[0]["HNLPD"].Contains("～") && !SItem[0]["NKHLPD"].Contains("～"))
                 {
-                    if (Conversion.Val(SItem[0]["NKHLPD"]) > 55)
+                    if (GetSafeDouble(GetNum(SItem[0]["NKHLPD"])) > 55)
                     {
                         //dj = SItem[0]["NKHLPD"];
                         dj = SItem[0]["HNLPD"];
@@ -1319,7 +1216,7 @@ namespace Calculates
                 }
                 else if (!SItem[0]["HNLPD"].Contains("～") && !SItem[0]["NKHLPD"].Contains("～"))
                 {
-                    if (Conversion.Val(SItem[0]["NKHLPD"]) > Conversion.Val(SItem[0]["HNLPD"]))
+                    if (GetSafeDouble(GetNum(SItem[0]["NKHLPD"])) > GetSafeDouble(GetNum(SItem[0]["HNLPD"])))
                     {
                         //dj = SItem[0]["NKHLPD"];
                         dj = SItem[0]["HNLPD"];
