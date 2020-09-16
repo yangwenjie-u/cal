@@ -40,6 +40,8 @@ namespace Calculates
                     sItem["G_HSL"] = string.IsNullOrEmpty(extraFieldsDj["D_HSL"]) ? extraFieldsDj["D_HSL"] : extraFieldsDj["D_HSL"].Trim();
                     sItem["G_SSL"] = string.IsNullOrEmpty(extraFieldsDj["D_SSL"]) ? extraFieldsDj["D_SSL"] : extraFieldsDj["D_SSL"].Trim();
                     sItem["G_BBMJ"] = string.IsNullOrEmpty(extraFieldsDj["D_BBMJ"]) ? extraFieldsDj["D_BBMJ"] : extraFieldsDj["D_BBMJ"].Trim();
+                    sItem["G_CNSJB"] = string.IsNullOrEmpty(extraFieldsDj["D_CNSJB"]) ? extraFieldsDj["D_CNSJB"] : extraFieldsDj["D_CNSJB"].Trim();
+                    sItem["G_BRW"] = string.IsNullOrEmpty(extraFieldsDj["D_BRW"]) ? extraFieldsDj["D_BRW"] : extraFieldsDj["D_BRW"].Trim();
                 }
                 else
                 {
@@ -277,6 +279,64 @@ namespace Calculates
                     sItem["MD_GH"] = "----";
                     sItem["G_MD"] = "----";
                     sItem["W_MD"] = "----";
+                }
+                #endregion
+
+                #region 初凝时间比
+                if (jcxm.Contains("、初凝时间比、"))
+                {
+                    jcxmCur = "初凝时间比";
+                    if (IsQualified(sItem["G_CNSJB"],sItem["W_CNSJB"],false) == "合格")
+                    {
+                        sItem["HG_CNSJB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_CNSJB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["HG_CNSJB"] = "----";
+                    sItem["W_CNSJB"] = "----";
+                    sItem["G_CNSJB"] = "----";
+                }
+                #endregion
+
+                #region 不溶物
+                if (jcxm.Contains("、不溶物、"))
+                {
+                    jcxmCur = "不溶物";
+                    List<double> lArray = new List<double>();
+                    for (int i = 1; i < 3; i++)
+                    {
+                        sItem["BRWZLFS" + i] = Math.Round((Conversion.Val(sItem["BRWSHZL" + i]) - Conversion.Val(sItem["BRWKBSHZL" + i])) / Conversion.Val(sItem["BRWSYZL" + i]) * 100, 1).ToString("0.0");
+                        lArray.Add(Conversion.Val(sItem["BRWZLFS" + i]));
+                    }
+
+                    if (lArray!=null)
+                    {
+                        sItem["W_BRW"] = lArray.Average().ToString();
+                    }
+                    
+                    if (IsQualified(sItem["G_BRW"],sItem["W_BRW"],false)=="合格")
+                    {
+                        sItem["HG_BRW"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_BRW"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["W_BRW"] = "----";
+                    sItem["HG_BRW"] = "----";
+                    sItem["G_BRW"] = "----";
                 }
                 #endregion
 

@@ -290,6 +290,7 @@ namespace Calculates.HPB_混凝土配合比
 
                 if (jcxm.Contains("、表观密度、") || jcxm.Contains("、配合比、"))
                 {
+                    sItem["BGMD"] = (Math.Round((Conversion.Val(sItem["THSJZZL"]) - Conversion.Val(sItem["TZL"])) / Conversion.Val(sItem["TLJ"]) * 1000/10, 0)*10).ToString("0");
                 }
                 else
                 {

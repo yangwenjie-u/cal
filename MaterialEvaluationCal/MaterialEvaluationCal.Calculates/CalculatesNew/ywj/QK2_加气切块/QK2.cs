@@ -628,7 +628,7 @@ namespace Calculates
                         jcxmCur = "导热系数";
                         if (Conversion.Val(sItem["DRXS"]) == 0)
                         { }
-                        if (IsQualified(sItem["DRXSYQ"], sItem["DRXS"],false) == "合格")
+                        if (IsQualified(sItem["DRXSYQ"], sItem["DRXS"], false) == "合格")
                         {
                             sItem["DRXSPD"] = "合格";
                         }
@@ -724,10 +724,47 @@ namespace Calculates
                     }
                     #endregion
 
+                    #region 抗折强度
+                    if (jcxm.Contains("、抗折强度、"))
+                    {
+                        jcxmCur = "抗折强度";
+                        if (!string.IsNullOrEmpty(sItem["KZQDKD1"]))
+                        {
+                            List<double> kzqdArray = new List<double>();
+                            for (int i = 1; i < 3; i++)
+                            {
+                                sItem["W_KZQD" + i] = Math.Round((Conversion.Val(sItem["KZQDPHHZ" + i]) * Conversion.Val(sItem["KZQDJJ" + i])) / (Conversion.Val(sItem["KZQDKD" + i]) * Conversion.Val(sItem["KZQDGD" + i]) * Conversion.Val(sItem["KZQDGD" + i])), 1).ToString("0.0");
+                                kzqdArray.Add(Conversion.Val(sItem["W_KZQD" + i]));
+                            }
+                            sItem["W_KZQD"] = kzqdArray.Average().ToString();
+                        }
+                        MItem[0]["G_KZQD"] = "≥" + Conversion.Val(sItem["G_KZQD"]).ToString();
+                        if (IsQualified(MItem[0]["G_KZQD"], sItem["W_KZQD"], false) == "合格")
+                        {
+                            MItem[0]["GH_KZQD"] = "合格";
+                            mFlag_Hg = true;
+                        }
+                        else
+                        {
+                            MItem[0]["GH_KZQD"] = "不合格";
+                            mbhggs = mbhggs + 1;
+                            mFlag_Bhg = true;
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                    }
+                    else
+                    {
+                        MItem[0]["GH_KZQD"] = "----";
+                        MItem[0]["G_KZQD"] = "----";
+                        sItem["W_KZQD"] = "----";
+                    }
+                    #endregion
+
                     if (sItem["GMDPD"].Trim() == "不合格" || sItem["HSLPD"] == "不合格" || sItem["QDPD"].Trim() == "不合格" || sItem["WCPD"].Trim() == "不合格" || sItem["DRXSPD"] == "不合格" || sItem["LLSSLPD"] == "不合格" || sItem["DHQDPD"] == "不合格" || sItem["DRPD"] == "不合格")
                     {
                         sItem["JCJG"] = "不合格";
-                        if (sItem["GMDPD"].Trim() == "合格" || sItem["QDPD"].Trim() == "合格" || sItem["WCPD"].Trim() == "合格" || sItem["DRXSPD"] == "合格" || sItem["LLSSLPD"] == "合格" || sItem["DHQDPD"] == "合格"|| sItem["DRPD"] == "合格")
+                        if (sItem["GMDPD"].Trim() == "合格" || sItem["QDPD"].Trim() == "合格" || sItem["WCPD"].Trim() == "合格" || sItem["DRXSPD"] == "合格" || sItem["LLSSLPD"] == "合格" || sItem["DHQDPD"] == "合格" || sItem["DRPD"] == "合格")
                         {
                             mFlag_Hg = true;
                             mFlag_Bhg = true;
