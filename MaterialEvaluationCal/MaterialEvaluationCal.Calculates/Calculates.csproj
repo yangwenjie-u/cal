@@ -53,6 +53,9 @@
     <Compile Include="Base\JsonHelper.cs" />
     <Compile Include="Base\SqlBase.cs" />
     <Compile Include="Base\SQLHelper.cs" />
+    <Compile Include="CalculatesNew\llm\GJ 挂件\GJ.cs" />
+    <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
+    <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" />
     <Compile Include="CalculatesNew\lq\井盖，水箅\JGS.cs" />
     <Compile Include="CalculatesNew\lq\其他排水管\QPS.cs" />
     <Compile Include="CalculatesNew\lq\其他给水管\QGS.cs" />

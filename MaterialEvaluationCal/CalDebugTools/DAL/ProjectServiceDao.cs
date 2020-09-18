@@ -129,7 +129,7 @@ namespace CalDebugTools.DAL
 
             if (addJcjt)
             {
-                sqlstr = string.Format($"select * from  pr_m_syxm where syxmbh='{projectCode}';");
+                sqlstr = string.Format($"select * from  PR_M_SYXM where syxmbh='{projectCode}';");
                 reflag = CheckProjectIsExist(jcjtService, sqlstr);
                 if (reflag == -2 || reflag > 0)
                 {
@@ -165,7 +165,7 @@ namespace CalDebugTools.DAL
             //检测监管
             if (addJcjg)
             {
-                sqlstr = string.Format($"select * from  pr_m_syxm where syxmbh='{projectCode}';");
+                sqlstr = string.Format($"select * from  PR_M_SYXM where syxmbh='{projectCode}';");
                 reflag = CheckProjectIsExist(jcjgService, sqlstr);
                 if (reflag == -2 || reflag > 0)
                 {
