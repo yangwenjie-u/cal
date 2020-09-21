@@ -49,7 +49,7 @@ namespace Calculates
                     sItem["G_ZXKL"] = mrsdj["ZXKL"].Trim();//从等级表中获取最小抗拉强度标准值
                     sItem["G_LLHZ"] = mrsdj["LLHZ"].Trim();//从等级表中获取楔负载标准值
                     sItem["G_BZHZ"] = mrsdj["BZHZ"].Trim();//从等级表中获取保证荷载标准值
-                    sItem["GCMJ"] = mrsdj["GCMJ"].Trim();//从等级表中获取公称面积
+                    //sItem["GCMJ"] = mrsdj["GCMJ"].Trim();//从等级表中获取公称面积
                     sItem["G_KLQD"] = mrsdj["KLQD"].Trim();//从等级表中获取抗拉强度标准值
                     //mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["JSFF"];
                 }
@@ -57,7 +57,7 @@ namespace Calculates
                 {
                     //mJSFF = "";
                     mAllHg = false;
-                    mItem["bgbh"] = "";
+                    
                     sItem["JCJG"] = "依据不详";
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
@@ -72,7 +72,7 @@ namespace Calculates
                     int sum = 0;
                     for (int i = 1; i < 9; i++)//循环8次，判定最小拉力载荷是否符合标准要求。
                     {
-                         if (GetSafeDouble(sItem["ZXKL" + i]) >= double.Parse(sItem["G_ZXKL"]))
+                         if (GetSafeDouble(sItem["ZXKL" + i]) < GetSafeDouble(sItem["G_ZXKL"]))
                          {
                               sum++;
                          }
@@ -154,7 +154,7 @@ namespace Calculates
                     int sum = 0;
                     for (int i = 1; i < 9; i++)//循环8次，判定最小拉力载荷是否符合标准要求。
                     {
-                        if (GetSafeDouble(sItem["BZHZ" + i]) >= double.Parse(sItem["G_BZHZ"]))
+                        if (GetSafeDouble(sItem["BZHZ" + i]) < GetSafeDouble(sItem["G_BZHZ"]))
                         {
                             sum++;
                         }
@@ -193,34 +193,34 @@ namespace Calculates
 
                     int sum = 0;
                     //计算8个试件的抗拉强度
-                    mMj1 = double.Parse(sItem["JXLL1"]) / double.Parse(sItem["GCMJ"]);
+                    mMj1 = GetSafeDouble(sItem["KLHZ1"]) / GetSafeDouble(sItem["JMJ"]);
                     sItem["KLQD1"] = mMj1.ToString();
 
-                    mMj2 = double.Parse(sItem["JXLL2"]) / double.Parse(sItem["GCMJ"]);
+                    mMj2 = GetSafeDouble(sItem["KLHZ2"]) / GetSafeDouble(sItem["JMJ"]);
                     sItem["KLQD2"] = mMj2.ToString();
 
-                    mMj3 = double.Parse(sItem["JXLL3"]) / double.Parse(sItem["GCMJ"]);
-                    sItem["KLQD1"] = mMj3.ToString();
+                    mMj3 = GetSafeDouble(sItem["KLHZ3"]) / GetSafeDouble(sItem["JMJ"]);
+                    sItem["KLQD3"] = mMj3.ToString();
 
-                    mMj4 = double.Parse(sItem["JXLL4"]) / double.Parse(sItem["GCMJ"]);
-                    sItem["KLQD1"] = mMj4.ToString();
+                    mMj4 = GetSafeDouble(sItem["KLHZ4"]) / GetSafeDouble(sItem["JMJ"]);
+                    sItem["KLQD4"] = mMj4.ToString();
 
-                    mMj5 = double.Parse(sItem["JXLL5"]) / double.Parse(sItem["GCMJ"]);
-                    sItem["KLQD1"] = mMj5.ToString();
+                    mMj5 = GetSafeDouble(sItem["KLHZ5"]) / GetSafeDouble(sItem["JMJ"]);
+                    sItem["KLQD5"] = mMj5.ToString();
 
-                    mMj6 = double.Parse(sItem["JXLL6"]) / double.Parse(sItem["GCMJ"]);
-                    sItem["KLQD1"] = mMj6.ToString();
+                    mMj6 = GetSafeDouble(sItem["KLHZ6"]) / GetSafeDouble(sItem["JMJ"]);
+                    sItem["KLQD6"] = mMj6.ToString();
 
-                    mMj7 = double.Parse(sItem["JXLL7"]) / double.Parse(sItem["GCMJ"]);
-                    sItem["KLQD1"] = mMj7.ToString();
+                    mMj7 = GetSafeDouble(sItem["KLHZ7"]) / GetSafeDouble(sItem["JMJ"]);
+                    sItem["KLQD7"] = mMj7.ToString();
 
-                    mMj8 = double.Parse(sItem["JXLL8"]) / double.Parse(sItem["GCMJ"]);
+                    mMj8 = GetSafeDouble(sItem["KLHZ8"]) / GetSafeDouble(sItem["JMJ"]);
                     sItem["KLQD8"] = mMj8.ToString();
 
                     
                     for (int i = 1; i < 9; i++)//循环8次，判定最小拉力载荷是否符合标准要求。
                     {
-                        if (GetSafeDouble(sItem["KLQD" + i]) >= double.Parse(sItem["G_KLQD"]))
+                        if (GetSafeDouble(sItem["KLQD" + i]) < GetSafeDouble(sItem["G_KLQD"]))
                         {
                             sum++;
                         }

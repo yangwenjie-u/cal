@@ -54,7 +54,7 @@ namespace Calculates
                 {
                     //mJSFF = "";
                     mAllHg = false;
-                    mItem["bgbh"] = "";
+                    
                     sItem["JCJG"] = "依据不详";
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
@@ -72,7 +72,7 @@ namespace Calculates
 
                     if (GetSafeDouble(sItem["XSL1"]) <= double.Parse(sItem["G_XSL"]) && GetSafeDouble(sItem["XSL2"]) <= double.Parse(sItem["G_XSL"]))
                     {
-                        MItem[0]["HG_ZXKL"] = "合格";
+                        MItem[0]["HG_XSL"] = "合格";
                         sItem["JCJG"] = "合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                         mAllHg = true;
@@ -81,7 +81,7 @@ namespace Calculates
                     else
                     {
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        mItem["HG_ZXKL"] = "不合格";
+                        mItem["HG_XSL"] = "不合格";
                         sItem["JCJG"] = "不合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，该批产品不合格。";
                         mAllHg = false;
