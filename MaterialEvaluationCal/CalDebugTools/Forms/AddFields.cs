@@ -287,6 +287,7 @@ namespace CalDebugTools.Forms
                 {
                     #region 添加主/从表字段
                     var startIndex = 0;
+                    string cmdStr = "";
                     ArrayList baseCmdList = new ArrayList();
                     ArrayList zdzdCmdList = new ArrayList();
                     ArrayList zdzdCmdList_Cal = new ArrayList();
@@ -303,7 +304,11 @@ namespace CalDebugTools.Forms
                             reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
                             if (reFieldCount == 0)
                             {
-                                baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
+                                cmdStr = $"alter table {tableName} add {fieldName} {fieldType};";
+                                if (!baseCmdList.Contains(cmdStr))
+                                {
+                                    baseCmdList.Add(cmdStr);
+                                }
                                 _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
                             }
                             else
@@ -318,7 +323,11 @@ namespace CalDebugTools.Forms
                             reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
                             if (reFieldCount == 0)
                             {
-                                baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
+                                cmdStr = $"alter table {tableName} add {fieldName} {fieldType};";
+                                if (!baseCmdList.Contains(cmdStr))
+                                {
+                                    baseCmdList.Add(cmdStr);
+                                }
                                 _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
                             }
                             else
@@ -332,7 +341,11 @@ namespace CalDebugTools.Forms
                             reFieldCount = CheckFieldIsExist(jcjgService, sqlStrCheck);
                             if (reFieldCount == 0)
                             {
-                                baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
+                                cmdStr = $"alter table {tableName} add {fieldName} {fieldType};";
+                                if (!baseCmdList.Contains(cmdStr))
+                                {
+                                    baseCmdList.Add(cmdStr);
+                                }
                                 _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
                             }
                             else
@@ -347,7 +360,11 @@ namespace CalDebugTools.Forms
                             reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
                             if (reFieldCount == 0)
                             {
-                                baseCmdList.Add($"alter table {tableName} add {fieldName} {fieldType};");
+                                cmdStr = $"alter table {tableName} add {fieldName} {fieldType};";
+                                if (!baseCmdList.Contains(cmdStr))
+                                {
+                                    baseCmdList.Add(cmdStr);
+                                }
                                 _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
                             }
                             else
@@ -380,7 +397,12 @@ namespace CalDebugTools.Forms
                                 if (reFieldCount == 0)
                                 {
 
-                                    baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
+                                    cmdStr = $"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};";
+                                    if (!baseCmdList.Contains(cmdStr))
+                                    {
+                                        baseCmdList.Add(cmdStr);
+                                    }
+
                                     _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
                                 }
                                 else
@@ -396,7 +418,12 @@ namespace CalDebugTools.Forms
                                 reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
                                 if (reFieldCount == 0)
                                 {
-                                    baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
+                                    cmdStr = $"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};";
+                                    if (!baseCmdList.Contains(cmdStr))
+                                    {
+                                        baseCmdList.Add(cmdStr);
+                                    }
+
                                     _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
                                 }
                                 else
@@ -411,7 +438,11 @@ namespace CalDebugTools.Forms
                                 if (reFieldCount == 0)
                                 {
 
-                                    baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
+                                    cmdStr = $"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};";
+                                    if (!baseCmdList.Contains(cmdStr))
+                                    {
+                                        baseCmdList.Add(cmdStr);
+                                    }
                                     _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
                                 }
                                 else
@@ -426,7 +457,11 @@ namespace CalDebugTools.Forms
                                 reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
                                 if (reFieldCount == 0)
                                 {
-                                    baseCmdList.Add($"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};");
+                                    cmdStr = $"alter table {tableName} add {fieldName}{startIndex + i} {fieldType};";
+                                    if (!baseCmdList.Contains(cmdStr))
+                                    {
+                                        baseCmdList.Add(cmdStr);
+                                    }
                                     _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
                                 }
                                 else

@@ -153,7 +153,7 @@ namespace Calculates
                     {
                         GG = GG.Substring(0, sItem["GG"].ToLower().Replace("*", "x").IndexOf('x'));
                     }
-                    if (GG != "190")
+                    if (GG != "190" && !string.IsNullOrEmpty(GG))
                     {
                         ZGKJ = Convert.ToInt32(GG) - 40;
                     }
