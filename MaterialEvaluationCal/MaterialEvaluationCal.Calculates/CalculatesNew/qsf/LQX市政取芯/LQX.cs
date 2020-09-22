@@ -148,8 +148,8 @@ namespace Calculates
                         }
 
                         //eLqx["BGBH"] = sItem["WTBH"];
-                        E_LQX["SXCZH"] = sItem["QYZH"];
-                        E_LQX["SHJ"] = sItem["HJ_S"];
+                        //E_LQX["SXCZH"] = sItem["QYZH"];
+                        //E_LQX["SHJ"] = sItem["HJ_S"];
                     }
                     #endregion
 
