@@ -138,7 +138,7 @@ namespace Calculates
                     sItem["JCJG_LS"] = "----";
                 }
 
-                if (jcxm2.Contains("冷弯") || jcxm2.Contains("弯曲"))
+                if (jcxm2.Contains("冷弯"))
                 {
                     if (double.Parse(sItem["HG_LW"]) - mHggs_lw_f > -0.00001)
                         sItem["JCJG_LW"] = "符合";
@@ -171,7 +171,7 @@ namespace Calculates
             double zj1 = 0, zj2 = 0;
             bool doOther = false;
 
-            double mQfqd, mklqd1, mLw, mcj = 0;
+            double mQfqd,  mLw, mcj = 0;
             string mHggs_qfqd, mHggs_klqd, mHggs_scl, mHggs_lw = "";
             string mFsgs_qfqd, mFsgs_klqd, mFsgs_scl, mFsgs_lw = "";
             string mlwjd, MFFWQCS = "";
@@ -180,7 +180,7 @@ namespace Calculates
             string mJSFF = "";
 
             double mScl = 0;
-            double mKlqd = 0;
+            string mKlqd, mklqd1 = "";
             var LwBzyq = "";
             var mxlgs = 0.0;
             var mSjdj = "";
@@ -268,8 +268,8 @@ namespace Calculates
                     continue;
                 }
                 mQfqd = Double.Parse(extraFieldsDj["QFQDBZZ"]); //'单组标准值
-                mKlqd = Double.Parse(extraFieldsDj["KLQDBZZ"]);
-                mklqd1 = Double.Parse(extraFieldsDj["KLQDBZZ1"]);
+                mKlqd = extraFieldsDj["KLQDBZZ"];
+                mklqd1 =extraFieldsDj["KLQDBZZ1"];
                 mScl = Double.Parse(extraFieldsDj["SCLBZZ"]);
                 mLw = Double.Parse(extraFieldsDj["LWBZZ"]);
                 mcj = Double.Parse(extraFieldsDj["CJBZZ"]);
@@ -314,7 +314,7 @@ namespace Calculates
                 #endregion
                 if (Conversion.Val(sItem["HD"]) > 100 && MItem[0]["PDBZ"].Contains("GB/T 700-2006《碳素结构钢》"))
                 {
-                    mKlqd = mKlqd - 20;
+                    mKlqd = (GetSafeDouble(mKlqd) - 20).ToString();
                 }
                 #region 弯曲标准
                 if (Conversion.Val(mlwzj) == 0 && Conversion.Val(MFFWQCS) != 0)
@@ -343,9 +343,14 @@ namespace Calculates
                 }
                 #endregion
                 sItem["G_LWZJ"] = mlwzj + "a";
-                sItem["G_QFQD"] = Conversion.Val(mQfqd).ToString();
-                sItem["G_KLQD"] = mKlqd.ToString();
-                sItem["G_KLQD1"] = Conversion.Val(mklqd1).ToString();
+                sItem["G_QFQD"] = Conversion.Val(mQfqd).ToString("0");
+                sItem["G_KLQD"] = Conversion.Val(mKlqd).ToString("0") ;
+                sItem["G_KLQD1"] = Conversion.Val(mklqd1).ToString("0"); 
+                sItem["G_KLQD"]= Conversion.Val(mKlqd).ToString("0") + "～"+Conversion.Val(mklqd1).ToString("0");
+                if (gclx_lb.Contains("管")){
+                    sItem["G_KLQD"]="≥"+ Conversion.Val(mKlqd).ToString("0");
+
+                }
                 sItem["G_SCL"] = mScl.ToString();
                 //冷弯性能标准要求
                 sItem["G_LWWZ"] = LwBzyq;
@@ -474,7 +479,7 @@ namespace Calculates
 
                 for (int i = 1; i < mxlgs + 1; i++)
                 {
-                    if (Conversion.Val(sItem["KLQD" + i]) >= mKlqd && Conversion.Val(sItem["KLQD" + i]) <= mklqd1)
+                    if (Conversion.Val(sItem["KLQD" + i]) >= GetSafeDouble( mKlqd) && Conversion.Val(sItem["KLQD" + i]) <= GetSafeDouble(mklqd1))
                         sItem["HG_KL"] = (Conversion.Val(sItem["HG_KL"]) + 1).ToString();
                     else
                         mallBhg_kl += 1;
@@ -494,7 +499,7 @@ namespace Calculates
                 #endregion
                 
                 #region  弯曲
-                if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
+                if (jcxm.Contains("、冷弯、") )
                 {
                     mallBhg_lw = mallBhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, double.Parse(mxwgs));
                 }

@@ -53,6 +53,9 @@
     <Compile Include="Base\JsonHelper.cs" />
     <Compile Include="Base\SqlBase.cs" />
     <Compile Include="Base\SQLHelper.cs" />
+    <Compile Include="CalculatesNew\llm\GJ 挂件\GJ.cs" />
+    <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
+    <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" />
     <Compile Include="CalculatesNew\lq\井盖，水箅\JGS.cs" />
     <Compile Include="CalculatesNew\lq\其他排水管\QPS.cs" />
     <Compile Include="CalculatesNew\lq\其他给水管\QGS.cs" />
@@ -82,6 +85,8 @@
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼开盘配合比\TKP.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼抗压强度\HGZ.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼搅拌记录\TJB.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单\商砼质量卡\ZLK.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单\商砼调整记录\TTZ.cs" />
     <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
     <Compile Include="CalculatesNew\qsf\JLH楼板厚度\JLH.cs" />
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
