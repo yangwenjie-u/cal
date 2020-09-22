@@ -45,7 +45,7 @@ namespace CalDebugTools.Common
         /// <param name="className">类名</param>
         /// <param name="infoLevel">日志级别</param>
         /// <param name="info">日志记录</param>
-        private static void WriteLog(string className, string infoLevel, string info)
+        private static void WriteLog(string infoLevel, string className, string info)
         {
             try
             {

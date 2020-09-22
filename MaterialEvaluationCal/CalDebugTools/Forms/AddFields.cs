@@ -47,6 +47,12 @@ namespace CalDebugTools.Forms
             {
                 return;
             }
+            if (Convert.ToInt16(txt_STabCount.Text) > 1 && MessageBox.Show("主表添加多个字段，是否继续?", "Confirm Message", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            {
+                return;
+            }
+
+
             CreateTableColumn("M");
         }
 
