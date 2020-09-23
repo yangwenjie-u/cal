@@ -60,7 +60,7 @@ namespace CalDebugTools
             info.YTable = txt_y.Text;
             info.DataFiled = txtdatafiled.Text;
             //info.Cal = txt_cal.Text;
-            int result = _projectInfos.DataInsert(info);
+            int result = _projectInfos.DataInsert(info);      
 
             if (result == -3)
             {

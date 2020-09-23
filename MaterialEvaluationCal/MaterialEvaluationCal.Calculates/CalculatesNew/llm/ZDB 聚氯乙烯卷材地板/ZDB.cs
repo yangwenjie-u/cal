@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculates
 {
-    public class SJZ : BaseMethods
+    public class ZDB : BaseMethods
     {
         public void Calc()
         {
@@ -16,14 +16,14 @@ namespace Calculates
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "";
-            var SItem = data["S_SJZ"];
-            var MItem = data["M_SJZ"];
-            var mrsDj = dataExtra["BZ_SJZ_DJ"];
+            var SItem = data["S_ZDB"];
+            var MItem = data["M_ZDB"];
+            var mrsDj = dataExtra["BZ_ZDB_DJ"];
             int mbHggs = 0;
             double mMj1 = 0, mMj2 = 0, mMj3 = 0, mMj4 = 0, mMj5 = 0, mMj6 = 0, mMj7 = 0, mMj8 = 0;
-            if (!data.ContainsKey("M_SJZ"))
+            if (!data.ContainsKey("M_ZDB"))
             {
-                data["M_SJZ"] = new List<IDictionary<string, string>>();
+                data["M_ZDB"] = new List<IDictionary<string, string>>();
             }
             if (MItem == null)
             {
@@ -42,12 +42,12 @@ namespace Calculates
             {
                 
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-                var mrsdj = mrsDj.FirstOrDefault(u => u["QDLB"] == sItem["QDLB"].Trim());
+                var mrsdj = mrsDj.FirstOrDefault(u => u["MC"] == sItem["SJDJ"].Trim());
                 if (mrsdj != null && mrsdj.Count != 0)
                 {
                     //MItem[0]["G_ZXKL"] = string.IsNullOrEmpty(extraFieldsDj["ZXKL"]) ? extraFieldsDj["ZXKL"] : GetSafeDouble(extraFieldsDj["ZXKL"].Trim()).ToString("0.0");
-                    sItem["G_PJKYQD"] = mrsdj["PJKYQD"].Trim();//从等级表中获取抗拉强度标准值
-                    sItem["G_MKYQD"] = mrsdj["MKYQD"].Trim();
+                    sItem["G_HFWHL"] = mrsdj["HFWHL"].Trim();//从等级表中获取挥发物含量标准值
+                    
 
                     //mJSFF = string.IsNullOrEmpty(extraFieldsDj["JSFF"]) ? "" : extraFieldsDj["JSFF"];
                 }
@@ -61,32 +61,16 @@ namespace Calculates
                     continue;
                 }
 
-                #region 抗压强度
+                #region 挥发物
                 sign = true;
-                if (jcxm.Contains("、抗压强度、"))
+                if (jcxm.Contains("、挥发物、"))
                 {
-                    jcxmCur = "抗压强度";
-
-                    //int sum = 0;
-                    //sItem["XSL1"] = Round((double.Parse(sItem["ZZZL1"]) - double.Parse(sItem["CSZL1"])) / double.Parse(sItem["CSZL1"]) * 100, 0).ToString("0");
-                    //sItem["XSL2"] = Round((double.Parse(sItem["ZZZL2"]) - double.Parse(sItem["CSZL2"])) / double.Parse(sItem["CSZL2"]) * 100, 0).ToString("0");
-
-                    //求抗压强度最小值
-                    double min = GetSafeDouble(sItem["KYQD1"]);
-
-                    for (int i = 2; i < 11; i++)
+                    jcxmCur = "挥发物";
+                 
+                    if (GetSafeDouble(sItem["HFWHL"]) <= GetSafeDouble(sItem["G_HFWHL"]) )
                     {
-                        if (min > GetSafeDouble(sItem["KYQD"+ i ]))
-                        {
-                            min = GetSafeDouble(sItem["KYQD" + i]);
-                        }
-                    }
-
-                    sItem["MKYQD"] = min.ToString();
-
-                    if (GetSafeDouble(sItem["PJKYQD"]) >= GetSafeDouble(sItem["G_PJKYQD"]) && GetSafeDouble(sItem["MKYQD"]) >= GetSafeDouble(sItem["G_MKYQD"]))
-                    {
-                        sItem["HG_PJKYQD"] = "合格";
+                        sItem["HG_HFWHL"] = "合格";
+                        sItem["G_HFWHL"] = "≤" + sItem["G_HFWHL"];
                         sItem["JCJG"] = "合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
                         mAllHg = true;
@@ -96,6 +80,7 @@ namespace Calculates
                     {
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["HG_PJKYQD"] = "不合格";
+                        sItem["G_HFWHL"] = "≤" + sItem["G_HFWHL"];
                         sItem["JCJG"] = "不合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，该批产品不合格。";
                         mAllHg = false;
@@ -104,9 +89,9 @@ namespace Calculates
                  }
                 else
                 {
-                    sItem["HG_PJKYQD"] = "----";
-                    sItem["G_KYQD"] = "----";
-                    
+                    sItem["HG_HFWHL"] = "----";
+                    sItem["G_HFWHL"] = "----";
+                    sItem["HFWHL"] = "----";
                 }
                 #endregion
                         
@@ -117,23 +102,23 @@ namespace Calculates
             {
                 mjcjg = "合格";
             }
-            if (!data.ContainsKey("M_SJZ"))
+            if (!data.ContainsKey("M_ZDB"))
             {
-                data["M_SJZ"] = new List<IDictionary<string, string>>();
+                data["M_ZDB"] = new List<IDictionary<string, string>>();
             }
-            var M_SJZ = data["M_SJZ"];
+            var M_ZDB = data["M_ZDB"];
             //if (M_HNT == default || M_HNT.Count == 0)
-            if (M_SJZ == null)
+            if (M_ZDB == null)
             {
                 IDictionary<string, string> m = new Dictionary<string, string>();
                 m["JCJG"] = mjcjg;
                 m["JCJGMS"] = jsbeizhu;
-                M_SJZ.Add(m);
+                M_ZDB.Add(m);
             }
             else
             {
-                M_SJZ[0]["JCJG"] = mjcjg;
-                M_SJZ[0]["JCJGMS"] = jsbeizhu;
+                M_ZDB[0]["JCJG"] = mjcjg;
+                M_ZDB[0]["JCJGMS"] = jsbeizhu;
             }
             #endregion
             /************************ 代码结束 *********************/
