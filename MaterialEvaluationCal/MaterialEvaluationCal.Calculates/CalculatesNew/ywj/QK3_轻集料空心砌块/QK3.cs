@@ -188,7 +188,7 @@ namespace Calculates
                     mMaxKyqd = mtmpArray[4];
                     mMinKyqd = mtmpArray[0];
 
-                    sItem["DKZX"] = mMinKyqd.ToString();
+                    sItem["DKZX"] = mMinKyqd.ToString("0.0");
 
                     //if (GetSafeDouble(sItem["KYPJ"]) >= GetSafeDouble(extraFieldsDj["PJBXY"]) && GetSafeDouble(sItem["DKZX"]) >= GetSafeDouble(extraFieldsDj["DKBXY"]) && GetSafeDouble(sItem["GMDPJ"]) <= GetSafeDouble(extraFieldsDj["MDDJFW"]))
                     if (GetSafeDouble(sItem["KYPJ"]) >= GetSafeDouble(extraFieldsDj["PJBXY"]) && GetSafeDouble(sItem["DKZX"]) >= GetSafeDouble(extraFieldsDj["DKBXY"]))

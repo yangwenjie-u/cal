@@ -458,6 +458,7 @@ namespace Calculates
                                 mitem["G_HDPC"] = mrsDj_item["G_HDPC"];  //厚度偏差要求
                                 mitem["G_HDYXPC"] = mrsDj_item["G_HDPC"];  //厚度偏差要求
                                 mitem["G_MDYXPC"] = mrsDj_item["BCMD"];  //密度偏差要求
+                                mitem["G_XSL"] = mrsDj_item["G_XSL"];  //吸水性要求
                             }
                             break;
                         case "矿物棉喷涂绝热层GB/T26746-2011":

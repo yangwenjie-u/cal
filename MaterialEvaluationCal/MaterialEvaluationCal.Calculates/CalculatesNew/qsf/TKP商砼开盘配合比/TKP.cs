@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculates
 {
-    public class TKP : BaseMethods
+    public class TKP2 : BaseMethods
     {
         public void Calc()
         {

@@ -144,9 +144,6 @@ namespace Calculates
                 }
                 #endregion
 
-
-
-
                 //单组判断
                 if (itemHG)
                 {

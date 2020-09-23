@@ -174,6 +174,7 @@ namespace Calculates
                     }
                     #endregion
 
+
                     #region  下颏带的强度
                     if (jcxm.Contains("、下颏带的强度、"))
                     {

@@ -36,6 +36,33 @@ namespace CalDebugTools.Forms
             com_dataSource.SelectedIndex = -1;
         }
 
+        /// <summary>
+        /// 判断往哪个数据库添加字段
+        /// </summary>
+        public List<string> CheckDataBaseSet()
+        {
+            List<string> resultDBNameList = new List<string>();
+            var selectedDataBaseName = "";
+            List<string> dataSourceList = new List<string>();
+            selectedDataBaseName = com_dataSource.Text.ToString();
+
+            if (selectedDataBaseName.Equals("全部"))
+            {
+                List<JCJGConnectInfo> listData = com_dataSource.DataSource as List<JCJGConnectInfo>;
+
+                //遍历所有配置的数据库，添加字段及zdzd表
+                foreach (JCJGConnectInfo item in listData)
+                {
+                    resultDBNameList.Add(item.Abbrevition);
+                }
+
+                resultDBNameList.Remove("ALL");
+                return resultDBNameList;
+            }
+            resultDBNameList.Add(((CalDebugTools.Model.JCJGConnectInfo)com_dataSource.SelectedItem).Abbrevition);
+
+            return resultDBNameList;
+        }
 
         private void btn_add_Click(object sender, EventArgs e)
         {
@@ -54,8 +81,20 @@ namespace CalDebugTools.Forms
             }
 
             string msg = "";
-            projectService.CreateProjectTable(com_dataSource.SelectedValue.ToString(), txt_ProjectName.Text.ToUpper(), this.chk_addjcjt.Checked, this.chk_addjcjg.Checked, out msg);
+            //projectService.CreateProjectTable(com_dataSource.SelectedValue.ToString(), txt_ProjectName.Text.ToUpper(), this.chk_addjcjt.Checked, this.chk_addjcjg.Checked, out msg);
 
+            List<string> dbNameList = CheckDataBaseSet();
+            var _deleteSqlStr = "";
+            var _outMsg = "";
+            int msgLen = 0;
+            foreach (var item in dbNameList)
+            {
+                _deleteSqlStr += "检测机构:" + item.ToUpper() + "\r\n";
+                _outMsg += "检测机构:" + item.ToUpper() + "\r\n";
+                msgLen += _outMsg.Length;
+                projectService.CreateProjectTable(item, txt_ProjectName.Text.ToUpper(), this.chk_addjcjt.Checked, this.chk_addjcjg.Checked, out msg);
+
+            }
             if (string.IsNullOrEmpty(msg))
             {
                 MessageBox.Show("添加成功", "提示");

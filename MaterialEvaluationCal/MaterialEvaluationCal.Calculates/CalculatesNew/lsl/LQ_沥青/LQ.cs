@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,7 +52,7 @@ namespace Calculates
                 {
                     mItem["bgbh"] = "";
                     sItem["JCJG"] = "依据不详";
-                    jsbeizhu = jsbeizhu + "单组流水号:" + sItem["dzbh"] + "试件尺寸为空" + "\r\n ";
+                    jsbeizhu = "试件尺寸为空";
                     continue;
                 }
 
@@ -204,9 +205,32 @@ namespace Calculates
                 {
                     jcxmCur = "溶解度";
                     /**
-                     * 溶解度 = {1-[（古氏坩埚、滤纸及不溶物总质量 m4 -古氏坩埚、滤纸质量 m1） + （锥形瓶、玻璃棒与黏附不溶物合质量 m5 - 锥形瓶、玻璃棒质量 m2）]/ （锥形瓶、玻璃棒与试样盒质量 m3 - 锥形瓶、玻璃棒质量 m2）} * 100
+                     * 溶解度 = {1-[（古氏坩埚、滤纸及不溶物总质量 m4 -古氏坩埚、滤纸质量 m1） + （锥形瓶、玻璃棒与黏附不溶物合质量 m5 - 锥形瓶、玻璃棒质量 m2）]  / （锥形瓶、玻璃棒与试样合质量 m3 - 锥形瓶、玻璃棒质量 m2）} * 100
                      * 平行试验 两次试验结果之差不大于0.1% 取平均值作为试验结果 溶解度大于99.0% 精确至 0.01%  小于等于99.0% 精确至0.1%
                      */
+                    sItem["RJD1"] = Round((1 - (GetSafeDouble(sItem["GZSYZZL1"].Trim()) - GetSafeDouble(sItem["GZZL1"].Trim()) + GetSafeDouble(sItem["PBNFSYZL1"].Trim()) - GetSafeDouble(sItem["PBZL1"].Trim()))
+                        / (GetSafeDouble(sItem["PBSYZZL1"].Trim()) - GetSafeDouble(sItem["PBZL1"].Trim()))) * 100, 2).ToString("0.00");
+                    sItem["RJD2"] = Round((1 - (GetSafeDouble(sItem["GZSYZZL2"].Trim()) - GetSafeDouble(sItem["GZZL2"].Trim()) + GetSafeDouble(sItem["PBNFSYZL2"].Trim()) - GetSafeDouble(sItem["PBZL2"].Trim()))
+                        / (GetSafeDouble(sItem["PBSYZZL2"].Trim()) - GetSafeDouble(sItem["PBZL2"].Trim()))) * 100, 2).ToString("0.00");
+                    //两次平行试验结果之差不大于0.1% ，取平均值为试验结果
+                    if (Math.Abs(GetSafeDouble(sItem["RJD1"]) - GetSafeDouble(sItem["RJD2"])) <= 0.1)
+                    {
+                        //溶解度大于99.0%  结果精确至0.01%
+                        if ((GetSafeDouble(sItem["RJD1"]) + GetSafeDouble(sItem["RJD2"])) / 2 > 99.0)
+                        {
+                            sItem["W_RJD"] = Round((GetSafeDouble(sItem["RJD1"]) + GetSafeDouble(sItem["RJD2"])) / 2, 2).ToString("0.00");
+                        }
+                        else
+                        {
+                            //溶解度小于等于99.0%  结果精确至0.1%
+                            sItem["W_RJD"] = Round((GetSafeDouble(sItem["RJD1"]) + GetSafeDouble(sItem["RJD2"])) / 2, 1).ToString("0.0");
+                        }
+                    }
+                    else
+                    {
+                        throw new SystemException("两次平行试验结果之差大于0.1% ");
+                    }
+
                     sItem["HG_RJD"] = IsQualified(sItem["G_RJD"], sItem["W_RJD"], false);
                     if (sItem["HG_RJD"] == "不合格")
                     {
@@ -225,23 +249,69 @@ namespace Calculates
                 #endregion
 
                 #region 黏附性
+                sign = true;
                 if (jcxm.Contains("、黏附性、"))
                 {
+                    sum = 0;
                     jcxmCur = "黏附性";
+
                     /**
                      * 同一试样平行试验5个集料颗粒   由两名试验人员分别评定，取平均等级作为试验结果
                      * 剥离面积百分率 = 0  黏附等级 5 剥离面积百分率 < 10%  黏附等级 4  剥离面积百分率 >=10% < 30%   黏附等级 3  剥离面积百分率 >30% 黏附等级 2   剥离面积百分率  =100%  黏附等级 1
                      */
-                    sItem["HG_NFX"] = IsQualified(sItem["G_NFX"], sItem["W_NFX"], false);
-                    if (sItem["HG_NFX"] == "不合格")
+
+                    for (int i = 1; i < 6; i++)
                     {
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        mAllHg = false;
-                        mbHggs = mbHggs + 1;
+                        for (int j = 1; j < 3; j++)
+                        {
+                            if (!string.IsNullOrEmpty(sItem["SYYPDKL" + i + "_" + j]))
+                            {
+                                switch (sItem["SYYPDKL" + i + "_" + j])
+                                {
+                                    case "沥青膜完全保存，剥离面积百分率接近于0":
+                                        sum = sum + 5;
+                                        break;
+                                    case "沥青膜少部分为水所移动，厚度不均匀，剥离面积百分率小于10%":
+                                        sum = sum + 4;
+                                        break;
+                                    case "沥青膜局部明显地为水所移动，基本保留在表面上，厚度不均匀，剥离面积百分率小于30%":
+                                        sum = sum + 3;
+                                        break;
+                                    case "沥青膜大部分为水所移动，局部保留在集料表面上，剥离面积百分率大于30%":
+                                        sum = sum + 2;
+                                        break;
+                                    case "沥青膜完全为水所移动，集料基本裸露，沥青全浮于水面上":
+                                        sum = sum + 1;
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                throw new SystemException("黏附性试验剥落程度数据录入不完整");
+                            }
+                        }
+                    }
+                    sItem["W_NFX"] = Round(sum / 10, 0).ToString("0");
+
+                    if (!string.IsNullOrEmpty(sItem["G_NFX"]))
+                    {
+                        sItem["HG_NFX"] = IsQualified(sItem["G_NFX"], sItem["W_NFX"], false);
+                        if (sItem["HG_NFX"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            mAllHg = false;
+                            mbHggs = mbHggs + 1;
+                        }
+                    }
+                    else
+                    {
+                        sItem["HG_NFX"] = "----";
                     }
                 }
                 else
                 {
+                    sItem["NFXJLLJ"] = "----";
+                    sItem["NFXSYFF"] = "----";
                     sItem["HG_NFX"] = "----";
                     sItem["G_NFX"] = "----";
                     sItem["W_NFX"] = "----";
@@ -274,29 +344,101 @@ namespace Calculates
                 if (jcxm.Contains("、密度与相对密度、"))
                 {
                     jcxmCur = "密度与相对密度";
-                    //根据沥青形态使用不同公式
-                    if ("固态沥青" == sItem["LQXT"])
+                    sItem["SMD1"] = "25℃" == sItem["MDXDMDSW1"].Trim() ? "0.9971" : "0.9991";
+                    //sItem["SMD2"] = "25℃" == sItem["MDXDMDSW1"].Trim() ? "0.9971" : "0.9991";
+                    //根据沥青形态使用不同公式   都为平行试验
+                    if ("固体沥青" == sItem["LQXT"] || "黏稠沥青" == sItem["LQXT"])
                     {
                         /**
-                         * 密度 = （比重瓶加沥青试样质量m6 - 瓶质量 m1） / [（比重瓶加水质量m2 - 瓶质量 m1）- (比重瓶加水加试样质量m7 - 比重瓶加沥青试样质量m6)] * 试样在试验温度下的密度 pw 
-                         * 相对密度 = （比重瓶加沥青试样质量m6 - 瓶质量 m1） / [（比重瓶加水质量m2 - 瓶质量 m1）- (比重瓶加水加试样质量m7 - 比重瓶加沥青试样质量m6)]
+                         * 固态沥青
+                         * 密度 = （比重瓶与沥青试样合计质量m6 - 比重瓶质量 m1） / [（比重瓶加水质量m2 - 比重瓶质量 m1）- (比重瓶加水加试样质量m7 - 比重瓶与沥青试样合计质量m6)] * 试样在试验温度下的密度 pw 
+                         * 相对密度 = （比重瓶与沥青试样合计质量m6 - 比重瓶质量 m1） / [（比重瓶加水质量m2 - 比重瓶质量 m1）- (比重瓶加水加试样质量m7 - 比重瓶与沥青试样合计质量m6)]
                          */
+                        /**
+                         * 黏度沥青
+                         * 密度 = （比重瓶与沥青试样合计质量m4 - 比重瓶质量m1）/ [（比重瓶加盛满水质量m2   - 比重瓶质量 m1） - （比重瓶加水加试样质量m5 - 比重瓶与沥青试样合计质量 m4）] * 试样在试验温度下的密度 pw 
+                         * 相对密度 = （比重瓶与沥青试样合计质量m4 - 比重瓶质量m1）/ [（比重瓶加盛满水质量m2 - 比重瓶质量 m1） - （比重瓶加水加试样质量m5 - 比重瓶与沥青试样合计质量 m4）] 
+                         */
+                        sItem["MD1"] = Round((GetSafeDouble(sItem["PJLQSYZL1"].Trim()) - GetSafeDouble(sItem["PZL1"].Trim())) / (GetSafeDouble(sItem["PSZL1"].Trim())
+                            - GetSafeDouble(sItem["PZL1"].Trim()) - GetSafeDouble(sItem["PJSJSYZL1"].Trim()) + GetSafeDouble(sItem["PJLQSYZL1"].Trim())) * GetSafeDouble(sItem["SMD1"]), 4).ToString("0.0000");
+                        sItem["MD2"] = Round((GetSafeDouble(sItem["PJLQSYZL2"].Trim()) - GetSafeDouble(sItem["PZL2"].Trim())) / (GetSafeDouble(sItem["PSZL2"].Trim())
+                            - GetSafeDouble(sItem["PZL2"].Trim()) - GetSafeDouble(sItem["PJSJSYZL2"].Trim()) + GetSafeDouble(sItem["PJLQSYZL2"].Trim())) * GetSafeDouble(sItem["SMD1"]), 4).ToString("0.0000");
+
+                        sItem["XDMD1"] = Round((GetSafeDouble(sItem["PJLQSYZL1"].Trim()) - GetSafeDouble(sItem["PZL1"].Trim())) / (GetSafeDouble(sItem["PSZL1"].Trim())
+                            - GetSafeDouble(sItem["PZL1"].Trim()) - GetSafeDouble(sItem["PJSJSYZL1"].Trim()) + GetSafeDouble(sItem["PJLQSYZL1"].Trim())), 4).ToString("0.0000");
+                        sItem["XDMD2"] = Round((GetSafeDouble(sItem["PJLQSYZL2"].Trim()) - GetSafeDouble(sItem["PZL2"].Trim())) / (GetSafeDouble(sItem["PSZL2"].Trim())
+                            - GetSafeDouble(sItem["PZL2"].Trim()) - GetSafeDouble(sItem["PJSJSYZL2"].Trim()) + GetSafeDouble(sItem["PJLQSYZL2"].Trim())), 4).ToString("0.0000");
+                        if ("固体沥青" == sItem["LQXT"])
+                        {
+                            //固体沥青 重复性试验允许误差为 0.01g/cm³
+                            if (Math.Abs(GetSafeDouble(sItem["MD1"]) - GetSafeDouble(sItem["MD2"])) <= 0.01)
+                            {
+                                sItem["W_MD"] = Round((GetSafeDouble(sItem["MD1"]) + GetSafeDouble(sItem["MD2"])) / 2, 3).ToString("0.000");
+                            }
+                            else
+                            {
+                                throw new SystemException("密度与相对密度试验，固体沥青密度平行试验重复性试验允许误差大于0.01g/cm³");
+                            }
+                            if (Math.Abs(GetSafeDouble(sItem["XDMD1"]) - GetSafeDouble(sItem["XDMD2"])) <= 0.01)
+                            {
+                                sItem["W_XDMD"] = Round((GetSafeDouble(sItem["XDMD1"]) + GetSafeDouble(sItem["XDMD2"])) / 2, 3).ToString("0.000");
+                            }
+                            else
+                            {
+                                throw new SystemException("密度与相对密度试验，固体沥青相对密度平行试验重复性试验允许误差大于0.01g/cm³");
+                            }
+                        }
+                        else
+                        {
+                            //黏稠沥青 重复性试验允许误差为 0.003g/cm³
+                            if (Math.Abs(GetSafeDouble(sItem["MD1"]) - GetSafeDouble(sItem["MD2"])) <= 0.003)
+                            {
+                                sItem["W_MD"] = Round((GetSafeDouble(sItem["MD1"]) + GetSafeDouble(sItem["MD2"])) / 2, 3).ToString("0.000");
+                            }
+                            else
+                            {
+                                throw new SystemException("密度与相对密度试验，黏稠沥青密度平行试验重复性试验允许误差大于0.003g/cm³");
+                            }
+                            if (Math.Abs(GetSafeDouble(sItem["XDMD1"]) - GetSafeDouble(sItem["XDMD2"])) <= 0.003)
+                            {
+                                sItem["W_XDMD"] = Round((GetSafeDouble(sItem["XDMD1"]) + GetSafeDouble(sItem["XDMD2"])) / 2, 3).ToString("0.000");
+                            }
+                            else
+                            {
+                                throw new SystemException("密度与相对密度试验，黏稠沥青相对密度平行试验重复性试验允许误差大于0.003g/cm³");
+                            }
+                        }
 
                     }
-                    else if ("液态沥青" == sItem["LQXT"])
+                    else if ("液体沥青" == sItem["LQXT"])
                     {
                         /**
-                         * 密度 = （瓶质量加样品质量m3 - 瓶质量 m1） / （比重瓶加水质量m2 - 瓶质量 m1）  * 试样在试验温度下的密度 pw 
-                         * 相对密度 = （瓶质量加样品质量m3 - 瓶质量 m1） / （比重瓶加水质量m2 - 瓶质量 m1）
+                         * 密度 = （比重瓶与所盛满试样合计质量m3 - 比重瓶质量 m1） / （比重瓶加盛满水质量m2 - 比重瓶质量 m1）  * 试样在试验温度下的密度 pw 
+                         * 相对密度 = （比重瓶与所盛满试样合计质量m3 - 比重瓶质量 m1） / （比重瓶加盛满水质量m2 - 比重瓶质量 m1）
                          * 15℃ 水密度0.9991   25℃ 水密度0.9971
                          */
-                    }
-                    else if ("黏度沥青" == sItem["LQXT"])
-                    {
-                        /*
-                         * 密度 = （比重瓶与沥青试样合计质量m4 - 比重瓶质量m1）/ [（比重瓶加水质量m2 - 瓶质量 m1） - （比重瓶加水加试样质量m5 - 比重瓶加沥青试样质量 m4）] * 试样在试验温度下的密度 pw 
-                         * 相对密度 = （比重瓶与沥青试样合计质量m4 - 比重瓶质量m1）/ [（比重瓶加水质量m2 - 瓶质量 m1） - （比重瓶加水加试样质量m5 - 比重瓶加沥青试样质量 m4）] 
-                         */
+                        sItem["MD1"] = Round((GetSafeDouble(sItem["PJYPZL1"].Trim()) - GetSafeDouble(sItem["PZL1"].Trim())) / (GetSafeDouble(sItem["PSZL1"].Trim()) - GetSafeDouble(sItem["PZL1"].Trim())) * GetSafeDouble(sItem["SMD1"]), 4).ToString("0.0000");
+                        sItem["MD2"] = Round((GetSafeDouble(sItem["PJYPZL2"].Trim()) - GetSafeDouble(sItem["PZL2"].Trim())) / (GetSafeDouble(sItem["PSZL2"].Trim()) - GetSafeDouble(sItem["PZL2"].Trim())) * GetSafeDouble(sItem["SMD2"]), 4).ToString("0.0000");
+
+                        sItem["XDMD1"] = Round((GetSafeDouble(sItem["PJYPZL1"].Trim()) - GetSafeDouble(sItem["PZL1"].Trim())) / (GetSafeDouble(sItem["PSZL1"].Trim()) - GetSafeDouble(sItem["PZL1"].Trim())) * GetSafeDouble(sItem["SMD1"]), 4).ToString("0.0000");
+                        sItem["XDMD2"] = Round((GetSafeDouble(sItem["PJYPZL2"].Trim()) - GetSafeDouble(sItem["PZL2"].Trim())) / (GetSafeDouble(sItem["PSZL2"].Trim()) - GetSafeDouble(sItem["PZL2"].Trim())) * GetSafeDouble(sItem["SMD2"]), 4).ToString("0.0000");
+                        if (Math.Abs(GetSafeDouble(sItem["MD1"]) - GetSafeDouble(sItem["MD2"])) <= 0.003)
+                        {
+                            //液体沥青 重复性试验允许误差为 0.003g/cm³
+                            sItem["W_MD"] = Round((GetSafeDouble(sItem["MD1"]) + GetSafeDouble(sItem["MD2"])) / 2, 3).ToString("0.000");
+                        }
+                        else
+                        {
+                            throw new SystemException("密度与相对密度试验，液体沥青密度平行试验重复性试验允许误差大于0.003g/cm³");
+                        }
+                        if (Math.Abs(GetSafeDouble(sItem["XDMD1"]) - GetSafeDouble(sItem["XDMD2"])) <= 0.003)
+                        {
+                            sItem["W_XDMD"] = Round((GetSafeDouble(sItem["XDMD1"]) + GetSafeDouble(sItem["XDMD2"])) / 2, 3).ToString("0.000");
+                        }
+                        else
+                        {
+                            throw new SystemException("密度与相对密度试验，液体沥青相对密度平行试验重复性试验允许误差大于0.003g/cm³");
+                        }
                     }
                     else
                     {
@@ -353,7 +495,7 @@ namespace Calculates
             }
             else
             {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目$$" + jcxmBhg.TrimEnd('、') + "$$不符合要求。";
             }
 
             MItem[0]["JCJG"] = mjcjg;

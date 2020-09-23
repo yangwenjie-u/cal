@@ -36,11 +36,13 @@ namespace CalDebugTools
         public FormMain()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             _projectInfo = new ProjectInfos();
             Init();
             CalInit();
             InitBaseData();
             _qybh = ConfigurationHelper.GetConfig("Qybh");
+
         }
 
         public void Init()
@@ -101,6 +103,7 @@ namespace CalDebugTools
         {
             ProjectManage manage = new ProjectManage(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -161,7 +164,7 @@ namespace CalDebugTools
         }
         private void btn_Debug_Click(object sender, EventArgs e)
         {
-            
+
             SaveXMinfos();
             Debug("", txt_wtdbh.Text.Trim());
         }
@@ -773,6 +776,7 @@ namespace CalDebugTools
         {
             AddFields manage = new AddFields(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -781,6 +785,7 @@ namespace CalDebugTools
         {
             UploadFields manage = new UploadFields(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -788,6 +793,7 @@ namespace CalDebugTools
         {
             UploadFieldsNew manage = new UploadFieldsNew(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -795,6 +801,7 @@ namespace CalDebugTools
         {
             CodeUpload manage = new CodeUpload(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -835,15 +842,17 @@ namespace CalDebugTools
         /// <param name="e"></param>
         private void tool_fieldSet_Click(object sender, EventArgs e)
         {
-            SettingFields manage = new SettingFields(this);
-            this.Hide();
-            manage.Show();
+            //SettingFields manage = new SettingFields(this);
+            //this.Hide();
+            //manage.StartPosition = FormStartPosition.CenterScreen;
+            //manage.Show();
         }
 
         private void tool_StrConver_Click(object sender, EventArgs e)
         {
             FieldToUpper manage = new FieldToUpper(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -851,6 +860,7 @@ namespace CalDebugTools
         {
             StringConvert manage = new StringConvert(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -858,18 +868,16 @@ namespace CalDebugTools
         {
             SyncDataField manage = new SyncDataField(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
-        private void 查看ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void zdzd表数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ZDZDTableSync manage = new ZDZDTableSync(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -877,6 +885,7 @@ namespace CalDebugTools
         {
             TargetForm manage = new TargetForm(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -901,6 +910,7 @@ namespace CalDebugTools
         {
             TestForm manage = new TestForm(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 
@@ -966,6 +976,7 @@ namespace CalDebugTools
         {
             AddProject manage = new AddProject(this);
             this.Hide();
+            manage.StartPosition = FormStartPosition.CenterScreen;
             manage.Show();
         }
 

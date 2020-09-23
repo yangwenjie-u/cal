@@ -176,7 +176,7 @@ namespace Calculates
             var data = retData;
             var mrsDj = dataExtra["BZ_HJ_DJ"];
             var MItem = data["M_HJ"];
-            var SItem = data["S_HJ"];
+            var SItem = data["S_HJ"].OrderBy(x=>x["FJWZ"]).ToList();
             #endregion
 
             #region  计算开始
@@ -598,7 +598,7 @@ namespace Calculates
                 {
                     sitem = SItem[Itemp - 1];
                     //sitem["AVG_D"] = md.ToString("F0");
-                    sitem["AVG_D"] = Math.Round(md,2).ToString("0.00");
+                    sitem["AVG_D"] = Math.Round(md, 2).ToString("0.00");
                     sitem["PD_D"] = calc_PB(sitem["G_D_ND"], sitem["AVG_D"], false);
                     bHggs_D = sitem["PD_D"] == "不合格" ? bHggs_D + 1 : bHggs_D;
                     sitem["AVG_D"] = sitem["AVG_D"] == "0" ? "未检出" : sitem["AVG_D"];
