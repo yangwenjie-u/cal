@@ -70,6 +70,7 @@ namespace Calculates
                     if (GetSafeDouble(sItem["HFWHL"]) <= GetSafeDouble(sItem["G_HFWHL"]) )
                     {
                         sItem["HG_HFWHL"] = "合格";
+                        sItem["G_HFWHL"] = GetSafeDouble(sItem["G_HFWHL"]).ToString("0.00");                      
                         sItem["G_HFWHL"] = "≤" + sItem["G_HFWHL"];
                         sItem["JCJG"] = "合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
