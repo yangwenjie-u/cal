@@ -141,7 +141,7 @@ namespace CalDebugTools.DAL
                     jcjtService.ExecuteSqlTran(cmdList, out msg);
                     if (!string.IsNullOrEmpty(msg))
                     {
-                        Log.Warn("新增项目", $"{jcjgCode}_检测集团数据库:添加字段失败，数据已回滚。");
+                        Log.Warn("新增项目", $"{jcjgCode}_检测集团数据库:添加字段失败，数据已回滚。msg:"+ msg);
                     }
                 }
 
@@ -158,7 +158,7 @@ namespace CalDebugTools.DAL
                     debugToolsService.ExecuteSqlTran(cmdList_zdzd, out msg);
                     if (!string.IsNullOrEmpty(msg))
                     {
-                        Log.Warn("新增项目", $"CalDebugTools数据库:新增表ZDZD_{projectCode}及添加表数据失败，数据已回滚。");
+                        Log.Warn("新增项目", $"CalDebugTools数据库:新增表ZDZD_{projectCode}及添加表数据失败，数据已回滚。msg:" + msg);
                     }
                 }
             }
