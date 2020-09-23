@@ -53,10 +53,13 @@
     <Compile Include="Base\JsonHelper.cs" />
     <Compile Include="Base\SqlBase.cs" />
     <Compile Include="Base\SQLHelper.cs" />
+    <Compile Include="CalculatesNew\lq\TGY钢筋灌浆套筒\TGY.cs" />
     <Compile Include="CalculatesNew\lq\井盖，水箅\JGS.cs" />
     <Compile Include="CalculatesNew\lq\其他排水管\QPS.cs" />
     <Compile Include="CalculatesNew\lq\其他给水管\QGS.cs" />
+    <Compile Include="CalculatesNew\lq\水质%28混凝土用水%29\HNS.cs" />
     <Compile Include="CalculatesNew\lq\纸面石膏板\ZSG.cs" />
+    <Compile Include="CalculatesNew\lq\路基路面厚度\LJM.cs" />
     <Compile Include="CalculatesNew\ltk\FS_防水卷材\FS.cs" />
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />

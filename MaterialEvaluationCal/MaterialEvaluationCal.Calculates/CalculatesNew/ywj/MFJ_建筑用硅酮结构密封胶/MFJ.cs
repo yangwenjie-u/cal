@@ -345,7 +345,7 @@ namespace Calculates
                     }
                 }
 
-                if (jcxm.Contains("、水-紫外光照后拉伸粘结强度、"))
+                if (jcxm.Contains("、定伸粘结强度、"))
                 {
                     //MItem[0]["WHICH"] = "bgmfj、bgmfj_1、bgmfj_2"；
                     sign = true;
@@ -382,52 +382,24 @@ namespace Calculates
                         sItem["GZNJPHMJ" + xd] = "----";
                     }
                 }
-                if (jcxm.Contains("、23℃时拉伸粘结性、"))
+                if (jcxm.Contains("、拉伸粘结性、"))
                 {
 
-                    MItem[0]["GH_23LSQD"] = IsQualified(sItem["G_23LSNJQD"], sItem["W_23LSQD"], false);
-                    MItem[0]["GH_ZDSCL"] = IsQualified(sItem["G_ZDSSL"], sItem["W_ZDSCL"], false);
-                    sign = true;
-                    for (xd = 1; xd < 6; xd++)
-                    {
-                        sign = IsQualified(sItem["G_23LSNJQD"], sItem["LSQD_23_" + xd], false) == "合格" ? sign : false;
-                    }
+               
+                 
 
-                    if (sign)
-                        MItem[0]["GH_23LSQD"] = "合格";
-                    else
-                        MItem[0]["GH_23LSQD"] = "不合格";
+                    
+                   
 
-                    sign = true;
-                    for (xd = 1; xd < 6; xd++)
-                    {
-                        sign = IsQualified(sItem["G_NJPHMJ"], sItem["NJPHMJ" + xd], false) == "合格" ? sign : false;
-                    }
 
-                    if (sign)
-                        MItem[0]["GH_NJPHMJ"] = "合格";
-                    else
-                        MItem[0]["GH_NJPHMJ"] = "不合格";
+
+                   
+                 
                 }
                 else
                 {
-                    for (xd = 1; xd < 6; xd++)
-                    {
-                        sItem["LSQD_23_" + xd] = "----";
-                        sItem["NJPHMJ" + xd] = "----";
-                    }
-                    sItem["W_10SCLML"] = "----";
-                    sItem["W_20SCLML"] = "----";
-                    sItem["W_40SCLML"] = "----";
-                    sItem["W_23LSQD"] = "----";
-                    sItem["W_ZDSCL"] = "----";
-                    sItem["W_NJPHMJ"] = "----";
-                    MItem[0]["GH_23LSQD"] = "----";
-                    MItem[0]["GH_ZDSCL"] = "----";
-                    MItem[0]["GH_NJPHMJ"] = "----";
-                    sItem["G_23LSNJQD"] = "----";
-                    sItem["G_ZDSSL"] = "----";
-                    sItem["G_NJPHMJ"] = "----";
+                 
+                 
                 }
                 if (
                 MItem[0]["GH_23LSQD"] == "不合格" ||
