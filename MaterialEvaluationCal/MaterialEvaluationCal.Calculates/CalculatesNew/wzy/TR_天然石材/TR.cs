@@ -693,11 +693,11 @@ namespace Calculates
                     jcxmCur = "冻融压缩强度";
                     for (int i = 1; i < 6; i++)
                     {
-                        sign = IsNumeric(sitem["DRYSQDC" + i + "_1"].Trim());
-                        sign = IsNumeric(sitem["DRYSQDC" + i + "_2"].Trim());
-                        sign = IsNumeric(sitem["DRYSQDK" + i + "_1"].Trim());
-                        sign = IsNumeric(sitem["DRYSQDK" + i + "_2"].Trim());
-                        sign = IsNumeric(sitem["DRYSQDZDZH" + i].Trim());
+                        sign = IsNumeric(sitem["DRYSQDC" + i + "_1"]);
+                        sign = IsNumeric(sitem["DRYSQDC" + i + "_2"]);
+                        sign = IsNumeric(sitem["DRYSQDK" + i + "_1"]);
+                        sign = IsNumeric(sitem["DRYSQDK" + i + "_2"]);
+                        sign = IsNumeric(sitem["DRYSQDZDZH" + i]);
                     }
                     if (sign)
                     {

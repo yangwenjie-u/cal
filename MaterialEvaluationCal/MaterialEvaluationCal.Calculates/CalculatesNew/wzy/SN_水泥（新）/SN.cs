@@ -21,7 +21,7 @@ namespace Calculates
             double mMaxKyqd, mMinKyqd, mavgkyqd;
             double mKYPJ3z, mKZPJ3z;
             double mXdbz, mXdbz2, mXdbz3, mCdbz1, mCdbz2, mCnsj, mZnsj, mKy_3, mKy_7, mKy_28 = 0, mKz_3, mKz_7, mKz_28;
-            string mSjdjbh  = "", mSnzl;
+            string mSjdjbh = "", mSnzl;
             string mSjdj = "";
             int vp;
             string mjlgs;
@@ -64,12 +64,6 @@ namespace Calculates
             mSFcjs = false;
             bool force = true;
             var SITEM = SItem[0];
-            //if (string.IsNullOrEmpty(SITEM["MAKEREP_BZ"]))
-            //    SITEM["MAKEREP_BZ"] = "0";
-            //foreach (var sitem in SItem)
-            //{
-            //    mSFcjs = (mSFcjs || sitem["MAKEREP_BZ"] == "1");
-            //}
             mitem["SYZT"] = "0";
             mjcxm = "、";
             bool bgmbFlag = false;
@@ -82,7 +76,7 @@ namespace Calculates
                     mitem["SHB"] = Round(GetSafeDouble(mitem["LDDYSL"].Trim()) / GetSafeDouble(sitem["SLLSHB"]), 2).ToString("0.00");
                 }
 
-                
+
                 mSjdj = sitem["SJDJ"];            //设计等级名称
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (string.IsNullOrEmpty(mSjdj))
@@ -163,12 +157,6 @@ namespace Calculates
                         sitem["KS_PJQD"] = pjmd.ToString("0.0");
                         sitem["KS_YQQD"] = "≥" + mKy_28.ToString("0.0");
                         sitem["KS_PDQD"] = IsQualified(sitem["KS_YQQD"], sitem["KS_PJQD"], false);
-                        //抗压合格判定
-                        //if(mitem["JCYJ"].Contains("2011"))
-                        // mrsmainTablesitem["WHICH") = "bgsn_3"
-                        //Else
-                        // mrsmainTablesitem["WHICH") = "bgsn_1"
-                        //End If
                     }
                     else
                     {
@@ -205,16 +193,20 @@ namespace Calculates
                         #endregion
 
                         #region 强度（3天）
-                        if (jcxm.Contains("、强度（3天）、") && Conversion.Val(sitem["KYHZ3_1"]) > 0)
+                        if (jcxm.Contains("、强度（3天）、"))
                         {
                             mMj = 0.625;
-                            sitem["KYQD3_1"] = Round(Conversion.Val(sitem["KYHZ3_1"]) * mMj, 1).ToString("0.0");
-                            sitem["KYQD3_2"] = Round(Conversion.Val(sitem["KYHZ3_2"]) * mMj, 1).ToString("0.0");
-                            sitem["KYQD3_3"] = Round(Conversion.Val(sitem["KYHZ3_3"]) * mMj, 1).ToString("0.0");
-                            sitem["KYQD3_4"] = Round(Conversion.Val(sitem["KYHZ3_4"]) * mMj, 1).ToString("0.0");
-                            sitem["KYQD3_5"] = Round(Conversion.Val(sitem["KYHZ3_5"]) * mMj, 1).ToString("0.0");
-                            sitem["KYQD3_6"] = Round(Conversion.Val(sitem["KYHZ3_6"]) * mMj, 1).ToString("0.0");
-                            mlongStr = sitem["KYQD3_1"] + "," + sitem["KYQD3_2"] + "," + sitem["KYQD3_3"] + "," + sitem["KYQD3_4"] + "," + sitem["KYQD3_5"] + "," + sitem["KYQD3_6"];
+                            if (Conversion.Val(sitem["KYHZ3_1"]) != 0 && Conversion.Val(sitem["KYHZ3_1"]) > 0)
+                            {
+                                //正确方法应该是将kN转换为N  然后除以面积
+                                sitem["KYQD3_1"] = Round(Conversion.Val(sitem["KYHZ3_1"]) * mMj, 1).ToString("0.0");
+                                sitem["KYQD3_2"] = Round(Conversion.Val(sitem["KYHZ3_2"]) * mMj, 1).ToString("0.0");
+                                sitem["KYQD3_3"] = Round(Conversion.Val(sitem["KYHZ3_3"]) * mMj, 1).ToString("0.0");
+                                sitem["KYQD3_4"] = Round(Conversion.Val(sitem["KYHZ3_4"]) * mMj, 1).ToString("0.0");
+                                sitem["KYQD3_5"] = Round(Conversion.Val(sitem["KYHZ3_5"]) * mMj, 1).ToString("0.0");
+                                sitem["KYQD3_6"] = Round(Conversion.Val(sitem["KYHZ3_6"]) * mMj, 1).ToString("0.0");
+                            }
+                            mlongStr = sitem["KYQD3_1"].Trim() + "," + sitem["KYQD3_2"].Trim() + "," + sitem["KYQD3_3"].Trim() + "," + sitem["KYQD3_4"].Trim() + "," + sitem["KYQD3_5"].Trim() + "," + sitem["KYQD3_6"].Trim();
                             mtmpArray = mlongStr.Split(',');
                             for (vp = 0; vp <= 5; vp++)
                                 mkyqdArray[vp] = GetSafeDouble(mtmpArray[vp]);
@@ -292,7 +284,7 @@ namespace Calculates
                                     sitem["KY3_HG"] = "不合格";
                                 }
                                 ky3_hg = false;
-                                
+
                             }
                             //if (!("、" + sitem["JCXM"] + "、").Contains("、强度（3天）、"))
                             if (!jcxm.Contains("、强度（3天）、"))
@@ -525,7 +517,7 @@ namespace Calculates
                     {
                         if (string.IsNullOrEmpty(mitem["BZCDYSL"]))
                             mitem["BZCDYSL"] = "0";
-                        mitem["CD"] = Round(Conversion.Val(mitem["BZCDYSL"]) / 500 * 100, 1).ToString();
+                        mitem["CD"] = Round(Conversion.Val(mitem["BZCDYSL"]) / 500 * 100, 1).ToString("0.0");
                         if (Conversion.Val(mitem["CD"]) > 0)
                         {
                             if (Conversion.Val(mitem["CD"]) >= mCdbz1 && Conversion.Val(mitem["CD"]) <= mCdbz2)
@@ -594,7 +586,7 @@ namespace Calculates
                             sitem["MD"] = ((Conversion.Val(sitem["MD1"]) + Conversion.Val(sitem["MD2"])) / 2).ToString("0.00");
                         }
                         //乌海直接输值 第一次与第二次 试样测试的比表面积计算平均值
-                        if (IsNumeric(mitem["XD_1"]) && IsNumeric(mitem["XD_2"]))
+                        if (IsNumeric(mitem["XD_1"]) && IsNumeric(mitem["XD_2"]) && !IsNumeric(sitem["SYT"]))
                         {
                             mitem["XD"] = Round((Conversion.Val(mitem["XD_1"]) + Conversion.Val(mitem["XD_2"])) / 2, 0).ToString();
                             if (Conversion.Val(mitem["XD_1"]) != 0 && Conversion.Val(mitem["XD_2"]) != 0)
@@ -607,7 +599,7 @@ namespace Calculates
                                 }
                                 else
                                 {
-                                    if (IsQualified(mitem["G_XD"], mitem["XD"],true) == "符合")
+                                    if (IsQualified(mitem["G_XD"], mitem["XD"], true) == "符合")
                                     {
                                         mitem["XD_HG"] = "合格";
                                         xd_hg = true;
@@ -632,6 +624,7 @@ namespace Calculates
                         {
                             if (Conversion.Val(sitem["MD"]) != 0)
                             {
+                                //空气粘度  萧山商砼站不考虑空气粘度
                                 var mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sitem["XZSWD"].Trim()));
                                 if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
                                     sitem["BYKQYD"] = mrsKqnd_Filter["KQND"];
@@ -641,32 +634,50 @@ namespace Calculates
                                 mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sitem["SYSWD2"].Trim()));
                                 if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
                                     sitem["SYKQYD2"] = mrsKqnd_Filter["KQND"];
+                                //被测试样的密度、试料层中空隙率与标准样品相同
                                 if (Conversion.Val(sitem["MD"]) == Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) == Conversion.Val(sitem["BYKXL"]))
                                 {
+                                    //试验温度与校准温度差 ≤3
                                     if (Math.Abs(Conversion.Val(sitem["SYSWD"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
+                                    {
                                         mitem["XD_1"] = (Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT"])) / Math.Sqrt(Conversion.Val(sitem["BYT"]))).ToString();
+                                    }
                                     else
+                                    {
+                                        //试验温度与校准温度差 ＞3   空气粘度相关
                                         mitem["XD_1"] = (Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) / Math.Sqrt(Conversion.Val(sitem["BYT"])) / Math.Sqrt(Conversion.Val(sitem["SYKQYD"]))).ToString();
+                                    }
                                 }
+                                //被测试样的密度与标准样品相同，试料层中空隙率与标准样品不同
                                 if (Conversion.Val(sitem["MD"]) == Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) != Conversion.Val(sitem["BYKXL"]))
                                 {
+                                    //试验温度与校准温度差 ≤3
                                     if (Math.Abs(Conversion.Val(sitem["SYSWD"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
                                     {
                                         md1 = Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"])));
                                         mitem["XD_1"] = Round(md1, 5).ToString();
                                     }
                                     else
+                                    {
+                                        //试验温度与校准温度差 ＞3   空气粘度相关
                                         mitem["XD_1"] = (Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"])))).ToString();
-
+                                    }
                                 }
+                                //被测试样的密度、试料层中空隙率与标准样品都不相同
                                 if (Conversion.Val(sitem["MD"]) != Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) != Conversion.Val(sitem["BYKXL"]))
                                 {
+                                    //试验温度与校准温度差 ≤3
                                     if (Math.Abs(Conversion.Val(sitem["SYSWD"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
+                                    {
                                         mitem["XD_1"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                    }
                                     else
+                                    {
+                                        //试验温度与校准温度差 ＞3   空气粘度相关
                                         mitem["XD_1"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                    }
                                 }
-                                //温州
+                                //空隙率 相同，密度不同  ？疑问
                                 if (Conversion.Val(sitem["MD"]) != Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) == Conversion.Val(sitem["BYKXL"]))
                                 {
                                     if (Math.Abs(Conversion.Val(sitem["SYSWD"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
@@ -679,34 +690,33 @@ namespace Calculates
                                 if (Conversion.Val(sitem["MD"]) == Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) == Conversion.Val(sitem["BYKXL"]))
                                 {
                                     if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) / Math.Sqrt(Conversion.Val(sitem["BYT"])), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) / Math.Sqrt(Conversion.Val(sitem["BYT2"])), 0).ToString();
                                     else
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) / Math.Sqrt(Conversion.Val(sitem["BYT"])) / Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) / Math.Sqrt(Conversion.Val(sitem["BYT2"])) / Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])), 0).ToString();
 
                                 }
                                 if (Conversion.Val(sitem["MD"]) == Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) != Conversion.Val(sitem["BYKXL"]))
                                 {
                                     if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
                                     else
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
                                 }
                                 if (Conversion.Val(sitem["MD"]) != Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) != Conversion.Val(sitem["BYKXL"]))
                                 {
                                     if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
                                     else
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
                                 }
 
                                 //温州
-
                                 if (Conversion.Val(sitem["MD"]) != Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) == Conversion.Val(sitem["BYKXL"]))
                                 {
                                     if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
                                     else
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
                                 }
                                 //温州
                                 mitem["XD_2"] = Round(Conversion.Val(mitem["XD_2"]), 0).ToString();
@@ -965,23 +975,20 @@ namespace Calculates
                 }
 
                 #region 强度（28天）
-                if (jcxm.Contains("、强度（28天）、") && Conversion.Val(sitem["KYHZ28_1"]) > 0)
+                if (jcxm.Contains("、强度（28天）、") )
                 {
-                    if (Conversion.Val(sitem["KYPJ28"]) == 0)
-                    {
-                        //mitem["BGSHR"] = "";
-                        //mitem["BGQFR"] = "";
-                        //mitem["BGDYR"] = "";
-                        //mitem["BGJDZT"] = mitem["BGJDZT"].Replace("S", "");
-                        //mitem["BGJDZT"] = mitem["BGJDZT"].Replace("R", "");
-                    }
                     mMj = 0.625;
-                    sitem["KYQD28_1"] = Round(Conversion.Val(sitem["KYHZ28_1"]) * mMj, 1).ToString("0.0");
-                    sitem["KYQD28_2"] = Round(Conversion.Val(sitem["KYHZ28_2"]) * mMj, 1).ToString("0.0");
-                    sitem["KYQD28_3"] = Round(Conversion.Val(sitem["KYHZ28_3"]) * mMj, 1).ToString("0.0");
-                    sitem["KYQD28_4"] = Round(Conversion.Val(sitem["KYHZ28_4"]) * mMj, 1).ToString("0.0");
-                    sitem["KYQD28_5"] = Round(Conversion.Val(sitem["KYHZ28_5"]) * mMj, 1).ToString("0.0");
-                    sitem["KYQD28_6"] = Round(Conversion.Val(sitem["KYHZ28_6"]) * mMj, 1).ToString("0.0");
+                    //直接录入强度值方法
+                    if (Conversion.Val(sitem["KYHZ28_1"]) != 0 && Conversion.Val(sitem["KYHZ28_1"]) > 0)
+                    {
+                        //正确方法应该是将kN转换为N  然后除以面积
+                        sitem["KYQD28_1"] = Round(Conversion.Val(sitem["KYHZ28_1"]) * mMj, 1).ToString("0.0");
+                        sitem["KYQD28_2"] = Round(Conversion.Val(sitem["KYHZ28_2"]) * mMj, 1).ToString("0.0");
+                        sitem["KYQD28_3"] = Round(Conversion.Val(sitem["KYHZ28_3"]) * mMj, 1).ToString("0.0");
+                        sitem["KYQD28_4"] = Round(Conversion.Val(sitem["KYHZ28_4"]) * mMj, 1).ToString("0.0");
+                        sitem["KYQD28_5"] = Round(Conversion.Val(sitem["KYHZ28_5"]) * mMj, 1).ToString("0.0");
+                        sitem["KYQD28_6"] = Round(Conversion.Val(sitem["KYHZ28_6"]) * mMj, 1).ToString("0.0");
+                    }
                     mlongStr = sitem["KYQD28_1"] + "," + sitem["KYQD28_2"] + "," + sitem["KYQD28_3"] + "," + sitem["KYQD28_4"] + "," + sitem["KYQD28_5"] + "," + sitem["KYQD28_6"];
                     mtmpArray = mlongStr.Split(',');
                     for (vp = 0; vp <= 5; vp++)
@@ -1192,7 +1199,7 @@ namespace Calculates
                 {
                     if (mAllHg)
                     {
-                        if ( "不合格" == SItem[0]["KY3_HG"])
+                        if ("不合格" == SItem[0]["KY3_HG"])
                         {
                             mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目3天强度不符合强度等级" + jlmsDj + "技术要求，28天强度符合强度等级" + jlmsDj + "标准要求";
                         }
@@ -1204,7 +1211,7 @@ namespace Calculates
                         {
                             mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合强度等级" + jlmsDj + "标准要求。";
                         }
-                        
+
                     }
                     else
                     {
@@ -1235,12 +1242,12 @@ namespace Calculates
                 if (mAllHg)
                 {
                     //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，28天强度检测前，该组试样所检项目符合标准要求。";
-                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合强度等级"+ jlmsDj + "3天标准要求。";
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合强度等级" + jlmsDj + "3天标准要求。";
 
                 }
                 else
                 {
-                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + bhgJcxm + "不符合强度等级" + jlmsDj + "3天标准要求。"; 
+                    mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + bhgJcxm + "不符合强度等级" + jlmsDj + "3天标准要求。";
                     //mitem["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，28天强度检测前，所检项目" + bhgJcxm + "不符合要求。";
                     //if (mFlag_Bhg && mFlag_Hg)
                     // mitem["JCJGMS"] = "28天强度检测前，该组试样所检项目" + bhgJcxm + "不符合" + mitem["PDBZ"] + mSjdj.Trim() + "标准要求。";
