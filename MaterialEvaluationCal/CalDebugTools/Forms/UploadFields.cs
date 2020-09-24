@@ -378,15 +378,6 @@ namespace CalDebugTools.Forms
             return true;
         }
 
-        private void rd_i_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txt_code_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         /// <summary>
         /// 判断字段是I/O类型
@@ -474,28 +465,24 @@ namespace CalDebugTools.Forms
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void radioButton1_Click(object sender, EventArgs e)
+        private void rd_other_Click(object sender, EventArgs e)
         {
             txtother.Visible = true;
+            lab_otherTableDesc.Visible = true;
         }
 
         private void rd_m_Click(object sender, EventArgs e)
         {
             txtother.Visible = false;
+            lab_otherTableDesc.Visible = false;
         }
 
         private void rd_s_Click(object sender, EventArgs e)
         {
+            lab_otherTableDesc.Visible = false;
             txtother.Visible = false;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
 
-        }
     }
 }

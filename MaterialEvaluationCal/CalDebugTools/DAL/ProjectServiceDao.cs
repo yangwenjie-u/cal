@@ -129,7 +129,7 @@ namespace CalDebugTools.DAL
 
             if (addJcjt)
             {
-                sqlstr = string.Format($"select * from  pr_m_syxm where syxmbh='{projectCode}';");
+                sqlstr = string.Format($"select * from  PR_M_SYXM where syxmbh='{projectCode}';");
                 reflag = CheckProjectIsExist(jcjtService, sqlstr);
                 if (reflag == -2 || reflag > 0)
                 {
@@ -141,7 +141,7 @@ namespace CalDebugTools.DAL
                     jcjtService.ExecuteSqlTran(cmdList, out msg);
                     if (!string.IsNullOrEmpty(msg))
                     {
-                        Log.Warn("新增项目", $"{jcjgCode}_检测集团数据库:添加字段失败，数据已回滚。");
+                        Log.Warn("新增项目", $"{jcjgCode}_检测集团数据库:添加字段失败，数据已回滚。msg:"+ msg);
                     }
                 }
 
@@ -158,14 +158,14 @@ namespace CalDebugTools.DAL
                     debugToolsService.ExecuteSqlTran(cmdList_zdzd, out msg);
                     if (!string.IsNullOrEmpty(msg))
                     {
-                        Log.Warn("新增项目", $"CalDebugTools数据库:新增表ZDZD_{projectCode}及添加表数据失败，数据已回滚。");
+                        Log.Warn("新增项目", $"CalDebugTools数据库:新增表ZDZD_{projectCode}及添加表数据失败，数据已回滚。msg:" + msg);
                     }
                 }
             }
             //检测监管
             if (addJcjg)
             {
-                sqlstr = string.Format($"select * from  pr_m_syxm where syxmbh='{projectCode}';");
+                sqlstr = string.Format($"select * from  PR_M_SYXM where syxmbh='{projectCode}';");
                 reflag = CheckProjectIsExist(jcjgService, sqlstr);
                 if (reflag == -2 || reflag > 0)
                 {

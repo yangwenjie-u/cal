@@ -17,6 +17,7 @@ namespace Calculates
             string jcxm = "", mjcjg = "不合格", jsbeizhu = "", jcjg = "";
 
             var extraDJ = dataExtra["BZ_KZD_DJ"];
+            var mrsKqnd = dataExtra["BZ_SNKQND"];
             var data = retData;
 
             var SItem = data["S_KZD"];
@@ -40,6 +41,8 @@ namespace Calculates
                     sItem["G_HSL"] = string.IsNullOrEmpty(extraFieldsDj["D_HSL"]) ? extraFieldsDj["D_HSL"] : extraFieldsDj["D_HSL"].Trim();
                     sItem["G_SSL"] = string.IsNullOrEmpty(extraFieldsDj["D_SSL"]) ? extraFieldsDj["D_SSL"] : extraFieldsDj["D_SSL"].Trim();
                     sItem["G_BBMJ"] = string.IsNullOrEmpty(extraFieldsDj["D_BBMJ"]) ? extraFieldsDj["D_BBMJ"] : extraFieldsDj["D_BBMJ"].Trim();
+                    sItem["G_CNSJB"] = string.IsNullOrEmpty(extraFieldsDj["D_CNSJB"]) ? extraFieldsDj["D_CNSJB"] : extraFieldsDj["D_CNSJB"].Trim();
+                    sItem["G_BRW"] = string.IsNullOrEmpty(extraFieldsDj["D_BRW"]) ? extraFieldsDj["D_BRW"] : extraFieldsDj["D_BRW"].Trim();
                 }
                 else
                 {
@@ -233,15 +236,145 @@ namespace Calculates
                 if (jcxm.Contains("、比表面积、"))
                 {
                     jcxmCur = "比表面积";
-                    if (Conversion.Val(sItem["W_BBMJ"]) >= Conversion.Val(sItem["G_BBMJ"]))
+
+                    #region 比表面积计算
+                    sItem["MD1"] = ((Round(Conversion.Val(sItem["MDSYZL1"]) / (Conversion.Val(sItem["MDYYTJ1"]) - Conversion.Val(sItem["MDYTJ1"])), 4) * 1000) / 1000).ToString("0.00");
+                    sItem["MD2"] = ((Round(Conversion.Val(sItem["MDSYZL2"]) / (Conversion.Val(sItem["MDYYTJ2"]) - Conversion.Val(sItem["MDYTJ2"])), 4) * 1000) / 1000).ToString("0.00");
+                    sItem["W_MD"] = ((Conversion.Val(sItem["MD1"]) + Conversion.Val(sItem["MD2"])) / 2).ToString("0.0");
+
+                    if (Conversion.Val(sItem["W_MD"]) != 0 && !string.IsNullOrEmpty(sItem["SYT1"]))
                     {
-                        sItem["BBMJ_GH"] = "合格";
+                        var mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sItem["XZSWD"].Trim()));
+                        if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
+                            sItem["BYKQYD"] = mrsKqnd_Filter["KQND"];
+                        mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sItem["SYSWD1"].Trim()));
+                        if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
+                            sItem["SYKQYD1"] = mrsKqnd_Filter["KQND"];
+                        mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sItem["SYSWD2"].Trim()));
+                        if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
+                            sItem["SYKQYD2"] = mrsKqnd_Filter["KQND"];
+                        if (Conversion.Val(sItem["W_MD"]) == Conversion.Val(sItem["BYMD"]) && Conversion.Val(sItem["SYKXL1"]) == Conversion.Val(sItem["BYKXL"]))
+                        {
+                            if (Math.Abs(Conversion.Val(sItem["SYSWD1"]) - Conversion.Val(sItem["XZSWD"])) <= 3)
+                                sItem["SYBBMJ1"] = (Conversion.Val(sItem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sItem["SYT1"])) / Math.Sqrt(Conversion.Val(sItem["BYT1"]))).ToString();
+                            else
+                                sItem["SYBBMJ1"] = (Conversion.Val(sItem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sItem["SYT1"])) * Math.Sqrt(Conversion.Val(sItem["BYKQYD"])) / Math.Sqrt(Conversion.Val(sItem["BYT1"])) / Math.Sqrt(Conversion.Val(sItem["SYKQYD1"]))).ToString();
+                        }
+                        if (Conversion.Val(sItem["W_MD"]) == Conversion.Val(sItem["BYMD"]) && Conversion.Val(sItem["SYKXL1"]) != Conversion.Val(sItem["BYKXL"]))
+                        {
+                            if (Math.Abs(Conversion.Val(sItem["SYSWD1"]) - Conversion.Val(sItem["XZSWD"])) <= 3)
+                            {
+                                double md1 = 0;
+                                md1 = Conversion.Val(sItem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sItem["SYT1"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Math.Sqrt(Conversion.Val(sItem["BYT1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"])));
+                                sItem["SYBBMJ1"] = Round(md1, 5).ToString();
+                            }
+                            else
+                                sItem["SYBBMJ1"] = (Conversion.Val(sItem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sItem["SYT1"])) * Math.Sqrt(Conversion.Val(sItem["BYKQYD"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Math.Sqrt(Conversion.Val(sItem["BYT1"])) * Math.Sqrt(Conversion.Val(sItem["SYKQYD1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"])))).ToString();
+
+                        }
+                        if (Conversion.Val(sItem["W_MD"]) != Conversion.Val(sItem["BYMD"]) && Conversion.Val(sItem["SYKXL1"]) != Conversion.Val(sItem["BYKXL"]))
+                        {
+                            if (Math.Abs(Conversion.Val(sItem["SYSWD1"]) - Conversion.Val(sItem["XZSWD"])) <= 3)
+                                sItem["SYBBMJ1"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Conversion.Val(sItem["BYMD"]) * Math.Sqrt(Conversion.Val(sItem["SYT1"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Conversion.Val(sItem["W_MD"]) * Math.Sqrt(Conversion.Val(sItem["BYT1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                            else
+                                sItem["SYBBMJ1"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Conversion.Val(sItem["BYMD"]) * Math.Sqrt(Conversion.Val(sItem["SYT1"])) * Math.Sqrt(Conversion.Val(sItem["BYKQYD"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Conversion.Val(sItem["W_MD"]) * Math.Sqrt(Conversion.Val(sItem["BYT1"])) * Math.Sqrt(Conversion.Val(sItem["SYKQYD1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                        }
+                        //温州
+                        if (Conversion.Val(sItem["W_MD"]) != Conversion.Val(sItem["BYMD"]) && Conversion.Val(sItem["SYKXL1"]) == Conversion.Val(sItem["BYKXL"]))
+                        {
+                            if (Math.Abs(Conversion.Val(sItem["SYSWD1"]) - Conversion.Val(sItem["XZSWD"])) <= 3)
+                                sItem["SYBBMJ1"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Conversion.Val(sItem["BYMD"]) * Math.Sqrt(Conversion.Val(sItem["SYT1"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Conversion.Val(sItem["W_MD"]) * Math.Sqrt(Conversion.Val(sItem["BYT1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                            else
+                                sItem["SYBBMJ1"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Conversion.Val(sItem["BYMD"]) * Math.Sqrt(Conversion.Val(sItem["SYT1"])) * Math.Sqrt(Conversion.Val(sItem["BYKQYD"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Conversion.Val(sItem["W_MD"]) * Math.Sqrt(Conversion.Val(sItem["BYT1"])) * Math.Sqrt(Conversion.Val(sItem["SYKQYD1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                        }
+                        //温州
+                        //第二次
+                        if (Conversion.Val(sItem["W_MD"]) == Conversion.Val(sItem["BYMD"]) && Conversion.Val(sItem["SYKXL1"]) == Conversion.Val(sItem["BYKXL"]))
+                        {
+                            if (Math.Abs(Conversion.Val(sItem["SYSWD2"]) - Conversion.Val(sItem["XZSWD"])) <= 3)
+                                sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sItem["SYT2"])) / Math.Sqrt(Conversion.Val(sItem["BYT1"])), 0).ToString();
+                            else
+                                sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sItem["SYT2"])) * Math.Sqrt(Conversion.Val(sItem["BYKQYD"])) / Math.Sqrt(Conversion.Val(sItem["BYT1"])) / Math.Sqrt(Conversion.Val(sItem["SYKQYD2"])), 0).ToString();
+
+                        }
+                        if (Conversion.Val(sItem["W_MD"]) == Conversion.Val(sItem["BYMD"]) && Conversion.Val(sItem["SYKXL1"]) != Conversion.Val(sItem["BYKXL"]))
+                        {
+                            if (Math.Abs(Conversion.Val(sItem["SYSWD2"]) - Conversion.Val(sItem["XZSWD"])) <= 3)
+                                sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sItem["SYT2"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Math.Sqrt(Conversion.Val(sItem["BYT1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                            else
+                                sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sItem["SYT2"])) * Math.Sqrt(Conversion.Val(sItem["BYKQYD"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Math.Sqrt(Conversion.Val(sItem["BYT1"])) * Math.Sqrt(Conversion.Val(sItem["SYKQYD2"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                        }
+                        if (Conversion.Val(sItem["W_MD"]) != Conversion.Val(sItem["BYMD"]) && Conversion.Val(sItem["SYKXL1"]) != Conversion.Val(sItem["BYKXL"]))
+                        {
+                            if (Math.Abs(Conversion.Val(sItem["SYSWD2"]) - Conversion.Val(sItem["XZSWD"])) <= 3)
+                                sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Conversion.Val(sItem["BYMD"]) * Math.Sqrt(Conversion.Val(sItem["SYT2"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Conversion.Val(sItem["W_MD"]) * Math.Sqrt(Conversion.Val(sItem["BYT1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                            else
+                                sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Conversion.Val(sItem["BYMD"]) * Math.Sqrt(Conversion.Val(sItem["SYT2"])) * Math.Sqrt(Conversion.Val(sItem["BYKQYD"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Conversion.Val(sItem["W_MD"]) * Math.Sqrt(Conversion.Val(sItem["BYT1"])) * Math.Sqrt(Conversion.Val(sItem["SYKQYD2"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                        }
+
+                        //温州
+
+                        if (Conversion.Val(sItem["W_MD"]) != Conversion.Val(sItem["BYMD"]) && Conversion.Val(sItem["SYKXL1"]) == Conversion.Val(sItem["BYKXL"]))
+                        {
+                            if (Math.Abs(Conversion.Val(sItem["SYSWD2"]) - Conversion.Val(sItem["XZSWD"])) <= 3)
+                                sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Conversion.Val(sItem["BYMD"]) * Math.Sqrt(Conversion.Val(sItem["SYT2"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Conversion.Val(sItem["W_MD"]) * Math.Sqrt(Conversion.Val(sItem["BYT1"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                            else
+                                sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["BYBBMJ"]) * Conversion.Val(sItem["BYMD"]) * Math.Sqrt(Conversion.Val(sItem["SYT2"])) * Math.Sqrt(Conversion.Val(sItem["BYKQYD"])) * (1 - Conversion.Val(sItem["BYKXL"])) * Math.Sqrt(Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"]) * Conversion.Val(sItem["SYKXL1"])) / (Conversion.Val(sItem["W_MD"]) * Math.Sqrt(Conversion.Val(sItem["BYT1"])) * Math.Sqrt(Conversion.Val(sItem["SYKQYD2"])) * (1 - Conversion.Val(sItem["SYKXL1"])) * Math.Sqrt(Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]) * Conversion.Val(sItem["BYKXL"]))), 0).ToString();
+                        }
+                        //温州
+                        sItem["SYBBMJ2"] = Round(Conversion.Val(sItem["SYBBMJ2"]), 0).ToString();
+                        sItem["W_BBMJ"] = Round((Conversion.Val(sItem["SYBBMJ1"]) + Conversion.Val(sItem["SYBBMJ2"])) / 2, 0).ToString();
+                        //if (Conversion.Val(sItem["SYBBMJ1"]) != 0 && Conversion.Val(sItem["SYBBMJ2"]) != 0)
+                        //{
+                        //    if (Math.Abs(Conversion.Val(sItem["SYBBMJ1"]) - Conversion.Val(sItem["SYBBMJ2"])) / Conversion.Val(sItem["SYBBMJ1"]) > 0.02 || Math.Abs(Conversion.Val(sItem["SYBBMJ1"]) - Conversion.Val(sItem["SYBBMJ2"])) / Conversion.Val(sItem["SYBBMJ2"]) > 0.02)
+                        //    {
+                        //        sItem["W_BBMJ"] = "无效";
+                        //        mitem["XD_HG"] = "需重做";
+                        //        xd_hg = false;
+                        //    }
+                        //else
+                        //{
+                        //    if (IsQualified(mitem["G_XD"], sItem["W_BBMJ"], true) == "符合")
+                        //    {
+                        //        mitem["XD_HG"] = "合格";
+                        //        xd_hg = true;
+                        //    }
+                        //    else
+                        //    {
+                        //        mitem["XD_HG"] = "不合格";
+                        //        if (string.IsNullOrEmpty(bhgJcxm))
+                        //        {
+                        //            bhgJcxm = bhgJcxm + "比表面积";
+                        //        }
+                        //        else
+                        //        {
+                        //            bhgJcxm = bhgJcxm + "、比表面积";
+                        //        }
+                        //        xd_hg = false;
+                        //    }
+                        //}
+                        //}
+                    }
+                    #endregion
+                    if (Math.Abs(Conversion.Val(sItem["SYBBMJ1"]) - Conversion.Val(sItem["SYBBMJ2"])) / Conversion.Val(sItem["SYBBMJ1"]) > 0.02 || Math.Abs(Conversion.Val(sItem["SYBBMJ1"]) - Conversion.Val(sItem["SYBBMJ2"])) / Conversion.Val(sItem["SYBBMJ2"]) > 0.02)
+                    {
+                        sItem["W_BBMJ"] = "无效";
+                        sItem["BBMJ_GH"] = "需重做";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
                     }
                     else
                     {
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        sItem["BBMJ_GH"] = "不合格";
-                        mAllHg = false;
+                        if (Conversion.Val(sItem["W_BBMJ"]) >= Conversion.Val(sItem["G_BBMJ"]))
+                        {
+                            sItem["BBMJ_GH"] = "合格";
+                        }
+                        else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sItem["BBMJ_GH"] = "不合格";
+                            mAllHg = false;
+                        }
                     }
                     sItem["G_BBMJ"] = "≥" + sItem["G_BBMJ"];
                 }
@@ -277,6 +410,64 @@ namespace Calculates
                     sItem["MD_GH"] = "----";
                     sItem["G_MD"] = "----";
                     sItem["W_MD"] = "----";
+                }
+                #endregion
+
+                #region 初凝时间比
+                if (jcxm.Contains("、初凝时间比、"))
+                {
+                    jcxmCur = "初凝时间比";
+                    if (IsQualified(sItem["G_CNSJB"], sItem["W_CNSJB"], false) == "合格")
+                    {
+                        sItem["HG_CNSJB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_CNSJB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["HG_CNSJB"] = "----";
+                    sItem["W_CNSJB"] = "----";
+                    sItem["G_CNSJB"] = "----";
+                }
+                #endregion
+
+                #region 不溶物
+                if (jcxm.Contains("、不溶物、"))
+                {
+                    jcxmCur = "不溶物";
+                    List<double> lArray = new List<double>();
+                    for (int i = 1; i < 3; i++)
+                    {
+                        sItem["BRWZLFS" + i] = Math.Round((Conversion.Val(sItem["BRWSHZL" + i]) - Conversion.Val(sItem["BRWKBSHZL" + i])) / Conversion.Val(sItem["BRWSYZL" + i]) * 100, 1).ToString("0.0");
+                        lArray.Add(Conversion.Val(sItem["BRWZLFS" + i]));
+                    }
+
+                    if (lArray != null)
+                    {
+                        sItem["W_BRW"] = lArray.Average().ToString();
+                    }
+
+                    if (IsQualified(sItem["G_BRW"], sItem["W_BRW"], false) == "合格")
+                    {
+                        sItem["HG_BRW"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_BRW"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["W_BRW"] = "----";
+                    sItem["HG_BRW"] = "----";
+                    sItem["G_BRW"] = "----";
                 }
                 #endregion
 

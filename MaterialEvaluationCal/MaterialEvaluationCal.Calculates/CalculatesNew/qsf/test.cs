@@ -48,9 +48,9 @@ namespace Calculates.CalculatesNew.qsf
                         dic["syff"] = "----";
                     }
 
-                    if (IsNumeric(dic["md"]) && IsNumeric(dic["BZMD_S1"]))
+                    if (MatchValue.IsNumeric(dic["md"]) && MatchValue.IsNumeric(dic["BZMD_S1"]))
                     {
-                        dic["YSD"] = Math.Round(dic["md"].GetSafeDouble() / dic["BZMD_S1"].GetSafeDouble() * 100, 2);
+                        dic["YSD"] = Math.Round(dic["md"].GetSafeDouble() / dic["BZMD_S1"].GetSafeDouble() * 100, 2).GetSafeString();
                     }
                 }
                 else
@@ -58,7 +58,7 @@ namespace Calculates.CalculatesNew.qsf
                     dic["syff"] = "----";
                 }
                 upsqls.Add($"update {ysjbmc} set hd = '{dic["hd"]}',ysd = '{dic["ysd"]}' where sysjbrecid = '{recid}'");
-                upsqls.Add($"update {sjbmc} set SCHD = '{dic["hd"]}',SCYSD = '{dic["ysd"]}' where recid = '{recid}'");
+                upsqls.Add($"update {sjbmc} set SCHD = '{dic["hd"]}',SCYSD = '{dic["ysd"]}',MD = '{dic["md"]}' where recid = '{recid}'");
             }
             #endregion
 
