@@ -112,7 +112,7 @@ namespace CalDebugTools.Forms
             string txtLX = string.IsNullOrEmpty(txt_lx.Text) ? "H" : txt_lx.Text.Trim();
             string chksfxs = this.chk_SFXS.Checked ? "1" : "0";
             string ssjcx = string.IsNullOrEmpty(this.txt_ssjcx.Text) ? "" : "、" + this.txt_ssjcx.Text.Trim() + "、";
- string locstionStr = "1,1";
+            string locstionStr = "1,1";
             if (string.IsNullOrEmpty(xmbh))
             {
                 MessageBox.Show("输入项目编号！");
