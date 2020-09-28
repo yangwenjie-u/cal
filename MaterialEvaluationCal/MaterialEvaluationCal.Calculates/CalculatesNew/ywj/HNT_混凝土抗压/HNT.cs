@@ -82,7 +82,7 @@ namespace Calculates
                 var SJCCDouble = GetSafeDouble(SJCC);
                 var SJCCMJ = SJCCDouble * SJCCDouble;
 
-                var HSXS = 1.0;
+                var HSXS = 1.00;
                 if (SJCC == "100")
                 {
                     HSXS = 0.95;

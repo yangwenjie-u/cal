@@ -1385,11 +1385,11 @@ namespace Calculates
                 //mitem["JCJGMS"] = "该组试样所检项目符合上述标准要求。";
                 if (dj == "不符合级配")
                 {
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",不符合级配。";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所检项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",不符合级配。";
                 }
                 else
                 {
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",符合" + dj + "的混凝土用砂。";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所检项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",符合" + dj + "的混凝土用砂。";
                 }
             }
             else
