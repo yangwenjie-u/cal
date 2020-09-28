@@ -53,7 +53,11 @@
     <Compile Include="Base\JsonHelper.cs" />
     <Compile Include="Base\SqlBase.cs" />
     <Compile Include="Base\SQLHelper.cs" />
+    <Compile Include="CalculatesNew\llm\CGZ 触感引道路面砖\CGZ.cs" />
     <Compile Include="CalculatesNew\llm\GJ 挂件\GJ.cs" />
+    <Compile Include="CalculatesNew\llm\JWA_建筑绝热用硬质聚氨酯\JWA.cs" />
+    <Compile Include="CalculatesNew\llm\ZDB 聚氯乙烯卷材地板\ZDB.cs" />
+    <Compile Include="CalculatesNew\llm\SJZ 烧结路面砖\SJZ.cs" />
     <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
     <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" />
     <Compile Include="CalculatesNew\lq\井盖，水箅\JGS.cs" />

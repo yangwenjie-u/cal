@@ -71,16 +71,16 @@ namespace CalDebugTools
             }
 
             string sqlStr = $"select * from  PR_M_SYXM where SYXMBH  = '{info.BH}'";
-            var _sqlBase2 = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringJCJT);
-            var dfd = _sqlBase2.ExecuteScalar(sqlStr);
-            if (dfd == null)
-            {
-                return -3;
-            }
+            //var _sqlBase2 = new Common.DBUtility.SqlBase(ESqlConnType.ConnectionStringJCJT);
+            //var dfd = _sqlBase2.ExecuteScalar(sqlStr);
+            //if (dfd == null)
+            //{
+            //    return -3;
+            //}
             sqlStr = $"select * from  ProjectInfo where BH = '{info.BH}'";
 
 
-            dfd = _sqlBase.ExecuteScalar(sqlStr);
+            var dfd = _sqlBase.ExecuteScalar(sqlStr);
             if (dfd != null)
             {
                 return -2;

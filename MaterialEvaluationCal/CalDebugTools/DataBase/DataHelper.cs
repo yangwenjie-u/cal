@@ -14,15 +14,18 @@ namespace CalDebugTools
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_WH"].ConnectionString;
         private DbProviderFactory provider;
+        public string dbType ;
         public DataHelper()
         {
             provider = DbProviderFactories.GetFactory(ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_WH"].ProviderName);
+            dbType = ConfigurationManager.ConnectionStrings["ConnectionStringJCJT_WH"].ProviderName;
         }
         public DataHelper(string connectStr)
         {
             connectionString = ConfigurationManager.ConnectionStrings[connectStr].ConnectionString;
 
             provider = DbProviderFactories.GetFactory(ConfigurationManager.ConnectionStrings[connectStr].ProviderName);
+            dbType = ConfigurationManager.ConnectionStrings[connectStr].ProviderName;
         }
 
         #region  执行简单SQL语句

@@ -113,8 +113,8 @@ namespace Calculates
                     for (int i = 1; i < 9; i++)//循环8次，判定最小拉力载荷是否符合标准要求。
                     {
                         //if (GetSafeDouble(sItem["ZXKL" + i]) <= double.Parse(sItem["G_ZXKL"]))
-                        sItem["HG_LLHZ"] = IsQualified(sItem["G_LLHZ"], sItem["LLHZ" + i], false);
-                        if (sItem["HG_LLHZ"] == "不合格")
+                        mItem["HG_LLHZ"] = IsQualified(sItem["G_LLHZ"], sItem["LLHZ" + i], false);
+                        if (mItem["HG_LLHZ"] == "不合格")
                         {
                             sum++;
                         }
@@ -139,7 +139,7 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["HG_LLHZ"] = "----";
+                    mItem["HG_LLHZ"] = "----";
                     sItem["G_LLHZ"] = "----";
 
                 }
