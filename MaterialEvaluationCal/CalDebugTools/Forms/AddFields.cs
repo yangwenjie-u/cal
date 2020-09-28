@@ -724,9 +724,9 @@ namespace CalDebugTools.Forms
                                 if (!chk_jcjg_only.Checked)
                                 {
                                     reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
-                                    if (reFieldCount == 0)
+                                    if (reFieldCount == 0 && !zdzdCmdList_Cal.Contains(sqlStr))
                                     {
-                                        zdzdCmdList_Cal.AddRange(zdzdCmdList);
+                                        zdzdCmdList_Cal.Add(sqlStr);
                                     }
                                 }
                             }

@@ -130,10 +130,11 @@ namespace CalDebugTools.DAL
                 }
                 else
                 {
-                    //debugToolsService.ExecuteSqlTran(debugTool_zdzd, out msg);
+                    debugToolsService.ExecuteSqlTran(debugTool_zdzd, out msg);
                     if (!string.IsNullOrEmpty(msg))
                     {
                         Log.Warn("新增项目", $"CalDebugTools数据库:新增表ZDZD_{projectCode}及添加表数据失败，数据已回滚。msg:" + msg);
+                        msg = "warn";
                     }
                 }
             }
@@ -207,7 +208,7 @@ namespace CalDebugTools.DAL
 
             //创建从表
             sqlstr = string.Format($"CREATE TABLE [dbo].[S_{projectCode}]([RECID][nvarchar](50) NOT NULL,[BYZBRECID][nvarchar](50) NULL," +
-                $"[YPSL][nvarchar](50) NULL,[BWSX][nvarchar](120) NULL,[JCJG][nvarchar](10) NULL,[JCXM][varchar](max) NULL,[JCXMDH][varchar](max) NULL," +
+                $"[YPSL][nvarchar](50) NULL,[BWSX][nvarchar](120) NULL,[JCJG][nvarchar](10) NULL,[JCXM][varchar](max) NULL," +
                 $"[SJ_ZS][int] NULL,[SBMCBH][nvarchar](200) NULL) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY];");
             cmdList.Add(sqlstr);
 
