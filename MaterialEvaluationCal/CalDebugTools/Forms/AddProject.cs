@@ -101,7 +101,7 @@ namespace CalDebugTools.Forms
             }
             else
             {
-                MessageBox.Show("添加成功,请查看日志信息", "提示");
+                MessageBox.Show("添加失败,请查看日志信息", "提示");
             }
         }
 

@@ -20,6 +20,7 @@ namespace CalDebugTools.Forms
         FormMain _formMain;
         public string _deleteSqlStr = "";
         public string _outMsg = "";
+        public List<DeleteFieldInfos> _deleteFieldInfosList = new List<DeleteFieldInfos>();
         public AddFields(FormMain main)
         {
             _formMain = main;
@@ -39,7 +40,6 @@ namespace CalDebugTools.Forms
             com_dataSource.ValueMember = "Abbrevition";
             com_dataSource.SelectedIndex = -1;
         }
-
 
         private void btn_M_only_Click(object sender, EventArgs e)
         {
@@ -89,6 +89,20 @@ namespace CalDebugTools.Forms
             CreateTableColumn("C");
         }
 
+        public struct DeleteFieldInfos
+        {
+            /// <summary>
+            /// 检测机构
+            /// </summary>
+            public string jcjgName;
+            /// <summary>
+            /// 连接监管/集团库
+            /// </summary>
+            public string connectType;
+            public string dataBaseType;
+            public string deleteSql;
+        };
+
         /// <summary>
         /// 添加字段
         /// </summary>
@@ -112,7 +126,7 @@ namespace CalDebugTools.Forms
             string txtLX = string.IsNullOrEmpty(txt_lx.Text) ? "H" : txt_lx.Text.Trim();
             string chksfxs = this.chk_SFXS.Checked ? "1" : "0";
             string ssjcx = string.IsNullOrEmpty(this.txt_ssjcx.Text) ? "" : "、" + this.txt_ssjcx.Text.Trim() + "、";
- string locstionStr = "1,1";
+            string locstionStr = "1,1";
             if (string.IsNullOrEmpty(xmbh))
             {
                 MessageBox.Show("输入项目编号！");
@@ -160,13 +174,17 @@ namespace CalDebugTools.Forms
             _deleteSqlStr = "";
             _outMsg = "";
             int msgLen = 0;
+            _deleteFieldInfosList.Clear();
             foreach (var item in dbNameList)
             {
                 _deleteSqlStr += "检测机构:" + item.ToUpper() + "\r\n";
                 _outMsg += "检测机构:" + item.ToUpper() + "\r\n";
                 msgLen += _outMsg.Length;
-                AddFieldToDB(item, item.ToUpper(), xmbh, type, tableName, fieldName, fieldType, fieldMS, chksfxs, ssjcx, txtLX, locstionStr);
+                AddFieldToDB(item, item.ToUpper(), xmbh, type, tableName, fieldName, fieldType, fieldMS, chksfxs, ssjcx, txtLX);
+                //记录
+
             }
+
             txt_deleteSqlStr.Text = msgLen == txt_deleteSqlStr.TextLength ? "" : _deleteSqlStr;
 
             if (_outMsg.Length == msgLen)
@@ -207,11 +225,48 @@ namespace CalDebugTools.Forms
             return resultDBNameList;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jcjgName">检测机构代号</param>
+        /// <param name="connectType">连接的类型“jcjt。检测集团”；jcjg 检测监管</param>
+        /// <param name="dataBaseType"></param>
+        /// <param name="operType">“1”删除字段 ，非1删除数据 </param>
+        /// <param name="tableName">表名</param>
+        /// <param name="fieldName">字段名</param>
+        /// <returns></returns>
+        public DeleteFieldInfos AddDeleteFields(string jcjgName, string connectType, string dataBaseType, string operType, string tableName, string fieldName, string xmbh = "")
+        {
+            DeleteFieldInfos deleteField = new DeleteFieldInfos();
+            deleteField.jcjgName = jcjgName;
+            deleteField.connectType = connectType;
+            deleteField.dataBaseType = dataBaseType;
+            //删除字段
+            if (operType == "1")
+            {
+                deleteField.deleteSql = $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                return deleteField;
+            }
+
+            //删除数据
+            if (dataBaseType == DataBaseType.SqlClient)
+            {
+                deleteField.deleteSql = $"delete ZDZD_{xmbh} where ZDMC ='{fieldName}' and SJBMC ='{tableName}' ;\r\n";
+            }
+            else
+            {
+                deleteField.deleteSql = $"DELETE FROM ZDZD_{xmbh} WHERE ZDMC ='{fieldName}' and SJBMC ='{tableName}' ;\r\n ";
+            }
+
+            return deleteField;
+        }
+
         public void AddFieldToDB(string jcjgName, string jcjgCode, string xmbh, string insertTabType, string tableName, string fieldName, string fieldType,
-            string fieldMS, string chksfxs, string ssjcx, string fielsLx, string locstionStr)
+            string fieldMS, string chksfxs, string ssjcx, string fielsLx)
         {
             try
             {
+
                 DataHelper jcjtService = new DataHelper($"ConnectionStringJCJT_{jcjgCode}");
                 DataHelper jcjgService = new DataHelper($"ConnectionStringJCJG_{jcjgCode}");
                 DataHelper debugToolsService = new DataHelper($"ConnectionStringDebugTool");
@@ -219,6 +274,8 @@ namespace CalDebugTools.Forms
                 string sqlstr = string.Format($" select count(1) FROM  M_{xmbh}");
                 string customize = txt_customize.Text.ToUpper();
                 string msg = "";
+
+                DeleteFieldInfos deleteField = new DeleteFieldInfos();
                 #region 插入字段
                 if (chk_jcjg_only.Checked == true) //是否只监管
                 {
@@ -309,6 +366,7 @@ namespace CalDebugTools.Forms
                                     baseCmdList.Add(cmdStr);
                                 }
                                 _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjg", jcjgService.dbType, "1", tableName, fieldName));
                             }
                             else
                             {
@@ -328,6 +386,8 @@ namespace CalDebugTools.Forms
                                     baseCmdList.Add(cmdStr);
                                 }
                                 _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjt", jcjtService.dbType, "1", tableName, fieldName));
+
                             }
                             else
                             {
@@ -346,6 +406,7 @@ namespace CalDebugTools.Forms
                                     baseCmdList.Add(cmdStr);
                                 }
                                 _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjg", jcjgService.dbType, "1", tableName, fieldName));
                             }
                             else
                             {
@@ -365,6 +426,7 @@ namespace CalDebugTools.Forms
                                     baseCmdList.Add(cmdStr);
                                 }
                                 _deleteSqlStr += $"alter table  {tableName} drop column {fieldName} ;\r\n";
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjt", jcjtService.dbType, "1", tableName, fieldName));
                             }
                             else
                             {
@@ -403,6 +465,7 @@ namespace CalDebugTools.Forms
                                     }
 
                                     _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjg", jcjgService.dbType, "1", tableName, fieldName +(startIndex + i)));
                                 }
                                 else
                                 {
@@ -424,6 +487,7 @@ namespace CalDebugTools.Forms
                                     }
 
                                     _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjt", jcjtService.dbType, "1", tableName, fieldName+ (startIndex + i)));
                                 }
                                 else
                                 {
@@ -443,6 +507,7 @@ namespace CalDebugTools.Forms
                                         baseCmdList.Add(cmdStr);
                                     }
                                     _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjg", jcjgService.dbType, "1", tableName, fieldName +(startIndex + i)));
                                 }
                                 else
                                 {
@@ -462,6 +527,7 @@ namespace CalDebugTools.Forms
                                         baseCmdList.Add(cmdStr);
                                     }
                                     _deleteSqlStr += $"alter table {tableName} drop column {fieldName}{startIndex + i} ;\r\n";
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjt", jcjtService.dbType, "1", tableName, fieldName +(startIndex + i)));
                                 }
                                 else
                                 {
@@ -503,6 +569,11 @@ namespace CalDebugTools.Forms
                                 Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
                                 _outMsg += $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
                             }
+                            else
+                            {
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjg", jcjgService.dbType, "2", tableName, fieldName, xmbh));
+                            }
+
                         }
                         else if (chk_syncJcJG.Checked == true) //两个数据库都添加
                         {
@@ -513,6 +584,11 @@ namespace CalDebugTools.Forms
                                 addFiled = false;
                                 Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
                                 _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
+                            }
+                            else
+                            {
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjt", jcjtService.dbType, "2", tableName, fieldName,xmbh));
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "calDebugTool", debugToolsService.dbType, "2", tableName, fieldName, xmbh));
                             }
                             #endregion
 
@@ -526,14 +602,15 @@ namespace CalDebugTools.Forms
                                     _outMsg += $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
                                 }
                             }
+                            else
+                            {
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjg", jcjgService.dbType, "2", tableName, fieldName, xmbh));
+                            }
                         }
                         else //集团版本
                         {
                             var df = jcjtService.ExecuteReader(sqlStrCheck);
-                            if (df == null)
-                            {
 
-                            }
                             reFieldCount = CheckFieldIsExist(jcjtService, sqlStrCheck);
 
                             if (reFieldCount == -2 || reFieldCount > 0)
@@ -542,6 +619,11 @@ namespace CalDebugTools.Forms
                                 Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！count:{reFieldCount}");
                                 _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}！" + "\r\n";
                             }
+                            else
+                            {
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjt", jcjtService.dbType, "2", tableName, fieldName,xmbh));
+                                _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "calDebugTool", debugToolsService.dbType, "2", tableName, fieldName, xmbh));
+                            }
                         }
 
                         if (addFiled)
@@ -549,6 +631,7 @@ namespace CalDebugTools.Forms
                             _deleteSqlStr += $"delete ZDZD_{xmbh} where ZDMC = '{fieldName}' and SJBMC = '{tableName}';\r\n";
                             zdzdCmdList.Add(sqlStr);
 
+                            //添加集团版本字段是，需要在caldebug数据库添加记录
                             if (!chk_jcjg_only.Checked)
                             {
                                 reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
@@ -580,6 +663,10 @@ namespace CalDebugTools.Forms
                                     Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
                                     _outMsg += $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
                                 }
+                                else
+                                {
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjg", jcjgService.dbType, "2", tableName, fieldName +(startIndex + i), xmbh));
+                                }
                             }
                             else if (chk_syncJcJG.Checked == true) //两个数据库都添加
                             {
@@ -590,6 +677,11 @@ namespace CalDebugTools.Forms
                                     addFiled = false;
                                     Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
                                     _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
+                                }
+                                else
+                                {
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjt", jcjtService.dbType, "2", tableName, fieldName +(startIndex + i), xmbh));
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "calDebugTool", debugToolsService.dbType, "2", tableName, fieldName +(startIndex + i), xmbh));
                                 }
                                 #endregion
 
@@ -602,6 +694,10 @@ namespace CalDebugTools.Forms
                                         Log.Warn("AddField", $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
                                         _outMsg += $"{jcjgName}_监管数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
                                     }
+                                    else
+                                    {
+                                        _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjg", jcjgService.dbType, "2", tableName, fieldName +(startIndex + i), xmbh));
+                                    }
                                 }
                             }
                             else //检测集团
@@ -613,6 +709,11 @@ namespace CalDebugTools.Forms
                                     Log.Warn("AddField", $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！count:{reFieldCount}");
                                     _outMsg += $"{jcjgName}_检测集团数据库:添加字段异常，ZDZD_{xmbh}表已存在字段{fieldName}{startIndex + i}！" + "\r\n";
                                 }
+                                else
+                                {
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "jcjt", jcjtService.dbType, "2",tableName, fieldName +(startIndex + i), xmbh));
+                                    _deleteFieldInfosList.Add(AddDeleteFields(jcjgCode, "calDebugTool", debugToolsService.dbType, "2",tableName, fieldName +(startIndex + i), xmbh));
+                                }
                             }
 
                             if (addFiled)
@@ -623,9 +724,9 @@ namespace CalDebugTools.Forms
                                 if (!chk_jcjg_only.Checked)
                                 {
                                     reFieldCount = CheckFieldIsExist(debugToolsService, sqlStrCheck);
-                                    if (reFieldCount == 0)
+                                    if (reFieldCount == 0 && !zdzdCmdList_Cal.Contains(sqlStr))
                                     {
-                                        zdzdCmdList_Cal.AddRange(zdzdCmdList);
+                                        zdzdCmdList_Cal.Add(sqlStr);
                                     }
                                 }
                             }
@@ -667,7 +768,7 @@ namespace CalDebugTools.Forms
                             if (!string.IsNullOrEmpty(msg))
                             {
                                 Log.Warn("AddField", $"CalDebugTools数据库_:添加字段失败：" + msg);
-                                _outMsg += $"CalDebugTools数据库:添加字段失败：" + msg + "\r\n";
+                                //_outMsg += $"CalDebugTools数据库:添加字段失败：" + msg + "\r\n";
                             }
                         }
 
@@ -743,15 +844,6 @@ namespace CalDebugTools.Forms
             }
         }
 
-        //private void chk_jcjg_only_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    if (((System.Windows.Forms.CheckBox)sender).CheckState == CheckState.Checked)
-        //    {
-        //        chk_syncJcJG.CheckState = CheckState.Checked;
-        //    }
-        //    //if()
-        //}
-
         private void btn_test_Click(object sender, EventArgs e)
         {
             try
@@ -770,6 +862,61 @@ namespace CalDebugTools.Forms
             {
 
             }
+        }
+
+        private void btn_oneKeyDelete_Click(object sender, EventArgs e)
+        {
+            #region  一键删除字段
+            DataHelper dataService = null;
+            string connStr = "";
+            int flag = _deleteFieldInfosList.Count();
+            if (flag == 0)
+            {
+                MessageBox.Show("请先添加字段");
+            }
+            //需要删除的字段
+            foreach (var item in _deleteFieldInfosList)
+            {
+                if (item.connectType == "jcjg")
+                {
+                    connStr = $"ConnectionStringJCJG_{item.jcjgName}";
+                    dataService = new DataHelper($"ConnectionStringJCJG_{item.jcjgName}");
+                }
+                else if (item.connectType == "jcjt")
+                {
+                    dataService = new DataHelper($"ConnectionStringJCJT_{item.jcjgName}");
+                    connStr = $"ConnectionStringJCJT_{item.jcjgName}";
+                }
+                else
+                {
+                    dataService = new DataHelper($"ConnectionStringDebugTool");
+                    connStr = $" {item.jcjgName}  ConnectionStringDebugTool ";
+                }
+
+                try
+                {
+                    if (dataService.ExecuteReader(item.deleteSql) == null)
+                    {
+                        Log.Warn("DeleteFields", $"删除字段失败，数据库连接{connStr}:删除语句：{item.deleteSql}！");
+
+                        throw new Exception("一键删除字段失败，请手动执行，");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    flag = -1;
+                    Log.Warn("DeleteFields", $"删除字段异常，数据库连接{connStr}:删除语句：{item.deleteSql}！ex：" + ex);
+                }
+            }
+
+            if (flag == -1)
+            {
+                MessageBox.Show("删除字段失败，请查看日志");
+            }
+            else { 
+                MessageBox.Show("删除字段成功");
+            }
+            #endregion
         }
     }
 }

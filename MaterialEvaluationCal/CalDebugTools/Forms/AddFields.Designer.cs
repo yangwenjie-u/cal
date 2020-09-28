@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btn_oneKeyDelete = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.chk_jcjg_only = new System.Windows.Forms.CheckBox();
             this.txt_deleteSqlStr = new System.Windows.Forms.TextBox();
@@ -56,7 +57,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.txt_lx = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btn_test = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.btn_Customize = new System.Windows.Forms.Button();
             this.txt_customize = new System.Windows.Forms.TextBox();
@@ -69,6 +69,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btn_oneKeyDelete);
             this.panel3.Controls.Add(this.label8);
             this.panel3.Controls.Add(this.chk_jcjg_only);
             this.panel3.Controls.Add(this.txt_deleteSqlStr);
@@ -101,6 +102,16 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(764, 212);
             this.panel3.TabIndex = 68;
+            // 
+            // btn_oneKeyDelete
+            // 
+            this.btn_oneKeyDelete.Location = new System.Drawing.Point(656, 160);
+            this.btn_oneKeyDelete.Name = "btn_oneKeyDelete";
+            this.btn_oneKeyDelete.Size = new System.Drawing.Size(75, 23);
+            this.btn_oneKeyDelete.TabIndex = 70;
+            this.btn_oneKeyDelete.Text = "一键删除";
+            this.btn_oneKeyDelete.UseVisualStyleBackColor = true;
+            this.btn_oneKeyDelete.Click += new System.EventHandler(this.btn_oneKeyDelete_Click);
             // 
             // label8
             // 
@@ -343,7 +354,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.btn_test);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.btn_Customize);
             this.groupBox1.Controls.Add(this.txt_customize);
@@ -358,16 +368,6 @@
             this.groupBox1.TabIndex = 61;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "独立添加";
-            // 
-            // btn_test
-            // 
-            this.btn_test.Location = new System.Drawing.Point(274, 101);
-            this.btn_test.Name = "btn_test";
-            this.btn_test.Size = new System.Drawing.Size(75, 23);
-            this.btn_test.TabIndex = 69;
-            this.btn_test.Text = "测试";
-            this.btn_test.UseVisualStyleBackColor = true;
-            this.btn_test.Click += new System.EventHandler(this.btn_test_Click);
             // 
             // label6
             // 
@@ -481,6 +481,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox chk_jcjg_only;
-        private System.Windows.Forms.Button btn_test;
+        private System.Windows.Forms.Button btn_oneKeyDelete;
     }
 }
