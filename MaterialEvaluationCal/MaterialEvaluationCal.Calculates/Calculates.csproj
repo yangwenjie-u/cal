@@ -88,11 +88,15 @@
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼质量卡\ZLK.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼调整记录\TTZ.cs" />
     <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
+    <Compile Include="CalculatesNew\qsf\JJR建筑用绝热制品\JJR.cs" />
     <Compile Include="CalculatesNew\qsf\JLH楼板厚度\JLH.cs" />
+    <Compile Include="CalculatesNew\qsf\JZJ 建筑砂浆\JZJ.cs" />
+    <Compile Include="CalculatesNew\qsf\QJL无机轻集料建筑保温砂浆\QJL.cs" />
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
     <Compile Include="CalculatesNew\qsf\THG砼合格证明书\THG.cs" />
     <Compile Include="CalculatesNew\qsf\TKP商砼开盘配合比\TKP.cs" />
     <Compile Include="CalculatesNew\qsf\WBC外保温系统\WBC.cs" />
+    <Compile Include="CalculatesNew\qsf\WJR无机硬质绝热制品\WJR.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
     <Compile Include="CalculatesNew\wlb\JG_结构实体检测\JG.cs" />
