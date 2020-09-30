@@ -101,6 +101,7 @@
     <Compile Include="CalculatesNew\qsf\TKP商砼开盘配合比\TKP.cs" />
     <Compile Include="CalculatesNew\qsf\WBC外保温系统\WBC.cs" />
     <Compile Include="CalculatesNew\qsf\WJR无机硬质绝热制品\WJR.cs" />
+    <Compile Include="CalculatesNew\qsf\ZBL 中空玻璃\ZBL.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
     <Compile Include="CalculatesNew\wlb\JG_结构实体检测\JG.cs" />
