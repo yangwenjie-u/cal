@@ -35,8 +35,8 @@ namespace Calculates
             {
                 List<double> kyqdlist = new List<double>();
                 double md1, md2, md, pjmd, sum;
-                bool sign, itemHg;
-                itemHg = false;
+                bool sign;
+                //itemHg = false;
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 //从设计等级表中取得相应的计算数值、等级标准
                 var extraFieldsDj = mrsDj.FirstOrDefault(u => u["QDDJ"] == sitem["QDDJ"].Trim());
@@ -74,11 +74,14 @@ namespace Calculates
                         {
                             //平均长度
                             md1 = Round((GetSafeDouble(sitem["KYCD1_" + i].Trim()) + GetSafeDouble(sitem["KYCD2_" + i].Trim())) / 2, 0);
+                            sitem["KYPJCD" + i] = md1.ToString("0");
                             //平均宽度
                             md2 = Round((GetSafeDouble(sitem["KYKD1_" + i].Trim()) + GetSafeDouble(sitem["KYKD2_" + i].Trim())) / 2, 0);
+                            sitem["KYPJKD" + i] = md2.ToString("0");
                             //抗压面积
-                            md = md1 * md2;
-                            sitem["KYQD" + i] = Round(GetSafeDouble(sitem["KYQDHZ" + i].Trim()) / md, 1).ToString("0.0");
+                            md = GetDouble(sitem["KYPJCD" + i]) * GetDouble(sitem["KYPJKD" + i]);
+                            sitem["KYMJ" + i] = md.ToString("0");
+                            sitem["KYQD" + i] = Round(GetSafeDouble(sitem["KYQDHZ" + i].Trim()) / GetSafeDouble(sitem["KYMJ" + i]), 1).ToString("0.0");
                             kyqdlist.Add(GetSafeDouble(sitem["KYQD" + i]));
                             sum = sum + GetSafeDouble(sitem["KYQD" + i]);
                         }
@@ -95,7 +98,7 @@ namespace Calculates
 
                         if ("不合格" == sitem["PJQDHGPD"] || "不合格" == sitem["ZXQDHGPD"])
                         {
-                            itemHg = false;
+                            //itemHg = false;
                             mAllHg = false;
                             jcjg = "不合格";
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";

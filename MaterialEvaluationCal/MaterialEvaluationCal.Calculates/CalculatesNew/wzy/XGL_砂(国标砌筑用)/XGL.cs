@@ -506,7 +506,7 @@ namespace Calculates
                 narr = new double[3, 8];
 
                 #region 级配
-                if (jcxm.Contains("、级配、"))
+                if (jcxm.Contains("、级配、") || jcxm.Contains("、筛分析、"))
                 {
                     for (xd = 1; xd <= 6; xd++)
                     {
@@ -947,7 +947,7 @@ namespace Calculates
                 #endregion
 
                 #region 氯离子含量
-                if (jcxm.Contains("、氯离子含量、"))
+                if (jcxm.Contains("、氯离子含量、") || jcxm.Contains("、氯化物含量、"))
                 {
                     cd1 = Conversion.Val(sitem["LLZV"].Trim());
                     cd2 = Conversion.Val(sitem["LLZV0"].Trim());

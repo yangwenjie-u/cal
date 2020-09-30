@@ -45,9 +45,9 @@ namespace Calculates
             {
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
 
-                var mrsDj = extraDJ.FirstOrDefault(u => u["MC"] == sItem["CPMC"] && u["LB"] == sItem["LB"] && u["DJ"] == sItem["DJ"]);
+                var mrsDj = extraDJ.FirstOrDefault(u => (u["MC"] == sItem["CPMC"] && u["LB"] == sItem["LB"] && u["DJ"] == sItem["DJ"]) || u["ZHMCDJ"] == sItem["SJDJ"]);
 
-                if (mrsDj != null)
+                if (mrsDj != null && mrsDj.Count > 0)
                 {
                     mJSFF = string.IsNullOrEmpty(mrsDj["JSFF"]) ? "" : mrsDj["JSFF"].ToLower();
                 }
@@ -197,8 +197,8 @@ namespace Calculates
                 }
                 #endregion
 
-                #region 活性指数 - WH
-                if (jcxm.Contains("、活性指数、"))
+                #region 强度活性指数 - WH
+                if (jcxm.Contains("、活性指数、") || jcxm.Contains("、强度活性指数、"))
                 {
 
                     int tcsyzGs = 0;
@@ -212,7 +212,7 @@ namespace Calculates
                     jcxmCur = "活性指数";
                     MItem[0]["G_HXZS"] = mrsDj["HXZS"];
                     //文档中取一组6个数据作为对照组 ，一组6个作为试验组，取28天抗压强度做平均值   面积为1600平方毫米
-                    if (IsNumeric(sItem["SYZKYHZ1"].Trim()))
+                    if (IsNumeric(sItem["SYZKYHZ1"]))
                     {
                         //试验组28天抗压荷载1 有值  非直接录结果
                         for (int i = 1; i < 7; i++)

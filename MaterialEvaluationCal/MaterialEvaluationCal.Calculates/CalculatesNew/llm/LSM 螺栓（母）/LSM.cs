@@ -79,6 +79,7 @@ namespace Calculates
                     }
                     if (sum <= 0)
                     {
+                        sItem["G_ZXKL"] = "≥" + sItem["G_ZXKL"];
                         MItem[0]["HG_ZXKL"] = "合格";
                         sItem["JCJG"] = "合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
@@ -161,6 +162,7 @@ namespace Calculates
                     }
                     if (sum <= 0)
                     {
+                        sItem["G_BZHZ"] = "≥" + sItem["G_BZHZ"];
                         MItem[0]["HG_BZHZ"] = "合格";
                         sItem["JCJG"] = "合格";
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
@@ -192,35 +194,13 @@ namespace Calculates
                     jcxmCur = "抗拉强度";
 
                     int sum = 0;
-                    //计算8个试件的抗拉强度
-                    mMj1 = GetSafeDouble(sItem["KLHZ1"]) / GetSafeDouble(sItem["JMJ"]);
-                    sItem["KLQD1"] = mMj1.ToString();
+                   
 
-                    mMj2 = GetSafeDouble(sItem["KLHZ2"]) / GetSafeDouble(sItem["JMJ"]);
-                    sItem["KLQD2"] = mMj2.ToString();
-
-                    mMj3 = GetSafeDouble(sItem["KLHZ3"]) / GetSafeDouble(sItem["JMJ"]);
-                    sItem["KLQD3"] = mMj3.ToString();
-
-                    mMj4 = GetSafeDouble(sItem["KLHZ4"]) / GetSafeDouble(sItem["JMJ"]);
-                    sItem["KLQD4"] = mMj4.ToString();
-
-                    mMj5 = GetSafeDouble(sItem["KLHZ5"]) / GetSafeDouble(sItem["JMJ"]);
-                    sItem["KLQD5"] = mMj5.ToString();
-
-                    mMj6 = GetSafeDouble(sItem["KLHZ6"]) / GetSafeDouble(sItem["JMJ"]);
-                    sItem["KLQD6"] = mMj6.ToString();
-
-                    mMj7 = GetSafeDouble(sItem["KLHZ7"]) / GetSafeDouble(sItem["JMJ"]);
-                    sItem["KLQD7"] = mMj7.ToString();
-
-                    mMj8 = GetSafeDouble(sItem["KLHZ8"]) / GetSafeDouble(sItem["JMJ"]);
-                    sItem["KLQD8"] = mMj8.ToString();
-
-                    
                     for (int i = 1; i < 9; i++)//循环8次，判定最小拉力载荷是否符合标准要求。
                     {
-                        if (GetSafeDouble(sItem["KLQD" + i]) < GetSafeDouble(sItem["G_KLQD"]))
+                        //if (GetSafeDouble(sItem["ZXKL" + i]) <= double.Parse(sItem["G_ZXKL"]))
+                        mItem["HG_KLQD"] = IsQualified(sItem["G_KLQD"], sItem["KLQD" + i], false);
+                        if (mItem["HG_KLQD"] == "不合格")
                         {
                             sum++;
                         }

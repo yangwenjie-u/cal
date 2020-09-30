@@ -101,8 +101,9 @@ namespace Calculates
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，该批产品不合格。";
                         mAllHg = false;
                     }
+                    sItem["G_PJKYQD"] = "平均值 ≥" + sItem["G_PJKYQD"] + ",且最小值≥" + sItem["G_MKYQD"];
 
-                 }
+                }
                 else
                 {
                     sItem["HG_PJKYQD"] = "----";
@@ -168,6 +169,7 @@ namespace Calculates
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，该批产品不合格。";
                         mAllHg = false;
                     }
+                    sItem["G_PJKZQD"] = "平均值 ≥" + sItem["G_PJKZQD"] + ",且最小值≥" + sItem["G_MZYQD"];
 
                 }
                 else

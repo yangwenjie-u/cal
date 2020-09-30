@@ -46,11 +46,11 @@ namespace Calculates
                     {
                         sItem["SXZB"] = ET_JXH[0]["SXZB"];
                     }
-                    if (sItem["SXZB"] =="补做")
+                    if (sItem["SXZB"].Contains ("补做"))
                     {
                         throw new SystemException("依据标准，圆锥下沉深度为2mm处相应的两个含水率的差值≥2%，应补做试验。");
                     }
-                    sItem["GH_JXHSL"] = "符合";
+                    
                     string yx = IsQualified(sItem["SJ_YX"], sItem["YX"], true);
                     string sx = IsQualified(sItem["SJ_SX"], sItem["SX"], true);
                     string sxzb = IsQualified(sItem["SJ_SXZB"], sItem["SXZB"], true);
@@ -67,6 +67,10 @@ namespace Calculates
                         if (yx1 == "----" && sx1 == "----" && sxzb1 == "----")
                         {
                             sItem["GH_JXHSL"] = "----";
+                        }
+                        else
+                        {
+                            sItem["GH_JXHSL"] = "符合";
                         }
 
                     }

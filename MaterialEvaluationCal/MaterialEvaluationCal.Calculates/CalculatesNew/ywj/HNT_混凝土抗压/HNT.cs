@@ -82,7 +82,7 @@ namespace Calculates
                 var SJCCDouble = GetSafeDouble(SJCC);
                 var SJCCMJ = SJCCDouble * SJCCDouble;
 
-                var HSXS = 1.0;
+                var HSXS = 1.00;
                 if (SJCC == "100")
                 {
                     HSXS = 0.95;
@@ -218,7 +218,6 @@ namespace Calculates
                     jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sItem["KYPJ"] + "MPa，" + "达到设计强度" + sItem["DDSJQD"] + "%。";
                 }
                 sItem["JCJG"] = jcjg;
-
             }
 
             if (mAllHg && mjcjg != "----")
@@ -227,7 +226,6 @@ namespace Calculates
             }
             if (!data.ContainsKey("M_HNT"))
             {
-
                 data["M_HNT"] = new List<IDictionary<string, string>>();
             }
 
