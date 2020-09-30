@@ -483,6 +483,8 @@ namespace Calculates
             mFlag_Hg = false;
             mFlag_Bhg = false;
             mAllHg = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sitem in SItem)
             {
                 if (string.IsNullOrEmpty(sitem["SACY"]))
@@ -699,6 +701,7 @@ namespace Calculates
                 #region 含泥量
                 if (jcxm.Contains("、含泥量、"))
                 {
+                    jcxmCur = "含泥量";
                     cd1 = Conversion.Val(sitem["HNLG0"].Trim());
                     cd2 = Conversion.Val(sitem["HNLG1"].Trim());
                     md1 = 100 * (cd1 - cd2) / cd1;
@@ -756,6 +759,7 @@ namespace Calculates
                 #region 泥块含量
                 if (jcxm.Contains("、泥块含量、"))
                 {
+                    jcxmCur = "泥块含量";
                     cd1 = Conversion.Val(sitem["NKHLG1"].Trim());
                     cd2 = Conversion.Val(sitem["NKHLG2"].Trim());
                     md1 = 100 * (cd1 - cd2) / cd1;
@@ -813,6 +817,7 @@ namespace Calculates
                 #region 堆积密度
                 if (jcxm.Contains("、堆积密度、"))
                 {
+                    jcxmCur = "堆积密度";
                     cd1 = Conversion.Val(sitem["DJMDG1"].Trim());
                     cd2 = Conversion.Val(sitem["DJMDG2"].Trim());
                     md1 = Conversion.Val(sitem["DJMDV"].Trim());
@@ -847,6 +852,7 @@ namespace Calculates
                 #region 紧密密度
                 if (jcxm.Contains("、紧密密度、"))
                 {
+                    jcxmCur = "紧密密度";
                     cd1 = Conversion.Val(sitem["JMMDG1"].Trim());
                     cd2 = Conversion.Val(sitem["JMMDG2"].Trim());
                     md1 = Conversion.Val(sitem["JMMDV"].Trim());
@@ -881,10 +887,11 @@ namespace Calculates
                 #region 表观密度
                 if (jcxm.Contains("、表观密度、"))
                 {
+                    jcxmCur = "表观密度";
                     cd1 = Conversion.Val(sitem["BGMDG0"].Trim());
                     cd2 = Conversion.Val(sitem["BGMDG2"].Trim());
                     md1 = Conversion.Val(sitem["BGMDG1"].Trim());
-                    md1 = 100 * (cd1 / (cd1 + cd2 - md1)- GetSafeDouble(sitem["SWXZXS1"].Trim()));
+                    md1 = 100 * (cd1 / (cd1 + cd2 - md1) - GetSafeDouble(sitem["SWXZXS1"].Trim()));
                     md1 = Round(md1, 0);
                     md1 = md1 * 10;
                     sitem["KXLP2"] = md1.ToString();
@@ -919,6 +926,7 @@ namespace Calculates
                 #region 空隙率
                 if (jcxm.Contains("、空隙率、"))
                 {
+                    jcxmCur = "空隙率";
                     cd1 = Conversion.Val(sitem["KXLP1"].Trim());
                     cd2 = Conversion.Val(sitem["KXLP2"].Trim());
                     md1 = 100 * (1 - cd1 / cd2);
@@ -949,18 +957,22 @@ namespace Calculates
                 #region 氯离子含量
                 if (jcxm.Contains("、氯离子含量、") || jcxm.Contains("、氯化物含量、"))
                 {
+                    jcxmCur = "氯离子含量";
                     cd1 = Conversion.Val(sitem["LLZV"].Trim());
                     cd2 = Conversion.Val(sitem["LLZV0"].Trim());
                     md1 = 35.5 * (cd1 - cd2) * cd1 / 500;
                     md1 = Round(md1, 2);
+                    sitem["LLZHL1"] = md1.ToString("0.00");
 
 
                     cd1 = Conversion.Val(sitem["LLZV_2"].Trim());
                     cd2 = Conversion.Val(sitem["LLZV0_2"].Trim());
                     md2 = 35.5 * (cd1 - cd2) * cd1 / 500;
                     md2 = Round(md2, 2);
+                    sitem["LLZHL2"] = md2.ToString("0.00");
                     md = (md1 + md2) / 2;
                     md = Round(md, 2);
+
                     sitem["LLZHL"] = md.ToString("0.00");
                     sitem["LLZHLPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
@@ -1006,6 +1018,7 @@ namespace Calculates
                 #region 吸水率
                 if (jcxm.Contains("、吸水率、"))
                 {
+                    jcxmCur = "吸水率";
                     cd1 = Conversion.Val(sitem["XSLG1"].Trim());
                     cd2 = Conversion.Val(sitem["XSLG2"].Trim());
                     md1 = 100 * (500 - (cd2 - cd1)) / (cd2 - cd1);
@@ -1087,6 +1100,7 @@ namespace Calculates
                 #region 含水率
                 if (jcxm.Contains("、含水率、"))
                 {
+                    jcxmCur = "含水率";
                     cd1 = Conversion.Val(sitem["HSLG1"].Trim());
                     cd2 = Conversion.Val(sitem["HSLG2"].Trim());
                     md1 = 100 * (cd2 - cd1) / cd1;
@@ -1113,6 +1127,7 @@ namespace Calculates
                 #region 有机物含量
                 if (jcxm.Contains("、有机物含量、"))
                 {
+                    jcxmCur = "有机物含量";
                     sitem["YJWHLPD"] = sitem["YJWHLPD"].Contains("不") ? "不符合" : "符合";
                     mbhgs = sitem["YJWHLPD"].Contains("不") ? mbhgs + 1 : mbhgs;
                     if (sitem["YJWHLPD"].Contains("不"))
@@ -1127,6 +1142,7 @@ namespace Calculates
                 #region 碱活性
                 if (jcxm.Contains("、碱活性、"))
                 {
+                    jcxmCur = "碱活性";
                     md = Conversion.Val(sitem["JHX"].Trim());
                     if (IsQualified(mrsDj[0]["JHX"], sitem["JHX"]) == "符合")
                     {
@@ -1149,6 +1165,7 @@ namespace Calculates
                 #region 轻物质含量
                 if (jcxm.Contains("、轻物质含量、"))
                 {
+                    jcxmCur = "轻物质含量";
                     cd1 = Conversion.Val(sitem["QWZG1_1"].Trim());
                     cd2 = Conversion.Val(sitem["QWZG2_1"].Trim());
                     md1 = Conversion.Val(sitem["QWZG3_1"].Trim());
@@ -1183,6 +1200,7 @@ namespace Calculates
                 #region 硫化物和硫酸盐含量
                 if (jcxm.Contains("、硫化物和硫酸盐含量、"))
                 {
+                    jcxmCur = "硫化物和硫酸盐含量";
                     cd1 = Conversion.Val(sitem["SO3G1_1"].Trim());
                     cd2 = Conversion.Val(sitem["SO3G2_1"].Trim());
                     md1 = 100 * 0.343 * cd2 / cd1;
@@ -1216,6 +1234,7 @@ namespace Calculates
                 #region 坚固性
                 if (jcxm.Contains("、坚固性、"))
                 {
+                    jcxmCur = "坚固性";
                     sum = 0;
                     narr = new double[3, 5];
                     for (xd = 1; xd <= 4; xd++)
@@ -1284,6 +1303,42 @@ namespace Calculates
                 {
                     sitem["JGXPD"] = "----";
                     sitem["JGX"] = "----";
+                }
+                #endregion
+
+                #region 贝壳含量
+                if (jcxm.Contains("、贝壳含量、"))
+                {
+                    jcxmCur = "贝壳含量";
+                    sign = true;
+                    sign = IsNumeric(sitem["BKHLSYZZ1"]) ? sign : false;
+                    sign = IsNumeric(sitem["BKHLSYZZ2"]) ? sign : false;
+                    sign = IsNumeric(sitem["BKHLSYCQBKHZL1"]) ? sign : false;
+                    sign = IsNumeric(sitem["BKHLSYCQBKHZL2"]) ? sign : false;
+                    if (sign)
+                    {
+                        sitem["BKHL1"] = Round((GetSafeDouble(sitem["BKHLSYZZ1"]) - GetSafeDouble(sitem["BKHLSYCQBKHZL1"])) / GetSafeDouble(sitem["BKHLSYZZ1"]) * 100 - GetSafeDouble(sitem["HNL"]), 1).ToString("0.0");
+                        sitem["BKHL2"] = Round((GetSafeDouble(sitem["BKHLSYZZ2"]) - GetSafeDouble(sitem["BKHLSYCQBKHZL2"])) / GetSafeDouble(sitem["BKHLSYZZ2"]) * 100 - GetSafeDouble(sitem["HNL"]), 1).ToString("0.0");
+                        if (Math.Abs((GetSafeDouble(sitem["BKHL1"]) - GetSafeDouble(sitem["BKHL2"]))) > 0.5)
+                        {
+                            sitem["BKHL"] = "重新取样试验";
+                            //throw new SystemException();
+                        }
+                        else
+                        {
+                            sitem["BKHL"] = Round((GetSafeDouble(sitem["BKHL1"]) + GetSafeDouble(sitem["BKHL2"])) / 2, 1).ToString("0.0");
+                        }
+                    }
+                    else
+                    {
+                        throw new SystemException("贝壳含量试样数据录入有误");
+                    }
+
+
+                }
+                else
+                {
+
                 }
                 #endregion
 
