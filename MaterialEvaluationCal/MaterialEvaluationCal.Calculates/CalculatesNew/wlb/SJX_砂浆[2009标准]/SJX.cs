@@ -36,12 +36,15 @@ namespace Calculates
             }
             List<double> mkyqdArray = new List<double>();
             List<string> mtmpArray = new List<string>();
-            string mSjdj, mJSFF, mlongStr = "";
-            double mSjcc, mSjcc1, mMj = 0;
-            double mSz, mQdyq = 0;
-            Double mMaxKyqd, mMinKyqd, mAvgKyqd, mMidKyqd = 0;
             foreach (var sItem in S_SJXS)
             {
+                string mSjdj, mJSFF, mlongStr = "";
+                double mSjcc, mSjcc1, mMj = 0;
+                double mSz, mQdyq = 0;
+                Double mMaxKyqd, mMinKyqd, mAvgKyqd, mMidKyqd = 0;
+                mkyqdArray = new List<double>();
+                mtmpArray = new List<string>();
+
                 itemHG = true;
                 string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
@@ -177,7 +180,6 @@ namespace Calculates
                                         mAllHg = false;
                                     }
                                 }
-
                             }
                         }
                         else

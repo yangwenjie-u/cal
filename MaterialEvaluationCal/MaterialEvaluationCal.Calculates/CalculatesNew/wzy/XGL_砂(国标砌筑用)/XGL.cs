@@ -483,6 +483,8 @@ namespace Calculates
             mFlag_Hg = false;
             mFlag_Bhg = false;
             mAllHg = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sitem in SItem)
             {
                 if (string.IsNullOrEmpty(sitem["SACY"]))
@@ -506,7 +508,7 @@ namespace Calculates
                 narr = new double[3, 8];
 
                 #region 级配
-                if (jcxm.Contains("、级配、"))
+                if (jcxm.Contains("、级配、") || jcxm.Contains("、筛分析、"))
                 {
                     for (xd = 1; xd <= 6; xd++)
                     {
@@ -642,7 +644,7 @@ namespace Calculates
                 #endregion
 
                 #region 细度模数
-                if (jcxm.Contains("、细度模数、"))
+                if (jcxm.Contains("、细度模数、") || jcxm.Contains("、筛分析、"))
                 {
                     md1 = 0;
                     md2 = 0;
@@ -699,6 +701,7 @@ namespace Calculates
                 #region 含泥量
                 if (jcxm.Contains("、含泥量、"))
                 {
+                    jcxmCur = "含泥量";
                     cd1 = Conversion.Val(sitem["HNLG0"].Trim());
                     cd2 = Conversion.Val(sitem["HNLG1"].Trim());
                     md1 = 100 * (cd1 - cd2) / cd1;
@@ -715,7 +718,7 @@ namespace Calculates
                     sitem["HNLPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (IsQualified(mrsDj_temp["HNL"], sitem["HNL"]) == "符合")
+                        if (IsQualified(mrsDj_temp["HNL"], sitem["HNL"], true) == "符合")
                         {
                             sitem["HNLPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -756,6 +759,7 @@ namespace Calculates
                 #region 泥块含量
                 if (jcxm.Contains("、泥块含量、"))
                 {
+                    jcxmCur = "泥块含量";
                     cd1 = Conversion.Val(sitem["NKHLG1"].Trim());
                     cd2 = Conversion.Val(sitem["NKHLG2"].Trim());
                     md1 = 100 * (cd1 - cd2) / cd1;
@@ -772,7 +776,7 @@ namespace Calculates
                     sitem["NKHLPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (IsQualified(mrsDj_temp["NKHL"], sitem["NKHL"]) == "符合")
+                        if (IsQualified(mrsDj_temp["NKHL"], sitem["NKHL"], true) == "符合")
                         {
                             sitem["NKHLPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -813,6 +817,7 @@ namespace Calculates
                 #region 堆积密度
                 if (jcxm.Contains("、堆积密度、"))
                 {
+                    jcxmCur = "堆积密度";
                     cd1 = Conversion.Val(sitem["DJMDG1"].Trim());
                     cd2 = Conversion.Val(sitem["DJMDG2"].Trim());
                     md1 = Conversion.Val(sitem["DJMDV"].Trim());
@@ -847,6 +852,7 @@ namespace Calculates
                 #region 紧密密度
                 if (jcxm.Contains("、紧密密度、"))
                 {
+                    jcxmCur = "紧密密度";
                     cd1 = Conversion.Val(sitem["JMMDG1"].Trim());
                     cd2 = Conversion.Val(sitem["JMMDG2"].Trim());
                     md1 = Conversion.Val(sitem["JMMDV"].Trim());
@@ -881,10 +887,11 @@ namespace Calculates
                 #region 表观密度
                 if (jcxm.Contains("、表观密度、"))
                 {
+                    jcxmCur = "表观密度";
                     cd1 = Conversion.Val(sitem["BGMDG0"].Trim());
                     cd2 = Conversion.Val(sitem["BGMDG2"].Trim());
                     md1 = Conversion.Val(sitem["BGMDG1"].Trim());
-                    md1 = 100 * (cd1 / (cd1 + cd2 - md1)- GetSafeDouble(sitem["SWXZXS1"].Trim()));
+                    md1 = 100 * (cd1 / (cd1 + cd2 - md1) - GetSafeDouble(sitem["SWXZXS1"].Trim()));
                     md1 = Round(md1, 0);
                     md1 = md1 * 10;
                     sitem["KXLP2"] = md1.ToString();
@@ -919,6 +926,7 @@ namespace Calculates
                 #region 空隙率
                 if (jcxm.Contains("、空隙率、"))
                 {
+                    jcxmCur = "空隙率";
                     cd1 = Conversion.Val(sitem["KXLP1"].Trim());
                     cd2 = Conversion.Val(sitem["KXLP2"].Trim());
                     md1 = 100 * (1 - cd1 / cd2);
@@ -947,25 +955,29 @@ namespace Calculates
                 #endregion
 
                 #region 氯离子含量
-                if (jcxm.Contains("、氯离子含量、"))
+                if (jcxm.Contains("、氯离子含量、") || jcxm.Contains("、氯化物含量、"))
                 {
+                    jcxmCur = "氯离子含量";
                     cd1 = Conversion.Val(sitem["LLZV"].Trim());
                     cd2 = Conversion.Val(sitem["LLZV0"].Trim());
                     md1 = 35.5 * (cd1 - cd2) * cd1 / 500;
                     md1 = Round(md1, 2);
+                    sitem["LLZHL1"] = md1.ToString("0.00");
 
 
                     cd1 = Conversion.Val(sitem["LLZV_2"].Trim());
                     cd2 = Conversion.Val(sitem["LLZV0_2"].Trim());
                     md2 = 35.5 * (cd1 - cd2) * cd1 / 500;
                     md2 = Round(md2, 2);
+                    sitem["LLZHL2"] = md2.ToString("0.00");
                     md = (md1 + md2) / 2;
                     md = Round(md, 2);
+
                     sitem["LLZHL"] = md.ToString("0.00");
                     sitem["LLZHLPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (IsQualified(mrsDj_temp["LLZHL"], sitem["LLZHL"]) == "符合")
+                        if (IsQualified(mrsDj_temp["LLZHL"], sitem["LLZHL"], true) == "符合")
                         {
                             sitem["LLZHLPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -1006,6 +1018,7 @@ namespace Calculates
                 #region 吸水率
                 if (jcxm.Contains("、吸水率、"))
                 {
+                    jcxmCur = "吸水率";
                     cd1 = Conversion.Val(sitem["XSLG1"].Trim());
                     cd2 = Conversion.Val(sitem["XSLG2"].Trim());
                     md1 = 100 * (500 - (cd2 - cd1)) / (cd2 - cd1);
@@ -1045,7 +1058,7 @@ namespace Calculates
                     sitem["YMPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (IsQualified(mrsDj_temp["YM"], sitem["YM"]) == "符合")
+                        if (IsQualified(mrsDj_temp["YM"], sitem["YM"],true) == "符合")
                         {
                             sitem["YMPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -1087,6 +1100,7 @@ namespace Calculates
                 #region 含水率
                 if (jcxm.Contains("、含水率、"))
                 {
+                    jcxmCur = "含水率";
                     cd1 = Conversion.Val(sitem["HSLG1"].Trim());
                     cd2 = Conversion.Val(sitem["HSLG2"].Trim());
                     md1 = 100 * (cd2 - cd1) / cd1;
@@ -1113,6 +1127,7 @@ namespace Calculates
                 #region 有机物含量
                 if (jcxm.Contains("、有机物含量、"))
                 {
+                    jcxmCur = "有机物含量";
                     sitem["YJWHLPD"] = sitem["YJWHLPD"].Contains("不") ? "不符合" : "符合";
                     mbhgs = sitem["YJWHLPD"].Contains("不") ? mbhgs + 1 : mbhgs;
                     if (sitem["YJWHLPD"].Contains("不"))
@@ -1127,8 +1142,9 @@ namespace Calculates
                 #region 碱活性
                 if (jcxm.Contains("、碱活性、"))
                 {
+                    jcxmCur = "碱活性";
                     md = Conversion.Val(sitem["JHX"].Trim());
-                    if (IsQualified(mrsDj[0]["JHX"], sitem["JHX"]) == "符合")
+                    if (IsQualified(mrsDj[0]["JHX"], sitem["JHX"], true) == "符合")
                     {
                         sitem["JHXPD"] = "符合";
                         mFlag_Hg = true;
@@ -1149,6 +1165,7 @@ namespace Calculates
                 #region 轻物质含量
                 if (jcxm.Contains("、轻物质含量、"))
                 {
+                    jcxmCur = "轻物质含量";
                     cd1 = Conversion.Val(sitem["QWZG1_1"].Trim());
                     cd2 = Conversion.Val(sitem["QWZG2_1"].Trim());
                     md1 = Conversion.Val(sitem["QWZG3_1"].Trim());
@@ -1162,7 +1179,7 @@ namespace Calculates
                     md = (md1 + md2) / 2;
                     md = Round(md, 1);
                     sitem["QWZ"] = md.ToString("0.0");
-                    if (IsQualified(mrsDj[0]["QWZ"], sitem["QWZ"]) == "符合")
+                    if (IsQualified(mrsDj[0]["QWZ"], sitem["QWZ"], true) == "符合")
                     {
                         sitem["QWZPD"] = "符合";
                         mFlag_Hg = true;
@@ -1183,6 +1200,7 @@ namespace Calculates
                 #region 硫化物和硫酸盐含量
                 if (jcxm.Contains("、硫化物和硫酸盐含量、"))
                 {
+                    jcxmCur = "硫化物和硫酸盐含量";
                     cd1 = Conversion.Val(sitem["SO3G1_1"].Trim());
                     cd2 = Conversion.Val(sitem["SO3G2_1"].Trim());
                     md1 = 100 * 0.343 * cd2 / cd1;
@@ -1193,7 +1211,7 @@ namespace Calculates
                     pjmd = sum / 2;
                     pjmd = Round(pjmd, 2);
                     sitem["SO3"] = pjmd.ToString("0.00");
-                    if (IsQualified(mrsDj[0]["SO3"], sitem["SO3"]) == "符合")
+                    if (IsQualified(mrsDj[0]["SO3"], sitem["SO3"], true) == "符合")
                     {
                         sitem["SO3PD"] = "符合";
                         mFlag_Hg = true;
@@ -1216,6 +1234,7 @@ namespace Calculates
                 #region 坚固性
                 if (jcxm.Contains("、坚固性、"))
                 {
+                    jcxmCur = "坚固性";
                     sum = 0;
                     narr = new double[3, 5];
                     for (xd = 1; xd <= 4; xd++)
@@ -1249,7 +1268,7 @@ namespace Calculates
                     sitem["JGXPD"] = "";
                     foreach (var mrsDj_temp in mrsDj)
                     {
-                        if (IsQualified(mrsDj_temp["JGX"], sitem["JGX"]) == "符合")
+                        if (IsQualified(mrsDj_temp["JGX"], sitem["JGX"], true) == "符合")
                         {
                             sitem["JGXPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
                             break;
@@ -1287,47 +1306,220 @@ namespace Calculates
                 }
                 #endregion
 
-                switch (sitem["SJDJ"].Trim())
+                #region 石粉含量
+                sign = true;
+                if (jcxm.Contains("、石粉含量、"))
                 {
-                    case "Ⅰ类":
-                        Salbs = 1;
-                        break;
-                    case "Ⅱ类":
-                        Salbs = 2;
-                        break;
-                    case "Ⅲ类":
-                        Salbs = 3;
-                        break;
-                }
-                sitem["JCJG"] = mbhgs == 0 && zSalbs <= Salbs ? "合格" : "不合格";
-                mAllHg = (mAllHg && sitem["JCJG"] == "合格");
-                if (sitem["SJDJ"] != "----")
-                {
-                    if (mAllHg)
+                    jcxmCur = "石粉含量";
+                    /**
+                     * 亚甲蓝试验    
+                     * 亚加蓝MB值 = 加入的亚甲蓝溶液总量 / 试样质量 * 10    精确至 0.01    g/kg
+                     */
+                    sign = IsNumeric(sitem["YJLSYZL"]) ? sign : false;
+                    sign = IsNumeric(sitem["YJLRYZL"]) ? sign : false;
+                    if (sign)
                     {
-                        mitem["JCJG"] = "合格";
-                        mitem["JCJGMS"] = "该组试样所检项目依据" + mitem["PDBZ"] + "符合" + sitem["SJDJ"] + "砂的标准要求。";
+                        //亚甲蓝值 MB
+                        sitem["YJLZ"] = Round(GetSafeDouble(sitem["YJLRYZL"].Trim()) / GetSafeDouble(sitem["YJLSYZL"].Trim()) * 10, 2).ToString("0.00");
+                        if (IsNumeric(sitem["SYQHGZL1"]))
+                        {
+                            //亚甲蓝试验判定   MB值 ＜1.4  石粉为主     MB值 ≥1.4 泥粉为主
+                            // var mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"].Equals("石粉含量"));
+                            if (Conversion.Val(sitem["YJLZ"]) <= 1.4)
+                            {
+
+                                sitem["SFHL1"] = Round((GetSafeDouble(sitem["SYQHGZL1"].Trim()) - GetSafeDouble(sitem["SYHHGZL1"].Trim())) / GetSafeDouble(sitem["SYQHGZL1"].Trim()) * 100, 1).ToString("0.0");
+                                sitem["SFHL2"] = Round((GetSafeDouble(sitem["SYQHGZL2"].Trim()) - GetSafeDouble(sitem["SYHHGZL2"].Trim())) / GetSafeDouble(sitem["SYQHGZL2"].Trim()) * 100, 1).ToString("0.0");
+                                sitem["SFHLPJZ"] = Round((Conversion.Val(sitem["SFHL1"]) + Conversion.Val(sitem["SFHL2"])) / 2, 1).ToString("0.0");
+                                sitem["SFHLYQ"] = "≤10.0";
+                                sitem["SFHLPD"] = IsQualified(sitem["SFHLYQ"], sitem["SFHLPJZ"]);
+                            }
+                            else
+                            {
+
+                                sitem["SFHL1"] = Round((GetSafeDouble(sitem["SYQHGZL1"].Trim()) - GetSafeDouble(sitem["SYHHGZL1"].Trim())) / GetSafeDouble(sitem["SYQHGZL1"].Trim()) * 100, 1).ToString("0.0");
+                                sitem["SFHL2"] = Round((GetSafeDouble(sitem["SYQHGZL2"].Trim()) - GetSafeDouble(sitem["SYHHGZL2"].Trim())) / GetSafeDouble(sitem["SYQHGZL2"].Trim()) * 100, 1).ToString("0.0");
+                                sitem["SFHLPJZ"] = Round((Conversion.Val(sitem["SFHL1"]) + Conversion.Val(sitem["SFHL2"])) / 2, 1).ToString("0.0");
+                                if ("Ⅰ类" == sitem["NKHLPD"])
+                                {
+                                    sitem["SFHLYQ"] = "≤1.0";
+                                }
+                                else if ("Ⅱ类" == sitem["NKHLPD"])
+                                {
+                                    sitem["SFHLYQ"] = "≤3.0";
+                                }
+                                else if ("Ⅲ类" == sitem["NKHLPD"])
+                                {
+                                    sitem["SFHLYQ"] = "≤5.0";
+                                }
+                                else
+                                {
+                                    sitem["SFHLYQ"] = "----";
+                                }
+
+                                sitem["SFHLPD"] = IsQualified(sitem["SFHLYQ"], sitem["SFHLPJZ"]);
+
+                            }
+
+                            if (sitem["SFHLPD"] != "----")
+                            {
+                                if (sitem["SFHLPD"] == "不合格")
+                                {
+                                    jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                    mbhgs = mbhgs + 1;
+                                }
+                                if (Math.Abs(Conversion.Val(sitem["SFHL1"]) - Conversion.Val(sitem["SFHL2"])) > 0.5)
+                                {
+                                    sitem["SFHLPD"] = "重新试验";
+                                    sitem["SFHLPJZ"] = "重新试验";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //if (Conversion.Val(sitem["YJLZ"]) <= 1.4)
+                            //{
+                            //    sitem["YJLPD"] = "石粉为主";
+                            //}
+                            //else
+                            //{
+                            //    sitem["YJLPD"] = "泥粉为主";
+                            //}
+                            //亚甲蓝快速法
+                            if ("出现色晕" == sitem["SFHLSYGC"])
+                            {
+                                sitem["SFHLPD"] = "合格";
+                            }
+                            else
+                            {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mbhgs = mbhgs + 1;
+                                sitem["SFHLPD"] = "不合格";
+                            }
+                        }
                     }
                     else
                     {
-                        mitem["JCJG"] = "不合格";
-                        mitem["JCJGMS"] = "该组试样所检项目依据" + mitem["PDBZ"] + "不符合" + sitem["SJDJ"] + "砂的标准要求。";
-                        if (mFlag_Bhg && mFlag_Hg)
-                            mitem["JCJGMS"] = "该组试样所检项目依据" + mitem["PDBZ"] + "部分不符合" + sitem["SJDJ"] + "砂的标准要求。";
+                        throw new SystemException("石粉含量试验亚甲蓝试验数据录入有误");
                     }
                 }
                 else
-                    mitem["JCJGMS"] = "----";
-                if (sitem["JPPD"].Contains("不"))
                 {
-                    //mitem["JCJGMS"] = "该组试样颗粒级配不符合标准要求。";
-                    mitem["JCJG"] = "不合格";
-                    sitem["JCJG"] = "不合格";
+                    sitem["SFHLPJZ"] = "----";
+                    sitem["SFHLYQ"] = "----";
+                    sitem["SFHLPD"] = "----";
                 }
-            }
-            #endregion
+                    #endregion
+
+                    #region 贝壳含量
+                    if (jcxm.Contains("、贝壳含量、"))
+                    {
+                        jcxmCur = "贝壳含量";
+                        sign = true;
+                        sign = IsNumeric(sitem["BKHLSYZZ1"]) ? sign : false;
+                        sign = IsNumeric(sitem["BKHLSYZZ2"]) ? sign : false;
+                        sign = IsNumeric(sitem["BKHLSYCQBKHZL1"]) ? sign : false;
+                        sign = IsNumeric(sitem["BKHLSYCQBKHZL2"]) ? sign : false;
+                        if (sign)
+                        {
+                            sitem["BKHL1"] = Round((GetSafeDouble(sitem["BKHLSYZZ1"]) - GetSafeDouble(sitem["BKHLSYCQBKHZL1"])) / GetSafeDouble(sitem["BKHLSYZZ1"]) * 100 - GetSafeDouble(sitem["HNL"]), 1).ToString("0.0");
+                            sitem["BKHL2"] = Round((GetSafeDouble(sitem["BKHLSYZZ2"]) - GetSafeDouble(sitem["BKHLSYCQBKHZL2"])) / GetSafeDouble(sitem["BKHLSYZZ2"]) * 100 - GetSafeDouble(sitem["HNL"]), 1).ToString("0.0");
+                            if (Math.Abs(GetSafeDouble(sitem["BKHL1"]) - GetSafeDouble(sitem["BKHL2"])) > 0.5)
+                            {
+                                sitem["BKHL"] = "重新取样试验";
+                                //throw new SystemException();
+                            }
+                            else
+                            {
+                                sitem["BKHL"] = Round((GetSafeDouble(sitem["BKHL1"]) + GetSafeDouble(sitem["BKHL2"])) / 2, 1).ToString("0.0");
+                                foreach (var mrsDj_temp in mrsDj)
+                                {
+                                    if (IsQualified(mrsDj_temp["BKHL"], sitem["BKHL"], true) == "符合")
+                                    {
+                                        sitem["BKHLPD"] = mrsDj_temp["MC"].Trim().Substring(mrsDj_temp["MC"].Trim().Length - 2);
+                                        break;
+                                    }
+                                }
+                                if (sitem["BKHLPD"] == "")
+                                {
+                                    sitem["BKHLPD"] = "不符合";
+                                    mbhgs = mbhgs + 1;
+                                    mFlag_Bhg = true;
+                                }
+                                else
+                                    mFlag_Hg = true;
+
+                                switch (sitem["BKHLPD"].Trim())
+                                {
+                                    case "Ⅰ类":
+                                        zSalbs = zSalbs < 1 ? 1 : zSalbs;
+                                        break;
+                                    case "Ⅱ类":
+                                        zSalbs = zSalbs < 2 ? 2 : zSalbs;
+                                        break;
+                                    case "Ⅲ类":
+                                        zSalbs = zSalbs < 3 ? 3 : zSalbs;
+                                        break;
+                                    default:
+                                        zSalbs = zSalbs < 4 ? 4 : zSalbs;
+                                        break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new SystemException("贝壳含量试样数据录入有误");
+                        }
+                    }
+                    else
+                    {
+                        sitem["BKHL1"] = "----";
+                        sitem["BKHL2"] = "----";
+                        sitem["BKHL"] = "----";
+                    }
+                    #endregion
+
+                    switch (sitem["SJDJ"].Trim())
+                    {
+                        case "Ⅰ类":
+                            Salbs = 1;
+                            break;
+                        case "Ⅱ类":
+                            Salbs = 2;
+                            break;
+                        case "Ⅲ类":
+                            Salbs = 3;
+                            break;
+                    }
+                    sitem["JCJG"] = mbhgs == 0 && zSalbs <= Salbs ? "合格" : "不合格";
+                    mAllHg = (mAllHg && sitem["JCJG"] == "合格");
+                    if (sitem["SJDJ"] != "----")
+                    {
+                        if (mAllHg)
+                        {
+                            mitem["JCJG"] = "合格";
+                            mitem["JCJGMS"] = "该组试样所检项目依据" + mitem["PDBZ"] + "符合" + sitem["SJDJ"] + "砂的标准要求。";
+                        }
+                        else
+                        {
+                            mitem["JCJG"] = "不合格";
+                            mitem["JCJGMS"] = "该组试样所检项目依据" + mitem["PDBZ"] + "不符合" + sitem["SJDJ"] + "砂的标准要求。";
+                            if (mFlag_Bhg && mFlag_Hg)
+                                mitem["JCJGMS"] = "该组试样所检项目依据" + mitem["PDBZ"] + "部分不符合" + sitem["SJDJ"] + "砂的标准要求。";
+                        }
+                    }
+                    else
+                        mitem["JCJGMS"] = "----";
+                    if (sitem["JPPD"].Contains("不"))
+                    {
+                        //mitem["JCJGMS"] = "该组试样颗粒级配不符合标准要求。";
+                        mitem["JCJG"] = "不合格";
+                        sitem["JCJG"] = "不合格";
+                    }
+                }
+                #endregion
             #endregion
             /************************ 代码结束 *********************/
+            }
         }
     }
-}

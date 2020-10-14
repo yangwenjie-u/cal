@@ -167,9 +167,9 @@ namespace Calculates
                     mAllHg = (mAllHg && sitem["JCJG"] == "合格");
                     continue;
                 }
-                if (jcxm.Contains("、断裂强力、"))
+                if (jcxm.Contains("、断裂强力、") || jcxm.Contains("、拉伸断裂强力、"))
                 {
-                    jcxmCur = "断裂强力";
+                    jcxmCur = CurrentJcxm(jcxm, "断裂强力,拉伸断裂强力");
                     if ((Conversion.Val(sitem["CSQLJ1"]) + Conversion.Val(sitem["CSQLJ2"]) + Conversion.Val(sitem["CSQLJ3"]) + Conversion.Val(sitem["CSQLJ4"]) + Conversion.Val(sitem["CSQLJ5"])) != 0)
                     {
                         sitem["DLQLJ"] = Round((Conversion.Val(sitem["CSQLJ1"]) + Conversion.Val(sitem["CSQLJ2"]) + Conversion.Val(sitem["CSQLJ3"]) + Conversion.Val(sitem["CSQLJ4"]) + Conversion.Val(sitem["CSQLJ5"])) / 5, 0).ToString();

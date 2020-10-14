@@ -44,6 +44,11 @@ namespace Calculates
             if (string.IsNullOrEmpty(msyzl1.ToString()) || msyzl1 == 0)
                 msyzl1 = 500;
             mAllHg = true;
+
+            double fjsy1 = 0;
+            double fjsy2 = 0;
+            double fjsy3 = 0;
+            double fjsy4 = 0;
             foreach (var sitem in SItem)
             {
                 double mbhgs = 0;
@@ -85,6 +90,7 @@ namespace Calculates
                 double mljsyb5_2 = 0;
                 double mljsyb6_2 = 0;
                 double mljsyb7_2 = 0;
+
                 if (jcxm.Contains("、筛分析、"))
                 {
 
@@ -118,6 +124,15 @@ namespace Calculates
                         sitem["FJSY2_5"] = mFJSYB5_2.ToString("0.0");
                         sitem["FJSY2_6"] = mFJSYB6_2.ToString("0.0");
                         sitem["FJSY2_7"] = mFJSYB7_2.ToString("0.0");
+                        //以下四个分计筛余用于压碎值指标计算
+                        //2.50mm
+                        fjsy1 = Round((GetSafeDouble(sitem["FJSY1_2"]) + GetSafeDouble(sitem["FJSY2_2"])) / 2, 1);
+                        //1.25mm
+                        fjsy2 = Round((GetSafeDouble(sitem["FJSY1_3"]) + GetSafeDouble(sitem["FJSY2_3"])) / 2, 1);
+                        //630um
+                        fjsy3 = Round((GetSafeDouble(sitem["FJSY1_4"]) + GetSafeDouble(sitem["FJSY2_4"])) / 2, 1);
+                        //315um
+                        fjsy4 = Round((GetSafeDouble(sitem["FJSY1_5"]) + GetSafeDouble(sitem["FJSY2_5"])) / 2, 1);
                     }
                     mljsyb1 = Round(mFJSYB1, 1);
                     mljsyb2 = Round((mFJSYB1 + mFJSYB2), 1);
@@ -306,7 +321,8 @@ namespace Calculates
                             break;
                         }
                     }
-                    if (sitem["JGXPD"] == "")
+
+                    if (sitem["JGXPD"] == "" || sitem["JGXPD"] == "不符合")
                     {
                         sitem["JGXPD"] = "不符合";
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
@@ -625,7 +641,9 @@ namespace Calculates
                             //含泥量% = 试验前烘干试样的质量g/试验后烘干试样的质量g
                             mhnl1 = Round((GetSafeDouble(sitem["HNLG0"]) - GetSafeDouble(sitem["HNLG1"])) / GetSafeDouble(sitem["HNLG0"]) * 100, 1);
                             mhnl2 = Round((GetSafeDouble(sitem["HNLG0_2"]) - GetSafeDouble(sitem["HNLG1_2"])) / GetSafeDouble(sitem["HNLG0_2"]) * 100, 1);
-                            md = Round((mhnl1 + mhnl2) / 2, 1);
+                            sitem["HNL1"] = mhnl1.ToString("0.0");
+                            sitem["HNL2"] = mhnl2.ToString("0.0");
+                            md = Round((GetSafeDouble(sitem["HNL1"]) + GetSafeDouble(sitem["HNL2"])) / 2, 1);
                             sitem["HNL"] = md.ToString("0.0");
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("含泥量")).ToList();
                             foreach (var item in mrsZbyq_where)
@@ -647,11 +665,12 @@ namespace Calculates
                                 sitem["HNLPD"] = "两次结果之差超过0.5%需重新取样试验";
                                 sitem["HNLPD"] = "重新试验";
                             }
-
                         }
                     }
                     else
                     {
+                        sitem["HNL1"] = "----";
+                        sitem["HNL2"] = "----";
                         sitem["HNL"] = "----";
                         sitem["HNLPD"] = "----";
                     }
@@ -669,7 +688,9 @@ namespace Calculates
                         {
                             mnkhl1 = Round((GetSafeDouble(sitem["NKHLG1"]) - GetSafeDouble(sitem["NKHLG2"])) / GetSafeDouble(sitem["NKHLG1"]) * 100, 1);
                             mnkhl2 = Round((GetSafeDouble(sitem["NKHLG1_2"]) - GetSafeDouble(sitem["NKHLG2_2"])) / GetSafeDouble(sitem["NKHLG1_2"]) * 100, 1);
-                            md = Round((mnkhl1 + mnkhl2) / 2, 1);
+                            sitem["NKHL1"] = mnkhl1.ToString("0.0");
+                            sitem["NKHL2"] = mnkhl2.ToString("0.0");
+                            md = Round((GetSafeDouble(sitem["NKHL1"]) + GetSafeDouble(sitem["NKHL2"])) / 2, 1);
                             sitem["NKHL"] = md.ToString("0.0");
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("泥块含量")).ToList();
                             foreach (var item in mrsZbyq_where)
@@ -690,6 +711,8 @@ namespace Calculates
                     }
                     else
                     {
+                        sitem["NKHL1"] = "----";
+                        sitem["NKHL2"] = "----";
                         sitem["NKHLPD"] = "----";
                         sitem["NKHL"] = "----";
                     }
@@ -704,12 +727,16 @@ namespace Calculates
                         {
                             mdjmd1 = Round((Conversion.Val(sitem["DJMDG1"]) - Conversion.Val(sitem["DJMDG2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0) * 10;//标准文档要求精确到10kg/m³
                             mdjmd2 = Round((Conversion.Val(sitem["DJMDG1_2"]) - Conversion.Val(sitem["DJMDG2_2"])) / Conversion.Val(sitem["DJMDV"]) * 100, 0) * 10;
-                            sitem["DJMD"] = (Round((mdjmd1 + mdjmd2) / 20, 0) * 10).ToString();
+                            sitem["DJMD1"] = mdjmd1.ToString();
+                            sitem["DJMD2"] = mdjmd2.ToString();
+                            sitem["DJMD"] = (Round((GetSafeDouble(sitem["DJMD1"]) + GetSafeDouble(sitem["DJMD2"])) / 20, 0) * 10).ToString();
                             sitem["DJMDPD"] = "----";
                         }
                     }
                     else
                     {
+                        sitem["DJMD1"] = "----";
+                        sitem["DJMD2"] = "----";
                         sitem["DJMD"] = "----";
                         sitem["DJMDPD"] = "----";
                     }
@@ -724,12 +751,16 @@ namespace Calculates
                         {
                             mjmmd1 = Round((Conversion.Val(sitem["JMMDG1"]) - Conversion.Val(sitem["JMMDG2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0) * 10;//标准文档要求精确到10kg/m³
                             mjmmd2 = Round((Conversion.Val(sitem["JMMDG1_2"]) - Conversion.Val(sitem["JMMDG2_2"])) / Conversion.Val(sitem["JMMDV"]) * 100, 0) * 10;
-                            sitem["JMMD"] = (Round((mjmmd1 + mjmmd2) / 20, 0) * 10).ToString();
+                            sitem["JMMD1"] = mjmmd1.ToString();
+                            sitem["JMMD2"] = mjmmd2.ToString();
+                            sitem["JMMD"] = (Round((GetSafeDouble(sitem["JMMD1"]) + GetSafeDouble(sitem["JMMD2"])) / 20, 0) * 10).ToString();
                             sitem["JMMDPD"] = "----";
                         }
                     }
                     else
                     {
+                        sitem["JMMD1"] = "----";
+                        sitem["JMMD2"] = "----";
                         sitem["JMMD"] = "----";
                         sitem["JMMDPD"] = "----";
                     }
@@ -745,6 +776,8 @@ namespace Calculates
                             mbgmd1 = Round((Conversion.Val(sitem["BGMDG0"]) / (Conversion.Val(sitem["BGMDG0"]) + Conversion.Val(sitem["BGMDG2"]) - Conversion.Val(sitem["BGMDG1"])) - Conversion.Val(sitem["SWXZXS"])) * 100, 0) * 10;
                             mbgmd2 = Round(((Conversion.Val(sitem["BGMDG0_2"])) / (Conversion.Val(sitem["BGMDG0_2"]) + Conversion.Val(sitem["BGMDG2_2"]) - Conversion.Val(sitem["BGMDG1_2"])) - Conversion.Val(sitem["SWXZXS"])) * 100, 0) * 10;
                             md = Round((mbgmd1 + mbgmd2) / 20, 0) * 10;
+                            sitem["BGMD1"] = mbgmd1.ToString("0");
+                            sitem["BGMD2"] = mbgmd2.ToString("0");
                             sitem["BGMD"] = md.ToString("0");
                             sitem["BGMDPD"] = "----";
                             if (Math.Abs(mbgmd1 - mbgmd2) > 20)
@@ -760,6 +793,8 @@ namespace Calculates
                                 mbgmd1 = Round(((Conversion.Val(sitem["BGMDG0_3"])) / ((Conversion.Val(sitem["BGMDV2_3"])) - (Conversion.Val(sitem["BGMDV1_3"]))) - (Conversion.Val(sitem["SWXZXS"]))) * 100, 0) * 10;
                             mbgmd2 = Round(((Conversion.Val(sitem["BGMDG0_4"])) / ((Conversion.Val(sitem["BGMDV2_4"])) - (Conversion.Val(sitem["BGMDV1_4"]))) - (Conversion.Val(sitem["SWXZXS"]))) * 100, 0) * 10;
                             md = Round((mbgmd1 + mbgmd2) / 20, 0) * 10;
+                            sitem["BGMD1"] = mbgmd1.ToString("0");
+                            sitem["BGMD2"] = mbgmd2.ToString("0");
                             sitem["BGMD"] = md.ToString("0");
                             sitem["BGMDPD"] = "----";
                             if (Math.Abs((mbgmd1 - mbgmd2)) > 20)
@@ -810,11 +845,13 @@ namespace Calculates
                          * 氯离子含量 = [硝酸盐标准溶液浓度C AgNO3  * (样品滴定时消耗的硝酸银标准溶液的体积 V1 - 空白试验时消耗的硝酸银标准溶液的体积) * 0.0355 * 10 ] / 试样质量 m * 100
                          * 精确至0.001%
                          */
-                        md = Round((GetSafeDouble(sitem["LLZV"]) - GetSafeDouble(sitem["LLZV0"])) * GetSafeDouble(sitem["LLZC"]) * 35.5 / 500, 3);
+                        sitem["LLZC"] = "0.01";
+                        md = Round((GetSafeDouble(sitem["LLZV"]) - GetSafeDouble(sitem["LLZV0"])) * 0.01 * 35.5 / 500, 3);
                         sitem["LLZHL"] = md.ToString("0.000");
-                        var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("氯离子含量") && x["SPZ"].Equals(sitem["SYT"].Trim())).ToList();
+                        var mrsZbyq_where = mrsZbyq.Where(x => x["MC"] == ("氯离子含量") && x["SPZ"] == sitem["SYT"].Trim()).ToList();
                         foreach (var item in mrsZbyq_where)
                         {
+                            sitem["LLZHLYQ"] = item["YQ"];
                             if (IsQualified(item["YQ"], sitem["LLZHL"], true) == "符合")
                             {
                                 sitem["LLZHLPD"] = item["DJ"].Trim();
@@ -875,7 +912,9 @@ namespace Calculates
                         {
                             mxsl1 = Round((500 - (GetSafeDouble(sitem["XSLG2"]) - GetSafeDouble(sitem["XSLG1"]))) / (GetSafeDouble(sitem["XSLG2"]) - GetSafeDouble(sitem["XSLG1"])) * 100, 1);
                             mxsl2 = Round((500 - (GetSafeDouble(sitem["XSLG2_2"]) - GetSafeDouble(sitem["XSLG1_2"]))) / (GetSafeDouble(sitem["XSLG2_2"]) - GetSafeDouble(sitem["XSLG1_2"])) * 100, 1);
-                            md = Round((mxsl1 + mxsl2) / 2, 1);
+                            sitem["XSL1"] = mxsl1.ToString("0.0");
+                            sitem["XSL2"] = mxsl2.ToString("0.0");
+                            md = Round((GetSafeDouble(sitem["XSL1"]) + GetSafeDouble(sitem["XSL2"])) / 2, 1);
                             sitem["XSL"] = md.ToString("0.0");
                             if (Math.Abs((mxsl1 - mxsl2)) > 0.2)
                             {
@@ -902,13 +941,17 @@ namespace Calculates
                         {
                             mhsl1 = Round((GetSafeDouble(sitem["HSLG2"]) - GetSafeDouble(sitem["HSLG3"])) / (GetSafeDouble(sitem["HSLG3"]) - GetSafeDouble(sitem["HSLG1"])) * 100, 1);
                             mhsl2 = Round((GetSafeDouble(sitem["HSLG2_2"]) - GetSafeDouble(sitem["HSLG3_2"])) / (GetSafeDouble(sitem["HSLG3_2"]) - GetSafeDouble(sitem["HSLG1_2"])) * 100, 1);
-                            md = Round((mhsl1 + mhsl2) / 2, 1);
+                            sitem["HSL1"] = mhsl1.ToString("0.0");
+                            sitem["HSL2"] = mhsl2.ToString("0.0");
+                            md = Round((GetSafeDouble(sitem["HSL1"]) + GetSafeDouble(sitem["HSL2"])) / 2, 1);
                             sitem["HSL"] = md.ToString("0.0");
                         }
                         sitem["HSLPD"] = "";
                     }
                     else
                     {
+                        sitem["HSL1"] = "----";
+                        sitem["HSL2"] = "----";
                         sitem["HSLPD"] = "----";
                         sitem["HSL"] = "----";
                     }
@@ -930,11 +973,14 @@ namespace Calculates
                         {
                             mbkhl1 = Round((GetSafeDouble(sitem["BKHLM1"]) - GetSafeDouble(sitem["BKHLM2"])) / GetSafeDouble(sitem["BKHLM1"]) * 100 - GetSafeDouble(sitem["HNL"]), 1);
                             mbkhl2 = Round((GetSafeDouble(sitem["BKHLM1_2"]) - GetSafeDouble(sitem["BKHLM2_2"])) / GetSafeDouble(sitem["BKHLM1_2"]) * 100 - GetSafeDouble(sitem["HNL"]), 1);
+                            sitem["BKHL1"] = mbkhl1.ToString("0.0");
+                            sitem["BKHL2"] = mbkhl2.ToString("0.0");
                             md = Round((mbkhl1 + mbkhl2) / 2, 1);
                             sitem["BKHL"] = md.ToString("0.0");
                             var mrsZbyq_where = mrsZbyq.Where(x => x["MC"].Equals("贝壳含量")).ToList();
                             foreach (var item in mrsZbyq_where)
                             {
+                                sitem["BKHLYQ"] = item["YQ"];
                                 if (IsQualified(item["YQ"], sitem["BKHL"], true) == "符合")
                                 {
                                     sitem["BKHLPD"] = item["DJ"].Trim();
@@ -1101,64 +1147,93 @@ namespace Calculates
                         {
                             //亚甲蓝值 MB
                             sitem["YJLZ"] = Round(GetSafeDouble(sitem["YJLRYZL"].Trim()) / GetSafeDouble(sitem["YJLSYZL"].Trim()) * 10, 2).ToString("0.00");
-                            //亚甲蓝试验判定   MB值 ＜1.4  石粉为主     MB值 ≥1.4 泥粉为主
-                            var mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"].Equals("石粉含量"));
-                            if (Conversion.Val(sitem["YJLZ"]) < 1.4)
+                            if (IsNumeric(sitem["SYQHGZL1"]))
                             {
-                                sitem["YJLPD"] = "石粉为主";
-                                mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"] == "石粉含量" && x["MB"] == "＜1.4" && x["DJ"] == sitem["NKHLPD"]);
-                                if (mrsZbyqDj != null && mrsZbyqDj.Count > 0)
+                                //亚甲蓝试验判定   MB值 ＜1.4  石粉为主     MB值 ≥1.4 泥粉为主
+                                var mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"].Equals("石粉含量"));
+                                if (Conversion.Val(sitem["YJLZ"]) < 1.4)
                                 {
-                                    sitem["SFHL1"] = Round((GetSafeDouble(sitem["SYQHGZL1"].Trim()) - GetSafeDouble(sitem["SYHHGZL1"].Trim())) / GetSafeDouble(sitem["SYQHGZL1"].Trim()) * 100, 1).ToString("0.0");
-                                    sitem["SFHL2"] = Round((GetSafeDouble(sitem["SYQHGZL2"].Trim()) - GetSafeDouble(sitem["SYHHGZL2"].Trim())) / GetSafeDouble(sitem["SYQHGZL2"].Trim()) * 100, 1).ToString("0.0");
-                                    sitem["SFHLPJZ"] = Round((Conversion.Val(sitem["SFHL1"]) + Conversion.Val(sitem["SFHL2"])) / 2, 1).ToString("0.0");
-                                    sitem["SFHLYQ"] = mrsZbyqDj["YQ"];
-                                    sitem["SFHLPD"] = IsQualified(sitem["SFHLYQ"], sitem["SFHLPJZ"]);
+                                    sitem["YJLPD"] = "石粉为主";
+                                    mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"] == "石粉含量" && x["MB"] == "＜1.4" && x["DJ"] == sitem["NKHLPD"]);
+                                    if (mrsZbyqDj != null && mrsZbyqDj.Count > 0)
+                                    {
+                                        sitem["SFHL1"] = Round((GetSafeDouble(sitem["SYQHGZL1"].Trim()) - GetSafeDouble(sitem["SYHHGZL1"].Trim())) / GetSafeDouble(sitem["SYQHGZL1"].Trim()) * 100, 1).ToString("0.0");
+                                        sitem["SFHL2"] = Round((GetSafeDouble(sitem["SYQHGZL2"].Trim()) - GetSafeDouble(sitem["SYHHGZL2"].Trim())) / GetSafeDouble(sitem["SYQHGZL2"].Trim()) * 100, 1).ToString("0.0");
+                                        sitem["SFHLPJZ"] = Round((Conversion.Val(sitem["SFHL1"]) + Conversion.Val(sitem["SFHL2"])) / 2, 1).ToString("0.0");
+                                        sitem["SFHLYQ"] = mrsZbyqDj["YQ"];
+                                        sitem["SFHLPD"] = IsQualified(sitem["SFHLYQ"], sitem["SFHLPJZ"]);
+                                    }
+                                    else
+                                    {
+                                        sitem["SFHL1"] = "----";
+                                        sitem["SFHL2"] = "----";
+                                        sitem["SFHLPJZ"] = "----";
+                                        sitem["SFHLYQ"] = "获取技术指标失败";
+                                        sitem["SFHLPD"] = "----";
+                                    }
                                 }
                                 else
                                 {
-                                    sitem["SFHL1"] = "----";
-                                    sitem["SFHL2"] = "----";
-                                    sitem["SFHLPJZ"] = "----";
-                                    sitem["SFHLYQ"] = "获取技术指标失败";
-                                    sitem["SFHLPD"] = "----";
+                                    sitem["YJLPD"] = "泥粉为主";
+                                    mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"] == "石粉含量" && x["MB"] == "≥1.4" && x["DJ"] == sitem["NKHLPD"]);
+                                    if (mrsZbyqDj != null && mrsZbyqDj.Count > 0)
+                                    {
+                                        sitem["SFHL1"] = Round((GetSafeDouble(sitem["SYQHGZL1"].Trim()) - GetSafeDouble(sitem["SYHHGZL1"].Trim())) / GetSafeDouble(sitem["SYQHGZL1"].Trim()) * 100, 1).ToString("0.0");
+                                        sitem["SFHL2"] = Round((GetSafeDouble(sitem["SYQHGZL2"].Trim()) - GetSafeDouble(sitem["SYHHGZL2"].Trim())) / GetSafeDouble(sitem["SYQHGZL2"].Trim()) * 100, 1).ToString("0.0");
+                                        sitem["SFHLPJZ"] = Round((Conversion.Val(sitem["SFHL1"]) + Conversion.Val(sitem["SFHL2"])) / 2, 1).ToString("0.0");
+                                        sitem["SFHLYQ"] = mrsZbyqDj["YQ"];
+                                        sitem["SFHLPD"] = IsQualified(sitem["SFHLYQ"], sitem["SFHLPJZ"]);
+                                    }
+                                    else
+                                    {
+                                        sitem["SFHL1"] = "----";
+                                        sitem["SFHL2"] = "----";
+                                        sitem["SFHLPJZ"] = "----";
+                                        sitem["SFHLYQ"] = "获取技术指标失败";
+                                        sitem["SFHLPD"] = "----";
+                                    }
+                                }
+
+                                if (sitem["SFHLPD"] != "----")
+                                {
+                                    if (sitem["SFHLPD"] == "不合格")
+                                    {
+                                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                        mbhgs = mbhgs + 1;
+                                    }
+                                    if (Math.Abs(Conversion.Val(sitem["SFHL1"]) - Conversion.Val(sitem["SFHL2"])) > 0.5)
+                                    {
+                                        sitem["SFHLPD"] = "重新试验";
+                                        sitem["SFHLPJZ"] = "重新试验";
+                                    }
                                 }
                             }
                             else
                             {
-                                sitem["YJLPD"] = "泥粉为主";
-                                mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"] == "石粉含量" && x["MB"] == "≥1.4" && x["DJ"] == sitem["NKHLPD"]);
-                                if (mrsZbyqDj != null && mrsZbyqDj.Count > 0)
+                                if (Conversion.Val(sitem["YJLZ"]) < 1.4)
                                 {
-                                    sitem["SFHL1"] = Round((GetSafeDouble(sitem["SYQHGZL1"].Trim()) - GetSafeDouble(sitem["SYHHGZL1"].Trim())) / GetSafeDouble(sitem["SYQHGZL1"].Trim()) * 100, 1).ToString("0.0");
-                                    sitem["SFHL2"] = Round((GetSafeDouble(sitem["SYQHGZL2"].Trim()) - GetSafeDouble(sitem["SYHHGZL2"].Trim())) / GetSafeDouble(sitem["SYQHGZL2"].Trim()) * 100, 1).ToString("0.0");
-                                    sitem["SFHLPJZ"] = Round((Conversion.Val(sitem["SFHL1"]) + Conversion.Val(sitem["SFHL2"])) / 2, 1).ToString("0.0");
-                                    sitem["SFHLYQ"] = mrsZbyqDj["YQ"];
-                                    sitem["SFHLPD"] = IsQualified(sitem["SFHLYQ"], sitem["SFHLPJZ"]);
+                                    sitem["YJLPD"] = "石粉为主";
                                 }
                                 else
                                 {
-                                    sitem["SFHL1"] = "----";
-                                    sitem["SFHL2"] = "----";
-                                    sitem["SFHLPJZ"] = "----";
-                                    sitem["SFHLYQ"] = "获取技术指标失败";
-                                    sitem["SFHLPD"] = "----";
+                                    sitem["YJLPD"] = "泥粉为主";
                                 }
-                            }
-
-                            if (sitem["SFHLPD"] != "----")
-                            {
-                                if (sitem["SFHLPD"] == "不合格")
+                                //亚甲蓝快速法
+                                if ("出现色晕" == sitem["SFHLSYGC"])
+                                {
+                                    sitem["SFHLPD"] = "合格";
+                                }
+                                else
                                 {
                                     jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                                     mbhgs = mbhgs + 1;
-                                }
-                                if (Math.Abs(Conversion.Val(sitem["SFHL1"]) - Conversion.Val(sitem["SFHL2"])) > 0.5)
-                                {
-                                    sitem["SFHLPD"] = "重新试验";
-                                    sitem["SFHLPJZ"] = "重新试验";
+                                    sitem["SFHLPD"] = "不合格";
                                 }
                             }
+                        }
+                        else
+                        {
+                            throw new SystemException("石粉含量试验亚甲蓝试验数据录入有误");
                         }
                     }
                     else
@@ -1166,6 +1241,93 @@ namespace Calculates
                         sitem["SFHLPJZ"] = "----";
                         sitem["SFHLYQ"] = "----";
                         sitem["SFHLPD"] = "----";
+                    }
+                    #endregion
+
+                    #region 压碎值指标   
+                    sign = true;
+                    if (jcxm.Contains("、压碎值、") || jcxm.Contains("、压碎值指标、"))
+                    {
+                        var mrsZbyqDj = mrsZbyq.FirstOrDefault(x => x["MC"].Equals("压碎值指标"));
+                        if (mrsZbyqDj != null && mrsZbyqDj.Count > 0)
+                        {
+                            sitem["YSZYQ"] = mrsZbyqDj["YQ"].Trim();
+                        }
+                        else
+                        {
+                            sitem["YSZYQ"] = "压碎值指标标准要求获取失败";
+                            continue;
+                        }
+                        //人工砂才做压碎值指标试验
+                        jcxmCur = "压碎值指标";
+                        for (int i = 1; i < 3; i++)
+                        {
+                            sign = IsNumeric(sitem["YSZ1_1_" + i]);
+                            sign = IsNumeric(sitem["YSZ2_1_" + i]);
+                            sign = IsNumeric(sitem["YSZ3_1_" + i]);
+                            sign = IsNumeric(sitem["YSZ4_1_" + i]);
+                            sign = IsNumeric(sitem["YSZ1_2_" + i]);
+                            sign = IsNumeric(sitem["YSZ2_2_" + i]);
+                            sign = IsNumeric(sitem["YSZ3_2_" + i]);
+                            sign = IsNumeric(sitem["YSZ4_2_" + i]);
+                            sign = IsNumeric(sitem["YSZ1_3_" + i]);
+                            sign = IsNumeric(sitem["YSZ2_3_" + i]);
+                            sign = IsNumeric(sitem["YSZ3_3_" + i]);
+                            sign = IsNumeric(sitem["YSZ4_3_" + i]);
+                        }
+                        if (sign)
+                        {
+                            //单个压碎值计算   试样质量  - 试样压碎后筛余质量 / 试样质量   *  100%
+                            //第一单级 5.00 ~ 2.50
+                            sitem["YSZSC1_1_1"] = Round((GetSafeDouble(sitem["YSZ1_1_1"].Trim()) - GetSafeDouble(sitem["YSZ1_1_2"].Trim())) / GetSafeDouble(sitem["YSZ1_1_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZSC1_2_1"] = Round((GetSafeDouble(sitem["YSZ1_2_1"].Trim()) - GetSafeDouble(sitem["YSZ1_2_2"].Trim())) / GetSafeDouble(sitem["YSZ1_2_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZSC1_3_1"] = Round((GetSafeDouble(sitem["YSZ1_3_1"].Trim()) - GetSafeDouble(sitem["YSZ1_3_2"].Trim())) / GetSafeDouble(sitem["YSZ1_3_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZPJ1"] = Round((GetSafeDouble(sitem["YSZSC1_1_1"]) + GetSafeDouble(sitem["YSZSC1_2_1"]) + GetSafeDouble(sitem["YSZSC1_3_1"])) / 3, 1).ToString("0.0");
+                            //第二单级 2.50~1.25
+                            sitem["YSZSC1_1_2"] = Round((GetSafeDouble(sitem["YSZ2_1_1"].Trim()) - GetSafeDouble(sitem["YSZ2_1_2"].Trim())) / GetSafeDouble(sitem["YSZ2_1_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZSC1_2_2"] = Round((GetSafeDouble(sitem["YSZ2_2_1"].Trim()) - GetSafeDouble(sitem["YSZ2_2_2"].Trim())) / GetSafeDouble(sitem["YSZ2_2_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZSC1_3_2"] = Round((GetSafeDouble(sitem["YSZ2_3_1"].Trim()) - GetSafeDouble(sitem["YSZ2_3_2"].Trim())) / GetSafeDouble(sitem["YSZ2_3_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZPJ2"] = Round((GetSafeDouble(sitem["YSZSC1_1_2"]) + GetSafeDouble(sitem["YSZSC1_2_2"]) + GetSafeDouble(sitem["YSZSC1_3_2"])) / 3, 1).ToString("0.0");
+                            //第三单级
+                            sitem["YSZSC1_1_3"] = Round((GetSafeDouble(sitem["YSZ3_1_1"].Trim()) - GetSafeDouble(sitem["YSZ3_1_2"].Trim())) / GetSafeDouble(sitem["YSZ3_1_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZSC1_2_3"] = Round((GetSafeDouble(sitem["YSZ3_2_1"].Trim()) - GetSafeDouble(sitem["YSZ3_2_2"].Trim())) / GetSafeDouble(sitem["YSZ3_2_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZSC1_3_3"] = Round((GetSafeDouble(sitem["YSZ3_3_1"].Trim()) - GetSafeDouble(sitem["YSZ3_3_2"].Trim())) / GetSafeDouble(sitem["YSZ3_3_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZPJ3"] = Round((GetSafeDouble(sitem["YSZSC1_1_3"]) + GetSafeDouble(sitem["YSZSC1_2_3"]) + GetSafeDouble(sitem["YSZSC1_3_3"])) / 3, 1).ToString("0.0");
+                            //第四单级
+                            sitem["YSZSC1_1_4"] = Round((GetSafeDouble(sitem["YSZ4_1_1"].Trim()) - GetSafeDouble(sitem["YSZ4_1_2"].Trim())) / GetSafeDouble(sitem["YSZ4_1_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZSC1_2_4"] = Round((GetSafeDouble(sitem["YSZ4_2_1"].Trim()) - GetSafeDouble(sitem["YSZ4_2_2"].Trim())) / GetSafeDouble(sitem["YSZ4_2_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZSC1_3_4"] = Round((GetSafeDouble(sitem["YSZ4_3_1"].Trim()) - GetSafeDouble(sitem["YSZ4_3_2"].Trim())) / GetSafeDouble(sitem["YSZ4_3_1"].Trim()) * 100, 1).ToString("0.0");
+                            sitem["YSZPJ4"] = Round((GetSafeDouble(sitem["YSZSC1_1_4"]) + GetSafeDouble(sitem["YSZSC1_2_4"]) + GetSafeDouble(sitem["YSZSC1_3_4"])) / 3, 1).ToString("0.0");
+                            //总压碎值指标 
+                            //2.50mm 分计筛余
+                            sitem["YSZZZZ"] = Round((fjsy1 * GetSafeDouble(sitem["YSZPJ1"]) + fjsy2 * GetSafeDouble(sitem["YSZPJ2"]) + fjsy3 * GetSafeDouble(sitem["YSZPJ3"]) + fjsy4 * GetSafeDouble(sitem["YSZPJ4"]))
+                                / (fjsy1 + fjsy2 + fjsy3 + fjsy4), 1).ToString("0.0");
+
+                            if ("合格" == IsQualified(sitem["YSZYQ"], sitem["YSZZZZ"]))
+                            {
+                                sitem["YSZPD"] = "合格";
+                            }
+                            else
+                            {
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                                mbhgs = mbhgs + 1;
+                                sitem["YSZPD"] = "不合格";
+                            }
+                        }
+                        else
+                        {
+                            throw new SystemException("压碎值指标试验数据录入有误");
+                        }
+                    }
+                    else
+                    {
+                        sitem["YSZPD"] = "----";
+                        sitem["YSZZZZ"] = "----";
+                        sitem["YSZYQ"] = "----";
+                        sitem["YSZPJ1"] = "----";
+                        sitem["YSZPJ2"] = "----";
+                        sitem["YSZPJ3"] = "----";
+                        sitem["YSZPJ4"] = "----";
                     }
                     #endregion
 
@@ -1245,11 +1407,11 @@ namespace Calculates
                 //mitem["JCJGMS"] = "该组试样所检项目符合上述标准要求。";
                 if (dj == "不符合级配")
                 {
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",不符合级配。";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所检项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",不符合级配。";
                 }
                 else
                 {
-                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所属项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",符合" + dj + "的混凝土用砂。";
+                    mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + ",所检项目属于" + SItem[0]["JPPD"] + SItem[0]["XDMSPD"] + ",符合" + dj + "的混凝土用砂。";
                 }
             }
             else

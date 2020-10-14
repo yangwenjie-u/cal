@@ -86,7 +86,7 @@ namespace Calculates
                         jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，该批产品不合格。";
                         mAllHg = false;
                     }
-
+                    sItem["G_XSL"] = "≤" + sItem["G_XSL"];
                  }
                 else
                 {

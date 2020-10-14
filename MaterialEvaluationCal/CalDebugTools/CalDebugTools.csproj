@@ -141,6 +141,7 @@
     <Compile Include="Common\Comm.cs" />
     <Compile Include="Common\CSetLineSpace.cs" />
     <Compile Include="Common\Data.cs" />
+    <Compile Include="Common\DataBaseType.cs" />
     <Compile Include="Common\DBUtility\BaseDal.cs" />
     <Compile Include="Common\DBUtility\JsonHelper.cs" />
     <Compile Include="Common\DBUtility\SqlBase.cs" />

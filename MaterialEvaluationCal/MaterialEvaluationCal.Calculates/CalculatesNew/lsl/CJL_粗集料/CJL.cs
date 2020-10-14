@@ -100,7 +100,7 @@ namespace Calculates
                     for (int i = 1; i < 3; i++)
                     {
                         //损耗质量   干燥试样总量 - 水洗后0.075筛下量(g)1
-                        sItem["SYSH" + i] = (GetSafeDouble(sItem["GZSYZL" + i]) - (GetSafeDouble(sItem["SXHSXL" + i]) + GetSafeDouble(sItem["SXHSSZL" + i]))).ToString("0.00");
+                        sItem["SYSH" + i] = (GetSafeDecimal(sItem["GZSYZL" + i]) - (GetSafeDecimal(sItem["SXHSXL" + i]) + GetSafeDecimal(sItem["SXHSSZL" + i]))).ToString("0.00");
                         //损耗率
                         sItem["SYSHL" + i] = Round(GetSafeDouble(sItem["SYSH" + i]) / GetSafeDouble(sItem["GZSYZL" + i].Trim()) * 100, 1).ToString("0.00");
                     }
@@ -526,19 +526,19 @@ namespace Calculates
                                 //表干相对密度   集料表干质量 / （集料表干质量 + 水、瓶及玻璃片总质量(g) - 集料试样、水、瓶及玻璃片总质量(g)）
                                 sItem["XDMDBG" + i] = Round(GetSafeDouble(sItem["BGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim()) + GetSafeDouble(sItem["SPBZJL" + i].Trim()) - GetSafeDouble(sItem["JLSYSBZJL" + i].Trim())), 3).ToString("0.000");
                                 //毛体积相对密度   集料的烘干质量 / （集料表干质量+水、瓶及玻璃片总质量(g) - 集料试样、水、瓶及玻璃片总质量(g)）
-                                sItem["MTJXDMD" + i] = Round(GetSafeDouble(sItem["HGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim())+ GetSafeDouble(sItem["SPBZJL" + i].Trim()) - GetSafeDouble(sItem["JLSYSBZJL" + i].Trim())), 3).ToString("0.000");
-                              
+                                sItem["MTJXDMD" + i] = Round(GetSafeDouble(sItem["HGZL" + i].Trim()) / (GetSafeDouble(sItem["BGZL" + i].Trim()) + GetSafeDouble(sItem["SPBZJL" + i].Trim()) - GetSafeDouble(sItem["JLSYSBZJL" + i].Trim())), 3).ToString("0.000");
+
                                 //if (IsNumeric(sItem["BHZTHSSZL1"]) && IsNumeric(sItem["BHZTHSSZL2"]))
                                 //{
-                                    //吸水率还有一种计算方式 水泥混凝土需要以饱和面干试样作为基准求取集料的吸水率
-                                   // sItem["XSL" + i] = Round((GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["HGZL" + i].Trim())) / GetSafeDouble(sItem["BGZL" + i].Trim()) * 100, 1).ToString("0.0");
+                                //吸水率还有一种计算方式 水泥混凝土需要以饱和面干试样作为基准求取集料的吸水率
+                                // sItem["XSL" + i] = Round((GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["HGZL" + i].Trim())) / GetSafeDouble(sItem["BGZL" + i].Trim()) * 100, 1).ToString("0.0");
                                 //}
                                 //else
                                 //{
-                                    //吸水率   (集料表干质量 - 集料的烘干质量) / 集料的烘干质量 * 100    精确至 0.1%
-                                    sItem["XSL" + i] = Round((GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["HGZL" + i].Trim())) / GetSafeDouble(sItem["HGZL" + i].Trim()) * 100, 1).ToString("0.0");
+                                //吸水率   (集料表干质量 - 集料的烘干质量) / 集料的烘干质量 * 100    精确至 0.1%
+                                sItem["XSL" + i] = Round((GetSafeDouble(sItem["BGZL" + i].Trim()) - GetSafeDouble(sItem["HGZL" + i].Trim())) / GetSafeDouble(sItem["HGZL" + i].Trim()) * 100, 1).ToString("0.0");
                                 //}
-                                
+
                             }
                         }
                         //平均表观相对密度
@@ -629,23 +629,39 @@ namespace Calculates
                 #region 含泥量
                 if (jcxm.Contains("、含泥量、"))
                 {
-                    jcxmCur = "含泥量";
-                    if (IsNumeric(ET_HNL["Q_ZL1"]) && IsNumeric(ET_HNL["Q_ZL2"]) && IsNumeric(ET_HNL["H_ZL1"]) && IsNumeric(ET_HNL["H_ZL2"]))
+                    //试验员约定  送样方委托检测项目出错时 补丁
+                    if ("----" == ET_HNL["Q_ZL1"])
                     {
-                        ET_HNL["HNL1"] = Round((GetSafeDouble(ET_HNL["Q_ZL1"].Trim()) - GetSafeDouble(ET_HNL["H_ZL1"].Trim())) / GetSafeDouble(ET_HNL["Q_ZL1"].Trim()) * 100, 1).ToString("0.0");
-                        ET_HNL["HNL2"] = Round((GetSafeDouble(ET_HNL["Q_ZL2"].Trim()) - GetSafeDouble(ET_HNL["H_ZL2"].Trim())) / GetSafeDouble(ET_HNL["Q_ZL2"].Trim()) * 100, 1).ToString("0.0");
-                        ET_HNL["HNL"] = Round((GetSafeDouble(ET_HNL["HNL1"]) + GetSafeDouble(ET_HNL["HNL2"])) / 2, 1).ToString("0.0");
+                        ET_HNL["Q_ZL2"] = "----";
+                        ET_HNL["H_ZL1"] = "----";
+                        ET_HNL["H_ZL2"] = "----";
+                        ET_HNL["HNL1"] = "----";
+                        ET_HNL["HNL2"] = "----";
+                        ET_HNL["HNL"] = "----";
+                        sItem["HNL_GH"] = "----";
+                        sItem["G_HNL"] = "----";
+                        sItem["W_HNL"] = "----";
                     }
                     else
                     {
-                        throw new SystemException("含泥量数据录入有误");
-                    }
-                    sItem["W_HNL"] = ET_HNL["HNL"];
-                    sItem["HNL_GH"] = IsQualified(sItem["G_HNL"], sItem["W_HNL"], true);
-                    if (sItem["HNL_GH"] == "不符合")
-                    {
-                        mAllHg = false;
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        jcxmCur = "含泥量";
+                        if (IsNumeric(ET_HNL["Q_ZL1"]) && IsNumeric(ET_HNL["Q_ZL2"]) && IsNumeric(ET_HNL["H_ZL1"]) && IsNumeric(ET_HNL["H_ZL2"]))
+                        {
+                            ET_HNL["HNL1"] = Round((GetSafeDouble(ET_HNL["Q_ZL1"].Trim()) - GetSafeDouble(ET_HNL["H_ZL1"].Trim())) / GetSafeDouble(ET_HNL["Q_ZL1"].Trim()) * 100, 1).ToString("0.0");
+                            ET_HNL["HNL2"] = Round((GetSafeDouble(ET_HNL["Q_ZL2"].Trim()) - GetSafeDouble(ET_HNL["H_ZL2"].Trim())) / GetSafeDouble(ET_HNL["Q_ZL2"].Trim()) * 100, 1).ToString("0.0");
+                            ET_HNL["HNL"] = Round((GetSafeDouble(ET_HNL["HNL1"]) + GetSafeDouble(ET_HNL["HNL2"])) / 2, 1).ToString("0.0");
+                        }
+                        else
+                        {
+                            throw new SystemException("含泥量数据录入有误");
+                        }
+                        sItem["W_HNL"] = ET_HNL["HNL"];
+                        sItem["HNL_GH"] = IsQualified(sItem["G_HNL"], sItem["W_HNL"], true);
+                        if (sItem["HNL_GH"] == "不符合")
+                        {
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -673,61 +689,78 @@ namespace Calculates
                 #region 针状和片状颗粒总含量  || 针片状
                 if (jcxm.Contains("、针状和片状颗粒总含量、") || jcxm.Contains("、针片状、"))
                 {
-                    jcxmCur = "针状和片状颗粒总含量";
-                    var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["DLDJ"] == sItem["DLDJ"]);
-                    if (null == mrsDj_Filter)
+                    //试验员约定  送样方委托检测项目出错时 补丁
+                    if ("----" == EJL_ZPZ["ZZL1"])
                     {
-                        sItem["JCJG"] = "不下结论";
-                        mAllHg = false;
-                        continue;
+                        EJL_ZPZ["KLZL1"] = "----";
+                        EJL_ZPZ["KLZL2"] = "----";
+                        EJL_ZPZ["KLZL3"] = "----";
+                        EJL_ZPZ["ZZL2"] = "----";
+                        EJL_ZPZ["ZZL3"] = "----";
+                        EJL_ZPZ["ZPZ1"] = "----";
+                        EJL_ZPZ["ZPZ2"] = "----";
+                        EJL_ZPZ["ZPZ3"] = "----";
+                        EJL_ZPZ["ZPZ"] = "----";
+                        sItem["ZZKL_GH"] = "----";
+                        sItem["G_ZZKL"] = "----";
+                        sItem["W_ZZKL"] = "----";
                     }
                     else
                     {
-                        sItem["G_ZZKL"] = mrsDj_Filter["G_ZPZ"];
-                    }
-                    if (IsNumeric(EJL_ZPZ["KLZL1"]) && IsNumeric(EJL_ZPZ["KLZL2"]) && IsNumeric(EJL_ZPZ["ZZL1"]) && IsNumeric(EJL_ZPZ["ZZL2"]))
-                    {
-
-                        if (IsNumeric(EJL_ZPZ["KLZL3"]) && IsNumeric(EJL_ZPZ["ZZL3"]))
+                        jcxmCur = "针状和片状颗粒总含量";
+                        var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["DLDJ"] == sItem["DLDJ"]);
+                        if (null == mrsDj_Filter)
                         {
-                            EJL_ZPZ["ZPZ1"] = Round(GetSafeDouble(EJL_ZPZ["KLZL1"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL1"].Trim()) * 100, 1).ToString("0.0");
-                            EJL_ZPZ["ZPZ2"] = Round(GetSafeDouble(EJL_ZPZ["KLZL2"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL2"].Trim()) * 100, 1).ToString("0.0");
-                            EJL_ZPZ["ZPZ3"] = Round(GetSafeDouble(EJL_ZPZ["KLZL3"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL3"].Trim()) * 100, 1).ToString("0.0");
-                            EJL_ZPZ["ZPZ"] = Round((GetSafeDouble(EJL_ZPZ["ZPZ1"]) + GetSafeDouble(EJL_ZPZ["ZPZ2"]) + GetSafeDouble(EJL_ZPZ["ZPZ3"])) / 3, 1).ToString("0.0");
-                            sItem["W_ZZKL"] = EJL_ZPZ["ZPZ"];
+                            sItem["JCJG"] = "不下结论";
+                            mAllHg = false;
+                            continue;
                         }
                         else
                         {
-                            EJL_ZPZ["ZPZ1"] = Round(GetSafeDouble(EJL_ZPZ["KLZL1"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL1"].Trim()) * 100, 1).ToString("0.0");
-                            EJL_ZPZ["ZPZ2"] = Round(GetSafeDouble(EJL_ZPZ["KLZL2"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL2"].Trim()) * 100, 1).ToString("0.0");
-                            EJL_ZPZ["ZPZ"] = Round((GetSafeDouble(EJL_ZPZ["ZPZ1"]) + GetSafeDouble(EJL_ZPZ["ZPZ2"])) / 2, 1).ToString("0.0");
-                            sItem["W_ZZKL"] = EJL_ZPZ["ZPZ"];
-                            if (Math.Abs(GetSafeDouble(EJL_ZPZ["ZPZ1"]) - GetSafeDouble(EJL_ZPZ["ZPZ2"])) > 20 || Math.Abs(GetSafeDouble(EJL_ZPZ["ZPZ1"]) - GetSafeDouble(EJL_ZPZ["ZPZ2"])) == 20)
+                            sItem["G_ZZKL"] = mrsDj_Filter["G_ZPZ"];
+                        }
+                        if (IsNumeric(EJL_ZPZ["KLZL1"]) && IsNumeric(EJL_ZPZ["KLZL2"]) && IsNumeric(EJL_ZPZ["ZZL1"]) && IsNumeric(EJL_ZPZ["ZZL2"]))
+                        {
+
+                            if (IsNumeric(EJL_ZPZ["KLZL3"]) && IsNumeric(EJL_ZPZ["ZZL3"]))
                             {
-                                throw new SystemException("针、片状颗粒含量试验两次结果之差大于等于20%，需追加试验");
+                                EJL_ZPZ["ZPZ1"] = Round(GetSafeDouble(EJL_ZPZ["KLZL1"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL1"].Trim()) * 100, 1).ToString("0.0");
+                                EJL_ZPZ["ZPZ2"] = Round(GetSafeDouble(EJL_ZPZ["KLZL2"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL2"].Trim()) * 100, 1).ToString("0.0");
+                                EJL_ZPZ["ZPZ3"] = Round(GetSafeDouble(EJL_ZPZ["KLZL3"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL3"].Trim()) * 100, 1).ToString("0.0");
+                                EJL_ZPZ["ZPZ"] = Round((GetSafeDouble(EJL_ZPZ["ZPZ1"]) + GetSafeDouble(EJL_ZPZ["ZPZ2"]) + GetSafeDouble(EJL_ZPZ["ZPZ3"])) / 3, 1).ToString("0.0");
+                                sItem["W_ZZKL"] = EJL_ZPZ["ZPZ"];
+                            }
+                            else
+                            {
+                                EJL_ZPZ["ZPZ1"] = Round(GetSafeDouble(EJL_ZPZ["KLZL1"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL1"].Trim()) * 100, 1).ToString("0.0");
+                                EJL_ZPZ["ZPZ2"] = Round(GetSafeDouble(EJL_ZPZ["KLZL2"].Trim()) / GetSafeDouble(EJL_ZPZ["ZZL2"].Trim()) * 100, 1).ToString("0.0");
+                                EJL_ZPZ["ZPZ"] = Round((GetSafeDouble(EJL_ZPZ["ZPZ1"]) + GetSafeDouble(EJL_ZPZ["ZPZ2"])) / 2, 1).ToString("0.0");
+                                sItem["W_ZZKL"] = EJL_ZPZ["ZPZ"];
+                                if (Math.Abs(GetSafeDouble(EJL_ZPZ["ZPZ1"]) - GetSafeDouble(EJL_ZPZ["ZPZ2"])) > 20 || Math.Abs(GetSafeDouble(EJL_ZPZ["ZPZ1"]) - GetSafeDouble(EJL_ZPZ["ZPZ2"])) == 20)
+                                {
+                                    throw new SystemException("针、片状颗粒含量试验两次结果之差大于等于20%，需追加试验");
+                                }
                             }
                         }
-
-                    }
-                    else
-                    {
-                        throw new SystemException("针、片状颗粒含量试验数据录入有误");
-                    }
-                    if ("S14 3～5(mm)" == sItem["GGXH"])
-                    {
-                        sItem["G_ZZKL"] = "----";
-                        sItem["ZZKL_GH"] = "----";
-                    }
-                    else
-                    {
-                        sItem["ZZKL_GH"] = IsQualified(sItem["G_ZZKL"], sItem["W_ZZKL"], true);
-                        if (sItem["ZZKL_GH"] == "不符合")
+                        else
                         {
-                            mAllHg = false;
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            throw new SystemException("针、片状颗粒含量试验数据录入有误");
+                        }
+                        if ("S14 3～5(mm)" == sItem["GGXH"])
+                        {
+                            sItem["G_ZZKL"] = "----";
+                            sItem["ZZKL_GH"] = "----";
+                        }
+                        else
+                        {
+                            sItem["ZZKL_GH"] = IsQualified(sItem["G_ZZKL"], sItem["W_ZZKL"], true);
+                            if (sItem["ZZKL_GH"] == "不符合")
+                            {
+                                mAllHg = false;
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
                         }
                     }
-
                 }
                 else
                 {
@@ -740,39 +773,61 @@ namespace Calculates
                 #region 压碎值指标 || 压碎值
                 if (jcxm.Contains("、压碎值指标、") || jcxm.Contains("、压碎值、"))
                 {
-                    jcxmCur = "压碎值";
-                    var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["DLDJ"] == sItem["DLDJ"]);
-                    if (null == mrsDj_Filter)
+                    //试验员约定  送样方委托检测项目出错时 补丁
+                    if ("----" == ET_YSZ["HQ_ZL1"])
                     {
-                        sItem["JCJG"] = "不下结论";
-                        mAllHg = false;
-                        continue;
+                        ET_YSZ["YSZ1"] = "----";
+                        ET_YSZ["YSZ2"] = "----";
+                        ET_YSZ["YSZ3"] = "----";
+                        ET_YSZ["YSZ"] = "----";
+                        ET_YSZ["XL_ZL1"] = "----";
+                        ET_YSZ["XL_ZL2"] = "----";
+                        ET_YSZ["XL_ZL3"] = "----";
+                        ET_YSZ["HQ_ZL2"] = "----";
+                        ET_YSZ["HQ_ZL3"] = "----";
+                        sItem["YSZ_GH"] = "----";
+                        sItem["G_YSZ"] = "----";
+                        sItem["W_YSZ"] = "----";
                     }
                     else
                     {
-                        sItem["G_YSZ"] = mrsDj_Filter["G_YSZ"];
-                    }
-                    sign = true;
-                    for (int i = 1; i < 4; i++)
-                    {
-                        sign = IsNumeric(ET_YSZ["XL_ZL" + i]);
-                        sign = IsNumeric(ET_YSZ["HQ_ZL" + i]);
-                    }
-                    if (sign)
-                    {
-                        ET_YSZ["YSZ1"] = Round(GetSafeDouble(ET_YSZ["XL_ZL1"].Trim()) / GetSafeDouble(ET_YSZ["HQ_ZL1"].Trim()) * 100, 1).ToString("0.0");
-                        ET_YSZ["YSZ2"] = Round(GetSafeDouble(ET_YSZ["XL_ZL2"].Trim()) / GetSafeDouble(ET_YSZ["HQ_ZL2"].Trim()) * 100, 1).ToString("0.0");
-                        ET_YSZ["YSZ3"] = Round(GetSafeDouble(ET_YSZ["XL_ZL3"].Trim()) / GetSafeDouble(ET_YSZ["HQ_ZL3"].Trim()) * 100, 1).ToString("0.0");
-                        ET_YSZ["YSZ"] = Round((GetSafeDouble(ET_YSZ["YSZ1"]) + GetSafeDouble(ET_YSZ["YSZ2"]) + GetSafeDouble(ET_YSZ["YSZ3"])) / 3, 1).ToString("0.0");
-                        sItem["W_YSZ"] = ET_YSZ["YSZ"];
-                        sItem["YSZ_GH"] = IsQualified(sItem["G_YSZ"], sItem["W_YSZ"], true);
-                        if (sItem["YSZ_GH"] == "不符合")
+                        jcxmCur = "压碎值";
+                        var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["DLDJ"] == sItem["DLDJ"]);
+                        if (null == mrsDj_Filter && mrsDj_Filter.Count <= 0)
                         {
+                            sItem["JCJG"] = "不下结论";
                             mAllHg = false;
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            continue;
+                        }
+                        else
+                        {
+                            sItem["G_YSZ"] = mrsDj_Filter["G_YSZ"];
+                        }
+                        sign = true;
+                        for (int i = 1; i < 4; i++)
+                        {
+                            sign = IsNumeric(ET_YSZ["XL_ZL" + i]);
+                            sign = IsNumeric(ET_YSZ["HQ_ZL" + i]);
+                        }
+                        if (sign)
+                        {
+                            ET_YSZ["YSZ1"] = Round(GetSafeDouble(ET_YSZ["XL_ZL1"].Trim()) / GetSafeDouble(ET_YSZ["HQ_ZL1"].Trim()) * 100, 1).ToString("0.0");
+                            ET_YSZ["YSZ2"] = Round(GetSafeDouble(ET_YSZ["XL_ZL2"].Trim()) / GetSafeDouble(ET_YSZ["HQ_ZL2"].Trim()) * 100, 1).ToString("0.0");
+                            ET_YSZ["YSZ3"] = Round(GetSafeDouble(ET_YSZ["XL_ZL3"].Trim()) / GetSafeDouble(ET_YSZ["HQ_ZL3"].Trim()) * 100, 1).ToString("0.0");
+                            ET_YSZ["YSZ"] = Round((GetSafeDouble(ET_YSZ["YSZ1"]) + GetSafeDouble(ET_YSZ["YSZ2"]) + GetSafeDouble(ET_YSZ["YSZ3"])) / 3, 1).ToString("0.0");
+                            sItem["W_YSZ"] = ET_YSZ["YSZ"];
+                            sItem["YSZ_GH"] = IsQualified(sItem["G_YSZ"], sItem["W_YSZ"], true);
+                            if (sItem["YSZ_GH"] == "不符合")
+                            {
+                                mAllHg = false;
+                                jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            }
+                        }
+                        else
+                        {
+                            throw new SystemException("压碎值指标试验数据录入有误");
                         }
                     }
-
                 }
                 else
                 {
