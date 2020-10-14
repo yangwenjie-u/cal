@@ -66,6 +66,7 @@
     <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
     <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" />
     <Compile Include="CalculatesNew\lq\HNL混凝土路缘石\HNL.cs" />
+    <Compile Include="CalculatesNew\lq\LFW铝蜂窝板\LFW.cs" />
     <Compile Include="CalculatesNew\lq\PGD城镇排水管道\PGD.cs" />
     <Compile Include="CalculatesNew\lq\TGY钢筋灌浆套筒\TGY.cs" />
     <Compile Include="CalculatesNew\lq\TZC金属涂装（涂层）\TZC.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="CalculatesNew\qsf\ZBL 中空玻璃\ZBL.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
+    <Compile Include="CalculatesNew\wlb\CZZ_承重混凝土多孔砖\CZZ.cs" />
     <Compile Include="CalculatesNew\wlb\JG_结构实体检测\JG.cs" />
     <Compile Include="CalculatesNew\wlb\CBR_现场CBR值\CBR.cs" />
     <Compile Include="CalculatesNew\wlb\CT_沥青混合料抽提\CT.cs" />
