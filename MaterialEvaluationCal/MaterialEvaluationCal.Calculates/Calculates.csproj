@@ -66,6 +66,7 @@
     <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
     <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" />
     <Compile Include="CalculatesNew\lq\HNL混凝土路缘石\HNL.cs" />
+    <Compile Include="CalculatesNew\lq\LFW铝蜂窝板\LFW.cs" />
     <Compile Include="CalculatesNew\lq\PGD城镇排水管道\PGD.cs" />
     <Compile Include="CalculatesNew\lq\TGY钢筋灌浆套筒\TGY.cs" />
     <Compile Include="CalculatesNew\lq\TZC金属涂装（涂层）\TZC.cs" />
