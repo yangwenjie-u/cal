@@ -84,28 +84,50 @@ namespace Calculates
                     {
                         sItem["HXZS7D_GH"] = "不合格";
                     }
-                    if (xd >= kz)
+
+                    if (xd!=0)  //考虑只做7天的情况
                     {
-                        sItem["HXZS28D_GH"] = "合格";
+                        if (xd >= kz)
+                        {
+                            sItem["HXZS28D_GH"] = "合格";
+                        }
+                        else
+                        {
+                            sItem["HXZS28D_GH"] = "不合格";
+                        }
+                        if (md >= b1 && xd >= kz)
+                        {
+                            sItem["HXZS_GH"] = "合格";
+                        }
+                        else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sItem["HXZS_GH"] = "不合格";
+                            mAllHg = false;
+                        }
+                        sItem["G_HXZS7"] = "≥" + sItem["G_HXZS7"];
+                        sItem["G_HXZS28"] = "≥" + sItem["G_HXZS28"];
+                        sItem["W_HXZS7"] = md.ToString("0");
+                        sItem["W_HXZS28"] = xd.ToString("0");
                     }
                     else
                     {
-                        sItem["HXZS28D_GH"] = "不合格";
+                        if (md >= b1)
+                        {
+                            sItem["HXZS_GH"] = "合格";
+                        }
+                        else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sItem["HXZS_GH"] = "不合格";
+                            mAllHg = false;
+                        }
+                        sItem["G_HXZS7"] = "≥" + sItem["G_HXZS7"];
+                        sItem["G_HXZS28"] = "----";
+                        sItem["W_HXZS7"] = md.ToString("0");
+                        sItem["W_HXZS28"] = "----";
+                        sItem["HXZS28D_GH"] = "----";
                     }
-                    if (md >= b1 && xd >= kz)
-                    {
-                        sItem["HXZS_GH"] = "合格";
-                    }
-                    else
-                    {
-                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-                        sItem["HXZS_GH"] = "不合格";
-                        mAllHg = false;
-                    }
-                    sItem["G_HXZS7"] = "≥" + sItem["G_HXZS7"];
-                    sItem["G_HXZS28"] = "≥" + sItem["G_HXZS28"];
-                    sItem["W_HXZS7"] = md.ToString("0");
-                    sItem["W_HXZS28"] = xd.ToString("0");
                 }
                 else
                 {

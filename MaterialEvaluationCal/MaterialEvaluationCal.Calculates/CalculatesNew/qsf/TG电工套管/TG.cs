@@ -120,6 +120,29 @@ namespace Calculates
                 }
                 #endregion
 
+                #region 最小内径
+                if (jcxm.Contains("、最小内径、"))
+                {
+                    jcxmCur = "最小内径";
+                    if (MItem[0]["ZXNJ"] == "能通过量规")
+                    {
+                        MItem[0]["ZXNJ_HG"] = "合格";
+                    }
+                    else
+                    {
+                        MItem[0]["ZXNJ_HG"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    MItem[0]["ZXNJ_HG"] = "----";
+                    MItem[0]["ZXNJ"] = "----";
+                    MItem[0]["G_ZXNJ"] = "----";
+                }
+                #endregion
+
                 #region 最小壁厚
                 if (jcxm.Contains("、最小壁厚、"))
                 {

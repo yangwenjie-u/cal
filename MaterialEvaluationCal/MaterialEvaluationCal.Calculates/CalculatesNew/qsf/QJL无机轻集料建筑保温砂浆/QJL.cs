@@ -32,6 +32,7 @@ namespace Calculates
                 {
                     sItem["G_MD"] = extraFieldsDj["MD"];
                     sItem["G_KYQD"] = extraFieldsDj["KYQD"];
+                    sItem["G_DRXS"] = extraFieldsDj["DRXS"];
                 }
                 else
                 {
@@ -94,7 +95,30 @@ namespace Calculates
                 }
                 #endregion
 
- 
+                #region 导热系数
+                if (jcxm.Contains("、导热系数、"))
+                {
+                    jcxmCur = "导热系数";
+                    if (IsQualified(sItem["G_DRXS"], sItem["W_DRXS"]) == "合格")
+                    {
+                        sItem["HG_DRXS"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_DRXS"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["HG_DRXS"] = "----";
+                    sItem["G_DRXS"] = "----";
+                    sItem["W_DRXS"] = "----";
+                }
+                #endregion
+
+
             }
 
             #region 最终结果

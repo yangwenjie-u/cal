@@ -39,6 +39,8 @@ namespace Calculates
 
             int mbHggs = 0;//统计合格数量
             bool sign = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
 
             foreach (var sItem in S_YJS)
             {
@@ -56,15 +58,32 @@ namespace Calculates
                 else
                 {
                     sItem["G_CJQD"] = extraFieldsDj["G_CJQD"].Trim();
-                    sItem["G_DRHYJQD"] = extraFieldsDj["G_DRHYJQD"].Trim();
-                    sItem["G_JSHYJQD"] = extraFieldsDj["G_JSHYJQD"].Trim();
+                    //sItem["G_DRHYJQD"] = extraFieldsDj["G_DRHYJQD"].Trim(); //压剪强度--冻融
+                    //sItem["G_JSHYJQD"] = extraFieldsDj["G_JSHYJQD"].Trim(); //压剪强度--浸水
                     sItem["G_LJQD"] = extraFieldsDj["G_LJQD"].Trim();
-                    sItem["G_RCLYJQD"] = extraFieldsDj["G_RCLYJQD"].Trim();
+                    //sItem["G_RCLYJQD"] = extraFieldsDj["G_RCLYJQD"].Trim();  //压剪强度--热处理
                     sItem["G_WG"] = extraFieldsDj["G_WG"].Trim();
                     sItem["G_WQTXML"] = extraFieldsDj["G_WQTXML"].Trim();
-                    sItem["G_YJQDBZG"] = extraFieldsDj["G_YJQDBZG"].Trim();
-                    sItem["G_YJQDBZS"] = extraFieldsDj["G_YJQDBZS"].Trim();
-
+                    //sItem["G_YJQDBZG"] = extraFieldsDj["G_YJQDBZG"].Trim(); //压剪强度--不锈钢标准条件
+                    //sItem["G_YJQDBZS"] = extraFieldsDj["G_YJQDBZS"].Trim(); //压剪强度--石材标准条件
+                    switch (sItem["CPMC"])
+                    {
+                        case "石材-石材(标准条件48h)":
+                            sItem["G_YJQD"] = extraFieldsDj["G_YJQDBZS"].Trim();
+                            break;
+                        case "石材-石材(浸水168h)":
+                            sItem["G_YJQD"] = extraFieldsDj["G_JSHYJQD"].Trim();
+                            break;
+                        case "石材-石材(热处理80℃,168h)":
+                            sItem["G_YJQD"] = extraFieldsDj["G_RCLYJQD"].Trim();
+                            break;
+                        case "石材-石材(冻融循环50次)":
+                            sItem["G_YJQD"] = extraFieldsDj["G_DRHYJQD"].Trim();
+                            break;
+                        case "石材-不锈钢(标准条件48h)":
+                            sItem["G_YJQD"] = extraFieldsDj["G_YJQDBZG"].Trim();
+                            break;
+                    }
                 }
                 #region 外观
                 if (jcxm.Contains("、外观、"))
@@ -148,13 +167,15 @@ namespace Calculates
                 #region 拉剪强度
                 if (jcxm.Contains("、拉剪强度、"))
                 {
+                    jcxmCur = "拉剪强度";
                     sign = true;
                     sign = IsNumeric(sItem["W_LJQD"]) && !string.IsNullOrEmpty(sItem["W_LJQD"]) ? sign : false;
                     if (sign)
                     {
-                        MItem[0]["GH_LJQD"] = IsQualified(sItem["G_LJQD"], sItem["W_LJQD"], false);
-                        if (MItem[0]["GH_LJQD"] == "不合格")
+                        sItem["HG_LJQD"] = IsQualified(sItem["G_LJQD"], sItem["W_LJQD"], false);
+                        if (sItem["HG_LJQD"] == "不合格")
                         {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mAllHg = false;
                             itemHG = false;
                         }
@@ -169,47 +190,22 @@ namespace Calculates
                 {
                     sItem["G_LJQD"] = "----";
                     sItem["W_LJQD"] = "----";
-                    MItem[0]["GH_LJQD"] = "----";
+                    sItem["HG_LJQD"] = "----";
                 }
                 #endregion
 
-                #region 石材－石材标准条件压剪强度
-                if (jcxm.Contains("、石材－石材标准条件压剪强度、"))
+                #region 压剪强度
+                if (jcxm.Contains("、压剪强度、"))
                 {
+                    jcxmCur = "压剪强度";
                     sign = true;
-                    sign = IsNumeric(sItem["W_YJQDBZS"]) && !string.IsNullOrEmpty(sItem["W_YJQDBZS"]) ? sign : false;
+                    sign = IsNumeric(sItem["W_YJQD"]) && !string.IsNullOrEmpty(sItem["W_YJQD"]) ? sign : false;
                     if (sign)
                     {
-                        MItem[0]["GH_YJQDBZS"] = IsQualified(sItem["G_YJQDBZS"], sItem["W_YJQDBZS"], false);
-                        if (MItem[0]["GH_YJQDBZS"] == "不合格")
+                        sItem["HG_YJQD"] = IsQualified(sItem["G_YJQD"], sItem["W_YJQD"], false);
+                        if (sItem["HG_YJQD"] == "不合格")
                         {
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            mbHggs++;
-                        }
-                    }
-                }
-                else
-                {
-                    sItem["G_YJQDBZS"] = "----";
-                    sItem["W_YJQDBZS"] = "----";
-                    MItem[0]["GH_YJQDBZS"] = "----";
-                }
-                #endregion
-
-                #region 石材－石材浸水压剪强度
-                if (jcxm.Contains("、石材－石材浸水压剪强度、"))
-                {
-                    sign = true;
-                    sign = IsNumeric(sItem["W_JSHYJQD"]) && !string.IsNullOrEmpty(sItem["W_JSHYJQD"]) ? sign : false;
-                    if (sign)
-                    {
-                        MItem[0]["GH_JSHYJQD"] = IsQualified(sItem["G_JSHYJQD"], sItem["W_JSHYJQD"], false);
-                        if (MItem[0]["GH_JSHYJQD"] == "不合格")
-                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                             mAllHg = false;
                             itemHG = false;
                         }
@@ -222,184 +218,242 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["G_JSHYJQD"] = "----";
-                    sItem["W_JSHYJQD"] = "----";
-                    MItem[0]["GH_JSHYJQD"] = "----";
+                    sItem["G_YJQD"] = "----";
+                    sItem["W_YJQD"] = "----";
+                    sItem["HG_YJQD"] = "----";
                 }
                 #endregion
 
-                #region 石材－石材热处理压剪强度
-                if (jcxm.Contains("、石材－石材热处理压剪强度、"))
-                {
-                    sign = true;
-                    sign = IsNumeric(sItem["W_RCLYJQD"]) && !string.IsNullOrEmpty(sItem["W_RCLYJQD"]) ? sign : false;
-                    if (sign)
-                    {
-                        MItem[0]["GH_RCLYJQD"] = IsQualified(sItem["G_RCLYJQD"], sItem["W_RCLYJQD"], false);
-                        if (MItem[0]["GH_RCLYJQD"] == "不合格")
-                        {
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            mbHggs++;
-                        }
-                    }
-                }
-                else
-                {
-                    sItem["G_RCLYJQD"] = "----";
-                    sItem["W_RCLYJQD"] = "----";
-                    MItem[0]["GH_RCLYJQD"] = "----";
-                }
-                #endregion
+                #region
 
-                #region 石材－石材冻融循环压剪强度
-                if (jcxm.Contains("、石材－石材冻融循环压剪强度、"))
-                {
-                    sign = true;
-                    sign = IsNumeric(sItem["W_DRHYJQD"]) && !string.IsNullOrEmpty(sItem["W_DRHYJQD"]) ? sign : false;
-                    if (sign)
-                    {
-                        MItem[0]["GH_DRHYJQD"] = IsQualified(sItem["G_DRHYJQD"], sItem["W_DRHYJQD"], false);
-                        if (MItem[0]["GH_DRHYJQD"] == "不合格")
-                        {
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            mbHggs++;
-                        }
-                    }
-                }
-                else
-                {
-                    sItem["G_DRHYJQD"] = "----";
-                    sItem["W_DRHYJQD"] = "----";
-                    MItem[0]["GH_DRHYJQD"] = "----";
-                }
-                #endregion
-
-                #region 石材－不锈钢标准条件压剪强度
-                if (jcxm.Contains("、石材－不锈钢标准条件压剪强度、"))
-                {
-                    sign = true;
-                    sign = IsNumeric(sItem["W_YJQDBZG"]) && !string.IsNullOrEmpty(sItem["W_YJQDBZG"]) ? sign : false;
-                    if (sign)
-                    {
-                        MItem[0]["GH_YJQDBZG"] = IsQualified(sItem["G_YJQDBZG"], sItem["W_YJQDBZG"], false);
-                        if (MItem[0]["GH_YJQDBZG"] == "不合格")
-                        {
-                            mAllHg = false;
-                            itemHG = false;
-                        }
-                        else
-                        {
-                            mbHggs++;
-                        }
-                    }
-                }
-                else
-                {
-                    sItem["G_YJQDBZG"] = "----";
-                    sItem["W_YJQDBZG"] = "----";
-                    MItem[0]["GH_YJQDBZG"] = "----";
-                }
-                #endregion
-
-                #region vb 代码中跳转之后代码所加的检测项,暂时用不到
-                //#region 抗弯承载力
-                //if (jcxm.Contains("、抗弯承载力、"))
+                //#region 石材－石材标准条件压剪强度
+                //if (jcxm.Contains("、石材－石材标准条件压剪强度、"))
                 //{
                 //    sign = true;
-                //    sign = IsNumeric(sItem["W_PHHZ"]) && !string.IsNullOrEmpty(sItem["W_PHHZ"]) ? sign : false;
+                //    sign = IsNumeric(sItem["W_YJQDBZS"]) && !string.IsNullOrEmpty(sItem["W_YJQDBZS"]) ? sign : false;
                 //    if (sign)
                 //    {
-                //        MItem[0]["GH_PHHZ"] = IsQualified(sItem["G_PHHZ"], sItem["W_PHHZ"], false);
-                //        if (MItem[0]["GH_PHHZ"] == "不合格")
+                //        MItem[0]["GH_YJQDBZS"] = IsQualified(sItem["G_YJQDBZS"], sItem["W_YJQDBZS"], false);
+                //        if (MItem[0]["GH_YJQDBZS"] == "不合格")
                 //        {
                 //            mAllHg = false;
                 //            itemHG = false;
+                //        }
+                //        else
+                //        {
+                //            mbHggs++;
                 //        }
                 //    }
                 //}
                 //else
                 //{
-                //    sItem["G_PHHZ"] = "----";
-                //    sItem["W_PHHZ"] = "----";
-                //    MItem[0]["GH_PHHZ"] = "----";
+                //    sItem["G_YJQDBZS"] = "----";
+                //    sItem["W_YJQDBZS"] = "----";
+                //    MItem[0]["GH_YJQDBZS"] = "----";
                 //}
                 //#endregion
 
-                //#region 传热系数
-                //if (jcxm.Contains("、传热系数、"))
+                //#region 石材－石材浸水压剪强度
+                //if (jcxm.Contains("、石材－石材浸水压剪强度、"))
                 //{
                 //    sign = true;
-                //    sign = IsNumeric(sItem["W_CRXS"]) && !string.IsNullOrEmpty(sItem["W_CRXS"]) ? sign : false;
+                //    sign = IsNumeric(sItem["W_JSHYJQD"]) && !string.IsNullOrEmpty(sItem["W_JSHYJQD"]) ? sign : false;
                 //    if (sign)
                 //    {
-                //        MItem[0]["GH_CRXS"] = IsQualified(sItem["G_CRXS"], sItem["W_CRXS"], false);
-                //        if (MItem[0]["GH_CRXS"] == "不合格")
+                //        MItem[0]["GH_JSHYJQD"] = IsQualified(sItem["G_JSHYJQD"], sItem["W_JSHYJQD"], false);
+                //        if (MItem[0]["GH_JSHYJQD"] == "不合格")
                 //        {
                 //            mAllHg = false;
                 //            itemHG = false;
                 //        }
+                //        else
+                //        {
+                //            mbHggs++;
+                //        }
                 //    }
+
                 //}
                 //else
                 //{
-                //    sItem["G_CRXS"] = "----";
-                //    sItem["W_CRXS"] = "----";
-                //    MItem[0]["GH_CRXS"] = "----";
+                //    sItem["G_JSHYJQD"] = "----";
+                //    sItem["W_JSHYJQD"] = "----";
+                //    MItem[0]["GH_JSHYJQD"] = "----";
                 //}
                 //#endregion
 
-                //#region 粘结强度
-                //if (jcxm.Contains("、粘结强度、"))
+                //#region 石材－石材热处理压剪强度
+                //if (jcxm.Contains("、石材－石材热处理压剪强度、"))
                 //{
                 //    sign = true;
-                //    sign = IsNumeric(sItem["W_NJQD"]) && !string.IsNullOrEmpty(sItem["W_NJQD"]) ? sign : false;
+                //    sign = IsNumeric(sItem["W_RCLYJQD"]) && !string.IsNullOrEmpty(sItem["W_RCLYJQD"]) ? sign : false;
                 //    if (sign)
                 //    {
-                //        MItem[0]["GH_NJQD"] = IsQualified(sItem["G_NJQD"], sItem["W_NJQD"], false);
-                //        if (MItem[0]["GH_NJQD"] == "不合格")
+                //        MItem[0]["GH_RCLYJQD"] = IsQualified(sItem["G_RCLYJQD"], sItem["W_RCLYJQD"], false);
+                //        if (MItem[0]["GH_RCLYJQD"] == "不合格")
                 //        {
                 //            mAllHg = false;
                 //            itemHG = false;
+                //        }
+                //        else
+                //        {
+                //            mbHggs++;
                 //        }
                 //    }
                 //}
                 //else
                 //{
-                //    sItem["G_NJQD"] = "----";
-                //    sItem["W_NJQD"] = "----";
-                //    MItem[0]["GH_NJQD"] = "----";
+                //    sItem["G_RCLYJQD"] = "----";
+                //    sItem["W_RCLYJQD"] = "----";
+                //    MItem[0]["GH_RCLYJQD"] = "----";
                 //}
                 //#endregion
 
-                //#region 剥离性能
-                //if (jcxm.Contains("、剥离性能、"))
+                //#region 石材－石材冻融循环压剪强度
+                //if (jcxm.Contains("、石材－石材冻融循环压剪强度、"))
                 //{
                 //    sign = true;
-                //    sign = IsNumeric(sItem["W_BLXN"]) && !string.IsNullOrEmpty(sItem["W_BLXN"]) ? sign : false;
+                //    sign = IsNumeric(sItem["W_DRHYJQD"]) && !string.IsNullOrEmpty(sItem["W_DRHYJQD"]) ? sign : false;
                 //    if (sign)
                 //    {
-                //        MItem[0]["GH_BLXN"] = IsQualified(sItem["G_BLXN"], sItem["W_BLXN"], false);
-                //        if (MItem[0]["GH_BLXN"] == "不合格")
+                //        MItem[0]["GH_DRHYJQD"] = IsQualified(sItem["G_DRHYJQD"], sItem["W_DRHYJQD"], false);
+                //        if (MItem[0]["GH_DRHYJQD"] == "不合格")
                 //        {
                 //            mAllHg = false;
                 //            itemHG = false;
+                //        }
+                //        else
+                //        {
+                //            mbHggs++;
                 //        }
                 //    }
                 //}
                 //else
                 //{
-                //    sItem["G_BLXN"] = "----";
-                //    sItem["W_BLXN"] = "----";
-                //    MItem[0]["GH_BLXN"] = "----";
+                //    sItem["G_DRHYJQD"] = "----";
+                //    sItem["W_DRHYJQD"] = "----";
+                //    MItem[0]["GH_DRHYJQD"] = "----";
                 //}
+                //#endregion
+
+                //#region 石材－不锈钢标准条件压剪强度
+                //if (jcxm.Contains("、石材－不锈钢标准条件压剪强度、"))
+                //{
+                //    sign = true;
+                //    sign = IsNumeric(sItem["W_YJQDBZG"]) && !string.IsNullOrEmpty(sItem["W_YJQDBZG"]) ? sign : false;
+                //    if (sign)
+                //    {
+                //        MItem[0]["GH_YJQDBZG"] = IsQualified(sItem["G_YJQDBZG"], sItem["W_YJQDBZG"], false);
+                //        if (MItem[0]["GH_YJQDBZG"] == "不合格")
+                //        {
+                //            mAllHg = false;
+                //            itemHG = false;
+                //        }
+                //        else
+                //        {
+                //            mbHggs++;
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    sItem["G_YJQDBZG"] = "----";
+                //    sItem["W_YJQDBZG"] = "----";
+                //    MItem[0]["GH_YJQDBZG"] = "----";
+                //}
+                //#endregion
+
+                //#region vb 代码中跳转之后代码所加的检测项,暂时用不到
+                ////#region 抗弯承载力
+                ////if (jcxm.Contains("、抗弯承载力、"))
+                ////{
+                ////    sign = true;
+                ////    sign = IsNumeric(sItem["W_PHHZ"]) && !string.IsNullOrEmpty(sItem["W_PHHZ"]) ? sign : false;
+                ////    if (sign)
+                ////    {
+                ////        MItem[0]["GH_PHHZ"] = IsQualified(sItem["G_PHHZ"], sItem["W_PHHZ"], false);
+                ////        if (MItem[0]["GH_PHHZ"] == "不合格")
+                ////        {
+                ////            mAllHg = false;
+                ////            itemHG = false;
+                ////        }
+                ////    }
+                ////}
+                ////else
+                ////{
+                ////    sItem["G_PHHZ"] = "----";
+                ////    sItem["W_PHHZ"] = "----";
+                ////    MItem[0]["GH_PHHZ"] = "----";
+                ////}
+                ////#endregion
+
+                ////#region 传热系数
+                ////if (jcxm.Contains("、传热系数、"))
+                ////{
+                ////    sign = true;
+                ////    sign = IsNumeric(sItem["W_CRXS"]) && !string.IsNullOrEmpty(sItem["W_CRXS"]) ? sign : false;
+                ////    if (sign)
+                ////    {
+                ////        MItem[0]["GH_CRXS"] = IsQualified(sItem["G_CRXS"], sItem["W_CRXS"], false);
+                ////        if (MItem[0]["GH_CRXS"] == "不合格")
+                ////        {
+                ////            mAllHg = false;
+                ////            itemHG = false;
+                ////        }
+                ////    }
+                ////}
+                ////else
+                ////{
+                ////    sItem["G_CRXS"] = "----";
+                ////    sItem["W_CRXS"] = "----";
+                ////    MItem[0]["GH_CRXS"] = "----";
+                ////}
+                ////#endregion
+
+                ////#region 粘结强度
+                ////if (jcxm.Contains("、粘结强度、"))
+                ////{
+                ////    sign = true;
+                ////    sign = IsNumeric(sItem["W_NJQD"]) && !string.IsNullOrEmpty(sItem["W_NJQD"]) ? sign : false;
+                ////    if (sign)
+                ////    {
+                ////        MItem[0]["GH_NJQD"] = IsQualified(sItem["G_NJQD"], sItem["W_NJQD"], false);
+                ////        if (MItem[0]["GH_NJQD"] == "不合格")
+                ////        {
+                ////            mAllHg = false;
+                ////            itemHG = false;
+                ////        }
+                ////    }
+                ////}
+                ////else
+                ////{
+                ////    sItem["G_NJQD"] = "----";
+                ////    sItem["W_NJQD"] = "----";
+                ////    MItem[0]["GH_NJQD"] = "----";
+                ////}
+                ////#endregion
+
+                ////#region 剥离性能
+                ////if (jcxm.Contains("、剥离性能、"))
+                ////{
+                ////    sign = true;
+                ////    sign = IsNumeric(sItem["W_BLXN"]) && !string.IsNullOrEmpty(sItem["W_BLXN"]) ? sign : false;
+                ////    if (sign)
+                ////    {
+                ////        MItem[0]["GH_BLXN"] = IsQualified(sItem["G_BLXN"], sItem["W_BLXN"], false);
+                ////        if (MItem[0]["GH_BLXN"] == "不合格")
+                ////        {
+                ////            mAllHg = false;
+                ////            itemHG = false;
+                ////        }
+                ////    }
+                ////}
+                ////else
+                ////{
+                ////    sItem["G_BLXN"] = "----";
+                ////    sItem["W_BLXN"] = "----";
+                ////    MItem[0]["GH_BLXN"] = "----";
+                ////}
+                //#endregion
                 #endregion
 
                 //单组
@@ -414,25 +468,19 @@ namespace Calculates
             }
 
             //添加最终报告
+            #region 最终结果
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "该组样品所检项目符合" + MItem[0]["PDBZ"] + "标准要求。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
             }
             else
             {
-                if (mbHggs > 0)
-                {
-                    jsbeizhu = "该组样品所检项目部分符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
-                else
-                {
-                    jsbeizhu = "该组样品所检项目不符合" + MItem[0]["PDBZ"] + "标准要求。";
-                }
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
             }
-
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
+            #endregion
             #endregion
             /************************ 代码结束 ********************/
         }

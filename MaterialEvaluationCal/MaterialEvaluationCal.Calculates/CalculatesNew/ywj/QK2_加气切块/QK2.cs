@@ -364,6 +364,7 @@ namespace Calculates
 
                 //'含水率
                 sItem["HSLYQ"] = "8～12";
+                sItem["XSLYQ"] = "8～12";
                 MItem[0]["WCYQ"] = mrsDj["WCYQ"];
 
 
@@ -642,9 +643,10 @@ namespace Calculates
                     else
                         sItem["DRXSPD"] = "----";
 
-                    if (jcxm.Contains("、含水率和吸水率、"))
+                    #region 含水率和吸水率
+                    if (jcxm.Contains("、含水率和吸水率、") || jcxm.Contains("、含水率、"))
                     {
-                        jcxmCur = "含水率和吸水率";
+                        jcxmCur = CurrentJcxm(jcxm, "含水率和吸水率,含水率");
                         if (Conversion.Val(sItem["HSL1_1"]) > 0)
                         {
                             sItem["HSL1"] = Round((Conversion.Val(sItem["HSL1_1"]) + Conversion.Val(sItem["HSL1_2"]) + Conversion.Val(sItem["HSL1_3"])) / 3, 1).ToString("0.0");
@@ -664,7 +666,32 @@ namespace Calculates
                     {
                         sItem["HSLPD"] = "----";
                     }
+                    #endregion 
 
+                    #region 吸水率
+                    if (jcxm.Contains("、吸水率、"))
+                    {
+                        jcxmCur = "吸水率";
+                        //if (Conversion.Val(sItem["XSL1_1"]) > 0)
+                        //{
+                        //    sItem["XSL1"] = Round((Conversion.Val(sItem["XSL1_1"]) + Conversion.Val(sItem["XSL1_2"]) + Conversion.Val(sItem["XSL1_3"])) / 3, 1).ToString("0.0");
+                        //    sItem["XSL2"] = Round((Conversion.Val(sItem["XSL2_1"]) + Conversion.Val(sItem["XSL2_2"]) + Conversion.Val(sItem["XSL2_3"])) / 3, 1).ToString("0.0");
+                        //    sItem["XSL3"] = Round((Conversion.Val(sItem["XSL3_1"]) + Conversion.Val(sItem["XSL3_2"]) + Conversion.Val(sItem["XSL3_3"])) / 3, 1).ToString("0.0");
+                        //}
+                        if (Conversion.Val(sItem["XSL1"]) > 0)
+                            sItem["XSLPJ"] = Round((Conversion.Val(sItem["XSL1"]) + Conversion.Val(sItem["XSL2"]) + Conversion.Val(sItem["XSL3"])) / 3, 1).ToString("0.0");
+
+                        sItem["XSLPD"] = IsQualified(sItem["XSLYQ"], sItem["XSLPJ"], false);
+                        if (sItem["XSLPD"] == "不合格")
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
+                    }
+                    else
+                    {
+                        sItem["XSLPD"] = "----";
+                    }
+                    #endregion 
 
                     #region 抗冻性
                     if (jcxm.Contains("、抗冻性、"))
@@ -731,9 +758,9 @@ namespace Calculates
                         if (!string.IsNullOrEmpty(sItem["KZQDKD1"]))
                         {
                             List<double> kzqdArray = new List<double>();
-                            for (int i = 1; i < 3; i++)
+                            for (int i = 1; i < 4; i++)
                             {
-                                sItem["W_KZQD" + i] = Math.Round((Conversion.Val(sItem["KZQDPHHZ" + i]) * Conversion.Val(sItem["KZQDJJ" + i])) / (Conversion.Val(sItem["KZQDKD" + i]) * Conversion.Val(sItem["KZQDGD" + i]) * Conversion.Val(sItem["KZQDGD" + i])), 1).ToString("0.0");
+                                sItem["W_KZQD" + i] = Math.Round((Conversion.Val(sItem["KZQDPHHZ" + i]) * 1000 * Conversion.Val(sItem["KZQDJJ" + i])) / (Conversion.Val(sItem["KZQDKD" + i]) * Conversion.Val(sItem["KZQDGD" + i]) * Conversion.Val(sItem["KZQDGD" + i])), 1).ToString("0.0");
                                 kzqdArray.Add(Conversion.Val(sItem["W_KZQD" + i]));
                             }
                             sItem["W_KZQD"] = kzqdArray.Average().ToString();
