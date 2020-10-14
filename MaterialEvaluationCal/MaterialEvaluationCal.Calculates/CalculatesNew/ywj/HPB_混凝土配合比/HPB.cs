@@ -257,7 +257,7 @@ namespace Calculates.HPB_混凝土配合比
                     List<double> larray = new List<double>();
                     for (int i = 1; i <= 3; i++)
                     {
-                        sItem["CYMSL" + i] = Math.Round(Conversion.Val(sItem["MSLMSZL"+i])/(Conversion.Val(sItem["MSLBHYSL"+i])/Conversion.Val(sItem["MSLBHWZZL"+i]))*(Conversion.Val(sItem["MSLTSYZZL"+i])-Conversion.Val(sItem["MSLTZL"+i]))*100 ,0).ToString();
+                        sItem["CYMSL" + i] = Math.Round(Conversion.Val(sItem["MSLMSZL"+i])/(Conversion.Val(sItem["MSLBHYSL"+i])/Conversion.Val(sItem["MSLBHWZZL"+i])*(Conversion.Val(sItem["MSLTSYZZL"+i])-Conversion.Val(sItem["MSLTZL"+i])))*100 ,0).ToString("0");
                         larray.Add(Conversion.Val(sItem["CYMSL" + i]));
                     }
                     if ((larray.Max()-larray.Average())>larray.Average()*0.15 || larray.Average()-larray.Min() > larray.Average() * 0.15)
@@ -266,7 +266,7 @@ namespace Calculates.HPB_混凝土配合比
                     }
                     else
                     {
-                        sItem["CYMSL"] = larray.Average().ToString();
+                        sItem["CYMSL"] = larray.Average().ToString("0");
                     }
                 }
                 else

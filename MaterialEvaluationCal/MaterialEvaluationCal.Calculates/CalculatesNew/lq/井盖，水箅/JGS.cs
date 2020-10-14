@@ -20,9 +20,6 @@ namespace Calculates
             var jcxmBhg = "";
             var jcxmCur = "";
 
-
-
-
             foreach (var sitem in SItem)
             {
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
@@ -35,7 +32,7 @@ namespace Calculates
                 
                 MItem[0]["G_BZHZ"] = extraFieldsDj["D_SYHZ"].Trim();
                 MItem[0]["G_QRSD"] = extraFieldsDj["QRSD"].Trim();
-
+                sitem["G_HWGD"]= extraFieldsDj["BZHWGD"].Trim();
 
                 if (jcxm.Contains("、外观质量、"))
                 {
@@ -88,7 +85,111 @@ namespace Calculates
                     {
                         sitem["SDPD"] = "不合格";
                     }
+                    //总间隙
+                    if (GetSafeDouble(sitem["GJSL"]) == 1)
+                    {
+                        if (GetSafeDouble(sitem["JKK"]) <= 400)
+                        {
+                            sitem["G_JX"] = "≤3";
 
+                            if (GetSafeDouble(sitem["JX"]) <= 3)
+                            {
+                                sitem["JXPD"] = "合格";
+                            }
+                            else
+                            {
+                                sitem["JXPD"] = "不合格";
+                            }
+
+                        }
+                        else
+                        {
+                            sitem["G_JX"] = "≤6";
+                            if (GetSafeDouble(sitem["JX"]) <= 6)
+                            {
+                                sitem["JXPD"] = "合格";
+                            }
+                            else
+                            {
+                                sitem["JXPD"] = "不合格";
+                            }
+                        }
+
+
+
+
+
+                    }
+                    if (GetSafeDouble(sitem["GJSL"]) == 2)
+                    {
+                        if (GetSafeDouble(sitem["JKK"]) <= 400)
+                        {
+                            sitem["G_JX"] = "≤7";
+                            if (GetSafeDouble(sitem["ZJX"]) <= 7)
+                            {
+                                sitem["JXPD"] = "合格";
+                            }
+                            else
+                            {
+                                sitem["JXPD"] = "不合格";
+                            }
+
+                        }
+                        else
+                        {
+                            sitem["G_JX"] = "≤9";
+                            if (GetSafeDouble(sitem["JX"]) <= 9)
+                            {
+                                sitem["JXPD"] = "合格";
+                            }
+                            else
+                            {
+                                sitem["JXPD"] = "不合格";
+                            }
+                        }
+
+
+                    }
+                    if (GetSafeDouble(sitem["GJSL"]) >= 3)
+                    {
+                        sitem["G_JX"] = "≤15";
+                        if (GetSafeDouble(sitem["JX"]) <= 15)
+                        {
+                            sitem["JXPD"] = "合格";
+                        }
+                        else
+                        {
+                            sitem["JXPD"] = "不合格";
+                        }
+
+                    }
+                    //井座支层面宽度
+                    if (GetSafeDouble(sitem["JKK"]) < 600)
+                    {
+                        sitem["G_CMKD"] = "≥20";
+                        if (GetSafeDouble(sitem["CMKD"]) >= 20)
+                        {
+                            sitem["KDPD"] = "合格";
+                        }
+                        else
+                        {
+                            sitem["KDPD"] = "不合格";
+                        }
+
+                    }
+                    if (GetSafeDouble(sitem["JKK"]) >= 600)
+                    {
+                        sitem["G_CMKD"] = "≥24";
+                        if (GetSafeDouble(sitem["CMKD"]) >= 24)
+                        {
+                            sitem["KDPD"] = "合格";
+                        }
+                        else
+                        {
+                            sitem["KDPD"] = "不合格";
+                        }
+
+                    }
 
                 }
                 if (jcxm.Contains("、承载能力、"))

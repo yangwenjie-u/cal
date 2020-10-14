@@ -20,7 +20,7 @@ namespace Calculates
             var jgsm = "";
             var jcjg = "";
             var SItems = data["S_PM"];
-            var ZM_DRJL = data["ZM_DRJL"];
+           
 
             if (!data.ContainsKey("M_PM"))
             {
@@ -133,65 +133,7 @@ namespace Calculates
                          }
                      }
 
-                     if (jcxm.Contains("、导热系数、"))
-                     {
-                         mItem["AVG_DR"] = sItem["DRXS"].Trim();
-                         var mcd = mItem["G_DR"].Trim().Length;
-                         var mdwz = mItem["G_DR"].Trim().IndexOf('.');
-                         mcd = mcd - mdwz + 1;
-
-                         if (mItem["G_DR"].Contains("XCS17-067") || mItem["G_DR"].Contains("XCS17-066"))
-                         {
-                             var mrsDrxs = ZM_DRJL.FirstOrDefault(u => u["sylb"] == "pq" && u["sybh"] == mItem["jydbh"]);
-                             mItem["DRXS"] = mrsDrxs["DRXS"];
-                             mItem["Jcyj"] = mItem["Jcyj"].Replace("10294", "10295");
-                         }
-
-                         mItem["DRXS"] = Math.Round(double.Parse(mItem["DRXS"]), mcd).ToString();
-                         mItem["GH_DR"] = IsQualified(mItem["G_DR"], sItem["DRXS"], false);
-                         if (mItem["GH_DR"] == "不合格")
-                         {
-                             mbhggs = mbhggs + 1;
-                             mAllHg = false;
-                             mFlag_Hg = true;
-                         }
-                         else
-                         {
-                             mFlag_Hg = true;
-                         }
-                     }
-                     else
-                     {
-                         mItem["GH_DR"] = "----";
-                         mItem["G_DR"] = "----";
-                         sItem["DRXS"] = "----";
-                   
-                     }
-                     if (jcxm.Contains("、吸水率、"))
-                     {
-                         mItem["GH_XSL"] = IsQualified(mItem["G_XSL"], mItem["W_XSL"], false);
-                         if (sItem["GH_XSL"] == "不合格")
-                         {
-                             mbhggs = mbhggs + 1;
-                             mAllHg = false;
-                             mFlag_Hg = true;
-                         }
-                         else
-                         {
-                             mFlag_Hg = true;
-                         }
-                     }
-                     else
-                     {
-                         mItem["GH_XSL"] = "----";
-                         mItem["G_XSL"] = "----";
-                         mItem["W_XSL"] = "----";
-                         for (xd = 1; xd < 4; xd++)
-                         {
-                             mItem["F_XSL" + xd] = "----";
-                         }
-                     }
-
+                                   
 
                      if (mbhggs == 0)
                      {
@@ -225,6 +167,7 @@ namespace Calculates
                     {
                         MItem[0]["G_QD_MIN"] = extraDJ[xd]["QDMIN"];
                         MItem[0]["G_QD_AVG"] = extraDJ[xd]["QDAVG"];
+
                         break;
                     }
                 }
