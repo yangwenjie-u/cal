@@ -53,8 +53,15 @@
     <Compile Include="Base\JsonHelper.cs" />
     <Compile Include="Base\SqlBase.cs" />
     <Compile Include="Base\SQLHelper.cs" />
-    <Compile Include="CalculatesNew\llm\GJ 挂件\GJ.cs" /> <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
-    <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" /><Compile Include="CalculatesNew\lq\TGY钢筋灌浆套筒\TGY.cs" />    <Compile Include="CalculatesNew\lq\井盖，水箅\JGS.cs" />
+    <Compile Include="CalculatesNew\llm\GJ 挂件\GJ.cs" />
+    <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
+    <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" />
+    <Compile Include="CalculatesNew\lq\HNL混凝土路缘石\HNL.cs" />
+    <Compile Include="CalculatesNew\lq\PGD城镇排水管道\PGD.cs" />
+    <Compile Include="CalculatesNew\lq\TGY钢筋灌浆套筒\TGY.cs" />
+    <Compile Include="CalculatesNew\lq\TZC金属涂装（涂层）\TZC.cs" />
+    <Compile Include="CalculatesNew\lq\ZZT土壤\ZZT.cs" />
+    <Compile Include="CalculatesNew\lq\井盖，水箅\JGS.cs" />
     <Compile Include="CalculatesNew\lq\其他排水管\QPS.cs" />
     <Compile Include="CalculatesNew\lq\其他给水管\QGS.cs" />
     <Compile Include="CalculatesNew\lq\水质%28混凝土用水%29\HNS.cs" />

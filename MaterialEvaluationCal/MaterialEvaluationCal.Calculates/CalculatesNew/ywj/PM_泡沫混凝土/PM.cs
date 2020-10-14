@@ -167,6 +167,7 @@ namespace Calculates
                     {
                         MItem[0]["G_QD_MIN"] = extraDJ[xd]["QDMIN"];
                         MItem[0]["G_QD_AVG"] = extraDJ[xd]["QDAVG"];
+
                         break;
                     }
                 }

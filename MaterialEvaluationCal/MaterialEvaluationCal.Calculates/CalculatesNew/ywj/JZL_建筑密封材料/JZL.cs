@@ -19,19 +19,10 @@ namespace Calculates
             var mitem = MItem[0];
             var SItem = data["S_SNK"];
             bool mAllHg = true;
-
-
             var jcxm = "";
-
-          
-
 
             foreach (var sitem in SItem)
             {
-
-
-              
-
 
                 var mrsDj_Filter = mrsDj.FirstOrDefault(x => x[""].Contains(""));
                 if (mrsDj_Filter != null && mrsDj_Filter.Count() > 0)
@@ -52,6 +43,7 @@ namespace Calculates
              
                 if (jcxm.Contains("、下垂度、"))
                 {
+
                 }
                 if (jcxm.Contains("、挤出性、"))
                 {

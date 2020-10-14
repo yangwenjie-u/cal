@@ -990,20 +990,27 @@ namespace Calculates
                                 break;
                             }
                         }
-                        sitem["BGJCXM" + curJcxmCount] = sitem["BGJCXM" + curJcxmCount];
-                        sitem["BGDW" + curJcxmCount] = "----";
-                        sitem["BGBZYQ" + curJcxmCount] = mitem["G_LCCJ"];
-                        sitem["BGSCJG" + curJcxmCount] = mitem["LCCJ"];
-                        sitem["BGDXPD" + curJcxmCount] = mitem["LCCJ_HG"];
-                        curJcxmCount = curJcxmCount + 1;
+                       
                     }
+
+                    sitem["BGJCXM" + curJcxmCount] = sitem["BGJCXM" + curJcxmCount];
+                    if (sitem["BGJCXM" + curJcxmCount] == "")
+                    {
+                        sitem["BGJCXM" + curJcxmCount] = "落锤冲击试验";
+                    }
+                    sitem["BGDW" + curJcxmCount] = "----";
+                    sitem["BGBZYQ" + curJcxmCount] = mitem["G_LCCJ"];
+                    sitem["BGSCJG" + curJcxmCount] = mitem["LCCJ"];
+                    sitem["BGDXPD" + curJcxmCount] = mitem["LCCJ_HG"];
+                    curJcxmCount = curJcxmCount + 1;
+
                 }
 
                 else
                 {
 
 
-                    sitem["BGJCXM" + curJcxmCount] = "落锤冲击";
+                    sitem["BGJCXM" + curJcxmCount] = "落锤冲击试验";
                     sitem["BGDW" + curJcxmCount] = "----";
                     sitem["BGBZYQ" + curJcxmCount] = "----";
                     sitem["BGSCJG" + curJcxmCount] = "----";
