@@ -47,6 +47,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txt_help_json = new System.Windows.Forms.RichTextBox();
             this.txt_zdzd_json = new System.Windows.Forms.RichTextBox();
+            this.btn_update = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -126,7 +127,6 @@
             this.label9.TabIndex = 13;
             this.label9.Text = "备注：";
             this.label9.UseWaitCursor = true;
-            this.label9.Visible = false;
             // 
             // txtremark
             // 
@@ -137,7 +137,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(143, 411);
+            this.button1.Location = new System.Drawing.Point(558, 406);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(104, 23);
             this.button1.TabIndex = 15;
@@ -222,11 +222,22 @@
             this.txt_zdzd_json.TabIndex = 24;
             this.txt_zdzd_json.Text = "";
             // 
+            // btn_update
+            // 
+            this.btn_update.Location = new System.Drawing.Point(154, 406);
+            this.btn_update.Name = "btn_update";
+            this.btn_update.Size = new System.Drawing.Size(104, 23);
+            this.btn_update.TabIndex = 25;
+            this.btn_update.Text = "上传";
+            this.btn_update.UseVisualStyleBackColor = true;
+            this.btn_update.Click += new System.EventHandler(this.btn_update_Click);
+            // 
             // CodeUpload
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 479);
+            this.Controls.Add(this.btn_update);
             this.Controls.Add(this.txt_zdzd_json);
             this.Controls.Add(this.txt_help_json);
             this.Controls.Add(this.label4);
@@ -275,5 +286,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RichTextBox txt_help_json;
         private System.Windows.Forms.RichTextBox txt_zdzd_json;
+        private System.Windows.Forms.Button btn_update;
     }
 }
