@@ -628,6 +628,9 @@ namespace Calculates
                                 var mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sitem["XZSWD"].Trim()));
                                 if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
                                     sitem["BYKQYD"] = mrsKqnd_Filter["KQND"];
+                                var mrsKqnd_Filter2 = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sitem["XZSWD2"].Trim()));
+                                if (mrsKqnd_Filter2 != null && mrsKqnd_Filter2.Count() > 0)
+                                    sitem["BYKQYD2"] = mrsKqnd_Filter["KQND"];
                                 mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sitem["SYSWD"].Trim()));
                                 if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
                                     sitem["SYKQYD"] = mrsKqnd_Filter["KQND"];
