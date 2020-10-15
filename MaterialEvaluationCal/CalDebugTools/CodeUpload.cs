@@ -31,153 +31,172 @@ namespace CalDebugTools
         FormMain _formMain;
         private void button1_Click(object sender, EventArgs e)
         {
-            try
+            string zdzdjson = string.Empty;
+            string extratable = string.Empty;
+
+            string sylb = txtsylb.Text.Trim();
+            string code = txtcode.Text.Trim();
+            string extratable_name = txtextratable.Text.Trim();
+
+            if (string.IsNullOrEmpty(sylb.Trim()))
             {
-                string sylb = txtsylb.Text.Trim();
-                string code = txtcode.Text.Trim();
-                string extratable_name = txtextratable.Text.Trim();
-                string extratable = string.Empty;
-                string username = txtusername.Text.Trim();
-                string beizu = txtremark.Text.Trim();
-
-                if (string.IsNullOrEmpty(sylb.Trim()))
-                {
-                    MessageBox.Show("试验类别不能为空");
-                    return;
-                }
-                if (string.IsNullOrEmpty(code.Trim()))
-                {
-                    MessageBox.Show("计算代码不能为空");
-                    return;
-                }
-                //if (string.IsNullOrEmpty(extratable_name.Trim()))
-                //{
-                //    MessageBox.Show("帮助表不能为空");
-                //    return;
-                //}
-                if (string.IsNullOrEmpty(username.Trim()))
-                {
-                    MessageBox.Show("用户名不能为空");
-                    return;
-                }
-
-                Dictionary<string, string> dic = new Dictionary<string, string>();
-                dic.Add("jcxmbh", txtsylb.Text);
-                dic.Add("extratable", txtextratable.Text);
-                dic.Add("username", txtusername.Text);
-                dic.Add("remark", txtremark.Text);
-
-                ConfigurationHelper.SaveConfig(dic);
-
-
-                //获取字段字典json
-                string zdzdjson = string.Empty;
-                zdzdjson += "[";
-                string jcx_json = string.Empty;
-                string ZDZD_sql = string.Format(@"select SJGJ_ID,SY,DEFAVAL,LX,SSJCX,SJBMC,ZDMC,ZDLX from ZDZD_" + sylb + " where (LX like '%I%' or LX like '%O%')");
-                DataSet dszdzd = _sqlDebugTool.ExecuteDataset(ZDZD_sql);
-                if (dszdzd != null && dszdzd.Tables[0].Rows.Count > 0)
-                {
-                    int recid = 1;
-                    foreach (DataRow item in dszdzd.Tables[0].Rows)
-                    {
-                        string lx = item["LX"].ToString().Trim();
-                        string SSJCX = item["SSJCX"].ToString().Trim();
-                        string SCCS = string.Empty;
-                        string FHCS = string.Empty;
-                        if (lx.ToUpper().Split(',').Contains("I"))
-                        {
-                            SCCS = "1";
-                            FHCS = "0";
-                        }
-                        else
-                        {
-                            SCCS = "0";
-                            FHCS = "1";
-                        }
-                        if (string.IsNullOrEmpty(item["SSJCX"].ToString().Trim()))
-                        {
-                            jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, "", "", item["ZDLX"]);
-
-                        }
-                        else
-                        {
-                            string[] jcxmlist = item["SSJCX"].ToString().Split(',');
-                            foreach (var jcxm in jcxmlist)
-                            {
-                                jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, jcxm.Trim(), "", item["ZDLX"]);
-
-                            }
-                        }
-                        recid++;
-                    }
-                }
-                zdzdjson += jcx_json.TrimEnd(',') + "]";
-                txt_zdzd_json.Text = zdzdjson;
-
-                //帮助表
-                if (!string.IsNullOrEmpty(extratable_name))
-                {
-                    extratable = "{";
-                    string str = string.Empty;
-                    if (!string.IsNullOrEmpty(extratable_name))
-                    {
-                        string[] table_list = extratable_name.Split(',');
-                        foreach (string item in table_list)
-                        {
-                            string extra_sql = string.Format("select * from " + item);
-                            DataSet extra_dt = _sqlBase.ExecuteDataset(extra_sql);
-                            extra_dt.Tables[0].TableName = item;
-                            str += JsonHelper.SerializeObject(extra_dt).TrimStart('{').TrimEnd('}') + ",";
-                        }
-                    }
-                    extratable += str.TrimEnd(',') + "}";
-                }
-                else
-                {
-                    extratable = "{}";
-                }
-                txt_help_json.Text = extratable;
-                string token = TokenHeple.GetToken(username);
-                string par_json = "{\"sylb\":\"" + sylb + "\",\"code\":\"" + Base64Helper.Base64Encode(code) + "\",\"zdzd\":\"" + Base64Helper.Base64Encode(zdzdjson) + "\",\"extratable\":\"" + Base64Helper.Base64Encode(extratable) + "\",\"username\":\"" + username + "\",\"beizhu\":\"" + beizu + "\"}";
-
-                string get_json = Data.GetHtmlByPost(Data.http_setapiurl, par_json, "", null, token);
-                if (get_json.Contains("成功"))
-                {
-                    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
-                    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
-                    var ddf = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json_strue.data.ToString());
-                    var ver = ddf["ver"];
-                    if (this.ck_defaultLib.Checked)
-                    {
-                        par_json = "{\"sylb\":\"" + sylb + "\",\"ver\":\"" + ver + "\"}";
-                        get_json = Data.GetHtmlByPost(Data.http_set_defaultLib_url, par_json, "", null, token);
-                        //get_json = Data.GetHtmlByPost(@"http://calctest.jzyglxt.com/apiv1/SetCalcVersionDefault", par_json, "", null, token);
-                        if (get_json.Contains("成功"))
-                        {
-                            MessageBox.Show($"代码上传成功,设置{sylb}默认版本为{ver}");
-                        }
-                        else
-                        {
-                            MessageBox.Show($"代码上传成功,设置{sylb}默认版本失败：{json_strue.message}");
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show($"代码上传成功");
-                    }
-                }
-                else
-                {
-                    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
-                    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
-                    MessageBox.Show(json_strue.message);
-                }
+                MessageBox.Show("试验类别不能为空");
+                return;
             }
-            catch (WebException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+
+            CodeUploadFun(sylb, extratable_name, out zdzdjson, out extratable);
+            txt_zdzd_json.Text = zdzdjson;
+            txt_help_json.Text = extratable;
+
+            #region 注释
+            //try
+            //{
+            //    string sylb = txtsylb.Text.Trim();
+            //    string code = txtcode.Text.Trim();
+            //    string extratable_name = txtextratable.Text.Trim();
+            //    string extratable = string.Empty;
+            //    string username = txtusername.Text.Trim();
+            //    string beizu = txtremark.Text.Trim();
+
+            //    if (string.IsNullOrEmpty(sylb.Trim()))
+            //    {
+            //        MessageBox.Show("试验类别不能为空");
+            //        return;
+            //    }
+            //    if (string.IsNullOrEmpty(code.Trim()))
+            //    {
+            //        MessageBox.Show("计算代码不能为空");
+            //        return;
+            //    }
+            //    //if (string.IsNullOrEmpty(extratable_name.Trim()))
+            //    //{
+            //    //    MessageBox.Show("帮助表不能为空");
+            //    //    return;
+            //    //}
+            //    if (string.IsNullOrEmpty(username.Trim()))
+            //    {
+            //        MessageBox.Show("用户名不能为空");
+            //        return;
+            //    }
+
+            //    Dictionary<string, string> dic = new Dictionary<string, string>();
+            //    dic.Add("jcxmbh", txtsylb.Text);
+            //    dic.Add("extratable", txtextratable.Text);
+            //    dic.Add("username", txtusername.Text);
+            //    dic.Add("remark", txtremark.Text);
+
+            //    ConfigurationHelper.SaveConfig(dic);
+
+
+            //    //获取字段字典json
+            //    string zdzdjson = string.Empty;
+            //    zdzdjson += "[";
+            //    string jcx_json = string.Empty;
+            //    string ZDZD_sql = string.Format(@"select SJGJ_ID,SY,DEFAVAL,LX,SSJCX,SJBMC,ZDMC,ZDLX from ZDZD_" + sylb + " where (LX like '%I%' or LX like '%O%')");
+            //    DataSet dszdzd = _sqlDebugTool.ExecuteDataset(ZDZD_sql);
+            //    if (dszdzd != null && dszdzd.Tables[0].Rows.Count > 0)
+            //    {
+            //        int recid = 1;
+            //        foreach (DataRow item in dszdzd.Tables[0].Rows)
+            //        {
+            //            string lx = item["LX"].ToString().Trim();
+            //            string SSJCX = item["SSJCX"].ToString().Trim();
+            //            string SCCS = string.Empty;
+            //            string FHCS = string.Empty;
+            //            if (lx.ToUpper().Split(',').Contains("I"))
+            //            {
+            //                SCCS = "1";
+            //                FHCS = "0";
+            //            }
+            //            else
+            //            {
+            //                SCCS = "0";
+            //                FHCS = "1";
+            //            }
+            //            if (string.IsNullOrEmpty(item["SSJCX"].ToString().Trim()))
+            //            {
+            //                jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, "", "", item["ZDLX"]);
+
+            //            }
+            //            else
+            //            {
+            //                string[] jcxmlist = item["SSJCX"].ToString().Split(',');
+            //                foreach (var jcxm in jcxmlist)
+            //                {
+            //                    jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, jcxm.Trim(), "", item["ZDLX"]);
+
+            //                }
+            //            }
+            //            recid++;
+            //        }
+            //    }
+            //    zdzdjson += jcx_json.TrimEnd(',') + "]";
+            //    txt_zdzd_json.Text = zdzdjson;
+
+            //    //帮助表
+            //    if (!string.IsNullOrEmpty(extratable_name))
+            //    {
+            //        extratable = "{";
+            //        string str = string.Empty;
+            //        if (!string.IsNullOrEmpty(extratable_name))
+            //        {
+            //            string[] table_list = extratable_name.Split(',');
+            //            foreach (string item in table_list)
+            //            {
+            //                string extra_sql = string.Format("select * from " + item);
+            //                DataSet extra_dt = _sqlBase.ExecuteDataset(extra_sql);
+            //                extra_dt.Tables[0].TableName = item;
+            //                str += JsonHelper.SerializeObject(extra_dt).TrimStart('{').TrimEnd('}') + ",";
+            //            }
+            //        }
+            //        extratable += str.TrimEnd(',') + "}";
+            //    }
+            //    else
+            //    {
+            //        extratable = "{}";
+            //    }
+            //    txt_help_json.Text = extratable;
+            //    string token = TokenHeple.GetToken(username);
+            //    string par_json = "{\"sylb\":\"" + sylb + "\",\"code\":\"" + Base64Helper.Base64Encode(code) + "\",\"zdzd\":\"" + Base64Helper.Base64Encode(zdzdjson) + "\",\"extratable\":\"" + Base64Helper.Base64Encode(extratable) + "\",\"username\":\"" + username + "\",\"beizhu\":\"" + beizu + "\"}";
+
+            //    string get_json = Data.GetHtmlByPost(Data.http_setapiurl, par_json, "", null, token);
+            //    if (get_json.Contains("成功"))
+            //    {
+            //        var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
+            //        var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
+            //        var ddf = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json_strue.data.ToString());
+            //        var ver = ddf["ver"];
+            //        if (this.ck_defaultLib.Checked)
+            //        {
+            //            par_json = "{\"sylb\":\"" + sylb + "\",\"ver\":\"" + ver + "\"}";
+            //            get_json = Data.GetHtmlByPost(Data.http_set_defaultLib_url, par_json, "", null, token);
+            //            //get_json = Data.GetHtmlByPost(@"http://calctest.jzyglxt.com/apiv1/SetCalcVersionDefault", par_json, "", null, token);
+            //            if (get_json.Contains("成功"))
+            //            {
+            //                MessageBox.Show($"代码上传成功,设置{sylb}默认版本为{ver}");
+            //            }
+            //            else
+            //            {
+            //                MessageBox.Show($"代码上传成功,设置{sylb}默认版本失败：{json_strue.message}");
+            //            }
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show($"代码上传成功");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
+            //        var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
+            //        MessageBox.Show(json_strue.message);
+            //    }
+            //}
+            //catch (WebException ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //} 
+            #endregion
         }
 
         private void txtsylb_MouseLeave(object sender, EventArgs e)
@@ -212,6 +231,162 @@ namespace CalDebugTools
 
         }
 
+        private void btn_update_Click(object sender, EventArgs e)
+        {
+            string zdzdjson = string.Empty;
+            string extratable = string.Empty;
+            string username = txtusername.Text.Trim();
+            string beizu = txtremark.Text.Trim();
+            string sylb = txtsylb.Text.Trim();
+            string code = txtcode.Text.Trim();
+            string extratable_name = txtextratable.Text.Trim();
+
+            if (string.IsNullOrEmpty(sylb.Trim()))
+            {
+                MessageBox.Show("试验类别不能为空");
+                return;
+            }
+            if (string.IsNullOrEmpty(code.Trim()))
+            {
+                MessageBox.Show("计算代码不能为空");
+                return;
+            }
+            if (string.IsNullOrEmpty(username))
+            {
+                MessageBox.Show("请输入用户名");
+                return;
+            }
+
+            try
+            {
+                CodeUploadFun(sylb, extratable_name, out zdzdjson, out extratable);
+                string token = TokenHeple.GetToken(username);
+                string par_json = "{\"sylb\":\"" + sylb + "\",\"code\":\"" + Base64Helper.Base64Encode(code) + "\",\"zdzd\":\"" + Base64Helper.Base64Encode(zdzdjson) + "\",\"extratable\":\"" + Base64Helper.Base64Encode(extratable) + "\",\"username\":\"" + username + "\",\"beizhu\":\"" + beizu + "\"}";
+
+                string get_json = Data.GetHtmlByPost(Data.http_setapiurl, par_json, "", null, token);
+                if (get_json.Contains("成功"))
+                {
+                    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
+                    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
+                    var ddf = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json_strue.data.ToString());
+                    var ver = ddf["ver"];
+                    if (this.ck_defaultLib.Checked)
+                    {
+                        par_json = "{\"sylb\":\"" + sylb + "\",\"ver\":\"" + ver + "\"}";
+                        get_json = Data.GetHtmlByPost(Data.http_set_defaultLib_url, par_json, "", null, token);
+                        if (get_json.Contains("成功"))
+                        {
+                            MessageBox.Show($"代码上传成功,设置{sylb}默认版本为{ver}");
+                        }
+                        else
+                        {
+                            MessageBox.Show($"代码上传成功,设置{sylb}默认版本失败：{json_strue.message}");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show($"代码上传成功");
+                    }
+                }
+                else
+                {
+                    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
+                    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
+                    MessageBox.Show(json_strue.message);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("代码上传异常：" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 获取上传代码需要的数据
+        /// </summary>
+        /// <param name="sylb"></param>
+        /// <param name="extratable_name"></param>
+        /// <param name="zdzdjson"></param>
+        /// <param name="extratable"></param>
+        private void CodeUploadFun(string sylb, string extratable_name, out string zdzdjson, out string extratable)
+        {
+            zdzdjson = string.Empty;
+            extratable = string.Empty;
+
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("jcxmbh", txtsylb.Text);
+            dic.Add("extratable", txtextratable.Text);
+            dic.Add("username", txtusername.Text);
+            dic.Add("remark", txtremark.Text);
+
+            ConfigurationHelper.SaveConfig(dic);
+
+            //获取字段字典json
+            zdzdjson += "[";
+            string jcx_json = string.Empty;
+            string ZDZD_sql = string.Format(@"select SJGJ_ID,SY,DEFAVAL,LX,SSJCX,SJBMC,ZDMC,ZDLX from ZDZD_" + sylb + " where (LX like '%I%' or LX like '%O%')");
+            DataSet dszdzd = _sqlDebugTool.ExecuteDataset(ZDZD_sql);
+            if (dszdzd != null && dszdzd.Tables[0].Rows.Count > 0)
+            {
+                int recid = 1;
+                foreach (DataRow item in dszdzd.Tables[0].Rows)
+                {
+                    string lx = item["LX"].ToString().Trim();
+                    string SSJCX = item["SSJCX"].ToString().Trim();
+                    string SCCS = string.Empty;
+                    string FHCS = string.Empty;
+                    if (lx.ToUpper().Split(',').Contains("I"))
+                    {
+                        SCCS = "1";
+                        FHCS = "0";
+                    }
+                    else
+                    {
+                        SCCS = "0";
+                        FHCS = "1";
+                    }
+                    if (string.IsNullOrEmpty(item["SSJCX"].ToString().Trim()))
+                    {
+                        jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, "", "", item["ZDLX"]);
+
+                    }
+                    else
+                    {
+                        string[] jcxmlist = item["SSJCX"].ToString().Split(',');
+                        foreach (var jcxm in jcxmlist)
+                        {
+                            jcx_json += string.Format("{{\"Recid\":\"{0}\",\"SJBMC\":\"{1}\",\"ZDMC\":\"{2}\",\"SY\":\"{3}\",\"DEFAVAL\":\"{4}\",\"SCCS\":\"{5}\",\"FHCS\":\"{6}\",\"JCXM\":\"{7}\",\"Field\":\"{8}\",\"ZDLX\":\"{9}\"}},", recid, item["SJBMC"], item["ZDMC"], item["SY"], item["DEFAVAL"], SCCS, FHCS, jcxm.Trim(), "", item["ZDLX"]);
+
+                        }
+                    }
+                    recid++;
+                }
+            }
+            zdzdjson += jcx_json.TrimEnd(',') + "]";
+
+            //帮助表
+            if (!string.IsNullOrEmpty(extratable_name))
+            {
+                extratable = "{";
+                string str = string.Empty;
+                if (!string.IsNullOrEmpty(extratable_name))
+                {
+                    string[] table_list = extratable_name.Split(',');
+                    foreach (string item in table_list)
+                    {
+                        string extra_sql = string.Format("select * from " + item);
+                        DataSet extra_dt = _sqlBase.ExecuteDataset(extra_sql);
+                        extra_dt.Tables[0].TableName = item;
+                        str += JsonHelper.SerializeObject(extra_dt).TrimStart('{').TrimEnd('}') + ",";
+                    }
+                }
+                extratable += str.TrimEnd(',') + "}";
+            }
+            else
+            {
+                extratable = "{}";
+            }
+        }
         //private void InitializeComponent()
         //{
         //    this.SuspendLayout();
