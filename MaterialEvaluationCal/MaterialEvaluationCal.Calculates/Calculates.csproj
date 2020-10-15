@@ -105,6 +105,7 @@
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼搅拌记录\TJB.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼质量卡\ZLK.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼调整记录\TTZ.cs" />
+    <Compile Include="CalculatesNew\qsf\FZZ 非承重混凝土空心砖\FZZ.cs" />
     <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
     <Compile Include="CalculatesNew\qsf\JJR建筑用绝热制品\JJR.cs" />
     <Compile Include="CalculatesNew\qsf\JLH楼板厚度\JLH.cs" />

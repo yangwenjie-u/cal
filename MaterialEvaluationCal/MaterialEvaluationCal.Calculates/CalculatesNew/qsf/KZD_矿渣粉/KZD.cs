@@ -262,7 +262,7 @@ namespace Calculates
                     #region 比表面积计算
                     sItem["MD1"] = ((Round(Conversion.Val(sItem["MDSYZL1"]) / (Conversion.Val(sItem["MDYYTJ1"]) - Conversion.Val(sItem["MDYTJ1"])), 4) * 1000) / 1000).ToString("0.00");
                     sItem["MD2"] = ((Round(Conversion.Val(sItem["MDSYZL2"]) / (Conversion.Val(sItem["MDYYTJ2"]) - Conversion.Val(sItem["MDYTJ2"])), 4) * 1000) / 1000).ToString("0.00");
-                    sItem["W_MD"] = ((Conversion.Val(sItem["MD1"]) + Conversion.Val(sItem["MD2"])) / 2).ToString("0.0");
+                    sItem["W_MD"] = ((Conversion.Val(sItem["MD1"]) + Conversion.Val(sItem["MD2"])) / 2).ToString("0.00");
 
                     if (Conversion.Val(sItem["W_MD"]) != 0 && !string.IsNullOrEmpty(sItem["SYT1"]))
                     {
@@ -414,7 +414,7 @@ namespace Calculates
                     jcxmCur = "密度";
                     sItem["MD1"] = ((Round(Conversion.Val(sItem["MDSYZL1"]) / (Conversion.Val(sItem["MDYYTJ1"]) - Conversion.Val(sItem["MDYTJ1"])), 4) * 1000) / 1000).ToString("0.00");
                     sItem["MD2"] = ((Round(Conversion.Val(sItem["MDSYZL2"]) / (Conversion.Val(sItem["MDYYTJ2"]) - Conversion.Val(sItem["MDYTJ2"])), 4) * 1000) / 1000).ToString("0.00");
-                    sItem["W_MD"] = ((Conversion.Val(sItem["MD1"]) + Conversion.Val(sItem["MD2"])) / 2).ToString("0.0");
+                    sItem["W_MD"] = ((Conversion.Val(sItem["MD1"]) + Conversion.Val(sItem["MD2"])) / 2).ToString("0.00");
                     if (Conversion.Val(sItem["W_MD"]) >= Conversion.Val(sItem["G_MD"]))
                     {
                         sItem["MD_GH"] = "合格";
