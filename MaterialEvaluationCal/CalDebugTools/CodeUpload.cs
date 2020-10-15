@@ -57,8 +57,8 @@ namespace CalDebugTools
                 //}
                 if (string.IsNullOrEmpty(username.Trim()))
                 {
-                    //MessageBox.Show("用户名不能为空");
-                    //return;
+                    MessageBox.Show("用户名不能为空");
+                    return;
                 }
 
                 Dictionary<string, string> dic = new Dictionary<string, string>();
@@ -138,41 +138,41 @@ namespace CalDebugTools
                     extratable = "{}";
                 }
                 txt_help_json.Text = extratable;
-                //string token = TokenHeple.GetToken(username);
-                //string par_json = "{\"sylb\":\"" + sylb + "\",\"code\":\"" + Base64Helper.Base64Encode(code) + "\",\"zdzd\":\"" + Base64Helper.Base64Encode(zdzdjson) + "\",\"extratable\":\"" + Base64Helper.Base64Encode(extratable) + "\",\"username\":\"" + username + "\",\"beizhu\":\"" + beizu + "\"}";
+                string token = TokenHeple.GetToken(username);
+                string par_json = "{\"sylb\":\"" + sylb + "\",\"code\":\"" + Base64Helper.Base64Encode(code) + "\",\"zdzd\":\"" + Base64Helper.Base64Encode(zdzdjson) + "\",\"extratable\":\"" + Base64Helper.Base64Encode(extratable) + "\",\"username\":\"" + username + "\",\"beizhu\":\"" + beizu + "\"}";
 
-                //string get_json = Data.GetHtmlByPost(Data.http_setapiurl, par_json, "", null, token);
-                //if (get_json.Contains("成功"))
-                //{
-                //    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
-                //    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
-                //    var ddf = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json_strue.data.ToString());
-                //    var ver = ddf["ver"];
-                //    if (this.ck_defaultLib.Checked)
-                //    {
-                //        par_json = "{\"sylb\":\"" + sylb + "\",\"ver\":\"" + ver + "\"}";
-                //        get_json = Data.GetHtmlByPost(Data.http_set_defaultLib_url, par_json, "", null, token);
-                //        //get_json = Data.GetHtmlByPost(@"http://calctest.jzyglxt.com/apiv1/SetCalcVersionDefault", par_json, "", null, token);
-                //        if (get_json.Contains("成功"))
-                //        {
-                //            MessageBox.Show($"代码上传成功,设置{sylb}默认版本为{ver}");
-                //        }
-                //        else
-                //        {
-                //            MessageBox.Show($"代码上传成功,设置{sylb}默认版本失败：{json_strue.message}");
-                //        }
-                //    }
-                //    else
-                //    {
-                //        MessageBox.Show($"代码上传成功");
-                //    }
-                //}
-                //else
-                //{
-                //    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
-                //    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
-                //    MessageBox.Show(json_strue.message);
-                //}
+                string get_json = Data.GetHtmlByPost(Data.http_setapiurl, par_json, "", null, token);
+                if (get_json.Contains("成功"))
+                {
+                    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
+                    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
+                    var ddf = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json_strue.data.ToString());
+                    var ver = ddf["ver"];
+                    if (this.ck_defaultLib.Checked)
+                    {
+                        par_json = "{\"sylb\":\"" + sylb + "\",\"ver\":\"" + ver + "\"}";
+                        get_json = Data.GetHtmlByPost(Data.http_set_defaultLib_url, par_json, "", null, token);
+                        //get_json = Data.GetHtmlByPost(@"http://calctest.jzyglxt.com/apiv1/SetCalcVersionDefault", par_json, "", null, token);
+                        if (get_json.Contains("成功"))
+                        {
+                            MessageBox.Show($"代码上传成功,设置{sylb}默认版本为{ver}");
+                        }
+                        else
+                        {
+                            MessageBox.Show($"代码上传成功,设置{sylb}默认版本失败：{json_strue.message}");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show($"代码上传成功");
+                    }
+                }
+                else
+                {
+                    var code_json = new { data = new object(), code = string.Empty, message = string.Empty };
+                    var json_strue = JsonHelper.DeserializeAnonymousType(get_json, code_json);
+                    MessageBox.Show(json_strue.message);
+                }
             }
             catch (WebException ex)
             {

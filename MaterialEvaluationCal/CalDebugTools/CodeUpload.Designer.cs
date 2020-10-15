@@ -109,7 +109,6 @@
             this.label8.Size = new System.Drawing.Size(53, 12);
             this.label8.TabIndex = 11;
             this.label8.Text = "用户名：";
-            this.label8.Visible = false;
             // 
             // txtusername
             // 
@@ -117,7 +116,6 @@
             this.txtusername.Name = "txtusername";
             this.txtusername.Size = new System.Drawing.Size(325, 21);
             this.txtusername.TabIndex = 12;
-            this.txtusername.Visible = false;
             // 
             // label9
             // 
@@ -127,6 +125,7 @@
             this.label9.Size = new System.Drawing.Size(41, 12);
             this.label9.TabIndex = 13;
             this.label9.Text = "备注：";
+            this.label9.UseWaitCursor = true;
             this.label9.Visible = false;
             // 
             // txtremark
@@ -135,7 +134,6 @@
             this.txtremark.Name = "txtremark";
             this.txtremark.Size = new System.Drawing.Size(325, 21);
             this.txtremark.TabIndex = 14;
-            this.txtremark.Visible = false;
             // 
             // button1
             // 
@@ -173,7 +171,6 @@
             this.label3.Size = new System.Drawing.Size(89, 12);
             this.label3.TabIndex = 17;
             this.label3.Text = "设置默认版本：";
-            this.label3.Visible = false;
             // 
             // ck_defaultLib
             // 
@@ -187,7 +184,6 @@
             this.ck_defaultLib.TabIndex = 18;
             this.ck_defaultLib.Text = "是";
             this.ck_defaultLib.UseVisualStyleBackColor = true;
-            this.ck_defaultLib.Visible = false;
             this.ck_defaultLib.CheckedChanged += new System.EventHandler(this.ck_defaultLib_CheckedChanged);
             // 
             // lab1
