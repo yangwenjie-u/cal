@@ -120,10 +120,11 @@
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
     <Compile Include="CalculatesNew\wlb\CZZ_承重混凝土多孔砖\CZZ.cs" />
     <Compile Include="CalculatesNew\wlb\JG_结构实体检测\JG.cs" />
-    <Compile Include="CalculatesNew\wlb\CBR_现场CBR值\CBR.cs" />
+    <Compile Include="CalculatesNew\wlb\CBR_非现场cbr\CBR.cs" />
     <Compile Include="CalculatesNew\wlb\CT_沥青混合料抽提\CT.cs" />
     <Compile Include="CalculatesNew\wlb\JXS_预应力筋用锚具、夹具和连接器\JXS.cs" />
     <Compile Include="CalculatesNew\wlb\LQD_沥青混合料单轴压缩\LQD.cs" />
+    <Compile Include="CalculatesNew\wlb\YT_工程岩体\YT.cs" />
     <Compile Include="CalculatesNew\wlb\LQW_沥青混合料弯曲\LQW.cs" />
     <Compile Include="CalculatesNew\wlb\PZD_三米直尺平整度\PZD.cs" />
     <Compile Include="CalculatesNew\wlb\TKL_混凝土氯离子含量\TKL.cs" />
