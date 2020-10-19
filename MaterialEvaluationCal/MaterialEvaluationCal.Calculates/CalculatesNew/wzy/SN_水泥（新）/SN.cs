@@ -628,6 +628,9 @@ namespace Calculates
                                 var mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sitem["XZSWD"].Trim()));
                                 if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
                                     sitem["BYKQYD"] = mrsKqnd_Filter["KQND"];
+                                var mrsKqnd_Filter2 = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sitem["XZSWD2"].Trim()));
+                                if (mrsKqnd_Filter2 != null && mrsKqnd_Filter2.Count() > 0)
+                                    sitem["BYKQYD2"] = mrsKqnd_Filter["KQND"];
                                 mrsKqnd_Filter = mrsKqnd.FirstOrDefault(x => x["MC"].Contains(sitem["SYSWD"].Trim()));
                                 if (mrsKqnd_Filter != null && mrsKqnd_Filter.Count() > 0)
                                     sitem["SYKQYD"] = mrsKqnd_Filter["KQND"];
@@ -687,36 +690,36 @@ namespace Calculates
                                 }
                                 //温州
                                 //第二次
-                                if (Conversion.Val(sitem["MD"]) == Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) == Conversion.Val(sitem["BYKXL"]))
+                                if (Conversion.Val(sitem["MD"]) == Conversion.Val(sitem["BYMD2"]) && Conversion.Val(sitem["SYKXL"]) == Conversion.Val(sitem["BYKXL2"]))
                                 {
-                                    if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) / Math.Sqrt(Conversion.Val(sitem["BYT2"])), 0).ToString();
+                                    if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD2"])) <= 3)
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ2"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) / Math.Sqrt(Conversion.Val(sitem["BYT2"])), 0).ToString();
                                     else
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) / Math.Sqrt(Conversion.Val(sitem["BYT2"])) / Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ2"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD2"])) / Math.Sqrt(Conversion.Val(sitem["BYT2"])) / Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])), 0).ToString();
 
                                 }
-                                if (Conversion.Val(sitem["MD"]) == Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) != Conversion.Val(sitem["BYKXL"]))
+                                if (Conversion.Val(sitem["MD"]) == Conversion.Val(sitem["BYMD2"]) && Conversion.Val(sitem["SYKXL"]) != Conversion.Val(sitem["BYKXL2"]))
                                 {
-                                    if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                    if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD2"])) <= 3)
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ2"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL2"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]))), 0).ToString();
                                     else
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ2"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD2"])) * (1 - Conversion.Val(sitem["BYKXL2"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]))), 0).ToString();
                                 }
-                                if (Conversion.Val(sitem["MD"]) != Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) != Conversion.Val(sitem["BYKXL"]))
+                                if (Conversion.Val(sitem["MD"]) != Conversion.Val(sitem["BYMD2"]) && Conversion.Val(sitem["SYKXL"]) != Conversion.Val(sitem["BYKXL2"]))
                                 {
-                                    if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                    if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD2"])) <= 3)
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ2"]) * Conversion.Val(sitem["BYMD2"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL2"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]))), 0).ToString();
                                     else
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ2"]) * Conversion.Val(sitem["BYMD2"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD2"])) * (1 - Conversion.Val(sitem["BYKXL2"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]))), 0).ToString();
                                 }
 
                                 //温州
-                                if (Conversion.Val(sitem["MD"]) != Conversion.Val(sitem["BYMD"]) && Conversion.Val(sitem["SYKXL"]) == Conversion.Val(sitem["BYKXL"]))
+                                if (Conversion.Val(sitem["MD"]) != Conversion.Val(sitem["BYMD2"]) && Conversion.Val(sitem["SYKXL"]) == Conversion.Val(sitem["BYKXL2"]))
                                 {
-                                    if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD"])) <= 3)
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                    if (Math.Abs(Conversion.Val(sitem["SYSWD2"]) - Conversion.Val(sitem["XZSWD2"])) <= 3)
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ2"]) * Conversion.Val(sitem["BYMD2"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * (1 - Conversion.Val(sitem["BYKXL2"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]))), 0).ToString();
                                     else
-                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ"]) * Conversion.Val(sitem["BYMD"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD"])) * (1 - Conversion.Val(sitem["BYKXL"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]) * Conversion.Val(sitem["BYKXL"]))), 0).ToString();
+                                        mitem["XD_2"] = Round(Conversion.Val(sitem["BYBBMJ2"]) * Conversion.Val(sitem["BYMD2"]) * Math.Sqrt(Conversion.Val(sitem["SYT2"])) * Math.Sqrt(Conversion.Val(sitem["BYKQYD2"])) * (1 - Conversion.Val(sitem["BYKXL2"])) * Math.Sqrt(Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"]) * Conversion.Val(sitem["SYKXL"])) / (Conversion.Val(sitem["MD"]) * Math.Sqrt(Conversion.Val(sitem["BYT2"])) * Math.Sqrt(Conversion.Val(sitem["SYKQYD2"])) * (1 - Conversion.Val(sitem["SYKXL"])) * Math.Sqrt(Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]) * Conversion.Val(sitem["BYKXL2"]))), 0).ToString();
                                 }
                                 //温州
                                 mitem["XD_2"] = Round(Conversion.Val(mitem["XD_2"]), 0).ToString();
