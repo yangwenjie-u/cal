@@ -62,6 +62,7 @@ namespace Calculates
                     sItem["HG_KYQD"] = "----";
                     sItem["G_KYQD"] = "----";
                     sItem["W_KYQD"] = "----";
+                    sItem["MINKYQD"] = "----";
                 }
                 #endregion
         

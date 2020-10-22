@@ -243,6 +243,20 @@ namespace Calculates
                     sitem["T2ZN"] = "0";
                 }
 
+                #region 抗渗性能
+                if (sitem["JCXM"].Contains("抗渗性能"))
+                {
+                    if (Conversion.Val(sitem["KSKYQD1"]) > 0)
+                    {
+                        sitem["W_KSXN"] = "P" + (Conversion.Val(sitem["KSKYQD1"]) - 0.1).ToString();
+                    }
+                }
+                else
+                {
+                    sitem["W_KSXN"] = "----";
+                }
+                #endregion
+
             }
 
             //主表总判断赋值
