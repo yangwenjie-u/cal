@@ -31,7 +31,7 @@ namespace Calculates
             //砼合格证明书
 
            
-           // var THGMItem = data["M_THG"];
+            var THGMItem = data["M_THG"];
             var THGSItem = data["S_THG"];
             //商砼开盘配合比
 
@@ -47,8 +47,11 @@ namespace Calculates
             /*  //商砼抗压强度
               var HGZMItem = data["M_HGZ"];*/
             var HGZSItem = data["S_HGZ"];
+            //
+            var ZLKMItem = data["M_ZLK"];
+            var ZLKSItem = data["S_ZLK"];
             #endregion
-            
+
             #region 计算开始
             foreach (var sitem in SItem)
             {
@@ -60,7 +63,7 @@ namespace Calculates
                 //石含水率
                 d_SHIHSL= GetSafeDouble(sitem["SHIHSL"]);
                 //砂含石率
-                d_SHAHSHIL= GetSafeDouble(sitem["SHAHSHIL"]);
+                //d_SHAHSHIL= GetSafeDouble(sitem["SHAHSHIL"]);
                 #region 每立方用量T_
               if (GetSafeDouble(sitem["T_CLSN"]) == 0)
                 {
@@ -113,22 +116,26 @@ namespace Calculates
                 d_T_CLCHL2 = GetSafeDouble(sitem["T_CLCHL2"]);
                 d_T_CLCHL3 = GetSafeDouble(sitem["T_CLCHL3"]);
                 #endregion
-
+                
                 //计算出干的 石子+砂子的混合物质量
                 double md1, md2, md;
-                md = d_T_CLSHA * 100 / (100 - d_SHAHSHIL);
-
-                //由水/（干的石子+砂子的质量）=含水率  得到湿的混合物
-                md = md * (100 + d_SHAHSL) / 100;
+                //d_T_CLSHA 每立方用量(砂子)
+                //md = d_T_CLSHA * 100 / (100 - d_SHAHSHIL);
+                md = d_T_CLSHA * (100 + d_SHAHSL) / 100;
+               
+             
                 var d_H_CLSHA = Round(md, 0);
                 //计算含石量
-                md1 = d_T_CLSHI;
-                md2 = (d_SHAHSHIL / 100) * d_T_CLSHA * 100 / (100 - d_SHAHSHIL);
+                //md1 = d_T_CLSHI;
+                //md2 = (d_SHAHSHIL / 100) * d_T_CLSHA * 100 / (100 - d_SHAHSHIL);
                 //干的石子质量
-                md = md1 - md2;
-                md = md * (100 + d_SHIHSL) / 100;
+                //md = md1 - md2;
+                //md = md * (100 + d_SHIHSL) / 100;
+                //每立方用量(石)
+                md = d_T_CLSHI * (100 + d_SHIHSL) / 100;
                 var d_H_CLSHI = Round(md, 0);
-                var d_H_CLS = Round((d_T_CLS - d_H_CLSHA * d_SHAHSL / 100 - d_H_CLSHI * d_SHIHSL / 100), 0);
+                //每立方用量(水)
+                var d_H_CLS = Round((d_T_CLS - d_T_CLSHA * d_SHAHSL / 100 - d_T_CLSHI * d_SHIHSL / 100), 0);
                 #region XZL_校准量;H_调整;S_实际
                 if (GetSafeDouble(sitem["XZL_SHUI"]) == 0)
                 {
@@ -196,32 +203,60 @@ namespace Calculates
                     sitem["S_CLCHL3"] = sitem["H_CLCHL3"];
                 }
                 #endregion
-
+                sitem["SGTLD"]= sitem["TLD"]; 
                 #endregion
 
                 #region ZLK 质量卡
-
+                ZLKSItem[0]["HNTBJ"] = sitem["HNTBJ"];
+                ZLKSItem[0]["HPBBGBH"] = sitem["HPBBGBH"];
+                ZLKSItem[0]["TLDSGYQ"] = sitem["TLD"]; 
+                ZLKSItem[0]["TLDSJYQ"] = sitem["TLD"];
+                ZLKMItem[0]["JZBW"] = sitem["JZBW"];
+                ZLKMItem[0]["QYZZZSBH"] = MItem[0]["QYZZZSBH"];
+                ZLKMItem[0]["SYSHGZSBH"] = MItem[0]["SYSHGZSBH"];
                 #endregion
 
                 #region THG 合格证
-                THGSItem[0]["SAGG"] = sitem["SAGG"];
-                THGSItem[0]["SZGG"] = sitem["SZGG"];
+                THGMItem[0]["JZBW"] = sitem["JZBW"];
+                THGSItem[0]["LQ"] = sitem["LQ"];
+                THGSItem[0]["SJDJ"] = sitem["SJDJ"];
+                THGSItem[0]["HNTBJ"] = sitem["HNTBJ"];
+                THGSItem[0]["BJWYQ"] = sitem["BJWYQ"];
+                //配合比
+                THGSItem[0]["HPBBGBH"] = sitem["HPBBGBH"];
+                //外加剂
+                THGSItem[0]["WJJ1MC"] = sitem["WJJ1MC"];
+                THGSItem[0]["WJJ2MC"] = sitem["WJJ2MC"];
+                THGSItem[0]["WJJ3MC"] = sitem["WJJ3MC"];
                 THGSItem[0]["WJJ1ZL"] = sitem["WJJ1ZL"];
                 THGSItem[0]["WJJ2ZL"] = sitem["WJJ2ZL"];
                 THGSItem[0]["WJJ3ZL"] = sitem["WJJ3ZL"];
-                THGSItem[0]["CHL1ZL"] = sitem["CHL1ZL"];
-                THGSItem[0]["CHL2ZL"] = sitem["CHL3ZL"];
-                THGSItem[0]["CHL3ZL"] = sitem["CHL3ZL"];
-                THGSItem[0]["SNBGBH"] = sitem["SNBGBH"];
-                THGSItem[0]["SABGBH"] = sitem["SABGBH"];
-                THGSItem[0]["SZBGBH"] = sitem["SZBGBH"];
                 THGSItem[0]["WJJ1BGBH"] = sitem["WJJ1BGBH"];
                 THGSItem[0]["WJJ2BGBH"] = sitem["WJJ2BGBH"];
                 THGSItem[0]["WJJ3BGBH"] = sitem["WJJ3BGBH"];
+                //水泥
+                THGSItem[0]["SNBGBH"] = sitem["SNBGBH"];
+                THGSItem[0]["SNPZDJ"] = sitem["SNPZDJ"];
+                //砂
+                THGSItem[0]["SABGBH"] = sitem["SABGBH"];
+                THGSItem[0]["SAGG"] = sitem["SAGG"];
+                //石子
+                THGSItem[0]["SZBGBH"] = sitem["SZBGBH"];
+                THGSItem[0]["SZGG"] = sitem["SZGG"];
+                //掺合料
                 THGSItem[0]["CHL1BGBH"] = sitem["CHL1BGBH"];
                 THGSItem[0]["CHL2BGBH"] = sitem["CHL2BGBH"];
                 THGSItem[0]["CHL3BGBH"] = sitem["CHL3BGBH"];
+                THGSItem[0]["CHL1MC"] = sitem["CHL1MC"];
+                THGSItem[0]["CHL2MC"] = sitem["CHL3MC"];
+                THGSItem[0]["CHL3MC"] = sitem["CHL3MC"];
+                THGSItem[0]["CHL1ZL"] = sitem["CHL1ZL"];
+                THGSItem[0]["CHL2ZL"] = sitem["CHL3ZL"];
+                THGSItem[0]["CHL3ZL"] = sitem["CHL3ZL"];
                 #endregion
+
+
+                #region 萧山暂不要
 
                 #region TTZ 调整记录
 
@@ -339,12 +374,15 @@ namespace Calculates
                 HGZSItem[0]["CHL2CJ"] = sitem["CHL3CJ"];
                 HGZSItem[0]["CHL3CJ"] = sitem["CHL3CJ"];
                 #endregion
-
                 
+                #endregion
+
 
             }
             #endregion
-            
+            MItem[0]["JCJG"] = "----";
+           
+            MItem[0]["JCJGMS"] = "----";
             /************************ 代码结束 *********************/
             #endregion
 
