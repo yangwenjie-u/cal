@@ -67,8 +67,8 @@ namespace Calculates
                     continue;
                 }
 
-                MItem[0]["G_XD"] = mrsDj["XD"];
-                MItem[0]["G_MD"] = mrsDj["MD"];
+                /*MItem[0]["G_XD"] = mrsDj["XD"];*/
+                /*MItem[0]["G_MD"] = mrsDj["MD"];*/
                 MItem[0]["G_MSL"] = mrsDj["MSL"];
                 MItem[0]["G_JSL"] = mrsDj["JSL"];
                 MItem[0]["G_GTHL"] = mrsDj["GTHL"];
@@ -109,6 +109,7 @@ namespace Calculates
                     else
                     {
                         MItem[0]["HG_XD"] = IsQualified(sItem["XDKZZ"], sItem["XD"], false);
+                        MItem[0]["G_XD"] = sItem["XDKZZ"];
                     }
                     if (MItem[0]["HG_XD"] == "合格")
                     {
@@ -196,10 +197,10 @@ namespace Calculates
                 }
                 #endregion
 
-                #region 固体含量
-                if (jcxm.Contains("、固体含量、"))
+                #region 含固量
+                if (jcxm.Contains("、含固量、")|| jcxm.Contains("、固体含量、"))
                 {
-                    jcxmCur = "固体含量";
+                    jcxmCur = "含固量";
                     if (!IsNumeric(sItem["GTHLM2_1"]) || !IsNumeric(sItem["GTHLM2_1"]) || !IsNumeric(sItem["GTHLM0_1"]) || !IsNumeric(sItem["GTHLM0_2"]) || !IsNumeric(sItem["GTHLM1_1"]) || !IsNumeric(sItem["GTHLM1_2"])
                         || !IsNumeric(sItem["GTHLM0_1"]) || !IsNumeric(sItem["GTHLM0_2"]))
                     {
@@ -246,6 +247,7 @@ namespace Calculates
                     sItem["GTHL_2"] = "----";
                     sItem["GTHL"] = "----";
                     MItem[0]["G_GTHL"] = "----";
+                    MItem[0]["HG_GTHL"] = "----";
                 }
                 #endregion
 
@@ -740,56 +742,9 @@ namespace Calculates
                 if (jcxm.Contains("、经1h后坍落度变化量、"))
                 {
                     jcxmCur = "经1h后坍落度变化量";
-                    #region 基准
+                  
                     mTmpArray.Clear();
-                    for (int i = 1; i < 4; i++)
-                    {
-                        if (!IsNumeric(sItem["TLD1HC_" + i]) || !IsNumeric(sItem["TLD1HH_" + i]))
-                        {
-                            throw new Exception("请输入经基准1h后坍落度变化量参数");
-                        }
-                        sItem["TLDBHL" + i] = Round((Conversion.Val(sItem["TLD1HC_" + i]) - Conversion.Val(sItem["TLD1HH_" + i])), 0).ToString();
-                        mTmpArray.Add(GetSafeDouble(sItem["TLDBHL" + i]));
-                    }
-
-                    mTmpArray.Sort();
-                    if (mTmpArray.Count == 3)
-                    {
-                        mMaxKyqd = mTmpArray[2];
-                        mMinKyqd = mTmpArray[0];
-                        mMidKyqd = mTmpArray[1];
-                        mAvgKyqd = mTmpArray.Average();
-
-                        //计算抗压平均、达到设计强度、及进行单组合格判定
-                        if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
-                        {
-                            MItem[0]["HG_TLD"] = "重做";
-                            sItem["PJTLDBHL"] = "重做";
-                        }
-                        if (mMaxKyqd - mMidKyqd > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
-                        {
-                            //最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHL"] = (Round(mMidKyqd / 5, 0) * 5).ToString("0.0");
-                        }
-                        if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
-                        {
-                            // 最大最小强度值其中一个超出中间值的15%,试验结果取中间值"
-                            sItem["PJTLDBHL"] = (Round(mMidKyqd / 5, 0) * 5).ToString("0.0");
-                        }
-                        if (mMaxKyqd - mMidKyqd <= Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd <= Round(mMidKyqd * 0.15, 1))
-                        {
-                            //最大最小强度值均未超出中间值的15%,试验结果取平均值"
-                            sItem["PJTLDBHL"] = (Round(mAvgKyqd / 5, 0) * 5).ToString("0.0");
-
-                        }
-                    }
-                    else
-                    {
-                        MItem[0]["HG_TLD"] = "重做";
-                        sItem["PJTLDBHL"] = "重做";
-                    }
-
-                    #endregion
+                  
                     #region 受检
                     mTmpArray.Clear();
                     for (int i = 1; i < 4; i++)
@@ -842,18 +797,16 @@ namespace Calculates
                     #endregion
 
 
-                    if (sItem["PJTLDBHL"] == "重做" || sItem["PJTLDBHLSJ"] == "重做")
+                    if ( sItem["PJTLDBHLSJ"] == "重做")
                     {
                         mbhggs = mbhggs + 1;
                     }
                     else
                     {
-                        MItem[0]["HG_TLD"] = IsQualified(MItem[0]["G_TLD"], sItem["PJTLDBHL"], false);
-                        if (MItem[0]["HG_TLD"] == "合格")
-                        {
+                        
                             MItem[0]["HG_TLD"] = IsQualified(MItem[0]["G_TLD"], sItem["PJTLDBHLSJ"], false);
 
-                        }
+                        
                     }
 
                     if (MItem[0]["HG_TLD"] == "合格")
@@ -870,7 +823,7 @@ namespace Calculates
                 else
                 {
                     MItem[0]["G_TLD"] = "----";
-                    sItem["PJTLDBHL"] = "----";
+                    sItem["PJTLDBHLSJ"] = "----";
                     MItem[0]["HG_TLD"] = "----";
                 }
                 #endregion
@@ -1085,7 +1038,7 @@ namespace Calculates
                     int vp = 0;
                     string[] mtmpArray;
                     double[] mkyqdArray = new double[3];
-
+                    #region 抗压强度比
                     if (jcxm.Contains("、" + mlq.ToLower() + "抗压强度比、"))
                     {
                         jcxmCur = mlq.ToLower() + "抗压强度比";
@@ -1268,6 +1221,7 @@ namespace Calculates
                         sItem["PJQDB" + mlq] = "-----";
                         MItem[0]["HG_KYQD" + mlq] = "----";
                     }
+                    #endregion
                 }
 
                 #region 收缩率比
@@ -1335,6 +1289,7 @@ namespace Calculates
                     MItem[0]["G_PH"] = "----";
                 }
                 #endregion
+                
                 #region 氯离子含量
                 if (jcxm.Contains("、氯离子含量、"))
                 {
@@ -1434,6 +1389,73 @@ namespace Calculates
                     MItem[0]["HG_LSNHL"] = "----";
                 }
                 #endregion
+
+                #region ,水泥胶砂减水率
+                if (jcxm.Contains("、水泥胶砂减水率、"))
+                {
+                    jcxmCur = "水泥胶砂减水率";
+                    sItem["JSJSL"] = Math.Round((GetSafeDouble(sItem["JZJSYSL"]) - GetSafeDouble(sItem["WJJJSYSL"])) / GetSafeDouble(sItem["JZJSYSL"]) * 100, 1).ToString();
+                    if (GetNum(sItem["JSJSLKZZ"]) == null || GetNum(sItem["JSJSLKZZ"]) == "")
+                    {
+                        MItem[0]["G_JSJSLKZZ"] = "----";
+                    }
+                    else
+                    {
+                        MItem[0]["HG_JSJSL"] = IsQualified(sItem["JSJSLKZZ"], sItem["JSJSL"], false);
+                    }
+                    MItem[0]["G_JSJSLKZZ"] = sItem["JSJSLKZZ"];
+                    if (MItem[0]["HG_JSJSL"] == "合格")
+                    {
+                        mFlag_Hg = true;
+                    }
+                    else
+                    {
+                        mbhggs = mbhggs + 1;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true;
+                    }
+                }
+                else
+                {
+                    sItem["JSJSL"] = "----";
+                    MItem[0]["HG_JSJSL"] = "----";
+                    MItem[0]["G_JSLKZZ"] = "----";
+                }
+                #endregion
+
+                #region 水泥净浆流动度
+                if (jcxm.Contains("、水泥净浆流动度、"))
+                {
+                    jcxmCur = "水泥净浆流动度";
+                    sItem["JJLDD"] = Math.Round((GetSafeDouble(sItem["LTZJ1"]) +GetSafeDouble(sItem["LTZJ1"])) / 2, 1).ToString();
+                    if (GetNum(sItem["JJLDDKZZ"]) == null || GetNum(sItem["JJLDDKZZ"]) == "")
+                    {
+                        MItem[0]["G_JJLDDKZZ"] = "----";
+                    }
+                    else
+                    {
+                        MItem[0]["HG_JJLDD"] = IsQualified(sItem["JSJSLKZZ"], sItem["JJLDD"], false);
+                    }
+                    MItem[0]["G_JJLDDKZZ"] = sItem["JJLDDKZZ"];
+                    if (MItem[0]["HG_JJLDD"] == "合格")
+                    {
+                        mFlag_Hg = true;
+                    }
+                    else
+                    {
+                        mbhggs = mbhggs + 1;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mFlag_Bhg = true;
+                    }
+                }
+                else
+                {
+                    sItem["JJLDD"] = "----";
+                    MItem[0]["HG_JJLDD"] = "----";
+                    MItem[0]["G_JJLDDKZZ"] = "----";
+                }
+                #endregion
+               
                 if (mbhggs == 0)
                 {
                     sItem["JCJG"] = "合格";
