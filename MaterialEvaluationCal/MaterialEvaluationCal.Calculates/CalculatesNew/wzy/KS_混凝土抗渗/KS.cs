@@ -176,17 +176,17 @@ namespace Calculates
                 }
                 else
                 {
-                    if (Conversion.Val(sitem["KYQD1"]) > mQdyq || (Conversion.Val(sitem["KYQD1"]) >= mQdyq && sitem["SFBSS1"] == "1"))
+                    if (Conversion.Val(sitem["KYQD1"]) >= mQdyq && sitem["SFBSS1"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD2"]) > mQdyq || (Conversion.Val(sitem["KYQD2"]) >= mQdyq && sitem["SFBSS2"] == "1"))
+                    if (Conversion.Val(sitem["KYQD2"]) >= mQdyq && sitem["SFBSS2"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD3"]) > mQdyq || (Conversion.Val(sitem["KYQD3"]) >= mQdyq && sitem["SFBSS3"] == "1"))
+                    if (Conversion.Val(sitem["KYQD3"]) >= mQdyq && sitem["SFBSS3"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD4"]) > mQdyq || (Conversion.Val(sitem["KYQD4"]) >= mQdyq && sitem["SFBSS4"] == "1"))
+                    if (Conversion.Val(sitem["KYQD4"]) >= mQdyq && sitem["SFBSS4"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD5"]) > mQdyq || (Conversion.Val(sitem["KYQD5"]) >= mQdyq && sitem["SFBSS5"] == "1"))
+                    if (Conversion.Val(sitem["KYQD5"]) >= mQdyq && sitem["SFBSS5"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD6"]) > mQdyq || (mQdyq <= Conversion.Val(sitem["KYQD6"]) && sitem["SFBSS6"] == "1"))
+                    if (Conversion.Val(sitem["KYQD6"]) >= mQdyq && sitem["SFBSS6"] == "1")
                         vv = vv + 1;
                     if (vv <= 3)
                     {
