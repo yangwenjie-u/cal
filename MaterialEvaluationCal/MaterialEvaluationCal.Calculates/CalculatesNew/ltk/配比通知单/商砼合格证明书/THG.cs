@@ -241,13 +241,14 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
             }
                 MItem[0]["ZZS"] = hntzs.ToString();
                 int n = hntzs;//可作为评定依据的组数
-            
-            
-            
-            
-            
-            #region 所有组混凝土代表强度得到后，商砼统计评定
 
+
+
+
+
+            #region 所有组混凝土代表强度得到后，商砼统计评定
+            
+            #region 总组数>1
             //标准差
             //和；平均值
             double bzczbz1 = 0;//标准差准备值
@@ -267,6 +268,7 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
                 }
                 MItem[0]["QDDBZ" + (i + 1)] = DbqdArrqy[i].ToString("0.0");
             }
+            #region 可作为评定依据的组数等于1
             //强度保证率：合格强度组数/有效组数*10
             MItem[0]["QDBZL"]=(100- Round(bhgzs / n * 100, 0)).ToString("0");
             MItem[0]["MZQDZS"] = n.ToString();
@@ -334,7 +336,7 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
                 
               
             }
-            
+            #endregion
             jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，"+ MItem[0]["PHGPD"];
             #endregion
 
