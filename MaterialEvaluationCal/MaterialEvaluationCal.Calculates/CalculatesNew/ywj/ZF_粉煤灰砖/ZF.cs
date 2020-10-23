@@ -141,21 +141,24 @@ namespace Calculates
                     flag = true;
                     jcxmCur = "抗折强度";
 
-                    string GG = !string.IsNullOrEmpty(sItem["GG"]) && sItem["GG"].ToLower().Replace("*", "x").Contains("x") ? sItem["GG"] : "";
+                    if (string.IsNullOrEmpty(sItem["ZZJL"]))
+                    {
+                        string GG = !string.IsNullOrEmpty(sItem["GG"]) && sItem["GG"].ToLower().Replace("*", "x").Contains("x") ? sItem["GG"] : "";
 
-                    int ZGKJ = 160;
-                    if (string.IsNullOrEmpty(GG))
-                    {
-                        flag = false;
-                        throw new Exception("请输入砖规格。");
-                    }
-                    else
-                    {
-                        GG = GG.Substring(0, sItem["GG"].ToLower().Replace("*", "x").IndexOf('x'));
-                    }
-                    if (GG != "190" && !string.IsNullOrEmpty(GG))
-                    {
-                        ZGKJ = Convert.ToInt32(GG) - 40;
+                        sItem["ZZJL"] = "160";
+                        if (string.IsNullOrEmpty(GG))
+                        {
+                            flag = false;
+                            throw new Exception("请输入砖规格。");
+                        }
+                        else
+                        {
+                            GG = GG.Substring(0, sItem["GG"].ToLower().Replace("*", "x").IndexOf('x'));
+                        }
+                        if (GG != "190" && !string.IsNullOrEmpty(GG))
+                        {
+                            sItem["ZZJL"] = (Convert.ToInt32(GG) - 40).ToString();
+                        }
                     }
                     for (xd = 1; xd <= 10; xd++)
                     {
@@ -187,7 +190,7 @@ namespace Calculates
                             kd2 = Conversion.Val(sItem["KZ_CD" + xd + "_2"].Trim());
                             md2 = (kd1 + kd2) / 2;
                             md2 = Round(md2, 0);
-                            md = Conversion.Val(sItem["KZ_KYHZ" + xd].Trim()) * ZGKJ;
+                            md = Conversion.Val(sItem["KZ_KYHZ" + xd].Trim()) * Conversion.Val(sItem["ZZJL"]);
                             md = 1000 * 3 * md / (2 * md1 * Math.Pow(md2, 2));
                             md = Round(md, 2);
                             sItem["QD_KZQD" + xd] = md.ToString("0.00");
@@ -378,6 +381,75 @@ namespace Calculates
                 MItem[0]["JCJG"] = "不合格";
 
             #endregion
+            #endregion
+        }
+
+        public void GxJCJGMS()
+        {
+            //富阳德浩
+            #region
+            var extraDJ = dataExtra["BZ_ZF_DJ"];
+
+            var data = retData;
+            var jsbeizhu = "该组试样的检测结果全部合格";
+            var SItems = data["S_ZF"];
+            var MItem = data["M_ZF"];
+
+            var mAllHg = true;
+            var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+            string sjdj = "";
+
+            foreach (var sItem in SItems)
+            {
+                jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+                sjdj = sItem["SJDJ"];
+
+                #region 抗压强度
+                if (jcxm.Contains("、抗压强度、"))
+                {
+                    jcxmCur = "抗压强度";
+                    if (sItem["PD_KYQD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 抗折强度
+                if (jcxm.Contains("、抗折强度、"))
+                {
+                    jcxmCur = "抗折强度";
+                    if (sItem["PD_KZQD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 抗冻性能
+                if (jcxm.Contains("抗冻性能"))
+                {
+                    jcxmCur = "抗冻性能";
+
+                    if (sItem["KDXJL"] == "不符合")
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+            }
+            if (MItem[0]["JCJG"] == "合格")
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合"+ sjdj + "强度等级要求。";
+            }
+            else
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + sjdj + "强度等级要求。";
+            }
             #endregion
         }
     }

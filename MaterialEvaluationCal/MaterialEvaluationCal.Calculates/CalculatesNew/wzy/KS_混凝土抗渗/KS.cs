@@ -186,7 +186,7 @@ namespace Calculates
                         vv = vv + 1;
                     if (Conversion.Val(sitem["KYQD5"]) > mQdyq || (Conversion.Val(sitem["KYQD5"]) >= mQdyq && sitem["SFBSS5"] == "1"))
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD6"]) > mQdyq || (mQdyq <= Conversion.Val(sitem["KYQD6"]) && sitem["SFBSS5"] == "1"))
+                    if (Conversion.Val(sitem["KYQD6"]) > mQdyq || (mQdyq <= Conversion.Val(sitem["KYQD6"]) && sitem["SFBSS6"] == "1"))
                         vv = vv + 1;
                     if (vv <= 3)
                     {
