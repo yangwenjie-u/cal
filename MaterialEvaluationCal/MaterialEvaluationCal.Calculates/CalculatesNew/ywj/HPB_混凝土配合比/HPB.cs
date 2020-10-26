@@ -57,11 +57,11 @@ namespace Calculates.HPB_混凝土配合比
                     //水
                     MItem[0]["T_CLS"] = MItem[0]["YSL"];
                     //灰
-                    MItem[0]["T_CLSN"] = Round(GetSafeDouble(MItem[0]["YSL"]) / GetSafeDouble(MItem[0]["SHB"]), 0).ToString("0");
+                    MItem[0]["T_JNCL"] = Round(GetSafeDouble(MItem[0]["YSL"]) / GetSafeDouble(MItem[0]["SHB"]), 0).ToString("0");
                     //砂
-                    MItem[0]["T_CLSA"] = Round((GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_CLSN"])) * GetSafeDouble(MItem[0]["SL"]) / 100, 0).ToString("0");
+                    MItem[0]["T_CLSA"] = Round((GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_JNCL"])) * GetSafeDouble(MItem[0]["SL"]) / 100, 0).ToString("0");
                     //石子
-                    MItem[0]["T_CLSI"] = Round(GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_CLSN"]) - GetSafeDouble(MItem[0]["T_CLSA"]), 0).ToString("0");
+                    MItem[0]["T_CLSI"] = Round(GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_JNCL"]) - GetSafeDouble(MItem[0]["T_CLSA"]), 0).ToString("0");
                 }
                 #endregion
 
@@ -71,7 +71,7 @@ namespace Calculates.HPB_混凝土配合比
                     //水
                     if (IsNumeric(MItem[0]["T_CLS"]))
                     {
-                        MItem[0]["T_PBS"] = Round(GetSafeDouble(MItem[0]["T_CLS"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBS"] = Round(GetSafeDouble(MItem[0]["T_CLS"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 2).ToString("0.00");
                     }
                     else
                     {
@@ -80,7 +80,7 @@ namespace Calculates.HPB_混凝土配合比
                     //砂
                     if (IsNumeric(MItem[0]["T_CLSA"]))
                     {
-                        MItem[0]["T_PBSA"] = Round(GetSafeDouble(MItem[0]["T_CLSA"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBSA"] = Round(GetSafeDouble(MItem[0]["T_CLSA"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 2).ToString("0.00");
                     }
                     else
                     {
@@ -89,7 +89,7 @@ namespace Calculates.HPB_混凝土配合比
                     //石子
                     if (IsNumeric(MItem[0]["T_CLSI"]))
                     {
-                        MItem[0]["T_PBSI"] = Round(GetSafeDouble(MItem[0]["T_CLSI"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 2).ToString("0.00");
+                        MItem[0]["T_PBSI"] = Round(GetSafeDouble(MItem[0]["T_CLSI"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 2).ToString("0.00");
                     }
                     else
                     {
@@ -99,7 +99,7 @@ namespace Calculates.HPB_混凝土配合比
                     //外加剂1
                     if (IsNumeric(MItem[0]["T_CLWJJ1"]))
                     {
-                        MItem[0]["T_PBWJJ1"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
+                        MItem[0]["T_PBWJJ1"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ1"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -108,7 +108,7 @@ namespace Calculates.HPB_混凝土配合比
                     //外加剂2
                     if (IsNumeric(MItem[0]["T_CLWJJ2"]))
                     {
-                        MItem[0]["T_PBWJJ2"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
+                        MItem[0]["T_PBWJJ2"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ2"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -118,7 +118,7 @@ namespace Calculates.HPB_混凝土配合比
                     //外加剂3
                     if (IsNumeric(MItem[0]["T_CLWJJ3"]))
                     {
-                        MItem[0]["T_PBWJJ3"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ3"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
+                        MItem[0]["T_PBWJJ3"] = Round(GetSafeDouble(MItem[0]["T_CLWJJ3"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -128,7 +128,7 @@ namespace Calculates.HPB_混凝土配合比
                     //掺合料1
                     if (IsNumeric(MItem[0]["T_CLCHL1"]))
                     {
-                        MItem[0]["T_PBCHL1"] = Round(GetSafeDouble(MItem[0]["T_CLCHL1"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
+                        MItem[0]["T_PBCHL1"] = Round(GetSafeDouble(MItem[0]["T_CLCHL1"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -137,7 +137,7 @@ namespace Calculates.HPB_混凝土配合比
                     //掺合料2
                     if (IsNumeric(MItem[0]["T_CLCHL2"]))
                     {
-                        MItem[0]["T_PBCHL2"] = Round(GetSafeDouble(MItem[0]["T_CLCHL2"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
+                        MItem[0]["T_PBCHL2"] = Round(GetSafeDouble(MItem[0]["T_CLCHL2"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 3).ToString("0.000");
                     }
                     else
                     {
@@ -146,7 +146,7 @@ namespace Calculates.HPB_混凝土配合比
                     //掺合料3
                     if (IsNumeric(MItem[0]["T_CLCHL3"]))
                     {
-                        MItem[0]["T_PBCHL3"] = Round(GetSafeDouble(MItem[0]["T_CLCHL3"]) / GetSafeDouble(MItem[0]["T_CLSN"]), 3).ToString("0.000");
+                        MItem[0]["T_PBCHL3"] = Round(GetSafeDouble(MItem[0]["T_CLCHL3"]) / GetSafeDouble(MItem[0]["T_JNCL"]), 3).ToString("0.000");
                     }
                     else
                     {

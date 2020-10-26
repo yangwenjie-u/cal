@@ -13,6 +13,9 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
             var data = retData;
             var MItem = data["M_ZLK"];
             var SItem = data["S_ZLK"];
+            MItem[0]["JCJG"] = "----";
+
+            MItem[0]["JCJGMS"] = "----";
         }
     }
 }
