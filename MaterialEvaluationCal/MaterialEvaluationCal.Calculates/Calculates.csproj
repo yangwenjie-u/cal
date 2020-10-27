@@ -65,7 +65,12 @@
     <Compile Include="CalculatesNew\llm\SJZ 烧结路面砖\SJZ.cs" />
     <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
     <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" />
+    <Compile Include="CalculatesNew\lq\DAM安全帽\DAM.cs" />
     <Compile Include="CalculatesNew\lq\DAQ安全带\DAQ.cs" />
+    <Compile Include="CalculatesNew\lq\DBA个人保安线\DBA.cs" />
+    <Compile Include="CalculatesNew\lq\DJK登杆脚扣\DJK.cs" />
+    <Compile Include="CalculatesNew\lq\DJY绝缘绳\DJY.cs" />
+    <Compile Include="CalculatesNew\lq\GSC声测管\GSC.cs" />
     <Compile Include="CalculatesNew\lq\HNL混凝土路缘石\HNL.cs" />
     <Compile Include="CalculatesNew\lq\LFW铝蜂窝板\LFW.cs" />
     <Compile Include="CalculatesNew\lq\PGD城镇排水管道\PGD.cs" />
