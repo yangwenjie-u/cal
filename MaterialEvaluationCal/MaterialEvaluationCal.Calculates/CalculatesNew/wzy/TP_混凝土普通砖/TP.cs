@@ -30,6 +30,8 @@ namespace Calculates
             var MItem = data["M_TP"];
             var mitem = MItem[0];
             var SItem = data["S_TP"];
+            var mjcjg = "不合格";
+            var jsbeizhu = "合格";
             #endregion
 
             #region  自定义函数
@@ -186,6 +188,8 @@ namespace Calculates
             #region  计算开始
             mGetBgbh = false;
             mAllHg = true;
+            var jcxmBhg = "";
+            var jcxmCur = "";
             foreach (var sitem in SItem)
             {
                 mbHggs = 0;
@@ -197,8 +201,9 @@ namespace Calculates
                 bool flag, sign, mark;
                 mbHggs = 0; var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 //密度、抗压、冻融、吸水率
-                if (jcxm.Contains("、抗压、"))
+                if (jcxm.Contains("、抗压、") || jcxm.Contains("、抗压强度、"))
                 {
+                    jcxmCur = CurrentJcxm(jcxm, "抗压,抗压强度");
                     sign = true;
                     //等级表
                     Gs = mrsDj.Count();
@@ -293,7 +298,7 @@ namespace Calculates
                         md = md2 / md1;
                         md = Round(md, 2);
                         mitem["W_QD_BY"] = md.ToString("0.00");
-                        if (calc_PB("＞0.21", mitem["W_QD_BZZ"], false) == "合格")
+                        if (calc_PB("＞0.21", mitem["W_QD_BY"], false) == "合格")
                         {
                             mitem["G_QD"] = "抗压强度平均值" + mitem["G_QD_AVG"] + "MPa," + "单块最小抗压强度值" + mitem["G_QD_MIN"] + "MPa";
                             flag = true;
@@ -305,9 +310,14 @@ namespace Calculates
                             mitem["G_QD"] = "抗压强度平均值" + mitem["G_QD_AVG"] + "MPa," + "强度标准值" + mitem["G_QD_BZZ"] + "MPa";
                             flag = true;
                             flag = calc_PB(mitem["G_QD_AVG"], mitem["W_QD_AVG"], false) == "合格" ? flag : false;
-                            flag = calc_PB(mitem["G_QD_BZZ"], mitem["G_QD_BZZ"], false) == "合格" ? flag : false;
+                            flag = calc_PB(mitem["G_QD_BZZ"], mitem["W_QD_BZZ"], false) == "合格" ? flag : false;
                         }
                         mitem["GH_QD"] = flag ? "合格" : "不合格";
+                        if (!flag)
+                        {
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -322,6 +332,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、密度、"))
                 {
+                    jcxmCur = "密度";
                     sign = true;
                     //等级表 ,
                     Gs = mrdMdDj.Count();
@@ -411,6 +422,11 @@ namespace Calculates
                         pjmd = Round(pjmd, 0);
                         mitem["W_MD_AVG"] = pjmd.ToString();
                         mitem["GH_MD"] = calc_PB(mitem["G_MD_AVG"], mitem["W_MD_AVG"], false);
+                        if (mitem["GH_MD"] == "不合格")
+                        {
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -425,6 +441,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、吸水率、"))
                 {
+                    jcxmCur = "吸水率";
                     sign = true;
                     //等级表
                     Gs = mrsDj.Count();
@@ -485,6 +502,11 @@ namespace Calculates
                         pjmd = Round(pjmd, 1);
                         mitem["W_XSL"] = pjmd.ToString("0.0");
                         mitem["GH_XSL"] = calc_PB(mitem["G_XSL"], mitem["W_XSL"], false);
+                        if (mitem["GH_XSL"] == "不合格")
+                        {
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -497,6 +519,7 @@ namespace Calculates
                 }
                 if (jcxm.Contains("、冻融、"))
                 {
+                    jcxmCur = "冻融";
                     sign = true;
                     //等级表
                     var mrsDj_item = mrsDj[0];
@@ -598,6 +621,11 @@ namespace Calculates
                         flag = calc_PB(mitem["G_DR_SS"], mitem["W_DR_SS"], false) == "合格" ? flag : false;
                         flag = calc_PB(mitem["G_DR_KDX"], mitem["W_DR_KDX"], false) == "合格" ? flag : false;
                         mitem["GH_DR"] = flag ? "合格" : "不合格";
+                        if (!flag)
+                        {
+                            mAllHg = false;
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        }
                     }
                 }
                 else
@@ -621,9 +649,25 @@ namespace Calculates
                 mbHggs = mitem["GH_XSL"] == "不合格" ? mbHggs + 1 : mbHggs;
                 mbHggs = mitem["GH_MD"] == "不合格" ? mbHggs + 1 : mbHggs;
                 sitem["JCJG"] = mbHggs == 0 ? "合格" : "不合格";
-                mitem["JCJG"] = mbHggs == 0 ? "合格" : "不合格";
-                mitem["JCJGMS"] = mbHggs == 0 ? "该样品符合标准要求。" : "该样品不符合标准要求。";
+                //mitem["JCJG"] = mbHggs == 0 ? "合格" : "不合格";
+                //mitem["JCJGMS"] = mbHggs == 0 ? "该样品符合标准要求。" : "该样品不符合标准要求。";
             }
+
+            //添加最终报告
+            #region 最终结果
+            if (mAllHg && mjcjg != "----")
+            {
+                mjcjg = "合格";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合要求。";
+            }
+            else
+            {
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+            }
+            MItem[0]["JCJG"] = mjcjg;
+            MItem[0]["JCJGMS"] = jsbeizhu;
+            #endregion
+
             #endregion
             /************************ 代码结束 *********************/
         }

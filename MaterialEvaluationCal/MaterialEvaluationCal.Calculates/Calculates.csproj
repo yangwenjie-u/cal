@@ -112,6 +112,8 @@
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼搅拌记录\TJB.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼质量卡\ZLK.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼调整记录\TTZ.cs" />
+    <Compile Include="CalculatesNew\qsf\FZZ 非承重混凝土空心砖\FZZ.cs" />
+    <Compile Include="CalculatesNew\qsf\JBL建筑玻璃\JBL.cs" />
     <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
     <Compile Include="CalculatesNew\qsf\JJR建筑用绝热制品\JJR.cs" />
     <Compile Include="CalculatesNew\qsf\JLH楼板厚度\JLH.cs" />
@@ -124,13 +126,18 @@
     <Compile Include="CalculatesNew\qsf\WJR无机硬质绝热制品\WJR.cs" />
     <Compile Include="CalculatesNew\qsf\ZBL 中空玻璃\ZBL.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
+    <Compile Include="CalculatesNew\qsf\ZFK蒸压粉煤灰多孔砖\ZFK.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
+    <Compile Include="CalculatesNew\wlb\CZB_回弹模量%28承载板%29\CZB.cs" />
+    <Compile Include="CalculatesNew\wlb\FHJ_分户质量检验\FHJ.cs" />
     <Compile Include="CalculatesNew\wlb\CZZ_承重混凝土多孔砖\CZZ.cs" />
     <Compile Include="CalculatesNew\wlb\JG_结构实体检测\JG.cs" />
     <Compile Include="CalculatesNew\wlb\CBR_非现场cbr\CBR.cs" />
     <Compile Include="CalculatesNew\wlb\CT_沥青混合料抽提\CT.cs" />
     <Compile Include="CalculatesNew\wlb\JXS_预应力筋用锚具、夹具和连接器\JXS.cs" />
     <Compile Include="CalculatesNew\wlb\LQD_沥青混合料单轴压缩\LQD.cs" />
+    <Compile Include="CalculatesNew\wlb\HTC_混凝土超声回弹\HTC.cs" />
+    <Compile Include="CalculatesNew\wlb\XBR_现场CBR值\XBR.cs" />
     <Compile Include="CalculatesNew\wlb\YT_工程岩体\YT.cs" />
     <Compile Include="CalculatesNew\wlb\LQW_沥青混合料弯曲\LQW.cs" />
     <Compile Include="CalculatesNew\wlb\PZD_三米直尺平整度\PZD.cs" />
@@ -251,6 +258,7 @@
     <Compile Include="CalculatesNew\ywj\BN_保温系统用胶粘剂\BN.cs" />
     <Compile Include="CalculatesNew\ltk\FST_防水涂料\FST.cs" />
     <Compile Include="CalculatesNew\ywj\GJN_灌浆料\GJN.cs" />
+    <Compile Include="CalculatesNew\ywj\TYH_混凝土抗压检测单位养护\TYH.cs" />
     <Compile Include="CalculatesNew\ywj\HNT_混凝土抗压\HNT.cs" />
     <Compile Include="CalculatesNew\ywj\JWW_建筑外墙外保温用岩棉制品\JWW.cs" />
     <Compile Include="CalculatesNew\ywj\JZL_建筑密封材料\JZL.cs" />

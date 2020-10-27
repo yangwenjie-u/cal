@@ -112,7 +112,8 @@ namespace Calculates
                 if (!String.IsNullOrEmpty(SJDJ))
                 {
                     var DJ = extraDJ.FirstOrDefault(x => x["MC"].Trim().Equals(SJDJ, StringComparison.OrdinalIgnoreCase));
-                    if (DJ != null)
+                    //var DJ = extraDJ.FirstOrDefault(x => x["MC"].Trim().Equals(SJDJ, StringComparison.OrdinalIgnoreCase));
+                    if (DJ != null && DJ.Count() > 0)
                     {
                         var sz = DJ["SZ"].Trim();
                         var qdyq = DJ["QDYQ"].Trim();

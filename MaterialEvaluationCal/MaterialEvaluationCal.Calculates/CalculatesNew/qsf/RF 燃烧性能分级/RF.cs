@@ -895,11 +895,17 @@ namespace Calculates
                     if (sItem["GH_HXMY"] == "合格")
                     {
                         sItem["W_HXMY"] = "是";
+                        sItem["HXMY1"] = "是";
+                        sItem["HXMY2"] = "是";
+                        sItem["HXMY3"] = "是";
                     }
                     else
                     {
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         sItem["W_HXMY"] = "否";
+                        sItem["HXMY1"] = "否";
+                        sItem["HXMY2"] = "否";
+                        sItem["HXMY3"] = "否";
                         mAllHg = false;
                     }
 
@@ -977,12 +983,21 @@ namespace Calculates
                     {
                         case "d0":
                             sItem["W_RSDR"] = "600s内无燃烧滴落物/微粒";
+                            sItem["RSDR1"] = "600s内无燃烧滴落物/微粒";
+                            sItem["RSDR2"] = "600s内无燃烧滴落物/微粒";
+                            sItem["RSDR3"] = "600s内无燃烧滴落物/微粒";
                             break;
                         case "d1":
                             sItem["W_RSDR"] = "600s内无燃烧滴落物/微粒，持续时间不超过10s";
+                            sItem["RSDR1"] = "600s内无燃烧滴落物/微粒，持续时间不超过10s";
+                            sItem["RSDR2"] = "600s内无燃烧滴落物/微粒，持续时间不超过10s";
+                            sItem["RSDR3"] = "600s内无燃烧滴落物/微粒，持续时间不超过10s";
                             break;
                         case "d2":
                             sItem["W_RSDR"] = "未达到600s内无燃烧滴落物/微粒，持续时间不超过10s";
+                            sItem["RSDR1"] = "未达到600s内无燃烧滴落物/微粒，持续时间不超过10s";
+                            sItem["RSDR2"] = "未达到600s内无燃烧滴落物/微粒，持续时间不超过10s";
+                            sItem["RSDR3"] = "未达到600s内无燃烧滴落物/微粒，持续时间不超过10s";
                             break;
                     }
                 }

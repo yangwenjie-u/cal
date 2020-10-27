@@ -12,7 +12,6 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
-
             #region 参数定义
             string mcalBh, mlongStr;
             string mMaxBgbh;
