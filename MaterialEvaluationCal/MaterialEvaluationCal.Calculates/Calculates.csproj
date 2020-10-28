@@ -65,6 +65,7 @@
     <Compile Include="CalculatesNew\llm\SJZ 烧结路面砖\SJZ.cs" />
     <Compile Include="CalculatesNew\llm\RPM 柔性泡沫橡塑绝热制品\RPM.cs" />
     <Compile Include="CalculatesNew\llm\LSM 螺栓（母）\LSM.cs" />
+    <Compile Include="CalculatesNew\lq\BKM回弹模量%28贝克曼梁%29\BKM.cs" />
     <Compile Include="CalculatesNew\lq\DAM安全帽\DAM.cs" />
     <Compile Include="CalculatesNew\lq\DAQ安全带\DAQ.cs" />
     <Compile Include="CalculatesNew\lq\DBA个人保安线\DBA.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZFK蒸压粉煤灰多孔砖\ZFK.cs" />
     <Compile Include="CalculatesNew\qsf\ZQC静载%28浅板、岩石地基、处理后地基%29\ZQC.cs" />
-    <Compile Include="CalculatesNew\wlb\CZB_回弹模量%28承载板%29\CZB.cs" />
     <Compile Include="CalculatesNew\wlb\FHJ_分户质量检验\FHJ.cs" />
     <Compile Include="CalculatesNew\wlb\CZZ_承重混凝土多孔砖\CZZ.cs" />
     <Compile Include="CalculatesNew\wlb\JG_结构实体检测\JG.cs" />

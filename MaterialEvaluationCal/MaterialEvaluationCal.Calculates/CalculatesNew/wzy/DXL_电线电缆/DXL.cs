@@ -223,12 +223,7 @@ namespace Calculates
                             //实测电阻（零线）
                             sitem["E_SCDZ_L"] = Y_DXL["E_SCDZ"];
                         }
-                        else
-                        {
-                            sitem["E_SJDZ_L"] = "";
-                            sitem["E_SCDZ_L"] = "";
-
-                        }
+                       
                         if (Y_DXL["E_DXZL"].Trim() == "地线")
                         {
                             //设计电阻(地线)
