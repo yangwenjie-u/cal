@@ -87,6 +87,7 @@ namespace Calculates
                 if (jcxm.Contains("、装饰面层厚度、"))
 
                 {
+                    jcxmCur = "装饰面层厚度";
                     if (sitem["TCLX"] == "氟碳涂层")
                     {
                         if (sitem["TCCS"] == "二涂")
@@ -152,6 +153,7 @@ namespace Calculates
                 if (jcxm.Contains("、表面硬度、"))
 
                 {
+                    jcxmCur = "表面硬度";
                     if (GetSafeDouble(sitem["YDSCJG"]) < GetSafeDouble(sitem["G_YD"]))
                     {
                         sitem["YDDXPD"] = "合格";

@@ -11,7 +11,7 @@ namespace CalDebugTools
     {
         public static string GetToken(string username)
         {
-            string token = Data.GetPost_http(Data.http_get_login, "{\"username\":\"" + username + "\",\"password\":\"q88888\"}", "", null, "");
+            string token = Data.GetPost_http(Data.http_get_login, "{\"username\":\"" + username + "\",\"password\":\"88888\"}", "", null, "");
             TokenEntity te = JsonHelper.DeserializeJsonToObject<TokenEntity>(token);
             if (te.data == null)
             {
