@@ -10,6 +10,7 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
+            
             #region
             #region 参数定义
             var extraDJ = dataExtra["BZ_WJJ_DJ"];
@@ -1427,7 +1428,7 @@ namespace Calculates
                 if (jcxm.Contains("、水泥净浆流动度、"))
                 {
                     jcxmCur = "水泥净浆流动度";
-                    sItem["JJLDD"] = Math.Round((GetSafeDouble(sItem["LTZJ1"]) +GetSafeDouble(sItem["LTZJ1"])) / 2, 1).ToString();
+                    sItem["JJLDD"] = Math.Round((GetSafeDouble(sItem["LTZJ1"]) +GetSafeDouble(sItem["LTZJ2"])) / 2, 0).ToString();
                     if (GetNum(sItem["JJLDDKZZ"]) == null || GetNum(sItem["JJLDDKZZ"]) == "")
                     {
                         MItem[0]["G_JJLDDKZZ"] = "----";

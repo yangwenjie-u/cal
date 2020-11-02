@@ -12,7 +12,7 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
         {
       
 
-            #region MyRegion
+            #region Code
             var extraDJ = dataExtra["BZ_THG_DJ"];
             var extraGG = dataExtra["BZ_THGGG"];
 
@@ -67,7 +67,7 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
                 DateTime.TryParse(sItem["SYRQ"], out SYRQ);
                 var YHTJ = sItem["YHTJ"].Trim();
 
-                var LQ = 0;
+               /* var LQ = 0;
                 if (ZZRQ <= InitDate || SYRQ <= InitDate)
                 {
                     LQ = 0;
@@ -79,7 +79,7 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
                     //{
                     // LQ = 28;
                     //}
-                }
+                }*/
 
                 var KYHZ1 = GetSafeDouble(sItem["KYHZ1"]);
                 var KYHZ2 = GetSafeDouble(sItem["KYHZ2"]);
@@ -222,7 +222,7 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
 
                     sItem["DDSJQD"] = Round(GetSafeDouble(sItem["KYPJ"]) / mSz * 100, 0).ToString("0");
                     sItem["HSXS"] = HSXS.ToString();
-                    sItem["LQ"] = LQ.ToString();
+                    //sItem["LQ"] = LQ.ToString();
 
                     if (100 > GetSafeDouble(sItem["DDSJQD"]))
                     {
@@ -268,73 +268,96 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
                 }
                 MItem[0]["QDDBZ" + (i + 1)] = DbqdArrqy[i].ToString("0.0");
             }
-            #region 可作为评定依据的组数等于1
-            //强度保证率：合格强度组数/有效组数*10
-            MItem[0]["QDBZL"]=(100- Round(bhgzs / n * 100, 0)).ToString("0");
-            MItem[0]["MZQDZS"] = n.ToString();
-            for (int a = hntzs; a < 209; a++)
+            #region 总组数或可作为评定依据的组数等于1
+            if (GetSafeDouble(MItem[0]["ZZS"]) == 1)
             {
-                MItem[0]["QDDBZ" + (a + 1)] = "/";
+                MItem[0]["QDBZL"] = "100";
+                MItem[0]["MZQDZS"] = n.ToString();
+                MItem[0]["QDDBZ1"] = S_THGS[0]["KYPJ"];
+                MItem[0]["PNPJQD"] = MItem[0]["QDDBZ1"];
+                MItem[0]["QDBZC"] = "/";
+                MItem[0]["QDGFQZ"] = "/";
+                MItem[0]["QDZXZ"] = MItem[0]["QDDBZ1"];
+                MItem[0]["BGHGPDXS1"] = "1.15";
+                MItem[0]["BGHGPDXS2"] = "0.95";
+                if (bhgzs == 0)
+                {
+                    MItem[0]["PHGPD"] = "合格";
+                }
+                else
+                {
+                    MItem[0]["PHGPD"] = "不合格";
+                }
             }
-            bzczbz2 = (DbqdSum / n) * (DbqdSum / n) * n;
-            MItem[0]["PNPJQD"] = (DbqdSum / n).ToString();
+            #endregion
+            else {
+                //强度保证率：合格强度组数/有效组数*10
+                MItem[0]["QDBZL"]=(100- Round(bhgzs / n * 100, 0)).ToString("0");
+                MItem[0]["MZQDZS"] = n.ToString();
+                for (int a = hntzs; a < 209; a++)
+                {
+                    MItem[0]["QDDBZ" + (a + 1)] = "/";
+                }
+                bzczbz2 = (DbqdSum / n) * (DbqdSum / n) * n;
+                MItem[0]["PNPJQD"] = (DbqdSum / n).ToString("0.00");
 
-            MItem[0]["QDBZC"] = Math.Sqrt((bzczbz1 - bzczbz2) / (n - 1)).ToString("0.00");
-            if (Math.Sqrt((bzczbz1 - bzczbz2) / (n - 1)) < 2.5)
-            {
-                MItem[0]["QDGFQZ"] = "2.50";
-            }
-            else
-            {
-                MItem[0]["QDGFQZ"] = MItem[0]["QDBZC"];
-            }
-            DbqdArrqy.ToList().Sort();
-            MItem[0]["QDZXZ"] = DbqdArrqy[0].ToString();
+                MItem[0]["QDBZC"] = Math.Sqrt((bzczbz1 - bzczbz2) / (n - 1)).ToString("0.00");
+                if (Math.Sqrt((bzczbz1 - bzczbz2) / (n - 1)) < 2.5)
+                {
+                    MItem[0]["QDGFQZ"] = "2.50";
+                }
+                else
+                {
+                    MItem[0]["QDGFQZ"] = MItem[0]["QDBZC"];
+                }
+                DbqdArrqy.ToList().Sort();
+                MItem[0]["QDZXZ"] = DbqdArrqy[0].ToString();
            
             
-            if (hntzs >= 10)//统计方法为gb t50107-2012 5.1.3
-            {
-                if (hntzs < 15){ MItem[0]["HGPDXS1"] = "1.15"; MItem[0]["HGPDXS2"] = "0.90"; }
-                if (hntzs >14 && hntzs<20) { MItem[0]["HGPDXS1"] = "1.05"; MItem[0]["HGPDXS2"] = "0.90"; }
-                if (hntzs > 19) { MItem[0]["HGPDXS1"] = "0.95"; MItem[0]["HGPDXS2"] = "0.85"; }
-                MItem[0]["BGHGPDXS1"] = MItem[0]["HGPDXS1"];
-                MItem[0]["BGHGPDXS2"] = MItem[0]["HGPDXS2"];
+                if (hntzs >= 10)//统计方法为gb t50107-2012 5.1.3
+                {
+                    if (hntzs < 15){ MItem[0]["HGPDXS1"] = "1.15"; MItem[0]["HGPDXS2"] = "0.90"; }
+                    if (hntzs >14 && hntzs<20) { MItem[0]["HGPDXS1"] = "1.05"; MItem[0]["HGPDXS2"] = "0.90"; }
+                    if (hntzs > 19) { MItem[0]["HGPDXS1"] = "0.95"; MItem[0]["HGPDXS2"] = "0.85"; }
+                    MItem[0]["BGHGPDXS1"] = MItem[0]["HGPDXS1"];
+                    MItem[0]["BGHGPDXS2"] = MItem[0]["HGPDXS2"];
 
                
                     if (DbqdSum / n >= (bzkyqd + GetSafeDouble(MItem[0]["HGPDXS1"]) * Math.Sqrt((bzczbz1 - bzczbz2) / (n - 1))) && DbqdArrqy[0] >= GetSafeDouble(MItem[0]["HGPDXS2"]) * bzkyqd)
                     {
-                    MItem[0]["PHGPD"] = "合格";
-                }
-                else
-                {
-                    MItem[0]["PHGPD"] = "不合格";
-                }
+                        MItem[0]["PHGPD"] = "合格";
+                    }
+                    else
+                    {
+                        MItem[0]["PHGPD"] = "不合格";
+                    }
 
 
                 
 
-            }
-            else
-            {//非统计方法
-                MItem[0]["HGPDXS4"] = "0.95";
-                if (GetSafeDouble( GetNum(S_THGS[0]["SJDJ"])) < 60)
-                {
-                    MItem[0]["HGPDXS3"] = "1.15";
                 }
-                else { MItem[0]["HGPDXS3"] = "1.10"; }
-                MItem[0]["BGHGPDXS1"] = MItem[0]["HGPDXS3"];
-                MItem[0]["BGHGPDXS2"] = MItem[0]["HGPDXS4"];
+                else
+                {//非统计方法
+                    MItem[0]["HGPDXS4"] = "0.95";
+                    if (GetSafeDouble( GetNum(S_THGS[0]["SJDJ"])) < 60)
+                    {
+                        MItem[0]["HGPDXS3"] = "1.15";
+                    }
+                    else { MItem[0]["HGPDXS3"] = "1.10"; }
+                    MItem[0]["BGHGPDXS1"] = MItem[0]["HGPDXS3"];
+                    MItem[0]["BGHGPDXS2"] = MItem[0]["HGPDXS4"];
                 
                     if (DbqdSum / n >= bzkyqd*GetSafeDouble(MItem[0]["HGPDXS3"]) && DbqdArrqy[0] >= GetSafeDouble(MItem[0]["HGPDXS4"]) * bzkyqd)
                     {
-                    MItem[0]["PHGPD"] = "合格";
+                        MItem[0]["PHGPD"] = "合格";
                     }
-                else
-                {
-                    MItem[0]["PHGPD"] = "不合格";
-                }
+                    else
+                    {
+                        MItem[0]["PHGPD"] = "不合格";
+                    }
                 
               
+                }
             }
             #endregion
             jgsm = "依据" + MItem[0]["PDBZ"] + "的规定，"+ MItem[0]["PHGPD"];
@@ -346,10 +369,10 @@ namespace Calculates.CalculatesNew.ltk.配比通知单.商砼合格证明书
             {
                 mjcjg = "合格";
             }
-            if (!data.ContainsKey("M_HNT"))
+            if (!data.ContainsKey("M_THG"))
             {
 
-                data["M_HNT"] = new List<IDictionary<string, string>>();
+                data["M_THG"] = new List<IDictionary<string, string>>();
             }
 
             MItem[0]["JCJG"] = mjcjg;

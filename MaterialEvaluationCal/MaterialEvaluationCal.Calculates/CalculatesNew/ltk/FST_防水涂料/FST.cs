@@ -10,6 +10,8 @@ namespace Calculates
     {
         public void Calc()
         {
+            #region code
+            
             #region  参数定义
             double[] mkyqdArray = new double[3];
             int mbhggs = 0;
@@ -528,7 +530,25 @@ namespace Calculates
                     mitem["G_SLQD"] = "----";
                     mitem["HG_SLQD"] = "----";
                 }
+                if (jcxm.Contains("、耐热度、")|| jcxm.Contains("、耐热性、"))
+                {
+                    jcxmCur = "耐热度";
+                    if ("合格" != sitem["HG_NRD"] && sitem["HG_NRD"] != "符合")
+                    {
+                        mbhggs = mbhggs + 1;
+                        mFlag_Bhg = true;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
 
+                    }
+                    else
+                        mFlag_Hg = true;
+                }
+                else
+                {
+                    sitem["NRD"] = "----";
+                    sitem["HG_NRD"] = "----";
+                    mitem["G_NRD"] = "----";
+                }
 
                 if (mbhggs == 0)
                 {
@@ -555,6 +575,8 @@ namespace Calculates
                 if (mFlag_Bhg && mFlag_Hg)
                     MItem[0]["JCJGMS"] = "依据标准" + MItem[0]["PDBZ"] + ",所检项目" + jcxmBhg.TrimEnd('、') + "不符合标准要求，需复检。";
             }
+            #endregion
+
             #endregion
         }
     }

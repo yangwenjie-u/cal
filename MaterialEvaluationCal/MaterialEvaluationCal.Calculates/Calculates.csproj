@@ -97,16 +97,16 @@
     <Compile Include="CalculatesNew\lq\YKJ_扣件\YKJBAK.cs" />
     <Compile Include="CalculatesNew\ltk\矿物外加剂MA\MA.cs" />
     <Compile Include="CalculatesNew\ltk\管桩_GZ\GZ.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼抗渗\SHG.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼抗折\ZHG.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\TPT.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼交货检验记录\TJH.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼合格证明书\THG.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼开盘配合比\TKP.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼抗压强度\HGZ.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼搅拌记录\TJB.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼质量卡\ZLK.cs" />
-    <Compile Include="CalculatesNew\ltk\配比通知单\商砼调整记录\TTZ.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼抗渗\SHG.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼抗折\ZHG.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\TPT.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼交货检验记录\TJH.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼合格证明书\THG.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼开盘配合比\TKP.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼抗压强度\HGZ.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼搅拌记录\TJB.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼质量卡\ZLK.cs" />
+    <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼调整记录\TTZ.cs" />
     <Compile Include="CalculatesNew\qsf\FZZ 非承重混凝土空心砖\FZZ.cs" />
     <Compile Include="CalculatesNew\qsf\JBL建筑玻璃\JBL.cs" />
     <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
@@ -307,8 +307,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CalculatesNew\ltk\配比通知单\re.txt" />
-    <Content Include="CalculatesNew\ltk\配比通知单\tpt.txt" />
+    <Content Include="CalculatesNew\ltk\配比通知单TPT\re.txt" />
+    <Content Include="CalculatesNew\ltk\配比通知单TPT\tpt.txt" />
     <Content Include="obj\Debug\Calculates.csproj.FileListAbsolute.txt" />
     <Content Include="obj\Debug\Calculates.dll" />
     <Content Include="obj\Debug\Calculates.pdb" />

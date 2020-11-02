@@ -9,6 +9,8 @@ namespace Calculates
         public void Calc()
         {
             #region
+            
+            #region 字段定义
             var data = retData;
             var mjcjg = "不合格";
             var jsbeizhu = "";
@@ -34,6 +36,9 @@ namespace Calculates
             }
 
             var mItem = MItem[0];
+            #endregion
+            
+            #region 函数
             Func<double, double> myint = delegate (double dataChar)
             {
                 return Math.Round(Conversion.Val(dataChar) / 5, 0) * 5;
@@ -58,8 +63,13 @@ namespace Calculates
 
                 return "";
             };
+            #endregion
+
+            #region 从表循环开始
+            
             foreach (var sItem in SItem)
             {
+                #region 参数判定，空白处理
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
 
                 string dCpmc = string.IsNullOrEmpty(sItem["CPMC"]) ? "" : sItem["CPMC"].Trim();
@@ -72,7 +82,8 @@ namespace Calculates
                 string dSbmcl = string.IsNullOrEmpty(sItem["SBMCL"]) ? "" : sItem["SBMCL"].Trim();
                 string dZyycl = string.IsNullOrEmpty(sItem["ZYYCL"]) ? "" : sItem["ZYYCL"].Trim();
                 string dBzh = string.IsNullOrEmpty(sItem["BZH"]) ? "" : sItem["BZH"].Trim();
-
+                #endregion 
+                
                 switch (dCpmc)
                 {    
                     #region CPMC-CPBJ产品标记
@@ -870,7 +881,7 @@ namespace Calculates
                         mItem["HG_NRD"] = "----";
                     }
 
-                    #region MyRegion
+                    #region 
                     //if ((sItem["CPMC"] == "自粘聚合物改性沥青防水卷材" && sItem["XS"] == "PY") || sItem["CPMC"] == "预铺防水卷材(2017)")
                     //{
                     //    //if (sItem["NRDSM_3"] == "无滑动、流淌、滴落" && sItem["NRDSM_4"] == "无滑动、流淌、滴落" && sItem["NRDSM_5"] == "无滑动、流淌、滴落")
@@ -1337,7 +1348,7 @@ namespace Calculates
                     sItem["JCJG"] = "合格";
                 }
             }
-
+            #endregion 从表循环结束
             #region 添加最终报告
             //综合判断
             if (mbhggs == 0)

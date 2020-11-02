@@ -12,8 +12,10 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
+            #region Code
+            
             #region  参数定义
-            string  mlongStr;
+            string mlongStr;
             double[] mkzqdArray = new double[3];
             double[] mkzhzArray = new double[3];
             string[] mtmpArray;
@@ -23,6 +25,10 @@ namespace Calculates
 
             string mJSFF;
             bool mAllHg;
+            int ZZS = 0;//总组数
+            int WSZS = 0;//无效组数;
+            int HGZS = 0;//合格组数;
+            int BHGZS = 0;//不合格组数；
 
 
             mAllHg = true;
@@ -95,7 +101,7 @@ namespace Calculates
                     mjcjg = "不下结论";
                     continue;
                 }
-                sitem["LQ"] = (GetSafeDateTime(mitem["SYRQ"]) - GetSafeDateTime(sitem["ZZRQ"])).Days.ToString();
+                //sitem["LQ"] = (GetSafeDateTime(mitem["SYRQ"]) - GetSafeDateTime(sitem["ZZRQ"])).Days.ToString();
                 sitem["DDSJQD"] = "0";
                 sitem["KZQD1"] = Round(1000 * Conversion.Val(sitem["KZHZ1"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
                 sitem["KZQD2"] = Round(1000 * Conversion.Val(sitem["KZHZ2"]) * Conversion.Val(sitem["SJCD"]) / (Conversion.Val(sitem["SJKD"]) * Conversion.Val(sitem["SJGD"]) * Conversion.Val(sitem["SJGD"])) * mHsxs, 1).ToString("0.0");
@@ -106,7 +112,7 @@ namespace Calculates
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
                 if (string.IsNullOrEmpty(mJSFF))
                 {
-                    if (jcxm.Contains("、抗折强度、"))
+                    if (jcxm.Contains("、抗折强度、")|| jcxm.Contains("、抗折、"))
                     {
                         mlongStr = sitem["KZQD1"] + "," + sitem["KZQD2"] + "," + sitem["KZQD3"];
                         mtmpArray = mlongStr.Split(',');
@@ -281,13 +287,28 @@ namespace Calculates
                         sitem["JCJG"] = "----";
                     }
                 }
-                if (sitem["KZPJ"] == "无效")
+                if (sitem["KZPJ"] == "无效") { 
                     jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值无效。";
+                    WSZS = WSZS + 1;
+                }
                 else
                     jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样强度代表值" + sitem["KZPJ"] + "MPa，" + "占设计强度" + sitem["DDSJQD"] + "%。";
                 mAllHg = (mAllHg && sitem["JCJG"] == "合格");
+                if (mAllHg)
+                {
+                    HGZS = HGZS + 1;
+                }
+                else
+                {
+                    BHGZS = BHGZS + 1;
+                }
+                ZZS = ZZS + 1;
             }
             //主表总判断赋值
+            if (BHGZS > 1)
+            {
+                mAllHg = false;
+            }
             if (mAllHg)
             {
                 mjcjg = "合格";
@@ -297,6 +318,8 @@ namespace Calculates
             MItem[0]["JCJG"] = mjcjg;
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion;
+            
+            #endregion
             /************************ 代码结束 *********************/
         }
     }

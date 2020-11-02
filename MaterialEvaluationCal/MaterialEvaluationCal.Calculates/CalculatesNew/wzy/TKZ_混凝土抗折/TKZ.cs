@@ -32,8 +32,8 @@ namespace Calculates
             var mjcjg = "不合格";
             var jsbeizhu = "";
             var data = retData;
-            var mrsDj = dataExtra["BZ_TKZ_DJ"];
-            var mrsGg = dataExtra["BZ_TKZCC"];
+            var mrsDj = dataExtra["BZ_ZHG_DJ"];
+            var mrsGg = dataExtra["BZ_ZHGCC"];
             //var MItem = data["M_TKZ"];
             if (!data.ContainsKey("M_TKZ"))
             {

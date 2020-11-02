@@ -11,6 +11,7 @@ namespace Calculates
     {
         public void Calc()
         {
+            #region Code
             /************************ 代码开始 *********************/
             /* 
              * 计算项目：混泥土抗渗
@@ -115,6 +116,7 @@ namespace Calculates
                 string mSz = "0";
                 double mbzssgd = 0;
                 mSjdj = sitem["SJDJ"];            //设计等级名称
+                sitem["GGXH"] = sitem["DINGMZJ"] + "*" + sitem["DIMZJ"] + "*" + sitem["GD"];
                 if (string.IsNullOrEmpty(mSjdj))
                     mSjdj = "";
                 //从设计等级表中取得相应的计算数值、等级标准
@@ -134,7 +136,7 @@ namespace Calculates
                     break;
                 }
                 //计算龄期
-                sitem["LQ"] = (GetSafeDateTime(sitem["SYRQ"]) - GetSafeDateTime(sitem["ZZRQ"])).Days.ToString();
+                //sitem["LQ"] = (GetSafeDateTime(sitem["SYRQ"]) - GetSafeDateTime(sitem["ZZRQ"])).Days.ToString();
                 if (!string.IsNullOrEmpty(MItem[0]["SJTABS"]))
                 {
                     if (sjtabcalc(MItem[0], sitem, mAllHg))
@@ -178,24 +180,24 @@ namespace Calculates
                 }
                 else
                 {
-                    if (Conversion.Val(sitem["KYQD1"]) > mQdyq || (Conversion.Val(sitem["KYQD1"]) >= mQdyq && sitem["SFBSS1"] == "1"))
+                    if (Conversion.Val(sitem["KYQD1"]) >= mQdyq && sitem["SFBSS1"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD2"]) > mQdyq || (Conversion.Val(sitem["KYQD2"]) >= mQdyq && sitem["SFBSS2"] == "1"))
+                    if (Conversion.Val(sitem["KYQD2"]) >= mQdyq && sitem["SFBSS2"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD3"]) > mQdyq || (Conversion.Val(sitem["KYQD3"]) >= mQdyq && sitem["SFBSS3"] == "1"))
+                    if (Conversion.Val(sitem["KYQD3"]) >= mQdyq && sitem["SFBSS3"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD4"]) > mQdyq || (Conversion.Val(sitem["KYQD4"]) >= mQdyq && sitem["SFBSS4"] == "1"))
+                    if (Conversion.Val(sitem["KYQD4"]) >= mQdyq && sitem["SFBSS4"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD5"]) > mQdyq || (Conversion.Val(sitem["KYQD5"]) >= mQdyq && sitem["SFBSS5"] == "1"))
+                    if (Conversion.Val(sitem["KYQD5"]) >= mQdyq && sitem["SFBSS5"] == "1")
                         vv = vv + 1;
-                    if (Conversion.Val(sitem["KYQD6"]) > mQdyq || (mQdyq <= Conversion.Val(sitem["KYQD6"]) && sitem["SFBSS5"] == "1"))
+                    if (Conversion.Val(sitem["KYQD6"]) >= mQdyq && sitem["SFBSS6"] == "1")
                         vv = vv + 1;
                     if (vv <= 3)
                     {
                         sitem["KS_HG"] = "0";
                         sitem["JCJG"] = "不合格";
-                        mAllHg = false;
                         BHGZS = BHGZS + 1;
+                        mAllHg = false;
                     }
                     else
                     {
@@ -225,6 +227,7 @@ namespace Calculates
             }
             #endregion
             /************************ 代码结束 *********************/
+            #endregion
         }
     }
 }
