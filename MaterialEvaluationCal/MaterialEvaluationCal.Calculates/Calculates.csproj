@@ -97,12 +97,15 @@
     <Compile Include="CalculatesNew\ltk\GYF 钢筋原材料复试\GYF.cs" />
     <Compile Include="CalculatesNew\ltk\JGF_钢筋型材复试\JGF.cs" />
     <Compile Include="CalculatesNew\ltk\JGG_钢筋型材\JGG.cs" />
+    <Compile Include="CalculatesNew\ltk\PKS盘扣式构件\PKS.cs" />
     <Compile Include="CalculatesNew\ltk\LKH 抗滑移系数\LKH.cs" />
     <Compile Include="CalculatesNew\ltk\LNJ_高强度螺栓连接副\LNJ.cs" />
     <Compile Include="CalculatesNew\lq\XHF_型钢焊接复试\XHF.cs" />
     <Compile Include="CalculatesNew\lq\XHJ_型钢焊接\XHJ.cs" />
     <Compile Include="CalculatesNew\lq\YKJ_扣件\YKJ.cs" />
     <Compile Include="CalculatesNew\lq\YKJ_扣件\YKJBAK.cs" />
+    <Compile Include="CalculatesNew\ltk\KWS 碗扣式钢管脚手架构件\KWS.cs" />
+    <Compile Include="CalculatesNew\ltk\QFS 其它防水材料\QFS.cs" />
     <Compile Include="CalculatesNew\ltk\矿物外加剂MA\MA.cs" />
     <Compile Include="CalculatesNew\ltk\管桩_GZ\GZ.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼抗渗\SHG.cs" />

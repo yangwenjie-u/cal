@@ -51,7 +51,7 @@ namespace Calculates
                 //从设计等级表中取得相应的计算数值、等级标准
                 //不做固体含量不需要ZF
                 //var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj) && x["ZF"].Contains(dZf) && x["BZH"].Contains(dBzh));
-                var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj) && x["BZH"].Contains(dBzh));
+                var mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(dCpmc) && x["LX"].Contains(dLx) && x["DJ"].Contains(dDj));
                 if (mrsDj_item != null && mrsDj_item.Count() > 0)
                 {
                     mJSFF = string.IsNullOrEmpty(mrsDj_item["JSFF"]) ? "" : mrsDj_item["JSFF"].Trim().ToLower();
@@ -579,5 +579,8 @@ namespace Calculates
 
             #endregion
         }
+
+
+        
     }
 }

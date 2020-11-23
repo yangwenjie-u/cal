@@ -585,7 +585,9 @@ namespace Calculates
                         md1 = Conversion.Val(sItem["BHWHQL_" + xd]);
                         md2 = Conversion.Val(sItem["SSHQL_" + xd]);
                         md = Round(md1 - md2, 1);
+                        sItem["HQL_" + xd] = md.ToString("0.0");
                         sum += md;
+
                     }
                     md = sum / 3;
                     sItem["PJHQL"] = Math.Round(md, 1).ToString();
@@ -1018,7 +1020,7 @@ namespace Calculates
                 }
                 #endregion
 
-
+                #region 抗压强度比
                 double[] Arrmd = new double[4];
                 for (int qdi = 1; qdi <= 4; qdi++)
                 {
@@ -1224,6 +1226,7 @@ namespace Calculates
                     }
                     #endregion
                 }
+                #endregion
 
                 #region 收缩率比
                 if (jcxm.Contains("、收缩率比、"))

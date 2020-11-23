@@ -226,11 +226,14 @@ namespace Calculates
                 ZLKSItem[0]["TLDSGYQ"] = sitem["TLD"]; 
                 ZLKSItem[0]["TLDSJYQ"] = sitem["TLD"];
                 ZLKMItem[0]["JZBW"] = sitem["JZBW"];
+                ZLKSItem[0]["CCRQ"] = MItem[0]["ZLKCCRQ"];
+                ZLKSItem[0]["SGGY"]= sitem["SGGY"];
 
                 #endregion
 
                 MHGMItem[0]["HPBBGBH"] = sitem["HPBBGBH"];
                 MHGMItem[0]["JZBW"] = sitem["JZBW"];
+              
 
                 #region THG 合格证
                 THGMItem[0]["JZBW"] = sitem["JZBW"];

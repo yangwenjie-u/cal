@@ -11,7 +11,7 @@ namespace Calculates
     {
         public void Calc()
         {
-            #region
+            #region Code
 
             #region 数据准备
             var extraDJ = dataExtra["BZ_JGG_DJ"];
@@ -503,7 +503,45 @@ namespace Calculates
                 #region  弯曲
                 if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
+                    for (int i = 1; i < double.Parse(mxwgs) + 1; i++)
+                    {
+                        if (sItem["LW" + i] == "无裂纹")
+                        {
+                            sItem["LW" + i] = "1";
+                        }
+                        if (sItem["LW" + i] == "有裂纹")
+                        {
+                            sItem["LW" + i] = "0";
+                        }
+                        if (sItem["LW" + i] == "----")
+                        {
+                            sItem["LW" + i] = "-1";
+                        }
+
+                    }
                     mallBhg_lw = mallBhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, double.Parse(mxwgs));
+                    for (int i = 1; i < double.Parse(mxwgs) + 1; i++)
+                    {
+                        if (sItem["LW" + i] == "1")
+                        {
+                            sItem["LW" + i] = "无裂纹";
+                        }
+                        if (sItem["LW" + i] == "0")
+                        {
+                            sItem["LW" + i] = "有裂纹";
+                        }
+                        if (sItem["LW" + i] == "-1")
+                        {
+                            sItem["LW" + i] = "----";
+                        }
+
+                    }
+                }
+                else
+                {
+                    sItem["LW1"] = "----";
+                    sItem["LW2"] = "----";
+                    
                 }
                 #endregion
 
@@ -517,6 +555,7 @@ namespace Calculates
                     if (extraFieldsDj["WHICH"] == "1")
                     {
                         var cjbzz = double.Parse(extraFieldsDj["CJBZZ"]);
+                        sItem["CJBZZ"] = "≥" + cjbzz;
                         var cjsy = Conversion.Val(sItem["CJSY1"]);
                         if (cjsy < cjbzz)
                         {
@@ -546,6 +585,8 @@ namespace Calculates
                     }
                     else
                     {
+                        var cjbzz = double.Parse(extraFieldsDj["CJBZZ"]);
+                        sItem["CJBZZ"] = "≥" + cjbzz;
                         mcjpj = Math.Round((Conversion.Val(sItem["CJSY1"]) + Conversion.Val(sItem["CJSY2"]) + Conversion.Val(sItem["CJSY3"])) / 3, 1);
 
                         sItem["CJPJ"] = Math.Round(mcjpj, 1).ToString();
@@ -558,21 +599,6 @@ namespace Calculates
                             }
                         }
 
-                        if (mcjcnt >= double.Parse(extraFieldsDj["CJBZZ"]) && mcjcnt7 < 1 && mcjcnt < 2)
-                        {
-                            sItem["JCJG_CJ"] = "合格";
-                            mFlag_Hg = true;
-                        }
-                        else
-                        {
-                            sItem["JCJG_CJ"] = "复试";
-                            jcxmCur = "冲击试验";
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
-
-                            mAllHg = false;
-                            mFlag_Bhg = true;
-                        }
-
                         if (mcjcnt7 >= 2)
                         {
                             jcxmCur = "冲击试验";
@@ -581,6 +607,14 @@ namespace Calculates
                             mFlag_Bhg = true;
                             mAllHg = false;
                         }
+                        else
+                        {
+
+                            sItem["JCJG_CJ"] = "合格";
+                            mFlag_Hg = true;
+                        }
+                        sItem["CJDZHGGS"] = (3 - mcjcnt7).ToString();;
+                        
                     }
                 }
                 else
@@ -590,6 +624,8 @@ namespace Calculates
                     sItem["CJSY2"] = "----";
                     sItem["CJSY3"] = "----";
                     sItem["CJPJ"] = "----";
+                    sItem["CJBZZ"] = "----";
+                    sItem["CJDZHGGS"] = "----";
                 }
                 #endregion
 
