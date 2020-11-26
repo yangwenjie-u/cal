@@ -232,7 +232,7 @@ namespace Calculates
                 sitem = SItem[xd - 1];
                 sArr[1, xd] = sitem["FJWZ"];
                 bl = sitem["ND_A"];
-                sitem["W_ND_A"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("F2") : bl;
+                sitem["W_ND_A"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("0.000") : bl;
                 sArr[2, xd] = IsNumeric(bl) ? sitem["W_ND_A"] : bl;
                 sitem["G_A_ND"] = mrsDj_Filter["G_A_ND"];
             }
@@ -274,20 +274,20 @@ namespace Calculates
                     sitem = SItem[Itemp - 1];
                     if (md.ToString().Contains("＜"))
                     {
-                        sitem["AVG_A"] = md.ToString();
+                        sitem["AVG_A"] = md.ToString("0.000");
                         sitem["PD_A"] = "合格";
                     }
                     else if (md.ToString().Contains("<"))
                     {
-                        sitem["AVG_A"] = md.ToString();
+                        sitem["AVG_A"] = md.ToString("0.000");
                         sitem["PD_A"] = "合格";
                     }
                     else
                     {
-                        sitem["AVG_A"] = md.ToString("0.00");
+                        sitem["AVG_A"] = md.ToString("0.000");
                         sitem["PD_A"] = calc_PB(sitem["G_A_ND"], sitem["AVG_A"], false);
                         bHggs_A = sitem["PD_A"] == "不合格" ? bHggs_A + 1 : bHggs_A;
-                        sitem["AVG_A"] = sitem["AVG_A"] == "0.00" ? "未检出" : sitem["AVG_A"];
+                        sitem["AVG_A"] = sitem["AVG_A"] == "0.000" ? "未检出" : sitem["AVG_A"];
                     }
                 }
                 xd = Gs;
@@ -314,7 +314,7 @@ namespace Calculates
                 sitem = SItem[xd - 1];
                 sArr[1, xd] = sitem["FJWZ"].Trim();
                 bl = sitem["ND_J"].Trim();
-                sitem["W_ND_J"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("F3") : bl;
+                sitem["W_ND_J"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("0.000") : bl;
                 sArr[2, xd] = IsNumeric(bl) ? sitem["W_ND_J"] : bl;
                 sitem["G_J_ND"] = mrsDj_Filter["G_J_ND"];
             }
@@ -356,12 +356,12 @@ namespace Calculates
                     sitem = SItem[Itemp - 1];
                     if (md.ToString().Contains("＜"))
                     {
-                        sitem["AVG_J"] = md.ToString();
+                        sitem["AVG_J"] = md.ToString("0.000");
                         sitem["PD_J"] = "合格";
                     }
                     else if (md.ToString().Contains("<"))
                     {
-                        sitem["AVG_J"] = md.ToString();
+                        sitem["AVG_J"] = md.ToString("0.000");
                         sitem["PD_J"] = "合格";
                     }
                     else
@@ -396,7 +396,7 @@ namespace Calculates
                 sitem = SItem[xd - 1];
                 sArr[1, xd] = sitem["FJWZ"].Trim();
                 bl = sitem["ND_B"].Trim();
-                sitem["W_ND_B"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("F3") : bl;
+                sitem["W_ND_B"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("0.000") : bl;
                 sArr[2, xd] = IsNumeric(bl) ? sitem["W_ND_B"] : bl;
                 sitem["G_B_ND"] = mrsDj_Filter["G_B_ND"];
             }
@@ -438,17 +438,17 @@ namespace Calculates
                     sitem = SItem[Itemp - 1];
                     if (md.ToString().Contains("＜"))
                     {
-                        sitem["AVG_B"] = md.ToString();
+                        sitem["AVG_B"] = md.ToString("0.000");
                         sitem["PD_B"] = "合格";
                     }
                     else if (md.ToString().Contains("<"))
                     {
-                        sitem["AVG_B"] = md.ToString();
+                        sitem["AVG_B"] = md.ToString("0.000");
                         sitem["PD_B"] = "合格";
                     }
                     else
                     {
-                        sitem["AVG_B"] = md.ToString("F3");
+                        sitem["AVG_B"] = md.ToString("0.000");
                         sitem["PD_B"] = calc_PB(sitem["G_B_ND"], sitem["AVG_B"], false);
                         bHggs_B = sitem["PD_B"] == "不合格" ? bHggs_B + 1 : bHggs_B;
                         sitem["AVG_B"] = sitem["AVG_B"] == "0.000" ? "未检出" : sitem["AVG_B"];
@@ -480,7 +480,7 @@ namespace Calculates
                 sitem = SItem[xd - 1];
                 sArr[1, xd] = sitem["FJWZ"].Trim();
                 bl = sitem["ND_T"].Trim();
-                sitem["W_ND_T"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("F2") : bl;
+                sitem["W_ND_T"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("0.000") : bl;
                 sArr[2, xd] = IsNumeric(bl) ? sitem["W_ND_T"] : bl;
                 sitem["G_T_ND"] = mrsDj_Filter["G_T_ND"];
             }
@@ -523,20 +523,20 @@ namespace Calculates
                     sitem = SItem[Itemp - 1];
                     if (md.ToString().Contains("＜"))
                     {
-                        sitem["AVG_T"] = md.ToString();
+                        sitem["AVG_T"] = md.ToString("0.000");
                         sitem["PD_T"] = "合格";
                     }
                     else if (md.ToString().Contains("<"))
                     {
-                        sitem["AVG_T"] = md.ToString();
+                        sitem["AVG_T"] = md.ToString("0.000");
                         sitem["PD_T"] = "合格";
                     }
                     else
                     {
-                        sitem["AVG_T"] = md.ToString("0.00");
+                        sitem["AVG_T"] = md.ToString("0.000");
                         sitem["PD_T"] = calc_PB(sitem["G_T_ND"], sitem["AVG_T"], false);
                         bHggs_T = sitem["PD_T"] == "不合格" ? bHggs_T + 1 : bHggs_T;
-                        sitem["AVG_T"] = sitem["AVG_T"] == "0.00" ? "未检出" : sitem["AVG_T"];
+                        sitem["AVG_T"] = sitem["AVG_T"] == "0.000" ? "未检出" : sitem["AVG_T"];
 
                     }
                 }

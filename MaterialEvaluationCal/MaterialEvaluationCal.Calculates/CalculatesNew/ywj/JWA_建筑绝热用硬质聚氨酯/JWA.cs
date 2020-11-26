@@ -338,7 +338,8 @@ namespace Calculates
                 MItem[0]["G_CCWDX"] = mrsDj["CCWDX1"];
                 sItem["G_CCWDX2"] = mrsDj["CCWDX2"];
                 sItem["G_RSFJ"] = mrsDj["RSFJ"];
-
+                MItem[0]["G_XSL"] = mrsDj["G_XSL"];
+                MItem[0]["G_DRXS1"] = mrsDj["G_DRXS10"];
 
                 var sjtabs = MItem[0]["SJTABS"];
                 if (!string.IsNullOrEmpty(sjtabs))
@@ -1525,7 +1526,7 @@ namespace Calculates
                     if (jcxm.Contains("、吸水率、"))
                     {
                         jcxmCur = "吸水率";
-                        if (IsQualified(MItem[0]["G_XSL"], sItem["XSL"], true) == "符合")
+                        if (IsQualified(MItem[0]["G_XSL"], sItem["W_XSL"], true) == "符合")
                         {
                             MItem[0]["HG_XSL"] = "合格";
                             mFlag_Hg = true;
@@ -1541,7 +1542,7 @@ namespace Calculates
                     }
                     else
                     {
-                        sItem["XSL"] = "----";
+                        sItem["W_XSL"] = "----";
                         MItem[0]["HG_XSL"] = "----";
                         MItem[0]["G_XSL"] = "----";
                     }

@@ -1398,5 +1398,56 @@ namespace Calculates
 
             /************************ 代码结束 *********************/
         }
+
+        public void GxJCJGMS()
+        {
+            //富阳德浩
+            #region
+            var extraDJ = dataExtra["BZ_ZX_DJ"];
+            var mrswcDj = dataExtra["BZ_ZXWCDJ"];
+            var mrskfhDj = dataExtra["BZ_ZXKFHDJ"];
+            var mrsmdDj = dataExtra["BZ_ZXMDDJ"];
+
+            var data = retData;
+            var jsbeizhu = "该组试样的检测结果全部合格";
+            var SItems = data["S_ZX"];
+            var MItem = data["M_ZX"];
+
+            var mAllHg = true;
+            var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+            string sjdj = "";
+
+            foreach (var sItem in SItems)
+            {
+                jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+                sjdj = sItem["SJDJ"];
+
+                #region 抗压强度
+                if (jcxm.Contains("、抗压、"))
+                {
+                    jcxmCur = "抗压强度";
+                    if (sItem["QDPD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+            }
+            if (MItem[0]["JCJG"] == "合格")
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合" + sjdj + "强度等级要求。";
+                MItem[0]["JCJGSM"] = MItem[0]["JCJGMS"];
+            }
+            else
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + sjdj + "强度等级要求。";
+                MItem[0]["JCJGSM"] = MItem[0]["JCJGMS"];
+            }
+            #endregion
+        }
     }
 }

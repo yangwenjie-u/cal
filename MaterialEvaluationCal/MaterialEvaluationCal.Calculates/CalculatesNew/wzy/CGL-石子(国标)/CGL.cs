@@ -331,7 +331,8 @@ namespace Calculates
                     {
                         if (MItem[0]["JCYJ"].Contains("14685-2011"))
                         {
-                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            //extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"]) && u["JCYJ"].Contains("14685-2011")).ToList();
                         }
                         else
                         {
@@ -340,7 +341,7 @@ namespace Calculates
                     }
                     foreach (var eDj in extraFieldsDj1)
                     {
-                        sItem["G_JGX"] = "<"+ Math.Round(GetSafeDouble(eDj["JGX"]),0).ToString("0");
+                        sItem["G_JGX"] = "≤" + Math.Round(GetSafeDouble(eDj["JGX"]),0).ToString("0");
                         if (GetSafeDouble(sItem["JGX"]) < GetSafeDouble(eDj["JGX"]) || GetSafeDouble(sItem["JGX"]) == 0)
                         {
                             sItem["JGXPD"] = eDj["MC"].Trim().Substring(eDj["MC"].Length - 2, 2);
@@ -367,7 +368,10 @@ namespace Calculates
                 if (mSjdj.Trim().Length > 2)
                 {
                     if (MItem[0]["JCYJ"].Contains("14685-2011"))
-                        mrsDj_Where = extraDJ.Where(x => x["MC"].Contains(mSjdj.Substring(0, mSjdj.Length - 2)) && x["JCYJ"].Contains("14685-2011")).ToList();
+                    {
+                        //mrsDj_Where = extraDJ.Where(x => x["MC"].Contains(mSjdj.Substring(0, mSjdj.Length - 2)) && x["JCYJ"].Contains("14685-2011")).ToList();
+                        mrsDj_Where = extraDJ.Where(x => x["MC"].Contains(mSjdj) && x["JCYJ"].Contains("14685-2011")).ToList();
+                    }
                     else
                         mrsDj_Where = extraDJ.Where(x => x["MC"].Contains(mSjdj.Substring(0, mSjdj.Length - 2)) && x["JCYJ"].Contains("14685-2001")).ToList();
                 }
@@ -758,7 +762,8 @@ namespace Calculates
                     {
                         if (MItem[0]["JCYJ"].Contains("14685-2011"))
                         {
-                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            //extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"]) && u["JCYJ"].Contains("14685-2011")).ToList();
                         }
                         else
                         {
@@ -768,7 +773,7 @@ namespace Calculates
                     
                     foreach (var eDj in extraFieldsDj1)
                     {
-                        sItem["G_HNL"] = "<" +Math.Round(GetSafeDouble(eDj["HNL"]),1).ToString("0.0");
+                        sItem["G_HNL"] = "≤" + Math.Round(GetSafeDouble(eDj["HNL"]),1).ToString("0.0");
                         if (GetSafeDouble(sItem["HNL"]) < GetSafeDouble(eDj["HNL"]) || GetSafeDouble(sItem["HNL"]) == 0)
                         {
                             sItem["HNLPD"] = eDj["MC"].Trim().Substring(eDj["MC"].Length - 2, 2);
@@ -811,7 +816,8 @@ namespace Calculates
                     {
                         if (MItem[0]["JCYJ"].Contains("14685-2011"))
                         {
-                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            //extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"]) && u["JCYJ"].Contains("14685-2011")).ToList();
                         }
                         else
                         {
@@ -821,7 +827,7 @@ namespace Calculates
                     
                     foreach (var eDj in extraFieldsDj1)
                     {
-                        sItem["G_NKHL"] = "<" + Math.Round(GetSafeDouble(eDj["NKHL"]), 1).ToString("0.0");
+                        sItem["G_NKHL"] = "≤" + Math.Round(GetSafeDouble(eDj["NKHL"]), 1).ToString("0.0");
                         if (GetSafeDouble(sItem["NKHL"]) < GetSafeDouble(eDj["NKHL"]) || GetSafeDouble(sItem["NKHL"]) == 0)
                         {
                             sItem["NKHLPD"] = eDj["MC"].Trim().Substring(eDj["MC"].Length - 2, 2);
@@ -915,10 +921,10 @@ namespace Calculates
                 if (jcxm.Contains("、表观密度、"))
                 {
                     jcxmCur = "表观密度";
-                    if (GetSafeDouble(sItem["BGMDG0"]) + GetSafeDouble(sItem["BGMDG2"]) - GetSafeDouble(sItem["BGMDG1"]) != 0 && GetSafeDouble(sItem["BGMDG0_2"]) + GetSafeDouble(sItem["BGMDG2_2"]) - GetSafeDouble(sItem["BGMDG1_2"]) != 0)
+                    if (GetSafeDouble(sItem["BGMDG0"]) + GetSafeDouble(sItem["BGMDG2"]) - GetSafeDouble(sItem["BGMDG1"]) != 0 && GetSafeDouble(sItem["BGMDG0_2"]) + GetSafeDouble(sItem["BGMDG2_2"]) - GetSafeDouble(sItem["BGMDG1_2"]) != 0 && GetSafeDouble(sItem["SWXZXS"])!=0)
                     {
-                        mbgmd1 = Math.Round(GetSafeDouble(sItem["BGMDG0"]) / (GetSafeDouble(sItem["BGMDG0"]) + GetSafeDouble(sItem["BGMDG2"]) - GetSafeDouble(sItem["BGMDG1"])) * 100, 0) * 10;
-                        mbgmd2 = Math.Round(GetSafeDouble(sItem["BGMDG0_2"]) / (GetSafeDouble(sItem["BGMDG0_2"]) + GetSafeDouble(sItem["BGMDG2_2"]) - GetSafeDouble(sItem["BGMDG1_2"])) * 100, 0) * 10;
+                        mbgmd1 = Math.Round((GetSafeDouble(sItem["BGMDG0"]) / (GetSafeDouble(sItem["BGMDG0"]) + GetSafeDouble(sItem["BGMDG2"]) - GetSafeDouble(sItem["BGMDG1"]))-GetSafeDouble(sItem["SWXZXS"])) * 100, 0) * 10;
+                        mbgmd2 = Math.Round((GetSafeDouble(sItem["BGMDG0_2"]) / (GetSafeDouble(sItem["BGMDG0_2"]) + GetSafeDouble(sItem["BGMDG2_2"]) - GetSafeDouble(sItem["BGMDG1_2"]))- GetSafeDouble(sItem["SWXZXS"])) * 100, 0) * 10;
                         sItem["BGMD"] = (Math.Round((mbgmd1 + mbgmd2) / 20, 0) * 10).ToString();
                     }
                     sItem["G_BGMD"] = "≥" + g_bgmd.ToString();
@@ -970,7 +976,8 @@ namespace Calculates
                     {
                         if (MItem[0]["JCYJ"].Contains("14685-2011"))
                         {
-                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            //extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"]) && u["JCYJ"].Contains("14685-2011")).ToList();
                         }
                         else
                         {
@@ -1020,7 +1027,8 @@ namespace Calculates
                     {
                         if (MItem[0]["JCYJ"].Contains("14685-2011"))
                         {
-                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            //extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"]) && u["JCYJ"].Contains("14685-2011")).ToList();
                         }
                         else
                         {
@@ -1107,7 +1115,8 @@ namespace Calculates
                     {
                         if (MItem[0]["JCYJ"].Contains("14685-2011"))
                         {
-                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            //extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"]) && u["JCYJ"].Contains("14685-2011")).ToList();
                         }
                         else
                         {
@@ -1205,7 +1214,8 @@ namespace Calculates
                     {
                         if (MItem[0]["JCYJ"].Contains("14685-2011"))
                         {
-                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            //extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"].Trim().Substring(0, sItem["SJDJ"].Trim().ToString().Length - 2)) && u["JCYJ"].Contains("14685-2011")).ToList();
+                            extraFieldsDj1 = extraDJ.Where(u => u["MC"].Contains(sItem["SJDJ"]) && u["JCYJ"].Contains("14685-2011")).ToList();
                         }
                         else
                         {
@@ -1510,24 +1520,25 @@ namespace Calculates
                 if (mAllHg)
                 {
                     mjcjg = "合格";
-                    if (mzslbs == 1)
-                    {
-                        jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "Ⅰ类石子标准要求。";
-                    }
-                    if (mzslbs == 2)
-                    {
-                        jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "Ⅱ类石子标准要求。";
-                    }
-                    if (mzslbs == 3)
-                    {
-                        jsbeizhu = "该组试样所检项目符合" + MItem[0]["PDBZ"] + "Ⅲ类石子标准要求。";
-                    }
+                    //if (mzslbs == 1)
+                    //{
+                    //    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合Ⅰ类石子标准要求。";
+                    //}
+                    //if (mzslbs == 2)
+                    //{
+                    //    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合Ⅱ类石子标准要求。";
+                    //}
+                    //if (mzslbs == 3)
+                    //{
+                    //    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合Ⅲ类石子标准要求。";
+                    //}
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合"+ sItem["SJDJ"] + "标准要求。";
                 }
                 else
                 {
                     mjcjg = "不合格";
                     //jsbeizhu = "该组试样不符合" + MItem[0]["PDBZ"] + "砼用石子要求。";
-                    jsbeizhu = "该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + MItem[0]["PDBZ"] + "标准要求。";
+                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + sItem["SJDJ"] + "标准要求。";
                 }
                 #endregion
                 #region 添加最终报告

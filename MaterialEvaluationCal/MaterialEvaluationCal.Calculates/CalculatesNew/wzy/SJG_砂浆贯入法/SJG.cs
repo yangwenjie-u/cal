@@ -300,6 +300,9 @@ namespace Calculates
             r_Pj = Round(s_Htqdz / c_Ht, 1);  //求
             s_N2 = 0;
             MItem[0]["BYXS"] = "1";
+            MItem[0]["PJQDZ"] = "0.0";  //'平均强度值  *****
+            MItem[0]["QDBZC"] = "0.0";    //'标准差
+            MItem[0]["ZXQDZ"] = "0.0";    //'最小强度值  *****
             if (c_Ht >= 6)
             {
                 for (vi = 1; vi <= c_Ht; vi++)
@@ -356,10 +359,17 @@ namespace Calculates
                 MItem[0]["DDSJQD"] = Round(GetSafeDouble(MItem[0]["QDTDZ"]) / mSz * 100, 0).ToString();   //'达到设计强度%
                                                                                                           //主表总判断赋值
             if (mAllHg)
+            {
                 MItem[0]["JCJG"] = "合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合"+ mSjdj + "要求。";
+            }
             else
+            {
                 MItem[0]["JCJG"] = "不合格";
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目不符合"+ mSjdj + "要求。";
+            }
             #endregion
+
             /************************ 代码结束 *********************/
         }
     }

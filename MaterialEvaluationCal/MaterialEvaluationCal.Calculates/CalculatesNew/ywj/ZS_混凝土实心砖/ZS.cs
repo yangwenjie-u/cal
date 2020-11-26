@@ -599,7 +599,7 @@ namespace Calculates
                             sItem["DRDBZKYQD"] = Math.Round(Conversion.Val(dbarray.Average()), 1).ToString();
                             sItem["DRQDSSL"] = Math.Round((Conversion.Val(sItem["DRDBZKYQD"]) - Conversion.Val(sItem["DRSYZKYQD"])) / Conversion.Val(sItem["DRDBZKYQD"]) * 100, 0).ToString();
                         }
-                        if (IsQualified(drzlsslyq, sItem["DRZLSSL"],false) == "合格" && IsQualified(drkyqdsslyq, sItem["DRQDSSL"],false) == "合格")
+                        if (IsQualified(drzlsslyq, sItem["DRZLSSL"], false) == "合格" && IsQualified(drkyqdsslyq, sItem["DRQDSSL"], false) == "合格")
                         {
                             sItem["DRPD"] = "合格";
                             mFlag_Hg = true;
@@ -659,6 +659,120 @@ namespace Calculates
             MItem[0]["JCJGMS"] = jsbeizhu;
 
             #endregion
+            #endregion
+        }
+
+        public void GxJCJGMS()
+        {
+            //富阳德浩
+            #region
+            var extraDJ = dataExtra["BZ_ZS_DJ"].OrderBy(x => x["G_QDPJ"]).ToList();
+
+            var data = retData;
+            var jsbeizhu = "该组试样的检测结果全部合格";
+            var SItems = data["S_ZS"];
+            var MItem = data["M_ZS"];
+
+            var mAllHg = true;
+            var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+            string sjdj = "";
+
+            foreach (var sItem in SItems)
+            {
+                jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+
+                #region 抗压
+                if (jcxm.Contains("、抗压、"))
+                {
+                    jcxmCur = "抗压";
+                    if (sItem["QDPD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        int Gs = extraDJ.Count;
+                        for (int i = 0; i < Gs; i++)
+                        {
+                            if (!string.IsNullOrEmpty(extraDJ[i]["G_QDMIN"]) && !string.IsNullOrEmpty(extraDJ[i]["G_QDPJ"]))
+                            {
+                                if (Conversion.Val(sItem["KYPJ"]) >= Conversion.Val(extraDJ[i]["G_QDPJ"].Replace("≥", "")) && Conversion.Val(sItem["DKZX"]) >= Conversion.Val(extraDJ[i]["G_QDMIN"].Replace("≥", "")))
+                                {
+                                    sjdj = extraDJ[i]["QDDJ"];
+                                }
+                            }
+                        }
+                    }
+                }
+                #endregion
+
+                #region 干密度
+                if (jcxm.Contains("、干密度、"))
+                {
+                    jcxmCur = "干密度";
+                    if (sItem["GMDPD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 吸水率
+                if (jcxm.Contains("、吸水率、"))
+                {
+                    jcxmCur = "吸水率";
+                    if (sItem["XSLPD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 相对含水率
+                if (jcxm.Contains("、相对含水率、"))
+                {
+                    jcxmCur = "相对含水率";
+
+                    if (sItem["XDHSLPD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 干缩率
+                if (jcxm.Contains("、干缩率、"))
+                {
+                    jcxmCur = "干缩率";
+                    if (sItem["GSLPD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 抗冻性
+                if (jcxm.Contains("、抗冻性、"))
+                {
+                    jcxmCur = "抗冻性";
+                    if (sItem["DRPD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+            }
+            if (MItem[0]["JCJG"] == "不合格" && sjdj != "")
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。强度等级为" + sjdj+"。";
+            }
+
             #endregion
         }
     }

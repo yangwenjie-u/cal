@@ -67,6 +67,8 @@ namespace Calculates
                     sItem["G_CDWDX2"] = extraFieldsDj["G_CCWDX2"].Trim();
                     sItem["G_KDWDX2"] = extraFieldsDj["G_CCWDX2"].Trim();
                     sItem["G_LSQD"] = extraFieldsDj["G_LSQD"].Trim();
+                    sItem["G_BGMD"] = extraFieldsDj["G_BGMD"].Trim();
+                    sItem["G_XSL"] = extraFieldsDj["G_XSL"].Trim();
                 }
 
                 #region 表观密度
@@ -76,10 +78,19 @@ namespace Calculates
                     sign = true;
                     sign = IsNumeric(sItem["W_MDPC"]) && !string.IsNullOrEmpty(sItem["W_MDPC"]) ? sign : false;
                     sign = IsNumeric(sItem["BCMD"]) && !string.IsNullOrEmpty(sItem["BCMD"]) ? sign : false;
-                    if (sign)
-                    {
-                        sItem["G_MD"] = "允许偏差为标称值的±10%以内";
-                        sItem["GH_MD"] = 10 >= Math.Abs(double.Parse(sItem["W_MDPC"])) ? "合格" : "不合格";
+                    //if (sign)
+                    //{
+                        if (!sItem["YPLB"].Contains("D"))
+                        {
+                            sItem["G_MD"] = "允许偏差为标称值的±10%以内";
+                            sItem["GH_MD"] = 10 >= Math.Abs(double.Parse(sItem["W_MDPC"])) ? "合格" : "不合格";
+                        }
+                        else
+                        {
+                            sItem["G_MD"] = sItem["G_BGMD"];
+                            sItem["GH_MD"] = IsQualified(sItem["G_BGMD"], sItem["W_MD"], false);
+                        }
+                        
                         if ("不合格" == sItem["GH_MD"])
                         {
                             jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
@@ -90,7 +101,7 @@ namespace Calculates
                         {
                             mbHggs++;
                         }
-                    }
+                    //}
                 }
                 else
                 {
@@ -314,6 +325,30 @@ namespace Calculates
                     sItem["GH_CDWDX2"] = "----";
                     sItem["GH_KDWDX2"] = "----";
                     sItem["GH_HDWDX2"] = "----";
+                }
+                #endregion
+
+                #region 吸水率
+                if (jcxm.Contains("、吸水率、"))
+                {
+                    jcxmCur = "吸水率";
+                    if (IsQualified(sItem["G_XSL"], sItem["W_XSL"], true) == "符合")
+                    {
+                        sItem["HG_XSL"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_XSL"] = "不合格";
+                        itemHG = false;
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["W_XSL"] = "----";
+                    sItem["HG_XSL"] = "----";
+                    sItem["G_XSL"] = "----";
                 }
                 #endregion
 

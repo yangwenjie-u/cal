@@ -194,7 +194,7 @@ namespace Calculates
             {
                 mbHggs = 0;
                 mSFwc = true;
-                Double md1, md2, md, pjmd, sum, Gd1, Gd2;
+                Double md1, md2, md, pjmd, sum, Gd1, Gd2, bzc;
                 string bl;
                 int xd, Gs = 0;
                 double[] nArr;
@@ -291,10 +291,11 @@ namespace Calculates
                             sum = md + sum;
                         }
                         md = Math.Sqrt(sum / 9);
-                        md = Round(md, 2);
-                        mitem["W_QD_BZZ"] = md.ToString("0.00");
+                        bzc = Round(md, 2);
+                        mitem["W_QD_BZC"] = bzc.ToString("0.00");
+                        mitem["W_QD_BZZ"] = Math.Round(Conversion.Val(mitem["W_QD_AVG"]) - 1.8 * bzc,2).ToString("0.00");
                         md1 = Conversion.Val(mitem["W_QD_AVG"].Trim());
-                        md2 = Conversion.Val(mitem["W_QD_BZZ"]);
+                        md2 = bzc;
                         md = md2 / md1;
                         md = Round(md, 2);
                         mitem["W_QD_BY"] = md.ToString("0.00");
@@ -304,6 +305,7 @@ namespace Calculates
                             flag = true;
                             flag = calc_PB(mitem["G_QD_AVG"], mitem["W_QD_AVG"], false) == "合格" ? flag : false;
                             flag = calc_PB(mitem["G_QD_MIN"], mitem["W_QD_MIN"], false) == "合格" ? flag : false;
+                            mitem["W_QD_BZZ"] = "----";
                         }
                         else
                         {
@@ -311,6 +313,7 @@ namespace Calculates
                             flag = true;
                             flag = calc_PB(mitem["G_QD_AVG"], mitem["W_QD_AVG"], false) == "合格" ? flag : false;
                             flag = calc_PB(mitem["G_QD_BZZ"], mitem["W_QD_BZZ"], false) == "合格" ? flag : false;
+                            mitem["W_QD_MIN"] = "----";
                         }
                         mitem["GH_QD"] = flag ? "合格" : "不合格";
                         if (!flag)
@@ -670,6 +673,52 @@ namespace Calculates
 
             #endregion
             /************************ 代码结束 *********************/
+        }
+
+        public void GxJCJGMS()
+        {
+            //富阳德浩
+            #region
+            var extraDJ = dataExtra["BZ_TP_DJ"];
+
+            var data = retData;
+            var jsbeizhu = "该组试样的检测结果全部合格";
+            var SItems = data["S_TP"];
+            var MItem = data["M_TP"];
+
+            var mAllHg = true;
+            var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+            string sjdj = "";
+
+            foreach (var sItem in SItems)
+            {
+                jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+                sjdj = sItem["QDDJ"];
+
+                #region 抗压强度
+                if (jcxm.Contains("、抗压强度、"))
+                {
+                    jcxmCur = "抗压强度";
+                    if (MItem[0]["GH_QD"] == "不合格")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+            }
+            if (MItem[0]["JCJG"] == "合格")
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目均符合" + sjdj + "强度等级要求。";
+            }
+            else
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合" + sjdj + "强度等级要求。";
+            }
+            #endregion
         }
     }
 }

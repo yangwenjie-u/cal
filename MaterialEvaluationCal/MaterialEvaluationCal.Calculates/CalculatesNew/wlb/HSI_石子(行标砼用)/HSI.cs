@@ -539,7 +539,7 @@ namespace Calculates
 
                     //从设计等级表中取得相应的计算数值、等级标准
                     var extraFieldsZBYQs = extraZBYQ.Where(u => u["MC"].Trim() == "坚固性");
-                    
+
                     foreach (var extraFieldsZBYQ in extraFieldsZBYQs)
                     {
                         sItem["G_JGX"] = extraFieldsZBYQ["YQ"];
@@ -882,7 +882,7 @@ namespace Calculates
                             mhnl2 = Round((Conversion.Val(sItem["HNLG1_2"]) - Conversion.Val(sItem["HNLG2_2"])) / Conversion.Val(sItem["HNLG1_2"]) * 100, 1);
                             sItem["HNL"] = Round((mhnl1 + mhnl2) / 2, 1).ToString("0.0");
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("含泥量"));
-              
+
                             foreach (var item in mrsZbyq_where)
                             {
                                 sItem["G_HNL"] = item["YQ"];
@@ -928,7 +928,7 @@ namespace Calculates
                             mnkhl2 = Round((Conversion.Val(sItem["NKHLG1_2"]) - Conversion.Val(sItem["NKHLG2_2"])) / Conversion.Val(sItem["NKHLG1_2"]) * 100, 1);
                             sItem["NKHL"] = Round((mnkhl1 + mnkhl2) / 2, 1).ToString();
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("泥块含量"));
-                          
+
                             foreach (var item in mrsZbyq_where)
                             {
                                 sItem["G_NKHL"] = item["YQ"];
@@ -1090,7 +1090,7 @@ namespace Calculates
                             myszb3 = Round((Conversion.Val(sItem["YSZBG1_3"]) - Conversion.Val(sItem["YSZBG2_3"])) / Conversion.Val(sItem["YSZBG1_3"]) * 100, 1);
                             sItem["YSZB"] = Round((myszb1 + myszb2 + myszb3) / 3, 1).ToString();
                             var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("压碎性指标") && x["SPZ"].Equals(sItem["SIPZ"].Trim()));
-                            
+
                             foreach (var item in mrsZbyq_where)
                             {
                                 sItem["G_YSZB"] = item["YQ"];
@@ -1168,7 +1168,7 @@ namespace Calculates
                         if (Conversion.Val(sItem["ZPZHLG1"]) != 0)
                             sItem["ZPZHL"] = Round(Conversion.Val(sItem["ZPZHLG2"]) / Conversion.Val(sItem["ZPZHLG1"]) * 100, 0).ToString();
                         var mrsZbyq_where = extraZBYQ.Where(x => x["MC"].Equals("针片状含量"));
-                        
+
                         foreach (var item in mrsZbyq_where)
                         {
                             sItem["G_ZPZHL"] = item["YQ"];
@@ -1467,7 +1467,7 @@ namespace Calculates
             if (mAllHg && mjcjg != "----")
             {
                 mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合"+ strdj + "及抗冻、抗渗或其他特殊要求的"+ simc + "混凝土。";
+                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合" + strdj + "及抗冻、抗渗或其他特殊要求的" + simc + "混凝土。";
             }
             else
             {
@@ -1478,6 +1478,172 @@ namespace Calculates
             MItem[0]["JCJGMS"] = jsbeizhu;
             #endregion
             /************************ 代码结束 ********************/
+        }
+
+        public void GxJCJGMS()
+        {
+            //杭州吉泰（商砼）
+            #region
+            var extraDJ = dataExtra["BZ_HSI_DJ"];
+            var extraHSB = dataExtra["BZ_HSIHSB"];
+            var extraZBYQ = dataExtra["BZ_HSIZBYQ"];
+
+            var data = retData;
+            var jsbeizhu = "";
+            var SItems = data["S_HSI"];
+            var MItem = data["M_HSI"];
+
+            var mAllHg = true;
+            var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+            string sjdj = "", strJCJGMS = "";
+
+
+            foreach (var sItem in SItems)
+            {
+                jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+
+                #region 筛分析
+                if (jcxm.Contains("、筛分析、"))
+                {
+                    jcxmCur = "筛分析";
+                    if (sItem["JPPD"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        //从设计等级表中取得相应的计算数值、等级标准
+                        var extraFieldsHS = extraHSB.FirstOrDefault(u => u["GCCC"].Trim() == sItem["GCCC"]);
+                        if (extraFieldsHS != null)
+                        {
+                            strJCJGMS += "符合["+ sItem["GCCC"]+"mm"+ extraFieldsHS["MC"]+ "]，";
+                        }
+                    }
+                }
+                #endregion
+
+                #region 坚固性
+                if (jcxm.Contains("、坚固性、"))
+                {
+                    jcxmCur = "坚固性";
+                    if (sItem["JGXPD"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 含泥量
+                if (jcxm.Contains("、含泥量、"))
+                {
+                    jcxmCur = "含泥量";
+                    if (sItem["HNLPD"] == "不符合" || sItem["HNLPD"] == "重新试验")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        strJCJGMS += "其含泥量符合[" + sItem["HNLPD"] + "]强度等级砼的规定，";
+                    }
+                }
+                #endregion
+
+                #region 泥块含量
+                if (jcxm.Contains("、泥块含量、"))
+                {
+                    jcxmCur = "泥块含量";
+                    if (sItem["NKHLPD"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        strJCJGMS += "其泥块含量符合[" + sItem["NKHLPD"] + "]强度等级砼的规定，";
+                    }
+                }
+                #endregion
+
+                #region 压碎指标值
+                if (jcxm.Contains("、压碎指标值、"))
+                {
+                    jcxmCur = "压碎指标值";
+                    if (sItem["YSZBPD"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        strJCJGMS += "其压碎指标值符合[" + sItem["YSZBPD"] + "]强度等级砼的规定，";
+                    }
+                }
+                #endregion
+
+                #region 针片状含量
+                if (jcxm.Contains("、针片状含量、"))
+                {
+                    jcxmCur = "针片状含量";
+                    if (sItem["ZPZHLPD"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        strJCJGMS += "其针片状含量符合[" + sItem["ZPZHLPD"] + "]强度等级砼的规定，";
+                    }
+                }
+                #endregion
+                                
+                #region 硫化物和硫酸盐含量
+                if (jcxm.Contains("、硫化物和硫酸盐含量、"))
+                {
+                    jcxmCur = "硫化物和硫酸盐含量";
+                    if (sItem["LHWPD"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        strJCJGMS += "其硫化物和硫酸盐含量" +
+                            "符合[" + sItem["LHWPD"] + "]强度等级砼的规定，";
+                    }
+                }
+                #endregion
+
+                #region 硫化物和硫酸盐含量
+                if (jcxm.Contains("、硫化物和硫酸盐含量、"))
+                {
+                    jcxmCur = "硫化物和硫酸盐含量";
+                    if (sItem["LHWPD"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else
+                    {
+                        strJCJGMS += "其硫化物和硫酸盐含量符合[" + sItem["LHWPD"] + "]强度等级砼的规定，";
+                    }
+                }
+                #endregion
+            }
+            if (MItem[0]["JCJG"] == "合格")
+            {
+                strJCJGMS = strJCJGMS.Substring(0, strJCJGMS.Length - 1) + "。";
+                MItem[0]["JCJGMS"] = "该批材料经检验，按[" + MItem[0]["PDBZ"] + "标准规定的要求，判断该石子"+ strJCJGMS;
+            }
+            else
+            {
+                MItem[0]["JCJGMS"] = "该批材料经检验，按[" + MItem[0]["PDBZ"] + "]标准规定的要求，判断该石子" + jcxmBhg.TrimEnd('、') + "不符合标准要求。";
+            }
+            #endregion
         }
     }
 }

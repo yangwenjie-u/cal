@@ -248,7 +248,7 @@ namespace Calculates
                 {
                     if (Conversion.Val(sitem["KSKYQD1"]) > 0)
                     {
-                        sitem["W_KSXN"] = "P" + (Conversion.Val(sitem["KSKYQD1"]) - 0.1).ToString();
+                        sitem["W_KSXN"] = "P" + (Conversion.Val(sitem["KSKYQD1"]) * 10 - 1).ToString();
                     }
                 }
                 else
@@ -260,10 +260,15 @@ namespace Calculates
             }
 
             //主表总判断赋值
+            //if (mAllHg)
+            //    MItem[0]["JCJG"] = "合格";
+            //else
+            //    MItem[0]["JCJG"] = "不合格";
+
             if (mAllHg)
-                MItem[0]["JCJG"] = "合格";
+                MItem[0]["JCJG"] = "----";
             else
-                MItem[0]["JCJG"] = "不合格";
+                MItem[0]["JCJG"] = "----";
 
             /************************ 代码结束 *********************/
             #endregion

@@ -317,13 +317,16 @@ namespace Calculates.HPB_混凝土配合比
                     sItem["T3ZN"] = "----";
                 }
 
-                sItem["JCJG"] = "合格";
-                jsbeizhu = "该组试样的检测结果合格";
+                //sItem["JCJG"] = "合格";
+                //jsbeizhu = "该组试样的检测结果合格";
+                sItem["JCJG"] = "----";
+                jsbeizhu = "----";
             }
             #region 更新主表检测结果
             if (mAllHg && mjcjg != "----")
             {
-                mjcjg = "合格";
+                //mjcjg = "合格";
+                mjcjg = "----";
             }
 
             MItem[0]["JCJG"] = mjcjg;

@@ -584,6 +584,18 @@ namespace Calculates
                         md = nArr[1] / 1000;
                         md = Round(md, 1);
                         sitem["MIN_ZP3"] = md.ToString("F1");
+
+                        for (xd = 1; xd <= 3; xd++)
+                        {
+                            md = Conversion.Val(sitem["KFYPMAXZ" + xd].Trim());
+                            nArr[xd] = Math.Abs(md);
+                        }
+                        Array.Sort(nArr);
+                        md = nArr[1] / 1000;
+                        md = Round(md, 1);
+                        sitem["MIN_ZPMAX"] = md.ToString("F1");
+
+
                     }
                     //if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "内开单扇无受力杆件" || sitem["DSLB"] == "内开单扇有受力杆件"))
                     if (sitem["SFDS"] == "是" && (sitem["DSLB"] == "内开单扇无受力杆件"))
@@ -620,6 +632,18 @@ namespace Calculates
                         md = nArr[1] / 1000;
                         md = Round(md, 1);
                         sitem["MIN_FP3"] = md.ToString("F1");
+
+
+                        for (xd = 1; xd <= 3; xd++)
+                        {
+                            md = Conversion.Val(sitem["KFYPMAXF" + xd].Trim());
+                            nArr[xd] = Math.Abs(md);
+                        }
+                        Array.Sort(nArr);
+                        md = nArr[1] / 1000;
+                        md = Round(md, 1);
+                        sitem["MIN_FPMAX"] = md.ToString("F1");
+
                     }
                     if (sitem["SFDS"] == "是")
                     {

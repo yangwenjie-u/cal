@@ -44,7 +44,7 @@ namespace Calculates
                 itemHG = true;
                 string jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
                 //从设计等级表中取得相应的计算数值、等级标准
-                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["YPLB"] == sItem["YPLB"].Trim() && u["CLTJ"] == sItem["CLTJ"].Trim() && u["CZ"] == sItem["CZ"].Trim() && u["JLX"] == sItem["JLB"].Trim());
+                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["YPLB"] == sItem["YPLB"].Trim() && u["JLX"] == sItem["JLB"].Trim());
                 if (null == extraFieldsDj)
                 {
                     mAllHg = false;
@@ -55,9 +55,16 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["G_YJNJQD"] = extraFieldsDj["G_YJNJQD"].Trim();
+                    //sItem["G_YJNJQD"] = extraFieldsDj["G_YJNJQD"].Trim();
+                    sItem["G_SSBZYJQD"] = extraFieldsDj["G_SSBZYJQD"].Trim();   //压剪粘结强度(石材-石材 标准条件)
+                    sItem["G_SSGWYJQD"] = extraFieldsDj["G_SSGWYJQD"].Trim();   //压剪粘结强度(石材-石材 高温处理)
+                    sItem["G_SSGRSJQD"] = extraFieldsDj["G_SSGRSJQD"].Trim();   //压剪粘结强度(石材-石材 热水处理)
+                    sItem["G_SSJYJQD"] = extraFieldsDj["G_SSJYJQD"].Trim();     //压剪粘结强度(石材-石材 碱处理)
+                    sItem["G_SSDRYJQD"] = extraFieldsDj["G_SSDRYJQD"].Trim();   //压剪粘结强度(石材-石材 冻融循环处理)
+                    sItem["G_SGBZYJQD"] = extraFieldsDj["G_SGBZYJQD"].Trim();   //压剪粘结强度(石材-不锈钢 标准条件)
+
                     //sItem["G_CJQD"] = extraFieldsDj["G_CJQD"].Trim();
-                    //sItem["G_DRHYJQD"] = extraFieldsDj["G_DRHYJQD"].Trim();
+                    //sItem["G_DRHYJQD"] = extraFieldsDj["G_DRHYJQD"].Trim();  
                     //sItem["G_JSHYJQD"] = extraFieldsDj["G_JSHYJQD"].Trim();
                     //sItem["G_JCLYJQD"] = extraFieldsDj["G_JCLYJQD"].Trim();
                     //sItem["G_RSHYJQD"] = extraFieldsDj["G_RSHYJQD"].Trim();
@@ -336,17 +343,17 @@ namespace Calculates
                 //#endregion
                 #endregion
 
-                #region 压剪粘结强度
-                if (jcxm.Contains("、压剪粘结强度、"))
+                #region 压剪粘结强度(石材—石材 标准条件)
+                if (jcxm.Contains("、压剪粘结强度(石材—石材 标准条件)、"))
                 {
-                    jcxmCur = "压剪粘结强度";
-                    if (IsQualified(sItem["G_YJNJQD"],sItem["W_YJNJQD"],false) == "合格")
+                    jcxmCur = "压剪粘结强度(石材—石材 标准条件)";
+                    if (IsQualified(sItem["G_SSBZYJQD"],sItem["W_SSBZYJQD"],false) == "合格")
                     {
-                        sItem["HG_YJNJQD"] = "合格";
+                        sItem["HG_SSBZYJQD"] = "合格";
                     }
                     else
                     {
-                        sItem["HG_YJNJQD"] = "不合格";
+                        sItem["HG_SSBZYJQD"] = "不合格";
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                         mAllHg = false;
                         itemHG = false;
@@ -354,9 +361,129 @@ namespace Calculates
                 }
                 else
                 {
-                    sItem["G_YJNJQD"] = "----";
-                    sItem["W_YJNJQD"] = "----";
-                    sItem["HG_YJNJQD"] = "----";
+                    sItem["G_SSBZYJQD"] = "----";
+                    sItem["W_SSBZYJQD"] = "----";
+                    sItem["HG_SSBZYJQD"] = "----";
+                }
+                #endregion
+
+                #region 压剪粘结强度(石材—石材 高温处理)
+                if (jcxm.Contains("、压剪粘结强度(石材—石材 高温处理)、"))
+                {
+                    jcxmCur = "压剪粘结强度(石材—石材 高温处理)";
+                    if (IsQualified(sItem["G_SSGWYJQD"], sItem["W_SSGWYJQD"], false) == "合格")
+                    {
+                        sItem["HG_SSGWYJQD"] = "合格";
+                    }
+                    else
+                    {
+                        sItem["HG_SSGWYJQD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_SSGWYJQD"] = "----";
+                    sItem["W_SSGWYJQD"] = "----";
+                    sItem["HG_SSGWYJQD"] = "----";
+                }
+                #endregion
+
+                #region 压剪粘结强度(石材—石材 热水处理)
+                if (jcxm.Contains("、压剪粘结强度(石材—石材 热水处理)、"))
+                {
+                    jcxmCur = "压剪粘结强度(石材—石材 热水处理)";
+                    if (IsQualified(sItem["G_SSGRSJQD"], sItem["W_SSGRSJQD"], false) == "合格")
+                    {
+                        sItem["HG_SSGRSJQD"] = "合格";
+                    }
+                    else
+                    {
+                        sItem["HG_SSGRSJQD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_SSGRSJQD"] = "----";
+                    sItem["W_SSGRSJQD"] = "----";
+                    sItem["HG_SSGRSJQD"] = "----";
+                }
+                #endregion
+
+                #region 压剪粘结强度(石材—石材 碱处理)
+                if (jcxm.Contains("、压剪粘结强度(石材—石材 碱处理)、"))
+                {
+                    jcxmCur = "压剪粘结强度(石材—石材 碱处理)";
+                    if (IsQualified(sItem["G_SSJYJQD"], sItem["W_SSJYJQD"], false) == "合格")
+                    {
+                        sItem["HG_SSJYJQD"] = "合格";
+                    }
+                    else
+                    {
+                        sItem["HG_SSJYJQD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_SSJYJQD"] = "----";
+                    sItem["W_SSJYJQD"] = "----";
+                    sItem["HG_SSJYJQD"] = "----";
+                }
+                #endregion
+
+                #region 压剪粘结强度(石材—石材 冻融循环处理)
+                if (jcxm.Contains("、压剪粘结强度(石材—石材 冻融循环处理)、"))
+                {
+                    jcxmCur = "压剪粘结强度(石材—石材 冻融循环处理)";
+                    if (IsQualified(sItem["G_SSDRYJQD"], sItem["W_SSDRYJQD"], false) == "合格")
+                    {
+                        sItem["HG_SSDRYJQD"] = "合格";
+                    }
+                    else
+                    {
+                        sItem["HG_SSDRYJQD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_SSDRYJQD"] = "----";
+                    sItem["W_SSDRYJQD"] = "----";
+                    sItem["HG_SSDRYJQD"] = "----";
+                }
+                #endregion
+
+                #region 压剪粘结强度(石材—不锈钢 标准条件)
+                if (jcxm.Contains("、压剪粘结强度(石材—不锈钢 标准条件)、"))
+                {
+                    jcxmCur = "压剪粘结强度(石材—不锈钢 标准条件)";
+                    if (IsQualified(sItem["G_SGBZYJQD"], sItem["W_SGBZYJQD"], false) == "合格")
+                    {
+                        sItem["HG_SGBZYJQD"] = "合格";
+                    }
+                    else
+                    {
+                        sItem["HG_SGBZYJQD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        itemHG = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_SGBZYJQD"] = "----";
+                    sItem["W_SGBZYJQD"] = "----";
+                    sItem["HG_SGBZYJQD"] = "----";
                 }
                 #endregion
 

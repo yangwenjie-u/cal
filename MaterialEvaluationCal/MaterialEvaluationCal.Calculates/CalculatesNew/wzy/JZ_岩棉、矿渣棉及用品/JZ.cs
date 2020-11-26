@@ -400,9 +400,10 @@ namespace Calculates
                     switch (cpmc)
                     {
                         case "绝热用岩棉、矿渣棉及其制品（GB/T11835—2016）":
-                            if (sitem["CPMC"].Trim() == mrsDj_item["YPYT"] && sitem["LX"].Trim() == mrsDj_item["LX"] && sitem["ZPXS"].Trim() == mrsDj_item["ZPXS"])
+                            if (sitem["CPMC"].Trim().Replace("—","-") == mrsDj_item["YPYT"] && sitem["LX"].Trim() == mrsDj_item["LX"] && sitem["ZPXS"].Trim() == mrsDj_item["ZPXS"])
                             {
-                                mitem["G_ZLXSL"] = "≤5.0";
+                                //mitem["G_ZLXSL"] = "≤5.0";
+                                mitem["G_ZLXSL"] = mrsDj_item["G_ZLXSL"]; //要求质量吸湿率
                                 mitem["G_GQPXD"] = "≤10";
                                 mitem["G_DRXS"] = mrsDj_item["G_DRXS"]; //导热系数
                                 mitem["G_CDPC"] = mrsDj_item["G_CDPC"];  //长度偏差要求
@@ -411,6 +412,7 @@ namespace Calculates
                                 mitem["G_HDYXPC"] = mrsDj_item["G_HDPC"];  //厚度偏差要求
                                 md11 = mrsDj_item["BCMD"];  //标称密度
                                 mitem["G_MDYXPC"] = mrsDj_item["G_MD"];  //密度偏差要求
+                                mitem["G_XSL"] = mrsDj_item["G_XSL"];  //吸水性要求
                             }
                             break;
                         //case "建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)":
@@ -436,10 +438,13 @@ namespace Calculates
                                     mitem["G_HDYXPC"] = mrsDj_item["G_HDPC"];  //厚度偏差要求
                                     md11 = mrsDj_item["BCMD"];  //密度≥80kg/m3
                                     md12 = mrsDj_item["G_MD"];  //密度<80kg/m3
+                                    mitem["G_MDYXPC"] = mrsDj_item["G_MD"];  //密度偏差要求
+                                    mitem["G_XSL"] = mrsDj_item["G_XSL"];  //吸水性要求
+                                    mitem["G_ZLXSL"] = mrsDj_item["G_ZLXSL"]; //要求质量吸湿率
                                 }
                             }
 
-                            mitem["G_ZLXSL"] = "≤5.0";
+                            //mitem["G_ZLXSL"] = "≤5.0";
 
                             break;
                         case "建筑外墙外保温用岩棉制品(GB/T 25975-2018)":
@@ -1089,9 +1094,9 @@ namespace Calculates
 
                 #region 质量吸湿率
                 sign = true;
-                if (jcxm.Contains("、质量吸湿率、"))
+                if (jcxm.Contains("、质量吸湿率、") || jcxm.Contains("、吸湿性、"))
                 {
-                    jcxmCur = "质量吸湿率";
+                    jcxmCur = CurrentJcxm(jcxm, "质量吸湿率,吸湿性");
                     sign = IsNumeric(mitem["W_ZLXSL"]) && !string.IsNullOrEmpty(mitem["W_ZLXSL"]) ? sign : false;
                     if (sign)
                     {

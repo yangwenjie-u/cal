@@ -49,7 +49,7 @@ namespace Calculates
                     List<double> iArray = new List<double>();
                     for (int i = 1; i < 7; i++)
                     {
-                        sItem["MD" + i] = Math.Round(Conversion.Val(sItem["ZL" + i]) / ((Conversion.Val(sItem["CD" + i]) / 1000 * Conversion.Val(sItem["KD" + i]) / 1000 * Conversion.Val(sItem["HD" + i]) / 1000)), 0).ToString("0");
+                        sItem["MD" + i] = Math.Round(Conversion.Val(sItem["ZL" + i])/1000 / ((Conversion.Val(sItem["CD" + i]) / 1000 * Conversion.Val(sItem["KD" + i]) / 1000 * Conversion.Val(sItem["HD" + i]) / 1000)), 0).ToString("0");
                         iArray.Add(Conversion.Val(sItem["MD" + i]));
                     }
                     sItem["W_MD"] = iArray.Average().ToString();

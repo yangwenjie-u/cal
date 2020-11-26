@@ -76,104 +76,109 @@ namespace Calculates
                     continue;
                 }
                 var jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
-                if (!string.IsNullOrEmpty(mitem["SJTABS"]))
-                {
-                    mbhggs = 0;
-                    int xd;
-                    int sum, pj1, pj2, I;
-                    sum = 0;
-                    if (jcxm.Contains("、耐碱断裂强力、"))
-                    {
-                        jcxmCur = "耐碱断裂强力";
-                        mitem["HG_LDQ"] = "合格";
-                        if (Conversion.Val(sitem["LDQLJ"]) >= Conversion.Val(mitem["G_LDQLJ"]))
-                            mitem["HG_LDQLJ"] = "合格";
-                        else
-                        {
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
-                            mitem["HG_LDQLJ"] = "不合格";
-                            mitem["HG_LDQ"] = "不合格";
-                            mbhggs = mbhggs + 1;
-                            mAllHg = false;
-                        }
-                        if (Conversion.Val(sitem["LDQLW"]) >= Conversion.Val(mitem["G_LDQLW"]))
-                            mitem["HG_LDQLW"] = "合格";
-                        else
-                        {
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
-                            mitem["HG_LDQLW"] = "不合格";
-                            mitem["HG_LDQ"] = "不合格";
-                            mbhggs = mbhggs + 1;
-                            mAllHg = false;
-                        }
-                    }
-                    else
-                    {
-                        mitem["HG_LDQ"] = "----";
-                        sitem["LDQLJ"] = "----";
-                        mitem["HG_LDQLJ"] = "----";
-                        sitem["LDQLW"] = "----";
-                        mitem["HG_LDQLW"] = "----";
-                        mitem["G_LDQLJ"] = "----";
-                        mitem["G_LDQLW"] = "----";
-                    }
-                    if (jcxm.Contains("、耐碱断裂强力保留率、") || jcxm.Contains("、耐碱强力保留率、"))
-                    {
-                        jcxmCur = CurrentJcxm(jcxm, "耐碱断裂强力保留率,耐碱强力保留率");
-                        mitem["HG_LDQLB"] = "合格";
-                        if (Conversion.Val(sitem["LDQLBJ"]) >= Conversion.Val(mitem["G_LDQLBJ"]))
-                            mitem["HG_LDQLBJ"] = "合格";
-                        else
-                        {
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
-                            mitem["HG_LDQLBJ"] = "不合格";
-                            mitem["HG_LDQLB"] = "不合格";
-                            mbhggs = mbhggs + 1;
-                            mAllHg = false;
-                        }
 
-                        if (Conversion.Val(sitem["LDQLBW"]) >= Conversion.Val(mitem["G_LDQLBW"]))
-                            mitem["HG_LDQLBW"] = "合格";
-                        else
-                        {
-                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
-                            mitem["HG_LDQLBW"] = "不合格";
-                            mitem["HG_LDQLB"] = "不合格";
-                            mbhggs = mbhggs + 1;
-                            mAllHg = false;
-                        }
-                    }
-                    else
-                    {
-                        mitem["HG_LDQLB"] = "----";
-                        sitem["LDQLBJ"] = "----";
-                        mitem["HG_LDQLBJ"] = "----";
-                        sitem["LDQLBW"] = "----";
-                        mitem["HG_LDQLBW"] = "----";
-                        mitem["G_LDQLBJ"] = "----";
-                        mitem["G_LDQLBW"] = "----";
-                    }
-                    mitem["JCJGMS"] = "";
-                    if (mbhggs == 0)
-                    {
-                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
-                        sitem["JCJG"] = "合格";
-                    }
-                    if (mbhggs >= 1)
-                    {
-                        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
-                        sitem["JCJG"] = "不合格";
-                    }
-                    mAllHg = (mAllHg && sitem["JCJG"] == "合格");
-                    continue;
-                }
+                #region SJTABS
+
+                //if (!string.IsNullOrEmpty(mitem["SJTABS"]))
+                //{
+                //    mbhggs = 0;
+                //    int xd;
+                //    int sum, pj1, pj2, I;
+                //    sum = 0;
+                //    if (jcxm.Contains("、耐碱断裂强力、"))
+                //    {
+                //        jcxmCur = "耐碱断裂强力";
+                //        mitem["HG_LDQ"] = "合格";
+                //        if (Conversion.Val(sitem["LDQLJ"]) >= Conversion.Val(mitem["G_LDQLJ"]))
+                //            mitem["HG_LDQLJ"] = "合格";
+                //        else
+                //        {
+                //            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
+                //            mitem["HG_LDQLJ"] = "不合格";
+                //            mitem["HG_LDQ"] = "不合格";
+                //            mbhggs = mbhggs + 1;
+                //            mAllHg = false;
+                //        }
+                //        if (Conversion.Val(sitem["LDQLW"]) >= Conversion.Val(mitem["G_LDQLW"]))
+                //            mitem["HG_LDQLW"] = "合格";
+                //        else
+                //        {
+                //            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
+                //            mitem["HG_LDQLW"] = "不合格";
+                //            mitem["HG_LDQ"] = "不合格";
+                //            mbhggs = mbhggs + 1;
+                //            mAllHg = false;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        mitem["HG_LDQ"] = "----";
+                //        sitem["LDQLJ"] = "----";
+                //        mitem["HG_LDQLJ"] = "----";
+                //        sitem["LDQLW"] = "----";
+                //        mitem["HG_LDQLW"] = "----";
+                //        mitem["G_LDQLJ"] = "----";
+                //        mitem["G_LDQLW"] = "----";
+                //    }
+                //    if (jcxm.Contains("、耐碱断裂强力保留率、") || jcxm.Contains("、耐碱强力保留率、"))
+                //    {
+                //        jcxmCur = CurrentJcxm(jcxm, "耐碱断裂强力保留率,耐碱强力保留率");
+                //        mitem["HG_LDQLB"] = "合格";
+                //        if (Conversion.Val(sitem["LDQLBJ"]) >= Conversion.Val(mitem["G_LDQLBJ"]))
+                //            mitem["HG_LDQLBJ"] = "合格";
+                //        else
+                //        {
+                //            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(经向)、";
+                //            mitem["HG_LDQLBJ"] = "不合格";
+                //            mitem["HG_LDQLB"] = "不合格";
+                //            mbhggs = mbhggs + 1;
+                //            mAllHg = false;
+                //        }
+
+                //        if (Conversion.Val(sitem["LDQLBW"]) >= Conversion.Val(mitem["G_LDQLBW"]))
+                //            mitem["HG_LDQLBW"] = "合格";
+                //        else
+                //        {
+                //            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "(纬向)、";
+                //            mitem["HG_LDQLBW"] = "不合格";
+                //            mitem["HG_LDQLB"] = "不合格";
+                //            mbhggs = mbhggs + 1;
+                //            mAllHg = false;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        mitem["HG_LDQLB"] = "----";
+                //        sitem["LDQLBJ"] = "----";
+                //        mitem["HG_LDQLBJ"] = "----";
+                //        sitem["LDQLBW"] = "----";
+                //        mitem["HG_LDQLBW"] = "----";
+                //        mitem["G_LDQLBJ"] = "----";
+                //        mitem["G_LDQLBW"] = "----";
+                //    }
+                //    mitem["JCJGMS"] = "";
+                //    if (mbhggs == 0)
+                //    {
+                //        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目均符合要求。";
+                //        sitem["JCJG"] = "合格";
+                //    }
+                //    if (mbhggs >= 1)
+                //    {
+                //        mitem["JCJGMS"] = "依据" + mitem["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，需双倍复检。";
+                //        sitem["JCJG"] = "不合格";
+                //    }
+                //    mAllHg = (mAllHg && sitem["JCJG"] == "合格");
+                //    continue;
+                //}
+                #endregion
+
                 if (jcxm.Contains("、断裂强力、") || jcxm.Contains("、拉伸断裂强力、"))
                 {
                     jcxmCur = CurrentJcxm(jcxm, "断裂强力,拉伸断裂强力");
-                    if ((Conversion.Val(sitem["CSQLJ1"]) + Conversion.Val(sitem["CSQLJ2"]) + Conversion.Val(sitem["CSQLJ3"]) + Conversion.Val(sitem["CSQLJ4"]) + Conversion.Val(sitem["CSQLJ5"])) != 0)
+                    if ((Conversion.Val(sitem["LSDLQLCSDLQL1"]) + Conversion.Val(sitem["LSDLQLCSDLQL2"]) + Conversion.Val(sitem["LSDLQLCSDLQL3"]) + Conversion.Val(sitem["LSDLQLCSDLQL4"]) + Conversion.Val(sitem["LSDLQLCSDLQL5"])) != 0)
                     {
-                        sitem["DLQLJ"] = Round((Conversion.Val(sitem["CSQLJ1"]) + Conversion.Val(sitem["CSQLJ2"]) + Conversion.Val(sitem["CSQLJ3"]) + Conversion.Val(sitem["CSQLJ4"]) + Conversion.Val(sitem["CSQLJ5"])) / 5, 0).ToString();
-                        sitem["DLQLW"] = Round((Conversion.Val(sitem["CSQLW1"]) + Conversion.Val(sitem["CSQLW2"]) + Conversion.Val(sitem["CSQLW3"]) + Conversion.Val(sitem["CSQLW4"]) + Conversion.Val(sitem["CSQLW5"])) / 5, 0).ToString();
+                        sitem["DLQLJ"] = Round((Conversion.Val(sitem["LSDLQLCSDLQL1"]) + Conversion.Val(sitem["LSDLQLCSDLQL2"]) + Conversion.Val(sitem["LSDLQLCSDLQL3"]) + Conversion.Val(sitem["LSDLQLCSDLQL4"]) + Conversion.Val(sitem["LSDLQLCSDLQL5"])) / 5, 0).ToString();
+                        sitem["DLQLW"] = Round((Conversion.Val(sitem["LSDLQLWXDLQL1"]) + Conversion.Val(sitem["LSDLQLWXDLQL2"]) + Conversion.Val(sitem["LSDLQLWXDLQL3"]) + Conversion.Val(sitem["LSDLQLWXDLQL4"]) + Conversion.Val(sitem["LSDLQLWXDLQL5"])) / 5, 0).ToString();
                     }
                     if (Conversion.Val(sitem["DLQLJ"]) >= Conversion.Val(mitem["G_DLQLJ"]))
                     {
@@ -188,7 +193,7 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mAllHg = false;
                     }
-
+                    mitem["G_DLQLJ"] = "≥" + mitem["G_DLQLJ"];
 
                     if (Conversion.Val(sitem["DLQLW"]) >= Conversion.Val(mitem["G_DLQLW"]))
                     {
@@ -203,6 +208,7 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mAllHg = false;
                     }
+                    mitem["G_DLQLW"] = "≥" + mitem["G_DLQLW"];
                 }
                 else
                 {
@@ -250,7 +256,7 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mAllHg = false;
                     }
-
+                    mitem["G_LDQLJ"] = "≥" + mitem["G_LDQLJ"];
 
                     if (Conversion.Val(sitem["LDQLW"]) >= Conversion.Val(mitem["G_LDQLW"]))
                     {
@@ -265,6 +271,7 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mAllHg = false;
                     }
+                    mitem["G_LDQLW"] = "≥" + mitem["G_LDQLW"];
                 }
                 else
                 {
@@ -395,7 +402,7 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mAllHg = false;
                     }
-
+                    mitem["G_LDQLBJ"] = "≥" + mitem["G_LDQLBJ"];
 
                     if (Conversion.Val(sitem["LDQLBW"]) >= Conversion.Val(mitem["G_LDQLBW"]))
                     {
@@ -410,6 +417,7 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mAllHg = false;
                     }
+                    mitem["G_LDQLBW"] = "≥" + mitem["G_LDQLBW"];
                 }
                 else
                 {
@@ -534,6 +542,7 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mAllHg = false;
                     }
+                    mitem["G_DMJZL"] = "≥" + mitem["G_DMJZL"];
                 }
                 else
                 {

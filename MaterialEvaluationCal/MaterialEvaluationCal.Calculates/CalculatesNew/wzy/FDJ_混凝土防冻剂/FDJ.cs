@@ -83,7 +83,7 @@ namespace Calculates
                 var jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
                 if (string.IsNullOrEmpty(mitem["SJTABS"]))
                 {
-                    List<double> mtmpArray = new List<double>();
+                    
                     double mMaxKyqd, mMinKyqd, mMidKyqd, mAvgKyqd;
                     #region 细度
                     if (jcxm.Contains("、细度、"))
@@ -290,6 +290,7 @@ namespace Calculates
 
                             string mlongStr = sItem["JMSL_1"] + "," + sItem["JMSL_2"] + "," + sItem["JMSL_3"];
                             string[] str = mlongStr.Split(',');
+                            List<double> mtmpArray = new List<double>();
                             foreach (string s in str)
                             {
                                 mtmpArray.Add(GetSafeDouble(s));
@@ -334,6 +335,7 @@ namespace Calculates
 
                             string mlongStr = sItem["SMSL_1"] + "," + sItem["SMSL_2"] + "," + sItem["SMSL_3"];
                             string[] str = mlongStr.Split(',');
+                            List<double> mtmpArray = new List<double>();
                             foreach (string s in str)
                             {
                                 mtmpArray.Add(GetSafeDouble(s));
@@ -419,12 +421,12 @@ namespace Calculates
 
                         if (Conversion.Val(sItem["SYBHL"]) > 0)
                         {
-                            sItem["JJDYS_1"] = Round((GetSafeDouble(sItem["PBS1"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
-                            sItem["JJDYS_2"] = Round((GetSafeDouble(sItem["PBS2"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
-                            sItem["JJDYS_3"] = Round((GetSafeDouble(sItem["PBS3"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
-                            sItem["JSDYS_1"] = Round((GetSafeDouble(sItem["SPBS1"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
-                            sItem["JSDYS_2"] = Round((GetSafeDouble(sItem["SPBS2"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
-                            sItem["JSDYS_3"] = Round((GetSafeDouble(sItem["SPBS3"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
+                            //sItem["JJDYS_1"] = Round((GetSafeDouble(sItem["PBS1"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
+                            //sItem["JJDYS_2"] = Round((GetSafeDouble(sItem["PBS2"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
+                            //sItem["JJDYS_3"] = Round((GetSafeDouble(sItem["PBS3"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
+                            //sItem["JSDYS_1"] = Round((GetSafeDouble(sItem["SPBS1"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
+                            //sItem["JSDYS_2"] = Round((GetSafeDouble(sItem["SPBS2"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
+                            //sItem["JSDYS_3"] = Round((GetSafeDouble(sItem["SPBS3"]) / GetSafeDouble(sItem["SYBHL"])) * 1000, 2).ToString();
 
                             sItem["JSL_1"] = Round((GetSafeDouble(sItem["JJDYS_1"]) - GetSafeDouble(sItem["JSDYS_1"])) / GetSafeDouble(sItem["JJDYS_1"]) * 100, 1).ToString();
                             sItem["JSL_2"] = Round((GetSafeDouble(sItem["JJDYS_2"]) - GetSafeDouble(sItem["JSDYS_2"])) / GetSafeDouble(sItem["JJDYS_2"]) * 100, 1).ToString();
@@ -432,6 +434,7 @@ namespace Calculates
 
                             string mlongStr = sItem["JSL_1"] + "," + sItem["JSL_2"] + "," + sItem["JSL_3"];
                             string[] str = mlongStr.Split(',');
+                            List<double> mtmpArray = new List<double>();
                             foreach (string s in str)
                             {
                                 mtmpArray.Add(GetSafeDouble(s));
@@ -496,12 +499,13 @@ namespace Calculates
                         MItem[0]["HG_HQL"] = "";
                         if (sItem["BHWHQL_1"] != "" && sItem["BHWHQL_1"] != "----")
                         {
-                            sItem["HQL_1"] = (GetSafeDouble(sItem["BHWHQL_1"]) - GetSafeDouble(sItem["SSHQL_1"])).ToString();
-                            sItem["HQL_2"] = (GetSafeDouble(sItem["BHWHQL_2"]) - GetSafeDouble(sItem["SSHQL_2"])).ToString();
-                            sItem["HQL_3"] = (GetSafeDouble(sItem["BHWHQL_3"]) - GetSafeDouble(sItem["SSHQL_3"])).ToString();
+                            sItem["HQL_1"] = Math.Round(GetSafeDouble(sItem["BHWHQL_1"]) - GetSafeDouble(sItem["SSHQL_1"]),2).ToString("0.00");
+                            sItem["HQL_2"] = Math.Round(GetSafeDouble(sItem["BHWHQL_2"]) - GetSafeDouble(sItem["SSHQL_2"]),2).ToString("0.00");
+                            sItem["HQL_3"] = Math.Round(GetSafeDouble(sItem["BHWHQL_3"]) - GetSafeDouble(sItem["SSHQL_3"]),2).ToString("0.00");
 
                             string mlongStr = sItem["HQL_1"] + "," + sItem["HQL_2"] + "," + sItem["HQL_3"];
                             string[] str = mlongStr.Split(',');
+                            List<double> mtmpArray = new List<double>();
                             foreach (string s in str)
                             {
                                 mtmpArray.Add(GetSafeDouble(s));
@@ -573,6 +577,7 @@ namespace Calculates
 
                             string mlongStr = sItem["CNSJC_1"] + "," + sItem["CNSJC_2"] + "," + sItem["CNSJC_3"];
                             string[] str = mlongStr.Split(',');
+                            List<double> mtmpArray = new List<double>();
                             foreach (string s in str)
                             {
                                 mtmpArray.Add(GetSafeDouble(s));
@@ -638,11 +643,12 @@ namespace Calculates
                         if (sItem["ZNSJT_1"] != "" && sItem["ZNSJT_1"] != "----")
                         {
                             sItem["ZNSJC_1"] = (GetSafeDouble(sItem["ZNSJT_1"]) - GetSafeDouble(sItem["ZNJZT_1"])).ToString();
-                            sItem["ZNSJC_2"] = (GetSafeDouble(sItem["ZNSJT_2"]) - GetSafeDouble(sItem["ZNSJT_2"])).ToString();
-                            sItem["ZNSJC_3"] = (GetSafeDouble(sItem["ZNSJT_3"]) - GetSafeDouble(sItem["ZNSJT_3"])).ToString();
+                            sItem["ZNSJC_2"] = (GetSafeDouble(sItem["ZNSJT_2"]) - GetSafeDouble(sItem["ZNJZT_2"])).ToString();
+                            sItem["ZNSJC_3"] = (GetSafeDouble(sItem["ZNSJT_3"]) - GetSafeDouble(sItem["ZNJZT_3"])).ToString();
 
                             string mlongStr = sItem["ZNSJC_1"] + "," + sItem["ZNSJC_2"] + "," + sItem["ZNSJC_3"];
                             string[] str = mlongStr.Split(',');
+                            List<double> mtmpArray = new List<double>();
                             foreach (string s in str)
                             {
                                 mtmpArray.Add(GetSafeDouble(s));
@@ -765,6 +771,7 @@ namespace Calculates
 
                                 mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
                                 str = mlongStr.Split(',');
+                                List<double> mtmpArray = new List<double>();
                                 foreach (string s in str)
                                 {
                                     mtmpArray.Add(GetSafeDouble(s));
@@ -844,6 +851,7 @@ namespace Calculates
                                     }
                                     mlongStr = Arrmd[0] + "," + Arrmd[1] + "," + Arrmd[2];
                                     str = mlongStr.Split(',');
+                                    List<double> mtmpArray = new List<double>();
                                     foreach (string s in str)
                                     {
                                         mtmpArray.Add(GetSafeDouble(s));

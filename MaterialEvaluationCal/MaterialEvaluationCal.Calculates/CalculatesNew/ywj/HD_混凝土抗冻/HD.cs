@@ -653,7 +653,7 @@ namespace Calculates
                     //}
                     #endregion
 
-                    sItem["KDYQ"] = "相对动弹性模量应" + mrsdrFf["XDTXML"] + "% 或质量损失应" + mrsdrFf["ZLSSL"] + "%。";
+                    sItem["KDYQ"] = "相对动弹性模量应" + mrsdrFf["XDTXML"] + "% 且质量损失应" + mrsdrFf["ZLSSL"] + "%。";
                     if (IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML1"]) == "不合格" || IsQualified(mrsdrFf["XDTXML"], sItem["XDDTXML2"]) == "不合格")
                     {
                         jcxmCur = "相对动弹性模量";
@@ -665,7 +665,7 @@ namespace Calculates
                         sItem["GH_DTML"] = "合格";
                     }
 
-                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格" && IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL3"]) == "不合格")
+                    if (IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL1"]) == "不合格" || IsQualified(mrsdrFf["ZLSSL"], sItem["ZLSSL3"]) == "不合格")
                     {
                         jcxmCur = "质量损失";
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";

@@ -27,22 +27,22 @@ namespace Calculates
             foreach (var sItem in SItem)
             {
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["MC"] == sItem["CPMC"].Trim());
-                if (null != extraFieldsDj)
-                {
-                    //sItem["G_MD"] = extraFieldsDj["MD"];
-                    //sItem["G_XSL"] = extraFieldsDj["XSL"];
-                    //sItem["G_HSL"] = extraFieldsDj["HSL"];
-                    //sItem["G_KZQD"] = extraFieldsDj["KZQD"];
-                    //sItem["G_KYQD"] = extraFieldsDj["KYQD"];
-                }
-                else
-                {
-                    mAllHg = false;
-                    mjcjg = "不下结论";
-                    jsbeizhu = jsbeizhu + "依据不详";
-                    continue;
-                }
+                //var extraFieldsDj = extraDJ.FirstOrDefault(u => u["MC"] == sItem["CPMC"].Trim());
+                //if (null != extraFieldsDj)
+                //{
+                //    //sItem["G_MD"] = extraFieldsDj["MD"];
+                //    //sItem["G_XSL"] = extraFieldsDj["XSL"];
+                //    //sItem["G_HSL"] = extraFieldsDj["HSL"];
+                //    //sItem["G_KZQD"] = extraFieldsDj["KZQD"];
+                //    //sItem["G_KYQD"] = extraFieldsDj["KYQD"];
+                //}
+                //else
+                //{
+                //    mAllHg = false;
+                //    mjcjg = "不下结论";
+                //    jsbeizhu = jsbeizhu + "依据不详";
+                //    continue;
+                //}
 
                 #region 露点
                 if (jcxm.Contains("、露点、"))
@@ -94,6 +94,258 @@ namespace Calculates
                     sItem["G_NZWXFZ"] = "----";
                     //sItem["W_NZWXFZ"] = "----";
                     sItem["HG_NZWXFZ"] = "----";
+                }
+                #endregion
+
+                #region 可见光透射比
+                if (jcxm.Contains("、可见光透射比、"))
+                {
+                    jcxmCur = "可见光透射比";
+                    if (sItem["SJ_TSB"] !="----" && !sItem["SJ_TSB"].Contains("≥"))
+                    {
+                        sItem["G_KJGTSB"] = "≥" + sItem["SJ_TSB"];
+                    }
+                   
+                    if (IsQualified(sItem["G_KJGTSB"], sItem["W_KJGTSB"], false) == "合格")
+                    {
+                        sItem["HG_KJGTSB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_KJGTSB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_KJGTSB"] = "----";
+                    sItem["W_KJGTSB"] = "----";
+                    sItem["HG_KJGTSB"] = "----";
+                }
+                #endregion
+
+                #region 可见光反射比
+                if (jcxm.Contains("、可见光反射比、"))
+                {
+                    jcxmCur = "可见光反射比";
+                    if (sItem["G_KJGFSB"] != "----" && !sItem["G_KJGFSB"].Contains("≥"))
+                    {
+                        sItem["G_KJGFSB"] = "≥" + sItem["G_KJGFSB"];
+                    }
+
+                    if (IsQualified(sItem["G_KJGFSB"], sItem["W_KJGFSB"], false) == "合格")
+                    {
+                        sItem["HG_KJGFSB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_KJGFSB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_KJGFSB"] = "----";
+                    sItem["W_KJGFSB"] = "----";
+                    sItem["HG_KJGFSB"] = "----";
+                }
+                #endregion
+
+                #region 太阳光直接投射比
+                if (jcxm.Contains("、太阳光直接投射比、"))
+                {
+                    jcxmCur = "太阳光直接投射比";
+                    if (sItem["G_TYGZJTSB"] != "----" && !sItem["G_TYGZJTSB"].Contains("≥"))
+                    {
+                        sItem["G_TYGZJTSB"] = "≥" + sItem["G_TYGZJTSB"];
+                    }
+
+                    if (IsQualified(sItem["G_TYGZJTSB"], sItem["W_TYGZJTSB"], false) == "合格")
+                    {
+                        sItem["HG_TYGZJTSB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_TYGZJTSB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_TYGZJTSB"] = "----";
+                    sItem["W_TYGZJTSB"] = "----";
+                    sItem["HG_TYGZJTSB"] = "----";
+                }
+                #endregion
+
+                #region 太阳光直接反射比
+                if (jcxm.Contains("、太阳光直接反射比、"))
+                {
+                    jcxmCur = "太阳光直接反射比";
+                    if (sItem["G_TYGZJFSB"] != "----" && !sItem["G_TYGZJFSB"].Contains("≥"))
+                    {
+                        sItem["G_TYGZJFSB"] = "≥" + sItem["G_TYGZJFSB"];
+                    }
+
+                    if (IsQualified(sItem["G_TYGZJFSB"], sItem["W_TYGZJFSB"], false) == "合格")
+                    {
+                        sItem["HG_TYGZJFSB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_TYGZJFSB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_TYGZJFSB"] = "----";
+                    sItem["W_TYGZJFSB"] = "----";
+                    sItem["HG_TYGZJFSB"] = "----";
+                }
+                #endregion
+
+                #region 太阳能总透射比
+                if (jcxm.Contains("、太阳能总透射比、"))
+                {
+                    jcxmCur = "太阳能总透射比";
+                    if (sItem["G_TYNZTSB"] != "----" && !sItem["G_TYNZTSB"].Contains("≥"))
+                    {
+                        sItem["G_TYNZTSB"] = "≥" + sItem["G_TYNZTSB"];
+                    }
+
+                    if (IsQualified(sItem["G_TYNZTSB"], sItem["W_TYNZTSB"], false) == "合格")
+                    {
+                        sItem["HG_TYNZTSB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_TYNZTSB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_TYNZTSB"] = "----";
+                    sItem["W_TYNZTSB"] = "----";
+                    sItem["HG_TYNZTSB"] = "----";
+                }
+                #endregion
+
+                #region 紫外线透射比
+                if (jcxm.Contains("、紫外线透射比、"))
+                {
+                    jcxmCur = "紫外线透射比";
+                    if (sItem["G_ZWXTSB"] != "----" && !sItem["G_ZWXTSB"].Contains("≥"))
+                    {
+                        sItem["G_ZWXTSB"] = "≥" + sItem["G_ZWXTSB"];
+                    }
+
+                    if (IsQualified(sItem["G_ZWXTSB"], sItem["W_ZWXTSB"], false) == "合格")
+                    {
+                        sItem["HG_ZWXTSB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_ZWXTSB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_ZWXTSB"] = "----";
+                    sItem["W_ZWXTSB"] = "----";
+                    sItem["HG_ZWXTSB"] = "----";
+                }
+                #endregion
+
+                #region 紫外线反射比
+                if (jcxm.Contains("、紫外线反射比、"))
+                {
+                    jcxmCur = "紫外线反射比";
+                    if (sItem["G_ZWXFSB"] != "----" && !sItem["G_ZWXFSB"].Contains("≥"))
+                    {
+                        sItem["G_ZWXFSB"] = "≥" + sItem["G_ZWXFSB"];
+                    }
+
+                    if (IsQualified(sItem["G_ZWXFSB"], sItem["W_ZWXFSB"], false) == "合格")
+                    {
+                        sItem["HG_ZWXFSB"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_ZWXFSB"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_ZWXFSB"] = "----";
+                    sItem["W_ZWXFSB"] = "----";
+                    sItem["HG_ZWXFSB"] = "----";
+                }
+                #endregion
+
+                #region 遮蔽系数
+                if (jcxm.Contains("、遮蔽系数、"))
+                {
+                    jcxmCur = "遮蔽系数";
+                    if (sItem["ZBXSSJZ"] != "----" && !sItem["ZBXSSJZ"].Contains("≤"))
+                    {
+                        sItem["G_ZBXS"] = "≤" + sItem["ZBXSSJZ"];
+                    }
+
+                    if (IsQualified(sItem["G_ZBXS"], sItem["W_ZBXS"], false) == "合格")
+                    {
+                        sItem["HG_ZBXS"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_ZBXS"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_ZBXS"] = "----";
+                    sItem["W_ZBXS"] = "----";
+                    sItem["HG_ZBXS"] = "----";
+                }
+                #endregion
+
+                #region 传热系数
+                if (jcxm.Contains("、传热系数、"))
+                {
+                    jcxmCur = "传热系数";
+                    if (sItem["G_CRXS"] != "----" && !sItem["G_CRXS"].Contains("≤"))
+                    {
+                        sItem["G_CRXS"] = "≤" + sItem["G_CRXS"];
+                    }
+
+                    if (IsQualified(sItem["G_CRXS"], sItem["W_CRXS"], false) == "合格")
+                    {
+                        sItem["HG_CRXS"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sItem["HG_CRXS"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sItem["G_CRXS"] = "----";
+                    sItem["W_CRXS"] = "----";
+                    sItem["HG_CRXS"] = "----";
                 }
                 #endregion
 
