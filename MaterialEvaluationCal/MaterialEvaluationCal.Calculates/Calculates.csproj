@@ -105,7 +105,9 @@
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼搅拌记录\TJB.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼质量卡\ZLK.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单\商砼调整记录\TTZ.cs" />
+    <Compile Include="CalculatesNew\qsf\CG层高\CG.cs" />
     <Compile Include="CalculatesNew\qsf\FZZ 非承重混凝土空心砖\FZZ.cs" />
+    <Compile Include="CalculatesNew\qsf\GCJ工程结构\GCJ.cs" />
     <Compile Include="CalculatesNew\qsf\JBL建筑玻璃\JBL.cs" />
     <Compile Include="CalculatesNew\qsf\JCG层高\JCG.cs" />
     <Compile Include="CalculatesNew\qsf\JJR建筑用绝热制品\JJR.cs" />
@@ -113,10 +115,12 @@
     <Compile Include="CalculatesNew\qsf\JZJ 建筑砂浆\JZJ.cs" />
     <Compile Include="CalculatesNew\qsf\QJL无机轻集料建筑保温砂浆\QJL.cs" />
     <Compile Include="CalculatesNew\qsf\SH石灰\SH.cs" />
+    <Compile Include="CalculatesNew\qsf\SMB石墨改性模塑聚苯乙烯泡沫塑料板\SMB.cs" />
     <Compile Include="CalculatesNew\qsf\THG砼合格证明书\THG.cs" />
     <Compile Include="CalculatesNew\qsf\TKP商砼开盘配合比\TKP.cs" />
     <Compile Include="CalculatesNew\qsf\WBC外保温系统\WBC.cs" />
     <Compile Include="CalculatesNew\qsf\WJR无机硬质绝热制品\WJR.cs" />
+    <Compile Include="CalculatesNew\qsf\XPS挤塑聚苯乙烯泡沫塑料（XPS）\XPS.cs" />
     <Compile Include="CalculatesNew\qsf\ZBL 中空玻璃\ZBL.cs" />
     <Compile Include="CalculatesNew\qsf\ZFH静载%28复合地基%29\ZFH.cs" />
     <Compile Include="CalculatesNew\qsf\ZFK蒸压粉煤灰多孔砖\ZFK.cs" />
