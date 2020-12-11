@@ -12,6 +12,7 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
+           
             #region
             var extraDJ = dataExtra["BZ_GHJ_DJ"];
             var data = retData;
@@ -38,10 +39,11 @@ namespace Calculates
             var jcxm = "";
             var jcxmBhg = "";
             var jcxmCur = "";
-            var ggph = "";//钢筋牌号
+           
 
             bool gIs2HforRyyq_cd = true;//   '标注2个试件在焊缝或热影响区脆断
             bool gIs3HforRyyq_cd = true;// '标注2个试件在焊缝或热影响区脆断
+           
             #region 局部函数
 
             //返回值为每组每种指标不合格总数  ' mbzValue 是单前判断指标的标准值, count 是一组中的检测个数
@@ -486,24 +488,35 @@ namespace Calculates
             String SclBzyq = "";
             int kl1, kl2, kl3 = 0;
             int kj1, kj2, kj3 = 0;
+
+            var QBZZZD = "";
             #endregion
 
             foreach (var sItem in sItems)
             {
+                #region 字段处理
+                sItem["JCJLWZ"] = "检测结论";
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
-                ggph = sItem["GCLX_PH"];
 
-                sItem["FJ"] = false.ToString();
                 mZh = GetSafeDouble(sItem["ZH_G"]);//配置字段
-                //mZh = 0;
+
+
+
                 mGjlb = sItem["GJLB"];
 
                 if (string.IsNullOrEmpty(mGjlb))
                 {
                     mGjlb = "";
                 }
+                #endregion
                 #region 从设计等级表中取得相应的计算数值、等级标准
+                if (mGjlb.IndexOf('-') != -1){
+                    string[] abc = mGjlb.Split('-');
+                    mGjlb = abc[0];//电弧焊
+                }
+                
                 var mrsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["GJLB"] == mGjlb.Trim());
+                var mrsDj2 = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH2"] && u["GJLB"] == mGjlb.Trim());
 
                 if (null == mrsDj)
                 {
@@ -514,30 +527,62 @@ namespace Calculates
                     continue;
                 }
                 else
-                {
-                    sItem["SJDJ"] = mrsDj["MC"];
-                    mKlqd = GetSafeDouble(mrsDj["KLQDBZZ"]);//单组标准值
-                    mScl = GetSafeDouble(mrsDj["SCLBZZ"]);
-                    mLw = GetSafeDouble(mrsDj["LWBZZ"]);//要求冷弯值
-                    mLwjd = GetSafeDouble(mrsDj["LWJD"]);//冷弯角度和冷弯直径
-                    mLwzj = GetSafeDouble(mrsDj["LWZJ"]);
-                    mHggs_klqd = GetSafeDouble(mrsDj["ZHGGS_KLQD"]);//单组合格个数
-                    mHggs_scl = GetSafeDouble(mrsDj["ZHGGS_SCL"]);
-                    mHggs_lw = GetSafeDouble(mrsDj["ZHGGS_LW"]);
-                    mFsgs_klqd = GetSafeDouble(mrsDj["ZFSGS_KLQD"]);
-                    mFsgs_scl = GetSafeDouble(mrsDj["ZFSGS_SCL"]);
-                    mFsgs_lw = GetSafeDouble(mrsDj["ZFSGS_LW"]);
-                    mLwzj = GetSafeDouble(mrsDj["LWZJ"]);//冷弯直径和角度
-                    mLwjd = GetSafeDouble(mrsDj["LWJD"]);
-                    mXlgs = GetSafeDouble(mrsDj["XLGS"]);
-                    mXwgs =(int) GetSafeDouble(mrsDj["XWGS"]);
+                {  
+                    if(mrsDj2==null||GetSafeDouble(mrsDj["KLQDBZZ"])<= GetSafeDouble(mrsDj2["KLQDBZZ"])){
 
-                    mJSFF = string.IsNullOrEmpty(mrsDj["JSFF"]) ? "" : mrsDj["JSFF"].Trim().ToLower();
+                        #region 赋值
+                        QBZZZD = sItem["GCLX_PH"];
+                        sItem["SJDJ"] = mrsDj["MC"];
+                        mKlqd = GetSafeDouble(mrsDj["KLQDBZZ"]);//单组标准值
+                        mScl = GetSafeDouble(mrsDj["SCLBZZ"]);
+                        mLw = GetSafeDouble(mrsDj["LWBZZ"]);//要求冷弯值
+                        mLwjd = GetSafeDouble(mrsDj["LWJD"]);//冷弯角度和冷弯直径
+                        mLwzj = GetSafeDouble(mrsDj["LWZJ"]);
+                        mHggs_klqd = GetSafeDouble(mrsDj["ZHGGS_KLQD"]);//单组合格个数
+                        mHggs_scl = GetSafeDouble(mrsDj["ZHGGS_SCL"]);
+                        mHggs_lw = GetSafeDouble(mrsDj["ZHGGS_LW"]);
+                        mFsgs_klqd = GetSafeDouble(mrsDj["ZFSGS_KLQD"]);
+                        mFsgs_scl = GetSafeDouble(mrsDj["ZFSGS_SCL"]);
+                        mFsgs_lw = GetSafeDouble(mrsDj["ZFSGS_LW"]);
+                        mLwzj = GetSafeDouble(mrsDj["LWZJ"]);//冷弯直径和角度
+                        mLwjd = GetSafeDouble(mrsDj["LWJD"]);
+                        mXlgs = GetSafeDouble(mrsDj["XLGS"]);
+                        mXwgs = (int)GetSafeDouble(mrsDj["XWGS"]);
+
+                        mJSFF = string.IsNullOrEmpty(mrsDj["JSFF"]) ? "" : mrsDj["JSFF"].Trim().ToLower();
+                        #endregion}
+
+                    }
+                    else
+                    {
+                        #region 赋值
+                        QBZZZD = sItem["GCLX_PH2"];
+                        sItem["SJDJ"] = mrsDj2["MC"];
+                        mKlqd = GetSafeDouble(mrsDj2["KLQDBZZ"]);//单组标准值
+                        mScl = GetSafeDouble(mrsDj2["SCLBZZ"]);
+                        mLw = GetSafeDouble(mrsDj2["LWBZZ"]);//要求冷弯值
+                        mLwjd = GetSafeDouble(mrsDj2["LWJD"]);//冷弯角度和冷弯直径
+                        mLwzj = GetSafeDouble(mrsDj2["LWZJ"]);
+                        mHggs_klqd = GetSafeDouble(mrsDj2["ZHGGS_KLQD"]);//单组合格个数
+                        mHggs_scl = GetSafeDouble(mrsDj2["ZHGGS_SCL"]);
+                        mHggs_lw = GetSafeDouble(mrsDj2["ZHGGS_LW"]);
+                        mFsgs_klqd = GetSafeDouble(mrsDj2["ZFSGS_KLQD"]);
+                        mFsgs_scl = GetSafeDouble(mrsDj2["ZFSGS_SCL"]);
+                        mFsgs_lw = GetSafeDouble(mrsDj2["ZFSGS_LW"]);
+                        mLwzj = GetSafeDouble(mrsDj2["LWZJ"]);//冷弯直径和角度
+                        mLwjd = GetSafeDouble(mrsDj2["LWJD"]);
+                        mXlgs = GetSafeDouble(mrsDj2["XLGS"]);
+                        mXwgs = (int)GetSafeDouble(mrsDj2["XWGS"]);
+
+                        mJSFF = string.IsNullOrEmpty(mrsDj2["JSFF"]) ? "" : mrsDj2["JSFF"].Trim().ToLower();
+                        #endregion
+                    } 
                 }
 
                 //试验温度
                 #endregion
 
+                #region pdbz 18-2012
                 if (MItem[0]["PDBZ"].Contains("18-2012"))
                 {
                     SclBzyq = "3个试件均断于钢筋母材，呈延性断裂或其中一个试件断于焊缝，呈脆性断裂，其抗拉强度大于或等于钢筋母材抗拉强度标准值。";
@@ -553,24 +598,25 @@ namespace Calculates
                 sItem["G_KLQD"] = mKlqd.ToString();
                 sItem["G_DLWZ"] = SclBzyq.ToString();
                 sItem["G_LWWZ"] = LwBzyq.ToString();
-
+                #endregion
+                
                 //求抗拉强度
                 int count = (int)(mXlgs);
                 calc_kl(sItem, count);
                 //冷弯
-                for(int wq=1; wq< mXwgs + 1; wq++)
+                for (int wq = 1; wq < mXwgs + 1; wq++)
                 {
-                    if (sItem["LW" + wq] == "无裂纹"){ sItem["LW" + wq] = "1"; }
-                    if (sItem["LW" + wq] == "有裂纹"){ sItem["LW" + wq] = "0"; }
-                    if (sItem["LW" + wq] == "----"){ sItem["LW" + wq] = "-1"; }
+                    if (sItem["LW" + wq] == "无裂纹") { sItem["LW" + wq] = "1"; }
+                    if (sItem["LW" + wq] == "有裂纹") { sItem["LW" + wq] = "0"; }
+                    if (sItem["LW" + wq] == "----") { sItem["LW" + wq] = "-1"; }
 
                 }
                 mallbhg_lw = mallbhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, (int)(mXwgs));
                 for (int wq = 1; wq < mXwgs + 1; wq++)
                 {
                     if (sItem["LW" + wq] == "1") { sItem["LW" + wq] = "无裂纹"; }
-                    if (sItem["LW" + wq] =="0") { sItem["LW" + wq] = "有裂纹"; }
-                    if (sItem["LW" + wq] =="-1") { sItem["LW" + wq] = "----"; }
+                    if (sItem["LW" + wq] == "0") { sItem["LW" + wq] = "有裂纹"; }
+                    if (sItem["LW" + wq] == "-1") { sItem["LW" + wq] = "----"; }
 
                 }
 
@@ -612,7 +658,7 @@ namespace Calculates
                     }
 
 
-                  
+
                     // 旧值   valueFixed--断于焊缝之外，延性断裂,1,1 | 断于焊缝，延性断裂,2,0 | 断于焊缝之外，脆性断裂,3,0 | 断于焊缝，脆性断裂,4,0 | 既断于热影响区又脆断,5,0 | 断于热影响区，延性断裂,6,0 | 断于焊缝，脆性断裂(焊口开裂),7,0
                     //1为断于钢筋母材,延性断裂；2为断于母材,脆性断裂；3为断于焊缝,脆性断裂；4为断于热影响区,延性断裂；5为断于热影响区,脆性断裂
                     switch (kj1.ToString())
@@ -756,7 +802,7 @@ namespace Calculates
 
                         }
                         mallbhg_lw = mallbhg_lw + find_singlezb_bhg(MItem[0], sItem, "lw", mLw, (int)(mXwgs));
-                      
+
                         int Gs = 0;
                         for (int i = 1; i < 4; i++)
                         {
@@ -801,7 +847,8 @@ namespace Calculates
                         sItem["LW1"] = "----";
                         sItem["LW2"] = "----";
                         sItem["LW3"] = "----";
-                        sItem["HG_LW"] = "0";
+                        sItem["HG_LW"] = "0"; 
+                        sItem["G_LWWZ"] = "----";
                     }
                     #endregion
 
@@ -856,59 +903,95 @@ namespace Calculates
                 }
                 mAllHg = mAllHg && (sItem["JCJG"] == "合格");
                 #endregion
+                if(sItem["BJSM"]=="*"|| sItem["BJSM"] == null){
+                    sItem["BJSM"] = sItem["ZJ"]; 
+                }
+                
+                #region 从表检测结论处理
+                jsbeizhu = "试样" + sItem["YPBH"]+"经检测，"+ "依据" + MItem[0]["PDBZ"] +"中钢材级别为"+QBZZZD+ "的规定，所检项目符合要求。";
+
+
+                if (mAllHg && mjcjg != "----")
+                {
+                    mjcjg = "合格";
+                    jsbeizhu = "试样" + sItem["YPBH"] + "经检测，" + "依据" + MItem[0]["PDBZ"] + "中钢材级别为" + QBZZZD + "的规定，所检项目符合要求。";
+                }
+
+                if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
+                {
+                    jsbeizhu = "试样" + sItem["YPBH"] + "经检测，" + "依据" + MItem[0]["PDBZ"] + "中钢材级别为" + QBZZZD + "的规定，所检项目符合要求。";
+                    MItem[0]["FJJJ3"] = jsbeizhu;
+                }
+
+                if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
+                {
+                    jsbeizhu = "试样" + sItem["YPBH"] + "经检测，" + "依据" + MItem[0]["PDBZ"] + "中钢材级别为" + QBZZZD + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
+                    MItem[0]["FJJJ2"] = jsbeizhu;
+                    if (mFlag_Hg && mFlag_Bhg)
+                    {
+                        jsbeizhu = "试样" + sItem["YPBH"] + "经检测，" + "依据" + MItem[0]["PDBZ"] + "中钢材级别为" + QBZZZD + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。";
+                        MItem[0]["FJJJ2"] = jsbeizhu;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"]))
+                {
+
+                    jsbeizhu = "试样" + sItem["YPBH"] + "经检测，" + "依据" + MItem[0]["PDBZ"] + "中钢材级别为" + QBZZZD + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
+                    MItem[0]["FJJJ1"] = jsbeizhu;
+
+                }
+
+                if (!string.IsNullOrEmpty(mwxzh))
+                {
+                    mwxzh = "试样" + sItem["YPBH"] + "经检测，" + "依据" + MItem[0]["PDBZ"] + "中钢材级别为" + QBZZZD + "的规定，该组试样无效，应检验母材。";
+                    jsbeizhu = "试样" + sItem["YPBH"] + "经检测，" + "依据" + MItem[0]["PDBZ"] + "中钢材级别为" + QBZZZD + "的规定，该组试样无效，应检验母材。"; ;
+                }
+
+                #endregion
+
+                sItem["JCJGMS"] = jsbeizhu;
+                sItem["BGYPBH"] = sItem["YPBH"];
+                sItem["DZJCJG"] = sItem["JCJG"];
+
+                #region 单条计算完成，重置默认值
+                mAllHg = true;
+                mjcjg = "不合格";
+                MItem[0]["FJJJ1"] = "";
+                MItem[0]["FJJJ2"] = "";
+                MItem[0]["FJJJ3"] = "";
+                mwxzh = "";
+                mFlag_Hg = false;
+                mFlag_Bhg = false;
+                QBZZZD = "";
+                jsbeizhu = "该组试样的检测结果全部合格";
+                mJSFF = mwxzh = "";
+                mZh = mKlqd = mScl = mLw = mLwjd = mLwzj = 0;
+                mHggs_klqd = mHggs_scl = mHggs_lw = mXlgs = 0;
+                mXwgs = 0;
+                mFsgs_klqd = mFsgs_scl = mFsgs_lw = 0;
+                mGjlb = "";
+                LwBzyq = "";
+                SclBzyq = "";
+                kl1 = kl2 = kl3 = 0;
+                kj1 = kj2 = kj3 = 0;
+                #endregion
+
             }
+            //从表循环结束
+
 
             #region 添加最终报告
-            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
 
 
-            if (mAllHg && mjcjg != "----")
-            {
-                mjcjg = "合格";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
-            }
 
-            if (!string.IsNullOrEmpty(MItem[0]["FJJJ3"]))
-            {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目符合要求。";
-                MItem[0]["FJJJ3"] = jsbeizhu;
-            }
 
-            if (!string.IsNullOrEmpty(MItem[0]["FJJJ2"]))
-            {
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
-                MItem[0]["FJJJ2"] = jsbeizhu;
-                if (mFlag_Hg && mFlag_Bhg)
-                {
-                    jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。";
-                    MItem[0]["FJJJ2"] = jsbeizhu;
-                }
-            }
+            MItem[0]["JCJG"] = "----";
 
-            if (!string.IsNullOrEmpty(MItem[0]["FJJJ1"]))
-            {
-                //jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求。";
-                //MItem[0]["FJJJ1"] = jsbeizhu;
-                //if (mFlag_Hg && mFlag_Bhg)
-                //{
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，所检项目" + jcxmBhg.TrimEnd('、') + "不符合要求，另取双倍样复试。"; ;
-                MItem[0]["FJJJ1"] = jsbeizhu;
-                //}
-            }
-
-            if (!string.IsNullOrEmpty(mwxzh))
-            {
-                mwxzh = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样无效，应检验母材。";
-                jsbeizhu = "依据" + MItem[0]["PDBZ"] + "的规定，该组试样无效，应检验母材。"; ;
-            }
-            MItem[0]["JCJG"] = mjcjg;
-            if (mjcjg == "不下结论")
-            {
-                jsbeizhu = "";
-            }
-            MItem[0]["JCJGMS"] = jsbeizhu;
+            MItem[0]["JCJGMS"] = "----";
             #endregion
             #endregion
+            
             /************************ 代码结束 *********************/
         }
     }

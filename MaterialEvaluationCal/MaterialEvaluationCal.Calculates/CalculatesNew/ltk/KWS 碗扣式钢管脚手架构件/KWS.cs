@@ -19,7 +19,7 @@ namespace Calculates
             var SItems = data["S_KWS"];
             var MItem = data["M_KWS"];
             var jcxm = "";
-            var pdbz = "";
+            var CPMC = "";
             var mAllHg = true;
             var jcxmCur = "";
             var jcxmBhg = "";
@@ -31,24 +31,33 @@ namespace Calculates
             foreach (var sItem in SItems)
             {
                 jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
-                pdbz = sItem["PDBZ"];
-                if (string.IsNullOrEmpty(pdbz))
+                CPMC = sItem["CPMC"];
+                if (string.IsNullOrEmpty(CPMC))
                 {
-                    pdbz = "----";
+                    CPMC = "----";
                 }
                 #region 等级表处理
-                var mrsDj = extraDJ.FirstOrDefault(u => u["PDBZ"] == pdbz);
+                var mrsDj = extraDJ.FirstOrDefault(u => u["CPMC"] == CPMC);
                 if (null == mrsDj)
                 {
-                    mAllHg = false;
-                    sItem["JCJG"] = "不合格";
-                   
+                    //横杆插头焊接剪切强度
+                    sItem["G_HCHJQD"] = "当P=25kN时，各部位不应破坏";
+                    //轮盘组焊后剪切强度
+                    sItem["G_LPJQQD"] = "当P=60kN时，各部位不应破坏";
+                    //可调托撑抗压强度
+                    sItem["G_KTTZKYQD"] = "当P=50kN时，各部位不应破坏";
+                    //可调托撑抗压强度
+                    sItem["G_KTDZKYQD"] = "当P=50kN时，各部位不应破坏";
+
                 }
-                sItem["G_SWKQD"] = mrsDj["G_SWKQD"];
-                sItem["G_XWKHJQD"] = mrsDj["G_XWKHJQD"];
-                sItem["G_HGJTQD"] = mrsDj["G_HGJTQD"];
-                sItem["G_HGJTHJQD"] = mrsDj["G_HGJTHJQD"];
-                sItem["G_KTZZKYQDQD"] = mrsDj["G_KTZZKYQD"];
+                else {
+                    sItem["G_SWKQD"] = mrsDj["G_SWKQD"];
+                    sItem["G_XWKHJQD"] = mrsDj["G_XWKHJQD"];
+                    sItem["G_HGJTQD"] = mrsDj["G_HGJTQD"];
+                    sItem["G_HGJTHJQD"] = mrsDj["G_HGJTHJQD"];
+                    sItem["G_KTZZKYQDQD"] = mrsDj["G_KTZZKYQD"];
+                }
+                
 
                 #endregion
 
@@ -228,6 +237,158 @@ namespace Calculates
                     sItem["HG_KTZZKYQD"] = "----";
                     sItem["G_KTZZKYQDQD"] = "----";
                 }
+                #endregion
+
+                #region 横杆插头焊接剪切强度
+                
+
+                int HCHJQDBhg = 0;
+                if (jcxm.Contains("、横杆插头焊接剪切强度、"))
+                {
+                    jcxmCur = "横杆插头焊接剪切强度";
+                    for (int i = 1; i < 9; i++)
+                    {
+                        if (GetSafeInt(sItem["HCHJQD" + i]) != 1)
+                        {
+                            HCHJQDBhg = HCHJQDBhg + 1;
+                        }
+                    }
+                    if (HCHJQDBhg > 1)
+                    {
+                        sItem["HG_HCHJQD"] = "不合格";
+                        sItem["JCJG"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        jcxmBhgZs = jcxmBhgZs + 1;
+                    }
+                    else
+                    {
+                        sItem["HG_HCHJQD"] = "合格";
+                        sItem["JCJG"] = "合格";
+
+                    }
+
+                }
+                else
+                {
+                    sItem["HG_HCHJQD"] = "----";
+                    sItem["G_HCHJQD"] = "----";
+                }
+
+                #endregion
+
+                #region 轮盘组焊后剪切强度
+
+
+                int LPJQQDBhg = 0;
+                if (jcxm.Contains("、轮盘组焊后剪切强度、"))
+                {
+                    jcxmCur = "轮盘组焊后剪切强度";
+                    for (int i = 1; i < 9; i++)
+                    {
+                        if (GetSafeInt(sItem["LPJQQD" + i]) != 1)
+                        {
+                            LPJQQDBhg = LPJQQDBhg + 1;
+                        }
+                    }
+                    if (LPJQQDBhg > 1)
+                    {
+                        sItem["HG_LPJQQD"] = "不合格";
+                        sItem["JCJG"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        jcxmBhgZs = jcxmBhgZs + 1;
+                    }
+                    else
+                    {
+                        sItem["HG_LPJQQD"] = "合格";
+                        sItem["JCJG"] = "合格";
+
+                    }
+
+                }
+                else
+                {
+                    sItem["HG_LPJQQD"] = "----";
+                    sItem["G_LPJQQD"] = "----";
+                }
+
+                #endregion
+
+                #region 可调托撑抗压强度
+
+
+                int KTTZKYQDBhg = 0;
+                if (jcxm.Contains("、可调托撑抗压强度、"))
+                {
+                    jcxmCur = "可调托撑抗压强度";
+                    for (int i = 1; i < 9; i++)
+                    {
+                        if (GetSafeInt(sItem["KTTZKYQD" + i]) != 1)
+                        {
+                            KTTZKYQDBhg = KTTZKYQDBhg + 1;
+                        }
+                    }
+                    if (KTTZKYQDBhg > 1)
+                    {
+                        sItem["HG_KTTZKYQD"] = "不合格";
+                        sItem["JCJG"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        jcxmBhgZs = jcxmBhgZs + 1;
+                    }
+                    else
+                    {
+                        sItem["HG_KTTZKYQD"] = "合格";
+                        sItem["JCJG"] = "合格";
+
+                    }
+
+                }
+                else
+                {
+                    sItem["HG_KTTZKYQD"] = "----";
+                    sItem["G_KTTZKYQD"] = "----";
+                }
+
+                #endregion
+
+                #region 可调底座抗压强度
+
+
+                int KTDZKYQDBhg = 0;
+                if (jcxm.Contains("、可调底座抗压强度、"))
+                {
+                    jcxmCur = "可调底座抗压强度";
+                    for (int i = 1; i < 9; i++)
+                    {
+                        if (GetSafeInt(sItem["KTDZKYQD" + i]) != 1)
+                        {
+                            KTDZKYQDBhg = KTDZKYQDBhg + 1;
+                        }
+                    }
+                    if (KTDZKYQDBhg > 1)
+                    {
+                        sItem["HG_KTDZKYQD"] = "不合格";
+                        sItem["JCJG"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                        jcxmBhgZs = jcxmBhgZs + 1;
+                    }
+                    else
+                    {
+                        sItem["HG_KTDZKYQD"] = "合格";
+                        sItem["JCJG"] = "合格";
+
+                    }
+
+                }
+                else
+                {
+                    sItem["HG_KTDZKYQD"] = "----";
+                    sItem["G_KTDZKYQD"] = "----";
+                }
+
                 #endregion
 
                 if (mAllHg) {

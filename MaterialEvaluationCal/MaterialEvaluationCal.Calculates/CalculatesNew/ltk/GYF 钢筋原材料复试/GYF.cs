@@ -510,8 +510,9 @@ namespace Calculates
                 {
                     mxlgs = 6;
                 }
-
-                var extraFieldsZlpc = ZlpcData.FirstOrDefault(u => u["ZJ"] == sItem["ZJ"]);
+                //德浩检测
+                mxwgs = 4;
+                var extraFieldsZlpc = ZlpcData.FirstOrDefault(u =>GetSafeDouble( u["ZJ"]) == GetSafeDouble( sItem["ZJ"]));
                 if (extraFieldsZlpc != null)
                 {
                     sLlzl = GetSafeDouble(extraFieldsZlpc["LLZL"]);
@@ -526,7 +527,8 @@ namespace Calculates
                 #endregion
 
                 #region 计算开始
-
+                
+                #region 字段处理
                 if (string.IsNullOrEmpty(sItem["WXZJ"]))
                 {
                     sItem["WXZJ"] = mlwzj.ToString();
@@ -586,7 +588,7 @@ namespace Calculates
                 }
                 sItem["G_LWWZ"] = LwBzyq;
                 sItem["G_ZSCL"] = "----";
-
+                #endregion
                 //求伸长率
                 sItem["XGM"] = extraFieldsDj["XGM"];
                 sItem["CD"] = (Math.Round((GetSafeDouble(sItem["XGM"]) * GetSafeDouble(sItem["ZJ"])) / 5 + 0.001, 0) * 5).ToString();
@@ -614,11 +616,13 @@ namespace Calculates
                         jcxmBhg += "重量偏差" + "、";
                         mbhggs = mbhggs + 1;
                     }
+                    sItem["G_ZLPC"] = "±" + sZlpc;
                 }
                 else
                 {
                     sItem["JCJG_ZLPC"] = "----";
                 }
+                
                 #endregion
 
                 //求伸长率
@@ -931,7 +935,7 @@ namespace Calculates
                     sItem["QFQFB6"] = "----";
                     sItem["LW5"] = "----";
                     sItem["LW6"] = "----";
-                    sItem["FXWQ2"] = "----";
+                   
                 }
                 if (sItem["JCJG_KZ"] == "不符合" || sItem["JCJG_LS"] == "不符合")
                 {
