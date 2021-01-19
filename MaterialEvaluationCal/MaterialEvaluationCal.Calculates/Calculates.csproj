@@ -85,6 +85,14 @@
     <Compile Include="CalculatesNew\lq\水质%28混凝土用水%29\HNS.cs" />
     <Compile Include="CalculatesNew\lq\纸面石膏板\ZSG.cs" />
     <Compile Include="CalculatesNew\lq\路基路面厚度\LJM.cs" />
+    <Compile Include="CalculatesNew\ltk\FS_防水卷材\PFS聚氯乙烯（PVC%29防水卷材\PFS.cs" />
+    <Compile Include="CalculatesNew\ltk\FS_防水卷材\GFS高分子防水卷材\GFS.cs" />
+    <Compile Include="CalculatesNew\ltk\FS_防水卷材\ZFS自粘聚合物改性沥青防水卷材\ZFS.cs" />
+    <Compile Include="CalculatesNew\ltk\FS_防水卷材\UFS塑性体改性沥青防水卷材\UFS.cs" />
+    <Compile Include="CalculatesNew\ltk\FS_防水卷材\TFS弹性体改性沥青防水卷材\TFS.cs" />
+    <Compile Include="CalculatesNew\ltk\FS_防水卷材\FSS湿铺防水卷材\FSS.cs" />
+    <Compile Include="CalculatesNew\ltk\FS_防水卷材\SFS预铺防水卷材\SFS.cs" />
+    <Compile Include="CalculatesNew\ltk\GSG-硅酸钙绝热制品\GSG.cs" />
     <Compile Include="CalculatesNew\ltk\FS_防水卷材\FS.cs" />
     <Compile Include="CalculatesNew\lsl\TRD_土壤中氡\TRD.cs" />
     <Compile Include="CalculatesNew\lsl\JS_土击实\JS.cs" />
@@ -106,6 +114,10 @@
     <Compile Include="CalculatesNew\lq\YKJ_扣件\YKJBAK.cs" />
     <Compile Include="CalculatesNew\ltk\KWS 碗扣式钢管脚手架构件\KWS.cs" />
     <Compile Include="CalculatesNew\ltk\QFS 其它防水材料\QFS.cs" />
+    <Compile Include="CalculatesNew\ltk\ZQK 装饰混凝土砌块\ZQK.cs" />
+    <Compile Include="CalculatesNew\ltk\ZHZ 蒸压灰砂砖\ZHZ.cs" />
+    <Compile Include="CalculatesNew\ltk\WFS水性渗透性无机防水剂\WFS.cs" />
+    <Compile Include="CalculatesNew\ltk\YFS建筑表面用有机硅防水剂\YFS.cs" />
     <Compile Include="CalculatesNew\ltk\矿物外加剂MA\MA.cs" />
     <Compile Include="CalculatesNew\ltk\管桩_GZ\GZ.cs" />
     <Compile Include="CalculatesNew\ltk\配比通知单TPT\商砼抗渗\SHG.cs" />
@@ -324,7 +336,6 @@
     <Compile Include="Calculates\DemoCode.cs" />
     <Compile Include="CalculatesNew\wlb\XC_现场气密性\XC.cs" />
     <Compile Include="CalculatesNew\wlb\WZ_节能取芯\WZ.cs" />
-    <Compile Include="CalculatesNew\wzy\HSZ_蒸压灰砂砖\HSZ.cs" />
     <Compile Include="CalculatesNew\lsl\KF_矿粉\KF.cs" />
     <Compile Include="CalculatesNew\wzy\KS_混凝土抗渗\KS.cs" />
     <Compile Include="CalculatesNew\wzy\SPB_砂浆配合比\SPB.cs" />
