@@ -526,6 +526,55 @@ namespace Calculates
                         }
                     }
 
+                    #region 导热系数
+                    if (jcxm.Contains("、导热系数、"))
+                    {
+                        jcxmCur = "导热系数";
+                        sItem["G_DRXS"] = "≤" + sItem["G_DRXS"].Trim().Replace("≤", "");
+                        if (IsQualified(sItem["G_DRXS"].Trim(), sItem["W_DRXS"], false) == "合格")
+                        {
+                            sItem["HG_DRXS"] = "合格";
+                        }
+                        else
+                        {
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            sItem["HG_DRXS"] = "不合格";
+                            mAllHg = false;
+                        }
+
+                    }
+                    else
+                    {
+                        sItem["G_DRXS"] = "----";
+                        sItem["HG_DRXS"] = "----";
+                        sItem["W_DRXS"] = "----";
+                    }
+                    #endregion
+
+                    #region 传热系数
+                    if (jcxm.Contains("、传热系数、"))
+                    {
+                        jcxmCur = "传热系数";
+                        sItem["G_CRXS"] = "≤" + sItem["G_CRXS"].Trim().Replace("≤", "");
+                        if (IsQualified(sItem["G_CRXS"], sItem["KZ"], false) == "合格")
+                        {
+                            sItem["HG_CRXS"] = "合格";
+                        }
+                        else
+                        {
+                            sItem["HG_CRXS"] = "不合格";
+                            jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                            mAllHg = false;
+                        }
+                    }
+                    else
+                    {
+                        sItem["HG_CRXS"] = "----";
+                        sItem["G_CRXS"] = "----";
+                        sItem["KZ"] = "----";
+                    }
+                    #endregion
+
                     if (sItem["QDPD"] == "合格")
                     {
                         if (jcxm.Contains("、吸水率和饱和系数、") || jcxm.Contains("、抗风化性能、"))
@@ -778,7 +827,7 @@ namespace Calculates
                         sItem["FSPD"] = "----";
                         sItem["SHBLPD"] = "----";
                     }
-                    if (sItem["GMDPD"] == "不合格" || sItem["QDPD"] == "不合格" || sItem["WGPD"] == "不合格" || sItem["CCPD"] == "不合格" || sItem["DRPD"] == "不合格" || sItem["BHXSPD"] == "不合格" || sItem["FSPD"] == "不合格" || sItem["SHBLPD"] == "不合格")
+                    if (sItem["GMDPD"] == "不合格" || sItem["QDPD"] == "不合格" || sItem["WGPD"] == "不合格" || sItem["CCPD"] == "不合格" || sItem["DRPD"] == "不合格" || sItem["BHXSPD"] == "不合格" || sItem["FSPD"] == "不合格" || sItem["SHBLPD"] == "不合格" || sItem["HG_CRXS"] == "不合格")
                         mAllHg = false;
                 }
             }

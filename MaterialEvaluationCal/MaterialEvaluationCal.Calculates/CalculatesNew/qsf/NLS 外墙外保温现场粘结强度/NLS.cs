@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.VisualBasic;
 
 namespace Calculates
 {
@@ -43,6 +44,11 @@ namespace Calculates
                     mjcjg = "不下结论";
                     jsbeizhu = jsbeizhu + "依据不详";
                     continue;
+                }
+
+                if (!string.IsNullOrEmpty(sItem["NJQDSJZ"]) && sItem["NJQDSJZ"] != "----")
+                {
+                    MItem[0]["G_KYQD"] = Conversion.Val(sItem["NJQDSJZ"]).ToString();
                 }
 
                 switch (mJSFF)

@@ -392,7 +392,7 @@ namespace Calculates
                     if (string.IsNullOrEmpty(sItem["HG_LW"])) sItem["HG_LW"] = "0";
                     if (string.IsNullOrEmpty(sItem["HG_KL"])) sItem["HG_KL"] = "0";
 
-                    if (jcxm.Contains("、拉伸、"))
+                    if (jcxm.Contains("、拉伸、")|| jcxm.Contains("、抗拉强度、"))
                     {
                         if (Conversion.Val(sItem["HG_QF"]) >= mHggs_QFQD && Conversion.Val(sItem["HG_KL"]) >= mHggs_KLQD && Conversion.Val(sItem["HG_SC"]) >= mHggs_SCL)
                         {
@@ -433,6 +433,7 @@ namespace Calculates
                     return "";
                 };
             #endregion
+            
             foreach (var sItem in SItem)
             {
                 #region 数据准备工作
@@ -646,7 +647,39 @@ namespace Calculates
 
                 if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
+                    for (int i = 1; i < mxlgs + 1; i++)
+                    {
+                        if (sItem["LW" + i] == "无裂纹")
+                        {
+                            sItem["LW" + i] = "1";
+                        }
+                        if (sItem["LW" + i] == "有裂纹")
+                        {
+                            sItem["LW" + i] = "0";
+                        }
+                        if (sItem["LW" + i] == "----")
+                        {
+                            sItem["LW" + i] = "-1";
+                        }
+
+                    }
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mxlgs);
+                    for (int i = 1; i < mxlgs + 1; i++)
+                    {
+                        if (sItem["LW" + i] == "1")
+                        {
+                            sItem["LW" + i] = "无裂纹";
+                        }
+                        if (sItem["LW" + i] == "0")
+                        {
+                            sItem["LW" + i] = "有裂纹";
+                        }
+                        if (sItem["LW" + i] == "-1")
+                        {
+                            sItem["LW" + i] = "----";
+                        }
+
+                    }
                 }
                 else
                 {
@@ -823,6 +856,21 @@ namespace Calculates
                 {
                     jcxmCur = "反向弯曲";
                     sItem["G_LWWZ"] = "弯曲压头D=" + (mlwzj + 1) + "a,弯曲90度后，反向弯曲20度,弯曲部位表面无裂纹。";
+                    for(int i = 1; i < 3; i++) {
+                        if (sItem["FXWQ"+i] == "无裂纹")
+                        {
+                            sItem["FXWQ" + i] = "1";
+                        }
+                        if (sItem["FXWQ" + i] == "有裂纹")
+                        {
+                            sItem["FXWQ" + i] = "0";
+                        }
+                        if (sItem["FXWQ" + i] == "----")
+                        {
+                            sItem["FXWQ" + i] = "-1";
+                        }
+                    }
+                  
                     if (sItem["FXWQ1"] == "1" && sItem["FXWQ2"] == "1")
                     {
                         sItem["JCJG_LW"] = "符合";
@@ -832,6 +880,22 @@ namespace Calculates
                         sItem["JCJG_LW"] = "不符合";
                         jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
                     }
+
+                    for (int i = 1; i < 3; i++) {
+                        if (sItem["FXWQ"+i] == "1")
+                        {
+                            sItem["FXWQ" + i] = "无裂纹";
+                        }
+                        if (sItem["FXWQ" + i] == "0")
+                        {
+                            sItem["FXWQ" + i] = "有裂纹";
+                        }
+                        if (sItem["FXWQ" + i] == "-1")
+                        {
+                            sItem["FXWQ" + i] = "----";
+                        }
+                    }
+                       
                 }
                 else
                 {

@@ -778,5 +778,75 @@ namespace Calculates
             #endregion
             /************************ 代码结束 *********************/
         }
+
+        public void GxJCJGMS()
+        {
+            //富阳德浩
+            #region
+            var extraDJ = dataExtra["BZ_MC_DJ"];
+
+            var data = retData;
+            var jsbeizhu = "该组试样的检测结果全部合格";
+            var SItems = data["S_MC"];
+            var MItem = data["M_MC"];
+
+            var mAllHg = true;
+            var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+            string sjdj = "";
+
+            foreach (var sItem in SItems)
+            {
+                jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+
+                #region 气密性能
+                if (jcxm.Contains("、气密性能、"))
+                {
+                    jcxmCur = "气密性能";
+                    if (sItem["PD_QM"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 水密性能
+                if (jcxm.Contains("、水密性能、"))
+                {
+                    jcxmCur = "水密性能";
+                    if (sItem["PD_SM"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+
+                #region 抗风压性能
+                if (jcxm.Contains("、抗风压性能、"))
+                {
+                    jcxmCur = "抗风压性能";
+                    if (sItem["PD_KF"] == "不符合")
+                    {
+                        mAllHg = false;
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                #endregion
+                MItem[0]["BEIZHU1"] = "委托方要求按" + MItem[0]["JCYJ"] + "检测";
+            }
+            if (MItem[0]["JCJG"] == "不合格" && sjdj != "")
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "进行检测，该组试样所检项目" + jcxmBhg + "不符合设计要求。";
+            }
+            else
+            {
+                MItem[0]["JCJGMS"] = "依据" + MItem[0]["PDBZ"] + "进行检测，该组试样所检项目" + jcxmBhg + "符合设计要求。";
+            }
+
+            #endregion
+        }
     }
 }

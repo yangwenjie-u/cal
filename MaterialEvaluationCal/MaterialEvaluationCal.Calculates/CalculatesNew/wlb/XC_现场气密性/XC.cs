@@ -364,6 +364,54 @@ namespace Calculates
             #endregion
             /************************ 代码结束 *********************/
         }
+
+        public void GxJCJGMS()
+        {
+            //富阳德浩
+            #region
+            var extraDJ = dataExtra["BZ_XC_DJ"];
+
+            var data = retData;
+            var jsbeizhu = "";
+            var SItems = data["S_XC"];
+            var MItem = data["M_XC"];
+
+            var mAllHg = true;
+            var jcxm = "";
+            var jcxmBhg = "";
+            var jcxmCur = "";
+            string sjdj = "";
+
+            foreach (var sItem in SItems)
+            {
+                jcxm = "、" + sItem["JCXM"].Replace(',', '、') + "、";
+
+                #region 气密性能
+                if (jcxm.Contains("、气密性能、"))
+                {
+                    switch (sItem["PD_QM"])
+                    {
+                        case "符合":
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "进行检测，所检项目均符合设计要求。";
+                            break;
+
+                        case "不符合":
+                            jsbeizhu = "依据" + MItem[0]["PDBZ"] + "进行检测，所检项目气密性性能不符合设计要求。";
+                            break;
+
+                        default:
+                            jsbeizhu = "无设计要求， 该组试样气密性能检测结果如上。"; ;
+                            break;
+                    }
+                }
+                #endregion
+
+            }
+
+            MItem[0]["JCJGMS"] = jsbeizhu;
+
+            #endregion
+        }
     }
 }
 

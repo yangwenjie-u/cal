@@ -121,13 +121,13 @@ namespace Calculates
                 #endregion
                 if (sitem["JCXM"].Contains("7天强度") || jcxm.Contains("、配合比、"))
                 {
-
                     if (!IsNumeric(sitem["KYHZ1_1"]) || Conversion.Val(sitem["KYHZ1_1"]) == 0)
                     {
                         DateTime dtnow = DateTime.Now;
                         if (DateTime.TryParse(sitem["ZZRQ"], out dtnow))
                             sitem["YQSYRQ"] = GetSafeDateTime(sitem["ZZRQ"]).AddDays(28).ToString("yyyy-MM-dd HH:mm:ss");
                     }
+                    List<double> larray = new List<double>();
                     for (xd = 1; xd < 4; xd++)
                     {
                         if (IsNumeric(sitem["KYHZ" + xd + "_7"]) && Conversion.Val(sitem["KYHZ" + xd + "_7"]) != 0)
@@ -136,9 +136,19 @@ namespace Calculates
                             md = 1350 * md / (70.7 * 70.7);
                             md = Round(md, 1);
                             sitem["KYQD" + xd + "_7"] = md.ToString("0.0");
+                            larray.Add(md);
                         }
                         else
                             sitem["KYQD" + xd + "_7"] = "----";
+                    }
+
+                    if (larray.Count > 0)
+                    {
+                        sitem["KYPJ_7"] = larray.Average().ToString("0.0");
+                    }
+                    else
+                    {
+                        sitem["KYPJ_7"] = "----";
                     }
                 }
                 else
@@ -161,6 +171,7 @@ namespace Calculates
                             sitem["KYPJ"] = "----";
                         }
                     }
+                    List<double> larray = new List<double>();
                     for (xd = 1; xd < 4; xd++)
                     {
                         if (IsNumeric(sitem["KYHZ" + xd]) && Conversion.Val(sitem["KYHZ" + xd]) != 0)
@@ -169,9 +180,18 @@ namespace Calculates
                             md = 1350 * md / (70.7 * 70.7);
                             md = Round(md, 1);
                             sitem["KYQD" + xd] = md.ToString("0.0");
+                            larray.Add(md);
                         }
                         else
                             sitem["KYQD" + xd] = "----";
+                    }
+                    if (larray.Count>0)
+                    {
+                        sitem["KYPJ"] = larray.Average().ToString("0.0");
+                    }
+                    else
+                    {
+                        sitem["KYPJ"] = "----";
                     }
                 }
                 else
@@ -219,7 +239,7 @@ namespace Calculates
 
                         }
                     }
-                    if (n > 4)
+                    if (n < 4 && n != 0)
                     {
                         sitem["LSQDQD"] = "结果无效";
                     }

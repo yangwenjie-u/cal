@@ -45,7 +45,13 @@ namespace Calculates
 
             foreach (var sitem in SItem)
             {
-                jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
+                for (int i = 1; i <= 20; i++)
+                {
+                    sitem["E_SCDZ" + i] = "";
+                }
+
+
+                    jcxm = "、" + sitem["JCXM"].Replace(',', '、') + "、";
 
                 //if (jcxm.Contains("、截面积试验、"))
                 //{
@@ -195,6 +201,7 @@ namespace Calculates
                         {
                             Y_DXL["E_DXZL"] = "主线";
                         }
+
                         if (Y_DXL["E_DXZL"].Trim() == "相线")
                         {
                             //设计电阻(相线)
@@ -202,6 +209,13 @@ namespace Calculates
                             //实测电阻
                             sitem["E_SCDZ" + (yIndex - 1).ToString()] = Y_DXL["E_SCDZ"];
                         }
+                        else
+                        {
+                            sitem["E_SJDZ_Z"] = "";
+                            sitem["E_SCDZ" + (yIndex - 1).ToString()] = "";
+
+                        }
+
                         if (Y_DXL["E_DXZL"].Trim() == "零线")
                         {
                             //设计电阻(零线)
@@ -209,12 +223,19 @@ namespace Calculates
                             //实测电阻（零线）
                             sitem["E_SCDZ_L"] = Y_DXL["E_SCDZ"];
                         }
+                       
                         if (Y_DXL["E_DXZL"].Trim() == "地线")
                         {
                             //设计电阻(地线)
                             sitem["E_SJDZ_D"] = Y_DXL["E_SJDZ"];
                             //实测电阻（地线）
                             sitem["E_SCDZ_D"] = Y_DXL["E_SCDZ"];
+                        }
+                        else
+                        {
+                            sitem["E_SJDZ_D"] = "";
+                            sitem["E_SCDZ_D"] = "";
+
                         }
                         md = Conversion.Val(sd);
                         if (sm == "--")

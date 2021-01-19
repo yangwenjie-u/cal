@@ -11,7 +11,7 @@ namespace Calculates
     {
         public void Calc()
         {
-            #region
+            #region Code
             /************************ 代码开始 *********************/
           
             #region 变量定义
@@ -23,20 +23,26 @@ namespace Calculates
             #endregion
            
             #region  集合取值
+            
             var data = retData;
             var mrsDj = dataExtra["BZ_TPT_DJ"];
-           // var mrsGg = dataExtra["BZ_TPT_Gg"];
+           
+            // var mrsGg = dataExtra["BZ_TPT_Gg"];
             var MItem = data["M_TPT"];
             var SItem = data["S_TPT"];
+            
             //砼合格证明书
-
-           
             var THGMItem = data["M_THG"];
             var THGSItem = data["S_THG"];
-            //商砼开盘配合比
 
+            //质量卡
+            var ZLKMItem = data["M_ZLK"];
+            var ZLKSItem = data["S_ZLK"];
+            
+            //商砼开盘配合比
             var TKPSItem = data["S_TKP"];
             //var TKPMItem = data["M_TKP"];
+            
             //商砼搅拌记录
             //var STJMItem = data["M_STJ"];
             var TJBSItem = data["S_TJB"];
@@ -44,19 +50,27 @@ namespace Calculates
             //商砼交货检验记录
             //var TJHMItem = data["M_TJH"];
             var TJHSItem = data["S_TJH"];
-            /*  //商砼抗压强度
-              var HGZMItem = data["M_HGZ"];*/
+
+            //商砼抗压强度
+            //var HGZMItem = data["M_HGZ"];
             var HGZSItem = data["S_HGZ"];
-            //
-            var ZLKMItem = data["M_ZLK"];
-            var ZLKSItem = data["S_ZLK"];
+            
+            var ZHGMItem = data["M_ZHG"];
+            //var ZHGSItem = data["S_ZHG"];
+            
+            var MHGMItem = data["M_SHG"];
+            //var ZHGSItem = data["S_ZHG"];
+
             #endregion
 
             #region 计算开始
             foreach (var sitem in SItem)
             {
+                ZLKMItem[0]["QYZZZSBH"] = MItem[0]["QYZZZSBH"];
+                ZLKMItem[0]["SYSHGZSBH"] = MItem[0]["SYSHGZSBH"];
+
                 #region TPT 通知单
-             
+
                 double d_SHAHSL, d_SHIHSL, d_SHAHSHIL, d_T_CLSN, d_T_CLSHA, d_T_CLSHI, d_T_CLS, d_T_CLWJJ1, d_T_CLWJJ2, d_T_CLWJJ3, d_T_CLCHL1, d_T_CLCHL2, d_T_CLCHL3;
                 //砂含水率
                 d_SHAHSL = GetSafeDouble(sitem["SHAHSL"]);
@@ -212,9 +226,14 @@ namespace Calculates
                 ZLKSItem[0]["TLDSGYQ"] = sitem["TLD"]; 
                 ZLKSItem[0]["TLDSJYQ"] = sitem["TLD"];
                 ZLKMItem[0]["JZBW"] = sitem["JZBW"];
-                ZLKMItem[0]["QYZZZSBH"] = MItem[0]["QYZZZSBH"];
-                ZLKMItem[0]["SYSHGZSBH"] = MItem[0]["SYSHGZSBH"];
+                ZLKSItem[0]["CCRQ"] = MItem[0]["ZLKCCRQ"];
+                ZLKSItem[0]["SGGY"]= sitem["SGGY"];
+
                 #endregion
+
+                MHGMItem[0]["HPBBGBH"] = sitem["HPBBGBH"];
+                MHGMItem[0]["JZBW"] = sitem["JZBW"];
+              
 
                 #region THG 合格证
                 THGMItem[0]["JZBW"] = sitem["JZBW"];
@@ -253,6 +272,10 @@ namespace Calculates
                 THGSItem[0]["CHL1ZL"] = sitem["CHL1ZL"];
                 THGSItem[0]["CHL2ZL"] = sitem["CHL3ZL"];
                 THGSItem[0]["CHL3ZL"] = sitem["CHL3ZL"];
+                #endregion
+                #region ZHG 商砼抗折
+                ZHGMItem[0]["TLD"] = sitem["TLD"];
+                ZHGMItem[0]["JZBW"] = sitem["JZBW"];
                 #endregion
 
 
@@ -380,10 +403,12 @@ namespace Calculates
 
             }
             #endregion
+            
             MItem[0]["JCJG"] = "----";
-           
             MItem[0]["JCJGMS"] = "----";
+            
             /************************ 代码结束 *********************/
+            
             #endregion
 
         }

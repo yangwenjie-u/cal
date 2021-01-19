@@ -354,7 +354,7 @@ namespace Calculates
 
             if (!data.ContainsKey("M_BB"))
             {
-                data["M_BCR"] = new List<IDictionary<string, string>>();
+                data["M_BB"] = new List<IDictionary<string, string>>();
             }
             if (MItem == null)
             {
@@ -1291,35 +1291,35 @@ namespace Calculates
                             }
                         }
 
-                        if (23 == GetSafeDouble(sItem["BGMDWD"]))
-                        {
-                            if (15 > GetSafeDouble(sItem["BGMD4"]) && !string.IsNullOrEmpty(sItem["BGMD4"]))
-                            {
-                                sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMD4"]) + 1.22, 4).ToString();
-                            }
-                        }
-                        else
-                        {
-                            if (15 > GetSafeDouble(sItem["BGMD4"]) && !string.IsNullOrEmpty(sItem["BGMD4"]))
-                            {
-                                sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMD4"]) + 1.1955, 4).ToString();
-                            }
-                        }
+                        //if (23 == GetSafeDouble(sItem["BGMDWD"]))
+                        //{
+                        //    if (15 > GetSafeDouble(sItem["BGMD4"]) && !string.IsNullOrEmpty(sItem["BGMD4"]))
+                        //    {
+                        //        sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMD4"]) + 1.22, 4).ToString();
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    if (15 > GetSafeDouble(sItem["BGMD4"]) && !string.IsNullOrEmpty(sItem["BGMD4"]))
+                        //    {
+                        //        sItem["BGMD4"] = Round(GetSafeDouble(sItem["BGMD4"]) + 1.1955, 4).ToString();
+                        //    }
+                        //}
 
-                        if (23 == GetSafeDouble(sItem["BGMDWD"]))
-                        {
-                            if (15 > GetSafeDouble(sItem["BGMD5"]) && !string.IsNullOrEmpty(sItem["BGMD5"]))
-                            {
-                                sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMD5"]) + 1.22, 4).ToString();
-                            }
-                        }
-                        else
-                        {
-                            if (15 > GetSafeDouble(sItem["BGMD5"]) && !string.IsNullOrEmpty(sItem["BGMD5"]))
-                            {
-                                sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMD5"]) + 1.1955, 4).ToString();
-                            }
-                        }
+                        //if (23 == GetSafeDouble(sItem["BGMDWD"]))
+                        //{
+                        //    if (15 > GetSafeDouble(sItem["BGMD5"]) && !string.IsNullOrEmpty(sItem["BGMD5"]))
+                        //    {
+                        //        sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMD5"]) + 1.22, 4).ToString();
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    if (15 > GetSafeDouble(sItem["BGMD5"]) && !string.IsNullOrEmpty(sItem["BGMD5"]))
+                        //    {
+                        //        sItem["BGMD5"] = Round(GetSafeDouble(sItem["BGMD5"]) + 1.1955, 4).ToString();
+                        //    }
+                        //}
 
                         //sItem["BGMD"] = Round((GetSafeDouble(sItem["BGMD1"]) + GetSafeDouble(sItem["BGMD2"]) + GetSafeDouble(sItem["BGMD3"]) + GetSafeDouble(sItem["BGMD4"]) + GetSafeDouble(sItem["BGMD5"])) / 5, 1).ToString();
                         sItem["BGMD"] = Round((GetSafeDouble(sItem["BGMD1"]) + GetSafeDouble(sItem["BGMD2"]) + GetSafeDouble(sItem["BGMD3"])) / 3, 1).ToString();

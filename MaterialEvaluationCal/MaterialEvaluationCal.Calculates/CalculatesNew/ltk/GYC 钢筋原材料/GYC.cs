@@ -402,7 +402,7 @@ namespace Calculates
                     if (string.IsNullOrEmpty(sItem["HG_LW"])) sItem["HG_LW"] = "0";
                     if (string.IsNullOrEmpty(sItem["HG_KL"])) sItem["HG_KL"] = "0";
 
-                    if (jcxm.Contains("、拉伸、"))
+                    if (jcxm.Contains("、拉伸、")|| jcxm.Contains("、抗拉强度、"))
                     {
                         if (Conversion.Val(sItem["HG_QF"]) >= mHggs_QFQD && Conversion.Val(sItem["HG_KL"]) >= mHggs_KLQD && Conversion.Val(sItem["HG_SC"]) >= mHggs_SCL)
                         {
@@ -489,7 +489,7 @@ namespace Calculates
                 
                 #region BZ_GYC_DJ 等级表处理
                 
-                //'从设计等级表中取得相应的计算数值、等级标准                   钢材牌号
+                //从设计等级表中取得相应的计算数值、等级标准                   钢材牌号,钢筋类别，公称直径
                 
                 var extraFieldsDj = extraDJ.FirstOrDefault(u => u["PH"] == sItem["GCLX_PH"] && u["GJLB"] == mGJLB && GetSafeDouble(u["ZJFW1"]) < GetSafeDouble(sItem["ZJ"]) && GetSafeDouble(u["ZJFW2"]) > GetSafeDouble(sItem["ZJ"]));
                 
@@ -789,7 +789,39 @@ namespace Calculates
                 
                 if (jcxm.Contains("、冷弯、") || jcxm.Contains("、弯曲、"))
                 {
+                    for(int i = 1; i < mXWGS + 1; i ++)
+                    {
+                        if (sItem["LW" + i] == "无裂纹")
+                        {
+                            sItem["LW" + i] = "1";
+                        }
+                        if (sItem["LW" + i] == "有裂纹")
+                        {
+                            sItem["LW" + i] = "0";
+                        }
+                        if (sItem["LW" + i] == "----")
+                        {
+                            sItem["LW" + i] = "-1";
+                        }
+
+                    }
                     mallBHG_LW = mallBHG_LW + find_singlezb_bhg(MItem[0], sItem, "LW", mLw, (int)mXWGS);
+                    for (int i = 1; i < mXWGS + 1; i++)
+                    {
+                        if (sItem["LW" + i] == "1" )
+                        {
+                            sItem["LW" + i] = "无裂纹";
+                        }
+                        if (sItem["LW" + i] == "0" )
+                        {
+                            sItem["LW" + i] = "有裂纹";
+                        }
+                        if (sItem["LW" + i] == "-1" )
+                        {
+                            sItem["LW" + i] = "----";
+                        }
+
+                    }
                 }
                 else
                 {
@@ -943,6 +975,21 @@ namespace Calculates
                 {
                     jcxmCur = "反向弯曲";
                     sItem["G_LWWZ"] = "弯曲压头D=" + (mLWZJ + 1) + "a,弯曲90度后，反向弯曲20度,弯曲部位表面无裂纹。";
+                   
+                        if (sItem["FXWQ1"] == "无裂纹")
+                        {
+                            sItem["FXWQ1"] = "1";
+                        }
+                        if (sItem["FXWQ1"] == "有裂纹")
+                        {
+                            sItem["FXWQ1"] = "0";
+                        }
+                        if (sItem["FXWQ1"] == "----")
+                        {
+                            sItem["FXWQ1"] = "-1";
+                        }
+
+                    
                     if (sItem["FXWQ1"] == "1")
                     {
                         mFlag_Hg = true;
@@ -955,6 +1002,22 @@ namespace Calculates
                         mFlag_Bhg = true;
                         mbhggs = mbhggs + 1;
                     }
+
+                   
+                        if (sItem["FXWQ1"] == "1")
+                        {
+                            sItem["FXWQ1"] = "无裂纹";
+                        }
+                        if (sItem["FXWQ1"] == "0")
+                        {
+                            sItem["FXWQ1"] = "有裂纹";
+                        }
+                        if (sItem["FXWQ1"] == "-1")
+                        {
+                            sItem["FXWQ1"] = "----";
+                        }
+
+                    
                 }
                 else
                 {

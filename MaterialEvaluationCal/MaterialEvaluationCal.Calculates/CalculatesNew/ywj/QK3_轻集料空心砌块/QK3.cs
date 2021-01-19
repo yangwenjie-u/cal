@@ -451,6 +451,27 @@ namespace Calculates
                 else
                     sItem["WCPD"] = "----";
 
+                if (jcxm.Contains("、传热系数、"))
+                {
+                    jcxmCur = "传热系数";
+                    sItem["G_CRXS"] = "≤" + sItem["G_CRXS"].Trim().Replace("≤", "");
+                    if (IsQualified(sItem["G_CRXS"],sItem["KZ"],false)=="合格")
+                    {
+                        sItem["HG_CRXS"] = "合格";
+                    }
+                    else
+                    {
+                        sItem["HG_CRXS"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                }
+                else
+                {
+                    sItem["HG_CRXS"] = "----";
+                    sItem["G_CRXS"] = "----";
+                    sItem["KZ"] = "----";
+                }
+
                 if (!sign)
                 {
                     sItem["KDYQ"] = "----";
@@ -459,9 +480,10 @@ namespace Calculates
                     sItem["W_QDSS"] = "----";
                     sItem["QDSSYQ"] = "----";
                     sItem["ZLSSYQ"] = "----";
+                    sItem["KZ"] = "----";
                 }
 
-                if (sItem["XSLPD"] == "不合格" || sItem["QDPD"] == "不合格" || sItem["GMDPD"] == "不合格" || sItem["KDPD"] == "不合格" || sItem["WCPD"] == "不合格")
+                if (sItem["XSLPD"] == "不合格" || sItem["QDPD"] == "不合格" || sItem["GMDPD"] == "不合格" || sItem["KDPD"] == "不合格" || sItem["WCPD"] == "不合格" || sItem["HG_CRXS"] == "不合格")
                 {
                     sItem["JCJG"] = "不合格";
                     mAllHg = false;

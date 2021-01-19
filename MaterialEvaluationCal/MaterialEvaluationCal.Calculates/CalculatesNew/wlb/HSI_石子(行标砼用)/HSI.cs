@@ -65,7 +65,7 @@ namespace Calculates
                 #region 筛分析
                 if (jcxm.Contains("、筛分析、"))
                 {
-                    jcxmCur = "筛分析";
+                    jcxmCur = "颗粒级配";
                     #region 赋值
                     for (int i = 1; i < 14; i++)
                     {
@@ -223,19 +223,73 @@ namespace Calculates
                     //从设计等级表中取得相应的计算数值、等级标准
                     var extraFieldsHS = extraHSB.FirstOrDefault(u => u["GCCC"].Trim() == sItem["GCCC"]);
 
+                    #region 乌海版
+                    //flag = true;
+                    //flag = double.Parse(sItem["CY2_36"]) >= double.Parse(extraFieldsHS["CY2_36A"]) && double.Parse(sItem["CY2_36"]) <= double.Parse(extraFieldsHS["CY2_36B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY4_75"]) >= double.Parse(extraFieldsHS["CY4_75A"]) && double.Parse(sItem["CY4_75"]) <= double.Parse(extraFieldsHS["CY4_75B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY9_50"]) >= double.Parse(extraFieldsHS["CY9_50A"]) && double.Parse(sItem["CY9_50"]) <= double.Parse(extraFieldsHS["CY9_50B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY16_0"]) >= double.Parse(extraFieldsHS["CY16_0A"]) && double.Parse(sItem["CY16_0"]) <= double.Parse(extraFieldsHS["CY16_0B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY19_0"]) >= double.Parse(extraFieldsHS["CY19_0A"]) && double.Parse(sItem["CY19_0"]) <= double.Parse(extraFieldsHS["CY19_0B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY26_5"]) >= double.Parse(extraFieldsHS["CY26_5A"]) && double.Parse(sItem["CY26_5"]) <= double.Parse(extraFieldsHS["CY26_5B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY31_5"]) >= double.Parse(extraFieldsHS["CY31_5A"]) && double.Parse(sItem["CY31_5"]) <= double.Parse(extraFieldsHS["CY31_5B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY37_5"]) >= double.Parse(extraFieldsHS["CY37_5A"]) && double.Parse(sItem["CY37_5"]) <= double.Parse(extraFieldsHS["CY37_5B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY53_0"]) >= double.Parse(extraFieldsHS["CY53_0A"]) && double.Parse(sItem["CY53_0"]) <= double.Parse(extraFieldsHS["CY53_0B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY63_0"]) >= double.Parse(extraFieldsHS["CY63_0A"]) && double.Parse(sItem["CY63_0"]) <= double.Parse(extraFieldsHS["CY63_0B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY75_0"]) >= double.Parse(extraFieldsHS["CY75_0A"]) && double.Parse(sItem["CY75_0"]) <= double.Parse(extraFieldsHS["CY75_0B"]) ? flag : false;
+                    //flag = double.Parse(sItem["CY90"]) >= double.Parse(extraFieldsHS["CY90A"]) && double.Parse(sItem["CY4_75"]) <= double.Parse(extraFieldsHS["CY90B"]) ? flag : false;
+                    #endregion
+
+                    #region 德浩版
                     flag = true;
-                    flag = double.Parse(sItem["CY2_36"]) >= double.Parse(extraFieldsHS["CY2_36A"]) && double.Parse(sItem["CY2_36"]) <= double.Parse(extraFieldsHS["CY2_36B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY4_75"]) >= double.Parse(extraFieldsHS["CY4_75A"]) && double.Parse(sItem["CY4_75"]) <= double.Parse(extraFieldsHS["CY4_75B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY9_50"]) >= double.Parse(extraFieldsHS["CY9_50A"]) && double.Parse(sItem["CY9_50"]) <= double.Parse(extraFieldsHS["CY9_50B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY16_0"]) >= double.Parse(extraFieldsHS["CY16_0A"]) && double.Parse(sItem["CY16_0"]) <= double.Parse(extraFieldsHS["CY16_0B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY19_0"]) >= double.Parse(extraFieldsHS["CY19_0A"]) && double.Parse(sItem["CY19_0"]) <= double.Parse(extraFieldsHS["CY19_0B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY26_5"]) >= double.Parse(extraFieldsHS["CY26_5A"]) && double.Parse(sItem["CY26_5"]) <= double.Parse(extraFieldsHS["CY26_5B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY31_5"]) >= double.Parse(extraFieldsHS["CY31_5A"]) && double.Parse(sItem["CY31_5"]) <= double.Parse(extraFieldsHS["CY31_5B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY37_5"]) >= double.Parse(extraFieldsHS["CY37_5A"]) && double.Parse(sItem["CY37_5"]) <= double.Parse(extraFieldsHS["CY37_5B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY53_0"]) >= double.Parse(extraFieldsHS["CY53_0A"]) && double.Parse(sItem["CY53_0"]) <= double.Parse(extraFieldsHS["CY53_0B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY63_0"]) >= double.Parse(extraFieldsHS["CY63_0A"]) && double.Parse(sItem["CY63_0"]) <= double.Parse(extraFieldsHS["CY63_0B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY75_0"]) >= double.Parse(extraFieldsHS["CY75_0A"]) && double.Parse(sItem["CY75_0"]) <= double.Parse(extraFieldsHS["CY75_0B"]) ? flag : false;
-                    flag = double.Parse(sItem["CY90"]) >= double.Parse(extraFieldsHS["CY90A"]) && double.Parse(sItem["CY4_75"]) <= double.Parse(extraFieldsHS["CY90B"]) ? flag : false;
+                    if (extraFieldsHS["CY2_36A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY2_36"]) >= double.Parse(extraFieldsHS["CY2_36A"]) && double.Parse(sItem["CY2_36"]) <= double.Parse(extraFieldsHS["CY2_36B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY4_75A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY4_75"]) >= double.Parse(extraFieldsHS["CY4_75A"]) && double.Parse(sItem["CY4_75"]) <= double.Parse(extraFieldsHS["CY4_75B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY9_50A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY9_50"]) >= double.Parse(extraFieldsHS["CY9_50A"]) && double.Parse(sItem["CY9_50"]) <= double.Parse(extraFieldsHS["CY9_50B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY16_0A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY16_0"]) >= double.Parse(extraFieldsHS["CY16_0A"]) && double.Parse(sItem["CY16_0"]) <= double.Parse(extraFieldsHS["CY16_0B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY19_0A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY19_0"]) >= double.Parse(extraFieldsHS["CY19_0A"]) && double.Parse(sItem["CY19_0"]) <= double.Parse(extraFieldsHS["CY19_0B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY26_5A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY26_5"]) >= double.Parse(extraFieldsHS["CY26_5A"]) && double.Parse(sItem["CY26_5"]) <= double.Parse(extraFieldsHS["CY26_5B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY31_5A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY31_5"]) >= double.Parse(extraFieldsHS["CY31_5A"]) && double.Parse(sItem["CY31_5"]) <= double.Parse(extraFieldsHS["CY31_5B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY37_5A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY37_5"]) >= double.Parse(extraFieldsHS["CY37_5A"]) && double.Parse(sItem["CY37_5"]) <= double.Parse(extraFieldsHS["CY37_5B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY53_0A"] != "0.00")
+                    {
+                        flag = double.Parse(sItem["CY53_0"]) >= double.Parse(extraFieldsHS["CY53_0A"]) && double.Parse(sItem["CY53_0"]) <= double.Parse(extraFieldsHS["CY53_0B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY63_0A"]!="0.00")
+                    {
+                        flag = double.Parse(sItem["CY63_0"]) >= double.Parse(extraFieldsHS["CY63_0A"]) && double.Parse(sItem["CY63_0"]) <= double.Parse(extraFieldsHS["CY63_0B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY75_0A"]!="0.00")
+                    {
+                        flag = double.Parse(sItem["CY75_0"]) >= double.Parse(extraFieldsHS["CY75_0A"]) && double.Parse(sItem["CY75_0"]) <= double.Parse(extraFieldsHS["CY75_0B"]) ? flag : false;
+                    }
+                    if (extraFieldsHS["CY90A"]!="0.00")
+                    {
+                        flag = double.Parse(sItem["CY90"]) >= double.Parse(extraFieldsHS["CY90A"]) && double.Parse(sItem["CY4_75"]) <= double.Parse(extraFieldsHS["CY90B"]) ? flag : false;
+                    }
+                    #endregion
 
                     if (!flag)
                     {
@@ -257,198 +311,198 @@ namespace Calculates
                     mbhgs = flag ? mbhgs : mbhgs + 1;
                     sItem["JPPD"] = 100 - double.Parse(sItem["CY100"].Trim()) > 1 ? "试验需重做" : sItem["JPPD"];
 
-                    #region
-                    switch (sItem["GCCC"].Trim())
-                    {
-                        case "5~10":
-                            sItem["CY19_0"] = "-";
-                            sItem["CY26_5"] = "-";
-                            sItem["CY31_5"] = "-";
-                            sItem["CY37_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY90"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY53_0"] = "-";
-                            sItem["SY37_5"] = "-";
-                            sItem["SY31_5"] = "-";
-                            sItem["SY26_5"] = "-";
-                            sItem["SY19_0"] = "-";
+                    #region 乌海
+                    //switch (sItem["GCCC"].Trim())
+                    //{
+                    //    case "5~10":
+                    //        sItem["CY19_0"] = "-";
+                    //        sItem["CY26_5"] = "-";
+                    //        sItem["CY31_5"] = "-";
+                    //        sItem["CY37_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        sItem["SY37_5"] = "-";
+                    //        sItem["SY31_5"] = "-";
+                    //        sItem["SY26_5"] = "-";
+                    //        sItem["SY19_0"] = "-";
 
-                            break;
-                        case "5~16":
-                            sItem["CY26_5"] = "-";
-                            sItem["CY31_5"] = "-";
-                            sItem["CY37_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY90"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY53_0"] = "-";
-                            sItem["SY37_5"] = "-";
-                            sItem["SY31_5"] = "-";
-                            sItem["SY26_5"] = "-";
+                    //        break;
+                    //    case "5~16":
+                    //        sItem["CY26_5"] = "-";
+                    //        sItem["CY31_5"] = "-";
+                    //        sItem["CY37_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        sItem["SY37_5"] = "-";
+                    //        sItem["SY31_5"] = "-";
+                    //        sItem["SY26_5"] = "-";
 
-                            break;
-                        case "5~20":
-                            sItem["CY16_0"] = "-";
-                            sItem["CY31_5"] = "-";
-                            sItem["CY37_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY16_0"] = "-";
-                            sItem["SY31_5"] = "-";
-                            sItem["SY37_5"] = "-";
-                            sItem["SY53_0"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY90"] = "-";
-                            break;
-                        case "5~25":
-                            sItem["CY9_50"] = "-";
-                            sItem["CY19_0"] = "-";
-                            sItem["CY37_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY9_50"] = "-";
-                            sItem["SY19_0"] = "-";
-                            sItem["SY37_5"] = "-";
-                            sItem["SY53_0"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY90"] = "-";
-                            break;
-                        case "5~31.5":
-                            sItem["CY16_0"] = "-";
-                            sItem["CY26_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY16_0"] = "-";
-                            sItem["SY26_5"] = "-";
-                            sItem["SY53_0"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY90"] = "-";
-                            break;
-                        case "5~40":
-                            sItem["CY2_36"] = "-";
-                            sItem["CY16_0"] = "-";
-                            sItem["CY26_5"] = "-";
-                            sItem["CY31_5"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY2_36"] = "-";
-                            sItem["SY16_0"] = "-";
-                            sItem["SY26_5"] = "-";
-                            sItem["SY31_5"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY90"] = "-";
-                            break;
-                        case "10~20":
-                            sItem["CY2_36"] = "-";
-                            sItem["CY16_0"] = "-";
-                            sItem["CY31_5"] = "-";
-                            sItem["CY37_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY2_36"] = "-";
-                            sItem["SY16_0"] = "-";
-                            sItem["SY31_5"] = "-";
-                            sItem["SY37_5"] = "-";
-                            sItem["SY53_0"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY90"] = "-";
-                            break;
+                    //        break;
+                    //    case "5~20":
+                    //        sItem["CY16_0"] = "-";
+                    //        sItem["CY31_5"] = "-";
+                    //        sItem["CY37_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY16_0"] = "-";
+                    //        sItem["SY31_5"] = "-";
+                    //        sItem["SY37_5"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        break;
+                    //    case "5~25":
+                    //        sItem["CY9_50"] = "-";
+                    //        sItem["CY19_0"] = "-";
+                    //        sItem["CY37_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY9_50"] = "-";
+                    //        sItem["SY19_0"] = "-";
+                    //        sItem["SY37_5"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        break;
+                    //    case "5~31.5":
+                    //        sItem["CY16_0"] = "-";
+                    //        sItem["CY26_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY16_0"] = "-";
+                    //        sItem["SY26_5"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        break;
+                    //    case "5~40":
+                    //        sItem["CY2_36"] = "-";
+                    //        sItem["CY16_0"] = "-";
+                    //        sItem["CY26_5"] = "-";
+                    //        sItem["CY31_5"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY2_36"] = "-";
+                    //        sItem["SY16_0"] = "-";
+                    //        sItem["SY26_5"] = "-";
+                    //        sItem["SY31_5"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        break;
+                    //    case "10~20":
+                    //        sItem["CY2_36"] = "-";
+                    //        sItem["CY16_0"] = "-";
+                    //        sItem["CY31_5"] = "-";
+                    //        sItem["CY37_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY2_36"] = "-";
+                    //        sItem["SY16_0"] = "-";
+                    //        sItem["SY31_5"] = "-";
+                    //        sItem["SY37_5"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        break;
 
-                        case "16~31.5":
-                            sItem["CY2_36"] = "-";
-                            sItem["CY9_50"] = "-";
-                            sItem["CY19_0"] = "-";
-                            sItem["CY26_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY2_36"] = "-";
-                            sItem["SY9_50"] = "-";
-                            sItem["SY19_0"] = "-";
-                            sItem["SY26_5"] = "-";
-                            sItem["SY53_0"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY90"] = "-";
-                            break;
+                    //    case "16~31.5":
+                    //        sItem["CY2_36"] = "-";
+                    //        sItem["CY9_50"] = "-";
+                    //        sItem["CY19_0"] = "-";
+                    //        sItem["CY26_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY2_36"] = "-";
+                    //        sItem["SY9_50"] = "-";
+                    //        sItem["SY19_0"] = "-";
+                    //        sItem["SY26_5"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        break;
 
-                        case "20~40":
-                            sItem["CY2_36"] = "-";
-                            sItem["CY4_75"] = "-";
-                            sItem["CY16_0"] = "-";
-                            sItem["CY26_5"] = "-";
-                            sItem["CY31_5"] = "-";
-                            sItem["CY63_0"] = "-";
-                            sItem["CY75_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY2_36"] = "-";
-                            sItem["SY4_75"] = "-";
-                            sItem["SY16_0"] = "-";
-                            sItem["SY26_5"] = "-";
-                            sItem["SY31_5"] = "-";
-                            sItem["SY63_0"] = "-";
-                            sItem["SY75_0"] = "-";
-                            sItem["SY90"] = "-";
-                            break;
+                    //    case "20~40":
+                    //        sItem["CY2_36"] = "-";
+                    //        sItem["CY4_75"] = "-";
+                    //        sItem["CY16_0"] = "-";
+                    //        sItem["CY26_5"] = "-";
+                    //        sItem["CY31_5"] = "-";
+                    //        sItem["CY63_0"] = "-";
+                    //        sItem["CY75_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY2_36"] = "-";
+                    //        sItem["SY4_75"] = "-";
+                    //        sItem["SY16_0"] = "-";
+                    //        sItem["SY26_5"] = "-";
+                    //        sItem["SY31_5"] = "-";
+                    //        sItem["SY63_0"] = "-";
+                    //        sItem["SY75_0"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        break;
 
-                        case "31.5~63":
-                            sItem["CY2_36"] = "-";
-                            sItem["CY4_75"] = "-";
-                            sItem["CY9_50"] = "-";
-                            sItem["CY19_0"] = "-";
-                            sItem["CY26_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["CY90"] = "-";
-                            sItem["SY2_36"] = "-";
-                            sItem["SY4_75"] = "-";
-                            sItem["SY9_50"] = "-";
-                            sItem["SY19_0"] = "-";
-                            sItem["SY26_5"] = "-";
-                            sItem["SY53_0"] = "-";
-                            sItem["SY90"] = "-";
-                            break;
+                    //    case "31.5~63":
+                    //        sItem["CY2_36"] = "-";
+                    //        sItem["CY4_75"] = "-";
+                    //        sItem["CY9_50"] = "-";
+                    //        sItem["CY19_0"] = "-";
+                    //        sItem["CY26_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["CY90"] = "-";
+                    //        sItem["SY2_36"] = "-";
+                    //        sItem["SY4_75"] = "-";
+                    //        sItem["SY9_50"] = "-";
+                    //        sItem["SY19_0"] = "-";
+                    //        sItem["SY26_5"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        sItem["SY90"] = "-";
+                    //        break;
 
-                        case "40~80":
-                            sItem["CY2_36"] = "-";
-                            sItem["CY4_75"] = "-";
-                            sItem["CY9_50"] = "-";
-                            sItem["CY16_0"] = "-";
-                            sItem["CY26_5"] = "-";
-                            sItem["CY31_5"] = "-";
-                            sItem["CY53_0"] = "-";
-                            sItem["SY2_36"] = "-";
-                            sItem["SY4_75"] = "-";
-                            sItem["SY9_50"] = "-";
-                            sItem["SY16_0"] = "-";
-                            sItem["SY26_5"] = "-";
-                            sItem["SY31_5"] = "-";
-                            sItem["SY53_0"] = "-";
-                            break;
-                    }
+                    //    case "40~80":
+                    //        sItem["CY2_36"] = "-";
+                    //        sItem["CY4_75"] = "-";
+                    //        sItem["CY9_50"] = "-";
+                    //        sItem["CY16_0"] = "-";
+                    //        sItem["CY26_5"] = "-";
+                    //        sItem["CY31_5"] = "-";
+                    //        sItem["CY53_0"] = "-";
+                    //        sItem["SY2_36"] = "-";
+                    //        sItem["SY4_75"] = "-";
+                    //        sItem["SY9_50"] = "-";
+                    //        sItem["SY16_0"] = "-";
+                    //        sItem["SY26_5"] = "-";
+                    //        sItem["SY31_5"] = "-";
+                    //        sItem["SY53_0"] = "-";
+                    //        break;
+                    //}
                     #endregion
                 }
                 else
@@ -1377,7 +1431,7 @@ namespace Calculates
                             strdj1 = sItem["HNLPD"];
                         }
 
-                        if (dj > 0 && dj > dj1)
+                        if (dj == 0 || (dj > 0 && dj > dj1))
                         {
                             dj = dj1;
                             strdj = strdj1;
@@ -1407,7 +1461,7 @@ namespace Calculates
                             strdj1 = sItem["NKHLPD"];
                         }
 
-                        if (dj > 0 && dj > dj1)
+                        if (dj == 0 || (dj > 0 && dj > dj1))
                         {
                             dj = dj1;
                             strdj = strdj1;
@@ -1432,7 +1486,7 @@ namespace Calculates
                             strdj1 = sItem["YSZBPD"];
                         }
 
-                        if (dj > 0 && dj > dj1)
+                        if (dj == 0 || (dj > 0 && dj > dj1))
                         {
                             dj = dj1;
                             strdj = strdj1;
@@ -1519,7 +1573,7 @@ namespace Calculates
                         var extraFieldsHS = extraHSB.FirstOrDefault(u => u["GCCC"].Trim() == sItem["GCCC"]);
                         if (extraFieldsHS != null)
                         {
-                            strJCJGMS += "符合["+ sItem["GCCC"]+"mm"+ extraFieldsHS["MC"]+ "]，";
+                            strJCJGMS += "符合[" + sItem["GCCC"] + "mm" + extraFieldsHS["MC"] + "]，";
                         }
                     }
                 }
@@ -1600,7 +1654,7 @@ namespace Calculates
                     }
                 }
                 #endregion
-                                
+
                 #region 硫化物和硫酸盐含量
                 if (jcxm.Contains("、硫化物和硫酸盐含量、"))
                 {
@@ -1637,7 +1691,7 @@ namespace Calculates
             if (MItem[0]["JCJG"] == "合格")
             {
                 strJCJGMS = strJCJGMS.Substring(0, strJCJGMS.Length - 1) + "。";
-                MItem[0]["JCJGMS"] = "该批材料经检验，按[" + MItem[0]["PDBZ"] + "标准规定的要求，判断该石子"+ strJCJGMS;
+                MItem[0]["JCJGMS"] = "该批材料经检验，按[" + MItem[0]["PDBZ"] + "标准规定的要求，判断该石子" + strJCJGMS;
             }
             else
             {
@@ -1645,5 +1699,8 @@ namespace Calculates
             }
             #endregion
         }
+
+       
+
     }
 }

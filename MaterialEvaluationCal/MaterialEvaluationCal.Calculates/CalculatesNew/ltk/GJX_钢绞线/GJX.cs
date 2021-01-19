@@ -25,8 +25,8 @@ namespace Calculates
             var MItem = data["M_GJX"];
             bool sign = true;
             int Max_zs, Bhgs;
-            Bhgs = 0;
-            Max_zs = MItem[0]["SFFS"] == "是" ? 6 : 3;
+            Bhgs = 0;//检测项目不合格个数
+            Max_zs = MItem[0]["IFFJ"] == "是" ? 6 : 3;
             foreach (var sItem in SItem)
             {
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
@@ -73,9 +73,9 @@ namespace Calculates
                     {
                         md = GetSafeDouble(sItem["GDYSL" + xd].Trim());//GDYSL:规定非比例延伸力1-6
                         sItem["W_YSL" + xd] = sItem["GDYSL" + xd].Trim();//W_YSL实测规范非比例延伸力1-6
-                        sign = md >= GetSafeDouble(sItem["G_YSL"]) ? sign : false;
+                        sign = md >= GetSafeDouble(sItem["G_YSL"]) ? true : false;
                     }
-                    sItem["GH_YSL"] = "≥" + sItem["GH_YSL"];//GH_YSL:要求规范非比例延伸力
+                    sItem["GH_YSL"] = "≥" + sItem["G_YSL"];//GH_YSL:要求规范非比例延伸力
                     sItem["G_YSL"] = sign ? "符合" : "不符合";//G_YSL:判定规范非比例延伸力
                     if (!sign)
                     {
@@ -105,7 +105,7 @@ namespace Calculates
                     {
                         md = GetSafeDouble(sItem["TXML" + xd].Trim());//TXML:弹性模量1-6
                         sItem["W_TXML" + xd] = sItem["TXML" + xd].Trim();//W_TXML实测弹性模量1-6
-                        sign = md >= 185 && md <= 205 ? sign : false;
+                        sign = md >= 185 && md <= 205 ? true : false;
                     }
                     sItem["GH_TXML"] = "195±10";
                     sItem["G_TXML"] = sign ? "符合" : "不符合";
@@ -137,9 +137,9 @@ namespace Calculates
                     {
                         md = GetSafeDouble(sItem["ZDL" + xd].Trim());//ZDL:最大力1-6
                         sItem["W_ZDL" + xd] = sItem["ZDL" + xd].Trim();//ZDL最大力1-6
-                        sign = md >= GetSafeDouble(sItem["G_ZDL"]) ? sign : false;
+                        sign = md >= GetSafeDouble(sItem["G_ZDL"]) ? true : false;
                     }
-                    sItem["GH_ZDL"] = "≥" + sItem["G_ZDL"];
+                    sItem["GH_ZDL"] =  sItem["G_ZDL"];
                     sItem["G_ZDL"] = sign ? "符合" : "不符合";
                     if (!sign)
                     {
@@ -155,6 +155,47 @@ namespace Calculates
                     }
                     sItem["GH_ZDL"] = "----";
                     sItem["G_ZDL"] = "----";
+                }
+                #endregion
+
+                #region 公称抗拉强度
+                int qdbhggs = 0;//强度不合格个数
+                if (jcxm.Contains("、公称抗拉强度、"))
+                {
+                    jcxmCur = "公称抗拉强度";
+                    sign = true; //判定字段
+
+
+                    for (xd = 1; xd < Max_zs + 1; xd++)
+                    {
+                        md = GetSafeDouble(sItem["ZDL" + xd].Trim());//ZDL:最大力1-6
+                        sItem["W_ZDL" + xd] = sItem["ZDL" + xd].Trim();//ZDL最大力1-6
+                        sItem["W_KLQD" + xd] = Round(md / GetSafeDouble(sItem["G_JMJ"]), 0).ToString("0");
+                        sign = md >= GetSafeDouble(sItem["G_KLQD"]) ? true : false;
+                        if (!sign)
+                        {
+                            qdbhggs = qdbhggs + 1;
+                        }
+                    }
+                    sItem["GH_KLQD"] = "≥" + sItem["G_KLQD"];
+                    if (qdbhggs > 0)
+                    {
+                        sItem["G_KLQD"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                    }
+                    else { sItem["G_KLQD"] = "合格"; }
+                    
+                  
+                 
+                }
+                else
+                {
+                    for (xd = 1; xd < Max_zs + 1; xd++)
+                    {
+                        sItem["W_KLQD" + xd] = "----";
+                    }
+                    sItem["GH_KLQD"] = "----";
+                    sItem["G_KLQD"] = "----";
                 }
                 #endregion
 
@@ -203,7 +244,7 @@ namespace Calculates
                         md = GetSafeDouble(sItem["W_ZJ" + xd]) - GetSafeDouble(sItem["ZJ"]);
                         //sItem["W_ZJ" + xd] = String.Format(md.ToString(), "0.00");//W_ZJ尺寸1-6
 
-                        sign = md >= GetSafeDouble(sItem["G_ZJPC2"]) * -1 && md <= GetSafeDouble(sItem["G_ZJPC1"]) ? sign : false;
+                        sign = md >= GetSafeDouble(sItem["G_ZJPC2"]) * -1 && md <= GetSafeDouble(sItem["G_ZJPC1"]) ? true : false;
 
                     }
                     if (!string.IsNullOrEmpty(sItem["ZJPC1"]))
@@ -244,9 +285,10 @@ namespace Calculates
 
                     for (xd = 1; xd < Max_zs + 1; xd++)
                     {
-                        sItem["W_SCL" + xd] = sItem["DHBJ" + xd];//,断后标距1-6
-                        md = GetSafeDouble(sItem["DHBJ" + xd]);
-                        sign = md >= GetSafeDouble(sItem["G_SCL"]) ? sign : false;
+                       
+                        md =Round((GetSafeDouble(sItem["DHBJ" + xd])- GetSafeDouble(sItem["YSBJ" + xd]))/ GetSafeDouble(sItem["YSBJ" + xd]),1);
+                        sItem["W_SCL" + xd] = md.ToString("0.0");
+                        sign = md >= GetSafeDouble(sItem["G_SCL"]) ? true : false;
 
 
 

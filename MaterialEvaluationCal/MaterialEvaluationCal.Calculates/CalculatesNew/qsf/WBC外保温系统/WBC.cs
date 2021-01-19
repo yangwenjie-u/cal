@@ -27,7 +27,7 @@ namespace Calculates
             foreach (var sItem in SItem)
             {
                 jcxm = '、' + sItem["JCXM"].Trim().Replace(",", "、") + "、";
-                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["MC"] == sItem["CPMC"].Trim());
+                var extraFieldsDj = extraDJ.FirstOrDefault(u => u["MC"] == sItem["SJDJ"].Trim());
                 if (null != extraFieldsDj)
                 {
                     MItem[0]["G_LSQD"] = extraFieldsDj["LSQD"];
@@ -66,10 +66,10 @@ namespace Calculates
                 }
                 #endregion
 
-                #region 抗冲击性首层
-                if (jcxm.Contains("、抗冲击性首层、"))
+                #region 抗冲击性
+                if (jcxm.Contains("、抗冲击性、"))
                 {
-                    jcxmCur = "抗冲击性首层";
+                    jcxmCur = "抗冲击性";
                     int n = 10;
                     for (int i = 1; i < 11; i++)
                     {

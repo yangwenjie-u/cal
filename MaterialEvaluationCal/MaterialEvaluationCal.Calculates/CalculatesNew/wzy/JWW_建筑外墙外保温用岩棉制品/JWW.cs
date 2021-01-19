@@ -476,12 +476,16 @@ namespace Calculates
                     //}
                     //else
                     //{
-                        mark = calc_PB(mitem["G_DRXS"], mitem["W_DRXS"], false) == "合格" ? mark : false;
-                        mitem["W_DRXS1"] = mitem["W_DRXS"];
-                        mcd = mitem["G_DRXS"].Length;
-                        mdwz = mitem["G_DRXS"].IndexOf(".") + 1;
-                        mcd = mcd - mdwz;
-                        mitem["W_DRXS1"] = Round(Conversion.Val(mitem["W_DRXS"]), mcd).ToString();
+                    if (!string.IsNullOrEmpty(sitem["BCDRXS"]) && sitem["BCDRXS"] != "----")
+                    {
+                        mitem["G_DRXS"] = "≤" + sitem["BCDRXS"].Trim().Replace("≤", "");
+                    }
+                    mark = calc_PB(mitem["G_DRXS"], mitem["W_DRXS"], false) == "合格" ? mark : false;
+                    mitem["W_DRXS1"] = mitem["W_DRXS"];
+                    mcd = mitem["G_DRXS"].Length;
+                    mdwz = mitem["G_DRXS"].IndexOf(".") + 1;
+                    mcd = mcd - mdwz;
+                    mitem["W_DRXS1"] = Round(Conversion.Val(mitem["W_DRXS"]), mcd).ToString();
                     //}
                     if (mark)
                     {
@@ -515,6 +519,10 @@ namespace Calculates
                     if (sitem["BCYSQD"].Trim() != "----")
                     {
                         bcz = sitem["BCYSQD"];
+                        if (!bcz.Contains("≥") || !bcz.Contains("≤"))
+                        {
+                            bcz = "≥" + bcz;
+                        }
                         mark = calc_PB(bcz, mitem["W_YSQD"], false) == "合格" ? mark : false;
                         if (mitem["G_YSQD"] == "----" || mitem["G_YSQD"] == "")
                             mitem["G_YSQD"] = bcz + "标称值";
@@ -566,9 +574,9 @@ namespace Calculates
                     mitem["GH_ZLXSL"] = "----";
                 }
                 sign = true;
-                if (jcxm.Contains("、体积吸水率、"))
+                if (jcxm.Contains("、体积吸水率、") || jcxm.Contains("、体积吸水率(全浸)、"))
                 {
-                    jcxmCur = "体积吸水率";
+                    jcxmCur = CurrentJcxm(jcxm, "体积吸水率,体积吸水率(全浸)");
                     mitem["G_XSL"] = "≤5";
                     sign = IsNumeric(mitem["W_XSL"]) && !string.IsNullOrEmpty(mitem["W_XSL"]) ? sign : false;
                     if (sign)

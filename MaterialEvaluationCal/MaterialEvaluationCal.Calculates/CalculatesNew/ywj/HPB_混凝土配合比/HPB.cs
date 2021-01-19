@@ -59,9 +59,9 @@ namespace Calculates.HPB_混凝土配合比
                     //灰
                     MItem[0]["T_JNCL"] = Round(GetSafeDouble(MItem[0]["YSL"]) / GetSafeDouble(MItem[0]["SHB"]), 0).ToString("0");
                     //砂
-                    MItem[0]["T_CLSA"] = Round((GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_JNCL"])) * GetSafeDouble(MItem[0]["SL"]) / 100, 0).ToString("0");
+                    //MItem[0]["T_CLSA"] = Round((GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_JNCL"])) * GetSafeDouble(MItem[0]["SL"]) / 100, 0).ToString("0");
                     //石子
-                    MItem[0]["T_CLSI"] = Round(GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_JNCL"]) - GetSafeDouble(MItem[0]["T_CLSA"]), 0).ToString("0");
+                    //MItem[0]["T_CLSI"] = Round(GetSafeDouble(MItem[0]["RZ"]) - GetSafeDouble(MItem[0]["T_CLS"]) - GetSafeDouble(MItem[0]["T_JNCL"]) - GetSafeDouble(MItem[0]["T_CLSA"]), 0).ToString("0");
                 }
                 #endregion
 

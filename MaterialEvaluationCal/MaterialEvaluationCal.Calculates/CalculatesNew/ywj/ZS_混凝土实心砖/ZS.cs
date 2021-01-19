@@ -347,9 +347,9 @@ namespace Calculates
                     sign = true;
 
                     #region 抗压
-                    if (jcxm.Contains("、抗压、"))
+                    if (jcxm.Contains("、抗压、")|| jcxm.Contains("、抗压强度、"))
                     {
-                        jcxmCur = "抗压";
+                        jcxmCur = "抗压强度";
                         if (MItem[0]["G_PJZ"] != "----" && MItem[0]["G_MIN"] != "----")
                         {
                             sItem["QDYQ"] = "抗压强度平均值需" + MItem[0]["G_PJZ"] + "MPa,单块最小强度值需" + MItem[0]["G_MIN"] + "MPa。";

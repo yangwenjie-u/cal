@@ -10,6 +10,7 @@ namespace Calculates
         public void Calc()
         {
             /************************ 代码开始 *********************/
+            
             #region
             #region 参数定义
             var extraDJ = dataExtra["BZ_WJJ_DJ"];
@@ -584,7 +585,9 @@ namespace Calculates
                         md1 = Conversion.Val(sItem["BHWHQL_" + xd]);
                         md2 = Conversion.Val(sItem["SSHQL_" + xd]);
                         md = Round(md1 - md2, 1);
+                        sItem["HQL_" + xd] = md.ToString("0.0");
                         sum += md;
+
                     }
                     md = sum / 3;
                     sItem["PJHQL"] = Math.Round(md, 1).ToString();
@@ -1017,7 +1020,7 @@ namespace Calculates
                 }
                 #endregion
 
-
+                #region 抗压强度比
                 double[] Arrmd = new double[4];
                 for (int qdi = 1; qdi <= 4; qdi++)
                 {
@@ -1223,6 +1226,7 @@ namespace Calculates
                     }
                     #endregion
                 }
+                #endregion
 
                 #region 收缩率比
                 if (jcxm.Contains("、收缩率比、"))
@@ -1427,7 +1431,7 @@ namespace Calculates
                 if (jcxm.Contains("、水泥净浆流动度、"))
                 {
                     jcxmCur = "水泥净浆流动度";
-                    sItem["JJLDD"] = Math.Round((GetSafeDouble(sItem["LTZJ1"]) +GetSafeDouble(sItem["LTZJ1"])) / 2, 1).ToString();
+                    sItem["JJLDD"] = Math.Round((GetSafeDouble(sItem["LTZJ1"]) +GetSafeDouble(sItem["LTZJ2"])) / 2, 0).ToString();
                     if (GetNum(sItem["JJLDDKZZ"]) == null || GetNum(sItem["JJLDDKZZ"]) == "")
                     {
                         MItem[0]["G_JJLDDKZZ"] = "----";

@@ -188,7 +188,7 @@ namespace Calculates
             string bl, gclb;
             int xd, Gs = 0, Itemp;
             double[] nArr;
-            int bHggs_A, bHggs_J, bHggs_B, bHggs_T, bHggs_D;
+            int bHggs_A, bHggs_J, bHggs_B, bHggs_T, bHggs_D, bHggs_JB, bHggs_EJB;
             string[,] sArr = new string[3, mCount + 1];
             bool flag, sign, mark;
             mbHggs = 0;
@@ -213,6 +213,8 @@ namespace Calculates
             bHggs_B = 0;
             bHggs_T = 0;
             bHggs_D = 0;
+            bHggs_JB = 0;
+            bHggs_EJB = 0;
             IDictionary<string, string> mrsDj_Filter = new Dictionary<string, string>();
             for (xd = 1; xd <= mrsDj.Count(); xd++)
             {
@@ -227,6 +229,7 @@ namespace Calculates
                 mrsDj_Filter = mrsDj.FirstOrDefault(x => x["GCLB"].Contains(gclb) && x["JCYJBH"].Contains("2010%"));
             }
             //对 氨处理
+            #region 氨
             for (xd = 1; xd <= mCount; xd++)
             {
                 sitem = SItem[xd - 1];
@@ -308,7 +311,10 @@ namespace Calculates
                 }
                 #endregion
             }
+            #endregion
+
             //对 甲醛处理
+            #region 甲醛
             for (xd = 1; xd <= mCount; xd++)
             {
                 sitem = SItem[xd - 1];
@@ -390,7 +396,10 @@ namespace Calculates
                 }
                 #endregion
             }
+            #endregion
+
             //对 苯处理
+            #region 苯
             for (xd = 1; xd <= mCount; xd++)
             {
                 sitem = SItem[xd - 1];
@@ -474,7 +483,10 @@ namespace Calculates
                 }
                 #endregion
             }
+            #endregion
+
             //对 TVOC处理
+            #region TVOC
             for (xd = 1; xd <= mCount; xd++)
             {
                 sitem = SItem[xd - 1];
@@ -558,21 +570,20 @@ namespace Calculates
                 }
                 #endregion
             }
+            #endregion
+
             //对 氡处理
-
-
-
+            #region 氡
             for (xd = 1; xd <= mCount; xd++)
             {
                 sitem = SItem[xd - 1];
-                sArr[1, xd] = sitem["FJWZ"].Trim();
+                sArr[1, xd] = sitem["DFJWZ"].Trim();
                 bl = sitem["ND_D"].Trim();
                 //sitem["W_ND_D"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("F0") : bl;
                 sitem["W_ND_D"] = IsNumeric(bl) ? Conversion.Val(bl).ToString() : bl;
                 sArr[2, xd] = IsNumeric(bl) ? sitem["W_ND_D"] : "0";
                 sitem["G_D_ND"] = mrsDj_Filter["G_D_ND"];
             }
-
             for (xd = 1; xd <= mCount; xd++)
             {
                 bl = sArr[1, xd];
@@ -621,7 +632,183 @@ namespace Calculates
                 }
                 #endregion
             }
-            mbHggs = bHggs_A + bHggs_J + bHggs_B + bHggs_T + bHggs_D;
+            #endregion
+
+            //对 甲苯处理
+            #region 甲苯
+            for (xd = 1; xd <= mCount; xd++)
+            {
+                sitem = SItem[xd - 1];
+                sArr[1, xd] = sitem["FJWZ"].Trim();
+                bl = sitem["ND_JB"].Trim();
+                sitem["W_ND_JB"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("0.000") : bl;
+                sArr[2, xd] = IsNumeric(bl) ? sitem["W_ND_JB"] : bl;
+                sitem["G_JB_ND"] = mrsDj_Filter["G_JB_ND"];
+            }
+            for (xd = 1; xd <= mCount; xd++)
+            {
+                bl = sArr[1, xd];
+                for (Gs = xd + 1; Gs <= mCount; Gs++)
+                {
+                    if (bl != sArr[1, Gs])
+                    {
+                        Gs = Gs - 1;
+                        break;
+                    }
+                }
+                if (Gs > mCount)
+                    Gs = mCount;
+                sum = 0;
+                for (Itemp = xd; Itemp <= Gs; Itemp++)
+                {
+                    md = GetSafeDouble(sArr[2, Itemp]);
+                    if (md.ToString().Contains("<"))
+                        sum = md;
+                    else if (md.ToString().Contains("＜"))
+                        sum = md;
+                    else
+                        sum = sum + md;
+                }
+                if (sum.ToString().Contains("＜"))
+                    md = sum;
+                else if (md.ToString().Contains("<"))
+                    md = sum;
+                else
+                {
+                    md = sum / (Gs - xd + 1);
+                    md = Round(md, 3);
+                }
+                for (Itemp = xd; Itemp <= Gs; Itemp++)
+                {
+                    sitem = SItem[Itemp - 1];
+                    if (md.ToString().Contains("＜"))
+                    {
+                        sitem["AVG_JB"] = md.ToString("0.000");
+                        sitem["PD_JB"] = "合格";
+                    }
+                    else if (md.ToString().Contains("<"))
+                    {
+                        sitem["AVG_JB"] = md.ToString("0.000");
+                        sitem["PD_JB"] = "合格";
+                    }
+                    else
+                    {
+                        sitem["AVG_JB"] = md.ToString("0.000");
+                        sitem["PD_JB"] = calc_PB(sitem["G_JB_ND"], sitem["AVG_JB"], false);
+                        bHggs_JB = sitem["PD_JB"] == "不合格" ? bHggs_JB + 1 : bHggs_JB;
+                        sitem["AVG_JB"] = sitem["AVG_JB"] == "0.000" ? "未检出" : sitem["AVG_JB"];
+                    }
+
+
+                }
+                xd = Gs;
+
+                #region 处理未做甲苯检测的相关记录
+                for (int i = 1; i <= mCount; i++)
+                {
+                    string jcxm = "";
+                    sitem = SItem[i - 1];
+                    jcxm = '、' + sitem["JCXM"].Trim().Replace(",", "、") + "、";
+                    if (!jcxm.Contains("、甲苯、"))
+                    {
+                        sitem["G_JB_ND"] = "----";
+                        sitem["W_ND_JB"] = "----";
+                        sitem["AVG_JB"] = "----";
+                        sitem["PD_JB"] = "----";
+                    }
+                }
+                #endregion
+            }
+            #endregion
+
+            //对 二甲苯处理
+            #region 二甲苯
+            for (xd = 1; xd <= mCount; xd++)
+            {
+                sitem = SItem[xd - 1];
+                sArr[1, xd] = sitem["FJWZ"].Trim();
+                bl = sitem["ND_EJB"].Trim();
+                sitem["W_ND_EJB"] = IsNumeric(bl) ? Conversion.Val(bl).ToString("0.000") : bl;
+                sArr[2, xd] = IsNumeric(bl) ? sitem["W_ND_EJB"] : bl;
+                sitem["G_EJB_ND"] = mrsDj_Filter["G_EJB_ND"];
+            }
+            for (xd = 1; xd <= mCount; xd++)
+            {
+                bl = sArr[1, xd];
+                for (Gs = xd + 1; Gs <= mCount; Gs++)
+                {
+                    if (bl != sArr[1, Gs])
+                    {
+                        Gs = Gs - 1;
+                        break;
+                    }
+                }
+                if (Gs > mCount)
+                    Gs = mCount;
+                sum = 0;
+                for (Itemp = xd; Itemp <= Gs; Itemp++)
+                {
+                    md = GetSafeDouble(sArr[2, Itemp]);
+                    if (md.ToString().Contains("<"))
+                        sum = md;
+                    else if (md.ToString().Contains("＜"))
+                        sum = md;
+                    else
+                        sum = sum + md;
+                }
+                if (sum.ToString().Contains("＜"))
+                    md = sum;
+                else if (md.ToString().Contains("<"))
+                    md = sum;
+                else
+                {
+                    md = sum / (Gs - xd + 1);
+                    md = Round(md, 3);
+                }
+                for (Itemp = xd; Itemp <= Gs; Itemp++)
+                {
+                    sitem = SItem[Itemp - 1];
+                    if (md.ToString().Contains("＜"))
+                    {
+                        sitem["AVG_EJB"] = md.ToString("0.000");
+                        sitem["PD_EJB"] = "合格";
+                    }
+                    else if (md.ToString().Contains("<"))
+                    {
+                        sitem["AVG_EJB"] = md.ToString("0.000");
+                        sitem["PD_EJB"] = "合格";
+                    }
+                    else
+                    {
+                        sitem["AVG_EJB"] = md.ToString("0.000");
+                        sitem["PD_EJB"] = calc_PB(sitem["G_EJB_ND"], sitem["AVG_EJB"], false);
+                        bHggs_EJB = sitem["PD_EJB"] == "不合格" ? bHggs_EJB + 1 : bHggs_EJB;
+                        sitem["AVG_EJB"] = sitem["AVG_EJB"] == "0.000" ? "未检出" : sitem["AVG_EJB"];
+                    }
+
+
+                }
+                xd = Gs;
+
+                #region 处理未做二甲苯检测的相关记录
+                for (int i = 1; i <= mCount; i++)
+                {
+                    string jcxm = "";
+                    sitem = SItem[i - 1];
+                    jcxm = '、' + sitem["JCXM"].Trim().Replace(",", "、") + "、";
+                    if (!jcxm.Contains("、二甲苯、"))
+                    {
+                        sitem["G_EJB_ND"] = "----";
+                        sitem["W_ND_EJB"] = "----";
+                        sitem["AVG_EJB"] = "----";
+                        sitem["PD_EJB"] = "----";
+                    }
+                }
+                #endregion
+            }
+            #endregion
+
+            mbHggs = bHggs_A + bHggs_J + bHggs_B + bHggs_T + bHggs_D + bHggs_JB + bHggs_EJB;
             MItem[0]["JCJG"] = mbHggs == 0 ? "合格" : "不合格";
             //MItem[0]["JCJGMS"] = mbHggs == 0 ? "所检项目符合" + MItem[0]["JCYJ"] + "标准要求。" : "所检";
             //MItem[0]["JCJGMS"] = bHggs_A > 0 ? MItem[0]["JCJGMS"] + "氨、" : MItem[0]["JCJGMS"];
@@ -638,6 +825,8 @@ namespace Calculates
             MItem[0]["JCJGMS"] = bHggs_B > 0 ? MItem[0]["JCJGMS"] + "苯、" : MItem[0]["JCJGMS"];
             MItem[0]["JCJGMS"] = bHggs_T > 0 ? MItem[0]["JCJGMS"] + "TVOC、" : MItem[0]["JCJGMS"];
             MItem[0]["JCJGMS"] = bHggs_D > 0 ? MItem[0]["JCJGMS"] + "氡、" : MItem[0]["JCJGMS"];
+            MItem[0]["JCJGMS"] = bHggs_JB > 0 ? MItem[0]["JCJGMS"] + "甲苯、" : MItem[0]["JCJGMS"];
+            MItem[0]["JCJGMS"] = bHggs_EJB > 0 ? MItem[0]["JCJGMS"] + "二甲苯、" : MItem[0]["JCJGMS"];
             MItem[0]["JCJGMS"] = mbHggs == 0 ? MItem[0]["JCJGMS"] : MItem[0]["JCJGMS"].Substring(0, MItem[0]["JCJGMS"].Length - 1);
             MItem[0]["JCJGMS"] = mbHggs == 0 ? MItem[0]["JCJGMS"] : MItem[0]["JCJGMS"] + "不符合" + sitem["GCLB"] + "民用建筑工程验收时室内污染物浓度限量规定，需双倍复检。";
 

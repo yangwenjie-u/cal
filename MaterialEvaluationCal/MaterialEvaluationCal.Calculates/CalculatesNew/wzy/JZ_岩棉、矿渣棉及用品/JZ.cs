@@ -396,11 +396,11 @@ namespace Calculates
                 for (xd = 1; xd <= Gs; xd++)
                 {
                     var mrsDj_item = mrsDj[xd - 1];
-                    string cpmc = sitem["CPMC"].Trim();
+                    string cpmc = sitem["CPMC"].Trim().Replace("—", "-");
                     switch (cpmc)
                     {
-                        case "绝热用岩棉、矿渣棉及其制品（GB/T11835—2016）":
-                            if (sitem["CPMC"].Trim().Replace("—","-") == mrsDj_item["YPYT"] && sitem["LX"].Trim() == mrsDj_item["LX"] && sitem["ZPXS"].Trim() == mrsDj_item["ZPXS"])
+                        case "绝热用岩棉、矿渣棉及其制品(GB/T 11835-2016)":
+                            if (sitem["CPMC"].Trim().Replace("—", "-") == mrsDj_item["YPYT"] && sitem["LX"].Trim() == mrsDj_item["LX"] && sitem["ZPXS"].Trim() == mrsDj_item["ZPXS"])
                             {
                                 //mitem["G_ZLXSL"] = "≤5.0";
                                 mitem["G_ZLXSL"] = mrsDj_item["G_ZLXSL"]; //要求质量吸湿率
@@ -415,7 +415,7 @@ namespace Calculates
                                 mitem["G_XSL"] = mrsDj_item["G_XSL"];  //吸水性要求
                             }
                             break;
-                        //case "建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)":
+                        //case "建筑用岩棉绝热制品(GB/T 19686-2015)":
                         case "建筑用岩棉绝热制品(GB/T 19686-2015)":
                             if (sitem["ZPXS"].Trim() == mrsDj_item["ZPXS"])
                             {
@@ -681,7 +681,7 @@ namespace Calculates
                         mitem["GH_MD"] = mark ? "合格" : "不合格";
                         mitem["G_MD"] = "平均值与标称值允许偏差±10%";
                     }
-                    else if (CPMC == "建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)" && zpxs == "毡")
+                    else if (CPMC == "建筑用岩棉绝热制品(GB/T 19686-2015)" && zpxs == "毡")
                     {
                         mitem["G_MDDZ"] = "----";
                         mitem["G_MDBC"] = "±10";
@@ -699,7 +699,7 @@ namespace Calculates
                         mitem["GH_MD"] = hgs <= 1 ? "合格" : "不合格";
                         mitem["G_MD"] = "平均值与标称值允许偏差±10%";
                     }
-                    else if (CPMC == "建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)" && zpxs != "毡")
+                    else if (CPMC == "建筑用岩棉绝热制品(GB/T 19686-2015)" && zpxs != "毡")
                     {
                         mitem["G_MDDZ"] = "----";
                         mitem["G_MDBC"] = "±15";
@@ -1057,6 +1057,10 @@ namespace Calculates
                     if (sitem["BCYSQD"].Trim() != "----")
                     {
                         bcz = sitem["BCYSQD"];
+                        if (!bcz.Contains("≥") || !bcz.Contains("≤"))
+                        {
+                            bcz = "≥" + bcz;
+                        }
                         mark = IsQualified(bcz, mitem["W_YSQD"], false) == "合格" ? mark : false;
                         if (mitem["G_YSQD"] == "----" || mitem["G_YSQD"] == "")
                             mitem["G_YSQD"] = bcz + "标称值";
@@ -1328,9 +1332,9 @@ namespace Calculates
 
                 #region 吸水率 吸水性
                 sign = true;
-                if (jcxm.Contains("、吸水率、") || jcxm.Contains("、吸水性、"))
+                if (jcxm.Contains("、吸水率、") || jcxm.Contains("、吸水性、")|| jcxm.Contains("、体积吸水率(全浸)、"))
                 {
-                    jcxmCur = CurrentJcxm(jcxm, "吸水率,吸水性");
+                    jcxmCur = CurrentJcxm(jcxm, "吸水率,吸水性,体积吸水率(全浸)");
                     if (sitem["XSXZB"].Trim().Contains("千克每立方"))
                     {
                         mdwz = sitem["XSXZB"].Trim().IndexOf("千克每立方") + 1;
@@ -1688,7 +1692,7 @@ namespace Calculates
 
                         jcxmCur = "密度允许偏差";
                         #region GB/T 19686-2015
-                        if (CPMC.Contains("19686")) //建筑用岩棉、矿渣棉绝热制品(GB/T 19686-2015)
+                        if (CPMC.Contains("19686")) //建筑用岩棉绝热制品(GB/T 19686-2015)
                         {
 
                             switch (sitem["YYLX"].Trim())
@@ -1769,9 +1773,11 @@ namespace Calculates
                 }
                 else
                 {
-                    mitem["W_PJMD"] = "----";
-                    mitem["G_MD"] = "----";
-                    mitem["GH_MD"] = "----";
+                    mitem["GH_MDYXPC"] = "----";
+                    mitem["W_MDYXPC"] = "----";
+                    //mitem["W_PJMD"] = "----";
+                    //mitem["G_MD"] = "----";
+                    //mitem["GH_MD"] = "----";
                 }
                 #endregion
 
@@ -1780,50 +1786,50 @@ namespace Calculates
                 if (jcxm.Contains("、导热系数、"))
                 {
                     #region GB/T11835
-                    //if (CPMC == "绝热用岩棉、矿渣棉及其制品（GB/T11835—2016）")
-                    //{
-                    //    if (lx == "岩棉")
-                    //    {
-                    //        switch (zpxs)
-                    //        {
-                    //            case "板":
-                    //                mitem["G_DRXS"] = "≤0.043";
-                    //                break;
-                    //            case "毡":
-                    //                mitem["G_DRXS"] = "≤0.043";
-                    //                break;
-                    //            case "缝毡":
-                    //                mitem["G_DRXS"] = "≤0.043";
-                    //                break;
-                    //            case "管壳":
-                    //                mitem["G_DRXS"] = "≤0.044";
-                    //                break;
-                    //            default:
-                    //                break;
-                    //        }
+                    if (CPMC == "绝热用岩棉、矿渣棉及其制品(GB/T 11835-2016)")
+                    {
+                        if (lx == "岩棉")
+                        {
+                            switch (zpxs)
+                            {
+                                case "板":
+                                    mitem["G_DRXS"] = "≤0.043";
+                                    break;
+                                case "毡":
+                                    mitem["G_DRXS"] = "≤0.043";
+                                    break;
+                                case "缝毡":
+                                    mitem["G_DRXS"] = "≤0.043";
+                                    break;
+                                case "管壳":
+                                    mitem["G_DRXS"] = "≤0.044";
+                                    break;
+                                default:
+                                    break;
+                            }
 
-                    //    }
-                    //    else if (lx == "矿渣棉")
-                    //    {
-                    //        switch (zpxs)
-                    //        {
-                    //            case "板":
-                    //                mitem["G_DRXS"] = "≤0.043";
-                    //                break;
-                    //            case "毡":
-                    //                mitem["G_DRXS"] = "≤0.043";
-                    //                break;
-                    //            case "缝毡":
-                    //                mitem["G_DRXS"] = "≤0.043";
-                    //                break;
-                    //            case "管壳":
-                    //                mitem["G_DRXS"] = "≤0.044";
-                    //                break;
-                    //            default:
-                    //                break;
-                    //        }
-                    //    }
-                    //}
+                        }
+                        else if (lx == "矿渣棉")
+                        {
+                            switch (zpxs)
+                            {
+                                case "板":
+                                    mitem["G_DRXS"] = "≤0.043";
+                                    break;
+                                case "毡":
+                                    mitem["G_DRXS"] = "≤0.043";
+                                    break;
+                                case "缝毡":
+                                    mitem["G_DRXS"] = "≤0.043";
+                                    break;
+                                case "管壳":
+                                    mitem["G_DRXS"] = "≤0.044";
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                     #endregion
 
                     jcxmCur = "导热系数";
@@ -1895,7 +1901,29 @@ namespace Calculates
                 }
                 #endregion
 
-
+                #region 外观
+                if (jcxm.Contains("、外观、"))
+                {
+                    jcxmCur = "外观";
+                    mitem["G_WG"] = "喷涂绝热层表面平整，纤维分布均匀，不得有影响使用的分层、孔洞、裂缝等缺陷。";
+                    if ("无缺陷" == mitem["W_WG"])
+                    {
+                        mitem["HG_WG"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mitem["HG_WG"] = "不合格";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    mitem["G_WG"] = "----";
+                    mitem["HG_WG"] = "----";
+                    mitem["W_WG"] = "----";
+                }
+                #endregion
 
                 mbHggs = mitem["GH_MD"] == "不合格" ? mbHggs + 1 : mbHggs;
                 mbHggs = mitem["GH_DRXS"] == "不合格" ? mbHggs + 1 : mbHggs;

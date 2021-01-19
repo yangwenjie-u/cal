@@ -11,7 +11,7 @@ namespace Calculates
     {
         public void Calc()
         {
-            #region 
+            #region  Code
             /************************ 代码开始 *********************/
 
             #region 参数定义
@@ -48,7 +48,7 @@ namespace Calculates
             foreach (var sitem in SItem)
             {
                 #region 等级表处理
-                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["MC"].Contains(sitem["GGXH"]) && x["ZJM"].Contains(sitem["SJDJ"]));
+                var mrsDj_Filter = mrsDj.FirstOrDefault(x => x["MC"].Contains(sitem["GGXH"]) && x["ZJM"].Contains(sitem["GGPH"]));
                 if (mrsDj_Filter != null && mrsDj_Filter.Count > 0)
                 {
                     sitem["GGGWJ"] = mrsDj_Filter["GGWJ"];
@@ -71,8 +71,37 @@ namespace Calculates
                     MItem[0]["JCJGMS"] = MItem[0]["JCJGMS"] + "试件尺寸为空";
                     break;
                 }
+
+                #region 尺寸标准
+                if(sitem["YPMC"]== "低压流体输送用焊接钢管") {
+                    if (GetSafeDouble(sitem["GCWJ"]) <= 48.3)
+                    {
+                        sitem["GWJPC"] = "0.50";
+                    }
+                    if (GetSafeDouble(sitem["GCWJ"]) > 48.3 && GetSafeDouble(sitem["GCWJ"]) <= 273.1)
+                    {
+                        sitem["GWJPC"] = Round(0.001 * GetSafeDouble(sitem["GCWJ"]), 2).ToString("0.00");
+                    }
+                    if (GetSafeDouble(sitem["GCWJ"]) > 273.1 && GetSafeDouble(sitem["GCWJ"]) <= 508)
+                    {
+                        sitem["GWJPC"] = Round(0.0075 * GetSafeDouble(sitem["GCWJ"]), 2).ToString("0.00");
+                    }
+                    if (GetSafeDouble(sitem["GCWJ"]) > 508)
+                    {
+                        if (0.001 * GetSafeDouble(sitem["GCWJ"]) < 10.0)
+                        {
+                            sitem["GWJPC"] = Round(0.001 * GetSafeDouble(sitem["GCWJ"]), 1).ToString("0.00");
+                        }
+                        else { sitem["GWJPC"] = "10.0"; }
+                    }
+                    sitem["GBHPC"] = "-1.0" + "～" + Round(GetSafeDouble(sitem["GCBH"]) * 0.1, 1);
+                }
+
+                sitem["GBHPC"] = "-"+ GetSafeDouble(sitem["GCBH"]) + "～" + GetSafeDouble(sitem["GCBH"]);
                 #endregion
-                
+
+                #endregion
+
                 if (string.IsNullOrEmpty(mJSFF))
                 {
                     sitem["G_LW"] = "弯心d为6D弯曲角度90°受弯部位表面不得产生裂纹";
@@ -81,24 +110,24 @@ namespace Calculates
                     else
                         sitem["G_YB"] = "压扁试验后不得出现裂纹、分层";
                     #region 外径
-                    if (sitem["JCXM"].Contains("外径"))
+                    if (sitem["JCXM"].Contains("外径")|| sitem["JCXM"].Contains("尺寸允许偏差"))
                     {
                         double mwj1 = (Conversion.Val(sitem["GGWJ1_1"]) + Conversion.Val(sitem["GGWJ1_2"])) / 2;
                         double mwj2 = (Conversion.Val(sitem["GGWJ2_1"]) + Conversion.Val(sitem["GGWJ2_2"])) / 2;
                         sitem["GGWJ1"] = Round(mwj1, 2).ToString();
                         sitem["GGWJ2"] = Round(mwj2, 2).ToString();
-                        sitem["GGWJPC1"] = (Conversion.Val(sitem["GGWJ1"]) - Conversion.Val(mrsDj_Filter["GGWJ"])).ToString();
-                        sitem["GGWJPC2"] = (Conversion.Val(sitem["GGWJ2"]) - Conversion.Val(mrsDj_Filter["GGWJ"])).ToString();
+                        sitem["GGWJPC1"] = Round((Conversion.Val(sitem["GGWJ1"]) - Conversion.Val(mrsDj_Filter["GGWJ"])),1).ToString();
+                        sitem["GGWJPC2"] =Round( (Conversion.Val(sitem["GGWJ2"]) - Conversion.Val(mrsDj_Filter["GGWJ"])),1).ToString();
                         if ((int)GetSafeDouble(mrsDj_Filter["LSGS"]) == 2)
                         {
-                            if (Conversion.Val(sitem["GGWJ1"]) >= Conversion.Val(mrsDj_Filter["GGWJ"]) - Conversion.Val(mrsDj_Filter["WJPC"]) && Conversion.Val(sitem["GGWJ2"]) >= Conversion.Val(mrsDj_Filter["GGWJ"]) - Conversion.Val(mrsDj_Filter["WJPC"]))
+                            if (Math.Abs( Conversion.Val(sitem["GGWJPC1"]))<= Conversion.Val(sitem["GWJPC"])&& Math.Abs( Conversion.Val(sitem["GGWJPC2"]) )<= Conversion.Val(sitem["GWJPC"]))
                                 sitem["WJPD"] = "合格";
                             else
                                 sitem["WJPD"] = "不合格";
                         }
                         else
                         {
-                            if (Conversion.Val(sitem["GGWJ1"]) >= Conversion.Val(mrsDj_Filter["GGWJ"]) - Conversion.Val(mrsDj_Filter["WJPC"]))
+                            if (Math.Abs( Conversion.Val(sitem["GGWJPC1"]))<= Conversion.Val(sitem["GWJPC"]))
                                 sitem["WJPD"] = "合格";
                             else
                                 sitem["WJPD"] = "不合格";
@@ -110,29 +139,28 @@ namespace Calculates
                     #endregion
 
                     #region 壁厚
-                    if (sitem["JCXM"].Contains("壁厚"))
+                    if (sitem["JCXM"].Contains("壁厚") || sitem["JCXM"].Contains("尺寸允许偏差"))
                     {
                         double mbh1 = (Conversion.Val(sitem["GGBH1_1"]) + Conversion.Val(sitem["GGBH1_2"]) + Conversion.Val(sitem["GGBH1_3"]) + Conversion.Val(sitem["GGBH1_4"])) / 4;
                         double mbh2 = (Conversion.Val(sitem["GGBH2_1"]) + Conversion.Val(sitem["GGBH2_2"]) + Conversion.Val(sitem["GGBH2_3"]) + Conversion.Val(sitem["GGBH2_4"])) / 4;
                         sitem["GGBH1"] = Round(mbh1, 2).ToString();
                         sitem["GGBH2"] = Round(mbh2, 2).ToString();
-                        sitem["GGBHPC1"] = (Conversion.Val(sitem["GGBH1"]) - Conversion.Val(mrsDj_Filter["GGBH"])).ToString();
-                        sitem["GGBHPC2"] = (Conversion.Val(sitem["GGBH2"]) - Conversion.Val(mrsDj_Filter["GGBH"])).ToString();
+                        sitem["GGBHPC1"] =Round( (Conversion.Val(sitem["GGBH1"]) - Conversion.Val(mrsDj_Filter["GGBH"])),1).ToString();
+                        sitem["GGBHPC2"] =Round( (Conversion.Val(sitem["GGBH2"]) - Conversion.Val(mrsDj_Filter["GGBH"])),1).ToString();
 
 
                         if ((int)GetSafeDouble(mrsDj_Filter["LSGS"]) == 1)
-                        {
-                            if (Conversion.Val(sitem["GGBH1"]) >= Conversion.Val(mrsDj_Filter["GGBH"]) - Conversion.Val(mrsDj_Filter["BHPC"]))
-                                sitem["BHPD"] = "合格";
-                            else
-                                sitem["BHPD"] = "不合格";
+                        { 
+                            sitem["BHPD"] = IsQualified(sitem["GBHPC"] ,sitem["GGBHPC1"],false);
                         }
                         else
                         {
-                            if (Conversion.Val(sitem["GGBH1"]) >= Conversion.Val(mrsDj_Filter["GGBH"]) - Conversion.Val(mrsDj_Filter["BHPC"]) && Conversion.Val(sitem["GGBH2"]) >= Conversion.Val(mrsDj_Filter["GGBH"]) - Conversion.Val(mrsDj_Filter["BHPC"]))
-                                sitem["BHPD"] = "合格";
-                            else
-                                sitem["BHPD"] = "不合格";
+                           
+                            if(IsQualified(sitem["GBHPC"], sitem["GGBHPC1"], false) == "合格")
+                            {
+                                sitem["BHPD"] = IsQualified(sitem["GBHPC"], sitem["GGBHPC2"], false);
+                            }
+                            else { sitem["BHPD"] = "不合格"; }
                         }
                     }
                     else
@@ -176,11 +204,16 @@ namespace Calculates
 
                     #region 拉伸
                     if (sitem["JCXM"].Contains("拉伸")|| sitem["JCXM"].Contains("抗拉强度")||sitem["JCXM"].Contains("断后伸长率") && sitem["WGPD"] != "不合格")
-                    {
-                        double mMj1 = Round(3.14159 * (Conversion.Val(sitem["GGWJ1"]) / 2) * (Conversion.Val(sitem["GGWJ1"]) / 2) - 3.14159 * (Conversion.Val(sitem["GGWJ1"]) / 2 - Conversion.Val(sitem["GGBH1"])) * (Conversion.Val(sitem["GGWJ1"]) / 2 - Conversion.Val(sitem["GGBH1"])), 2);
-                        double mMj2 = Round(3.14159 * (Conversion.Val(sitem["GGWJ2"]) / 2) * (Conversion.Val(sitem["GGWJ2"]) / 2) - 3.14159 * (Conversion.Val(sitem["GGWJ2"]) / 2 - Conversion.Val(sitem["GGBH2"])) * (Conversion.Val(sitem["GGWJ2"]) / 2 - Conversion.Val(sitem["GGBH2"])), 2);
+                    { 
+                        var WJ1 = GetSafeDouble(sitem["GGWJ1"]);
+                        var BH1= GetSafeDouble(sitem["GGBH1"]);
+                        var WJ2 = GetSafeDouble(sitem["GGWJ2"]);
+                        var BH2 = GetSafeDouble(sitem["GGBH2"]);
+                        var mMj1 =Round( 3.14159 * (Math.Pow((WJ1 / 2), 2) - Math.Pow((WJ1 - BH1) / 2, 2)),4);
+                        var mMj2 =Round( 3.14159 * (Math.Pow((WJ2 / 2), 2) - Math.Pow((WJ2 - BH2) / 2, 2)),4);
                         sitem["JMJ1"] = mMj1.ToString();
                         sitem["JMJ2"] = mMj2.ToString();
+                  
                         sitem["YSBJ"] = (Round(5.65 * Math.Sqrt(mMj1) / 5, 0) * 5).ToString();
                         sitem["YSBJ2"] = (Round(5.65 * Math.Sqrt(mMj2) / 5, 0) * 5).ToString();
                         if (Conversion.Val(sitem["KLHZ1"]) == 0)
@@ -199,7 +232,7 @@ namespace Calculates
                         {
                             sitem["QFQD2"] = myint(1000 * (Conversion.Val(sitem["QFHZ2"]) / Conversion.Val(sitem["JMJ2"]))).ToString();
                             sitem["KLQD2"] = myint(1000 * (Conversion.Val(sitem["KLHZ2"]) / Conversion.Val(sitem["JMJ2"]))).ToString();
-                            mScl = Round((Conversion.Val(sitem["SCZ2"]) - Conversion.Val(sitem["YSBJ"])) * 100 / Conversion.Val(sitem["YSBJ2"]), 0);
+                            mScl = Round((Conversion.Val(sitem["SCZ2"]) - Conversion.Val(sitem["YSBJ2"])) * 100 / Conversion.Val(sitem["YSBJ2"]), 0);
                             if (mScl > 10)
                                 sitem["SCL2"] = Round(mScl, 0).ToString();
                             else
@@ -222,19 +255,19 @@ namespace Calculates
                             msclgs = msclgs + 1;
 
 
-                        if (mqfgs >= GetSafeInt(mrsDj_Filter["QFHGGS"]))
+                        if (mqfgs >=(int) GetSafeDouble(mrsDj_Filter["QFHGGS"]))
                             sitem["HG_QFQD"] = "合格";
                         else
                             sitem["HG_QFQD"] = "不合格";
                         if (Conversion.Val(mrsDj_Filter["G_QFQD"]) == 0 || Conversion.Val(sitem["QFQD1"]) == 0)
                             sitem["HG_QFQD"] = "----";
-                        if (mklgs >= GetSafeInt(mrsDj_Filter["KLHGGS"]))
+                        if (mklgs >= (int)GetSafeDouble(mrsDj_Filter["KLHGGS"]))
                             sitem["HG_KLQD"] = "合格";
                         else
                             sitem["HG_KLQD"] = "不合格";
                         if (Conversion.Val(mrsDj_Filter["G_KLQD"]) == 0 || Conversion.Val(sitem["KLQD1"]) == 0)
                             sitem["HG_KLQD"] = "----";
-                        if (msclgs >= GetSafeInt(mrsDj_Filter["SCHGGS"]))
+                        if (msclgs >=(int) GetSafeDouble(mrsDj_Filter["SCHGGS"]))
                             sitem["HG_SCL"] = "合格";
                         else
                             sitem["HG_SCL"] = "不合格";
@@ -248,10 +281,29 @@ namespace Calculates
                         sitem["HG_SCL"] = "----";
                     }
                     #endregion
-
-                    #region 弯曲
-                    if (sitem["JCXM"].Contains("弯曲"))
+                    if ((int)GetSafeDouble(mrsDj_Filter["LSGS"]) == 1)
                     {
+
+                    }
+                        #region 弯曲
+                        if (sitem["JCXM"].Contains("弯曲") || sitem["JCXM"].Contains("管材弯曲试验"))
+                    {
+                        for (int i = 1; i < 3; i++)
+                        {
+                            if (sitem["LW" + i] == "无裂纹")
+                            {
+                                sitem["LW" + i] = "1";
+                            }
+                            if (sitem["LW" + i] == "有裂纹")
+                            {
+                                sitem["LW" + i] = "0";
+                            }
+                            if (sitem["LW" + i] == "----")
+                            {
+                                sitem["LW" + i] = "-1";
+                            }
+                          
+                        }
                         int mlwgs = 0;
                         if (Conversion.Val(sitem["LW1"]) == 1 || Conversion.Val(sitem["LW1"]) < 0)
                             mlwgs = mlwgs + 1;
@@ -259,7 +311,7 @@ namespace Calculates
                             mlwgs = mlwgs + 1;
 
 
-                        if (mlwgs >= GetSafeInt(mrsDj_Filter["LWHGGS"]))
+                        if (mlwgs >= (int)GetSafeDouble(mrsDj_Filter["LWHGGS"]))
                             sitem["HG_LW"] = "合格";
                         else
                             sitem["HG_LW"] = "不合格";
@@ -277,16 +329,47 @@ namespace Calculates
                         sitem["HG_LW"] = "----";
                     }
                     #endregion
+                    for (int i = 1; i < 3; i++)
+                    {
+                        if (sitem["LW" + i] == "1")
+                        {
+                            sitem["LW" + i] = "无裂纹";
+                        }
+                        if (sitem["LW" + i] == "0")
+                        {
+                            sitem["LW" + i] = "有裂纹";
+                        }
+                        if (sitem["LW" + i] == "-1")
+                        {
+                            sitem["LW" + i] = "----";
+                        }
 
+                    }
                     #region 压扁
                     if (sitem["JCXM"].Contains("压扁"))
                     {
+                        for (int i = 1; i < 3; i++)
+                        {
+                            if (sitem["YB" + i] == "无裂纹")
+                            {
+                                sitem["YB" + i] = "1";
+                            }
+                            if (sitem["YB" + i] == "有裂纹")
+                            {
+                                sitem["YB" + i] = "0";
+                            }
+                            if (sitem["YB" + i] == "----")
+                            {
+                                sitem["YB" + i] = "-1";
+                            }
+
+                        }
                         int mybgs = 0;
                         if (Conversion.Val(sitem["YB1"]) == 1 || Conversion.Val(sitem["YB1"]) < 0)
                             mybgs = mybgs + 1;
                         if (Conversion.Val(sitem["YB2"]) == 1 || Conversion.Val(sitem["YB2"]) < 0)
                             mybgs = mybgs + 1;
-                        if (mybgs >= GetSafeInt(mrsDj_Filter["YBHGGS"]))
+                        if (mybgs >= (int)GetSafeDouble(mrsDj_Filter["YBHGGS"]))
                             sitem["HG_YB"] = "合格";
                         else
                             sitem["HG_YB"] = "不合格";
@@ -304,7 +387,22 @@ namespace Calculates
                         sitem["HG_YB"] = "----";
                     }
                     #endregion
+                    for (int i = 1; i < 3; i++)
+                    {
+                        if (sitem["YB" + i] == "1")
+                        {
+                            sitem["YB" + i] = "无裂纹";
+                        }
+                        if (sitem["YB" + i] == "0")
+                        {
+                            sitem["YB" + i] = "有裂纹";
+                        }
+                        if (sitem["YB" + i] == "-1")
+                        {
+                            sitem["YB" + i] = "----";
+                        }
 
+                    }
                     //单组判定
                     MItem[0]["JCJGMS"] = "";
                     if (sitem["WGPD"] == "不合格")

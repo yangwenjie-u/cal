@@ -41,10 +41,10 @@ namespace Calculates
                     mSjdj = "";
                 //从设计等级表中取得相应的计算数值、等级标准
                 IDictionary<string, string> mrsDj_item = new Dictionary<string, string>();
-                //if (sItem["JCXM"].Trim().Contains("强度比"))
-                //    mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(mSjdj.Trim()) && x["DJ"].Contains(sItem["DJ"].Trim()) && x["KYQDBWD"].Contains(sItem["KYGDWD"]));
-                //else
-                mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(mSjdj.Trim()) && x["DJ"].Contains(sItem["DJ"].Trim()));
+                if (sItem["JCXM"].Trim().Contains("抗压强度比"))
+                    mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(mSjdj.Trim()) && x["DJ"].Contains(sItem["DJ"].Trim()) && x["KYQDBWD"].Contains(sItem["SJDJ"].Replace("℃","")));
+                else
+                    mrsDj_item = mrsDj.FirstOrDefault(x => x["MC"].Contains(mSjdj.Trim()) && x["DJ"].Contains(sItem["DJ"].Trim()));
                 if (mrsDj_item != null && mrsDj_item.Count() > 0)
                 {
                     mitem["G_XD"] = mrsDj_item["XD"];
@@ -299,7 +299,7 @@ namespace Calculates
                             mMaxKyqd = mtmpArray[2];
                             mMinKyqd = mtmpArray[0];
                             mMidKyqd = mtmpArray[1];
-                            mAvgKyqd = mtmpArray.Average();
+                            mAvgKyqd = Math.Round(mtmpArray.Average(),2);
 
                             sItem["JPJMSL"] = "";
                             if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
@@ -344,7 +344,7 @@ namespace Calculates
                             mMaxKyqd = mtmpArray[2];
                             mMinKyqd = mtmpArray[0];
                             mMidKyqd = mtmpArray[1];
-                            mAvgKyqd = mtmpArray.Average();
+                            mAvgKyqd = Math.Round(mtmpArray.Average(), 2);
 
 
                             if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
@@ -443,7 +443,7 @@ namespace Calculates
                             mMaxKyqd = mtmpArray[2];
                             mMinKyqd = mtmpArray[0];
                             mMidKyqd = mtmpArray[1];
-                            mAvgKyqd = mtmpArray.Average();
+                            mAvgKyqd = Math.Round(mtmpArray.Average(), 2);
 
                             if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                             {
@@ -514,7 +514,7 @@ namespace Calculates
                             mMaxKyqd = mtmpArray[2];
                             mMinKyqd = mtmpArray[0];
                             mMidKyqd = mtmpArray[1];
-                            mAvgKyqd = mtmpArray.Average();
+                            mAvgKyqd = Math.Round(mtmpArray.Average(), 2);
 
                             if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && mMidKyqd - mMinKyqd > Round(mMidKyqd * 0.15, 1))
                             {
@@ -586,7 +586,7 @@ namespace Calculates
                             mMaxKyqd = mtmpArray[2];
                             mMinKyqd = mtmpArray[0];
                             mMidKyqd = mtmpArray[1];
-                            mAvgKyqd = mtmpArray.Average();
+                            mAvgKyqd = Math.Round(mtmpArray.Average(), 2);
                             sItem["CNPJSJC"] = "";
                             if ((mMaxKyqd - mMidKyqd) > 30 && (mMidKyqd - mMinKyqd) > 30)
                             {
@@ -657,7 +657,7 @@ namespace Calculates
                             mMaxKyqd = mtmpArray[2];
                             mMinKyqd = mtmpArray[0];
                             mMidKyqd = mtmpArray[1];
-                            mAvgKyqd = mtmpArray.Average();
+                            mAvgKyqd = Math.Round(mtmpArray.Average(), 2);
                             if ((mMaxKyqd - mMidKyqd) > 30 && (mMidKyqd - mMinKyqd) > 30)
                             {
                                 MItem[0]["HG_ZNSJC"] = "重做";
@@ -738,8 +738,7 @@ namespace Calculates
                     {
                         jcxmCur = "抗压强度比";
                         sItem["JPJQD"] = "";
-                        List<double> Arrmd = new List<double>();
-
+                        
                         string mlongStr = "";
                         string[] str = new string[3];
                         if (Round(GetSafeDouble(sItem["SJCD"]), 0) == 100)
@@ -760,6 +759,7 @@ namespace Calculates
                             for (int j = 1; j <= 3; j++)
                             {
                                 sum = 0;
+                                List<double> Arrmd = new List<double>();
                                 for (int k = 1; k <= 3; k++)
                                 {
                                     md1 = GetSafeDouble(sItem["JHZ" + "1D" + j + "_" + k]);
@@ -780,7 +780,7 @@ namespace Calculates
                                 mMaxKyqd = mtmpArray[2];
                                 mMinKyqd = mtmpArray[0];
                                 mMidKyqd = mtmpArray[1];
-                                mAvgKyqd = mtmpArray.Average();
+                                mAvgKyqd = Math.Round(mtmpArray.Average(), 1);
 
                                 if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
                                 {
@@ -841,6 +841,7 @@ namespace Calculates
                                 {
                                     sItem["SQDDBZ" + mlq + j] = "";
                                     sum = 0;
+                                    List<double> Arrmd = new List<double>();
                                     for (int k = 1; k <= 3; k++)
                                     {
                                         md1 = GetSafeDouble(sItem["SHZ" + mlq + j + "_" + k]);
@@ -860,7 +861,7 @@ namespace Calculates
                                     mMaxKyqd = mtmpArray[2];
                                     mMinKyqd = mtmpArray[0];
                                     mMidKyqd = mtmpArray[1];
-                                    mAvgKyqd = mtmpArray.Average();
+                                    mAvgKyqd = Math.Round(mtmpArray.Average(), 1);
                                     if ((mMaxKyqd - mMidKyqd) > Round(mMidKyqd * 0.15, 1) && (mMidKyqd - mMinKyqd) > Round(mMidKyqd * 0.15, 1))
                                     {
                                         sItem["SQDDBZ" + mlq + j] = "重做";
@@ -975,9 +976,10 @@ namespace Calculates
                                 mlq = "DRHS";
                             }
 
-                            List<double> Arrmd = new List<double>();
+                            //List<double> Arrmd = new List<double>();
                             if (sItem[mlq + "HZ1"] != "" && sItem[mlq + "HZ1"] != "----")
                             {
+                                List<double> Arrmd = new List<double>();
                                 for (int j = 1; j <= 3; j++)
                                 {
                                     mHZ1 = sItem["DRHJHZ" + j];
@@ -1070,6 +1072,12 @@ namespace Calculates
                             mFlag_Hg = true;
                         }
                     }
+                    else
+                    {
+                        sItem["SSLB"] = "----";
+                        mitem["HG_SSLB"] = "----";
+                        mitem["G_SSLB"] = "----";
+                    }
                     #endregion
                     #region 渗透高度比
                     if (jcxm.Contains("、渗透高度比、"))
@@ -1098,14 +1106,15 @@ namespace Calculates
                     if (jcxm.Contains("、水泥净浆流动度、"))
                     {
                         jcxmCur = "水泥净浆流动度";
-                        if (sItem["LDDKZZ"].Contains("≥"))
-                        {
-                            sItem["LDDKZZ"] = sItem["LDDKZZ"].Substring(0, sItem["LDDKZZ"].Length - (sItem["LDDKZZ"].Length - sItem["LDDKZZ"].IndexOf("≥")));
-                        }
-                        else
-                        {
-                            MItem[0]["G_LDD"] = "≥" + Round(GetSafeDouble(sItem["LDDKZZ"]) * 0.95, 1);
-                        }
+                        //if (sItem["LDDKZZ"].Contains("≥"))
+                        //{
+                        //    //sItem["LDDKZZ"] = sItem["LDDKZZ"].Substring(0, sItem["LDDKZZ"].Length - (sItem["LDDKZZ"].Length - sItem["LDDKZZ"].IndexOf("≥")));
+                        //    sItem["LDDKZZ"] = Conversion.Val(sItem["LDDKZZ"].Replace("≥", "")).ToString();
+                        //}
+                        //else
+                        //{
+                            MItem[0]["G_LDD"] = "≥" + Round(Conversion.Val(sItem["LDDKZZ"].Replace("≥", "")) * 0.95, 1);
+                        //}
                         if (sItem["LDDKZZ"] == "----")
                         {
                             MItem[0]["HG_LDD"] = "----";

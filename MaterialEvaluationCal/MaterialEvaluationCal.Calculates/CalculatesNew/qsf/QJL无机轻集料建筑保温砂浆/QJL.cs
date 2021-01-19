@@ -52,7 +52,7 @@ namespace Calculates
                         sItem["MD" + i] = Math.Round(Conversion.Val(sItem["ZL" + i])/1000 / ((Conversion.Val(sItem["CD" + i]) / 1000 * Conversion.Val(sItem["KD" + i]) / 1000 * Conversion.Val(sItem["HD" + i]) / 1000)), 0).ToString("0");
                         iArray.Add(Conversion.Val(sItem["MD" + i]));
                     }
-                    sItem["W_MD"] = iArray.Average().ToString();
+                    sItem["W_MD"] = iArray.Average().ToString("0.0");
                     if (IsQualified(sItem["G_MD"], sItem["W_MD"], false) == "合格")
                     {
                         sItem["HG_MD"] = "合格";

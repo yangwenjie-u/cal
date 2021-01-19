@@ -239,7 +239,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("＞") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -257,7 +257,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("≥") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -275,7 +275,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("＜") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -293,7 +293,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("≤") + 1;
-                            l_bl = sj_fun.Substring(0,dw - 1);
+                            l_bl = sj_fun.Substring(0, dw - 1);
                             r_bl = sj_fun.Substring(dw, length - dw);
                             if (IsNumeric(l_bl))
                             {
@@ -311,7 +311,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("～") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
+                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
                             max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
                             min_bl = true;
                             max_bl = true;
@@ -321,7 +321,7 @@ namespace Calculates
                         {
                             length = sj_fun.Length;
                             dw = sj_fun.IndexOf("±") + 1;
-                            min_sjz = GetSafeDouble(sj_fun.Substring(0,dw - 1));
+                            min_sjz = GetSafeDouble(sj_fun.Substring(0, dw - 1));
                             max_sjz = GetSafeDouble(sj_fun.Substring(dw, length - dw));
                             min_sjz = min_sjz - max_sjz;
                             max_sjz = min_sjz + 2 * max_sjz;
@@ -645,7 +645,7 @@ namespace Calculates
                     continue;
                 }
                 //计算单组的抗压强度,并进行合格判断
-                if (jcxm.Contains("、抗压、"))
+                if (jcxm.Contains("、抗压、") || jcxm.Contains("、抗压强度、"))
                 {
                     jcxmCur = "抗压强度";
                     if (GetSafeDouble(sitem["CD1_1"]) != 0)
@@ -1369,8 +1369,56 @@ namespace Calculates
                     sitem["SHBLYQ"] = "----";
                 }
 
+                #region 导热系数
+                if (jcxm.Contains("、导热系数、"))
+                {
+                    jcxmCur = "导热系数";
+                    sitem["G_DRXS"] = "≤" + sitem["G_DRXS"].Trim().Replace("≤", "");
+                    if (IsQualified(sitem["G_DRXS"].Trim(), sitem["W_DRXS"], false) == "合格")
+                    {
+                        sitem["HG_DRXS"] = "合格";
+                    }
+                    else
+                    {
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        sitem["HG_DRXS"] = "不合格";
+                        mAllHg = false;
+                    }
 
-                if (sitem["MDPD"] == "不合格" || sitem["QDPD"] == "不合格" || sitem["WGPD"] == "不合格" || sitem["CCPD"] == "不合格" || sitem["DRPD"] == "不合格" || sitem["BHXSPD"] == "不合格" || sitem["FSPD"] == "不合格" || sitem["shblpd"] == "不合格")
+                }
+                else
+                {
+                    sitem["G_DRXS"] = "----";
+                    sitem["HG_DRXS"] = "----";
+                    sitem["W_DRXS"] = "----";
+                }
+                #endregion
+
+                #region 传热系数
+                if (jcxm.Contains("、传热系数、"))
+                {
+                    jcxmCur = "传热系数";
+                    sitem["G_CRXS"] = "≤" + sitem["G_CRXS"].Trim().Replace("≤", "");
+                    if (IsQualified(sitem["G_CRXS"], sitem["KZ"], false) == "合格")
+                    {
+                        sitem["HG_CRXS"] = "合格";
+                    }
+                    else
+                    {
+                        sitem["HG_CRXS"] = "不合格";
+                        jcxmBhg += jcxmBhg.Contains(jcxmCur) ? "" : jcxmCur + "、";
+                        mAllHg = false;
+                    }
+                }
+                else
+                {
+                    sitem["HG_CRXS"] = "----";
+                    sitem["G_CRXS"] = "----";
+                    sitem["KZ"] = "----";
+                }
+                #endregion
+
+                if (sitem["MDPD"] == "不合格" || sitem["QDPD"] == "不合格" || sitem["WGPD"] == "不合格" || sitem["CCPD"] == "不合格" || sitem["DRPD"] == "不合格" || sitem["BHXSPD"] == "不合格" || sitem["FSPD"] == "不合格" || sitem["shblpd"] == "不合格" || sitem["HG_CRXS"] == "不合格")
                 {
                     mAllHg = false;
                     sitem["JCJG"] = "不合格";
